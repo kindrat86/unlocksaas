@@ -1,0 +1,632 @@
+{
+  "meta": {
+    "version": "2.0",
+    "created_at": "2026-05-16T13:45:25.032666",
+    "last_updated": "2026-05-16T23:30:00.000000",
+    "project_slug": "unlocksaas",
+    "business_name": "Unlock SaaS",
+    "domain": "unlocksaas.com",
+    "domain_status": "purchased via Namecheap 2026-05-16",
+    "one_liner": "A micro-SaaS that productizes every step of the Unlock the Secrets workbook",
+    "business_model": "saas",
+    "price_point": "$49/mo (locked in workbook 01 Section 2)",
+    "repo_layout": "Project root = unlocksaas/. Strategy lives in unlocksaas/strategy/. Code lives at root (Next.js + Supabase + Stripe + Claude API).",
+    "resume_pointer": "../00-RESUME-HERE.md"
+  },
+  "output_settings": {
+    "format": "markdown",
+    "pdf_disabled": true,
+    "output_dir": "workbooks/"
+  },
+  "skills_completed": {
+    "brunson-sales-funnel-secrets": true,
+    "brunson-funnels-value-ladder": true,
+    "brunson-funnel-scripts": true,
+    "brunson-building-your-funnels": true,
+    "brunson-creating-your-movement": true,
+    "brunson-creating-belief": true,
+    "brunson-10x-secrets-one-to-many-selling": true,
+    "brunson-your-dream-customer": true,
+    "brunson-fill-your-funnel": true,
+    "brunson-growth-hacking": true
+  },
+  "skills_timestamps": {},
+  "quick_assessment_passed": {},
+  "run_all_mode": {
+    "active": false,
+    "started_at": "",
+    "current_skill_index": 0,
+    "total_skills": 10
+  },
+  "dotcom_secrets": {
+    "secret_formula": {
+      "q1_dream_customer": {
+        "name": "Marco",
+        "age": "36",
+        "occupation": "Marketer / operator by background, NON-developer. Ships real AI products using Lovable + Claude Code. Has stable day job plus freelance income (not financially desperate).",
+        "biggest_pain": "Post-launch, pre-revenue. Shipped a real working AI product, ~12 users, ~2 paying. Stripe is a flat line. He is STUCK, not broke.",
+        "dream_outcome": "Turn the product he already built into real, recurring revenue.",
+        "false_beliefs": [
+          "The problem is the product (one more polish pass / feature / pricing tweak will fix it)",
+          "Idea validation equals customer understanding",
+          "More building is progress (for him it is avoidance)",
+          "He can reason his way to a customer without ever talking to one"
+        ],
+        "blame": "Misdirected inward: blames the product and himself. Real cause per brief: he built it for no one in particular.",
+        "secret_desire": "To prove to himself the launch was not three wasted months of his life.",
+        "fears": [
+          "This is just another framework he starts and abandons",
+          "It produces a tidy persona document he files and forgets",
+          "It will not actually reach revenue"
+        ],
+        "suspicions": [
+          "Half-senses the real gap is that he never knew, specifically, who the product was for"
+        ],
+        "avatar_origin": "Founder's own past self (your-mess-is-your-message) corroborated by 10+ real founder interviews.",
+        "live_belief_observation": "Founder described the surprise as 'even building a PERFECT product they did not subscribe' - the word 'perfect' reveals Marco's core false belief (the problem is the product) is still active in the founder. Key material for Epiphany Bridge / Skill 6.",
+        "confirmed": "LOCKED. Marco = the founder, literally. Non-developer, has never written production code. Builds with Lovable + Claude Code. No composite, no asterisk - 'your mess is your message' at maximum strength."
+      },
+      "q2_congregations": {
+        "websites": [],
+        "forums": [
+          "Indie Hackers",
+          "r/SaaS",
+          "r/microsaas"
+        ],
+        "facebook_groups": [],
+        "influencers": [
+          "build-in-public community on X"
+        ],
+        "podcasts": [],
+        "newsletters": [],
+        "blogs": [],
+        "youtube_channels": [],
+        "keywords": [],
+        "dream_100": [],
+        "communities": [
+          "Lovable community Discord",
+          "Discord servers / forums around AI build tools he uses daily"
+        ]
+      },
+      "q3_bait": {
+        "hook": "Your product isn't broken. It was built for no one in particular.",
+        "story": "",
+        "offer": "",
+        "lead_magnet_ideas": [],
+        "low_ticket_ideas": [],
+        "top_hooks": [],
+        "dead_bait": "Anything that pattern-matches to 'validate your idea' or 'define your audience' - pre-discredited for Marco."
+      },
+      "q4_unique_result": "Turn the product Marco already built into real, recurring revenue, and prove the launch was not wasted time.",
+      "observed_market_behavior": "Praise without payment. Across 10+ conversations, founders said the product was good but did not subscribe. 'They did not vote with dollars.' This is the say-do gap / validation trap - the most predictable failure mode in early SaaS, NOT a product-quality problem."
+    },
+    "offer_stack": {
+      "brainstorm_draft": [
+        "Guided Secret Formula builder (workbook as software) - likely core product",
+        "Offer Autopsy - score current pricing page vs 10x value standard",
+        "Praise-to-Payment diagnostic - wrong-person / weak-offer / weak-belief",
+        "Customer Interview Kit - questions + script to book 5 calls this week",
+        "Swipe file of real converting offer stacks with value math",
+        "Dollar-Objection Decoder - turn decline language into bonuses",
+        "Fill-in-the-blank hook/story/offer copy blocks for non-developers",
+        "Converting micro-SaaS pricing page templates",
+        "AI co-pilot trained on frameworks that pushes back on vague answers",
+        "Funnel-gap scanner - flags missing follow-up/hook/urgency",
+        "Marco-Meter - scores copy: one person vs vague category",
+        "Structured async offer-build session",
+        "Offer teardown - submit and get notes",
+        "Private room of post-launch pre-revenue founders",
+        "Revenue/MRR tracker with milestone celebration",
+        "14-day First New Customer accountability push",
+        "Teardown library: praise-no-pay products and the fix",
+        "Results-based guarantee (first new paying customer or refund)",
+        "Fast-action bonus: 48h personal offer review"
+      ],
+      "brainstorm_status": "TRIAGE INCOMPLETE. Founder returned 'can deliver everything / none would make Marco pay / nothing to add.' PIVOT: stop stacking ingredients, find the ONE core promise first. Stack is paused until the core promise exists.",
+      "core_product": {
+        "name": "The Machine (productized Unlock the Secrets path) - DRAFT, pending founder react",
+        "six_steps": [
+          "1. Pin the real dream customer (tool pushes back on vague answers)",
+          "2. Build the irresistible offer with a guaranteed result",
+          "3. Write the hook and page copy (fill-in-the-blank, non-developer safe)",
+          "4. Generate outreach assets and the target list (congregations)",
+          "5. Do the outreach: tool GENERATES message + target, Marco posts it himself in the real platform, Marco logs the public LINK back into the tool, tool fetches/verifies the link is live and real. Cold email is the one channel the tool can send + track natively. NOT auto-posting (spam, platform-ToS violations, account-ban risk).",
+          "6. Convert and verify (Stripe connected, first charge detected)"
+        ],
+        "note": "The machine IS the guarantee's work-condition milestones. Core product = this 6-step doing-environment.",
+        "step5_note": "LOAD-BEARING step of the entire guarantee. Resolved a SEND-vs-TRACK conflation: the guarantee needs TRACK, not SEND. Deeper point: Step 5 is hard to BUILD because it is hard for Marco to DO - the only real-world-action step, and real-world action is Marco's avoidance disease. The product's core value / new opportunity = getting a customer-avoidant founder over the wall and actually doing outreach. Generating + tracking alone = commodity.",
+        "status": "Core product (6-step machine) LOCKED. Step 5 technical path resolved."
+      },
+      "core_value": "$259/mo - CONFIRMED by founder",
+      "bonuses": [
+        {
+          "name": "14-Day First-Customer Sprint",
+          "fights": "Mountain - 'do outreach' feels too big",
+          "mechanism": "Breaks outreach into one small tracked action per day for 14 days",
+          "proposed_value": "$89"
+        },
+        {
+          "name": "The Outreach Room",
+          "fights": "Isolation - doing it alone is terrifying",
+          "mechanism": "Live room of post-launch pre-revenue founders doing outreach together; AI-moderated",
+          "proposed_value": "$79/mo - CONFIRMED by founder"
+        },
+        {
+          "name": "The Outreach Script Kit",
+          "fights": "Blank page - 'I don't know what to say'",
+          "mechanism": "Done-for-you messages + reply scripts per channel",
+          "proposed_value": "$69"
+        }
+      ],
+      "total_value": "$496 - CONFIRMED",
+      "price": "$49/mo - LOCKED by founder.",
+      "guarantee": {
+        "promise": "Marco's first paying customer within 60 days.",
+        "timeframe": "60 days - LOCKED",
+        "work_condition": "Must be machine-verifiable in-product actions only (founder cannot verify real-world homework). Qualifying milestones, all logged by the software: completed dream-customer module, generated offer + guarantee in-tool, generated outreach assets in-tool, sent/logged outreach to N prospects (~20) THROUGH the tool. Result auto-verified via Stripe connection (new charge on Marco's account).",
+        "remedy": "LOCKED. Full refund of the 2 monthly payments ($49 x 2 = $98) made in the 60-day window.",
+        "design_principle": "If an action cannot be verified, it must happen INSIDE the product. The product must be a DOING environment, not a teaching one - outreach happens in-tool so the software both helps and witnesses. Side benefit: kills Marco's 'not another tool' objection.",
+        "billing": "Monthly subscription.",
+        "terms": "Judged AT the 60-day mark. Refund triggers only if (a) the tracked in-product milestones were completed AND (b) Stripe shows no new paying customer. Guarantee covers the 60-day window only.",
+        "status": "FULLY BUILT AND LOCKED."
+      },
+      "urgency_scarcity": "",
+      "core_promise": "LOCKED. Marco gets his first paying customer - proven and guaranteed. This is the offer spine. All 19 brainstorm ideas are now re-scoped as 'the machine' that delivers this promise, or they get cut.",
+      "ten_x_check": "$496 / $49 = 10.1x. Clears the 10x bar.",
+      "values_caveat": "Values must be DEFENSIBLE - Marco is a skeptic; inflated fantasy numbers repel him.",
+      "status": "OFFER LOCKED. Written to workbooks/01-sales-funnel-secrets.md Section 2."
+    },
+    "story_selling": {
+      "status": "COMPLETE - 5-beat Epiphany Bridge synthesized and written to workbook Section 4.",
+      "result_beat_note": "Honest, no fabricated numbers. Upgrade to a real customer outcome when one exists."
+    },
+    "hooks_headlines": [],
+    "value_ladder": {
+      "mission_statement": "DRAFT - pending founder confirm: 'We take founders who shipped a real product but can't get paid from a flat Stripe line to a guaranteed first paying customer, and on to a repeatable revenue engine, through software they run themselves.'",
+      "tiers": {
+        "rung_0_free": {
+          "offer": "Free standalone diagnostic tool",
+          "result": "Marco sees WHY he is stuck (clarity)",
+          "build": "YES - launch",
+          "note": "Doubles as distribution/SEO asset"
+        },
+        "rung_1_core": {
+          "offer": "The Machine + 3 bonuses + 60-day guarantee",
+          "price": "$49/mo",
+          "result": "First paying customer (proof)",
+          "build": "YES - launch",
+          "note": "The $49 core owns: copy, outreach, conversion, guarantee, the actual paying customer."
+        },
+        "rung_2_future": {
+          "offer": "Repeatable-revenue / multi-product tier",
+          "price": "later",
+          "result": "A repeatable engine, not a fluke",
+          "build": "NO - noted for later, not launch",
+          "note": "NOT coaching/DFY (founder ruled out). Self-serve higher tier for the founder doing it again on product 2+."
+        },
+        "rung_0_5_dollar_one": {
+          "offer": "$1 one-time. Delivers a COMPLETE SMALL result (proposed: finished dream customer + offer, machine steps 1-2). Pending founder confirm of exact contents.",
+          "price": "$1 one-time (NOT an auto-converting trial)",
+          "result": "Marco has a finished WHO and WHAT - real, done, his to keep. Becomes a verified buyer.",
+          "build": "YES - launch",
+          "design_rule": "NOT 'a taste' (a fragment insults a skeptic). A complete small win. Must STOP SHORT of a paying customer - that result stays exclusive to the $49 core, so no cannibalization. 10x is trivially met at $1; the real discipline is restraint."
+        }
+      },
+      "discipline_note": "Launch ladder is LEAN: 2 rungs only (free tool + $49 core). Rung 2 noted, not built. One funnel away.",
+      "status": "COMPLETE - lean 3-rung ladder locked, written to workbook Section 3.",
+      "contested": {
+        "founder_proposal": "A staircase of monthly tiers: $0.97, $4.97, $9.97, $19.97, $29.97/mo, each with 10x value, to identify buyers.",
+        "russell_case_against": [
+          "Sub-dollar recurring loses money: fixed Stripe per-charge fee (~$0.25-0.30) eats a third+ of a $0.97 charge before percentage and before compute cost.",
+          "10x value at every tier = building 5-6 distinct products solo, non-dev, pre-launch = the 'more building is avoidance' trap (Marco's own disease).",
+          "Six prices on one page paralyzes the buyer (a confused mind says no).",
+          "Cheap tiers cannibalize the $49 core and a watered-down tier confirms a skeptic's worst belief, destroying trust with the exact customer."
+        ],
+        "russell_recommendation": "Lean launch ladder: (1) free diagnostic tool, (2) $1 trial as the buyer-identifier, (3) $49/mo core. The $1 trial satisfies the 'identify buyers' goal with one mechanism and zero extra build.",
+        "status": "RESOLVED - founder chose the lean ladder. Six-tier staircase dropped."
+      },
+      "launch_ladder_final": "1) Free diagnostic (email). 2) $1 one-time (finishes customer+offer, buyer ID). 3) $49/mo core (machine + guarantee + the paying customer)."
+    },
+    "attractive_character": {
+      "status": "COMPLETE. Five-beat AC locked (Identity, Backstory, Parables, Flaws, Polarity). Written to workbooks/01-sales-funnel-secrets.md Section 6. Closes Step 1.",
+      "product_decision": "Attractive Character becomes STEP 3 of the core machine (after offer, before copy). Machine goes from 6 steps to 7.",
+      "machine_7_steps": [
+        "1. Pin dream customer",
+        "2. Build offer",
+        "3. Define the Attractive Character (the voice/persona that sells)",
+        "4. Write copy",
+        "5. Generate outreach assets + list",
+        "6. Do outreach (tracked)",
+        "7. Convert + verify via Stripe"
+      ],
+      "tier": "$49 core only. NOT added to the $1 Starter (which stays WHO + WHAT, locked).",
+      "rationale": "Copy and outreach silently assumed a voice; the AC fills that hole. Pairs with the Epiphany Bridge Story as the voice engine.",
+      "module_spec": {
+        "components_the_ENGINE_must_know": [
+          "Backstory",
+          "Parables",
+          "Character flaws",
+          "Polarity"
+        ],
+        "identity_types_engine_recommends_from": [
+          "The Leader",
+          "The Adventurer",
+          "The Reporter/Evangelist",
+          "The Reluctant Hero"
+        ],
+        "six_storylines": [
+          "Loss & redemption",
+          "Us vs them",
+          "Before & after",
+          "Amazing discovery",
+          "Secret telling",
+          "Third-party testimonials"
+        ],
+        "storylines_placement": "The 6 storylines belong to STEP 4 (copy/outreach engine) as narrative templates powered by the character from step 3 - NOT a separate step-3 input.",
+        "design_principle": "FRAMEWORK INTO THE ENGINE, NOT ONTO THE USER. Marco answers ~3-4 simple questions; the engine (which knows backstory/parables/flaws/polarity/identities) assembles his Attractive Character and recommends his identity type. Reuses his Story beats + dream customer as input. Step 3 must NOT become a 14-field form, or it becomes the abandoned workbook.",
+        "dogfood_note": "The current Story Selling exercise (beats 1-5) IS Marco's AC raw material - founder is dogfooding step 3 live."
+      },
+      "locked": {
+        "identity_type": {
+          "choice": "Reluctant Hero",
+          "anchor_reason": "Honesty makes it sustainable. Reluctant Hero is the only identity defensible without inflation today.",
+          "supporting_reasons": [
+            "Origin reads as Reluctant Hero, not Leader: founder did not set out to teach, was dragged here by his own flat Stripe line and ten founders' mirror moment.",
+            "Marco is a skeptic; Leader voice pre-disqualifies in three seconds; Reluctant Hero disarms him."
+          ],
+          "rejected_alternatives": {
+            "leader": "Triggers Marco's another-guru allergy.",
+            "adventurer": "Too light, does not earn trust on the pain.",
+            "reporter_evangelist": "Credible but distant; Marco does not feel 'this person is me.'"
+          }
+        },
+        "backstory": {
+          "authority_vehicle": [
+            "Shipped real products as a non-engineer with Lovable and Claude",
+            "Hit the flat-Stripe wall personally",
+            "Sat with 10+ other founders and confirmed the pattern",
+            "Built the machine that walked himself out"
+          ],
+          "frame": "Not 'I am an expert.' 'I had the disease, diagnosed it, built the cure, here it is.'",
+          "one_line_bio": "Marketer, non-engineer, built a dozen AI products that nobody paid for. Then I figured out why.",
+          "three_line_about_opener": "I'm a marketer. I have never written a line of production code. In 2026, Lovable and Claude opened the door and I shipped real AI products in weeks, watched them flatline in Stripe, and ran from the truth into SEO tactics for almost a year. What broke me out was sitting with more than ten other founders telling my own story back to me. So I built the machine I wish someone had handed me.",
+          "six_line_intro": "I'm a marketer and an operator. I have never written a line of production code. For most of my life that closed a door. Then in 2026, Lovable and Claude opened it and I shipped real AI products in weeks. The shipping part felt like magic. What came after did not. I would launch, open Stripe, and watch a line lie flat. I told myself it was the product. I told myself it was the funnel. I went embarrassingly deep into SEO and optimization, and the truth is that was just a respectable way of not looking at the flat line. What finally broke me was talking to more than ten other founders and hearing my own story back, every single time. So I sat down to write the offer for this product, and I found nothing there. No promise, no specific person. That was the moment. I had been building beautiful things for no one in particular. I stopped fixing products and started fixing the order, the work I had been taught to skip. The machine in this workbook is what I built. I run it on myself first. Now I am putting it in front of you."
+        },
+        "parables": [
+          {
+            "name": "The Blank Offer Page",
+            "lesson": "If you cannot write your offer in one sentence, to one real person, you have not earned the right to build the product.",
+            "used_in": "opener for why-your-launch-went-flat content; intro to the Machine demo; email two of any cold sequence"
+          },
+          {
+            "name": "The Stripe Refresh",
+            "lesson": "The daily activity of 'working on it' is the most expensive way to avoid the actual work.",
+            "used_in": "hook for stuck-founder content; intro to the 14-Day Sprint bonus; retargeting copy"
+          },
+          {
+            "name": "The SEO Escape Hatch",
+            "lesson": "Productive work is the best-camouflaged form of avoidance, because nobody, including you, can call you out for it.",
+            "used_in": "positioning against more-traffic gurus; intro to the-order-is-wrong content"
+          },
+          {
+            "name": "The Mirror in Ten Founders",
+            "lesson": "You will not see your own pattern until you hear it in someone else's mouth.",
+            "used_in": "opener for cold outreach to founders; social post on peer conversations beating advice; intro to the Outreach Room bonus"
+          },
+          {
+            "name": "The Door That Opened",
+            "lesson": "The bottleneck has moved. Building is solved. Selling has not been, and now it sits exposed.",
+            "used_in": "foundational positioning; intro to non-engineers-who-already-shipped copy; podcast guest opens"
+          }
+        ],
+        "character_flaws": [
+          {
+            "name": "The Avoider",
+            "summary": "Dresses up productive work as progress when the real work is uncomfortable.",
+            "mirror": "Marco's Stripe-refresh ritual",
+            "note": "Spine of the brand. The product treats avoidance; confessing it earns the right to sell the cure."
+          },
+          {
+            "name": "Cannot Code",
+            "summary": "Not an engineer, never wrote production code, depends on Claude when things break.",
+            "mirror": "Marco's identical skill gap",
+            "doubles_as": "positioning wedge against funnel/marketing tooling that quietly assumes you can code"
+          },
+          {
+            "name": "Praise Junkie",
+            "summary": "Collected compliments and treated them like traction; retrained to ask 'did they pay.'",
+            "mirror": "Marco's flat Stripe under a wall of 'this is awesome' comments"
+          },
+          {
+            "name": "Plans Before Shipping",
+            "summary": "Default is thinking about doing instead of doing; Machine Step 5 forces real-world action.",
+            "mirror": "Marco's documented over-planning, 'more building is progress' false belief"
+          }
+        ],
+        "rejected_flaws": {
+          "performative": "'Too detail-obsessed' / 'work too hard' - performative humility, disqualified.",
+          "money_blind": "Undermines the guarantee.",
+          "introvert_hates_outreach": "Brittle public posture for someone who must show up daily."
+        },
+        "polarity": {
+          "stands_for": [
+            "The work nobody wants to do",
+            "The non-engineer who shipped anyway",
+            "Talking to one real customer before writing one more line of code",
+            "The first paying customer as the only proof that matters",
+            "Honest math, even when it makes the page less exciting"
+          ],
+          "stands_against": [
+            "SEO, AEO, and GEO sold as a substitute for selling anything",
+            "Funnel and marketing tooling that quietly assumes you can code",
+            "'Validate your idea' advice handed to founders who already shipped",
+            "Praise treated as traction",
+            "Course-and-framework economies that sell teaching when the cure is doing"
+          ],
+          "enemy_in_one_sentence": "The problem stuck founders have is not the product. It is that an entire industry profits from teaching them to keep building when the only thing left is to sell.",
+          "usage": {
+            "cold": "Any AGAINST line is already a hook (e.g. Hook #11).",
+            "about_page": "FOR list as 'what we believe' block; enemy sentence as paragraph below.",
+            "disqualifying_copy": "'This is not for you if you have not shipped anything yet.'",
+            "content_cadence": "Every public piece advances one FOR and attacks one AGAINST."
+          }
+        },
+        "engine_extraction_spec": {
+          "design_rule": "Framework lives in the engine. Marco answers human questions. Never sees a build-your-AC form.",
+          "identity_type": "2-3 origin questions map to one of the four types",
+          "backstory": "3-4 turning-point questions map to the three backstory lengths",
+          "parables": "5 specific-moment questions map to 5 named parables",
+          "flaws": "4 menu-based prompts (not open boxes) map to 2-3 owned flaws",
+          "polarity": "2 questions (what wastes time / what you wish someone had told you earlier) map to FOR/AGAINST plus a disqualifying line",
+          "non_negotiable": "Step 3 must never become a 14-field form."
+        }
+      }
+    },
+    "hooks": {
+      "status": "COMPLETE (v1) - 12 hooks drafted, written to workbook Section 5.",
+      "top_picks": [
+        "#3 pain mirror",
+        "#8 guarantee",
+        "#10 contrarian reframe"
+      ],
+      "note": "Drafted by Russell, accepted by founder ('whatever you have'). Living list, test and swap in market."
+    }
+  },
+  "expert_secrets": {
+    "movement": {
+      "status": "COMPLETE. Written to workbooks/05-creating-your-movement.md.",
+      "framework_name": "The Machine (7 steps, capital M, mechanical/anti-vibes branding)",
+      "core_market": "WEALTH",
+      "submarket": "Online business / micro-SaaS / solopreneur income",
+      "niche": "Post-launch pre-revenue non-engineer founders who shipped a real product and have a flat Stripe line",
+      "new_opportunity": "First paying customer in 60 days, verified, or you do not pay. Not an improvement (more marketing/SEO/courses); a different category entirely.",
+      "opportunity_switch_pitch": "I am not offering you better marketing. I am offering you a machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "future_based_cause": "Founders who build real things with AI deserve to get paid for them. Not just praised. The next decade belongs to non-engineers who shipped. We exist to make sure the work that closes the gap gets done.",
+      "identity_label": {
+        "primary": "Verified Builders",
+        "alternate": "Paid Builders",
+        "status": "Founder A/B tests before launch (Free Diagnostic email conversion as the metric)"
+      },
+      "milestone_awards": [
+        "Dream Customer Pinned",
+        "Offer Locked",
+        "Attractive Character Defined",
+        "Copy Generated",
+        "First Outreach Sent",
+        "First Reply",
+        "First Paying Customer Verified (triggers shareable badge)"
+      ],
+      "manifesto_v1": "We are non-engineer founders who shipped real things with AI tools we did not write. We were told the answer was more building, then more traffic, then a better course. We tried all three. The line stayed flat. We stopped pretending the problem was the product. The problem was the work nobody taught us to do: name one real person, make one real promise, sell it before it felt ready. We run The Machine. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one. We measure progress in Stripe charges, not in encouragement. We do not collect praise. We collect customers. We are Verified Builders."
+    },
+    "belief": {
+      "status": "COMPLETE. Written to workbooks/06-creating-belief.md.",
+      "epiphany_bridge_full_7_element": "Backstory+desire; external wall (flat Stripe); internal wall (maybe I do not have what it takes); the epiphany (blank offer page + ten founders' mirror); the plan (name one person, one promise, sell before it feels ready); the conflict (outreach is the avoidance home field); the achievement (Machine + 60-day guarantee)",
+      "heros_two_journeys": {
+        "external_arc": "Flat Stripe -> tried tactics -> 10-founder mirror -> ran the Machine -> first paying customer -> recurring",
+        "internal_arc": "Problem-is-product -> maybe-it-is-me -> problem-is-the-skipped-work -> praise-was-never-payment -> Verified Builder identity"
+      },
+      "four_core_stories": {
+        "vehicle_story": "The Machine works because it removes the option to skip. The 60-day guarantee is enforced by code. Avoidance is mechanically deleted, not willpower-overcome.",
+        "internal_belief_rewrites": [
+          {"false": "The problem is the product", "rewrite": "The product was built for no one in particular; the problem is upstream of the product", "kinda_like": "blaming the car when you never figured out where you were driving"},
+          {"false": "Validation = customer understanding", "rewrite": "Validation is theater; understanding requires a mouth", "kinda_like": "reading reviews of a restaurant instead of eating there"},
+          {"false": "More building is progress", "rewrite": "For an avoidant builder, more building is sophisticated procrastination", "kinda_like": "reorganizing your desk while the deadline approaches"},
+          {"false": "I can reason my way to a customer", "rewrite": "Customers exist outside your head; the only way to find them is to leave it", "kinda_like": "trying to learn to swim from a textbook on the couch"}
+        ],
+        "external_belief_rewrites": [
+          {"objection": "No time for another framework", "rewrite": "Machine is a tool not a framework; 3-5 Qs per step; 60 days or less"},
+          {"objection": "Tried customer interviews, did not help", "rewrite": "Bottleneck was the synthesizing; Machine forces conclusions from interviews"},
+          {"objection": "Outreach is not my strength", "rewrite": "Not anyone's strength; tool generates message + picks target + tracks send"},
+          {"objection": "$49 is too much pre-revenue", "rewrite": "Two coffees a week; $98 cap returned if no result"},
+          {"objection": "Cannot risk another failed product", "rewrite": "Product already exists; Machine is work AROUND it, not new product"}
+        ],
+        "chain_breakers": [
+          "Identity -> product blame: rewrite identity ('Verified Builder, two steps in')",
+          "Avoidance -> tactic shopping: rewrite avoidance ('tool removes option, no willpower needed')",
+          "Praise -> false signal: rewrite signal ('praise is not payment, only Stripe is')"
+        ]
+      },
+      "distribution_map": {
+        "$49_sales_page": "Vehicle + 2 strongest Internal rewrites + Epiphany Bridge video",
+        "soap_opera": "Parables 1-5 + 2 External rewrites in PS lines",
+        "onboarding_email": "Internal rewrite #1 (problem-is-product)",
+        "machine_step_1_pushback": "Internal rewrite #4 (customers exist outside your head)",
+        "machine_step_5_friction_buster": "External rewrite #3 (outreach not your strength)"
+      }
+    },
+    "ten_x_secrets": {
+      "status": "COMPLETE. Written to workbooks/07-10x-secrets-one-to-many.md.",
+      "big_domino": "Your first paying customer is reachable in 60 days through software, not through more building and not through more traffic.",
+      "three_secrets": {
+        "vehicle_what": {"title": "Why The Machine works where every other tool failed you", "story": "Vehicle Story", "strategy": "7 steps in order", "case_study": "Founder running on himself produced first one-sentence offer; upgrade to real customer once it exists"},
+        "internal_who": {"title": "Why the work that breaks the flat line is work you have been avoiding, and how The Machine removes the avoidance option", "story": "Parable 2 + Parable 3", "strategy": "Framework-into-engine: avoidance mechanically removed", "case_study": "Founder's own SEO year reframed as evidence"},
+        "external_world": {"title": "Why a 60-day guarantee is even possible on software", "story": "Guarantee mechanics (machine-verifiable conditions, Stripe-verified result)", "strategy": "Economics: code-enforced refunds", "case_study": "Two-payment cap on remedy ($98) makes business model survive any reasonable conversion"}
+      },
+      "stack_slides_16_to_30": "Each offer-stack item gets its own slide with value math. Slide 16-19 items, 20 total, 21 price, 22 ratio, 23-29 bonus depth, 30 re-stack",
+      "trial_closes_inventory_12": [
+        "Have you ever opened Stripe expecting a charge and found nothing?",
+        "Have you told yourself 'one more feature' more than three times?",
+        "Have you ever bought a course because you wanted permission to keep planning?",
+        "Would you trade your next 60 days of tactic-shopping for one verified paying customer?",
+        "If a tool would not let you write copy until you had named a real customer, would you accept that?",
+        "Can you afford another year of the flat line?",
+        "If outreach was generated, tracked, and the targets pre-picked, would you press send today?",
+        "Has anyone ever loved your product without paying for it?",
+        "Do you suspect you have been avoiding the customer?",
+        "If you knew exactly which 20 people to message tomorrow, would you message them?",
+        "Would a $98 cap on a 60-day risk be acceptable for the chance of recurring revenue?",
+        "If you ran The Machine on yourself today, what is the worst that happens in 60 days?"
+      ],
+      "mini_closes_inventory": {
+        "risk_reversal": ["Guarantee", "Reverse risk", "Stake"],
+        "logic": ["Math", "Comparison", "ROI"],
+        "emotion": ["Story re-anchor", "Identity", "Future pacing"],
+        "urgency_scarcity": "REJECTED. No fake scarcity. Skeptic avatar destroys trust on fabricated urgency. Stake close carries the urgency message."
+      },
+      "build_prompt_upgrade_needed": [
+        "Big Domino slide block (1-6) at top of $49 sales page",
+        "Stack slides 16-30 as vertical block, not single table row"
+      ]
+    }
+  },
+  "traffic_secrets": {
+    "dream_100": {
+      "status": "COMPLETE v1. Written to workbooks/08-your-dream-customer.md. Category 2 entries 31-40 pending founder confirm. CSV at unlock-saas/dream-100.csv to be created by founder.",
+      "categories": {
+        "communities_forums": ["Indie Hackers", "r/SaaS", "r/microsaas", "r/EntrepreneurRideAlong", "r/SideProject", "r/Entrepreneur", "Lovable Discord", "Bubble Forum", "Make.com community", "Hacker News (Show HN)", "Product Hunt", "X build-in-public", "LinkedIn founder hashtag groups", "WIP.co", "Microconf community", "Lenny's community", "r/nocode", "r/buildinpublic", "r/learnmachinelearning", "Discord servers around Claude/Anthropic/Lovable/Cursor"],
+        "influencers": ["Pieter Levels", "Arvid Kahl", "Marc Lou", "Jon Yongfook", "Daniel Vassallo", "Tyler Tringas", "Justin Welsh", "Greg Isenberg", "Sahil Bloom", "Andrew Gazdecki", "founder-fills 10 more"],
+        "podcasts": ["Indie Hackers Podcast", "Lenny's Podcast", "My First Million", "The Bootstrapped Founder", "Startup Ideas with Greg Isenberg", "SaaStr Podcast", "Microconf On Air", "Software Social", "The Tropical MBA", "Mostly Metrics", "Practical AI", "Latent Space", "The All-In Podcast", "Build Your SaaS", "The Diary of a CEO"],
+        "newsletters": ["Lenny's Newsletter", "The Hustle", "Bootstrapped Founder weekly", "Indie Hackers weekly", "Microconf newsletter", "Houck's Newsletter", "The Generalist", "Not Boring", "AI Tidbits", "Ben's Bites", "The Rundown", "Trends.vc", "SaaStr", "The Macro", "Build in Public weekly"],
+        "products_partners": ["Lovable", "Cursor", "Replit", "Bubble", "Webflow", "ConvertKit/Kit", "Stripe", "Beehiiv", "Notion", "Linear", "Vercel", "Supabase", "Anthropic/Claude", "OpenAI", "Cal.com"],
+        "youtube": ["Indie Hackers YouTube", "Marc Lou", "Pieter Levels", "Justin Welsh", "Greg Isenberg", "Build Your SaaS", "Indy Dev Dan", "Fireship", "Ali Abdaal", "Matt Wolfe"],
+        "blogs": ["Indie Hackers blog", "Microconf blog", "Earnest Capital / Tiny Capital blog", "SaaStr blog", "ChartMogul blog"]
+      },
+      "engine_use": "Machine Step 5 outreach pulls from this list. The 20-action minimum for the guarantee is drawn from the top 20 most-relevant entries given user's niche.",
+      "work_in_vs_buy_in": "Launch = work-in only (organic, free, slow). Buy-in begins when Free Diagnostic converts 30%+ AND $1 Starter converts 5%+ on cold-warm.",
+      "infiltration": "DEFERRED to Phase 2 (Month 3+ post-launch)."
+    },
+    "fill_funnel": {
+      "status": "COMPLETE. Written to workbooks/09-fill-your-funnel.md.",
+      "launch_minimum_channels": ["Twitter/X build-in-public", "Indie Hackers + r/SaaS + r/microsaas"],
+      "skipped_at_launch": ["Instagram", "Facebook", "TikTok", "YouTube (host)", "Google Ads", "LinkedIn", "Podcasting (host)"],
+      "podcasting_guest": "Allowed reactively at launch (accept invites, do not pitch)",
+      "JK5_publishing_categories": ["Personal (the build, behind-the-scenes)", "Process (Machine deconstructed)", "Pattern (10+ conversations + cohort observations)", "Polarity (AGAINST lines)", "Proof (real wins when they exist)"],
+      "hook_rotation": "Cycle 12 hooks from workbook 01 Section 5; track engagement; top 3 become hero-page headlines and ad creative",
+      "public_proof_loop": "Every First Paying Customer Verified event triggers a founder post (with permission) showing screenshot + journey parable + credit",
+      "paid_ad_activation_criteria": {
+        "free_diagnostic_conversion": ">= 30% from organic",
+        "$1_starter_conversion": ">= 5% on cold-warm",
+        "verified_customer_cycles": ">= 3"
+      },
+      "paid_ad_budget_logic": "Start at 10% of MRR; kill any ad >$5 CPL within 7 days; scale any ad <$5 CPL until it does not"
+    },
+    "growth_hacking": {
+      "status": "COMPLETE. Written to workbooks/10-growth-hacking.md.",
+      "funnel_hub": {
+        "url": "unlocksaas.com (or final brand domain)",
+        "build_at": "Launch (small static page, built alongside the $1 Starter funnel)",
+        "components": ["Hero (enemy sentence + one-line bio)", "Free Diagnostic CTA primary", "$1 Starter CTA secondary", "$49 Machine CTA tertiary below fold", "Manifesto", "Founder six-line intro video", "Podcast appearances list", "Newsletter signup", "Social links"]
+      },
+      "solo_ad_roi_calculator": {
+        "launch_estimates": {"CPC": 0.50, "squeeze_conv": 0.30, "CPL": 1.67, "email_to_$1": 0.05, "email_to_$49": 0.015, "RPE_lifetime": 2.94, "break_even_CPL": 2.94},
+        "month_6_estimates": {"CPC": 0.40, "squeeze_conv": 0.35, "CPL": 1.14, "email_to_$1": 0.07, "email_to_$49": 0.025, "RPE_lifetime": 8.58, "break_even_CPL": 8.58}
+      },
+      "messenger_ads": "DEFERRED indefinitely (Marco does not live in Messenger)",
+      "integration_partners": [
+        {"partner": "Lovable", "play": "Co-marketing as the 'after you ship' tool; free diagnostic for shipped Lovable apps"},
+        {"partner": "Stripe (Atlas/startup docs)", "play": "Content piece for their docs; embedded Free Diagnostic in post-launch checklist"},
+        {"partner": "Indie Hackers", "play": "Sponsored content + co-branded Founder Diagnostic; member discount on $1 Starter"},
+        {"partner": "Bootstrapped Founder podcast", "play": "Co-branded mini-series; his audience gets Free Diagnostic"},
+        {"partner": "ConvertKit/Kit", "play": "Co-marketing to creators launching products"}
+      ],
+      "integration_activation": "3+ customers have completed first-paying-customer cycles",
+      "affiliate_army": {
+        "deferred_until": "50+ active paying customers",
+        "tiers": {"customer": "30% recurring 6 months", "influencer_publisher": "50% first month + 30% recurring 6 months", "coach_community": "40% recurring lifetime + monthly marketing co-investment"},
+        "center_components": ["Unique link", "Real-time clicks/conversions", "Stripe-verified commission tracking", "Done-for-them swipe copy", "Bonus structure for top 5 monthly"]
+      },
+      "cold_traffic": {
+        "awareness_levels_mapped": {
+          "unaware": "DO NOT TARGET",
+          "problem_aware": "Hook #3 (pain mirror)",
+          "solution_aware": "Hook #10 (contrarian)",
+          "product_aware": "Hook #7 + guarantee",
+          "most_aware": "Direct CTA, Hook #8"
+        },
+        "cold_hook_priority": ["Hook #3", "Hook #10", "Hook #1"],
+        "bridge_flow": "Cold ad -> Bridge page -> Free Diagnostic squeeze -> Diagnostic result -> $1 Starter or 5-email Soap Opera (NEVER cold to $49)"
+      },
+      "butterfly_marketing": [
+        {"name": "Shareable diagnostic result", "trigger": "End of diagnostic", "loop": "Each share adds 'diagnose your launch' CTA"},
+        {"name": "Public proof badge", "trigger": "First Paying Customer Verified event", "loop": "Shareable Verified Builder badge for X/LinkedIn"},
+        {"name": "Affiliate amplification", "trigger": "Badge share", "loop": "One-click 30% recurring 6mo for badge-driven signups"}
+      ],
+      "growth_phases": {
+        "launch": {"trigger": "$1 funnel live", "channels": "X + IH/Reddit", "plays": "Organic publishing only"},
+        "phase_2": {"trigger": "3 verified customer cycles", "channels": "+ podcast guesting + paid retargeting + Funnel Hub", "plays": "Solo ads test + integration outreach"},
+        "phase_3": {"trigger": "50 paying customers", "channels": "+ Affiliate Army + cold-traffic ads + programmatic SEO", "plays": "Full Brunson playbook engaged"}
+      }
+    }
+  },
+  "launch_plan": {},
+  "funnel_metrics": {},
+  "funnel_hacks": [],
+  "advisory_board_notes": {},
+  "revision_history": [],
+  "notes": {
+    "funnelfixer_status": "DEAD - domain access lost permanently. This product replaces it.",
+    "q1_validation_status": "VERIFIED (avatar is a real, validated person: founder-self + 10+ real founder conversations). CAVEAT: founder's interpretation of those interviews was thin - extracted a known pattern, not a model-updating surprise. OFFER-STAGE TODO: re-mine the 10 conversations for specific dollar-objection language (exact words used when declining; what they DID pay for instead).",
+    "q1_received": "2026-05-16T13:50:34.827645",
+    "product_design_constraint": "Marco cannot code. HARD LAW for everything downstream: the SaaS must be fully usable by a non-developer and all copy must assume zero technical fluency. Also a positioning wedge - most funnel/marketing tooling quietly assumes technical comfort.",
+    "secret_formula_q2_q4_status": "LOCKED. All four Secret Formula questions signed off by founder.",
+    "secret_formula": "COMPLETE - Q1-Q4 locked. Workbook page written to workbooks/01-sales-funnel-secrets.md.",
+    "current_exercise": "Unlock the Secrets workbook (Steps 1-10, ALL 10 chapters) COMPLETE. Next phase: BUILD via BUILD-PROMPT-CLAUDE-CODE.md.",
+    "attractive_character_completion": "AC exercise ran 2026-05-16 in five beats (Identity Type, Backstory, Parables, Character Flaws, Polarity), each locked sequentially with founder confirmation. Reluctant Hero identity locked with founder's stated anchor reason: honesty makes it sustainable. Final beat (Polarity) accepted under 'proceed autonomously' instruction.",
+    "steps_2_3_4_completion": "Steps 2 (Funnels in the Value Ladder), 3 (Funnel Scripts), and 4 (Building Your Funnels) completed 2026-05-16 under 'proceed autonomously with every chapter' instruction. Foundation from Step 1 was strong enough to map funnel types, write launch-critical scripts, and produce page-by-page build specs without further founder Q+A. Build order locked: $1 Starter first, then Free Diagnostic, then $49 Machine. Outreach Step 5 send-vs-track resolution carried forward. Funnel Hacking slot reserved but deferred. Expert Secrets and Traffic Secrets (Skills 5-10) deliberately not run pre-build: Brunson's own sequence is ship-funnel first, then build movement, then drive traffic.",
+    "offer_diagnostic": "Founder (who IS Marco) could not name a single thing Marco would pay for, and could add nothing from the 10 conversations. This mirrors Marco's own documented disease (avoids the customer, reasons toward answers). Re-engagement move: ask founder to answer AS Marco - what promise would make him pay tonight. That sentence becomes the offer spine.",
+    "delivery_model": "Founder states community moderation and audits will be run by AI agents (consistent with Sipi/OpenClaw/Mac Mini infrastructure). Accepted as founder's call. NOTE: AI handles LABOR, not the guaranteed RESULT - the guarantee rests on whether the machine reliably produces a paying customer.",
+    "guarantee_risk_flag": "A guaranteed RESULT on a self-serve $39 tool is risky - founder does not control whether the user does the work. Needs an airtight work-requirement OR the guarantee lives on a higher-touch tier of the value ladder.",
+    "product_design_implication": "Guarantee mechanics force the product spec: outreach/work happens inside the tool (trackable), Stripe integration verifies the result. Teaching-only = dead bait for Marco; doing-environment = new opportunity.",
+    "economics_flag": "The guarantee makes the offer a BET on the machine's success rate. Profitability rides on the % of users who do the verified work and get a paying customer. High success rate = rocket; low = slow bankruptcy via refunds + serving costs.",
+    "bonus_selection_lens": "Bonuses must be Step 5 accelerators - friction-killers, momentum, accountability. Anything that makes a scared founder press send.",
+    "value_ladder_note": "Founder asked about lower tiers. CORRECTION logged: it is ascension, not 'lower ladders' - free/lower tiers are on-ramps that funnel UP to the $49 core. Sequencing: lock the $49 core offer (destination) FIRST, then map rungs. Value Ladder is the next workbook exercise.",
+    "creating_your_offer": "COMPLETE - core promise, machine, stack ($496/10.1x), guarantee all locked.",
+    "sequence_reorder": "Deliberate reorder: strict skill order is Offer -> Story Selling -> Hooks -> Value Ladder. Doing Value Ladder NOW (founder momentum + ladder is structural). Story Selling + Hooks circle back after the ladder.",
+    "value_ladder_correction": "Founder proposed an info-product ladder (free -> $1 -> $9 -> $49). Corrected: SaaS ladder is LEAN - free on-ramp then $49 core. '$1' only valid as a $1 trial. The 60-day guarantee already does the tripwire's de-risking job. On-ramp form pending founder choice."
+  },
+  "progress": {
+    "skill_01_completed": [
+      "Secret Formula (Q1-Q4)",
+      "Creating Your Offer",
+      "Your Value Ladder",
+      "Story Selling",
+      "Hooks & Headlines",
+      "Attractive Character"
+    ],
+    "skill_01_status": "COMPLETE. Step 1 of 4 closed.",
+    "skill_02_status": "COMPLETE. Funnel-type-per-rung mapped, build order locked ($1 Starter first).",
+    "skill_03_status": "COMPLETE. Launch-critical scripts written. Setter/Closer + Product Launch skipped with reason.",
+    "skill_04_status": "COMPLETE. Page-by-page build specs, Soap Opera sequence, outreach engine spec, Funnel Audit checklist.",
+    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (A/B pending), framework named (The Machine).",
+    "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
+    "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
+    "skill_08_status": "COMPLETE v1. Dream 100 list across 7 categories. Category 2 entries 31-40 pending founder confirm. CSV to be built by founder.",
+    "skill_09_status": "COMPLETE. Launch-minimum (X + IH/Reddit). JK5 categories. Paid ad activation criteria. Phase 2 platform playbook noted.",
+    "skill_10_status": "COMPLETE. Funnel Hub specced (build at launch). Solo ad ROI calculator. Integration partner list. Affiliate program (deferred to 50+ customers). Eugene Schwartz mapping. Butterfly marketing plays. Three-phase growth map.",
+    "unlock_the_secrets_workbook": "COMPLETE. All 10 chapters of the Brunson Secrets Trilogy distilled. Ready to build.",
+    "next_action": "BUILD. See unlock-saas/BUILD-PROMPT-CLAUDE-CODE.md (updated to consume workbooks 05-10).",
+    "deferred_at_launch_now_specced": {
+      "expert_secrets": "Skills 5-7 specced and ready to consume in copy. Movement live from day one; Beliefs power engine pushback; 10x Secrets powers $49 sales page long-form.",
+      "traffic_secrets": "Skills 8-10 specced. Dream 100 seeds Machine Step 5 targets. Fill Funnel sets launch channels. Growth Hacking maps Phase 2/3 triggers."
+    },
+    "founder_open_items_pre_launch": [
+      "Confirm Verified Builders vs Paid Builders (A/B test before launch)",
+      "Fill 10 specific Category 2 influencer names in Dream 100",
+      "Create dream-100.csv from workbook 08 seed",
+      "Re-mine 10+ founder conversations for dollar-objection language (feeds $49 FAQ + disqualifying copy)"
+    ]
+  },
+  "design_principles": [
+    "Framework into the engine, not onto the user: every Brunson concept added to the product goes in as engine intelligence, not as another task/form for Marco. The product's value is that it KNOWS the framework so the avoidant founder does not have to."
+  ]
+}

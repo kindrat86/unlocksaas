@@ -1,0 +1,14 @@
+{
+  "version": "2.0",
+  "active_project": "unlock-saas",
+  "projects": {
+    "unlock-saas": {
+      "created_at": "2026-05-16T13:45:25.032666",
+      "last_updated": "2026-05-16T13:45:25.032666",
+      "business_name": "Unlock SaaS (working title)",
+      "one_liner": "A micro-SaaS that productizes every step of the Unlock the Secrets workbook",
+      "skills_completed_count": 0,
+      "total_skills": 10
+    }
+  }
+}
