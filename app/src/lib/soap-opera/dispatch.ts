@@ -11,7 +11,7 @@ import { buildUnsubscribeUrl } from "./tokens";
  * Row shape that the dispatcher needs. Mirrors a subset of
  * soap_opera_subscribers columns.
  *
- * current_day semantics (matches migration 0003):
+ * emails_sent semantics (matches live schema after migration 0007):
  *   0 = no email sent yet (Day 0 / Email 1 still pending)
  *   1 = Email 1 has been sent; Email 2 is next
  *   ...
@@ -21,7 +21,7 @@ export interface DueRow {
   id: string;
   email: string;
   diagnostic_result: DiagnosticResult | null;
-  current_day: number;
+  emails_sent: number;
 }
 
 export interface SendResult {
@@ -48,11 +48,11 @@ function baseUrl(): string {
 /**
  * Send the next email in the sequence for one subscriber and advance their
  * counter. Returns ok=true on success, ok=false on either Resend failure or
- * DB write failure. On failure, current_day is NOT incremented so the next
+ * DB write failure. On failure, emails_sent is NOT incremented so the next
  * cron tick retries the same email.
  */
 export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
-  const index = row.current_day; // zero-based; if 0 we send Email 1.
+  const index = row.emails_sent; // zero-based; if 0 we send Email 1.
   if (index >= SEQUENCE_LENGTH) {
     return { email: row.email, index, ok: false, error: "sequence_exhausted" };
   }
@@ -108,23 +108,23 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
   }
 
   // Advance the counter. If this was the final email, flip status to
-  // completed and clear next_send_at. Otherwise schedule the next send 24h
-  // from now.
+  // 'complete' (matches the check constraint set in migration 0007) and
+  // clear next_send_at. Otherwise schedule the next send 24h from now.
   const nowMs = Date.now();
-  const newDay = index + 1;
-  const isFinal = newDay >= SEQUENCE_LENGTH;
+  const newCount = index + 1;
+  const isFinal = newCount >= SEQUENCE_LENGTH;
 
   const update: {
-    current_day: number;
+    emails_sent: number;
     last_sent_at: string;
     next_send_at: string | null;
-    status?: "completed";
+    status?: "complete";
   } = {
-    current_day: newDay,
+    emails_sent: newCount,
     last_sent_at: new Date(nowMs).toISOString(),
     next_send_at: isFinal ? null : new Date(nowMs + DAY_INTERVAL_MS).toISOString(),
   };
-  if (isFinal) update.status = "completed";
+  if (isFinal) update.status = "complete";
 
   const { error: dbError } = await supabase
     .from("soap_opera_subscribers")

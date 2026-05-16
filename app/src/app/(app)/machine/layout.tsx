@@ -58,20 +58,19 @@ export default async function MachineLayout({
   // First Paying Customer Verified — sidebar badge lights up the instant a
   // verified_conversions row exists. Wrapped in try/catch so the layout still
   // renders if the migration hasn't been applied yet in a given env.
-  // The verified_conversions table has both `project_id` (migration 0002) and
-  // `profile_id` (guarantee.sql) live in the DB, but the generated types only
-  // know about `project_id`. Cast eq() through unknown until the type-graph is
-  // regenerated. TODO: reconcile the dual schema and regen database.types.ts.
+  //
+  // Schema reconciliation in flight: the generated types only know
+  // `project_id` (migration 0002), but the builder_badges trigger and the
+  // webhook write `profile_id`. Until database.types.ts is regenerated, query
+  // by the column the trigger writes, with a typed-as-never cast to skip the
+  // column-key check on the generated PostgREST builder. TODO: reconcile.
   let firstCustomerVerified = false;
   try {
     if (profile?.id) {
-      const { count } = await (supabase
+      const { count } = await supabase
         .from("verified_conversions")
         .select("id", { count: "exact", head: true })
-        .eq as unknown as (col: string, val: string) => Promise<{ count: number | null }>)(
-        "profile_id",
-        profile.id
-      );
+        .eq("profile_id" as never, profile.id);
       firstCustomerVerified = (count ?? 0) > 0;
     }
   } catch {

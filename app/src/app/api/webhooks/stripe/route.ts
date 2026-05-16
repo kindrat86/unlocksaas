@@ -10,6 +10,16 @@ import {
   stripeDistinctId,
 } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
+import {
+  applyRefund,
+  applySubscriptionCanceled,
+  getProfileByCustomerId,
+  inviteOrSignIn,
+  markEventProcessed,
+  recordPayment,
+  sixtyDayExpiry,
+  upsertProfileByEmail,
+} from "@/lib/billing";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
 export const runtime = "nodejs";
@@ -68,63 +78,379 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true, connect: true });
   }
 
-  switch (event.type) {
-    case "checkout.session.completed": {
-      const session = event.data.object as Stripe.Checkout.Session;
-      // TODO: Create user project in Supabase, link Stripe customer
-      console.log("Checkout completed:", session.id, session.mode);
-      await recordIdentityAbConversion(session);
-      await recordDiagnosticAttribution(session);
-      await capturePurchase(session);
-      break;
+  // Idempotency guard. Every platform event passes through billing_events
+  // first; Stripe retries become no-ops. The Connect branch above doesn't
+  // need this guard because it's append-only against verified_conversions
+  // (unique-indexed on stripe_charge_id).
+  if (!(await markEventProcessed(event))) {
+    return NextResponse.json({ received: true, duplicate: true });
+  }
+
+  try {
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        // BILLING: upsert profile, record Starter payment, send magic link.
+        await handleCheckoutSessionCompleted(session);
+        // ATTRIBUTION + ANALYTICS side-channels (preserved unchanged).
+        await recordIdentityAbConversion(session);
+        await recordDiagnosticAttribution(session);
+        await capturePurchase(session);
+        break;
+      }
+      case "invoice.payment_succeeded": {
+        const invoice = event.data.object as Stripe.Invoice;
+        // BILLING: open 60-day clock on first sub invoice; record payment.
+        await handleInvoicePaymentSucceeded(invoice);
+        await captureInvoiceEvent(invoice, Event.InvoicePaymentSucceeded);
+        break;
+      }
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        // BILLING: record failed payment row.
+        await handleInvoicePaymentFailed(invoice);
+        await captureInvoiceEvent(invoice, Event.InvoicePaymentFailed);
+        break;
+      }
+      case "customer.subscription.created":
+      case "customer.subscription.updated": {
+        const sub = event.data.object as Stripe.Subscription;
+        await handleSubscriptionUpserted(sub);
+        break;
+      }
+      case "customer.subscription.deleted": {
+        const sub = event.data.object as Stripe.Subscription;
+        // BILLING: revoke Core tier per "drop to starter if owned, else none".
+        await handleSubscriptionDeleted(sub);
+        await captureServerAndFlush(
+          stripeDistinctId(
+            typeof sub.customer === "string" ? sub.customer : sub.customer?.id,
+          ),
+          Event.SubscriptionCanceled,
+          {
+            stripe_subscription_id: sub.id,
+            canceled_at: sub.canceled_at,
+            cancel_at_period_end: sub.cancel_at_period_end,
+          },
+        );
+        break;
+      }
+      case "charge.refunded": {
+        const charge = event.data.object as Stripe.Charge;
+        // BILLING: mark billing_payments refund + stamp profiles.refunded_at.
+        await handleChargeRefunded(charge);
+        await captureServerAndFlush(
+          stripeDistinctId(
+            typeof charge.customer === "string"
+              ? charge.customer
+              : charge.customer?.id,
+          ),
+          Event.ChargeRefunded,
+          {
+            stripe_charge_id: charge.id,
+            amount_refunded_cents: charge.amount_refunded,
+            currency: charge.currency,
+          },
+        );
+        break;
+      }
     }
-    case "invoice.payment_succeeded": {
-      const invoice = event.data.object as Stripe.Invoice;
-      // TODO: Track subscription payments for 60-day guarantee
-      console.log("Payment succeeded:", invoice.id);
-      await captureInvoiceEvent(invoice, Event.InvoicePaymentSucceeded);
-      break;
-    }
-    case "invoice.payment_failed": {
-      const invoice = event.data.object as Stripe.Invoice;
-      await captureInvoiceEvent(invoice, Event.InvoicePaymentFailed);
-      break;
-    }
-    case "customer.subscription.deleted": {
-      const sub = event.data.object as Stripe.Subscription;
-      await captureServerAndFlush(
-        stripeDistinctId(
-          typeof sub.customer === "string" ? sub.customer : sub.customer?.id,
-        ),
-        Event.SubscriptionCanceled,
-        {
-          stripe_subscription_id: sub.id,
-          canceled_at: sub.canceled_at,
-          cancel_at_period_end: sub.cancel_at_period_end,
-        },
-      );
-      break;
-    }
-    case "charge.refunded": {
-      const charge = event.data.object as Stripe.Charge;
-      await captureServerAndFlush(
-        stripeDistinctId(
-          typeof charge.customer === "string"
-            ? charge.customer
-            : charge.customer?.id,
-        ),
-        Event.ChargeRefunded,
-        {
-          stripe_charge_id: charge.id,
-          amount_refunded_cents: charge.amount_refunded,
-          currency: charge.currency,
-        },
-      );
-      break;
-    }
+  } catch (err) {
+    console.error(
+      `[stripe-webhook] platform handler error for ${event.type} (${event.id}):`,
+      err
+    );
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Handler error" },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ received: true });
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// Billing handlers — wire Stripe events into profiles + billing_* tables.
+// Schema in supabase/migrations/20260517000000_billing.sql. All ops idempotent.
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── checkout.session.completed ───────────────────────────────────────────────
+//
+// Fires once per successful Checkout for both $1 Starter (mode=payment) and
+// $49/mo Core (mode=subscription). We:
+//   1. Upsert profiles row by email (tier=starter | core).
+//   2. Record the Starter payment here — the $1 OTO is a PaymentIntent with
+//      no invoice, so this is the only opportunity. For Core, the payment
+//      lands in invoice.payment_succeeded (which is also when the 60-day
+//      clock starts, because that's when money actually moves).
+//   3. Send a magic link via inviteOrSignIn() so the user can sign into
+//      /machine without ever choosing a password (Reluctant Hero: no friction).
+async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
+  const email =
+    session.customer_details?.email ??
+    session.customer_email ??
+    null;
+  if (!email) {
+    console.warn(
+      `[stripe-webhook] checkout.session.completed ${session.id} has no email; skipping profile + invite`
+    );
+    return;
+  }
+
+  const stripeCustomerId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.customer?.id ?? null;
+
+  const isCore = session.mode === "subscription";
+  const stripeSubscriptionId = isCore
+    ? typeof session.subscription === "string"
+      ? session.subscription
+      : session.subscription?.id ?? null
+    : null;
+
+  const nowIso = new Date().toISOString();
+
+  const profile = await upsertProfileByEmail({
+    email,
+    stripe_customer_id: stripeCustomerId,
+    tier: isCore ? "core" : "starter",
+    stripe_subscription_id: stripeSubscriptionId,
+    subscription_status: isCore ? "active" : undefined,
+    starter_purchased_at: isCore ? undefined : nowIso,
+    // core_started_at + guarantee_expires_at set on invoice.payment_succeeded
+    // when billing_reason='subscription_create'.
+  });
+
+  // Starter ($1 OTO): no invoice event will fire, so record the payment here.
+  if (!isCore && session.amount_total && session.amount_total > 0) {
+    await recordPayment({
+      profile_id: profile.id,
+      email: profile.email,
+      stripe_customer_id: stripeCustomerId,
+      stripe_payment_intent_id:
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id ?? null,
+      kind: "starter",
+      amount_cents: session.amount_total,
+      currency: session.currency ?? "usd",
+      status: "paid",
+      paid_at: nowIso,
+    });
+  }
+
+  // Land the user where the Stripe success_url already pointed them:
+  //   Starter (mode=payment)      → /oto → /machine (auth-gated)
+  //   Core    (mode=subscription) → /onboarding (auth-gated)
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://unlocksaas.com";
+  const next = isCore ? "/onboarding" : "/machine";
+  const redirectTo = `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`;
+  await inviteOrSignIn({ email, redirectTo });
+}
+
+// ── invoice.payment_succeeded ────────────────────────────────────────────────
+//
+// Fires once per successful subscription invoice. Two flavors:
+//   - billing_reason='subscription_create' → first $49 charge → opens 60-day clock
+//   - billing_reason='subscription_cycle'  → monthly renewal
+//
+// Per Hard Rule #4 of strategy/BUILD-PROMPT-CLAUDE-CODE.md: the guarantee is
+// machine-verifiable. profile.guarantee_expires_at is the single source of
+// truth for refund eligibility windows (lib/guarantee.ts reads it).
+async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
+  const customerId =
+    typeof invoice.customer === "string"
+      ? invoice.customer
+      : invoice.customer?.id ?? null;
+  if (!customerId) return;
+
+  const email = invoice.customer_email ?? null;
+  const profile = await getProfileByCustomerId(customerId);
+  if (!profile && !email) {
+    console.warn(
+      `[stripe-webhook] invoice.payment_succeeded ${invoice.id} has no profile and no email; skipping`
+    );
+    return;
+  }
+
+  const isFirstSubInvoice = invoice.billing_reason === "subscription_create";
+
+  // Ensure profile exists. If checkout.session.completed got dropped, the
+  // invoice still gives us enough to promote the user.
+  const ensuredProfile =
+    profile ??
+    (await upsertProfileByEmail({
+      email: email!,
+      stripe_customer_id: customerId,
+      tier: "core",
+      subscription_status: "active",
+    }));
+
+  if (isFirstSubInvoice) {
+    const periodStart =
+      invoice.lines?.data?.[0]?.period?.start ??
+      Math.floor(Date.now() / 1000);
+    await upsertProfileByEmail({
+      email: ensuredProfile.email,
+      tier: "core",
+      subscription_status: "active",
+      core_started_at: new Date(periodStart * 1000).toISOString(),
+      guarantee_expires_at: sixtyDayExpiry(periodStart),
+    });
+  }
+
+  // Stripe-node v22 dropped `invoice.charge` and `invoice.payment_intent` from
+  // the static types when targeting newer API versions, but the runtime payload
+  // still includes them for older API versions and replayed events. Cast through
+  // a permissive local type so we can read them defensively.
+  const legacy = invoice as unknown as {
+    charge?: string | { id?: string } | null;
+    payment_intent?: string | { id?: string } | null;
+    status_transitions?: { paid_at?: number | null } | null;
+  };
+  const chargeId =
+    typeof legacy.charge === "string"
+      ? legacy.charge
+      : legacy.charge?.id ?? null;
+  const paymentIntentId =
+    typeof legacy.payment_intent === "string"
+      ? legacy.payment_intent
+      : legacy.payment_intent?.id ?? null;
+  const paidAtUnix =
+    legacy.status_transitions?.paid_at ?? Math.floor(Date.now() / 1000);
+
+  await recordPayment({
+    profile_id: ensuredProfile.id,
+    email: ensuredProfile.email,
+    stripe_customer_id: customerId,
+    stripe_invoice_id: invoice.id,
+    stripe_charge_id: chargeId,
+    stripe_payment_intent_id: paymentIntentId,
+    kind: isFirstSubInvoice ? "core_initial" : "core_renewal",
+    amount_cents: invoice.amount_paid ?? invoice.total ?? 0,
+    currency: invoice.currency ?? "usd",
+    status: "paid",
+    paid_at: new Date(paidAtUnix * 1000).toISOString(),
+  });
+}
+
+// ── invoice.payment_failed ───────────────────────────────────────────────────
+//
+// Card declined or auth failed. Stripe automatically dunns per its Smart Retries
+// schedule. We record the failed attempt and let subscription.updated flip
+// subscription_status to past_due.
+async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
+  const customerId =
+    typeof invoice.customer === "string"
+      ? invoice.customer
+      : invoice.customer?.id ?? null;
+  if (!customerId) return;
+
+  const profile = await getProfileByCustomerId(customerId);
+  const email = invoice.customer_email ?? profile?.email ?? null;
+  if (!email) {
+    console.warn(
+      `[stripe-webhook] invoice.payment_failed ${invoice.id} has no email; skipping`
+    );
+    return;
+  }
+
+  await recordPayment({
+    profile_id: profile?.id ?? null,
+    email,
+    stripe_customer_id: customerId,
+    stripe_invoice_id: invoice.id,
+    kind:
+      invoice.billing_reason === "subscription_create"
+        ? "core_initial"
+        : "core_renewal",
+    amount_cents: invoice.amount_due ?? 0,
+    currency: invoice.currency ?? "usd",
+    status: "failed",
+    failed_at: new Date().toISOString(),
+  });
+}
+
+// ── customer.subscription.created / .updated ─────────────────────────────────
+//
+// Status transitions (active → past_due → unpaid), cancel_at_period_end toggles,
+// plan swaps. We don't change tier here — that's owned by checkout (grant) and
+// subscription.deleted (revoke). This handler keeps subscription_status +
+// cancel_at_period_end in sync.
+async function handleSubscriptionUpserted(sub: Stripe.Subscription) {
+  const customerId =
+    typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null;
+  if (!customerId) return;
+
+  const profile = await getProfileByCustomerId(customerId);
+  if (!profile) {
+    console.warn(
+      `[stripe-webhook] subscription ${sub.id} for unknown customer ${customerId}; skipping`
+    );
+    return;
+  }
+
+  await upsertProfileByEmail({
+    email: profile.email,
+    stripe_subscription_id: sub.id,
+    subscription_status: sub.status,
+    cancel_at_period_end: sub.cancel_at_period_end ?? false,
+  });
+}
+
+// ── customer.subscription.deleted ────────────────────────────────────────────
+//
+// Final cancellation. applySubscriptionCanceled() drops tier from 'core' to
+// 'starter' if the user ever bought the Starter, else 'none' — per workbook 02
+// value ladder where $1 Starter unlocks Steps 1+2 permanently.
+async function handleSubscriptionDeleted(sub: Stripe.Subscription) {
+  const customerId =
+    typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null;
+  if (!customerId) return;
+  await applySubscriptionCanceled(customerId);
+}
+
+// ── charge.refunded ──────────────────────────────────────────────────────────
+//
+// Fires when the operator (or the guarantee verifier) refunds a charge in
+// Stripe. We update billing_payments status + stamp profiles.refunded_at on
+// full refunds. Tier downgrade is left to subscription.deleted which the
+// operator typically fires alongside.
+async function handleChargeRefunded(charge: Stripe.Charge) {
+  const customerId =
+    typeof charge.customer === "string"
+      ? charge.customer
+      : charge.customer?.id ?? null;
+  const refundedAt = new Date().toISOString();
+  const fullRefund = (charge.amount_refunded ?? 0) >= (charge.amount ?? 0);
+
+  if (charge.id) {
+    const db = createAdminClient();
+    const { error } = await db
+      .from("billing_payments")
+      // billing_payments is not yet in the generated Database type; loose cast
+      // so the update typechecks. Re-running `supabase gen types typescript`
+      // would let us drop this.
+      .update({
+        status: fullRefund ? "refunded" : "partial_refund",
+        refunded_at: refundedAt,
+        refund_amount_cents: charge.amount_refunded ?? 0,
+      } as unknown as never)
+      .eq("stripe_charge_id", charge.id);
+    if (error) {
+      console.error(
+        `[stripe-webhook] charge.refunded update failed for ${charge.id}:`,
+        error.message
+      );
+    }
+  }
+
+  await applyRefund({
+    customerId,
+    refundedAtIso: refundedAt,
+    fullRefund,
+  });
 }
 
 // ── Conversion capture for PostHog (the events brunson-funnel-metrics needs) ──
@@ -265,8 +591,11 @@ async function handleConnectChargeSucceeded(
     // saw a real paying customer. This is the only "success" the workbooks
     // recognize. Captured before the celebration email so a Resend outage
     // doesn't lose the conversion metric.
+    // `profile.user_id` isn't on the existing select clause, but we already
+    // resolved it as `project.user_id` above. Use that to keep the select
+    // clause untouched and the type-check clean.
     await captureServerAndFlush(
-      profile.user_id as string,
+      project.user_id as string,
       Event.FirstCustomerVerified,
       {
         stripe_charge_id: charge.id,
