@@ -1,27 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { track } from "@/lib/analytics/client";
+import { Event } from "@/lib/analytics/events";
+import { OutreachLog } from "./outreach-log";
+import { ConversionVerifier } from "./conversion-verifier";
 
 type Message = {
   role: "engine" | "user";
   content: string;
 };
 
-const STEP_CONFIG: Record<
-  string,
-  {
-    title: string;
-    intro: string;
-    questions: string[];
-    milestone: string;
-  }
-> = {
+type StepConfig = {
+  title: string;
+  intro: string;
+  questions: string[];
+  milestone: string;
+  /** Step IDs whose assembled outputs should be sent to the engine as context. */
+  needsPriorOutputs?: ("1" | "2" | "3" | "4")[];
+  /** Override the default next-step navigation. */
+  nextHref?: string;
+  nextLabel?: string;
+};
+
+const STEP_CONFIG: Record<string, StepConfig> = {
   "1": {
     title: "Pin Your Dream Customer",
     intro:
@@ -47,12 +55,74 @@ const STEP_CONFIG: Record<
     ],
     milestone: "Offer Locked",
   },
+  "3": {
+    title: "Define Your Attractive Character",
+    intro:
+      "The voice that sells is the voice you confess in. The Reluctant Hero earns trust by naming the lie before naming the cure. Five questions. You will be tempted to polish your way through these. The engine will catch you doing it and ask again. Honest beats polished here — every time.",
+    questions: [
+      "Tell me about the moment you stopped being who you were and became someone who could build this. What broke? Give me a scene, not a summary.",
+      "What was the hardest stretch of your founder life so far? Give me one specific scene — a room, a day, a thing you said out loud — that captures it.",
+      "Give me one specific memory from your founder life that taught you the thing you most want your customer to learn. Set the scene.",
+      "Name the flaw you fight hardest. Not 'perfectionism' — a real one you catch yourself doing this week. Avoider, can't code, praise junkie, over-planner, or your own.",
+      "What advice in your industry makes you furious, and what is the truer thing nobody is saying? Pick a side.",
+    ],
+    milestone: "AC Defined",
+  },
+  "4": {
+    title: "Write Your Copy",
+    intro:
+      "You have the WHO, the WHAT, and the VOICE. Now the engine assembles the launch copy. You answer three questions. The engine writes the headlines, the sales page, the OTO block. You will edit. You will not start from blank.",
+    questions: [
+      "What is the one sentence about your product that someone in your audience would stop scrolling for? Your gut try — I will sharpen it.",
+      "What is the small piece you sell first? The thing someone could pay $1 to $5 for and walk away with a complete small win. Describe it.",
+      "Any non-negotiable tone notes? Anything you want me to keep or kill in your voice? If none, say 'use AC voice as-is'.",
+    ],
+    milestone: "Copy Generated",
+    needsPriorOutputs: ["1", "2", "3"],
+  },
+  "5": {
+    title: "Generate Outreach Assets",
+    intro:
+      "This is the step every founder I know skips. The avoidance disease's home field. The engine removes the option to skip — it picks the 20 targets, writes the messages, and Step 6 tracks every action. Three questions to seed it.",
+    questions: [
+      "What 2-3 niche keywords describe your dream customer the way they would describe themselves to a stranger? Not 'founders' — be specific.",
+      "Pick 3-5 categories where your dream customer actually congregates. Choose from: communities_forums, influencers, podcasts, newsletters, products_partners, youtube, blogs. Just list the ones you pick.",
+      "Any tone notes for outreach? If none, say 'use AC voice as-is'. Reject: pushiness, urgency tricks, fake scarcity — those break the funnel.",
+    ],
+    milestone: "Outreach Assets Generated",
+    needsPriorOutputs: ["1", "2", "3"],
+    nextHref: "/machine/step/6",
+    nextLabel: "Continue to Step 6: Do Outreach",
+  },
+  // Steps 6 and 7 use dedicated UI components, not Q&A.
 };
 
 export default function MachineStepPage() {
   const params = useParams();
-  const router = useRouter();
   const stepId = params.id as string;
+
+  // Step 6 (Do Outreach) and Step 7 (Convert & Verify) are not guided
+  // conversations — they have their own UIs and their own state. Render them
+  // directly to avoid mounting the GuidedConversation hooks for steps that
+  // do not use them.
+  if (stepId === "6") return <OutreachLog />;
+  if (stepId === "7") return <ConversionVerifier />;
+
+  return <GuidedConversation stepId={stepId} />;
+}
+
+/**
+ * Q&A flow for Steps 1-5.
+ *
+ * Each step has an intro paragraph and 3-5 questions. On each answer the
+ * engine validates: if vague it pushes back with Reluctant Hero voice; if
+ * specific it accepts and moves on. After the last question the engine
+ * assembles a structured output that we persist to localStorage so later
+ * steps can read it as context. Server-side, the engine route fires the
+ * step's milestone into Supabase via the guarantee module.
+ */
+function GuidedConversation({ stepId }: { stepId: string }) {
+  const router = useRouter();
   const config = STEP_CONFIG[stepId];
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -61,6 +131,28 @@ export default function MachineStepPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [output, setOutput] = useState("");
+
+  // Fire MachineStepStarted exactly once when the page mounts with a valid
+  // step config. Guarded inside useEffect so it does not fire during SSR or
+  // on the locked-step fallback branch.
+  useEffect(() => {
+    if (!config) return;
+    track(Event.MachineStepStarted, {
+      step_id: stepId,
+      step_name: config.title,
+    });
+  }, [stepId, config]);
+
+  // Persist the assembled output for later steps to read as engine context.
+  useEffect(() => {
+    if (isComplete && output && config) {
+      try {
+        window.localStorage.setItem(`machine.step.${stepId}.output`, output);
+      } catch {
+        // Ignore quota / private-mode failures.
+      }
+    }
+  }, [isComplete, output, stepId, config]);
 
   if (!config) {
     return (
@@ -79,7 +171,7 @@ export default function MachineStepPage() {
     : (currentQuestion / config.questions.length) * 100;
 
   async function handleSubmit() {
-    if (!input.trim()) return;
+    if (!input.trim() || !config) return;
 
     const userMessage: Message = { role: "user", content: input.trim() };
     const newMessages = [...messages, userMessage];
@@ -87,7 +179,37 @@ export default function MachineStepPage() {
     setInput("");
     setIsLoading(true);
 
+    track(Event.MachineStepAnswerSubmitted, {
+      step_id: stepId,
+      step_name: config.title,
+      question_index: currentQuestion,
+    });
+
     try {
+      const answersInThisStep = newMessages
+        .filter((m) => m.role === "user")
+        .map((m) => m.content);
+
+      const previousAnswers: string[] = [];
+      if (config.needsPriorOutputs) {
+        for (const priorStep of config.needsPriorOutputs) {
+          try {
+            const priorOutput = window.localStorage.getItem(
+              `machine.step.${priorStep}.output`
+            );
+            if (priorOutput) {
+              previousAnswers.push(
+                `PRIOR STEP ${priorStep} OUTPUT:\n${priorOutput}`
+              );
+            }
+          } catch {
+            // Ignore localStorage failures.
+          }
+        }
+      }
+      // Prior answers from this step (excluding the one just submitted).
+      previousAnswers.push(...answersInThisStep.slice(0, -1));
+
       const res = await fetch("/api/engine", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -95,25 +217,29 @@ export default function MachineStepPage() {
           stepId,
           questionIndex: currentQuestion,
           answer: input.trim(),
-          previousAnswers: messages
-            .filter((m) => m.role === "user")
-            .map((m) => m.content),
+          previousAnswers,
         }),
       });
 
       const data = await res.json();
 
       if (data.accepted) {
-        // Answer accepted, move to next question or complete
         const nextQ = currentQuestion + 1;
         if (nextQ >= config.questions.length) {
-          // All questions answered — get the assembled output
           setMessages([
             ...newMessages,
             { role: "engine", content: data.message },
           ]);
           setOutput(data.output || "");
           setIsComplete(true);
+          track(Event.MachineStepCompleted, {
+            step_id: stepId,
+            step_name: config.title,
+          });
+          track(Event.MilestoneEarned, {
+            step_id: stepId,
+            milestone_name: config.milestone,
+          });
         } else {
           setMessages([
             ...newMessages,
@@ -122,7 +248,14 @@ export default function MachineStepPage() {
           setCurrentQuestion(nextQ);
         }
       } else {
-        // Pushback — answer was vague
+        // Pushback — answer was vague. Useful signal for brunson-funnel-metrics:
+        // which question triggers the most pushback tells us where the engine
+        // is doing real work.
+        track(Event.MachineEnginePushback, {
+          step_id: stepId,
+          step_name: config.title,
+          question_index: currentQuestion,
+        });
         setMessages([
           ...newMessages,
           { role: "engine", content: data.message },
@@ -139,6 +272,45 @@ export default function MachineStepPage() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function renderCompletionNav() {
+    if (!config) return null;
+
+    if (stepId === "1") {
+      return (
+        <Button onClick={() => router.push("/machine/step/2")}>
+          Continue to Step 2: Build Your Offer
+        </Button>
+      );
+    }
+    if (stepId === "2") {
+      return (
+        <div className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            You are done with the Starter. Your WHO and WHAT are finished.
+          </p>
+          <Button variant="secondary" asChild>
+            <a href="/oto">
+              Unlock the full Machine — $49/mo, 60-day guarantee
+            </a>
+          </Button>
+        </div>
+      );
+    }
+    if (config.nextHref) {
+      return (
+        <Button onClick={() => router.push(config.nextHref!)}>
+          {config.nextLabel ?? "Continue"}
+        </Button>
+      );
+    }
+    const nextStep = String(Number(stepId) + 1);
+    return (
+      <Button onClick={() => router.push(`/machine/step/${nextStep}`)}>
+        Continue to Step {nextStep}
+      </Button>
+    );
   }
 
   return (
@@ -165,7 +337,6 @@ export default function MachineStepPage() {
 
       {/* Conversation */}
       <div className="space-y-4 mb-6">
-        {/* Initial question */}
         {messages.length === 0 && (
           <div className="bg-muted/50 rounded-lg p-4">
             <p className="text-sm font-medium">{config.questions[0]}</p>
@@ -185,7 +356,6 @@ export default function MachineStepPage() {
           </div>
         ))}
 
-        {/* Current question (after pushback or acceptance) */}
         {!isComplete &&
           messages.length > 0 &&
           messages[messages.length - 1].role === "engine" && (
@@ -219,7 +389,6 @@ export default function MachineStepPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {/* Assembled output */}
           <Card className="border-primary/30">
             <CardContent className="pt-6">
               <h3 className="font-bold mb-3">Your {config.title}</h3>
@@ -231,22 +400,7 @@ export default function MachineStepPage() {
 
           <Badge className="animate-pulse">{config.milestone}</Badge>
 
-          {stepId === "1" ? (
-            <Button onClick={() => router.push("/machine/step/2")}>
-              Continue to Step 2: Build Your Offer
-            </Button>
-          ) : (
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                You are done with the Starter. Your WHO and WHAT are finished.
-              </p>
-              <Button variant="secondary" asChild>
-                <a href="/oto">
-                  Unlock the full Machine — $49/mo, 60-day guarantee
-                </a>
-              </Button>
-            </div>
-          )}
+          {renderCompletionNav()}
         </div>
       )}
     </div>

@@ -1,17 +1,113 @@
 "use client";
 
+import { Suspense, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
+import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { track } from "@/lib/analytics/client";
+import { Event } from "@/lib/analytics/events";
+
+// Per-label one-liner that opens the page when the visitor comes from the
+// diagnostic. Voice rule: name the diagnosis in their own words, then point
+// at what the Starter actually does. Workbook 04 §3 Page 2 + workbook 06 §3.
+const DIAGNOSTIC_HANDOFF: Record<string, { title: string; body: string }> = {
+  wrong_person: {
+    title: "Wrong Person. Got it. Here is the door.",
+    body: "Steps 1 and 2 of the Machine are exactly the work that pins a real person and writes a real offer for them. That is what the $1 below buys.",
+  },
+  weak_offer: {
+    title: "Weak Offer. Got it. Here is the door.",
+    body: "Step 2 of the Machine is offer construction with engine pushback on every hedge. Step 1 is the dream customer it is for. That is what the $1 below buys.",
+  },
+  weak_belief: {
+    title: "Weak Belief. Got it. Here is the door — for the upstream part.",
+    body: "Belief gets fully rebuilt in Step 4 (behind the full Machine). The work that has to come first is a real WHO and a real WHAT — Steps 1 and 2. That is what the $1 below buys.",
+  },
+  error: {
+    title: "I could not finish the read. The door is still open.",
+    body: "We skip the diagnosis. The $1 below puts you in front of the same engine the diagnosis was going to point at: Steps 1 and 2 of the Machine.",
+  },
+  missing: {
+    title: "Skipped the diagnostic. Good — here is the door.",
+    body: "The Starter is the same destination either way: finish your dream customer and your offer this week, for one dollar.",
+  },
+};
+
+function DiagnosticHandoffBanner() {
+  const params = useSearchParams();
+  const from = params.get("from");
+  if (from !== "diagnostic") return null;
+
+  const labelKey = params.get("label") ?? "";
+  const copy = DIAGNOSTIC_HANDOFF[labelKey] ?? DIAGNOSTIC_HANDOFF.missing;
+
+  return (
+    <aside
+      role="note"
+      className="mb-8 rounded-lg border border-primary/20 bg-primary/5 px-5 py-4"
+    >
+      <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+        From your diagnosis
+      </p>
+      <h2 className="text-base font-semibold leading-snug mb-1">
+        {copy.title}
+      </h2>
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        {copy.body}
+      </p>
+    </aside>
+  );
+}
 
 export default function StarterSalesPage() {
+  return (
+    // Suspense boundary required by Next 14 when useSearchParams reads inside
+    // a client component that may be prerendered. The shell still streams.
+    <Suspense fallback={null}>
+      <StarterSalesPageInner />
+    </Suspense>
+  );
+}
+
+function StarterSalesPageInner() {
+  const params = useSearchParams();
+
+  // Stable across renders so the click handler closes over the right values.
+  const attribution = useMemo(() => {
+    const from = params.get("from");
+    const label = params.get("label");
+    const lead = params.get("lead");
+    if (!from && !label && !lead) return null;
+    return {
+      from: from ?? undefined,
+      label: label ?? undefined,
+      lead: lead ?? undefined,
+    };
+  }, [params]);
+
+  useEffect(() => {
+    track(Event.StarterPageViewed, attribution ? { ...attribution } : undefined);
+  }, [attribution]);
+
   async function handleCheckout() {
+    track(Event.StarterCheckoutClicked, {
+      price_type: "starter",
+      surface: "starter",
+      ...(attribution ?? {}),
+    });
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ priceType: "starter" }),
+      body: JSON.stringify({
+        priceType: "starter",
+        // Forwarded to Stripe session metadata so the webhook can stamp
+        // diagnostic_leads.converted_to_starter_at on this row.
+        attribution,
+      }),
     });
     const { url } = await res.json();
     if (url) window.location.href = url;
@@ -19,7 +115,11 @@ export default function StarterSalesPage() {
 
   return (
     <div className="min-h-screen py-16 px-6">
+      <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">
+        {/* Handoff acknowledgment — only renders when ?from=diagnostic. */}
+        <DiagnosticHandoffBanner />
+
         {/* Hero Hook */}
         <Badge variant="secondary" className="mb-4">
           The $1 Starter

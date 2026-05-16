@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
 
 export default function FunnelHub() {
+  const variant = readIdentityFromCookies();
+  const labels = getIdentityLabels(variant);
+
   return (
     <div className="min-h-screen flex flex-col">
+      <AbExposureBeacon />
       {/* Hero */}
       <header className="py-20 px-6 text-center max-w-3xl mx-auto">
         <p className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
@@ -36,10 +42,10 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* Manifesto (half) */}
+      {/* Manifesto (half) — A/B identity_label variant from sticky cookie. */}
       <section className="py-16 px-6 max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          We Are Verified Builders
+          {labels.manifestoTitle}
         </h2>
         <blockquote className="text-muted-foreground space-y-4 leading-relaxed">
           <p>

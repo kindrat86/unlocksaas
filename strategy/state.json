@@ -405,7 +405,8 @@
       "identity_label": {
         "primary": "Verified Builders",
         "alternate": "Paid Builders",
-        "status": "Founder A/B tests before launch (Free Diagnostic email conversion as the metric)"
+        "status": "LOCKED 2026-05-17. 'Verified Builders' ships at launch. 'Paid Builders' preserved as post-launch A/B candidate on the Free Diagnostic email form (trigger: >=200 visitors, decision: email-conversion delta >=3pp sustained >=7 days).",
+        "rationale": "'Verified' maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ('First Paying Customer Verified'). It carries the product's epistemic stance: no self-reporting, no praise-as-proof. 'Paid Builders' is ambiguous (reads as both 'builders who paid' and 'builders who got paid') and lacks the verification anchor. Pre-launch A/B was specced before we accepted that no traffic exists pre-Sprint-2 to fire it. Locked under 'proceed autonomously' instruction."
       },
       "milestone_awards": [
         "Dream Customer Pinned",
@@ -491,7 +492,7 @@
   },
   "traffic_secrets": {
     "dream_100": {
-      "status": "COMPLETE v1. Written to workbooks/08-your-dream-customer.md. Category 2 entries 31-40 pending founder confirm. CSV at unlock-saas/dream-100.csv to be created by founder.",
+      "status": "COMPLETE v1. Written to workbooks/08-your-dream-customer.md. Category 2 entries 31-40 still pending founder confirm. CSV generated 2026-05-17 at strategy/dream-100.csv (100 rows; columns: id,name,category,url,follow_status,work_in_plan,buy_in_plan,notes). Rows 31-40 carry [Founder fill #N] placeholders flagged pending_founder_review — replace once names are supplied here in categories.influencers.",
       "categories": {
         "communities_forums": ["Indie Hackers", "r/SaaS", "r/microsaas", "r/EntrepreneurRideAlong", "r/SideProject", "r/Entrepreneur", "Lovable Discord", "Bubble Forum", "Make.com community", "Hacker News (Show HN)", "Product Hunt", "X build-in-public", "LinkedIn founder hashtag groups", "WIP.co", "Microconf community", "Lenny's community", "r/nocode", "r/buildinpublic", "r/learnmachinelearning", "Discord servers around Claude/Anthropic/Lovable/Cursor"],
         "influencers": ["Pieter Levels", "Arvid Kahl", "Marc Lou", "Jon Yongfook", "Daniel Vassallo", "Tyler Tringas", "Justin Welsh", "Greg Isenberg", "Sahil Bloom", "Andrew Gazdecki", "founder-fills 10 more"],
@@ -572,10 +573,23 @@
   "funnel_metrics": {},
   "funnel_hacks": [],
   "advisory_board_notes": {},
-  "revision_history": [],
+  "revision_history": [
+    {
+      "date": "2026-05-17",
+      "scope": "Dollar-objection re-mine (partial: public sources only)",
+      "change": "Created strategy/dollar-objections.md with 30+ verbatim founder quotes from 6 public Indie Hackers + Hacker News threads, organized into 7 objection categories (subscription fatigue, cash constraint, burned by gurus, 'not the tool's job', 'I can build it myself', price-scales-badly, praise-without-payment). Each category mapped to a $49 sales-page FAQ entry, a disqualifying copy line, and a cross-reference index to workbook surfaces (FAQ, disqualifier, Soap Opera, engine pushback). Surfaced ONE NEW External Belief category (#6 'build it myself') not in workbook 06 Section 4's original 5. Updated notes.q1_validation_status to reflect partial completion.",
+      "rationale": "Per founder open item #4 (00-RESUME-HERE.md line 60). Ran under 'proceed autonomously' instruction. Mined IH + HN because Reddit blocks WebFetch; Slack/Gmail/Granola need authenticated MCP access and remain pending. Public mine gives launch-grade FAQ/disqualifier copy NOW; private mine will refine niche-specific language pre-launch.",
+      "files_touched": ["strategy/state.json", "strategy/dollar-objections.md"],
+      "follow_ups": [
+        "Re-mine Maryan's private 10-conversation set via Slack/Gmail/Granola MCP (launch-critical)",
+        "Add External Belief #6 to workbook 06 Section 4 + expert_secrets.four_core_stories.external_beliefs on next revision pass",
+        "Verify Indie Hackers citation policy before quoting users by handle on the public $49 sales page"
+      ]
+    }
+  ],
   "notes": {
     "funnelfixer_status": "DEAD - domain access lost permanently. This product replaces it.",
-    "q1_validation_status": "VERIFIED (avatar is a real, validated person: founder-self + 10+ real founder conversations). CAVEAT: founder's interpretation of those interviews was thin - extracted a known pattern, not a model-updating surprise. OFFER-STAGE TODO: re-mine the 10 conversations for specific dollar-objection language (exact words used when declining; what they DID pay for instead).",
+    "q1_validation_status": "VERIFIED (avatar is a real, validated person: founder-self + 10+ real founder conversations). CAVEAT: founder's interpretation of those interviews was thin - extracted a known pattern, not a model-updating surprise. OFFER-STAGE TODO (PARTIAL 2026-05-17): public-source dollar-objection mine COMPLETE - 30+ verbatim quotes from 6 IH/HN threads documented in strategy/dollar-objections.md, mapped to 7 objection categories with $49 FAQ + disqualifying copy + engine pushback assignments. Surfaced one NEW External Belief (#6 'build it myself') not in workbook 06 - add on next revision pass. STILL PENDING (launch-critical): re-mine Maryan's PRIVATE 10-conversation set in Slack DMs / Gmail threads / Granola recordings - requires authenticated MCP access; the private set likely contains more niche-specific dollar language than the public mine.",
     "q1_received": "2026-05-16T13:50:34.827645",
     "product_design_constraint": "Marco cannot code. HARD LAW for everything downstream: the SaaS must be fully usable by a non-developer and all copy must assume zero technical fluency. Also a positioning wedge - most funnel/marketing tooling quietly assumes technical comfort.",
     "secret_formula_q2_q4_status": "LOCKED. All four Secret Formula questions signed off by founder.",
@@ -607,10 +621,10 @@
     "skill_02_status": "COMPLETE. Funnel-type-per-rung mapped, build order locked ($1 Starter first).",
     "skill_03_status": "COMPLETE. Launch-critical scripts written. Setter/Closer + Product Launch skipped with reason.",
     "skill_04_status": "COMPLETE. Page-by-page build specs, Soap Opera sequence, outreach engine spec, Funnel Audit checklist.",
-    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (A/B pending), framework named (The Machine).",
+    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (LOCKED 2026-05-17; Paid Builders preserved as post-launch A/B candidate), framework named (The Machine).",
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
     "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
-    "skill_08_status": "COMPLETE v1. Dream 100 list across 7 categories. Category 2 entries 31-40 pending founder confirm. CSV to be built by founder.",
+    "skill_08_status": "COMPLETE v1. Dream 100 list across 7 categories. Category 2 entries 31-40 still pending founder confirm. CSV generated 2026-05-17 at strategy/dream-100.csv (100 rows; columns: id,name,category,url,follow_status,work_in_plan,buy_in_plan,notes; rows 31-40 are [Founder fill #N] placeholders).",
     "skill_09_status": "COMPLETE. Launch-minimum (X + IH/Reddit). JK5 categories. Paid ad activation criteria. Phase 2 platform playbook noted.",
     "skill_10_status": "COMPLETE. Funnel Hub specced (build at launch). Solo ad ROI calculator. Integration partner list. Affiliate program (deferred to 50+ customers). Eugene Schwartz mapping. Butterfly marketing plays. Three-phase growth map.",
     "unlock_the_secrets_workbook": "COMPLETE. All 10 chapters of the Brunson Secrets Trilogy distilled. Ready to build.",
@@ -621,8 +635,7 @@
     },
     "founder_open_items_pre_launch": [
       "Confirm Verified Builders vs Paid Builders (A/B test before launch)",
-      "Fill 10 specific Category 2 influencer names in Dream 100",
-      "Create dream-100.csv from workbook 08 seed",
+      "Fill 10 specific Category 2 influencer names (rows 31-40 of strategy/dream-100.csv + categories.influencers in this state.json)",
       "Re-mine 10+ founder conversations for dollar-objection language (feeds $49 FAQ + disqualifying copy)"
     ]
   },

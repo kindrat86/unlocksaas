@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { getProfileByUserId } from "@/lib/onboarding";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -22,13 +25,58 @@ const steps = [
   { id: 7, name: "Convert & Verify", icon: CheckCircle2, milestone: "First Paying Customer Verified" },
 ];
 
-export default function MachineLayout({
+export default async function MachineLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // For Sprint 1: Steps 1-2 unlocked, 3-7 locked
-  const unlockedSteps = [1, 2];
+  // Auth gate — anonymous traffic gets sent to /login with the original
+  // path preserved so we can deep-link back after sign-in.
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) {
+    redirect("/login?next=/machine");
+  }
+
+  // Tier-driven step gating. Sourced from public.profiles, which the Stripe
+  // webhook writes on checkout.session.completed + invoice.payment_succeeded.
+  //   - core    → all 7 steps unlocked
+  //   - starter → Steps 1+2 only (BUILD-PROMPT Hard Rule #6:
+  //               "The $1 Starter delivers Machine Steps 1 and 2 only.")
+  //   - none    → user landed here without buying. Send to /starter so they
+  //               don't see a locked-out sidebar with no path forward.
+  const profile = await getProfileByUserId(supabase, data.user.id);
+  const tier = profile?.tier ?? "none";
+
+  if (tier === "none") {
+    redirect("/starter");
+  }
+
+  const unlockedSteps =
+    tier === "core" ? [1, 2, 3, 4, 5, 6, 7] : [1, 2];
+
+  // First Paying Customer Verified — sidebar badge lights up the instant a
+  // verified_conversions row exists. Wrapped in try/catch so the layout still
+  // renders if the migration hasn't been applied yet in a given env.
+  // The verified_conversions table has both `project_id` (migration 0002) and
+  // `profile_id` (guarantee.sql) live in the DB, but the generated types only
+  // know about `project_id`. Cast eq() through unknown until the type-graph is
+  // regenerated. TODO: reconcile the dual schema and regen database.types.ts.
+  let firstCustomerVerified = false;
+  try {
+    if (profile?.id) {
+      const { count } = await (supabase
+        .from("verified_conversions")
+        .select("id", { count: "exact", head: true })
+        .eq as unknown as (col: string, val: string) => Promise<{ count: number | null }>)(
+        "profile_id",
+        profile.id
+      );
+      firstCustomerVerified = (count ?? 0) > 0;
+    }
+  } catch {
+    firstCustomerVerified = false;
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -75,15 +123,28 @@ export default function MachineLayout({
             Milestones
           </p>
           <div className="flex flex-wrap gap-2">
-            {steps.map((step) => (
-              <Badge
-                key={step.id}
-                variant="outline"
-                className="text-[10px] opacity-40"
-              >
-                {step.milestone}
-              </Badge>
-            ))}
+            {steps.map((step) => {
+              const earned = step.id === 7 && firstCustomerVerified;
+              return earned ? (
+                <Link key={step.id} href="/machine/verified">
+                  <Badge
+                    variant="default"
+                    className="text-[10px] cursor-pointer"
+                    title="Open your Verified Builder badge"
+                  >
+                    {step.milestone}
+                  </Badge>
+                </Link>
+              ) : (
+                <Badge
+                  key={step.id}
+                  variant="outline"
+                  className="text-[10px] opacity-40"
+                >
+                  {step.milestone}
+                </Badge>
+              );
+            })}
           </div>
         </div>
       </aside>
