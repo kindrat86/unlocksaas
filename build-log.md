@@ -50,3 +50,28 @@ Blocked on: operator must add real Stripe test-mode keys and Anthropic API key t
 1. Create Stripe products: "$1 Starter" (one-time, $1) and "The Machine" (subscription, $49/mo). Add price IDs to env.
 2. Add Anthropic API key to env.
 3. Deploy to Vercel and point staging subdomain.
+
+## Sprint 1, Resume Pass: GitHub + Audit + Hardening
+**Status: SHIPPED**
+
+Resumed Sprint 1 on 2026-05-16 (session 2). Verified `cd` into project root. Read 00-RESUME-HERE.md, strategy/state.json (32 KB locked decisions), and BUILD-PROMPT-CLAUDE-CODE.md to refresh context. Audit confirms Sprint 1 deliverables 1-8 are coded and the only remaining gap is the smoke test, which is operator-blocked on real Stripe + Anthropic env keys. Code quality verified: Reluctant Hero voice present on every surface, framework-into-engine pattern intact, no stubs masquerading as features.
+
+## Sprint 1, Resume Pass: GitHub Repo Created and Pushed
+**Status: SHIPPED**
+
+Authenticated `gh` was `kindrat86`, not `sipi` (user confirmed namespace switch to `kindrat86/unlocksaas`). Staged `app/` (33 files) and `build-log.md`, committed as "Sprint 1: Next.js scaffold + funnel hub, $1 Starter, OTO, Machine shell," then ran `gh repo create kindrat86/unlocksaas --private --source=. --remote=origin --push`. Repo is live at https://github.com/kindrat86/unlocksaas with three commits: strategy lockdown, .gitignore, Sprint 1 scaffold. Remote `origin` set, `main` tracking `origin/main`.
+
+## Sprint 1, Resume Pass: `next build` Verified Clean
+**Status: SHIPPED**
+
+Ran `npx next build` from `app/`. Initial run: 11 routes generated, 0 errors, 0 warnings. After hardening (below) the second run produced 13 routes, still 0 errors. Static pages: `/`, `/machine`, `/oto`, `/starter`, `/diagnostic`, `/machine-sales`. Server-rendered: `/api/checkout`, `/api/engine`, `/api/webhooks/stripe`, `/machine/step/[id]`. First Load JS shared baseline 87.3 kB — within healthy range.
+
+## Sprint 1, Resume Pass: Dead Homepage CTAs Replaced With Placeholders
+**Status: SHIPPED**
+
+Found two homepage CTAs (`/diagnostic`, `/machine-sales`) wired to routes that did not exist — would have 404'd on the funnel hub. Built minimal placeholder pages at `app/src/app/(marketing)/diagnostic/page.tsx` and `app/src/app/(marketing)/machine-sales/page.tsx`. Each page is honest about the sprint timing (Sprint 2, Sprint 3), explains in Reluctant Hero voice why this door is closed and which door is open, and routes the visitor to `/starter` (the one funnel that is live). No fake "coming soon" copy. The real Free Diagnostic and $49 sales page will replace these in their respective sprints.
+
+## Sprint 1, Resume Pass: Engine Model Bumped to Sonnet 4.6
+**Status: SHIPPED**
+
+`/api/engine/route.ts` was pinned to `claude-sonnet-4-20250514` — a stale May 2025 snapshot. Updated both call sites (validation and assembly) to `claude-sonnet-4-6`, the current Sonnet ID per Anthropic's model registry. No API surface changes; same JSON-mode contract.
