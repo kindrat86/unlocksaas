@@ -1,0 +1,101 @@
+id,name,category,url,follow_status,work_in_plan,buy_in_plan,notes
+1,Indie Hackers,Communities and forums,https://www.indiehackers.com/,not_following,Daily presence; value-first comments; twice/week parable-led story (no link); once/week link to Free Diagnostic,Newsletter sponsorship + IH Podcast sponsorship (post-launch),Single biggest community overlap with Marco; also covers the IH podcast/newsletter/YouTube
+2,r/SaaS,Communities and forums,https://www.reddit.com/r/SaaS/,not_following,Daily presence; value-first comments; twice/week parable-led post (no link); once/week link to Free Diagnostic,Reddit ads targeting r/SaaS subscribers (deferred),Workbook 09 launch channel
+3,r/microsaas,Communities and forums,https://www.reddit.com/r/microsaas/,not_following,Daily presence; weekly parable-led post; once/week link to Free Diagnostic,Reddit ads (deferred),Workbook 09 launch channel
+4,r/EntrepreneurRideAlong,Communities and forums,https://www.reddit.com/r/EntrepreneurRideAlong/,not_following,Weekly value-first post on shipping pre-revenue; respect rules,Reddit ads (deferred),Lower priority than r/SaaS but high-intent
+5,r/SideProject,Communities and forums,https://www.reddit.com/r/SideProject/,not_following,Weekly story-led thread; engage in launch threads,Reddit ads (deferred),Adjacent ICP — earlier-stage founders
+6,r/Entrepreneur,Communities and forums,https://www.reddit.com/r/Entrepreneur/,not_following,Comment on shipping posts; weekly story-led post if rules permit,Reddit ads (deferred),Large but noisy; lower priority
+7,Lovable community Discord,Communities and forums,https://discord.gg/lovable,not_following,Daily help-first presence; share Reluctant Hero parables; build for Lovable users,Co-marketing with Lovable (Category 5 partner),HIGHEST niche overlap (vibe-coders post-launch)
+8,Bubble Forum,Communities and forums,https://forum.bubble.io/,not_following,Value-first answers on monetization questions,N/A,No-code overlap; secondary
+9,Make.com community,Communities and forums,https://community.make.com/,not_following,Answer monetization questions,N/A,Secondary
+10,Hacker News (Show HN),Communities and forums,https://news.ycombinator.com/show,not_following,Show HN at $1 Starter launch; comment thoughtfully on adjacent posts,N/A — no paid placement,One-shot launch event; can't be a daily channel
+11,Product Hunt,Communities and forums,https://www.producthunt.com/,not_following,Engage in maker community pre-launch; launch on PH after Sprint 3 ships,N/A,Defer launch until $49 sales page is live
+12,X build-in-public,Communities and forums,https://twitter.com/search?q=%23buildinpublic,not_following,Daily JK5 thread (Personal/Process/Pattern/Polarity/Proof); 12-hook rotation per workbook 09,X ads boosting top organic posts (deferred),Workbook 09 PRIMARY channel
+13,LinkedIn founder hashtag groups,Communities and forums,https://www.linkedin.com/feed/hashtag/founder,not_following,Weekly long-form post; value-first comments on dream-customer posts,LinkedIn ads (deferred),Tertiary
+14,WIP.co,Communities and forums,https://wip.co/,not_following,Daily todo log; engage with other indie makers,N/A,Niche but high-intent
+15,Microconf community,Communities and forums,https://microconfconnect.com/,not_following,Value comments in Slack; pitch speaking slot Month 9–12,Microconf event sponsorship (post-launch),Higher-revenue founders; secondary to IH
+16,Lenny's community,Communities and forums,https://www.lennysnewsletter.com/,not_following,Comment in subscriber Slack; cite Lenny's essays in posts,Newsletter + podcast sponsorship,Premium audience — adjacent ICP
+17,r/nocode,Communities and forums,https://www.reddit.com/r/nocode/,not_following,Weekly value-first post on monetizing no-code products,Reddit ads (deferred),No-code overlap
+18,r/buildinpublic,Communities and forums,https://www.reddit.com/r/buildinpublic/,not_following,Daily progress posts; weekly story-led post,Reddit ads (deferred),Direct overlap with X #buildinpublic
+19,r/learnmachinelearning,Communities and forums,https://www.reddit.com/r/learnmachinelearning/,not_following,Comment thoughtfully; not a primary play,N/A,Lower priority — ML hobbyists not founders
+20,Discord servers (Claude / Anthropic / Lovable / Cursor),Communities and forums,https://www.anthropic.com/discord,not_following,Daily help-first presence in relevant channels,Co-marketing with platform vendors,AI-builder overlap
+21,Pieter Levels,Influencers / individuals,https://twitter.com/levelsio,not_following,DM with specific compliment + parable + one question; cite his work in posts; NO pitch,Sponsored post / paid mention (deferred),Indie hacker icon; nomadlist; high overlap
+22,Arvid Kahl,Influencers / individuals,https://twitter.com/arvidkahl,not_following,DM with compliment + parable; reply to threads; pitch podcast guest spot,Bootstrapped Founder podcast/newsletter sponsorship,Direct ICP — author of Zero to Sold
+23,Marc Lou,Influencers / individuals,https://twitter.com/marc_louvion,not_following,DM compliment + parable; engage in his ShipFast community,Paid partnership / sponsored mention,Multiple shipped micro-SaaS; very close ICP
+24,Jon Yongfook,Influencers / individuals,https://twitter.com/yongfook,not_following,DM compliment + parable; cite Bannerbear journey in posts,Paid partnership,Bannerbear builder; bootstrapped operator
+25,Daniel Vassallo,Influencers / individuals,https://twitter.com/dvassallo,not_following,DM + cite Small Bets community work,Sponsor Small Bets cohort,Small bets thesis matches Dream 100 narrative
+26,Tyler Tringas,Influencers / individuals,https://twitter.com/tylertringas,not_following,DM compliment + parable; cite Calm Company writing,Calm Co newsletter sponsorship,Earnest Capital / Calm Company; serious operator audience
+27,Justin Welsh,Influencers / individuals,https://twitter.com/thejustinwelsh,not_following,DM compliment + parable; cite solo entrepreneur frameworks,Paid sponsorship,Solo entrepreneur audience
+28,Greg Isenberg,Influencers / individuals,https://twitter.com/gregisenberg,not_following,DM compliment + parable; pitch Startup Ideas podcast guest spot,Startup Ideas podcast sponsorship,Strong audience overlap; community-led growth thesis
+29,Sahil Bloom,Influencers / individuals,https://twitter.com/SahilBloom,not_following,Engage thoughtfully on entrepreneurial threads,Paid sponsorship,Broad audience; lower-intent than others
+30,Andrew Gazdecki,Influencers / individuals,https://twitter.com/agazdecki,not_following,DM + cite Acquire.com data; pitch micro-SaaS market angle,Acquire.com co-marketing,Founder of Acquire.com — pre-acquisition pipeline
+31,[Founder fill #31],Influencers / individuals,,pending_founder_review,TBD — fill from current X / IH feed (audience contains many Marcos),,Founder open item per workbook 08 §2: entries 31–40 need specific names + state.json traffic_secrets.dream_100.categories.influencers update
+32,[Founder fill #32],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+33,[Founder fill #33],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+34,[Founder fill #34],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+35,[Founder fill #35],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+36,[Founder fill #36],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+37,[Founder fill #37],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+38,[Founder fill #38],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+39,[Founder fill #39],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+40,[Founder fill #40],Influencers / individuals,,pending_founder_review,TBD,,Founder open item
+41,Indie Hackers Podcast,Podcasts,https://www.indiehackers.com/podcasts,not_following,Pitch as guest after first verified customer; use Maryan's 6-line intro as pitch opener; reframe his story as episode angle,Podcast sponsorship slot (workbook 08 §4 named target),Top-priority guest target
+42,Lenny's Podcast,Podcasts,https://www.lennysnewsletter.com/podcast,not_following,Pitch as guest post-launch wins; cite specific episodes in posts,Podcast sponsorship (workbook 08 §4 named target),Premium PM/founder audience
+43,My First Million,Podcasts,https://www.mfmpod.com/,not_following,Pitch unique angle (micro-SaaS guarantee mechanic); engage Sam/Shaan on X,Podcast sponsorship,Massive list — harder to break in
+44,The Bootstrapped Founder,Podcasts,https://thebootstrappedfounder.com/,not_following,Pitch as guest after first verified customer; Arvid's audience = ICP,Podcast sponsorship (workbook 08 §4 named target),Direct ICP overlap
+45,Startup Ideas with Greg Isenberg,Podcasts,https://www.startupideaspodcast.com/,not_following,Pitch via Greg's open guest application,Podcast sponsorship,Strong audience overlap
+46,SaaStr Podcast,Podcasts,https://www.saastr.com/category/podcast/,not_following,Pitch only post-Phase 2,N/A pre-launch,Higher-revenue B2B SaaS; secondary
+47,Microconf On Air,Podcasts,https://microconf.com/podcasts/,not_following,Pitch as guest after first verified customer,Microconf sponsorship,Bootstrapper audience
+48,Software Social,Podcasts,https://softwaresocial.dev/,not_following,Pitch as guest,N/A,Indie-pod
+49,The Tropical MBA,Podcasts,https://tropicalmba.com/,not_following,Pitch as guest,Podcast sponsorship,Lifestyle entrepreneur overlap
+50,Mostly Metrics,Podcasts,https://www.mostlymetrics.com/,not_following,Comment on episodes; pitch when warm,Newsletter sponsorship,Metrics/finance angle
+51,Practical AI,Podcasts,https://changelog.com/practicalai,not_following,Pitch as guest on AI engine angle,N/A,AI builder overlap
+52,Latent Space,Podcasts,https://www.latent.space/,not_following,Comment + cite essays; pitch when warm,Newsletter sponsorship,AI builder overlap; high-signal
+53,The All-In Podcast,Podcasts,https://www.allinpodcast.co/,not_following,Too large for guest pitch at launch,N/A,Defer
+54,Build Your SaaS,Podcasts,https://saas.transistor.fm/,not_following,Pitch as guest,N/A,Indie SaaS audience
+55,The Diary of a CEO,Podcasts,https://stevenbartlett.com/the-diary-of-a-ceo-podcast/,not_following,Too large at launch,N/A,Defer
+56,Lenny's Newsletter,Newsletters,https://www.lennysnewsletter.com/,not_following,Cite Lenny's posts; reply to issues; pitch guest essay when warm,Newsletter sponsorship (workbook 08 §4 named target),Premium audience
+57,The Hustle,Newsletters,https://thehustle.co/,not_following,Reply to issues; pitch story angle,Newsletter sponsorship,Broad business audience
+58,Bootstrapped Founder weekly,Newsletters,https://thebootstrappedfounder.com/newsletter/,not_following,Reply to issues; cite Arvid's frameworks,Newsletter sponsorship (workbook 08 §4 named target),Direct ICP
+59,Indie Hackers weekly,Newsletters,https://www.indiehackers.com/newsletter,not_following,Engage in IH community; pitch story for newsletter,Newsletter sponsorship,ICP
+60,Microconf newsletter,Newsletters,https://microconf.com/email/,not_following,Engage with Rob Walling content; pitch guest post,Sponsorship,Bootstrapper audience
+61,Houck's Newsletter,Newsletters,https://www.houck.news/,not_following,Reply; cite work,Sponsorship,Founder audience
+62,The Generalist,Newsletters,https://www.readthegeneralist.com/,not_following,Reply; cite essays,Sponsorship,Premium audience
+63,Not Boring (Packy McCormick),Newsletters,https://www.readnotboring.co/,not_following,Reply; cite essays,Sponsorship,Premium tech narrative
+64,AI Tidbits,Newsletters,https://www.aitidbits.ai/,not_following,Engage; pitch AI-builder angle,Sponsorship,AI builder audience
+65,Ben's Bites,Newsletters,https://bensbites.beehiiv.com/,not_following,Engage; pitch product launches,Sponsorship,AI builder audience
+66,The Rundown,Newsletters,https://www.therundown.ai/,not_following,Engage; pitch,Sponsorship,AI audience
+67,Trends.vc,Newsletters,https://trends.vc/,not_following,Engage; pitch,Newsletter sponsorship (workbook 08 §4 named target),Bootstrapper / market-research overlap
+68,SaaStr,Newsletters,https://www.saastr.com/,not_following,Engage; cite Jason Lemkin,N/A pre-Phase 2,B2B SaaS angle
+69,The Macro,Newsletters,https://www.ycombinator.com/blog,not_following,Engage; cite,Sponsorship,YC alumni audience
+70,Build in Public weekly,Newsletters,https://buildinpublic.xyz/,not_following,Engage; pitch story,Sponsorship,Direct ICP
+71,Lovable,Products / partner SaaS,https://lovable.dev/,not_following,Build for Lovable; write tutorial; pitch integration / co-marketing,Co-marketing campaign,SINGLE BIGGEST OVERLAP — vibe-coders post-launch
+72,Cursor,Products / partner SaaS,https://www.cursor.com/,not_following,Build for Cursor users; write tutorial,Co-marketing,AI builder overlap
+73,Replit,Products / partner SaaS,https://replit.com/,not_following,Tutorial: ship a Replit app to first paying customer,Co-marketing / bounties,Maker audience
+74,Bubble,Products / partner SaaS,https://bubble.io/,not_following,Tutorial; pitch app-template,Co-marketing,No-code overlap
+75,Webflow,Products / partner SaaS,https://webflow.com/,not_following,Tutorial on monetizing a Webflow site,N/A,Designer audience
+76,ConvertKit / Kit,Products / partner SaaS,https://kit.com/,not_following,Eventually integrate; tutorial,Co-marketing,Email list overlap (also TBD ESP candidate per infra memory)
+77,Stripe,Products / partner SaaS,https://stripe.com/,not_following,Cite Stripe docs in funnel content; engage with Stripe blog,Stripe Apps directory listing,Essential integration; their docs traffic
+78,Beehiiv,Products / partner SaaS,https://www.beehiiv.com/,not_following,Tutorial; pitch newsletter integration,Co-marketing,Email list overlap
+79,Notion,Products / partner SaaS,https://www.notion.so/,not_following,Template: founder Machine workspace,Notion template marketplace,Productivity overlap
+80,Linear,Products / partner SaaS,https://linear.app/,not_following,Tutorial: founder Linear setup,Co-marketing,Founder productivity overlap
+81,Vercel,Products / partner SaaS,https://vercel.com/,not_following,Already deployed on Vercel; write story; pitch case study,Vercel partner program,Infrastructure partner — UnlockSaaS runs on Vercel
+82,Supabase,Products / partner SaaS,https://supabase.com/,not_following,Already using Supabase; pitch case study,Supabase partner program,Infrastructure partner — UnlockSaaS DB
+83,Anthropic / Claude,Products / partner SaaS,https://www.anthropic.com/,not_following,Use Claude API in engine; pitch case study,Anthropic startup program,Infrastructure partner — Machine engine model
+84,OpenAI,Products / partner SaaS,https://openai.com/,not_following,Secondary AI partner,N/A,Not core stack
+85,Cal.com,Products / partner SaaS,https://cal.com/,not_following,Integrate Cal.com for founder consult bookings,Co-marketing,Founder productivity overlap
+86,Indie Hackers YouTube,YouTube channels,https://www.youtube.com/@indiehackers,not_following,Comment with insight on relevant videos; pitch collab when warm,N/A,Same audience as IH community
+87,Marc Lou (YouTube),YouTube channels,https://www.youtube.com/@marclouvion,not_following,Comment thoughtfully; pitch collab,N/A,Maker tutorials
+88,Pieter Levels (YouTube),YouTube channels,https://www.youtube.com/@levelsio,not_following,Engage with rare videos,N/A,Occasional uploads
+89,Justin Welsh (YouTube),YouTube channels,https://www.youtube.com/@thejustinwelsh,not_following,Comment + cite frameworks,N/A,Solo entrepreneur audience
+90,Greg Isenberg (YouTube),YouTube channels,https://www.youtube.com/@GregIsenberg,not_following,Comment + cite case studies,Sponsorship,Startup Ideas content overlap
+91,Build Your SaaS (YouTube),YouTube channels,https://www.youtube.com/@buildyoursaas,not_following,Comment + pitch guest,N/A,Indie SaaS audience
+92,Indy Dev Dan,YouTube channels,https://www.youtube.com/@indydevdan,not_following,Comment on Claude / AI builder videos,N/A,Claude / AI builder audience
+93,Fireship,YouTube channels,https://www.youtube.com/@Fireship,not_following,Engage on relevant ship videos,N/A,Developer audience; not core ICP
+94,Ali Abdaal,YouTube channels,https://www.youtube.com/@aliabdaal,not_following,Lower priority — productivity audience,N/A,Lower priority
+95,Matt Wolfe,YouTube channels,https://www.youtube.com/@mreflow,not_following,Engage on AI builder content,N/A,AI tools audience
+96,Indie Hackers blog,Blogs / content properties,https://www.indiehackers.com/posts,not_following,Cite in posts; pitch guest article,N/A,Same audience as community
+97,Microconf blog,Blogs / content properties,https://microconf.com/blog/,not_following,Cite Rob Walling work; pitch guest,N/A,Bootstrapper audience
+98,Earnest Capital / Tiny Capital blog,Blogs / content properties,https://earnestcapital.com/blog,not_following,Cite; pitch,N/A,Bootstrapped funding angle
+99,SaaStr blog,Blogs / content properties,https://www.saastr.com/blog-2/,not_following,Engage post-Phase 2,N/A,B2B SaaS angle
+100,ChartMogul blog,Blogs / content properties,https://chartmogul.com/blog/,not_following,Cite recurring-revenue research,Newsletter sponsorship,SaaS metrics overlap

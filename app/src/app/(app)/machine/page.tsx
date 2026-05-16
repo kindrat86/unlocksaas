@@ -22,10 +22,17 @@ export default async function MachineDashboard() {
         .eq("user_id", userData.user.id)
         .maybeSingle();
       if (profile?.id) {
-        const { count } = await supabase
+        // verified_conversions has both project_id (migration 0002) and
+        // profile_id (guarantee.sql) in the live DB, but the generated types
+        // only know about project_id. Cast eq() through unknown until the
+        // type-graph is regenerated. TODO: reconcile dual schema + regen types.
+        const { count } = await (supabase
           .from("verified_conversions")
           .select("id", { count: "exact", head: true })
-          .eq("profile_id", profile.id);
+          .eq as unknown as (col: string, val: string) => Promise<{ count: number | null }>)(
+          "profile_id",
+          profile.id
+        );
         verified = (count ?? 0) > 0;
       }
     } catch {

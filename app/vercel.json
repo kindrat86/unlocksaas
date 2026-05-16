@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/cron/soap-opera",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/seinfeld",
+      "schedule": "0 15 * * *"
+    }
+  ]
+}

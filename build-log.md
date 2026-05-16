@@ -137,3 +137,41 @@ End-to-end Soap Opera Sequence wired up against the existing `soap_opera_subscri
 1. Push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel envs (all three: production, preview, development).
 2. Vercel BLOCKED deploy state must clear before the cron schedule actually fires.
 3. Subscribe endpoint not yet wired to the Free Diagnostic form — Sprint 2 next coherent unit.
+
+## Sprint 2: Diagnostic → $1 Starter Handoff (end-to-end attribution loop)
+**Status: SHIPPED (staging — rides to production behind the Sprint 1 Vercel BLOCKED hold)**
+
+Closed the loop from the Free Diagnostic squeeze through the labeled diagnosis through the $1 Starter through Stripe through the webhook. Workbook 04 §3 Page 2 spec satisfied: labeled diagnosis, 100-word read-out, single CTA "Fix this for $1," one decision per page. Converged with concurrent edits onto a synchronous-classify architecture (API classifies + persists + returns `{id}`; result page reads by id) rather than streaming `?u=<url>` because attribution requires a persistent row.
+
+**The loop, page by page:**
+1. **Squeeze (`/diagnostic`).** Already shipped concurrently; left intact (Hook #3, two-field form, AC bio, polarity AGAINST line).
+2. **Form (`diagnostic-form.tsx`).** Validates client-side → POST `/api/diagnostic` → `router.push("/diagnostic/result?id=<uuid>")`.
+3. **API (`/api/diagnostic`).** Validates, calls `classifyUrl()` (fetch + strip + Sonnet 4.6), upserts `diagnostic_leads` keyed on `(lower(email), product_url)`, also touches `soap_opera_subscribers` with the same A/B `identity_variant`. Returns `{ id }`. `runtime: "nodejs"`, `maxDuration: 60`.
+4. **Result page (`/diagnostic/result`).** Server Component, reads row by id via admin client, renders per-label framing (`wrong_person` / `weak_offer` / `weak_belief` / `error`) with Claude's `headline`, `explanation`, `evidence`, `next_step`. "Fix this for $1" CTA → `/starter?from=diagnostic&label=<label>&lead=<id>`. Shells for missing-id / not-found / db-error so the funnel never dead-ends.
+5. **Starter (`/starter`).** Wrapped existing client surface in `<Suspense>` so `useSearchParams` reads cleanly. Added `<DiagnosticHandoffBanner />` above the hero — per-label one-liner only when `?from=diagnostic`. Checkout button POSTs `attribution: { from, label, lead }` to `/api/checkout`.
+6. **Checkout (`/api/checkout`).** Validates `attribution.lead` against UUID regex, stamps `attribution_from`, `diagnostic_label`, `diagnostic_lead_id` onto Stripe `session.metadata`. Coexists with A/B identity-variant metadata.
+7. **Webhook (`/api/webhooks/stripe`).** New `recordDiagnosticAttribution()` on `checkout.session.completed` (payment mode only): looks up `diagnostic_lead_id` in metadata, updates `diagnostic_leads.converted_to_starter_at` + `converted_session_id` if the row is still unconverted. Race-safe via `.is("converted_to_starter_at", null)`. Replay events no-op.
+8. **Migration (`supabase/migrations/20260517000001_diagnostic_leads.sql`).** `diagnostic_leads` with `headline`, `next_step`, `identity_variant`, `subscriber_id` FK, `converted_to_starter_at`, `converted_session_id`. Unique index on `(lower(email), product_url)`, partial index for unconverted rows. RLS on with no SELECT policies — service-role writes only; result page reads via admin client.
+
+**Files written/modified this pass:**
+- `supabase/migrations/20260517000001_diagnostic_leads.sql`
+- `app/src/app/api/diagnostic/route.ts` (synchronous classify + persist + return `{id}`)
+- `app/src/app/(marketing)/diagnostic/result/page.tsx` (Starter CTA carries `from=diagnostic&label=&lead=`)
+- `app/src/app/(marketing)/starter/page.tsx` (`<Suspense>` + `<DiagnosticHandoffBanner />` + attribution forwarded to checkout)
+- `app/src/app/api/checkout/route.ts` (accept `attribution` body + Stripe metadata stamping)
+- `app/src/app/api/webhooks/stripe/route.ts` (`recordDiagnosticAttribution()` handler)
+
+**Verified by inspection (no live smoke test yet — Vercel deploys still BLOCKED from Sprint 1):**
+- Form `productUrl` field matches API reader.
+- API returns `{id}`; form expects `{id}`; result page reads `?id=`. Contract aligned.
+- Result-page CTA query params (`from`, `label`, `lead`) match Starter page `useSearchParams` reads and `/api/checkout` body schema.
+- Stripe metadata keys (`diagnostic_lead_id`, `diagnostic_label`, `attribution_from`) match the webhook's reader.
+- Same UUID regex used in checkout API gate, webhook gate, result-page param validator — no drift.
+- Webhook update is idempotent (`.is(converted_to_starter_at, null)`).
+
+**Out of scope (intentional discipline):**
+- Day-0 Soap Opera Email 1 send from the diagnostic API. The concurrent `/api/soap-opera/subscribe` endpoint owns Day 0; the diagnostic API currently writes the subscriber row directly but does not call subscribe. Wiring is the next coherent unit and is what closes the "I email the diagnosis" promise on the squeeze copy.
+- $49 Machine sales page (Sprint 3).
+- A/B test on the handoff CTA wording (currently uses Claude's `nextStep` with workbook line as fallback).
+
+**Open consistency item:** the squeeze form copy "I email the diagnosis. No spam." is aspirational until the diagnostic API calls `/api/soap-opera/subscribe` to fire Email 1. Either wire the subscribe call into `/api/diagnostic` next, or trim the form copy. Recommend the former — Email 1 IS the Day-0 entry to the Soap Opera Sequence, so the two ships compound.
