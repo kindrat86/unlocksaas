@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
   // Validate the current answer
   const validationResponse = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-4-6",
     max_tokens: 300,
     system: stepPrompt.validate,
     messages: [
@@ -120,7 +120,7 @@ Validate this answer. Respond ONLY with JSON.`,
   if (isLastQuestion) {
     const allAnswers = [...previousAnswers, answer];
     const assemblyResponse = await getAnthropic().messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-6",
       max_tokens: 600,
       system: stepPrompt.assemble,
       messages: [
