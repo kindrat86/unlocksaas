@@ -24,15 +24,13 @@ export default async function MachineDashboard() {
       if (profile?.id) {
         // verified_conversions has both project_id (migration 0002) and
         // profile_id (guarantee.sql) in the live DB, but the generated types
-        // only know about project_id. Cast eq() through unknown until the
-        // type-graph is regenerated. TODO: reconcile dual schema + regen types.
-        const { count } = await (supabase
+        // only know about project_id. Cast the column name to `never` until
+        // the type-graph is regenerated. Matches the same pattern in
+        // machine/layout.tsx. TODO: reconcile dual schema + regen types.
+        const { count } = await supabase
           .from("verified_conversions")
           .select("id", { count: "exact", head: true })
-          .eq as unknown as (col: string, val: string) => Promise<{ count: number | null }>)(
-          "profile_id",
-          profile.id
-        );
+          .eq("profile_id" as never, profile.id);
         verified = (count ?? 0) > 0;
       }
     } catch {

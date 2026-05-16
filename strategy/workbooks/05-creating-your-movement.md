@@ -111,7 +111,7 @@ This is the line that goes on the about page, the conference t-shirt, the laptop
 | Common enemy | "An industry that profits from teaching them to keep building when the only thing left is to sell" (workbook 01 Section 6 Beat 5) |
 | Future-based cause | "Non-engineer founders deserve to get paid for what they shipped" |
 | Manifesto | See below |
-| Identity label | **Verified Builders** (LOCKED 2026-05-17). Alternate "Paid Builders" preserved as post-launch A/B candidate (see Section 8 Notes). "Post-Launch Founders" rejected as descriptive-not-identitarian. |
+| Identity label | **Verified Builders** (canonical / SSR default, LOCKED 2026-05-17). A/B against "Paid Builders" (50/50 cookie-assigned) is LIVE in production code per Hard Rule #10 — see Section 8 Notes. "Post-Launch Founders" rejected as descriptive-not-identitarian. |
 | Milestone awards | "Dream Customer Pinned" badge, "Offer Locked" badge, "First Outreach Sent" badge, "First Reply" badge, "First Paying Customer Verified" celebration (triggers shareable badge for X/LinkedIn) |
 
 ### The Manifesto (draft v1)
@@ -136,13 +136,13 @@ This is the line that goes on the about page, the conference t-shirt, the laptop
 
 - **Manifesto goes on the about page** at full length, on the homepage above the FAQ at half length.
 - **Milestone badges live inside the Machine**, visible in the sidebar. Each badge unlocks the next step's hidden context.
-- **"Verified Builders" is the LOCKED launch identity** (decided 2026-05-17). Rationale: "Verified" is the only word in the product's vocabulary that maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ("First Paying Customer Verified"). It carries the product's epistemic stance — no self-reporting, no praise-as-proof. "Paid Builders" is ambiguous (reads as both "builders who paid" and "builders who got paid") and lacks the verification anchor. The original pre-launch A/B was specced before we accepted that no traffic exists pre-Sprint-2 to fire it; preserving "Paid Builders" as a post-launch candidate to A/B test on the Free Diagnostic email form once the funnel has run ≥200 visitors. Email-conversion delta of ≥3 percentage points sustained over ≥7 days flips the identity; smaller deltas keep Verified Builders.
+- **"Verified Builders" is the canonical SSR identity and manifesto identity** (decided 2026-05-17). Rationale: "Verified" is the only word in the product's vocabulary that maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ("First Paying Customer Verified"). It carries the product's epistemic stance — no self-reporting, no praise-as-proof. "Paid Builders" is ambiguous (reads as both "builders who paid" and "builders who got paid") and lacks the verification anchor. The 50/50 A/B against "Paid Builders" specified in this section was SHIPPED to production by the build pass (cookies + middleware + exposure beacons + Stripe metadata attribution; see `build-log.md` entry "Founder Open Item: Verified Builders vs Paid Builders A/B Test"). SSR before middleware-write defaults to `verified_builder` so the original manifesto copy renders for any visitor whose cookie hasn't been set yet (no FOUC). **Convergence rule:** ~200 exposures per variant before calling a winner; primary metric is purchase-conversion rate (starter or core) per Hard Rule #10. Whichever wins becomes the new canonical identity; the loser is retired from the manifesto, milestone-badge UI, and copy.
 - **The future-based cause** appears in the email signature of every customer-facing email auto-sent by the Machine.
 - **The future Rung 3 (repeatable-revenue tier)** is gated behind one verified Stripe customer. Cannot be sold to a non-Verified Builder. Self-policing of credibility.
 
 ## Status
 
-**Step 5 COMPLETE.** Movement components named and locked. Manifesto drafted (v1, founder review allowed). Identity label **locked as Verified Builders** (2026-05-17); "Paid Builders" preserved as post-launch A/B candidate per Section 8 Notes.
+**Step 5 COMPLETE.** Movement components named and locked. Manifesto drafted (v1, founder review allowed). Identity label: **"Verified Builders" is the canonical SSR/manifesto identity** (LOCKED 2026-05-17); 50/50 A/B against "Paid Builders" is LIVE in production per Section 8 Notes (built; awaiting Vercel deploy to start collecting exposures).
 
 **Next:** Step 6, Creating Belief.
 

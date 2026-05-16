@@ -136,6 +136,8 @@ export type Database = {
       }
       diagnostic_leads: {
         Row: {
+          converted_session_id: string | null
+          converted_to_starter_at: string | null
           created_at: string
           email: string
           evidence: string | null
@@ -153,6 +155,8 @@ export type Database = {
           user_agent: string | null
         }
         Insert: {
+          converted_session_id?: string | null
+          converted_to_starter_at?: string | null
           created_at?: string
           email: string
           evidence?: string | null
@@ -170,6 +174,8 @@ export type Database = {
           user_agent?: string | null
         }
         Update: {
+          converted_session_id?: string | null
+          converted_to_starter_at?: string | null
           created_at?: string
           email?: string
           evidence?: string | null

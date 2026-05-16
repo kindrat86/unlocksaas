@@ -405,8 +405,16 @@
       "identity_label": {
         "primary": "Verified Builders",
         "alternate": "Paid Builders",
-        "status": "LOCKED 2026-05-17. 'Verified Builders' ships at launch. 'Paid Builders' preserved as post-launch A/B candidate on the Free Diagnostic email form (trigger: >=200 visitors, decision: email-conversion delta >=3pp sustained >=7 days).",
-        "rationale": "'Verified' maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ('First Paying Customer Verified'). It carries the product's epistemic stance: no self-reporting, no praise-as-proof. 'Paid Builders' is ambiguous (reads as both 'builders who paid' and 'builders who got paid') and lacks the verification anchor. Pre-launch A/B was specced before we accepted that no traffic exists pre-Sprint-2 to fire it. Locked under 'proceed autonomously' instruction."
+        "status": "LIVE A/B from launch. 'Verified Builders' is the canonical / SSR default identity (manifesto, milestone-badge taxonomy, copy that renders before cookie assignment). 50/50 cookie-based A/B against 'Paid Builders' SHIPPED to production by the build pass — see build-log.md entry 'Founder Open Item: Verified Builders vs Paid Builders A/B Test'. Convergence rule: ~200 exposures per variant; primary metric is purchase-conversion rate (starter or core) per Hard Rule #10. Whichever wins becomes the new canonical.",
+        "rationale": "'Verified' maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ('First Paying Customer Verified'). It carries the product's epistemic stance: no self-reporting, no praise-as-proof. 'Paid Builders' is ambiguous (reads as both 'builders who paid' and 'builders who got paid') and lacks the verification anchor — but Hard Rule #10 mandates the A/B, so the build implements 50/50 cookie assignment with Verified as the SSR default (no FOUC).",
+        "infrastructure": {
+          "wired_at": "2026-05-17 (parallel build session)",
+          "cookies": ["usaas_ab_identity", "usaas_ab_subject"],
+          "exposure_beacon": "app/src/components/ab-exposure-beacon.tsx — mounted on /, /starter, /oto",
+          "conversion_attribution": "Stripe checkout session metadata ab_key/ab_variant/ab_subject → webhook recordIdentityAbConversion()",
+          "labels_map": "app/src/lib/ab.ts IDENTITY_LABELS (plural/singular/manifestoTitle for both variants)",
+          "read_query": "select variant, count(distinct subject_id) filter (where conversion_event is null) as exposed, count(distinct subject_id) filter (where conversion_event = 'starter_purchase') as starter_buyers, count(distinct subject_id) filter (where conversion_event = 'core_purchase') as core_buyers from public.ab_tests where key = 'identity_label' group by variant order by variant;"
+        }
       },
       "milestone_awards": [
         "Dream Customer Pinned",
@@ -439,7 +447,8 @@
           {"objection": "Tried customer interviews, did not help", "rewrite": "Bottleneck was the synthesizing; Machine forces conclusions from interviews"},
           {"objection": "Outreach is not my strength", "rewrite": "Not anyone's strength; tool generates message + picks target + tracks send"},
           {"objection": "$49 is too much pre-revenue", "rewrite": "Two coffees a week; $98 cap returned if no result"},
-          {"objection": "Cannot risk another failed product", "rewrite": "Product already exists; Machine is work AROUND it, not new product"}
+          {"objection": "Cannot risk another failed product", "rewrite": "Product already exists; Machine is work AROUND it, not new product"},
+          {"objection": "I could build this myself in a weekend", "rewrite": "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, OR the 60-day refund logic in a weekend. And while you're building the tool, you're not running the funnel — which is the exact disease the Machine treats.", "added": "2026-05-17", "source": "strategy/dollar-objections.md Category 5 (public IH/HN mine)"}
         ],
         "chain_breakers": [
           "Identity -> product blame: rewrite identity ('Verified Builder, two steps in')",
@@ -585,6 +594,13 @@
         "Add External Belief #6 to workbook 06 Section 4 + expert_secrets.four_core_stories.external_beliefs on next revision pass",
         "Verify Indie Hackers citation policy before quoting users by handle on the public $49 sales page"
       ]
+    },
+    {
+      "date": "2026-05-17",
+      "scope": "expert_secrets.movement.identity_label (terminology reconciled with build reality)",
+      "change": "Reconciled the workbook 05 identity language with the parallel build session's A/B implementation. The build pass already shipped full 50/50 cookie-based A/B infrastructure (app/src/lib/ab.ts + middleware cookie write + exposure beacons on /, /starter, /oto + Stripe checkout metadata + webhook attribution). Updated workbook 05 Section 7 row + Section 8 Notes bullet + Status line to describe 'Verified Builders as canonical / SSR default; A/B against Paid Builders LIVE in production' rather than my initial framing of 'A/B deferred to post-launch'. Updated state.json identity_label.status + .rationale + added identity_label.infrastructure block (cookies, beacon path, attribution chain, SQL read query) + skill_05_status + founder_open_items_post_launch (reframed to 'read A/B results' not 'fire A/B'). Updated 00-RESUME-HERE.md Movement bullet + post-launch open item.",
+      "rationale": "Initial framing was wrong. I treated the A/B as something to defer because no traffic exists pre-Sprint-2; the build session correctly interpreted Hard Rule #10 to mean ship the A/B infrastructure now so exposures start accruing the moment Vercel deploy unblocks. 'Verified Builders' is the SSR default + the manifesto identity (so the original workbook 05 manifesto copy still renders pre-cookie); 'Paid Builders' is shown to the polar 50% via cookie. Convergence rule (~200 exposures per variant; winner = higher purchase-conversion rate) matches the build-log SQL guidance. Reframed under 'proceed autonomously' instruction.",
+      "files_touched": ["strategy/state.json", "strategy/workbooks/05-creating-your-movement.md", "00-RESUME-HERE.md", "build-log.md"]
     }
   ],
   "notes": {
@@ -621,7 +637,7 @@
     "skill_02_status": "COMPLETE. Funnel-type-per-rung mapped, build order locked ($1 Starter first).",
     "skill_03_status": "COMPLETE. Launch-critical scripts written. Setter/Closer + Product Launch skipped with reason.",
     "skill_04_status": "COMPLETE. Page-by-page build specs, Soap Opera sequence, outreach engine spec, Funnel Audit checklist.",
-    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (LOCKED 2026-05-17; Paid Builders preserved as post-launch A/B candidate), framework named (The Machine).",
+    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (canonical / SSR default, LOCKED 2026-05-17; 50/50 A/B against Paid Builders LIVE in production code, awaiting Vercel deploy to start collecting exposures), framework named (The Machine).",
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
     "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
     "skill_08_status": "COMPLETE v1. Dream 100 list across 7 categories. Category 2 entries 31-40 still pending founder confirm. CSV generated 2026-05-17 at strategy/dream-100.csv (100 rows; columns: id,name,category,url,follow_status,work_in_plan,buy_in_plan,notes; rows 31-40 are [Founder fill #N] placeholders).",
@@ -634,9 +650,11 @@
       "traffic_secrets": "Skills 8-10 specced. Dream 100 seeds Machine Step 5 targets. Fill Funnel sets launch channels. Growth Hacking maps Phase 2/3 triggers."
     },
     "founder_open_items_pre_launch": [
-      "Confirm Verified Builders vs Paid Builders (A/B test before launch)",
       "Fill 10 specific Category 2 influencer names (rows 31-40 of strategy/dream-100.csv + categories.influencers in this state.json)",
-      "Re-mine 10+ founder conversations for dollar-objection language (feeds $49 FAQ + disqualifying copy)"
+      "Re-mine private 10-conversation set via authenticated MCP (Slack/Gmail/Granola) — public-source mine already captured in strategy/dollar-objections.md; private mine refines niche-specific dollar-objection language for $49 FAQ + disqualifier copy"
+    ],
+    "founder_open_items_post_launch": [
+      "Read Verified vs Paid Builders A/B results once Vercel deploy unblocks AND ~200 exposures per variant accumulate. SQL query in expert_secrets.movement.identity_label.infrastructure.read_query. Whichever variant has higher purchase-conversion rate wins; loser retired from manifesto + milestone badges + copy."
     ]
   },
   "design_principles": [

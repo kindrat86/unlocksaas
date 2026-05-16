@@ -84,6 +84,7 @@ The objections Marco gives himself for not buying. Each is a story.
 | "Outreach is not my strength" | It is not anyone's strength. That is why Step 5 generates the message, picks the target, and the tool tracks the send. Strength is irrelevant to a mechanical process. |
 | "$49 a month is too much when I am not earning" | $49 a month is two coffees a week to make the difference between $0 and $49+ recurring forever. If The Machine does not produce a paying customer, the $98 comes back. |
 | "I cannot risk another product that does not work" | The product already exists. You shipped it. The Machine is the work AROUND it, not another product to build. |
+| "I could build this myself in a weekend" | You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, OR the 60-day refund logic in a weekend. And while you're building the tool, you're not running the funnel — which is the exact disease the Machine treats. Added 2026-05-17 from `strategy/dollar-objections.md` Category 5; surfaced by founder-conversation mine on public IH/HN threads ("the underlying data is basically free", "I try to stay as lean as possible, not paying for any SaaS", "I didn't use any fancy AI tools"). |
 
 ### Story Type 4: Internal / External Chains (mapped)
 
@@ -119,14 +120,14 @@ The engine asks each user to generate one Vehicle Story, four Internal Belief re
 |---|---|---|
 | Vehicle Story | The Machine's 7-step description + user's case | 1-paragraph Vehicle Story in user's voice |
 | Internal Beliefs (4) | User's 4 false beliefs from Machine Step 1 | 4 rewrites with kinda-like bridges |
-| External Beliefs (3) | User's answers to the Four-Question Close | 3 objection rewrites |
+| External Beliefs (6) | User's answers to the Four-Question Close (engine matches against the 6 locked external beliefs, generates a rewrite per match) | up to 6 objection rewrites |
 | Chain map (3) | Engine maps recurring patterns | 3 chain breakers used as inline pushback |
 
 Engine assembles. User answers human questions. Never a form.
 
 ## Status
 
-**Step 6 COMPLETE.** Epiphany Bridge full 7-element script written. Marco's Hero's Two Journeys laid out. Four Core Stories written: Vehicle, 4 Internal rewrites, 5 External rewrites, 3 chain maps. Distribution mapped to surfaces.
+**Step 6 COMPLETE.** Epiphany Bridge full 7-element script written. Marco's Hero's Two Journeys laid out. Four Core Stories written: Vehicle, 4 Internal rewrites, **6 External rewrites** (5 from original pass + 1 added 2026-05-17 from `strategy/dollar-objections.md` Category 5), 3 chain maps. Distribution mapped to surfaces.
 
 **Next:** Step 7, 10x Secrets / One-to-Many Selling.
 

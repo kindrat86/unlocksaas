@@ -38,7 +38,13 @@ async function requireProfile(): Promise<{
   const { data: userData, error: userErr } = await sb.auth.getUser();
   if (userErr || !userData.user) redirect("/login?next=/machine/verified");
 
-  const { data: profile, error: profileErr } = await sb
+  // Several columns (builder_slug, builder_name, product_name, product_url,
+  // share_visibility) live in profiles in the live DB but are not yet in the
+  // regenerated database.types.ts. Supabase's chain returns a SelectQueryError
+  // type when any column in .select() is unknown, which poisons every field
+  // read. Cast the whole row to a loose record so the field-level `as`
+  // assertions below take over. TODO: regen database.types.ts.
+  const { data: profileRaw, error: profileErr } = await sb
     .from("profiles")
     .select(
       "id,email,builder_slug,builder_name,product_name,product_url,share_visibility"
@@ -46,9 +52,11 @@ async function requireProfile(): Promise<{
     .eq("user_id", userData.user.id)
     .maybeSingle();
 
-  if (profileErr || !profile) {
+  if (profileErr || !profileRaw) {
     throw new Error("No profile found for this user.");
   }
+
+  const profile = profileRaw as unknown as Record<string, unknown>;
 
   return {
     profileId: profile.id as string,

@@ -6,6 +6,11 @@ import {
   type DiagnosticResult,
 } from "@/lib/diagnostic";
 import { createAdminClient } from "@/lib/supabase/server";
+import {
+  subscribeToSoapOpera,
+  type IdentityVariant,
+} from "@/lib/soap-opera/subscribe";
+import type { DiagnosticResult as SoapDiagnosis } from "@/lib/soap-opera/emails";
 
 /**
  * Free Diagnostic submission endpoint.
@@ -148,48 +153,60 @@ export async function POST(req: NextRequest) {
   // A/B split from workbook 05 §7 / 09 §3. Same lead, same variant across
   // surfaces — we look up an existing subscriber by email and reuse their
   // variant; new leads coin-flip 50/50.
-  let identityVariant: "verified_builder" | "paid_builder" =
+  let identityVariant: IdentityVariant =
     Math.random() < 0.5 ? "verified_builder" : "paid_builder";
-
-  // Upsert soap_opera_subscribers. Captures the email-list lead even though
-  // classification is synchronous, so the 5-email Soap Opera sequence has a
-  // list to send to once it ships.
-  let subscriberId: string | null = null;
   {
-    const { data: existing, error: lookupError } = await supabase
+    const { data: existing } = await supabase
       .from("soap_opera_subscribers")
-      .select("id, identity_variant")
+      .select("identity_variant")
       .eq("email", email)
       .maybeSingle();
-    if (lookupError) {
-      console.error("[diagnostic] subscriber lookup failed", lookupError);
-    } else if (existing?.id) {
-      subscriberId = existing.id as string;
-      if (
-        existing.identity_variant === "verified_builder" ||
-        existing.identity_variant === "paid_builder"
-      ) {
-        identityVariant = existing.identity_variant;
-      }
+    const prev = (existing as { identity_variant?: string } | null)
+      ?.identity_variant;
+    if (prev === "verified_builder" || prev === "paid_builder") {
+      identityVariant = prev;
+    }
+  }
+
+  // Subscribe to the 5-email Soap Opera sequence and fire Email 1 (Day 0).
+  // Skipped when the diagnostic itself failed — sending "Your diagnosis came
+  // back: X" when there was no real diagnosis would be a lie. The lead is
+  // still captured in diagnostic_leads below for manual retargeting.
+  //
+  // Only the three labelled outcomes map to soap_opera_subscribers.diagnostic_result
+  // (the column has a CHECK constraint enforcing this set or null).
+  let subscriberId: string | null = null;
+  if (
+    diagnosis.label === "wrong_person" ||
+    diagnosis.label === "weak_offer" ||
+    diagnosis.label === "weak_belief"
+  ) {
+    const outcome = await subscribeToSoapOpera({
+      email,
+      source: source ?? "free_diagnostic",
+      diagnostic_result: diagnosis.label as SoapDiagnosis,
+      identity_variant: identityVariant,
+    });
+    if (outcome.ok) {
+      subscriberId = outcome.id;
+    } else if (outcome.reason === "day_0_send_failed") {
+      // The row exists; we just couldn't send Email 1. Set the FK so
+      // diagnostic_leads links correctly, and rely on operator retry. The
+      // cron will NOT pick this up (cron filters emails_sent >= 1).
+      subscriberId = outcome.id;
+      console.error("[diagnostic] day-0 send failed", {
+        email,
+        detail: outcome.detail,
+      });
     } else {
-      const { data: inserted, error: insertError } = await supabase
-        .from("soap_opera_subscribers")
-        .insert({
-          email,
-          source: source ?? "diagnostic",
-          identity_variant: identityVariant,
-          status: "active",
-          current_day: 0,
-        })
-        .select("id")
-        .single();
-      if (insertError) {
-        // Don't fail the request — the diagnostic_leads row is the
-        // higher-value side. Log and continue without linkage.
-        console.error("[diagnostic] subscriber insert failed", insertError);
-      } else {
-        subscriberId = inserted?.id ?? null;
-      }
+      // invalid_email shouldn't happen here (we validated upstream).
+      // db_upsert_failed: don't fail the whole request — diagnostic_leads
+      // is the higher-value side.
+      console.error("[diagnostic] soap-opera subscribe failed", {
+        reason: outcome.reason,
+        detail:
+          outcome.reason === "db_upsert_failed" ? outcome.detail : undefined,
+      });
     }
   }
 

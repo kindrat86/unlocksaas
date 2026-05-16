@@ -44,7 +44,7 @@ Open this folder in Claude Code. Paste the prompt block from `strategy/BUILD-PRO
 - **Offer:** Marco gets his first paying customer, verified by Stripe, within 60 days, or full refund. Price $49/mo. Core product is **The Machine**, a 7-step system.
 - **Value ladder:** free diagnostic, then $1 one-time Starter (Machine Steps 1+2), then $49/mo core (Machine Steps 3-7 + guarantee).
 - **Attractive Character:** Reluctant Hero. Three backstory lengths. Five named parables. Four flaws. Polarity with enemy sentence.
-- **Movement:** Manifesto locked. Identity: **Verified Builders** (LOCKED 2026-05-17; Paid Builders preserved as post-launch A/B candidate). Future-based cause: "founders who build real things with AI deserve to get paid for them."
+- **Movement:** Manifesto locked. Identity: **Verified Builders** (canonical / SSR default, LOCKED 2026-05-17). 50/50 A/B against "Paid Builders" is LIVE in production code (cookies + beacons + Stripe-metadata attribution shipped; awaiting Vercel deploy for first exposures). Future-based cause: "founders who build real things with AI deserve to get paid for them."
 - **Belief work:** Full Epiphany Bridge (7 elements). Four Core Stories: Vehicle, 4 Internal rewrites with kinda-like bridges, 5 External rewrites, 3 chain breakers.
 - **Long-form $49 sales page:** Big Domino written. Three Secrets fully scripted with Story-Strategy-Case Study. Stack slides 16-30. 16 mini-closes in 4 categories. Scarcity deliberately rejected.
 - **Dream 100:** ~100 entries across 7 categories. Pending: founder confirms 10 specific Category 2 influencer names.
@@ -56,7 +56,7 @@ Open this folder in Claude Code. Paste the prompt block from `strategy/BUILD-PRO
 
 1. Fill 10 specific Category 2 influencer names in the Dream 100 (entries 31-40 still TBD in workbook 08 and in `dream-100.csv`).
 2. Fill `strategy/dollar-objections.md` template from 10+ founder conversations (template ready; conversations are founder-data-bound). This feeds $49 FAQ + disqualifying copy.
-3. Post-launch (≥200 Free Diagnostic visitors): fire Verified Builders vs Paid Builders A/B per workbook 05 Section 8.
+3. Post-launch (~200 exposures per variant, after Vercel deploy unblocks): read Verified vs Paid Builders A/B results — SQL query lives in `state.json` `expert_secrets.movement.identity_label.infrastructure.read_query`. The A/B itself is already live in code.
 
 ## Tech stack (locked in BUILD-PROMPT)
 

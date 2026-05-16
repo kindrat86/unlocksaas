@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
  * the counter. The next_send_at column is the cron's index (see migration
  * 0003: soap_opera_due_idx).
  *
- * Idempotency: a row whose Resend send fails is left with current_day
+ * Idempotency: a row whose Resend send fails is left with emails_sent
  * unchanged and next_send_at unchanged — the next cron tick retries it.
  */
 export async function GET(req: NextRequest) {
@@ -38,11 +38,11 @@ export async function GET(req: NextRequest) {
 
   const { data: due, error } = await supabase
     .from("soap_opera_subscribers")
-    .select("id, email, diagnostic_result, current_day")
+    .select("id, email, diagnostic_result, emails_sent")
     .eq("status", "active")
     // Subscribe owns Day 0; cron handles Days 1-4.
-    .gte("current_day", 1)
-    .lt("current_day", 5)
+    .gte("emails_sent", 1)
+    .lt("emails_sent", 5)
     .not("next_send_at", "is", null)
     .lte("next_send_at", nowIso)
     // Cap per-run fan-out. If we ever blow past this the next cron tick picks
@@ -68,10 +68,10 @@ export async function GET(req: NextRequest) {
   let failed = 0;
   for (const raw of due) {
     const row: DueRow = {
-      id: raw.id as string,
-      email: raw.email as string,
+      id: raw.id,
+      email: raw.email,
       diagnostic_result: raw.diagnostic_result as DiagnosticResult | null,
-      current_day: raw.current_day as number,
+      emails_sent: raw.emails_sent,
     };
     const result = await sendNextAndAdvance(row);
     if (result.ok) {
