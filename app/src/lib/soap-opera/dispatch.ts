@@ -1,0 +1,145 @@
+import { createAdminClient } from "@/lib/supabase/server";
+import { getResend, FROM_ADDRESS, REPLY_TO } from "@/lib/resend";
+import {
+  renderEmail,
+  SEQUENCE_LENGTH,
+  type DiagnosticResult,
+} from "./emails";
+import { buildUnsubscribeUrl } from "./tokens";
+
+/**
+ * Row shape that the dispatcher needs. Mirrors a subset of
+ * soap_opera_subscribers columns.
+ *
+ * current_day semantics (matches migration 0003):
+ *   0 = no email sent yet (Day 0 / Email 1 still pending)
+ *   1 = Email 1 has been sent; Email 2 is next
+ *   ...
+ *   5 = all 5 emails sent; sequence complete
+ */
+export interface DueRow {
+  id: string;
+  email: string;
+  diagnostic_result: DiagnosticResult | null;
+  current_day: number;
+}
+
+export interface SendResult {
+  email: string;
+  index: number;
+  ok: boolean;
+  error?: string;
+}
+
+/** 24-hour cadence between sends, locked from workbook 04 §5. */
+const DAY_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
+function baseUrl(): string {
+  // Prefer the canonical app URL (always set in production env). Fall back to
+  // VERCEL_URL (set on every preview deploy) so previews send links that
+  // resolve to the right host.
+  const explicit = process.env.NEXT_PUBLIC_APP_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_URL;
+  if (vercel) return `https://${vercel}`;
+  return "https://unlocksaas.com";
+}
+
+/**
+ * Send the next email in the sequence for one subscriber and advance their
+ * counter. Returns ok=true on success, ok=false on either Resend failure or
+ * DB write failure. On failure, current_day is NOT incremented so the next
+ * cron tick retries the same email.
+ */
+export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
+  const index = row.current_day; // zero-based; if 0 we send Email 1.
+  if (index >= SEQUENCE_LENGTH) {
+    return { email: row.email, index, ok: false, error: "sequence_exhausted" };
+  }
+
+  const supabase = createAdminClient();
+  const rendered = renderEmail(index, {
+    email: row.email,
+    diagnosis: row.diagnostic_result,
+    baseUrl: baseUrl(),
+  });
+  const unsubscribeUrl = buildUnsubscribeUrl(row.email, baseUrl());
+
+  let sendError: string | undefined;
+  try {
+    const result = await getResend().emails.send({
+      from: FROM_ADDRESS,
+      to: row.email,
+      replyTo: REPLY_TO,
+      subject: rendered.subject,
+      text: rendered.text,
+      html: rendered.html,
+      // RFC 8058 one-click unsubscribe — keeps Gmail/Yahoo happy on bulk send.
+      headers: {
+        "List-Unsubscribe": `<${unsubscribeUrl}>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
+      tags: [
+        { name: "sequence", value: "soap_opera" },
+        { name: "email_index", value: String(index) },
+        {
+          name: "diagnosis",
+          value: row.diagnostic_result ?? "none",
+        },
+      ],
+    });
+    if (result.error) {
+      sendError = `${result.error.name}: ${result.error.message}`;
+    }
+  } catch (err) {
+    sendError = err instanceof Error ? err.message : "unknown_send_error";
+  }
+
+  if (sendError) {
+    // Logged at the cron call site too, but keep one here in case the
+    // dispatcher is invoked from /subscribe.
+    console.error("[soap-opera-dispatch] send_failed", {
+      id: row.id,
+      email: row.email,
+      index,
+      error: sendError,
+    });
+    return { email: row.email, index, ok: false, error: sendError };
+  }
+
+  // Advance the counter. If this was the final email, flip status to
+  // completed and clear next_send_at. Otherwise schedule the next send 24h
+  // from now.
+  const nowMs = Date.now();
+  const newDay = index + 1;
+  const isFinal = newDay >= SEQUENCE_LENGTH;
+
+  const update: {
+    current_day: number;
+    last_sent_at: string;
+    next_send_at: string | null;
+    status?: "completed";
+  } = {
+    current_day: newDay,
+    last_sent_at: new Date(nowMs).toISOString(),
+    next_send_at: isFinal ? null : new Date(nowMs + DAY_INTERVAL_MS).toISOString(),
+  };
+  if (isFinal) update.status = "completed";
+
+  const { error: dbError } = await supabase
+    .from("soap_opera_subscribers")
+    .update(update)
+    .eq("id", row.id);
+
+  if (dbError) {
+    console.error("[soap-opera-dispatch] db_update_failed", {
+      id: row.id,
+      email: row.email,
+      index,
+      error: dbError.message,
+    });
+    return { email: row.email, index, ok: false, error: `db_${dbError.message}` };
+  }
+
+  return { email: row.email, index, ok: true };
+}

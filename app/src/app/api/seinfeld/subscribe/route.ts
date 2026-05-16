@@ -1,0 +1,113 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase/server";
+import { nextSendAt } from "@/lib/seinfeld/schedule";
+
+export const runtime = "nodejs";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ALLOWED_SOURCES = ["soap_opera_graduate", "manual"] as const;
+type Source = (typeof ALLOWED_SOURCES)[number];
+
+interface SubscribeBody {
+  email?: unknown;
+  source?: unknown;
+}
+
+/**
+ * POST /api/seinfeld/subscribe
+ *
+ * Adds (or refreshes) a Seinfeld subscriber. Unlike /api/soap-opera/subscribe,
+ * this endpoint does NOT send an email immediately — Seinfeld is a Mon/Wed/Fri
+ * cadence with no "Day 0" semantics. The next cron tick on a send day picks
+ * the subscriber up.
+ *
+ * Defaults source to 'manual'. The cron is the only thing that should ever
+ * use 'soap_opera_graduate'.
+ *
+ * Idempotency: upserts on email. A repeat submit refreshes status to active
+ * and clears last_error, but PRESERVES rotation state (current_index,
+ * sends_count) so subscribers re-added after a bounce-recovery don't restart
+ * the rotation.
+ */
+export async function POST(req: NextRequest) {
+  let body: SubscribeBody;
+  try {
+    body = (await req.json()) as SubscribeBody;
+  } catch {
+    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  }
+
+  const emailRaw =
+    typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  if (!emailRaw || !EMAIL_RE.test(emailRaw)) {
+    return NextResponse.json({ error: "invalid_email" }, { status: 400 });
+  }
+
+  const sourceRaw = typeof body.source === "string" ? body.source : "manual";
+  const source: Source = (ALLOWED_SOURCES as readonly string[]).includes(sourceRaw)
+    ? (sourceRaw as Source)
+    : "manual";
+
+  const supabase = createAdminClient();
+
+  // Two-step so we can preserve rotation state on update. (PostgreSQL upsert
+  // via .upsert({...}) would clobber current_index/sends_count to defaults.)
+  const { data: existing } = await supabase
+    .from("seinfeld_subscribers")
+    .select("id")
+    .eq("email", emailRaw)
+    .maybeSingle();
+
+  if (existing) {
+    const { error: updateError } = await supabase
+      .from("seinfeld_subscribers")
+      .update({
+        status: "active",
+        last_error: null,
+        unsubscribed_at: null,
+        source,
+      })
+      .eq("id", existing.id);
+
+    if (updateError) {
+      console.error("[seinfeld-subscribe] db_update_failed", {
+        email: emailRaw,
+        error: updateError.message,
+      });
+      return NextResponse.json(
+        { error: "db_update_failed", detail: updateError.message },
+        { status: 500 },
+      );
+    }
+    console.log("[seinfeld-subscribe] refreshed", { email: emailRaw, source });
+    return NextResponse.json({
+      ok: true,
+      subscribed: true,
+      created: false,
+      next_send_at: nextSendAt().toISOString(),
+    });
+  }
+
+  const { error: insertError } = await supabase
+    .from("seinfeld_subscribers")
+    .insert({ email: emailRaw, source, status: "active" });
+
+  if (insertError) {
+    console.error("[seinfeld-subscribe] db_insert_failed", {
+      email: emailRaw,
+      error: insertError.message,
+    });
+    return NextResponse.json(
+      { error: "db_insert_failed", detail: insertError.message },
+      { status: 500 },
+    );
+  }
+
+  console.log("[seinfeld-subscribe] created", { email: emailRaw, source });
+  return NextResponse.json({
+    ok: true,
+    subscribed: true,
+    created: true,
+    next_send_at: nextSendAt().toISOString(),
+  });
+}

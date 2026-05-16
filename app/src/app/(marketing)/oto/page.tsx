@@ -1,11 +1,23 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { track } from "@/lib/analytics/client";
+import { Event } from "@/lib/analytics/events";
 
 export default function OTOPage() {
+  useEffect(() => {
+    track(Event.OtoPageViewed);
+  }, []);
+
   async function handleUpgrade() {
+    track(Event.OtoUpgradeClicked, {
+      price_type: "machine",
+      surface: "oto",
+    });
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -15,8 +27,13 @@ export default function OTOPage() {
     if (url) window.location.href = url;
   }
 
+  function handleDecline() {
+    track(Event.OtoDeclined);
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center py-16 px-6">
+      <AbExposureBeacon />
       <div className="max-w-lg text-center">
         <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-6">
           You are two of seven steps in. Want the rest plus the 60-day
@@ -46,6 +63,7 @@ export default function OTOPage() {
         {/* Secondary link */}
         <Link
           href="/machine"
+          onClick={handleDecline}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
         >
           No thanks, deliver just the Starter.
