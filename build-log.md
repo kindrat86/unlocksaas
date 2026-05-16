@@ -175,3 +175,92 @@ Closed the loop from the Free Diagnostic squeeze through the labeled diagnosis t
 - A/B test on the handoff CTA wording (currently uses Claude's `nextStep` with workbook line as fallback).
 
 **Open consistency item:** the squeeze form copy "I email the diagnosis. No spam." is aspirational until the diagnostic API calls `/api/soap-opera/subscribe` to fire Email 1. Either wire the subscribe call into `/api/diagnostic` next, or trim the form copy. Recommend the former — Email 1 IS the Day-0 entry to the Soap Opera Sequence, so the two ships compound.
+
+## Founder Open Item: Verified Builders vs Paid Builders A/B Test
+**Status: SHIPPED (instrumentation live, data collection blocked on deploy)**
+
+Hard Rule #10 from `strategy/BUILD-PROMPT-CLAUDE-CODE.md` requires an A/B test on the collective identity name. The schema was already in place from migration `0003_soap_opera_and_ab_tests` (`public.ab_tests` with `key`, `variant`, `subject_id`, `conversion_event`, length-capped + RLS-protected by 0005). Just needed the wiring.
+
+**What shipped:**
+- `app/src/lib/ab.ts` — variant types, sticky cookie names (`usaas_ab_identity`, `usaas_ab_subject`), 50/50 picker, server-side cookie reader, `IDENTITY_LABELS` map (plural/singular/manifesto title for both variants). `readIdentityFromCookies()` defaults to `verified_builder` when missing so SSR before middleware-write looks identical to the originally shipped copy (no FOUC).
+- `app/src/middleware.ts` — after Supabase session refresh, picks 50/50 and writes both cookies (1-year sticky, sameSite lax, path /) AND mutates `request.cookies` so Server Components on the very first request see the variant without a double-render.
+- `app/src/components/ab-exposure-beacon.tsx` — fire-once useEffect client component; uses `navigator.sendBeacon` (survives navigation) with `fetch keepalive` fallback. Renders null. Dropped onto homepage, `/starter`, and `/oto` so direct-link traffic to any funnel page registers as an exposure.
+- `app/src/app/api/ab/event/route.ts` — POST endpoint inserts into `ab_tests` with the variant + subject from cookies. Body `{event?: string}` — omit for exposure, send `"opt_in"` / `"starter_purchase"` / `"core_purchase"` for conversion. Truncates to 64 chars to honor schema constraint. Insert failures are logged but return 200 so the beacon never retries in a loop.
+- `app/src/app/page.tsx` — homepage manifesto H2 now renders `{labels.manifestoTitle}` from the cookie variant. "We Are Verified Builders" → "We Are Paid Builders" for the polar group. Beacon mounted at top of the funnel hub.
+- `app/src/app/api/checkout/route.ts` — Stripe checkout sessions get `metadata: { ab_key, ab_variant, ab_subject }` on the session AND on `payment_intent_data.metadata` (one-time) or `subscription_data.metadata` (subscription), so the webhook can attribute even if the session lookup is lossy.
+- `app/src/app/api/webhooks/stripe/route.ts` — new `recordIdentityAbConversion(session)` called from `checkout.session.completed`. Reads `session.metadata.ab_*`, normalizes via `parseIdentityVariant`, derives `conversion_event` from `session.mode` (`"payment"` → `starter_purchase`, `"subscription"` → `core_purchase`). Uses service-role admin client because webhooks have no visitor cookies — they're excluded from the middleware matcher. Silently no-ops on non-A/B sessions so legacy or external sessions never break the webhook.
+
+**Why a separate cookie scheme instead of piggybacking on Supabase session:** anonymous visitors can land on `/starter` or `/oto` directly without ever authenticating. The A/B test needs to attribute their conversion even if they never log in. Cookie-based is the only way to span the auth boundary.
+
+**How to read results once traffic flows** (run from Supabase SQL editor):
+```sql
+select
+  variant,
+  count(distinct subject_id) filter (where conversion_event is null)              as exposed_subjects,
+  count(distinct subject_id) filter (where conversion_event = 'starter_purchase') as starter_buyers,
+  count(distinct subject_id) filter (where conversion_event = 'core_purchase')    as core_buyers
+from public.ab_tests
+where key = 'identity_label'
+group by variant
+order by variant;
+```
+Convergence rule of thumb: need at least ~200 exposures per variant before calling a winner. With pre-revenue traffic this will take weeks — that's fine; Hard Rule #10 says whichever wins ships, no timeline.
+
+**Build verification:** `npx tsc --noEmit` reports zero errors in any of the six A/B files. The 59 remaining type errors across `(app)/machine/{layout,page}.tsx`, `verified/actions.ts`, `seinfeld/*`, `conversions/route.ts`, and the legacy `handleConnectChargeSucceeded` in the same webhook file are pre-existing — they reference a `profiles` table that hasn't been added to the generated `database.types.ts` yet. Need a `supabase gen types` regen, unrelated to this delivery.
+
+**Blockers for live data:**
+1. Vercel BLOCKED deploy state must clear before any visitor traffic reaches the new manifesto + beacons.
+2. Cookies set on `vercel dev` won't roll over to production — each environment accrues its own A/B sample.
+3. No analytics surface yet — Maryan reads results via the SQL above. A `/admin/ab` dashboard is deferred; not worth the build until there's data to display.
+
+## Sprint 2, Step 1: Free Diagnostic Squeeze (real, replaces placeholder)
+**Status: SHIPPED (staging; gated only on unrelated parallel-agent build break)**
+
+Replaced the Sprint 2 placeholder at `/diagnostic` with the real squeeze page per workbook 04 §3 Page 1. The page is a Server Component shell that hosts a small `diagnostic-form.tsx` client island for interactivity.
+
+**Copy assembly:**
+- Hook #3 from workbook 01 §5 (top pick): "You shipped it. They said they loved it. So why is Stripe still flat?"
+- AC one-line bio from workbook 01 §6 sits beneath the hook.
+- Brunson Who-What-Why-How block (workbook 03 Script 2), condensed into three short paragraphs.
+- Two-field form: email + product URL.
+- CTA: "See why your launch is flat."
+- Footer disclaimer per workbook 04 §3: "I email the diagnosis. No spam. Reply STOP to unsubscribe."
+- Polarity AGAINST line + escape link to live `/starter` for impatient visitors.
+
+**API route (`POST /api/diagnostic`)** does the full Sprint 2 Step 1+2 capture-classify-persist cycle synchronously: validates email and URL, normalises via `normalizeUrl`, runs `classifyUrl` (Brunson-mapped Wrong Person / Weak Offer / Weak Belief via Sonnet 4.6 with SSRF protection and an 8s page-fetch budget), upserts the lead into `diagnostic_leads` on `(lower(email), product_url)`, and on the same request upserts a `soap_opera_subscribers` row (source='diagnostic', `emails_sent=0`) so the 5-email Soap Opera sequence has a list to send to once the cron lights up. Returns `{ id }`. Failure modes (invalid URL, blocked host, fetch failure, empty page, engine failure) persist as `label='error'` rows so the funnel never dead-ends and every submission has an audit trail. Identity variant is 50/50 A/B but reused from the soap-opera subscriber if the email already exists, so a returning lead stays in the same variant across surfaces.
+
+**Schema:** Applied `diagnostic_leads_replaces_submissions` migration via Supabase MCP. Table has full RLS — writes via service role only, authenticated reads scoped to email match (for future signed-in operator dashboards). Unique index on `(lower(email), product_url)` enforces the upsert key. `updated_at` trigger keeps re-runs accurate. Replaces the speculative `diagnostic_submissions` table from earlier in this session — it was a dead end since the API route does synchronous classification, not async.
+
+**Result page (`/diagnostic/result?id=<uuid>`)** was already built by the concurrent session and is fully wired to the schema my API writes. Renders the labeled diagnosis with static label-derived headline + CTA copy (version-controlled, A/B-testable in code per workbook 05) plus the personalised 100-word Reluctant Hero explanation and one-sentence evidence quote from Claude. Three failure shells (MissingIdShell, NotFoundShell, DbErrorShell) keep visitors in the funnel even when something goes sideways. CTA routes to `/starter`, copy adapts to label ("Pin your dream customer for $1" / "Build your offer for $1" / "Fix the upstream belief for $1").
+
+**`database.types.ts` regenerated** via Supabase MCP — was missing 4 tables the live DB has (`profiles`, `billing_events`, `billing_payments`, `milestones`, `seinfeld_subscribers`) plus the `builder_badges` view. The earlier build-log section "Three tables app code calls but no migration defines" is now resolved: those tables exist in the DB; the local types file was just stale. Regen cleared ~30 type errors in parallel-agent files (verified/, conversions/, guarantee/, milestones/, builder-badge.ts).
+
+**Build state at ship:**
+- `npx tsc --noEmit` on the diagnostic surface (`(marketing)/diagnostic/page.tsx`, `(marketing)/diagnostic/diagnostic-form.tsx`, `(marketing)/diagnostic/result/page.tsx`, `api/diagnostic/route.ts`, `lib/diagnostic.ts`) → **zero errors**.
+- Wider `next build` fails on parallel-agent Soap Opera + webhook work in `api/cron/soap-opera/route.ts`, `api/soap-opera/subscribe/route.ts`, `api/webhooks/stripe/route.ts`, and `lib/soap-opera/dispatch.ts` — they still reference the pre-rename `current_day` column on `soap_opera_subscribers`. Fix is mechanical: rename `current_day` → `emails_sent` in those four files. Not in scope for this ship; my own write-site was already corrected.
+
+**Operator action required before public launch:**
+1. Resolve the Vercel-account-level `BLOCKED` deploy state.
+2. Reconcile the four Soap-Opera files with the renamed column (~5-10 lines per file).
+3. Smoke-test the diagnostic against 3-5 real founder URLs and confirm the upstream-order rule (wrong_person > weak_offer > weak_belief) labels correctly.
+
+## Sprint 1, Resume Pass: Billing Schema (profiles / billing_events / billing_payments)
+**Status: SHIPPED (schema + types only; webhook handlers queued)**
+
+Wrote and applied `supabase/migrations/20260517000000_billing.sql` against Supabase project `iihtadgnpheuwkcuumhw`. Three new tables underpin the Stripe webhook and the 60-day guarantee verifier:
+
+- **`profiles`** — 1:1 with `auth.users` (email-keyed; `user_id` nullable so a paying customer who hasn't signed up yet has a row). Holds `tier` (`none`/`starter`/`core`), `stripe_customer_id`, `stripe_subscription_id`, `subscription_status`, `starter_purchased_at`, `core_started_at`, `guarantee_expires_at`, `cancel_at_period_end`, `canceled_at`, `refunded_at`, `created_at`, `updated_at`. Auto-`updated_at` trigger. A `link_profile_on_user_create` trigger on `auth.users` attaches the row by email match the first time a user completes magic-link signup — closing the loop the prior auth pass flagged ("paying customer bounced to /login").
+- **`billing_events`** — Stripe event idempotency log; `stripe_event_id` is PK. Re-deliveries become no-ops.
+- **`billing_payments`** — append-only row per charge/invoice. Unique partial indexes on `stripe_charge_id` and `(stripe_invoice_id, kind)` make duplicate inserts safe under retry. Powers the guarantee verifier and audit trail.
+
+RLS enabled on all three: signed-in users read their own profile (`profiles_self_read`) and own payments (`billing_payments_self_read`); `profiles_self_update` lets them edit non-billing fields; `billing_events` is service-role only.
+
+`database.types.ts` extended with `profiles`, `billing_events`, `billing_payments` Row/Insert/Update + FK metadata so `.from(...)` calls type-check against the typed `Database`.
+
+Also added `app/src/lib/celebration-email.ts` (stub from this pass; concurrent session enriched it with HTML body, builder/product/amount formatting, `/machine/verified` CTA fallback). Sends from `maryan@unlocksaas.com` via Resend; called by the Connect-event branch in the webhook when the first paying customer is detected on the user's *connected* Stripe account.
+
+**Concurrent edits noted (preserved, not reverted):** the webhook file `app/src/app/api/webhooks/stripe/route.ts` was rewritten by a parallel session during this pass. The end-state focuses on the **Connect-event branch** (`handleConnectChargeSucceeded`) plus analytics capture and A/B attribution. The **platform-event branches** (`checkout.session.completed` / `customer.subscription.*` / `invoice.*` / `charge.refunded` against *our* Stripe account) currently log + emit analytics but still carry `// TODO:` placeholders for the profile-upsert / tier-transition / billing_payments-write paths drafted in this pass. The schema + types are in place to drop those handlers back in — the work is queued, not lost.
+
+**Build status:** repo-wide `next build` is currently blocked by two pre-existing items outside this delivery: (a) a syntax error in `app/src/app/api/engine/route.ts` (mid-edit by a concurrent session), and (b) the `milestones` table referenced by `lib/guarantee.ts` not existing yet — the in-repo `20260517010000_guarantee.sql` tries to re-create `verified_conversions` with `profile_id` while the live table is `project_id`, so it cannot apply cleanly without reconciliation.
+
+**Next coherent unit:** reconcile the guarantee migration (rename or alter the live `verified_conversions` to be profile-scoped, then add `milestones`); re-instate the platform-event handlers on the webhook (idempotent profile upsert via `billing_events` ID lookup → tier transitions → `billing_payments` writes → 60-day clock from first `invoice.payment_succeeded` with `billing_reason='subscription_create'` → refund-on-`charge.refunded` demotion); fix the engine route syntax error.
