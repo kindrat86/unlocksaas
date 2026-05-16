@@ -16,3 +16,4 @@ inbox-cache/
 # Claude Code per-user / per-worktree state
 .claude/settings.local.json
 .claude/worktrees/
+.vercel

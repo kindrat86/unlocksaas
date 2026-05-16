@@ -8,6 +8,8 @@ Usage:
   python scripts/namecheap-dns.py add-email --apply               # actually push
   python scripts/namecheap-dns.py add-dkim "v=DKIM1; k=rsa; p=..."        # preview
   python scripts/namecheap-dns.py add-dkim "v=DKIM1; k=rsa; p=..." --apply
+  python scripts/namecheap-dns.py add-resend                      # preview Resend records (fetched from Resend API)
+  python scripts/namecheap-dns.py add-resend --apply              # actually push Resend records
   python scripts/namecheap-dns.py set-vercel                      # preview Vercel switch
   python scripts/namecheap-dns.py set-vercel --apply              # actually switch DNS to Vercel
 
@@ -30,6 +32,7 @@ DEPENDENCIES:
 """
 
 import argparse
+import json
 import os
 import sys
 import urllib.parse
@@ -259,10 +262,14 @@ def cmd_add_dkim(env: dict, args) -> None:
     merge_and_maybe_apply(env, additions, apply=args.apply)
 
 
-def merge_and_maybe_apply(env: dict, additions: list, apply: bool) -> None:
+def merge_and_maybe_apply(env: dict, additions: list, apply: bool, force_email_type: str = None) -> None:
     current, email_type = get_dns_state(env)
     print_records("Current records", current)
-    print(f"  EmailType (Mail Settings): {email_type}  ← will be preserved")
+    push_email_type = force_email_type or email_type
+    if force_email_type and force_email_type != email_type:
+        print(f"  EmailType (Mail Settings): {email_type}  → will switch to {force_email_type}")
+    else:
+        print(f"  EmailType (Mail Settings): {email_type}  ← will be preserved")
 
     existing_fp = {r.fingerprint() for r in current}
     to_add = [r for r in additions if r.fingerprint() not in existing_fp]
@@ -284,7 +291,7 @@ def merge_and_maybe_apply(env: dict, additions: list, apply: bool) -> None:
         return
 
     print("\nApplying via setHosts ...")
-    set_hosts(env, final, email_type=email_type)
+    set_hosts(env, final, email_type=push_email_type)
 
     print("Verifying ...")
     after = get_hosts(env)
@@ -300,6 +307,150 @@ def merge_and_maybe_apply(env: dict, additions: list, apply: bool) -> None:
 
     print("\nDone. DNS propagation usually completes in 5-30 minutes.")
     print("Verify externally:  dig +short TXT unlocksaas.com  (or use https://mxtoolbox.com/)")
+
+
+# ── Resend integration ────────────────────────────────────────────────────────
+
+
+RESEND_API_BASE = "https://api.resend.com"
+
+
+def fetch_resend_records(env: dict) -> tuple:
+    """Call Resend API, locate the configured domain, return (records, domain_id).
+
+    The list endpoint (/domains) returns only summary info — to get DNS records we
+    must GET /domains/{id}. We look up the id by matching NAMECHEAP_DOMAIN against
+    the 'name' field of each domain in the account.
+
+    Records returned by Resend have shape:
+        {"record": "DKIM"|"SPF", "name": "...", "type": "TXT"|"MX",
+         "value": "...", "priority": 10 (for MX), "ttl": "Auto", "status": "..."}
+    """
+    api_key = env.get("RESEND_API_KEY", "").strip()
+    if not api_key:
+        sys.exit(
+            "ERROR: RESEND_API_KEY missing from env file.\n"
+            "  Generate at https://resend.com/api-keys (Full access).\n"
+            "  Add line:  RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxx"
+        )
+
+    domain_name = env["NAMECHEAP_DOMAIN"]
+
+    def _get(path: str) -> dict:
+        # Resend's API sits behind Cloudflare; default urllib UA gets flagged
+        # with error 1010 (browser integrity check). Use a generic real UA.
+        req = urllib.request.Request(
+            RESEND_API_BASE + path,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "User-Agent": "unlocksaas-dns-script/1.0 (curl-like)",
+            },
+            method="GET",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            body = e.read().decode() if hasattr(e, "read") else ""
+            sys.exit(f"ERROR: Resend API GET {path} returned {e.code}: {body[:500]}")
+        except Exception as e:
+            sys.exit(f"ERROR: Resend API GET {path} failed: {e}")
+
+    listing = _get("/domains")
+    match = next(
+        (d for d in listing.get("data", []) if d.get("name") == domain_name),
+        None,
+    )
+    if not match:
+        sys.exit(
+            f"ERROR: domain '{domain_name}' not found in Resend account.\n"
+            f"  Create it first:\n"
+            f"    curl -X POST {RESEND_API_BASE}/domains \\\n"
+            f"      -H 'Authorization: Bearer $RESEND_API_KEY' \\\n"
+            f"      -H 'Content-Type: application/json' \\\n"
+            f"      -d '{{\"name\":\"{domain_name}\",\"region\":\"eu-west-1\"}}'"
+        )
+
+    domain_id = match["id"]
+    detail = _get(f"/domains/{domain_id}")
+
+    records = []
+    for r in detail.get("records", []):
+        rtype = (r.get("type") or "TXT").upper()
+        value = (r.get("value") or "").strip()
+        if not value:
+            continue
+        records.append(
+            Record(
+                name=r.get("name", "@"),
+                type=rtype,
+                address=value,
+                mx_pref=int(r.get("priority", 10)) if rtype == "MX" else 10,
+            )
+        )
+
+    if not records:
+        sys.exit(
+            f"ERROR: Resend returned 0 DNS records for {domain_name} "
+            f"(status: {detail.get('status')}). Possible causes:\n"
+            f"  • Domain is already verified (records hidden after verification)\n"
+            f"  • Domain creation is incomplete on Resend's side"
+        )
+
+    return records, domain_id
+
+
+def cmd_add_resend(env: dict, args) -> None:
+    """Fetch DNS records from Resend API for NAMECHEAP_DOMAIN and add them.
+
+    Resend's records live on the `send.<domain>` subdomain (SPF MX + SPF TXT)
+    plus a `resend._domainkey` TXT — none of which conflict with Private Email's
+    apex SPF or its `default._domainkey` DKIM.
+
+    EmailType handling: Resend requires an MX record at `send.<domain>` for
+    bounce feedback. Namecheap's EmailType=OX (Private Email mode) reserves
+    ALL MX management — user-supplied MX records are silently dropped. To get
+    the Resend MX to land, this function auto-detects the conflict and:
+      1. Adds Private Email's mx1/mx2.privateemail.com explicitly to the
+         addition set (otherwise email breaks when EmailType switches).
+      2. Switches EmailType from OX to MX on the setHosts push.
+    The visible Namecheap "Mail Settings" dropdown will read "Custom MX"
+    afterwards but mail delivery to Private Email continues unchanged.
+    """
+    additions, domain_id = fetch_resend_records(env)
+    print(f"Resend domain_id: {domain_id}  (region: eu-west-1 unless changed in Resend)")
+    print(f"Records returned by Resend API: {len(additions)}")
+
+    force_email_type = None
+    has_mx_addition = any(r.type.upper() == "MX" for r in additions)
+    if has_mx_addition:
+        _, current_email_type = get_dns_state(env)
+        if current_email_type == "OX":
+            print(
+                "\nDetected MX record in Resend additions + EmailType=OX. To prevent\n"
+                "Namecheap from silently dropping the MX, will:\n"
+                "  • Inject mx1.privateemail.com and mx2.privateemail.com explicitly\n"
+                "  • Switch EmailType from OX to MX (Mail Settings UI changes to Custom MX)\n"
+                "  • Private Email delivery continues unchanged via the explicit mx1/mx2.\n"
+            )
+            pe_mx = [
+                Record(name="@", type="MX", address="mx1.privateemail.com", mx_pref=10),
+                Record(name="@", type="MX", address="mx2.privateemail.com", mx_pref=10),
+            ]
+            additions = pe_mx + additions
+            force_email_type = "MX"
+
+    merge_and_maybe_apply(env, additions, apply=args.apply, force_email_type=force_email_type)
+    if args.apply:
+        print(
+            "\nNext step: trigger Resend's DNS verification once propagation completes:\n"
+            f"  curl -X POST {RESEND_API_BASE}/domains/{domain_id}/verify \\\n"
+            f"    -H 'Authorization: Bearer $RESEND_API_KEY'\n"
+            "Poll status with:\n"
+            f"  curl {RESEND_API_BASE}/domains/{domain_id} \\\n"
+            f"    -H 'Authorization: Bearer $RESEND_API_KEY' | python3 -m json.tool"
+        )
 
 
 # ── Vercel switch ─────────────────────────────────────────────────────────────
@@ -422,6 +573,12 @@ def main() -> None:
     )
     pd.add_argument("--apply", action="store_true", help="Actually push to Namecheap")
 
+    pr = sub.add_parser(
+        "add-resend",
+        help="Fetch Resend's required DNS records via API and merge them into Namecheap (dry-run by default). Requires RESEND_API_KEY in env file.",
+    )
+    pr.add_argument("--apply", action="store_true", help="Actually push to Namecheap")
+
     pv = sub.add_parser(
         "set-vercel",
         help="Switch DNS to Vercel: remove parking records, add A @ -> 76.76.21.21 and CNAME www -> cname.vercel-dns.com. Preserves SPF/DKIM/DMARC and Private Email Mail Settings.",
@@ -438,6 +595,8 @@ def main() -> None:
         cmd_add_email(env, args)
     elif args.cmd == "add-dkim":
         cmd_add_dkim(env, args)
+    elif args.cmd == "add-resend":
+        cmd_add_resend(env, args)
     elif args.cmd == "set-vercel":
         cmd_set_vercel(env, args)
 
