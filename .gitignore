@@ -2,7 +2,17 @@
 node_modules/
 .env
 .env.local
+.env.*.local
 .next/
 dist/
 build/
 *.log
+
+# Email operations — contain PII; never commit
+drafts/
+logs/
+inbox-cache/
+
+# Claude Code per-user / per-worktree state
+.claude/settings.local.json
+.claude/worktrees/
