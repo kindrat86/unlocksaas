@@ -206,23 +206,60 @@ function PlvBlock(props: {
   envVar: string;
   note: string;
 }) {
-  // We deliberately don't reference process.env here — server components are
-  // fine but we want the page to render with a clean placeholder until the
-  // founder uploads the videos. The playback IDs go into the env vars
-  // referenced; once present, replace this block with the real Mux/Cloudflare
-  // Stream player. Keeping the structure stable lets us drop a one-line edit
-  // per video instead of rebuilding the page.
+  // Server-side read of the playback ID env var. This component is rendered
+  // inside the (force-dynamic) FoundingPage server component, so reading
+  // process.env at render is correct — no NEXT_PUBLIC_ prefix needed, the
+  // playback ID stays out of the client bundle until the URL is composed.
+  //
+  // The env var holds a Mux PLAYBACK ID (not a full URL). We compose the
+  // MP4 URL here using Mux's static-rendition pattern:
+  //   https://stream.mux.com/<PLAYBACK_ID>/medium.mp4
+  // The upload pipeline (scripts/upload-shoot.py) requests `mp4_support:
+  // 'standard'` at asset creation, so this rendition exists on every
+  // uploaded PLV. Native <video> renders this in every browser without an
+  // HLS shim.
+  const playbackId = process.env[props.envVar]?.trim();
+  const hasVideo = !!playbackId && playbackId.length > 0;
+  const mp4Url = hasVideo
+    ? `https://stream.mux.com/${playbackId}/medium.mp4`
+    : undefined;
+  const posterUrl = hasVideo
+    ? `https://image.mux.com/${playbackId}/thumbnail.jpg?time=1`
+    : undefined;
+
   return (
     <div>
       <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
         PLV{props.number} — {props.length}
       </p>
       <h3 className="text-xl font-bold mb-2">{props.title}</h3>
-      <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-3 border border-border">
-        <p className="text-sm text-muted-foreground px-4 text-center">
-          Video upload pending — playback ID env var:{" "}
-          <code className="text-xs">{props.envVar}</code>
-        </p>
+      <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-3 border border-border">
+        {mp4Url ? (
+          // Native <video> handles play/pause/scrub/fullscreen with zero JS.
+          // preload="metadata" keeps the page light until the visitor
+          // presses play. Captions are burned in per the PLV script
+          // production notes, so no <track> is wired.
+          <video
+            controls
+            playsInline
+            preload="metadata"
+            poster={posterUrl}
+            src={mp4Url}
+            className="w-full h-full"
+          >
+            <p className="p-4 text-sm">
+              Your browser doesn&apos;t support HTML5 video. Reply to any
+              email from maryan@unlocksaas.com for a direct download link.
+            </p>
+          </video>
+        ) : (
+          <div className="flex items-center justify-center w-full h-full">
+            <p className="text-sm text-muted-foreground px-4 text-center">
+              Video upload pending — playback ID env var:{" "}
+              <code className="text-xs">{props.envVar}</code>
+            </p>
+          </div>
+        )}
       </div>
       <p className="text-sm text-muted-foreground leading-relaxed">
         {props.note}

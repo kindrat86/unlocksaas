@@ -105,11 +105,33 @@ done.
 
 ### Tier 2 — blocks the Reluctant-Hero proof, not revenue
 
-4. **Record the VSL.** Single take, plain background, no music, no
-   B-roll. Script locked at `strategy/vsl-script.md`. Three cuts produced
-   from one shoot: full 4–5 min for `/machine-sales`, 45s WHO-only for `/`,
-   90s WHAT+WHY for Email 1 Soap Opera. Upload to Cloudflare Stream or
-   Mux. Replace `/` and `/machine-sales` placeholders with the embed.
+4. **Record the VSL + 3 Founding PLVs in ONE shoot.** Single shoot,
+   same shirt, same lighting, same camera angle. Four outputs:
+
+   - VSL (3–5 min) — script at `strategy/founder-vsl-script.md`
+   - PLV1 "The Door That Opened" (5–7 min) — `strategy/founding-plv-scripts.md`
+   - PLV2 "How the Machine Actually Works" (8–10 min) — same file
+   - PLV3 "What It Looks Like on the Inside" (10–12 min) — same file
+
+   **Pre-staged 2026-05-17 (this push):** the entire Mux upload pipeline +
+   embed wiring is now ready-to-run. Walkthrough at
+   `strategy/OPERATOR-SHOOT-DAY.md`. The shoot day cost reduces to:
+
+   ```bash
+   # Once, before shoot day
+   python3 scripts/setup-mux-credentials.py
+
+   # After the shoot (one command per video, or batched)
+   python3 scripts/upload-shoot.py path/to/vsl.mp4  NEXT_PUBLIC_VSL_URL
+   python3 scripts/upload-shoot.py path/to/plv1.mp4 FOUNDING_PLV1_PLAYBACK
+   python3 scripts/upload-shoot.py path/to/plv2.mp4 FOUNDING_PLV2_PLAYBACK
+   python3 scripts/upload-shoot.py path/to/plv3.mp4 FOUNDING_PLV3_PLAYBACK
+   ```
+
+   `PlvBlock` already renders native `<video>` from the Mux MP4 rendition
+   the moment any `FOUNDING_PLV*_PLAYBACK` env var is populated. The VSL
+   player consumes `NEXT_PUBLIC_VSL_URL` directly. The 45s `/` cut and the
+   90s SOS Email 1 cut are derivative edits — defer to post-launch.
 
 5. **Re-mine private 10-conversation founder set** for niche-specific
    dollar-objection language via Slack DMs / Gmail threads / Granola

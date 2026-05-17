@@ -756,6 +756,101 @@ Reversed the skip. PLF runs ONCE at product birth as the founding-cohort launch.
 ### Blockers
 None for the code. The founding cohort is one button push away from being live once: (1) founder records PLV1/PLV2/PLV3 per `strategy/founding-plv-scripts.md`, (2) founder sets the four env vars (cart open/close + three playback IDs), (3) `CRON_SECRET` is already documented for the soap-opera cron — same secret works.
 
+## VSL + 3 PLV Shoot Pipeline — Pre-staged for One-Command Upload
+**Status: SHIPPED (pipeline ready; recording itself is operator-only and unmechanizable)**
+
+Founder ran the brunson-architect re-audit (composite 65 → 78). Fix #2 was
+"Record the VSL and 3 PLVs in ONE shoot — same camera, same shirt, same
+lighting. Upload to Mux. Drop 5 env vars. ~3 hours." Founder instructed:
+"Proceed autonomously."
+
+The recording itself cannot be autonomous — it requires Maryan on camera
+in his own voice. What this pass closes is everything AROUND the shoot, so
+the operator cost on shoot day drops to: (1) 45 min setup, (2) 60–90 min
+recording, (3) one Python command per file for upload + Vercel push.
+
+### Files added
+
+- `scripts/setup-mux-credentials.py` — getpass-based collection of
+  `MUX_TOKEN_ID` + `MUX_TOKEN_SECRET`, writes to `.env.development.local`
+  with `0600` perms. Pattern-matches the locked one-script-per-secret
+  convention from `project_unlocksaas_infra.md`. NOT pushed to Vercel —
+  these are upload-time-only credentials, not runtime.
+
+- `scripts/upload-shoot.py` — Mux Direct Upload API client + Vercel CLI
+  push, single command per video. Steps: POST `/video/v1/uploads` with
+  `mp4_support: 'standard'` so the static MP4 rendition exists, PUT the
+  local MP4 to the one-time upload URL, poll `/video/v1/uploads/{id}` for
+  `asset_id`, poll `/video/v1/assets/{id}` for `status == 'ready'` AND
+  `static_renditions.status == 'ready'`, extract the public playback ID,
+  compose the env var value per contract (full URL for VSL, raw ID for
+  PLVs), push to Vercel via subprocess+stdin for production + preview +
+  development. Idempotent: re-runs replace the value via `vercel env rm`
+  followed by `vercel env add`. No external Python deps required —
+  `requests` is used if installed, falls back to `urllib` stdlib.
+
+- `strategy/OPERATOR-SHOOT-DAY.md` — single-page checklist for the
+  founder on shoot day. Mux account setup, hardware checklist, voice
+  warm-up, shoot order (shortest → longest), upload commands, post-shoot
+  verify URLs, what to skip and why (e.g., the 45s `/` cut and 90s SOS
+  Email 1 cut are deferred edits, not blocking).
+
+### Files modified
+
+- `app/src/app/(marketing)/founding/page.tsx` — `PlvBlock` was a
+  deliberately-inert placeholder per its own comment ("once present,
+  replace this block with the real Mux/Cloudflare Stream player"). Wired
+  it to render native `<video>` with Mux's static MP4 URL pattern
+  (`https://stream.mux.com/<playback-id>/medium.mp4`) and a poster image
+  (`https://image.mux.com/<playback-id>/thumbnail.jpg?time=1`) when its
+  env var is set. Falls back to the same placeholder text otherwise so
+  the page renders cleanly pre-shoot. No client boundary added — `<video>`
+  is a native HTML element renderable from server components.
+
+- `.env.example` — replaced the VSL-only block with a unified "Video
+  shoot" section covering VSL + 3 PLVs + Mux dev credentials. Documents
+  the env-var contract explicitly: `NEXT_PUBLIC_VSL_URL` holds the full
+  MP4 URL (the VSL player was wired before Founding standardized on
+  playback IDs), `FOUNDING_PLV{1,2,3}_PLAYBACK` hold raw Mux playback IDs
+  (PlvBlock composes the URL server-side), `MUX_TOKEN_ID` +
+  `MUX_TOKEN_SECRET` are upload-time only and stay out of Vercel.
+
+- `LAUNCH-READINESS.md` — Tier 2 item #4 (Record the VSL) expanded to
+  the four-output + ready-to-run command block. Points at
+  OPERATOR-SHOOT-DAY.md for the full walkthrough.
+
+### What this pass does NOT do (honest scope)
+
+- **Does not record video.** Hard physical block.
+- **Does not upload to Mux.** No source files exist — `upload-shoot.py`
+  errors with `file not found` until the operator runs the shoot.
+- **Does not push playback IDs to Vercel.** The upload step is the thing
+  that produces the values.
+- **Does not install `@mux/mux-player-react`.** Native `<video>` + Mux's
+  static MP4 rendition is sufficient pre-launch; the player adds ~200 KB
+  of JS for adaptive bitrate that is overkill on a $49/mo SaaS funnel
+  pre-PMF. Add post-launch if cold-traffic data shows ABR is the leverage.
+- **Does not produce the 45s `/` cut or the 90s SOS Email 1 cut.** Both
+  are derivative edits of the full VSL source. Defer to post-launch.
+
+### Brunson audit score forecast (post-shoot, when operator completes the 3 hours)
+
+- DCS Secret 20 (VSL): 40 → ~90 (was the cheapest +50 on the board)
+- ES Secret 9 (Epiphany Bridge Script): 80 → ~92 (on camera at last)
+- DCS Secret 21 (Founding-Cohort PLF): 92 → ~96 (PLVs become real, not placeholder)
+- ES Secret 11 (Perfect Webinar overall): 88 → ~92 (VSL leads the long-form sales page)
+- Composite forecast: 78 → ~84 the day all four MP4s are live on the env vars.
+
+### Next coherent unit
+
+Operator-only. Maryan blocks 3 hours. Follows `strategy/OPERATOR-SHOOT-DAY.md`.
+When the four `vercel env add` confirmations land, the next coherent ship is
+the day-2 short-cut edits (45s + 90s) IF the long VSL shows a clear drop-off
+beat in PostHog session replay. Until traffic arrives, no further editing
+work is on the leverage path.
+
+---
+
 ## Autonomous Deploy of Founding-Cohort PLF
 **Status: LIVE on production**
 
