@@ -352,41 +352,6 @@ export default function FunnelHub() {
         </>
       ) : null}
 
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 17. SOCIAL ---------------- */}
-      <section className="py-10 sm:py-12 px-4 sm:px-6 max-w-md mx-auto text-center">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
-          Find me
-        </p>
-        <div className="flex gap-4 justify-center text-sm text-muted-foreground">
-          <a
-            href="https://twitter.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
-          >
-            X / Twitter
-          </a>
-          <a
-            href="https://www.indiehackers.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
-          >
-            Indie Hackers
-          </a>
-          <a
-            href="https://reddit.com/r/SaaS"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
-          >
-            r/SaaS
-          </a>
-        </div>
-      </section>
-
       {/* ---------------- 18. SIGNATURE FOOTER ---------------- */}
       <SignatureFooter />
 
