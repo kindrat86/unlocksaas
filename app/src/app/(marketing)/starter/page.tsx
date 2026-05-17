@@ -142,74 +142,192 @@ function StarterSalesPageInner() {
 
         {/* Star Story Solution */}
         <section className="space-y-6 mb-12">
-          {/* The Star */}
+          {/* The Star — vivid, sensory destination. Workbook 03 Script 3
+              expanded per the Brunson Book Funnel chapter: don't just name
+              the result, paint it. Sense memory + the specific behaviour
+              change the founder will notice. */}
           <div>
             <h2 className="text-xl font-bold mb-3">The Destination</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              In sixty days, with the same product you already shipped, you can
-              have your first paying customer. Verified by your own Stripe. Or
-              you do not pay. That is the destination of this machine. You are
-              buying the first $1 of the road to it.
-            </p>
-          </div>
-
-          {/* The Story */}
-          <div>
-            <h2 className="text-xl font-bold mb-3">The Story</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              I built a dozen products nobody paid for. I told myself it was the
-              product, then the funnel, then the traffic. I went embarrassingly
-              deep into SEO so I would not have to look at the flat line. What
-              broke me was sitting with more than ten other founders and hearing
-              my own story back. So I sat down to write the offer for this
-              product and found nothing. No promise. No specific person. That was
-              the moment. I had been building beautiful things for no one in
-              particular.
-            </p>
-          </div>
-
-          {/* The Solution */}
-          <div>
-            <h2 className="text-xl font-bold mb-3">What $1 Gets You</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              You finish two things this week. A real dream customer, named and
-              specific, not a vibe. A real offer, written, with a guaranteed
-              result you can defend to a skeptic. That is Machine Steps 1 and 2,
-              complete, yours to keep.
+              Picture sixty days from now. You open Stripe on a Tuesday
+              morning, the same way you have opened it on every Tuesday
+              morning of the last seven months. The line is not flat. There
+              is a charge on it. It has a real person&apos;s name attached.
+              You did not buy it from yourself. You did not pay anyone for a
+              fake. You sent one specific message to one specific person, you
+              used the product you already shipped, and they paid you.
             </p>
-            <Card>
+            <p className="text-muted-foreground leading-relaxed">
+              That is the destination of this machine. One verified paying
+              customer in your own Stripe within sixty days, or you do not
+              pay. The $1 below buys you the first two steps of the road to
+              it, yours to keep either way.
+            </p>
+          </div>
+
+          {/* The Story — full 7-beat Epiphany Bridge, condensed for the
+              $1 page. Workbook 06 §1: desire, external wall, internal wall,
+              epiphany, plan, conflict, achievement. Each labeled paragraph
+              hits one beat without breaking the Reluctant Hero voice. */}
+          <div>
+            <h2 className="text-xl font-bold mb-3">How I Got Here</h2>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              <span className="font-semibold text-foreground">The desire.</span>{" "}
+              I wanted to be one of the non-engineers who finally got paid for
+              software they shipped. Lovable and Claude opened that door in
+              2026. I walked through it and shipped a dozen products in months.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              <span className="font-semibold text-foreground">The external wall.</span>{" "}
+              Every product launched to the same flat Stripe line. Twelve in a
+              row. The dashboard mocked me every morning.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              <span className="font-semibold text-foreground">The internal wall.</span>{" "}
+              I told myself it was the product, then the funnel, then the
+              traffic. I went embarrassingly deep into SEO so I would not have
+              to look at the flat line. The fear underneath: maybe a
+              non-engineer who cannot code does not get to win this.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              <span className="font-semibold text-foreground">The epiphany.</span>{" "}
+              I sat with more than ten other founders. Every one of them was
+              me. Same flat Stripe, same SEO escape hatch, same private theory
+              that they were the broken one. So I sat down to write the offer
+              for this product and I found nothing. No promise. No specific
+              person. That was the moment. I had been building beautiful things
+              for no one in particular.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              <span className="font-semibold text-foreground">The plan.</span>{" "}
+              Name one real person. Write one real promise. Sell it before it
+              feels ready. The work the courses skip because it does not look
+              like work.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              <span className="font-semibold text-foreground">The conflict.</span>{" "}
+              The plan is short to read and brutal to do. Outreach is the home
+              field of every avoidant founder. You will not do it on willpower.
+              I did not.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              <span className="font-semibold text-foreground">The achievement.</span>{" "}
+              So I built a machine that refuses to let me skip the work. It
+              names the customer for me. It writes the offer with me. It picks
+              the outreach targets and tracks every send. It only counts a win
+              when Stripe says so. The Machine is what you are buying the first
+              two steps of below.
+            </p>
+          </div>
+
+          {/* The Solution — name the method explicitly, then DEMONSTRATE.
+              Brunson Magic Bullet rule: one concrete example of the engine
+              doing its job beats three paragraphs of "AI-powered" copy. */}
+          <div>
+            <h2 className="text-xl font-bold mb-3">
+              What $1 Gets You: The Machine, Steps 1 and 2
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              The Machine is a seven-step engine. The $1 buys the first two
+              steps, complete, yours to keep. A real dream customer, named and
+              specific, not a vibe. A real offer, written, with a guaranteed
+              result you can defend to a skeptic. The work is done with you,
+              not assigned to you.
+            </p>
+            <Card className="mb-4">
               <CardContent className="pt-6">
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                     <span>
-                      <strong>Step 1: Pin Your Dream Customer</strong> — A
-                      guided conversation that pushes back on vague answers until
-                      you have one real person, named and specific.
+                      <strong>Step 1: Pin Your Dream Customer.</strong> Five
+                      guided questions. The engine pushes back on every vague
+                      answer. The output is one named person with their real
+                      congregation list — not a marketing persona.
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                     <span>
-                      <strong>Step 2: Build Your Offer</strong> — Four questions.
-                      The engine assembles your guarantee, your stack, your 10x
-                      value math.
+                      <strong>Step 2: Build Your Offer.</strong> Four questions.
+                      The engine assembles your headline, your stack, your
+                      guarantee, and runs the 10x-value math. Hedges get
+                      rejected. Feature lists get rejected.
                     </span>
                   </li>
                 </ul>
               </CardContent>
             </Card>
+
+            {/* Magic Bullet — show the engine doing its job. */}
+            <div className="rounded-lg border border-border bg-muted/40 p-5">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+                What &ldquo;engine pushback&rdquo; actually looks like
+              </p>
+              <div className="space-y-2 text-sm">
+                <p className="text-muted-foreground">
+                  <span className="font-mono text-foreground">You:</span> My
+                  dream customer is founders.
+                </p>
+                <p className="text-muted-foreground">
+                  <span className="font-mono text-foreground">Engine:</span>{" "}
+                  &ldquo;Founders&rdquo; is a category, not a person. Name one
+                  founder you have already spoken to in the last thirty days.
+                  What did they say when you asked what they were stuck on?
+                </p>
+                <p className="text-muted-foreground">
+                  <span className="font-mono text-foreground">You:</span> Marco.
+                  He shipped a Lovable app in March. He has two paying users
+                  out of twelve and he keeps refreshing Stripe.
+                </p>
+                <p className="text-muted-foreground">
+                  <span className="font-mono text-foreground">Engine:</span>{" "}
+                  Good. That is a person. Step 1 begins.
+                </p>
+              </div>
+              <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
+                Every step works this way. The framework lives in the engine.
+                You answer human questions. The engine refuses to let you
+                hand-wave.
+              </p>
+            </div>
           </div>
         </section>
+
+        {/* What happens when you click — Brunson Cart Funnel specificity
+            block. Removes the "I don't know what I am buying" friction. */}
+        <Card className="mb-8">
+          <CardContent className="pt-6">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+              What happens when you click
+            </p>
+            <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside leading-relaxed">
+              <li>Stripe charges your card $1. One time. Not a subscription.</li>
+              <li>
+                You land inside the Machine, logged in, with Steps 1 and 2
+                unlocked.
+              </li>
+              <li>
+                You finish both steps in about ninety minutes of focused work.
+              </li>
+              <li>
+                On the next page you will see a one-time door to the full
+                Machine at $49/mo with the 60-day guarantee. You can take it
+                or skip it. The $1 work is yours either way.
+              </li>
+            </ol>
+          </CardContent>
+        </Card>
 
         {/* Guarantee Teaser */}
         <Card className="mb-8 border-primary/20">
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               The full Machine carries a 60-day guarantee: your first paying
               customer verified by Stripe, or both months back. The $1 Starter
-              delivers a real finished WHO and WHAT, yours to keep, no recurring
-              charge.
+              is not on the guarantee because nothing $1 should be. The $1
+              delivers a real finished WHO and WHAT, yours to keep, no
+              recurring charge.
             </p>
           </CardContent>
         </Card>
@@ -220,6 +338,54 @@ function StarterSalesPageInner() {
           the thing. This is the work that comes after.
         </p>
 
+        {/* Building Block #16 — Starter-specific FAQ (3 questions only; the $49 page
+            carries the full 8-question accordion). Voice: Reluctant Hero, sourced
+            from strategy/dollar-objections.md Categories 1, 5, and the OTO concern. */}
+        <section className="mb-10">
+          <h2 className="text-xl font-bold mb-5">Three quick questions before you click.</h2>
+          <div className="space-y-5">
+            <div>
+              <p className="font-semibold">Is the $1 a trial that auto-upgrades?</p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                No. The $1 is a one-time charge. After you pay you see an
+                upgrade door to the $49 Machine — clicking it is one decision,
+                clicking past it is another. The Starter you bought is yours
+                either way.
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold">
+                What if I finish Steps 1 and 2 and the offer still feels weak?
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                Then the engine pushed back well. The Starter delivers a real
+                dream customer and a real offer — not a confident one. The
+                belief-rebuild that hardens it is Step 4, behind the $49 door.
+                You can walk back to the $49 page when you are ready.
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold">
+                Could I not just write my dream customer and offer myself in a notebook?
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                Yes. You have not. Six months of notebook drafts is why your
+                Stripe line is flat. The $1 buys the version of you that
+                finishes — because the engine refuses to accept the vague
+                answer your notebook tolerates.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Trial Close — one soft-yes question before the CTA. Workbook 07
+            §2 trial-close inventory item #4. The CTA reads better after a
+            commitment-priming question than cold. */}
+        <p className="text-base text-foreground font-medium leading-relaxed mb-6 text-center">
+          Would you trade your next sixty days of tactic-shopping for one
+          verified paying customer?
+        </p>
+
         {/* CTA */}
         <div className="text-center">
           <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
@@ -228,6 +394,12 @@ function StarterSalesPageInner() {
           <p className="text-xs text-muted-foreground mt-3">
             One-time payment. No subscription. No auto-upgrade.
           </p>
+        </div>
+
+        {/* Reluctant Hero signature — per project_unlocksaas_email_identity
+            memory: customer-facing surfaces close with "— Maryan". */}
+        <div className="mt-12 text-right text-sm text-muted-foreground italic">
+          — Maryan
         </div>
       </div>
     </div>
