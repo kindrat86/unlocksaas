@@ -90,8 +90,13 @@ function buildFooter(unsubscribeUrl: string): { text: string; html: string } {
 function greeting(firstName: string): string {
   const trimmed = firstName.trim();
   if (!trimmed) return "Hey,";
-  // Avoid "Hey HEY," style awkwardness from all-caps inputs.
-  const cleaned = trimmed.replace(/[^\p{L}\p{N}\s'-]/gu, "").slice(0, 40);
+  // ASCII + Latin-1 Supplement + Latin Extended-A covers the names most likely
+  // to come through the funnel (English + most European accented forms).
+  // Avoids the Unicode `u` flag, which requires target >= es2015 (tsconfig
+  // currently defaults to es5 per Next.js scaffold).
+  const cleaned = trimmed
+    .replace(/[^A-Za-z0-9À-ɏ\s'-]/g, "")
+    .slice(0, 40);
   return `Hey ${cleaned},`;
 }
 

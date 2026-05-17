@@ -542,6 +542,66 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_subscribers: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          email: string
+          emails_sent: number
+          first_name: string
+          id: string
+          identity_variant: string | null
+          last_error: string | null
+          last_reply_at: string | null
+          last_sent_at: string | null
+          next_send_at: string | null
+          product_url: string | null
+          source: string
+          status: string
+          subscribed_at: string
+          unsubscribed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          email: string
+          emails_sent?: number
+          first_name: string
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_reply_at?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          product_url?: string | null
+          source?: string
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          email?: string
+          emails_sent?: number
+          first_name?: string
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_reply_at?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          product_url?: string | null
+          source?: string
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       seinfeld_subscribers: {
         Row: {
           created_at: string
