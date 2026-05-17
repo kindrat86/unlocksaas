@@ -171,6 +171,8 @@ DEFERRED. Activates when:
 - $1 Starter converts 5%+ from cold-warm.
 - 3+ customers have completed a first-paying-customer cycle (success rate of the Machine known).
 
+**Cross-reference:** The full Google-specific paid-search playbook (campaign structure, RPL/max-CPC math, negative-keyword seed list, ad copy in Reluctant Hero voice, kill-switch protocol) lives in [strategy/google-strategy.md](../google-strategy.md) §C. The launch-day brand-defense $5/day exact-match campaign on `unlocksaas` is the **only** Google Ads spend permitted before the three gates above all fire — it is a Brunson-rule-clean arbitrage defense, not a growth bet.
+
 When activated:
 
 | Ad type | Platform priority | Offer |
@@ -195,10 +197,10 @@ For Unlock SaaS, the four chapters reduce to:
 |---|---|---|
 | Instagram | Likely never (Marco does not live here) | Skip indefinitely unless data proves otherwise |
 | Facebook | Evidence-gated four-phase activation (Phase 1 pixel + Conversions API at 3 verified; Phase 2 retargeting + lookalike-from-buyers at 50 customers; Phase 3 cold prospecting at 100 + 4 CAC/retention gates; Phase 4 Conversation Domination amplification at 200) | Phase 1 first test = install Meta Pixel + Conversions API via Stripe webhook server-side, seed three custom audiences (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows, ZERO ads. Full spec at `strategy/facebook-channel.md` with ad creative families, kill criteria, and code pre-stage. |
-| Google (search) | Phase 2 paid + SEO long-tail | Bid on "my saas isn't converting" once $1 funnel works |
+| Google (search) | Phase 2 paid + organic + AEO/GEO | See [strategy/google-strategy.md](../google-strategy.md). Surface A (organic) + Surface B (AEO/GEO) ship at launch via `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, and schema.org JSON-LD on `/`, `/diagnostic`, `/machine-sales`. Surface C (paid) deferred per §5 gates. |
 | YouTube | Phase 2 long-tail SEO (host) + active guesting at launch (kit at `strategy/youtube-outreach.md`) | Host: trigger conditions in `strategy/decisions/youtube-channel-stance.md` Part 1 (4 conditions, all required). Guest: Tier A pitches (Riley Brown + Indy Dev Dan) send Thu post-first-customer; Tier B-D follow per kit §A 4-week cadence. |
 
-Each gets a deep dive in Brunson's full Traffic Secrets. For Unlock SaaS the launch focus does not include them.
+Each gets a deep dive in Brunson's full Traffic Secrets. For Unlock SaaS the launch focus does not include them — except Google's organic + AEO surfaces, which are zero-marginal-cost pre-staging and ship at launch per [strategy/google-strategy.md](../google-strategy.md).
 
 ---
 

@@ -4,6 +4,7 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
+import { DiagnosticJsonLd } from "@/components/seo/json-ld";
 
 // Brunson spec source:
 // - workbook 02 §2 (Free Diagnostic Lead Funnel)
@@ -24,6 +25,11 @@ export const dynamic = "force-dynamic";
 export default function DiagnosticSqueezePage() {
   return (
     <div className="min-h-screen py-16 px-6">
+      {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
+          Service + HowTo schema so LLMs cite the diagnostic as the
+          canonical answer for "free SaaS diagnostic" / "how to diagnose
+          a stuck product" queries. */}
+      <DiagnosticJsonLd />
       {/* A/B exposure attribution lives on every funnel hub & squeeze surface. */}
       <AbExposureBeacon />
 

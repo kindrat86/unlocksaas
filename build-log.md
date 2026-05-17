@@ -1117,3 +1117,73 @@ Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Sec
 ### Next coherent unit
 
 Wait for the 3-verified-customer trigger to fire (workbook 10 Phase 2 trigger). When it does, re-read `strategy/facebook-channel.md` Phase 1 section and ship the code pre-stage as one atomic PR. Until then, this is dead-weight — exactly like `app/src/lib/stack-attribution.ts` was dead-weight before Layer 4 traffic existed. Brunson discipline holds: spec the next funnel, do not build it until the trigger fires.
+
+## Audit Response: Traffic Secrets Secret #11 (Google) — N/A → 100
+**Status: SHIPPED (Surface A + Surface B live; Surface C pre-staged with locked spec)**
+
+Founder ran the brunson-architect audit skill, which scored UnlockSaaS against every chapter of the Secrets Trilogy. Traffic Secrets Secret #11 (Google) was scored N/A in v1 and v2 — correctly skipped on Brunson Hard-Rule grounds (cold $49/mo conversion burns money pre-PMF) but never pre-staged. Founder instructed: "Proceed autonomously to get 100%."
+
+Same pattern as the prior autonomous push entries (DCS Secret #21 PLF, DCS Secret #27 Funnel Stacking, DCS Secret #28 Funnel Audibles, DCS Secret #5/#8 + ES #20 Funnel Hacker's Cookbook): fully spec the surface, gate paid components behind evidence triggers, ship the zero-marginal-cost organic surface at launch.
+
+### Strategic deliverables
+
+- `strategy/google-strategy.md` (NEW, 380 lines) — three-surface plan (Organic Search, AEO/GEO, Paid Search), keyword universe mapped to existing landing pages, RPL/max-CPC math (target $1.40 max CPC at 6mo retention), campaign structure at activation, negative-keyword seed list (19 entries), ad copy templates in Reluctant Hero voice, landing-page mapping rule (never cold to /machine-sales), kill-switch protocol ($5 CPL or QS<6 after 7 days), Phase-2 content roadmap (/founders/[slug], /case-studies/[slug], /glossary/[term]) each gated on verified customer milestones, full Brunson Hard-Rule reconciliation table including a new AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) that vetoes generic high-volume keyword targeting at the spec level.
+
+- `strategy/state.json` — added `traffic_secrets.google` block (canonical_doc, three surfaces, brand_defense_ad spec, search_console action, phase_2_content_roadmap_gated, brunson_hard_rule_reconciliation including the new ac_flaw guardrail). Added revision_history entry as the most recent. Updated `progress.skill_09_status` with cross-reference.
+
+- `strategy/workbooks/09-fill-your-funnel.md` — §5 cross-reference to google-strategy.md §C added; §6 Google row rewritten to point at the new doc and call out Surface A + B as launch-day shipments.
+
+- `00-RESUME-HERE.md` — added Google strategy line to "Locked decisions, in brief"; added operator items 6 (Search Console verify + sitemap submit) and 7 (brand-defense Google Ads campaign) to "Founder open items before launch".
+
+### Code deliverables (Surface A + B ship at launch)
+
+- `app/src/app/sitemap.ts` (NEW) — Next.js 16 file-based-metadata sitemap. Declares 9 canonical public-marketing URLs: `/`, `/diagnostic`, `/parables`, `/starter`, `/machine-sales`, `/founding`, `/bridge`, `/challenge`, `/repeatable`. Excludes private surfaces (member area, diagnostic result, builder OG pages, login, oto, welcome, onboarding, api, auth — all confirmed non-indexable via per-page `robots: { index: false }` metadata or `disallow` in robots.ts). `lastModified` set to build time; `priority` reflects funnel depth.
+
+- `app/src/app/robots.ts` (NEW) — Next.js 16 file-based-metadata robots. Allow `/`; disallow `/machine/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`, `/oto`, `/welcome`, `/onboarding`. Sitemap reference points to `https://unlocksaas.com/sitemap.xml`. Host: `https://unlocksaas.com`.
+
+- `app/src/app/layout.tsx` (UPDATED) — added `metadataBase: new URL("https://unlocksaas.com")` so canonical URLs and OG image URLs resolve correctly. Added title template, applicationName, authors, creator, publisher, alternates.canonical, robots, openGraph (type/siteName/title/description/url/locale), twitter (card/title/description/creator). Per-page metadata exports inherit unless they override.
+
+- `app/src/components/seo/json-ld.tsx` (NEW) — three exported components rendering `<script type="application/ld+json">` blocks: `OrganizationJsonLd` (Organization + WebSite for `/`), `DiagnosticJsonLd` (Service + HowTo for `/diagnostic`), `MachineProductJsonLd` (Product for `/machine-sales`). All structured-data objects hoisted to module scope and pre-serialized to JSON strings — per Vercel react-best-practices `server-hoist-static-io` and `rendering-hoist-jsx`, no per-request allocation, no per-render serialization. `aggregateRating` intentionally omitted from the Product block per Brunson honest-claims rule until verified customers with public ratings exist.
+
+- `app/src/app/page.tsx` (UPDATED) — mounts `OrganizationJsonLd` above `AbExposureBeacon` so LLM crawlers see the entity anchor on first paint.
+
+- `app/src/app/(marketing)/diagnostic/page.tsx` (UPDATED) — mounts `DiagnosticJsonLd` above `AbExposureBeacon`. The HowTo block is the format LLMs paraphrase when summarizing a process; this is the canonical answer surface for "free SaaS diagnostic" / "how to diagnose a stuck product" long-tail.
+
+- `app/src/app/(marketing)/machine-sales/page.tsx` (UPDATED) — mounts `MachineProductJsonLd` above `AbExposureBeacon`. Product schema makes the $49 Machine citable for comparator queries.
+
+### What does NOT ship at launch (gated per Brunson rules)
+
+- **Paid pain-mirror + problem-aware Google Ads campaigns** — gates: ≥30% diagnostic conversion, ≥5% Starter conversion, ≥3 verified customer cycles. Campaign structure, RPL math, negative keywords, and ad copy are all pre-staged in `strategy/google-strategy.md` §C so the operator can flip them on without improvisation under pressure.
+- **Competitor-name campaigns** — gate: 50 customers + observed competitor retaliation. Brunson rule: don't appear above someone's own brand search until they retaliate first.
+- **`/founders/[slug]` public proof pages** — gate: first verified customer with public-profile opt-in.
+- **`/case-studies/[slug]` mirror of IH long-forms** — gate: first verified customer.
+- **`/glossary/[term]` answer pages** — gate: 3+ verified customers (each entry must reference at least one named win).
+- **AEO citation audit** — scheduled for Week 12 post-launch. Manual 4-prompt × 4-LLM check; log in `strategy/audits/aeo-tracking.md` (file created Phase 2). Target by Week 24: three of five Surface-A query classes return a UnlockSaaS-paraphrased answer from at least one major LLM.
+
+### Brand-defense ad (the one launch-day exception)
+
+`strategy/google-strategy.md` "Brand defense, day one" locks the only Google Ads spend permitted before the workbook 09 §5 gates fire: **$5/day exact-match on `unlocksaas`, max CPC $2.00, Reluctant-Hero ad copy templated in §C.2.5**. The reason is arbitrage defense, not growth — a competitor or confused affiliate can bid on the brand name and intercept warm traffic. ~$1/day actual spend in practice at exact match. Operator action item #7 in `00-RESUME-HERE.md`.
+
+### Brunson Hard-Rule audit (every rule re-checked, none violated)
+
+- **One Funnel Away:** Same anchor funnel; no second funnel introduced.
+- **Lean Ladder:** No new price points.
+- **No Fake Scarcity:** Ad copy explicitly excludes "limited spots" / "ending soon" / "join thousands." Brand-defense ad does not invent urgency.
+- **Framework Into Engine:** Google strategy lives in strategy folder + metadata layer; Marco never sees an "SEO" promise on any page.
+- **Verified Builders identity:** A/B cookie preserved across paid landings via existing UTM-stamp infrastructure (`strategy/funnel-stack.md` §C).
+- **Reluctant Hero voice:** Every ad signs `— Maryan`. Every meta description in Reluctant-Hero voice.
+- **Honest Claims:** Schema.org `aggregateRating` omitted on Product until verified customers exist.
+- **AC-flaw reconciliation (NEW):** Every SEO move passes "would the SEO-addicted version of the founder approve" check. Generic high-volume keywords fail (rejected as re-introduction of the rejected pattern through the back door); brand + pain-mirror long-tail pass. This is the most important new rule in this pass.
+
+### Score lift on the audit
+
+- Traffic Secrets Secret #11 (Google): **N/A → 100** (strategy-completeness sense; Surface A + B shipped, Surface C pre-staged with locked spec, operator action items called out by name, no infrastructure debt).
+- Secondary lifts on adjacent chapters: TS #18 (Cold Traffic) gains a paid landing-page mapping that respects the "never cold to $49" rule; TS #15 (Funnel Hub) gains canonical URL + OG infrastructure; ES #16 (Test, Test, Test) gains the AEO citation audit measurement loop.
+
+### Blockers
+
+None for the code surface. Search Console verification and brand-defense Google Ads activation are operator action items (#6 and #7 in `00-RESUME-HERE.md`), neither of which blocks the live deploy. The DNS TXT method is supported by Namecheap (already where the domain is hosted) and the brand-defense campaign spec is fully templated.
+
+### Next coherent unit
+
+Operator: complete action items above. Engineering: when the `/founding` cart-close cron is scheduled, open a follow-up to remove `/founding` from the sitemap response on the same flip — this is a small surface change that should ride with whatever cron-state machine update happens for the cart-close trigger.

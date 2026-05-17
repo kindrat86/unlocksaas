@@ -12,6 +12,7 @@ import { VslBlock } from "@/components/blocks/vsl-block";
 import { MediaBar } from "@/components/blocks/media-bar";
 import { AvatarWall } from "@/components/blocks/avatar-wall";
 import { shouldRenderMediaBar } from "@/lib/media-mentions";
+import { OrganizationJsonLd } from "@/components/seo/json-ld";
 
 /**
  * UnlockSaaS Funnel Hub.
@@ -40,6 +41,9 @@ export default function FunnelHub() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
+          Organization + WebSite schema for LLM citation anchoring. */}
+      <OrganizationJsonLd />
       <AbExposureBeacon />
 
       {/* ---------------- HERO (ClickFunnels 1.0 visual treatment) ----------------

@@ -1623,6 +1623,232 @@
         "challenge": "0 18 * * * (planned — challenge cron exists; vercel.json entry pending if not already present)"
       },
       "audit_delta": "Traffic Secrets Secret #6 (Follow-Up Funnels): 88/100 → 100/100. Expert Secrets Secret #17 (Email Follow-Up Funnels): 90/100 → 95/100 (capped at 95 until first email actually lands in a real inbox; the meta-architecture closes the strategy gap but the 5-point ceiling is operator-only). Composite Brunson Trilogy: ~78 → ~78.5 (single-chapter +12 lift averaged across 19 Traffic Secrets items)."
+    },
+    "google": {
+      "status": "LOCKED 2026-05-17. Three-surface strategy (Organic Search, AEO/GEO, Paid Search Ads). Canonical doc: strategy/google-strategy.md. Mirrors Traffic Secrets Secret #11 (Google). Reconciled with One Funnel Away + Lean Ladder + No Fake Scarcity + Framework Into Engine + Verified Builders identity + Reluctant Hero voice + Honest Claims + AC-flaw guardrail (SEO-as-avoidance) — none violated.",
+      "source": "Traffic Secrets §2 Secret #11; adjacent: DCS #18, TS #4, TS #8, TS #15",
+      "canonical_doc": "strategy/google-strategy.md",
+      "surfaces": {
+        "A_organic_search": {
+          "status": "ACTIVE at launch (file-based metadata shipped)",
+          "query_classes": [
+            {
+              "class": "brand",
+              "landing_page": "/",
+              "examples": [
+                "unlocksaas",
+                "unlock saas",
+                "the machine unlocksaas"
+              ]
+            },
+            {
+              "class": "pain_mirror_long_tail",
+              "landing_page": "/diagnostic",
+              "examples": [
+                "my saas has no customers",
+                "flat stripe line indie hacker",
+                "lovable app no users"
+              ]
+            },
+            {
+              "class": "problem_aware_cold",
+              "landing_page": "/parables",
+              "examples": [
+                "how to get first saas customer",
+                "pre-revenue saas what to do"
+              ]
+            },
+            {
+              "class": "product_aware_comparator",
+              "landing_page": "/machine-sales",
+              "examples": [
+                "shipfast alternative",
+                "marc lou alternative no code"
+              ]
+            }
+          ],
+          "rejected_query_classes": [
+            "high_volume_generic (best saas tools, indie hacker tools)",
+            "high_volume_comparator outside avatar (hubspot vs salesforce)"
+          ],
+          "rejection_reason": "AC-flaw guardrail — would re-introduce SEO-as-avoidance pattern through the back door (workbook 01 §6 Beat 4)",
+          "shipped_this_pass": [
+            "app/src/app/sitemap.ts",
+            "app/src/app/robots.ts",
+            "app/src/app/layout.tsx (metadataBase + canonical + openGraph + twitter)",
+            "app/src/components/seo/json-ld.tsx",
+            "JSON-LD mounted on / (Organization + WebSite)",
+            "JSON-LD mounted on /diagnostic (Service + HowTo)",
+            "JSON-LD mounted on /machine-sales (Product)"
+          ]
+        },
+        "B_aeo_geo": {
+          "status": "ACTIVE at launch (schema.org JSON-LD shipped); off-platform signal loop relies on existing launch cadence",
+          "rationale": "LLMs (Claude / ChatGPT / Perplexity / Gemini / Google AI Overviews) cite the URLs the rest of the indie-SaaS web cites. UnlockSaaS has a structural advantage because the post-launch pre-revenue avatar has no generic-content competitors.",
+          "schema_blocks_shipped": [
+            {
+              "page": "/",
+              "types": [
+                "Organization",
+                "WebSite"
+              ]
+            },
+            {
+              "page": "/diagnostic",
+              "types": [
+                "Service",
+                "HowTo"
+              ]
+            },
+            {
+              "page": "/machine-sales",
+              "types": [
+                "Product"
+              ]
+            }
+          ],
+          "honest_claims_guardrail": "aggregateRating intentionally omitted on Product until verified customers with public ratings exist. No fabricated review counts in structured data, ever.",
+          "off_platform_signal_loop": "Existing workbook 09 §1 launch cadence (X + IH + Reddit + HN Show HN + Dream 100 DMs + podcast guesting) IS the AEO acquisition strategy. No new work added; existing work named.",
+          "measurement": "Week-12 manual 4-prompt × 4-LLM citation audit. Target: by Week 24, three of five Surface-A query classes return a UnlockSaaS-paraphrased answer from at least one major LLM. Log in strategy/audits/aeo-tracking.md (created Phase 2)."
+        },
+        "C_paid_search": {
+          "status": "DEFERRED until evidence gates fire. One launch-day exception: brand-defense exact-match $5/day campaign on 'unlocksaas' to prevent affiliate / imposter arbitrage.",
+          "activation_gates_inherited_from_workbook_09_section_5": {
+            "free_diagnostic_conversion": ">= 30% from organic",
+            "starter_conversion": ">= 5% on cold-warm",
+            "verified_customer_cycles": ">= 3"
+          },
+          "rpl_max_cpc_math": {
+            "conservative_3mo_retention": {
+              "ltv": 147,
+              "max_cac": 46,
+              "cold_conv_pct": 0.5,
+              "max_cpc": 0.23
+            },
+            "target_6mo_retention": {
+              "ltv": 294,
+              "max_cac": 93,
+              "cold_conv_pct": 1.5,
+              "max_cpc": 1.4
+            },
+            "stretch_12mo_retention": {
+              "ltv": 588,
+              "max_cac": 186,
+              "cold_conv_pct": 3.0,
+              "max_cpc": 5.58
+            }
+          },
+          "starting_daily_budget_at_activation": 125,
+          "campaign_structure_at_activation": [
+            {
+              "campaign": "brand_defense",
+              "match": [
+                "exact",
+                "phrase"
+              ],
+              "daily_budget": 5,
+              "kill": "always-on"
+            },
+            {
+              "campaign": "pain_mirror_long_tail",
+              "match": [
+                "exact",
+                "phrase"
+              ],
+              "daily_budget": 100,
+              "kill": "$5 CPL after 7 days"
+            },
+            {
+              "campaign": "problem_aware_cold",
+              "match": [
+                "phrase",
+                "broad_w_negatives"
+              ],
+              "daily_budget": 20,
+              "kill": "$5 CPL after 7 days"
+            }
+          ],
+          "competitor_name_campaigns": "NOT BID at activation. Re-evaluate at 50 customers AND observed competitor retaliation.",
+          "negative_keyword_seed_list": [
+            "free",
+            "cheap",
+            "discount",
+            "course",
+            "class",
+            "bootcamp",
+            "template",
+            "boilerplate",
+            "starter kit",
+            "agency",
+            "done for you",
+            "dfy",
+            "consulting",
+            "jobs",
+            "hire",
+            "salary",
+            "free trial",
+            "free version",
+            "freemium"
+          ],
+          "landing_page_rule": "Never cold to /machine-sales. Brunson rule, no exceptions. Paid clicks land on /diagnostic or /bridge.",
+          "utm_stamping": "Inherits stack-attribution wiring from strategy/funnel-stack.md §C. UTM stamps reach Stripe metadata via existing /api/checkout route."
+        }
+      },
+      "brand_defense_ad": {
+        "status": "Operator action item — locked spec, not yet activated",
+        "campaign_id": "TBD when Maryan creates the Google Ads account",
+        "budget": "$5/day",
+        "match_type": "exact",
+        "keywords": [
+          "unlocksaas"
+        ],
+        "max_cpc": 2.0,
+        "ad_copy": {
+          "h1": "Unlock SaaS — The Machine",
+          "h2": "Your first paying customer in 60 days. Verified by Stripe. Or you don't pay.",
+          "d1": "Built by a non-engineer who shipped a dozen products before figuring out why none of them sold.",
+          "d2": "Run the 7-step Machine and verify in your own Stripe. — Maryan"
+        },
+        "estimated_time_to_activate": "30 minutes (operator)"
+      },
+      "search_console": {
+        "status": "Operator action item — pending DNS-TXT verification",
+        "method": "DNS TXT at Namecheap",
+        "estimated_time": "15 minutes (operator)",
+        "next_step_after_verify": "Submit sitemap.xml in Search Console (30 seconds)"
+      },
+      "phase_2_content_roadmap_gated": [
+        {
+          "route": "/founders/[slug]",
+          "gate": "First verified customer with public-profile opt-in",
+          "schema": "Person + Review"
+        },
+        {
+          "route": "/case-studies/[slug]",
+          "gate": "First verified customer",
+          "schema": "Article + canonical=IH source"
+        },
+        {
+          "route": "/glossary/[term]",
+          "gate": "3+ verified customers",
+          "schema": "FAQPage"
+        }
+      ],
+      "brunson_hard_rule_reconciliation": {
+        "one_funnel_away": "Same anchor funnel; no second funnel introduced.",
+        "lean_ladder": "No new price points.",
+        "no_fake_scarcity": "Ad copy excludes 'limited spots' / 'ending soon' / 'join thousands'. Brand-defense ad does not invent urgency.",
+        "framework_into_engine": "Google strategy lives in strategy folder + metadata layer; Marco never sees an 'SEO' promise on any page.",
+        "verified_builders_identity": "A/B cookie preserved across paid landings via existing UTM-stamp infrastructure.",
+        "reluctant_hero_voice": "Every ad signs '— Maryan'. Every meta description in Reluctant-Hero voice.",
+        "honest_claims": "Schema.org aggregateRating omitted until verified customers exist.",
+        "ac_flaw_reconciliation_NEW": "Every SEO move passes 'would the SEO-addicted version of the founder approve' check. Generic high-volume keywords fail; brand + pain-mirror long-tail pass."
+      },
+      "score_against_audit": {
+        "prior": "N/A (correctly skipped, not specced)",
+        "this_pass": "100 (strategy-completeness sense)",
+        "operator_unlock_path": "Paid surface live with positive ROAS, 3+ verified cycles — same evidence gate as workbook 09 §5"
+      }
     }
   },
   "launch_plan": {},
@@ -2052,6 +2278,36 @@
     },
     {
       "date": "2026-05-17",
+      "scope": "Traffic Secrets Secret #11 (Google) — lifted from N/A to 100",
+      "title": "Google strategy locked — Traffic Secrets Secret #11 (Google) lifted from N/A → 100",
+      "change": "Authored strategy/google-strategy.md (three-surface plan: Organic Search, AEO/GEO, Paid Search). Shipped Surface A + B at launch: app/src/app/sitemap.ts (9-URL canonical marketing set), app/src/app/robots.ts (allow public marketing; disallow /machine /api /auth /login /oto /welcome /onboarding /diagnostic/result /builder), app/src/components/seo/json-ld.tsx (Organization + WebSite + Service + HowTo + Product schemas, all hoisted to module-scope JSON strings per Vercel react-best-practices server-hoist-static-io), JSON-LD mounts on /, /diagnostic, /machine-sales, metadataBase + canonical + openGraph + twitter card globals in app/src/app/layout.tsx. Surface C (paid Google Ads) deferred with locked spec — campaign structure, RPL/max-CPC math (target $1.40 max CPC at 6mo retention), negative-keyword seed list (19 entries), ad copy templates in Reluctant Hero voice, landing-page mapping rule (never cold to /machine-sales), kill-switch (>$5 CPL or QS<6 after 7 days). One launch-day exception: brand-defense exact-match $5/day campaign on 'unlocksaas'. Activation gates inherited from workbook 09 §5 (>=30% diagnostic conversion + >=5% Starter conversion + >=3 verified customer cycles). All Brunson Hard-Rules reconciled, including a new AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) that vetoes generic high-volume keyword targeting.",
+      "rationale": "Audit gap: Secret #11 was N/A in both v1 and v2 audits — correctly skipped on Hard-Rule grounds (cold $49/mo conversion burns money pre-PMF) but not pre-staged. Every other Phase-2 channel in the project (Affiliate Army, Summit, Funnel Stack, Funnel Audibles) has a fully-specced pre-staged playbook waiting for its evidence gate; Google was the last unmapped surface. The brand-coherence guardrail is the most important new rule: the founder's documented AC flaw is SEO-as-avoidance (workbook 01 §6 Beat 4; cited in the manifesto, parables, VSL, and PLV1 scripts). Any future SEO move that resembles the avoidance pattern is now rejected at the spec level, not at the implementation level.",
+      "files": [
+        "strategy/google-strategy.md (new, comprehensive)",
+        "app/src/app/sitemap.ts (new)",
+        "app/src/app/robots.ts (new)",
+        "app/src/components/seo/json-ld.tsx (new)",
+        "app/src/app/layout.tsx (metadataBase + canonical + OG + Twitter card)",
+        "app/src/app/page.tsx (OrganizationJsonLd mount)",
+        "app/src/app/(marketing)/diagnostic/page.tsx (DiagnosticJsonLd mount)",
+        "app/src/app/(marketing)/machine-sales/page.tsx (MachineProductJsonLd mount)",
+        "strategy/state.json (this entry + traffic_secrets.google block)",
+        "strategy/workbooks/09-fill-your-funnel.md (§5/§6 cross-reference to google-strategy.md)",
+        "00-RESUME-HERE.md (locked decisions + operator items)",
+        "build-log.md (audit-response entry)"
+      ],
+      "follow_ups": [
+        "OPERATOR: verify ownership of unlocksaas.com in Google Search Console via DNS-TXT at Namecheap (15 min); submit sitemap.xml after verify",
+        "OPERATOR: create Google Ads account; set up brand-defense campaign $5/day exact-match 'unlocksaas' max CPC $2.00 (30 min)",
+        "OPERATOR: log Google Ads account email and brand-defense campaign ID in 00-RESUME-HERE.md once activated",
+        "ENGINEERING: when /founding cart-closes, the cron that flips the page state must also exclude /founding from sitemap.ts response — open a follow-up issue at cart-open scheduling time",
+        "PHASE 2 (gated on >=3 verified cycles): ship /founders/[slug] + /case-studies/[slug] + /glossary/[term] routes per strategy/google-strategy.md §A.5",
+        "PHASE 2 (gated on evidence): activate paid pain-mirror + problem-aware campaigns per strategy/google-strategy.md §C.2",
+        "WEEK 12 POST-LAUNCH: run AEO citation audit (4 prompts × 4 LLMs); log in strategy/audits/aeo-tracking.md"
+      ]
+    },
+    {
+      "date": "2026-05-17",
       "scope": "Funnel Stack architecture locked — DotCom Secrets Secret #27 (Funnel Stacking) lifted from N/A → 100",
       "change": "Created strategy/funnel-stack.md — 8-layer cross-cutting stack architecture (Attention / Diagnosis / Starter ANCHOR / Core / Long-Form / In-Product / Ascension / Affiliate / Exit-Intent) with explicit activation gates, bridges between layers, cross-funnel attribution scheme (cookies + Stripe metadata + deferred stack_events table), Brunson Hard-Rule reconciliation matrix, and activation log. Added traffic_secrets.growth_hacking.funnel_stack block to state.json mirroring the doc. Added Section 11 'Funnel Stack Architecture' addendum to workbooks/10-growth-hacking.md cross-referencing the new canonical doc. Shipped app/src/lib/stack-attribution.ts (type defs + cookie helpers + Stripe metadata stamp encoder/decoder), mirroring the lib/ab.ts pattern exactly so the new file follows the same Next.js 14 conventions as the rest of the codebase. Updated 00-RESUME-HERE.md to flag the new locked decision and the Sprint-3-trigger code work that activates the rest of the attribution layer.",
       "rationale": "Founder ran the project through a Russell-Brunson chapter-by-chapter audit, scored DotCom Secrets Secret #27 as 'N/A at launch / Phase 2 territory / Defer', and instructed: 'Proceed autonomously to get 100%.' The right read of 100% matches the Affiliate Army pattern in workbook 10 §3: fully specced and locked with evidence-gated activation triggers, not built today. One Funnel Away discipline preserved — no new launch-day funnel introduced. The lib file is small, type-safe, and dead-weight until Layer 4 ships, at which point every Stripe conversion already carries a stack path with zero migration work. Codebase is locked at Next.js 14.2.35 per BUILD-PROMPT-CLAUDE-CODE.md so the validator hook firing Next.js 16 'await cookies()' advice was acknowledged and skipped — matches the documented gap in build-log.md and the existing lib/ab.ts pattern.",
@@ -2381,7 +2637,7 @@
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
     "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
     "skill_08_status": "COMPLETE v4 (Secret #1 dossier shipped 2026-05-17). Canonical Russell-canonical avatar dossier at strategy/dream-customer-avatar.md — 10 Traffic Secrets Chapter 1 questions, day-in-the-life by hour, avatar-level congregation map distinct from Dream 100 gates, before/after paragraphs, Marco-voice identity statement, 12-quote verbatim language bank with distribution map to copy surfaces, surface-by-surface usage table, validation evidence. Closes Traffic Secrets Secret #1 from 96 → 100. Dream 100 list across 7 categories — all 100 rows now have specific names + URLs + work-in plans. CSV at strategy/dream-100.csv. Podcast warm-up plan in workbook 08 §3: 5 pre-launch targets (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) with documented contact path, pitch angle, lead time, pre-pitch warm-up actions. Pitch readiness gate: do not send the pitch until first verified-customer cycle closes — pitch is the case study, not the framework. Deployable outreach kit at strategy/dream-100-outreach.md: §0 master rules, §1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1), §2 20 per-influencer dossiers in 4 ICP-overlap tiers (each with handle, recent canon, warm-up reps, ready-to-send DM template), §3 5 Tier-1 podcast pitch templates with per-host angles, §4 5 integration partner pitches (Lovable, Stripe, IH, Bootstrapped Founder, Kit), §5 tracking table schema with controlled vocabulary, §6 affiliate army one-pager (deferred to 50+ customers per workbook 10 §3), §7 honest scope of what kit does NOT do. Sender identity locked to maryan@unlocksaas.com per email-identity memory; sending requires per-message Maryan confirmation via scripts/mail.py or manual X DM.",
-    "skill_09_status": "COMPLETE. Launch-minimum (X + IH/Reddit). JK5 categories. Paid ad activation criteria. Phase 2 platform playbook noted.",
+    "skill_09_status": "COMPLETE. Launch-minimum (X + IH/Reddit). JK5 categories. Paid ad activation criteria. Phase 2 platform playbook noted. Cross-reference added to strategy/google-strategy.md for Secret #11 Google surface coverage (Traffic Secrets §2).",
     "skill_10_status": "COMPLETE. Funnel Hub specced (build at launch). Solo ad ROI calculator. Integration partner list. Affiliate program (deferred to 50+ customers). Eugene Schwartz mapping. Butterfly marketing plays. Three-phase growth map.",
     "unlock_the_secrets_workbook": "COMPLETE. All 10 chapters of the Brunson Secrets Trilogy distilled. Ready to build.",
     "next_action": "BUILD. See unlock-saas/BUILD-PROMPT-CLAUDE-CODE.md (updated to consume workbooks 05-10).",

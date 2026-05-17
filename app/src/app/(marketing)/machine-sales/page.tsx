@@ -14,6 +14,7 @@ import { ComparisonTable } from "@/components/blocks/comparison-table";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { VslBlock } from "@/components/blocks/vsl-block";
+import { MachineProductJsonLd } from "@/components/seo/json-ld";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
@@ -68,6 +69,11 @@ export default function MachineSalesPage() {
 
   return (
     <div className="min-h-screen py-16 px-6">
+      {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
+          Product schema so the $49 Machine is citable when an LLM
+          answers comparator queries ("alternatives to ShipFast",
+          "tool that helps me get my first SaaS customer"). */}
+      <MachineProductJsonLd />
       <AbExposureBeacon />
       <div className="max-w-3xl mx-auto">
         {/* ============================================================ */}

@@ -7,10 +7,42 @@ import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
 
+// Surface A of the Google strategy — strategy/google-strategy.md §A.3 #3.
+// metadataBase makes canonical URLs and OG image URLs resolve against the
+// production origin, which Search Console + AI Overviews + Twitter/X cards
+// all rely on. Per-page metadata exports inherit unless they override.
 export const metadata: Metadata = {
-  title: "Unlock SaaS — Your First Paying Customer in 60 Days",
+  metadataBase: new URL("https://unlocksaas.com"),
+  title: {
+    default: "Unlock SaaS — Your First Paying Customer in 60 Days",
+    template: "%s — Unlock SaaS",
+  },
   description:
     "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+  applicationName: "Unlock SaaS",
+  authors: [{ name: "Maryan", url: "https://unlocksaas.com/" }],
+  creator: "Maryan",
+  publisher: "Unlock SaaS",
+  alternates: {
+    canonical: "/",
+  },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: "Unlock SaaS",
+    title: "Unlock SaaS — Your First Paying Customer in 60 Days",
+    description:
+      "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+    url: "/",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Unlock SaaS — Your First Paying Customer in 60 Days",
+    description:
+      "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+    creator: "@maryan",
+  },
 };
 
 export default function RootLayout({
