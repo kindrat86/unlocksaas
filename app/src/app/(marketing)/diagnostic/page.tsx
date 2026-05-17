@@ -143,6 +143,20 @@ export default function DiagnosticSqueezePage() {
           </Link>
           . Free, no gate, opt-in is at the bottom.
         </p>
+
+        {/* Challenge bridge — DCS Secret 19. For Marco who wants a structured
+            14-day commitment instead of a one-shot diagnosis. Same destination
+            ($1 Starter on Day 14), different on-ramp. */}
+        <p className="mt-3 text-xs text-muted-foreground text-center">
+          Want it broken into 14 daily actions instead?{" "}
+          <Link
+            href="/challenge"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Take the free 14-Day Sprint
+          </Link>
+          . One email per day, no card, no group.
+        </p>
       </div>
     </div>
   );

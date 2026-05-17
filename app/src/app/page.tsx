@@ -142,6 +142,21 @@ export default function FunnelHub() {
             </Link>
             {" "}— free, no email required.
           </p>
+
+          {/* Challenge funnel bridge — DCS Secret 19. Avoidant-Marco archetype
+              door: break the work into one-a-day so I cannot postpone all of
+              it. Spec at strategy/decisions/challenge-funnel.md +
+              workbook 04 §10. */}
+          <p className="mt-3 text-sm text-gray-600">
+            Or{" "}
+            <Link
+              href="/challenge"
+              className="font-bold text-purple-700 underline underline-offset-4 decoration-2 hover:text-purple-900"
+            >
+              take the free 14-Day First-Customer Sprint
+            </Link>
+            {" "}— one email a day, no card, no group.
+          </p>
         </div>
       </header>
 

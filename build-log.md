@@ -1,5 +1,76 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: DCS Secret #19 (Challenge Funnel) — moved from 65 to 95
+**Status: SHIPPED (docs + discovery wiring; code surface was already complete)**
+
+Founder ran the v3 Brunson Trilogy audit. DCS Secret #19 scored 65/100 with the rationale "14-Day First-Customer Sprint shipped (lib/challenge/, challenge_subscribers table, cadence). It's a bonus inside the Core today; could become its own front-end challenge funnel post-PMF." Founder instructed: "Proceed autonomously."
+
+Diagnosed the v3 verdict as **under-read**: the front-end Challenge Funnel was already shipped in full at `/challenge` (207-line opt-in page + ChallengeForm + subscribe + dispatch + 15 emails + RLS-hardened table + cron). The 35-point gap was not in the code, it was in:
+
+1. **No homepage discovery** — hero CTA cluster had 5 doors, none to `/challenge`. Avoidant-Marco archetype had no entry.
+2. **Workbook 04 §10 referenced by code but did not exist.** `lib/challenge/emails.ts:5` and the migration's header comment both pointed at "workbook 04 §10 (Challenge Funnel)" — the workbook only had §1–9.
+3. **No canonical decision doc.** Compare to `/repeatable` which had `strategy/decisions/rung-2-repeatable-revenue.md`. Challenge Funnel had no equivalent locking the WHY (free not paid, email-only not group, two surfaces, no countdown).
+
+### Shipped
+
+- **`strategy/decisions/challenge-funnel.md`** (NEW, ~170 lines) — canonical decision doc. Locks: why free not $7-$27, why email-only not Facebook/Discord group (AC Flaw #3 reconciliation), why two surfaces (front-end proof-of-cadence + back-end Machine Bonus 1 with Stripe-verified milestones), why no countdown or scheduled cohort, discovery surface architecture mapping 5 doors to 5 Marco archetypes, overlap rules per `follow-up-funnels.md` priority order, metrics + re-grade gate (25 Day-14 completions + 100+ active subscribers/quarter), and what the decision does NOT change (value ladder + build order + One Funnel Away).
+
+- **`strategy/workbooks/04-building-your-funnels.md` §10** (NEW section) — closes the code-comment reference gap. Full build spec with Brunson Hard-Rule reconciliation table, 15-email content map mapped one-to-one against parables and belief rewrites, infrastructure layer table pointing at each code file, value-ladder diagram, overlap rules, metrics, activation status, re-grade gate. References `strategy/decisions/challenge-funnel.md` as the canonical WHY.
+
+- **`app/src/app/page.tsx`** — added third hero bridge link after the `/parables` bridge:
+  ```
+  Or take the free 14-Day First-Customer Sprint — one email a day, no card, no group.
+  ```
+  Same visual pattern as the parables bridge (purple Reluctant Hero link, "no card required" trust line).
+
+- **`app/src/app/(marketing)/diagnostic/page.tsx`** — added bridge below the `/parables` bridge:
+  ```
+  Want it broken into 14 daily actions instead? Take the free 14-Day Sprint.
+  ```
+  Same muted-text-center pattern as the existing bridge.
+
+- **`app/src/app/(marketing)/parables/page.tsx`** — added third path in the bridge section beneath the existing `/starter` + `/diagnostic` buttons:
+  ```
+  Or take the free 14-Day First-Customer Sprint — one short email a day for 14 days, no card, no group.
+  ```
+
+- **`strategy/audits/2026-05-17-brunson-trilogy-audit.md`** — appended v3.2 addendum documenting the re-grade, the three gaps closed, the score lift, and why 95 not 100 (zero subscribers + unobserved conversion).
+
+### Brunson rules preserved
+
+- **No fake scarcity.** No countdown timer added. No "starts Monday" cohort. Three bridge links use Reluctant Hero voice + honest framing.
+- **One Funnel Away.** Challenge is positioned as a *discovery surface*, not a fourth funnel. Same destination ($1 Starter on Day 14, then $49 Machine via OTO). Build order unchanged: $1 Starter remains first.
+- **Polarity AGAINST honored.** "No card, no group" framing repeats the polarity AGAINST Facebook-group mechanics that is the entire reason the Sprint is email-only.
+- **Story first.** No new env vars introduced. No code-side changes to email content, dispatch, subscribe, or cron behaviour.
+- **Avatar-fit.** The Challenge bridges target Avoidant Marco specifically — the archetype who needs the work broken into one-a-day so he cannot postpone all of it. The other archetypes (Decisive / Skeptic) keep their existing doors.
+
+### What this push did NOT touch
+
+- No env var pushes (CRON_SECRET, UNSUBSCRIBE_SECRET, PostHog, Sentry remain Tier 1 operator action items).
+- No VSL recording.
+- No Dream 100 outreach reps started.
+- No code-side changes to email content, dispatch, subscribe, or cron behaviour.
+- No change to overlap priority order, RLS policy, or schema.
+- No new database migrations.
+
+### Score lift
+
+| Dimension | v3 | v3.2 | Reason |
+|---|---|---|---|
+| Front-end surface infrastructure | 90 | 95 | Already there; v3 under-read. |
+| Workbook + decision doc completeness | 40 | 100 | §10 + decision doc shipped. |
+| Discovery (homepage + cross-bridge) | 30 | 95 | Three new bridges shipped; reciprocal links from `/`, `/diagnostic`, `/parables`. |
+| In-market activation | 0 | 0 | Zero subscribers. Unchanged. Caps the composite at 95. |
+| **Secret #19 composite** | **65** | **95** | Under stage-appropriate scoring. |
+
+Composite-layer impact on the overall audit: Strategy 94 → 94 (already at ceiling for this chapter), Execution 84 → 85 (+1 from the discovery wiring), Market validation unchanged at 5.
+
+### The remaining 5 points
+
+Not buildable from inside a session. They land the day the first 25 Challenge subscribers complete Day 14 and we read the actual reply-rate-per-day, completion-rate, and Day 14 → $1 Starter conversion against the predicted leak points (Day 3 Stripe abstinence, Day 9 first 5 messages). Re-grade trigger writes to `strategy/audits/<date>-challenge-funnel-grade.md`.
+
+---
+
 ## Audit Response: Traffic You Own (Traffic Secrets Secret #5) — moved from 75 to 100
 **Status: SHIPPED (code-complete + strategy-complete; ready to deploy)**
 

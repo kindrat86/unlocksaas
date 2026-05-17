@@ -353,16 +353,128 @@ Suggested targets to hack post-launch: Lovable's own funnel (most directly model
 
 ---
 
+## Section 10: Challenge Funnel — `/challenge` Build Spec (DCS Secret #19)
+
+Added 2026-05-17 under the autonomous "push Secret #19 to 95" pass. Closes the gap where `app/src/lib/challenge/emails.ts` and `supabase/migrations/20260518000001_challenge_subscribers.sql` referenced "workbook 04 §10" but the section did not yet exist.
+
+**Status:** SHIPPED + LIVE. Both the front-end Challenge surface (`/challenge`) AND the back-end Machine Step 6 accelerator (the same 14-day arc embedded inside the $49 Core as Bonus 1) are built. Canonical decision doc lives at [`strategy/decisions/challenge-funnel.md`](../decisions/challenge-funnel.md).
+
+### Why two surfaces of the same 14-day arc
+
+Standard Brunson Challenge Funnel teaches a single surface — a paid 5-day or 14-day commitment with a daily-action drip and an end-of-challenge upsell. UnlockSaaS deliberately ships TWO uses of the same scaffold:
+
+1. **Front-end (`/challenge`)** — free, email-only, public squeeze. Cold-traffic-friendly. Day 14 ends with the $1 Starter CTA (Hook #8 verbatim). The Challenge IS the lead funnel for the avoidant Marco archetype.
+2. **Back-end (Machine Bonus 1, inside $49 Core)** — engine-wired Sprint accelerator that piggybacks on Stripe-verified milestones inside the Machine.
+
+The avatar (Marco, skeptic, post-launch pre-revenue) needs the cadence to PROVE itself before he pays $49. The free 14-day Sprint is the proof-of-cadence; the in-product Sprint is the proof-of-cadence-plus-machine.
+
+### Brunson Hard-Rule reconciliation
+
+| Brunson rule | How UnlockSaaS satisfies it |
+|---|---|
+| The challenge has ONE promise | "By Day 14 you will have done more selling than in the last six months — or proven to yourself that you will not." Specific, falsifiable; falsification is the point. |
+| Daily action, low friction | One email/day. One action under 30 minutes. One-line reply expected. |
+| End-of-challenge upsell | Day 14 only. Hook #8 verbatim → $1 Starter. No mid-Sprint pitches. No Day-7 OTO. |
+| Community / accountability | DELIBERATELY EMAIL-ONLY. Polarity AGAINST Facebook-group mechanics — for the skeptic avatar, public-group accountability triggers AC Flaw #3 (praise junkie). Honest "I read every reply" replaces public commitment. Full reasoning in `strategy/decisions/challenge-funnel.md`. |
+| Scarcity / countdown | DELIBERATELY ABSENT. No countdown timer. No "starts Monday." Anyone opts in any day; Day 1 lands tomorrow. Same polarity discipline as `/founding`. |
+
+### Page structure (`/challenge`)
+
+| Block | Content source |
+|---|---|
+| Hero hook | "14 days. 14 actions. One per day. By Day 14 you will have done more selling than in the last six months." |
+| AC sub-headline | Workbook 01 §6 Beat 2 three-line about opener |
+| Star / Story / Solution | Day-band Card with 6 rows mapping the 14-day arc |
+| Honest contract | "What this is not" — no course, no community, no live calls, no homework grading |
+| Polarity AGAINST | "This is not 'validate your idea' advice." |
+| Opt-in form | Email + first name + product URL (optional). Same shape as Soap Opera form. |
+| Bridge cluster | Footer links to `/diagnostic`, `/starter`, AND (added in this push) reciprocal links from `/`, `/diagnostic`, `/parables` back to `/challenge` |
+
+### 15-email content (`app/src/lib/challenge/emails.ts`)
+
+| Index | Day | Title | Parable / Brunson asset |
+|---|---|---|---|
+| 0 | Day 0 | Welcome + the rule | Honest disclaimer: 90% miss Day 4 |
+| 1 | Day 1 | Name one real person | Parable 1 (Blank Offer Page) |
+| 2 | Day 2 | Find one quote | Parable 4 (Mirror in Ten Founders) |
+| 3 | Day 3 | Do NOT open Stripe | Parable 2 (Stripe Refresh) |
+| 4 | Day 4 | Write one promise | Vehicle Story (workbook 06 §4) |
+| 5 | Day 5 | The math of defence | Stack 10x defence (workbook 01 §2) |
+| 6 | Day 6 | The remedy | Internal Belief Rewrite #1 |
+| 7 | Day 7 | The first list (20 names) | Dream 100 mini |
+| 8 | Day 8 | The first message | Parable 3 (SEO Escape Hatch) |
+| 9 | Day 9 | Send the first five | The actual ask |
+| 10 | Day 10 | Triage the replies | Internal Belief Rewrite #4 |
+| 11 | Day 11 | Send the next ten | Different congregation |
+| 12 | Day 12 | The hard five | The ones you've been avoiding |
+| 13 | Day 13 | One real conversation | Parable 5 (Door That Opened) |
+| 14 | Day 14 | Sprint complete + $1 Starter | Hook #8 verbatim — "Your first paying customer, guaranteed in writing, or you do not pay." |
+
+Rules carried from §5 Soap Opera (do not violate): story first; action at the bottom; Reluctant Hero voice throughout; one reply asked per email; **only Day 14 carries the CTA**.
+
+### Infrastructure
+
+| Layer | Spec | Code |
+|---|---|---|
+| Subscribe | `POST /api/challenge/subscribe` via `subscribeToChallenge` helper. Idempotent on `lower(email)`. Repeat-submit resets to Day 0. | `app/src/lib/challenge/subscribe.ts` |
+| Dispatch | `sendNextAndAdvance` — retry-safe; on Resend or DB failure, `emails_sent` is NOT incremented so cron retries. | `app/src/lib/challenge/dispatch.ts` |
+| Cron | `GET /api/cron/challenge` at `0 18 * * *` UTC. Late-day timing — "do one thing tonight" arc. | `app/src/app/api/cron/challenge/route.ts` |
+| Storage | `challenge_subscribers` table. RLS-hardened: anon-insert validated by CHECK, no SELECT policy, service-role reads only. | `supabase/migrations/20260518000001_challenge_subscribers.sql` |
+| Unsubscribe | Shared HMAC token via `buildUnsubscribeUrl` — one-click clears all cadences. RFC 8058 compliant. | `app/src/lib/soap-opera/tokens.ts` |
+
+### Position in the value ladder
+
+```
+Cold reader on X / IH / Reddit
+   ↓ (parable post)
+Funnel hub `/`
+   ↓ (cookbook-style hero CTA cluster — 5 doors in)
+/diagnostic  OR  /parables  OR  /challenge   (matches Marco's archetype on arrival)
+   ↓               ↓               ↓
+   Soap Opera      Soap Opera      14 daily emails
+   ↓               ↓               ↓ (Day 14)
+   ───────────── $1 Starter checkout ─────────────────
+   ↓ (OTO)
+   $49 Machine subscription
+```
+
+Three squeeze doors. Same destination. Different on-ramps for different Marco archetypes:
+- **Decisive Marco** → `/diagnostic` (one-shot answer)
+- **Skeptic Marco** → `/parables` (show me you have something true first)
+- **Avoidant Marco** → `/challenge` (break the work into one-a-day so I cannot postpone all of it)
+
+### Overlap rules
+
+Per `strategy/follow-up-funnels.md` priority order: **Founding > Cart Recovery > Soap Opera > Challenge > Seinfeld.** Same-day collisions resolve top-down. Challenge is daily-but-self-contained — can lag a day without breaking the arc.
+
+### Metrics to read
+
+1. **Day 14 completion rate** (`status='complete' / total active`). Brunson benchmark 8–15%. Below 5% = action ask is too heavy.
+2. **Day 14 → $1 Starter conversion** (from `source='challenge_optin'`). Modeled 5–12%. Real number unknown until 25+ completions land.
+3. **Reply rate per day.** Below 10% on any day = the action ask was too heavy that day. Predicted leak points: Day 3 (Stripe abstinence) + Day 9 (first 5 messages).
+4. **`identity_variant` cross-tab** — Verified vs Paid Builders, completion-rate split.
+
+### Activation status
+
+**LIVE at launch.** Free, email-only, no operator gate. Cron fires at 18:00 UTC once `CRON_SECRET` lands in Vercel env. Zero subscribers today.
+
+### Re-grade gate
+
+Re-evaluated against actual numbers at 25 Day-14 completions + first observed $1 Starter conversion + 100+ active Sprint subscribers/quarter. Re-grade trigger writes to `strategy/audits/<date>-challenge-funnel-grade.md`.
+
+---
+
 ## Status
 
 **Step 4 COMPLETE.**
 
-- Build specs locked for all three funnels.
+- Build specs locked for all three core funnels.
 - Soap Opera 5-email sequence drafted in full.
 - Machine Step 5 + 6 (the outreach engine, the load-bearing piece) specced including the send-vs-track resolution.
 - Step 7 Stripe verification logic specced.
 - Funnel Audit checklist ready to run pre-launch.
 - Funnel Hacking slot reserved with target list.
+- **Section 10 added 2026-05-17:** Challenge Funnel (DCS Secret #19) build spec locked + canonical decision doc at `strategy/decisions/challenge-funnel.md`. Front-end (`/challenge`) + back-end (Machine Bonus 1) both shipped.
 
 **The Unlock the Secrets workbook (Steps 1 through 4) is COMPLETE.**
 

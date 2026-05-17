@@ -377,6 +377,20 @@ export default function ParablesReverseSqueezePage() {
               Run the free diagnostic first
             </Link>
           </div>
+          {/* DCS Secret 19 third door — for the avoidant-Marco archetype who
+              wants the work broken into one-a-day so he cannot postpone all of
+              it. Same Day 14 destination ($1 Starter). Spec at
+              strategy/decisions/challenge-funnel.md. */}
+          <p className="mt-6 text-xs text-muted-foreground">
+            Or take the{" "}
+            <Link
+              href="/challenge"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              free 14-Day First-Customer Sprint
+            </Link>
+            {" "}— one short email a day for 14 days, no card, no group.
+          </p>
         </section>
 
         <footer className="mt-16 text-center">
