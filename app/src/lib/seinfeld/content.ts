@@ -3,13 +3,13 @@
  *
  * Spec: strategy/workbooks/09-fill-your-funnel.md §2 (JK5 publishing plan),
  *       strategy/workbooks/08-your-dream-customer.md §6 (cadence + PS rules),
- *       strategy/workbooks/01-sales-funnel-secrets.md §6 (parables, polarity).
+ *       strategy/workbooks/01-sales-funnel-secrets.md §6 (stories, polarity).
  *
  * Why JK5 here: Brunson's JK5 framework (5 publishing categories rotated
  * across every platform) is the locked publishing plan for Unlock SaaS in
  * workbook 09 §2. The Seinfeld email sequence is one of the platforms that
  * publishing plan governs. The previous design used three per-weekday pools
- * (Parables / Behind-the-Build / Industry Observations) — that covered three
+ * (Stories / Behind-the-Build / Industry Observations) — that covered three
  * of the five JK5 categories and silently dropped Polarity and Proof.
  *
  * This file replaces that with the full JK5 set:
@@ -76,14 +76,14 @@ export type Jk5Category =
  * world label so historical Resend tags stay queryable.
  */
 export type ContentKind =
-  | "parable"
+  | "story"
   | "behind_the_build"
   | "industry_observation"
   | "polarity"
   | "proof";
 
 const KIND_FOR_JK5: Record<Jk5Category, ContentKind> = {
-  personal: "parable",
+  personal: "story",
   process: "behind_the_build",
   pattern: "industry_observation",
   polarity: "polarity",
@@ -113,7 +113,7 @@ function item(
 
 // ── PERSONAL (JK5 category 1) ──────────────────────────────────────────────
 // Reluctant Hero confession. Drawn from workbook 01 §6 Beat 3 (the five
-// named parables). Seinfeld-era frame: "I keep coming back to this..."
+// named stories). Seinfeld-era frame: "I keep coming back to this..."
 export const PERSONAL: SeinfeldItem[] = [
   item(
     "personal-blank-offer-page-revisit",

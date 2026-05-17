@@ -51,8 +51,8 @@ export const Event = {
   // Reverse Squeeze (DotCom Secrets Secret 14, reverse variant) — value-first
   // public page, opt-in mid- and end-content. Placement is tracked as a
   // property so we can compare mid-content vs end-content conversion.
-  ParablesPageViewed: "parables_page_viewed",
-  ParablesOptInSubmitted: "parables_opt_in_submitted",
+  StoriesPageViewed: "stories_page_viewed",
+  StoriesOptInSubmitted: "stories_opt_in_submitted",
   StarterPageViewed: "starter_page_viewed",
   StarterCheckoutClicked: "starter_checkout_clicked",
   MachineSalesPageViewed: "machine_sales_page_viewed",

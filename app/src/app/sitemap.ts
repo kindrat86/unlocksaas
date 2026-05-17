@@ -75,11 +75,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // Reverse-squeeze long-form. Cold reader on Google long-tail lands here.
     {
-      url: `${base}/parables`,
+      url: `${base}/stories`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
-      alternates: hreflang(`${base}/parables`),
+      alternates: hreflang(`${base}/stories`),
     },
     // $1 Starter sales page. Solution-aware comparator.
     {

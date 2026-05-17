@@ -133,7 +133,7 @@ export default function MachineSalesPage() {
 
           {/* Slide 3 — Why this is hard to believe. Acknowledge Marco's
               history: a year of failed tactics. Workbook 07 §1 + workbook
-              01 §6 Beat 3 Parable 3 (SEO escape hatch). */}
+              01 §6 Beat 3 Story 3 (SEO escape hatch). */}
           <p className="text-muted-foreground leading-relaxed mb-6">
             I know that sentence sounds like every other promise you have
             already collected. I spent almost a year not believing it
@@ -266,7 +266,7 @@ export default function MachineSalesPage() {
               avoiding, and how The Machine removes the avoidance option.
             </h3>
 
-            {/* Story — Parable 2 (Stripe Refresh) + Parable 3 (SEO Escape
+            {/* Story — Story 2 (Stripe Refresh) + Story 3 (SEO Escape
                 Hatch) from workbook 01 §6 Beat 3. */}
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
@@ -517,7 +517,7 @@ export default function MachineSalesPage() {
               <p className="text-3xl sm:text-4xl font-bold">10.1×</p>
               <p className="text-xs text-muted-foreground italic mt-2">
                 Honest math. Every line item is a defensible category
-                comparable. A skeptic will check. The math holds.
+                comstory. A skeptic will check. The math holds.
               </p>
             </CardContent>
           </Card>

@@ -15,8 +15,8 @@
  *   - `priceType` branches the resume link AND the headline reference. Someone
  *     who abandoned the $1 Starter is in a different headspace than someone
  *     who abandoned $49/mo. The arc is identical; the price reference differs.
- *   - `diagnosticLabel` (optional) tilts Email 2's parable selection toward
- *     the diagnosed weakness. If null, the parable is the universal default.
+ *   - `diagnosticLabel` (optional) tilts Email 2's story selection toward
+ *     the diagnosed weakness. If null, the story is the universal default.
  */
 
 import { buildUnsubscribeUrl } from "../soap-opera/tokens";
@@ -83,7 +83,7 @@ const PARABLE_BY_LABEL: Record<DiagnosticLabel, string> = {
 const DEFAULT_PARABLE =
   "One founder told me, after the third bourbon, that she had clicked buy on a tool five times before finally finishing the checkout. Five times. Same tool. Each time she found a reason to step away — a tab, a meeting, a doubt. The thing that finally moved her was reading what the inside actually looked like. Not the price. Not the guarantee. The inside.";
 
-function parableFor(label: DiagnosticLabel | null): string {
+function storyFor(label: DiagnosticLabel | null): string {
   if (label && PARABLE_BY_LABEL[label]) return PARABLE_BY_LABEL[label];
   return DEFAULT_PARABLE;
 }
@@ -149,11 +149,11 @@ ${pTextLink(unsubscribeUrl, "Unsubscribe")}`;
 function renderEmail2(ctx: RenderContext, unsubscribeUrl: string): RenderedEmail {
   const shortRef = PRICE_SHORT_REF[ctx.priceType];
   const resume = `${ctx.baseUrl}${resumePath(ctx.priceType)}`;
-  const parable = parableFor(ctx.diagnosticLabel);
+  const story = storyFor(ctx.diagnosticLabel);
 
   const subject = "Five-time clickers";
 
-  const text = `${parable}
+  const text = `${story}
 
 That is the pattern. The thing that finally moves a five-time clicker is not another email about price. It is one more look at what the inside actually does.
 
@@ -168,7 +168,7 @@ If you do not, that is also fine. One more note from me, on Day 7. Then I am don
 ${pTextLink(unsubscribeUrl, "Unsubscribe")}`;
 
   const html = htmlWrap(
-    `<p>${parable}</p>
+    `<p>${story}</p>
 <p>That is the pattern. The thing that finally moves a five-time clicker is not another email about price. It is one more look at what the inside actually does.</p>
 <p>If you want that look, ${shortRef} is here:</p>
 <p><a href="${resume}" style="color:#0a7;font-weight:600;">${resume}</a></p>

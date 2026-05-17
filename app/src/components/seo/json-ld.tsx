@@ -199,7 +199,7 @@ const PERSON_JSON = JSON.stringify({
   },
   email: "maryan@unlocksaas.com",
   jobTitle: "Founder",
-  // Author-language signal for E-E-A-T attribution on /parables and any
+  // Author-language signal for E-E-A-T attribution on /stories and any
   // future bylined content. Mirrors Organization.inLanguage.
   knowsLanguage: ["en-US"],
   description:
@@ -409,7 +409,7 @@ export function FaqPageJsonLd({ items }: { items: ReadonlyArray<FaqItem> }) {
 }
 
 /**
- * Article schema. Render on long-form content pages (e.g. `/parables`) so
+ * Article schema. Render on long-form content pages (e.g. `/stories`) so
  * LLMs and Google attach author + publish date + canonical URL to the
  * narrative content. Caller supplies the publishing dates from the page
  * to avoid baking build-time dates into the serialized claim.

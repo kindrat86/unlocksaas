@@ -36,7 +36,7 @@ export const metadata: Metadata = {
  * (inside $49) = engine-wired, Stripe-verified, baked into Machine Step 6.
  *
  * Voice rule: Reluctant Hero throughout. Workbook 01 §6 Beat 1 + Beat 3
- * parable references. No fake scarcity. No countdown timers. The only CTA is
+ * story references. No fake scarcity. No countdown timers. The only CTA is
  * "Start the 14-Day Sprint" — earned, free, public.
  *
  * Position in the value ladder (per workbook 02 + workbook 04 §10):

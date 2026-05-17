@@ -1,5 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/parables", "destination": "/stories", "permanent": true },
+    { "source": "/parables.md", "destination": "/stories.md", "permanent": true }
+  ],
   "crons": [
     {
       "path": "/api/cron/soap-opera",

@@ -33,7 +33,7 @@ function siteOriginFromEnv(): string {
  *
  * Six bucket-specific bridges, each with its own:
  *   - acknowledgement headline (the "I see you" beat)
- *   - parable / story scaffold (from workbook 01 §6 Beat 3)
+ *   - story / story scaffold (from workbook 01 §6 Beat 3)
  *   - Strategy (one sentence — why THIS bucket needs THIS door)
  *   - soft trial close (from workbook 07 §2 inventory)
  *   - destination CTA (varies by bucket: free_content | starter | machine)
@@ -44,7 +44,7 @@ function siteOriginFromEnv(): string {
  * Source:
  *   - Brunson DotCom Secrets, Secret 15 (Survey Funnel + Bridge Scripts)
  *   - strategy/workbooks/04-building-your-funnels.md §3 (Diagnostic Result)
- *   - strategy/workbooks/01-sales-funnel-secrets.md §6 (Reluctant Hero voice + parables)
+ *   - strategy/workbooks/01-sales-funnel-secrets.md §6 (Reluctant Hero voice + stories)
  *   - strategy/workbooks/06-creating-belief.md §3 (Four Core Stories distribution)
  *   - strategy/workbooks/07-10x-secrets-one-to-many.md §2 (Trial Closes)
  */
@@ -82,7 +82,7 @@ type LeadRow = {
 // Brunson Bridge Script structure:
 //   acknowledgement  — pattern interrupt + name what they are
 //   identification   — shared identity beat ("you are not lazy / broken / dumb")
-//   story            — a parable that mirrors their lived experience
+//   story            — a story that mirrors their lived experience
 //   strategy         — why THIS door is the one for THIS bucket
 //   trial_close      — soft-yes question (workbook 07 §2 inventory)
 //   destination      — bucketDestination() return value
@@ -149,7 +149,7 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
     strategy:
       "What helps you right now is the five-email Soap Opera you are already on. Read them. Notice which one of the three failure modes starts feeling like yours. Then come back.",
     trial_close: "Would you trust me more if I told you to wait?",
-    cta: "Read the parables (free)",
+    cta: "Read the stories (free)",
     ctaSecondaryLabel: "I want to skip the wait — $1 Starter",
   },
 
@@ -266,9 +266,9 @@ function BridgePage({ row }: { row: LeadRow }) {
   const primaryHref = (() => {
     if (destination === "free_content") {
       // The Soap Opera Day-0 email is already sent. The next door is letting
-      // them read the parables — same destination as the reverse-squeeze
+      // them read the stories — same destination as the reverse-squeeze
       // from /diagnostic.
-      return "/parables";
+      return "/stories";
     }
     if (destination === "machine") {
       return `/machine-sales?from=diagnostic&label=${label}&bucket=${bucket}&lead=${row.id}`;
@@ -378,7 +378,7 @@ function BridgePage({ row }: { row: LeadRow }) {
           </p>
         )}
 
-        {/* Story — parable. Skipped for returning visitors. */}
+        {/* Story — story. Skipped for returning visitors. */}
         {!isReturning && (
           <blockquote className="border-l-2 border-primary/40 pl-4 py-1 mb-6 italic text-sm leading-relaxed text-foreground">
             {copy.story}

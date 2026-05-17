@@ -19,7 +19,7 @@
  *   4. Offer stack — ONE primary CTA (free diagnostic = lead funnel), TWO
  *      subordinated CTAs ($1 starter + $49 machine). Brunson rule: the
  *      visitor must know which door is the obvious next step.
- *   5. Reverse-squeeze bridge — "or read the five parables first" gives the
+ *   5. Reverse-squeeze bridge — "or read the five stories first" gives the
  *      hard-skeptic an exit ramp into content instead of bouncing.
  *
  * Visual treatment: subtle radial spotlight using shadcn primary token at 6%
@@ -122,10 +122,10 @@ export function Hero() {
           <p className="mt-10 text-sm text-muted-foreground">
             Or{" "}
             <Link
-              href="/parables"
+              href="/stories"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
             >
-              read the five parables first
+              read the five stories first
             </Link>
             {" "}— free, no email required.
           </p>

@@ -38,7 +38,7 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 
 - [Funnel hub](${BASE}/): The premise, the founder bio, and the three primary calls to action — free diagnostic, $1 Starter, $49/mo Machine.
 - [Free Launch Diagnostic](${BASE}/diagnostic): Paste a live product URL. In about ninety seconds, the system labels what is actually broken with one of three diagnoses — Wrong Person, Weak Offer, or Weak Belief — and hands the founder the specific next step.
-- [Five Parables for the Flat Stripe Line](${BASE}/parables): Long-form, free-to-read essays on the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. No email required.
+- [Five Stories for the Flat Stripe Line](${BASE}/stories): Long-form, free-to-read essays on the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. No email required.
 - [The $1 Starter funnel](${BASE}/starter): The entry rung. A real Stripe charge proves intent and unlocks Machine Steps 1 and 2 — pin one real customer, write one real offer.
 - [The Machine ($49/month)](${BASE}/machine-sales): The full seven-step system. 60-day money-back guarantee tied to the first verified Stripe payment.
 - [Verified Builders](${BASE}/builders): Founders whose first paying customer was verified inside Stripe, not self-reported. Directory grows only when Stripe confirms the cycle.
@@ -83,7 +83,7 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/diagnostic.md](${BASE}/diagnostic.md)
   - [/machine-sales.md](${BASE}/machine-sales.md)
   - [/starter.md](${BASE}/starter.md)
-  - [/parables.md](${BASE}/parables.md)
+  - [/stories.md](${BASE}/stories.md)
   - [/faq.md](${BASE}/faq.md)
   - [/alternatives-to.md](${BASE}/alternatives-to.md)
   - [/funnel-teardown.md](${BASE}/funnel-teardown.md)

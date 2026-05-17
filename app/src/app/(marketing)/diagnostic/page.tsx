@@ -188,15 +188,15 @@ export default async function DiagnosticSqueezePage({
         </p>
 
         {/* Reverse-squeeze bridge — for the cold visitor who is not yet
-            ready to type an email. Reads the parables first, opts in (or
+            ready to type an email. Reads the stories first, opts in (or
             doesn't) at the bottom. DCS Secret 14 reverse variant. */}
         <p className="mt-3 text-xs text-muted-foreground text-center">
           Not ready to enter your email yet?{" "}
           <Link
-            href="/parables"
+            href="/stories"
             className="underline underline-offset-4 hover:text-foreground"
           >
-            Read the five parables first
+            Read the five stories first
           </Link>
           . Free, no gate, opt-in is at the bottom.
         </p>

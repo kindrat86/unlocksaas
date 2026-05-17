@@ -292,7 +292,7 @@ A free, three-step diagnostic for post-launch pre-revenue SaaS founders. Input: 
    - **Wrong Person** — the offer is fine, but the page is aimed at no one in particular.
    - **Weak Offer** — the person is fine, but the page promises a feature list instead of a result.
    - **Weak Belief** — the person and offer are fine, but the page does not make the reader believe it will work for them.
-3. **Walk through the door.** The diagnosis hands you the specific next step that fixes the labeled problem. For most founders, that step is the $1 Starter or a re-read of the Parable that matches their diagnosis.
+3. **Walk through the door.** The diagnosis hands you the specific next step that fixes the labeled problem. For most founders, that step is the $1 Starter or a re-read of the Story that matches their diagnosis.
 
 ## What the diagnostic does not do
 
@@ -382,15 +382,15 @@ You don't auto-upgrade. After Steps 1 and 2, the in-product surface shows what C
 ${GUARANTEE_LINE}
 `;
 
-const PARABLES_BODY = `# Five Parables for the Flat Stripe Line
+const PARABLES_BODY = `# Five Stories for the Flat Stripe Line
 
 > Long-form, free-to-read essays on the work non-engineer founders skip. No email required, no payment, no upsell.
 
 ## TL;DR
 
-Five essays on the work that produces the first paying customer, written for the founder staring at a flat Stripe line. Each parable is a single-sitting read (8 to 15 minutes), names the specific failure pattern, and ends with the door that opens past it. Free. No email gate. No course.
+Five essays on the work that produces the first paying customer, written for the founder staring at a flat Stripe line. Each story is a single-sitting read (8 to 15 minutes), names the specific failure pattern, and ends with the door that opens past it. Free. No email gate. No course.
 
-## The five parables
+## The five stories
 
 1. **The Blank Offer Page** — what happens when the product is shipped but the page is still a feature list, and why no amount of traffic will fix it.
 2. **The Stripe Refresh** — the involuntary habit, the shape of the silence, and why refreshing the dashboard is the wrong loop to be running on day 14.
@@ -400,13 +400,13 @@ Five essays on the work that produces the first paying customer, written for the
 
 ## Why these are free
 
-They are the bridge content. A cold reader hits one of these parables on a long-tail Google search, reads the one that mirrors their situation, and recognizes the shape of their own flat Stripe line in the prose. That recognition is the only sales asset the page needs — if it lands, the reader walks toward the diagnostic. If it doesn't, they leave, and that is the right outcome.
+They are the bridge content. A cold reader hits one of these stories on a long-tail Google search, reads the one that mirrors their situation, and recognizes the shape of their own flat Stripe line in the prose. That recognition is the only sales asset the page needs — if it lands, the reader walks toward the diagnostic. If it doesn't, they leave, and that is the right outcome.
 
 ## How to read them
 
-Pick the parable whose title sounds most like your last 14 days. Read it. If the recognition lands, walk to ${BASE_URL}/diagnostic. If it doesn't, read another one. The parables are not a sequence; they are mirrors.
+Pick the story whose title sounds most like your last 14 days. Read it. If the recognition lands, walk to ${BASE_URL}/diagnostic. If it doesn't, read another one. The stories are not a sequence; they are mirrors.
 
-Read on ${BASE_URL}/parables.
+Read on ${BASE_URL}/stories.
 `;
 
 const FAQ_BODY = `# Frequently Asked Questions — Unlock SaaS
@@ -912,9 +912,9 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     body: STARTER_BODY,
   },
   {
-    path: "/parables",
-    mdPath: "/parables.md",
-    title: "Five Parables for the Flat Stripe Line",
+    path: "/stories",
+    mdPath: "/stories.md",
+    title: "Five Stories for the Flat Stripe Line",
     summary:
       "Five long-form essays on the work non-engineer founders skip. Free, no email.",
     body: PARABLES_BODY,

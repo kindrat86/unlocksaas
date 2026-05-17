@@ -12,7 +12,7 @@ type Props = {
   /**
    * Where on the page this form is rendered. Used to attribute conversions
    * — the mid-content opt-in tells us the reader bounced before the end;
-   * the end-content opt-in tells us they finished all five parables.
+   * the end-content opt-in tells us they finished all five stories.
    */
   placement: Placement;
   /** Copy on the submit button. */
@@ -30,11 +30,11 @@ type Props = {
  * not for a fragment they have not yet read.
  *
  * Routes opt-ins straight to /api/soap-opera/subscribe with
- *   source = "reverse_squeeze_parables_<placement>"
+ *   source = "reverse_squeeze_stories_<placement>"
  * so the Day 0 email fires immediately and the daily drip picks up from
  * Day 1 onward.
  */
-export function ParablesOptIn({ placement, ctaLabel, trustLine }: Props) {
+export function StoriesOptIn({ placement, ctaLabel, trustLine }: Props) {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<
     | { kind: "idle" }
@@ -43,7 +43,7 @@ export function ParablesOptIn({ placement, ctaLabel, trustLine }: Props) {
     | { kind: "error"; message: string }
   >({ kind: "idle" });
 
-  const source = `reverse_squeeze_parables_${placement}`;
+  const source = `reverse_squeeze_stories_${placement}`;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -58,7 +58,7 @@ export function ParablesOptIn({ placement, ctaLabel, trustLine }: Props) {
     }
 
     setState({ kind: "submitting" });
-    track(Event.ParablesOptInSubmitted, {
+    track(Event.StoriesOptInSubmitted, {
       placement,
       email_domain: email.trim().split("@")[1] ?? null,
     });
@@ -126,13 +126,13 @@ export function ParablesOptIn({ placement, ctaLabel, trustLine }: Props) {
     >
       <div className="space-y-1.5">
         <label
-          htmlFor={`parables-email-${placement}`}
+          htmlFor={`stories-email-${placement}`}
           className="text-sm font-medium text-foreground"
         >
           Your email
         </label>
         <Input
-          id={`parables-email-${placement}`}
+          id={`stories-email-${placement}`}
           name="email"
           type="email"
           autoComplete="email"

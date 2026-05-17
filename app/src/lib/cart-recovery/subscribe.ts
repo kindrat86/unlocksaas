@@ -54,7 +54,7 @@ export async function recordCartAbandonment(
   }
 
   // Diagnostic label is optional. If the user came through the diagnostic
-  // funnel, this is set; otherwise null. Used by Email 2's parable selector.
+  // funnel, this is set; otherwise null. Used by Email 2's story selector.
   const rawLabel = session.metadata?.diagnostic_label;
   let diagnosticLabel: DiagnosticLabel | null = null;
   if (

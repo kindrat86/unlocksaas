@@ -65,7 +65,7 @@ export const metadata: Metadata = {
 
 // Static. The FAQ array is module-level and the page does no I/O — flag this
 // to Next 14 so the route is built once and served from CDN. Matches the
-// pattern on /parables, which is also reverse-squeeze static content.
+// pattern on /stories, which is also reverse-squeeze static content.
 export const dynamic = "force-static";
 
 const BREADCRUMB_TRAIL = [

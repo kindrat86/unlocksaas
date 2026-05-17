@@ -2,7 +2,7 @@
  * 5-Email Soap Opera Sequence — full copy.
  *
  * Spec: strategy/workbooks/04-building-your-funnels.md §5.
- * Parables: strategy/workbooks/01-sales-funnel-secrets.md §6 Beat 3.
+ * Stories: strategy/workbooks/01-sales-funnel-secrets.md §6 Beat 3.
  * Hook #8: strategy/workbooks/01-sales-funnel-secrets.md §5.
  *
  * Rules from workbook 04 §5:
@@ -120,7 +120,7 @@ function render({
   return { subject, text, html };
 }
 
-// ── EMAIL 1 (Day 0): Diagnosis + Parable 1 (Blank Offer Page) ───────────────
+// ── EMAIL 1 (Day 0): Diagnosis + Story 1 (Blank Offer Page) ───────────────
 function email1(ctx: RenderContext): RenderedEmail {
   const opener = ctx.diagnosis ? DIAGNOSIS_OPENER[ctx.diagnosis] : NEUTRAL_OPENER;
   return render({
@@ -138,7 +138,7 @@ function email1(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 2 (Day 1): Parable 2 (Stripe Refresh) ─────────────────────────────
+// ── EMAIL 2 (Day 1): Story 2 (Stripe Refresh) ─────────────────────────────
 function email2(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day done. Dinner done. Laptop open. Refresh Stripe.",
@@ -155,7 +155,7 @@ function email2(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 3 (Day 2): Parable 4 (Mirror in Ten Founders) ─────────────────────
+// ── EMAIL 3 (Day 2): Story 4 (Mirror in Ten Founders) ─────────────────────
 function email3(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "I had to mute the call and walk around the room.",
@@ -172,7 +172,7 @@ function email3(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 4 (Day 3): Parable 5 (Door That Opened) + Polarity FOR #2 ─────────
+// ── EMAIL 4 (Day 3): Story 5 (Door That Opened) + Polarity FOR #2 ─────────
 function email4(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Why now is different (for non-engineers especially).",

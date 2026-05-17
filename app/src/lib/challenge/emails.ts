@@ -6,19 +6,19 @@
  *
  * 15 emails total:
  *   - index 0  = Day 0  (welcome, sent inline on subscribe)
- *   - index 1  = Day 1  (One Real Person, parable 1 — Blank Offer Page)
- *   - index 2  = Day 2  (Quote Them, parable 4 — Mirror in Ten Founders)
- *   - index 3  = Day 3  (The Stripe Refresh, parable 2)
+ *   - index 1  = Day 1  (One Real Person, story 1 — Blank Offer Page)
+ *   - index 2  = Day 2  (Quote Them, story 4 — Mirror in Ten Founders)
+ *   - index 3  = Day 3  (The Stripe Refresh, story 2)
  *   - index 4  = Day 4  (One Real Promise, Vehicle Story)
  *   - index 5  = Day 5  (The Math of Defence, Skeptic Marco)
  *   - index 6  = Day 6  (The Remedy, Internal Belief Rewrite #1)
  *   - index 7  = Day 7  (The First List — 20 names, Dream 100 mini)
- *   - index 8  = Day 8  (The First Message, parable 3 — SEO Escape Hatch)
+ *   - index 8  = Day 8  (The First Message, story 3 — SEO Escape Hatch)
  *   - index 9  = Day 9  (Send the First Five)
  *   - index 10 = Day 10 (Triage the Replies, Internal Belief Rewrite #4)
  *   - index 11 = Day 11 (Send the Next Ten — different congregation)
  *   - index 12 = Day 12 (The Hard Five — the ones you've been avoiding)
- *   - index 13 = Day 13 (One Real Conversation, parable 5 — Door That Opened)
+ *   - index 13 = Day 13 (One Real Conversation, story 5 — Door That Opened)
  *   - index 14 = Day 14 (Sprint Complete + $1 Starter, Hook #8 verbatim)
  *
  * Rules from workbook 04 §5 (carried over):
@@ -145,7 +145,7 @@ function day0(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 1 (Day 1): One Real Person — Parable 1: Blank Offer Page ──────────
+// ── EMAIL 1 (Day 1): One Real Person — Story 1: Blank Offer Page ──────────
 function day1(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day 1: name one real person.",
@@ -161,7 +161,7 @@ function day1(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 2 (Day 2): Quote Them — Parable 4: Mirror in Ten Founders ─────────
+// ── EMAIL 2 (Day 2): Quote Them — Story 4: Mirror in Ten Founders ─────────
 function day2(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day 2: find one quote.",
@@ -177,7 +177,7 @@ function day2(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 3 (Day 3): Do NOT open Stripe — Parable 2 ─────────────────────────
+// ── EMAIL 3 (Day 3): Do NOT open Stripe — Story 2 ─────────────────────────
 function day3(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day 3: do NOT open Stripe today.",
@@ -260,7 +260,7 @@ function day7(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 8 (Day 8): The First Message — Parable 3: SEO Escape Hatch ────────
+// ── EMAIL 8 (Day 8): The First Message — Story 3: SEO Escape Hatch ────────
 function day8(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day 8: write one message.",
@@ -346,7 +346,7 @@ function day12(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 13 (Day 13): One Real Conversation — Parable 5: Door That Opened ──
+// ── EMAIL 13 (Day 13): One Real Conversation — Story 5: Door That Opened ──
 function day13(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day 13: one real conversation.",

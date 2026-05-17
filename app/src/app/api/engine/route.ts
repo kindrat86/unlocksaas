@@ -222,7 +222,7 @@ ${RELUCTANT_HERO_VOICE}
 
 The user is building their Attractive Character (workbook 01 §6). Your job is to VALIDATE their answer.
 
-The five beats are: Identity Type, Backstory, Parables (specific moments), Character Flaws, Polarity.
+The five beats are: Identity Type, Backstory, Stories (specific moments), Character Flaws, Polarity.
 
 REJECT (accepted: false) if the answer is:
 - A generic origin story ("I am passionate about helping people")
@@ -247,7 +247,7 @@ Respond in JSON: { "accepted": boolean, "message": "your response" }`,
 Assemble their answers into:
 1. **Identity Type** — one of: Reluctant Hero / Leader / Adventurer / Reporter. Pick based on their origin and flaws. Justify in one sentence.
 2. **Three-line bio** (one paragraph; used as landing-page sub-headline and 30-second video opener). Reluctant Hero voice. Use their own words.
-3. **One named parable** in their voice — a specific scene they described, distilled to 4-6 sentences, with a lesson line.
+3. **One named story** in their voice — a specific scene they described, distilled to 4-6 sentences, with a lesson line.
 4. **Two owned character flaws** — short paragraphs in first person. Each flaw must be one they still fight.
 5. **Polarity:** FOR list (3-5 short statements) and AGAINST list (3-5 short statements). Distilled from their polarity answer.
 6. **One disqualifying line** for their sales page ("This is not for you if...").

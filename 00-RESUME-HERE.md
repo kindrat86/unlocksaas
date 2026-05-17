@@ -43,7 +43,7 @@ Open this folder in Claude Code. Paste the prompt block from `strategy/BUILD-PRO
 - **Dream customer:** Marco, 36, non-engineer, post-launch pre-revenue, flat Stripe line. Core false belief: "the problem is the product." Marco is the founder himself.
 - **Offer:** Marco gets his first paying customer, verified by Stripe, within 60 days, or full refund. Price $49/mo. Core product is **The Machine**, a 7-step system.
 - **Value ladder:** free diagnostic, then $1 one-time Starter (Machine Steps 1+2), then $49/mo core (Machine Steps 3-7 + guarantee).
-- **Attractive Character:** Reluctant Hero. Three backstory lengths. Five named parables. Four flaws. Polarity with enemy sentence.
+- **Attractive Character:** Reluctant Hero. Three backstory lengths. Five named stories. Four flaws. Polarity with enemy sentence.
 - **Movement:** Manifesto locked. Identity: **Verified Builders** (canonical / SSR default, LOCKED 2026-05-17). 50/50 A/B against "Paid Builders" is LIVE in production code (cookies + beacons + Stripe-metadata attribution shipped; awaiting Vercel deploy for first exposures). Future-based cause: "founders who build real things with AI deserve to get paid for them."
 - **Belief work:** Full Epiphany Bridge (7 elements). Four Core Stories: Vehicle, 4 Internal rewrites with kinda-like bridges, 5 External rewrites, 3 chain breakers.
 - **Long-form $49 sales page:** Big Domino written. Three Secrets fully scripted with Story-Strategy-Case Study. Stack slides 16-30. 16 mini-closes in 4 categories. Scarcity deliberately rejected.

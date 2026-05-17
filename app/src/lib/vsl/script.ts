@@ -97,7 +97,7 @@ const SCENES: VslScene[] = [
     emphasis: "Every time.",
     durationMs: 9500,
     speakerNote:
-      "Pause after 'broke me'. This is Parable #4, 'The Mirror in Ten Founders' — say it like a memory, not a marketing line.",
+      "Pause after 'broke me'. This is Story #4, 'The Mirror in Ten Founders' — say it like a memory, not a marketing line.",
   },
   {
     id: "04_what_setup",

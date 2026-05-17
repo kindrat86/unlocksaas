@@ -52,7 +52,7 @@ export function SocialProofBar() {
               10+ founder conversations
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-              Every parable below is sourced from a real conversation.
+              Every story below is sourced from a real conversation.
             </p>
           </div>
         </div>

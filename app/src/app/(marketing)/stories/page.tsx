@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
-import { ParablesOptIn } from "./parables-opt-in";
+import { StoriesOptIn } from "./stories-opt-in";
 import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
@@ -14,19 +14,19 @@ import {
 // timestamp signals "edited every deploy" noise to crawlers and LLMs.
 // Bump dateModified separately when the editorial actually changes.
 const PARABLES_PUBLISHED_AT = "2026-05-17";
-const PARABLES_URL = "https://unlocksaas.com/parables";
+const PARABLES_URL = "https://unlocksaas.com/stories";
 
 export const metadata: Metadata = {
-  title: "Five Parables for the Flat Stripe Line — Unlock SaaS",
+  title: "Five Stories for the Flat Stripe Line — Unlock SaaS",
   description:
     "Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. Read free. No email required.",
-  alternates: { canonical: "/parables" },
+  alternates: { canonical: "/stories" },
   openGraph: {
-    title: "Five Parables for the Flat Stripe Line",
+    title: "Five Stories for the Flat Stripe Line",
     description:
       "Why your launch went flat, in five short stories. Read free.",
     type: "article",
-    url: "/parables",
+    url: "/stories",
     publishedTime: PARABLES_PUBLISHED_AT,
     authors: ["Maryan"],
   },
@@ -50,19 +50,19 @@ export const dynamic = "force-static";
  * seen yet."
  *
  * Structure:
- *   1. Tiny preface — frame what the parables are and why they exist.
- *   2. Five parables in full, in workbook order. No gate, no fragments.
- *   3. Mid-content opt-in after parable 3 — soft, "want the diagnostic by
+ *   1. Tiny preface — frame what the stories are and why they exist.
+ *   2. Five stories in full, in workbook order. No gate, no fragments.
+ *   3. Mid-content opt-in after story 3 — soft, "want the diagnostic by
  *      email plus the rest of the story?"
- *   4. End-content opt-in after parable 5 — strong, "want the 5-email
+ *   4. End-content opt-in after story 5 — strong, "want the 5-email
  *      Soap Opera Sequence?"
  *   5. Bridge to the $1 Starter for readers who skip the opt-in.
  *
  * Source: strategy/workbooks/01-sales-funnel-secrets.md §6 Beat 3 (the five
- * named parables) + strategy/workbooks/04-building-your-funnels.md §5 (the
+ * named stories) + strategy/workbooks/04-building-your-funnels.md §5 (the
  * Soap Opera Sequence the opt-in routes into).
  */
-export default function ParablesReverseSqueezePage() {
+export default function StoriesReverseSqueezePage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
@@ -71,7 +71,7 @@ export default function ParablesReverseSqueezePage() {
           lets Google render breadcrumb sitelinks in SERPs and gives LLMs a
           navigational hint about where this page sits relative to the hub. */}
       <ArticleJsonLd
-        headline="Five Parables for the Flat Stripe Line"
+        headline="Five Stories for the Flat Stripe Line"
         description="Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened."
         url={PARABLES_URL}
         datePublished={PARABLES_PUBLISHED_AT}
@@ -79,7 +79,7 @@ export default function ParablesReverseSqueezePage() {
       <BreadcrumbListJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
-          { name: "Five Parables", url: PARABLES_URL },
+          { name: "Five Stories", url: PARABLES_URL },
         ]}
       />
       <AbExposureBeacon />
@@ -87,7 +87,7 @@ export default function ParablesReverseSqueezePage() {
         {/* PREFACE */}
         <header className="mb-12">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-            Five parables
+            Five stories
           </p>
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
             What I tell other founders before I show them the Machine.
@@ -108,7 +108,7 @@ export default function ParablesReverseSqueezePage() {
         {/* PARABLE 1 — The Blank Offer Page */}
         <section className="mb-12">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            Parable one
+            Story one
           </p>
           <h2 className="text-2xl font-bold mb-4">The Blank Offer Page</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
@@ -142,7 +142,7 @@ export default function ParablesReverseSqueezePage() {
         {/* PARABLE 2 — The Stripe Refresh */}
         <section className="mb-12">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            Parable two
+            Story two
           </p>
           <h2 className="text-2xl font-bold mb-4">The Stripe Refresh</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
@@ -178,7 +178,7 @@ export default function ParablesReverseSqueezePage() {
         {/* PARABLE 3 — The SEO Escape Hatch */}
         <section className="mb-12">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            Parable three
+            Story three
           </p>
           <h2 className="text-2xl font-bold mb-4">The SEO Escape Hatch</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
@@ -211,7 +211,7 @@ export default function ParablesReverseSqueezePage() {
         </section>
 
         {/* MID-CONTENT OPT-IN — soft, after the reader has already received
-            three full parables of value. Brunson rule: ask at the moment of
+            three full stories of value. Brunson rule: ask at the moment of
             highest perceived value, not at the moment of highest commitment
             anxiety. */}
         <Card className="mb-12 border-primary/30">
@@ -225,11 +225,11 @@ export default function ParablesReverseSqueezePage() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               You have read three of the five. If you want the other two by
               email plus the same diagnostic I run on every founder I talk
-              to — paste your address. The diagnostic is free, the parables
+              to — paste your address. The diagnostic is free, the stories
               keep coming, and the only thing you will get from me afterward
               is one short note a day for the rest of the week.
             </p>
-            <ParablesOptIn
+            <StoriesOptIn
               placement="mid_content"
               ctaLabel="Send me the rest plus the diagnostic"
               trustLine="One short email a day for five days. Reply STOP to unsubscribe. No course pitch, no countdown timer, no second opt-in."
@@ -242,7 +242,7 @@ export default function ParablesReverseSqueezePage() {
         {/* PARABLE 4 — The Mirror in Ten Founders */}
         <section className="mb-12">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            Parable four
+            Story four
           </p>
           <h2 className="text-2xl font-bold mb-4">
             The Mirror in Ten Founders
@@ -282,7 +282,7 @@ export default function ParablesReverseSqueezePage() {
         {/* PARABLE 5 — The Door That Opened */}
         <section className="mb-12">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            Parable five
+            Story five
           </p>
           <h2 className="text-2xl font-bold mb-4">The Door That Opened</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
@@ -334,14 +334,14 @@ export default function ParablesReverseSqueezePage() {
               The next five are by email.
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              These five are the parables. The next five days are the work
+              These five are the stories. The next five days are the work
               they point at — one short note a day, in the same voice, that
               walks you from &ldquo;I have a flat line&rdquo; to &ldquo;I
               have a written offer for one specific person.&rdquo; If you
               want those five, the address below is the only thing that has
               to leave this page.
             </p>
-            <ParablesOptIn
+            <StoriesOptIn
               placement="end_content"
               ctaLabel="Send me the next five days"
               trustLine="Day one arrives now. Days two through five at 9am each weekday. Reply STOP at any time. You will never get an upsell email — the upsell is on the page, not in the inbox."

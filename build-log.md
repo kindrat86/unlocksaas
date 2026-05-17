@@ -260,7 +260,7 @@ End-to-end Soap Opera Sequence wired up against the existing `soap_opera_subscri
 
 **Build verification:** `npx next build` ✓ Compiled successfully — the Soap Opera files all pass webpack compilation. The build halts on subsequent type-checking against pre-existing files (`(app)/machine/verified/actions.ts` uses `profiles` which is missing from the stale generated `database.types.ts`) — those are unrelated to this delivery and need a `supabase gen types` regen pass.
 
-**Brunson rule compliance:** story first, offer at the bottom on every email (workbook 04 §5 hard rule). Voice is Reluctant Hero across all 5 (parable scaffolds from workbook 01 §6 Beat 3: Blank Offer Page, Stripe Refresh, Mirror in Ten Founders, Door That Opened). Hook #8 used verbatim in Email 5. No countdown timers, no fake scarcity, no role-address sender.
+**Brunson rule compliance:** story first, offer at the bottom on every email (workbook 04 §5 hard rule). Voice is Reluctant Hero across all 5 (story scaffolds from workbook 01 §6 Beat 3: Blank Offer Page, Stripe Refresh, Mirror in Ten Founders, Door That Opened). Hook #8 used verbatim in Email 5. No countdown timers, no fake scarcity, no role-address sender.
 
 **Blockers before live send:**
 1. Push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel envs (all three: production, preview, development).
@@ -401,7 +401,7 @@ Implemented the indefinite Mon/Wed/Fri Seinfeld nurture per workbook 08 §6. Soa
 
 **What landed:**
 - Migration `supabase/migrations/20260517020000_seinfeld.sql` — `seinfeld_subscribers` table with rotation state (`current_index`, `sends_count`), status enum, FK to `soap_opera_subscribers` for graduate provenance, RLS enabled with no policies (service-role only). The generated `app/src/lib/database.types.ts` already includes the matching type entry (auto-regenerated when the migration landed).
-- Content pools in `app/src/lib/seinfeld/content.ts` — three pools (5 parables, 5 behind-the-build, 5 industry observations). All five parables from workbook 01 §6 Beat 3 reframed for Seinfeld era ("I keep coming back to this..."); behind-the-build notes cover Machine Step 5 design, 60-day clock, Dream 100 picker, engine pushback, Stripe-only proof; industry observations cover the build-no-longer-the-moat thesis, traffic-vs-copy diagnosis, comments-vs-charges, courses-as-avoidance, non-engineer-decade.
+- Content pools in `app/src/lib/seinfeld/content.ts` — three pools (5 stories, 5 behind-the-build, 5 industry observations). All five stories from workbook 01 §6 Beat 3 reframed for Seinfeld era ("I keep coming back to this..."); behind-the-build notes cover Machine Step 5 design, 60-day clock, Dream 100 picker, engine pushback, Stripe-only proof; industry observations cover the build-no-longer-the-moat thesis, traffic-vs-copy diagnosis, comments-vs-charges, courses-as-avoidance, non-engineer-decade.
 - `app/src/lib/seinfeld/schedule.ts` — Mon/Wed/Fri UTC cadence helpers + `nextSendAt()` for /subscribe responses.
 - `app/src/lib/seinfeld/emails.ts` — renderer mirrors the Soap Opera HTML shell, signs every email "— Maryan", alternates the PS link between `/diagnostic` (even sends) and `/starter` (odd sends).
 - `app/src/lib/seinfeld/dispatch.ts` — send-and-advance per row: picks today's pool, indexes by `current_index % pool.length`, tags Resend send with `sequence: 'seinfeld'`, `kind`, `content_id`, `ps_target`, increments both counters, persists `last_error` on failure for cron retry.
@@ -567,7 +567,7 @@ Ran a triage pass against the three remaining founder-open pre-launch items in `
 
 The five remaining Machine steps are now end-to-end live. Steps 3-5 extend the existing Q&A engine pattern; Steps 6-7 are dedicated UIs because they are not conversations.
 
-**Step 3 — Attractive Character (`/machine/step/3`):** five questions (workbook 01 §6 engine spec): origin scene, hardest stretch, parable moment, owned flaw, polarity. Engine validation rejects LinkedIn-bio polish, "perfectionist"-style fake flaws, and bland polarity. On completion it assembles Identity Type + three-line bio + named parable + two flaws + FOR/AGAINST lists + disqualifying line.
+**Step 3 — Attractive Character (`/machine/step/3`):** five questions (workbook 01 §6 engine spec): origin scene, hardest stretch, story moment, owned flaw, polarity. Engine validation rejects LinkedIn-bio polish, "perfectionist"-style fake flaws, and bland polarity. On completion it assembles Identity Type + three-line bio + named story + two flaws + FOR/AGAINST lists + disqualifying line.
 
 **Step 4 — Write Copy (`/machine/step/4`):** three questions, with Step 1+2+3 outputs piped to the engine as context (`needsPriorOutputs: ['1','2','3']`). Engine assembles five curiosity-based headlines, Star-Story-Solution sales-page draft, OTO upsell block, disqualifying copy block (workbook 03 Engine Implications).
 
@@ -578,7 +578,7 @@ The five remaining Machine steps are now end-to-end live. Steps 3-5 extend the e
 **Step 7 — Convert & Verify (`conversion-verifier.tsx` already in place):** reads `verified_conversions` via `/api/conversions`; one row flips the guarantee verdict to `verdict_kept`. Manual-record form is the v1 path; Stripe Connect auto-detection is the Sprint 4+ path (uses the existing `stripe_connections` + connect callback already in the codebase).
 
 **Engine route reshaped (`/api/engine/route.ts`):**
-- `STEP_PROMPTS` extended for steps 3-5 with the full Reluctant Hero voice block embedded in each system prompt (workbook 01 §6 polarity, parables, enemy sentence).
+- `STEP_PROMPTS` extended for steps 3-5 with the full Reluctant Hero voice block embedded in each system prompt (workbook 01 §6 polarity, stories, enemy sentence).
 - `STEP_TO_MILESTONE` map fires the corresponding milestone (`dream_customer_pinned`, `offer_locked`, `ac_defined`, `copy_generated`, `outreach_assets_generated`) on the user's profile via `markMilestone()` from `@/lib/guarantee` — the unique index makes it idempotent.
 - Whole handler wrapped in try/catch with structured logging (`stepId`, `questionIndex`, duration). Failure to mark a milestone is non-fatal — the user already saw their assembled output.
 
@@ -774,25 +774,25 @@ Engine pushback hardness moved from "good but soft-fails to accept" to "default 
 - Fancier deliverable formats (PDF, shareable web URL): the text download + email cover the keepable property; a PDF generator is a Sprint 3+ nice-to-have, not a Brunson-rule gap.
 - Engine prompt v2 (sharper Step-3 pushback, Step-4 prior-output threading): the current prompts are Brunson-correct; this pass hardened the validator HARNESS, not the prompts themselves.
 
-## Sprint 2: Reverse Squeeze (`/parables`) — DCS Chapter 14 closeout
+## Sprint 2: Reverse Squeeze (`/stories`) — DCS Chapter 14 closeout
 **Status: SHIPPED (code-complete; activates the moment Vercel deploys)**
 
 Closed the Russell audit's Chapter 14 gap from 45/100 → 100/100. The Lead Squeeze half (`/diagnostic`) was already live thanks to a concurrent author. This pass shipped the Reverse Squeeze half — Brunson's inverted opt-in mechanic: value FIRST (free, no email gate), opt-in second.
 
 **Files added:**
-- `app/src/app/(marketing)/parables/page.tsx` (358 lines, server component, statically generated)
-  — Renders all 5 named parables from `strategy/workbooks/01-sales-funnel-secrets.md` §6 Beat 3, each expanded from one-line lessons to ~120-word prose with a pulled-out lesson quote. Workbook order preserved: Blank Offer Page → Stripe Refresh → SEO Escape Hatch → Mirror in Ten Founders → Door That Opened.
-  — Two opt-in placements at the trust crests: mid-content (after parable 3, soft ask) + end-content (after parable 5, strong ask). Each Card is a client island that POSTs to `/api/soap-opera/subscribe` with a distinct `source` string for placement attribution.
+- `app/src/app/(marketing)/stories/page.tsx` (358 lines, server component, statically generated)
+  — Renders all 5 named stories from `strategy/workbooks/01-sales-funnel-secrets.md` §6 Beat 3, each expanded from one-line lessons to ~120-word prose with a pulled-out lesson quote. Workbook order preserved: Blank Offer Page → Stripe Refresh → SEO Escape Hatch → Mirror in Ten Founders → Door That Opened.
+  — Two opt-in placements at the trust crests: mid-content (after story 3, soft ask) + end-content (after story 5, strong ask). Each Card is a client island that POSTs to `/api/soap-opera/subscribe` with a distinct `source` string for placement attribution.
   — Bridge section at the bottom routes skippers to `/starter` and `/diagnostic` (no dead end).
   — Reluctant Hero voice throughout. AbExposureBeacon mounted (rides into the existing identity-label A/B).
-- `app/src/app/(marketing)/parables/parables-opt-in.tsx` (167 lines, `"use client"`)
+- `app/src/app/(marketing)/stories/stories-opt-in.tsx` (167 lines, `"use client"`)
   — Matches `diagnostic-form.tsx` conventions exactly: `useState` for email + discriminated-union state (idle/submitting/ok/error), native fetch, analytics `track()` on submit, accessible labels + aria-invalid on error, inline error/success rendering.
-  — `placement: "mid_content" | "end_content"` prop becomes `source = reverse_squeeze_parables_<placement>` on the subscribe POST. Same Day 0 destination as the standard diagnostic squeeze.
+  — `placement: "mid_content" | "end_content"` prop becomes `source = reverse_squeeze_stories_<placement>` on the subscribe POST. Same Day 0 destination as the standard diagnostic squeeze.
 
 **Files modified:**
-- `app/src/lib/analytics/events.ts` — added `ParablesPageViewed` + `ParablesOptInSubmitted` events to the funnel taxonomy. Property convention: `{ placement: "mid_content" | "end_content", email_domain }`.
-- `app/src/app/(marketing)/diagnostic/page.tsx` — added a 2-line bridge under the trust-line: "Not ready to enter your email yet? Read the five parables first." Gives the squeeze refusenik a second door instead of dropping them.
-- `app/src/app/page.tsx` — added a 2-line bridge under the hero CTAs: "Or read the five parables first — free, no email required." Surfaces `/parables` to homepage cold traffic.
+- `app/src/lib/analytics/events.ts` — added `StoriesPageViewed` + `StoriesOptInSubmitted` events to the funnel taxonomy. Property convention: `{ placement: "mid_content" | "end_content", email_domain }`.
+- `app/src/app/(marketing)/diagnostic/page.tsx` — added a 2-line bridge under the trust-line: "Not ready to enter your email yet? Read the five stories first." Gives the squeeze refusenik a second door instead of dropping them.
+- `app/src/app/page.tsx` — added a 2-line bridge under the hero CTAs: "Or read the five stories first — free, no email required." Surfaces `/stories` to homepage cold traffic.
 - `strategy/workbooks/04-building-your-funnels.md` — added §3 Page 1b with full Reverse Squeeze build spec, Brunson-rule annotations, and the two-placement attribution scheme. Pairs with the existing §3 Page 1 squeeze spec.
 - `strategy/state.json` — `revision_history` prepended with the full scope/change/rationale/files/follow-ups entry. Atomic write via python to avoid the concurrent-edit race that's currently active on this file.
 
@@ -800,14 +800,14 @@ Closed the Russell audit's Chapter 14 gap from 45/100 → 100/100. The Lead Sque
 
 **Why this shape:**
 - Brunson Secret 14 has two variants. Lead Squeeze = email-first, content-second. Reverse Squeeze = content-first, email-second. We had one. Now we have both, pointed at the same Day 0 Soap Opera, so the visitor self-selects which door fits their temperature.
-- The mid + end placement split is a designed experiment, not a guess. The two `source` strings let `brunson-funnel-metrics` compare opt-in rate by placement once N≥50 per placement accumulates. If mid wins by 2x+, the parable order needs a re-rank (strongest 3 above the mid). If end wins, the arc is reading as cohesive and the next move is parable 6.
-- The parables themselves were already strategy-locked content. Expansion to prose was the only authoring decision — each story stayed in the founder's voice with workbook-lesson pull-quotes preserved verbatim.
+- The mid + end placement split is a designed experiment, not a guess. The two `source` strings let `brunson-funnel-metrics` compare opt-in rate by placement once N≥50 per placement accumulates. If mid wins by 2x+, the story order needs a re-rank (strongest 3 above the mid). If end wins, the arc is reading as cohesive and the next move is story 6.
+- The stories themselves were already strategy-locked content. Expansion to prose was the only authoring decision — each story stayed in the founder's voice with workbook-lesson pull-quotes preserved verbatim.
 
 **Operator-blocked (unchanged from prior ships):**
-- `CRON_SECRET` + `UNSUBSCRIBE_SECRET` still pending in Vercel env. Until pushed, opt-ins from `/parables` (and `/diagnostic`) capture the subscriber row but the Day 0 Email 1 send fails silently (`subscribed:true, day_0_send:"failed"`).
-- PostHog key pending — the new `ParablesPageViewed` + `ParablesOptInSubmitted` events fire to a no-op tracker until the key lands.
+- `CRON_SECRET` + `UNSUBSCRIBE_SECRET` still pending in Vercel env. Until pushed, opt-ins from `/stories` (and `/diagnostic`) capture the subscriber row but the Day 0 Email 1 send fails silently (`subscribed:true, day_0_send:"failed"`).
+- PostHog key pending — the new `StoriesPageViewed` + `StoriesOptInSubmitted` events fire to a no-op tracker until the key lands.
 
-**Next coherent unit:** drive a single X thread expanding Parable 2 (Stripe Refresh) or Parable 3 (SEO Escape Hatch) to `/parables` instead of `/diagnostic`. The reverse squeeze fits cold social traffic better than the squeeze — no email ask in the first scroll.
+**Next coherent unit:** drive a single X thread expanding Story 2 (Stripe Refresh) or Story 3 (SEO Escape Hatch) to `/stories` instead of `/diagnostic`. The reverse squeeze fits cold social traffic better than the squeeze — no email ask in the first scroll.
 
 ## DCS Secret #13 / Traffic Secrets Secret #2 + #4 — Deployable Dream 100 Outreach Kit
 **Status: SHIPPED (kit ready to send; per-message Maryan confirmation required for any actual send)**
@@ -830,7 +830,7 @@ User instruction: "Proceed autonomously to get 100%" on the Russell audit's Secr
 - No podcast pitches sent. Pitch gate per workbook 08 §3: first verified-customer cycle complete. Until that closes, podcast pitches are warm-up only.
 - No integration partner pitches sent. Gate per workbook 10 §2: 3+ verified-customer cycles complete.
 - No affiliate onboarding. Gate per workbook 10 §3: 50+ paying customers active.
-- No IH long-forms written. The cadence schedules one per week; the parables exist in workbook 01 §6 Beat 3 but the long-form prose is operator-time-bound (or a separate ship).
+- No IH long-forms written. The cadence schedules one per week; the stories exist in workbook 01 §6 Beat 3 but the long-form prose is operator-time-bound (or a separate ship).
 
 **Audit-score delta:** DCS Secret #13 + Traffic Secrets Secret #2 + Secret #4 move from 20/100 to ~95/100 pre-launch ceiling. Remaining 5 points gate on post-launch customer evidence (first podcast yes, first integration deal, first affiliate onboarded) — none of which can be earned in a workbook edit. Operator unlock path: execute Week 1 of §1 cadence (5 hours founder time across Mon-Fri) → first verified customer closes → send a §3 podcast pitch → +1 point. Each subsequent gate opens the next point.
 
@@ -875,8 +875,8 @@ Reversed the skip. PLF runs ONCE at product birth as the founding-cohort launch.
 - **No discount on price.** $49 stays $49. Bonuses are additive (price lock, badge variant, direct line). Verified.
 - **Cart-close means cart-close.** After 50 seats OR 7 days, founding bonuses retire forever. Product continues at $49 evergreen — no second cohort, no "limited reopening." Verified by `cartWindow()` state machine — once `closed`, stays `closed`.
 - **No fake live counter.** Cohort meter renders server-side on every request. UI may lag DB by seconds during a write; that's accepted. Verified.
-- **Reluctant Hero voice everywhere.** PLV scripts open with the founder's flat-Stripe-line scar, parables 1-5 referenced, no expert posturing. Emails signed `— Maryan`. Verified.
-- **Brunson Hook-Story-Offer on every email.** PLE1 = story (your flat line) → question (engagement). PLE2-4 = story (parables) → soft pointer to video. PLE5 = full HSO with stack and cart-open. PLE6 = scarcity-or-closure binary. Verified.
+- **Reluctant Hero voice everywhere.** PLV scripts open with the founder's flat-Stripe-line scar, stories 1-5 referenced, no expert posturing. Emails signed `— Maryan`. Verified.
+- **Brunson Hook-Story-Offer on every email.** PLE1 = story (your flat line) → question (engagement). PLE2-4 = story (stories) → soft pointer to video. PLE5 = full HSO with stack and cart-open. PLE6 = scarcity-or-closure binary. Verified.
 
 ### Score lift on the audit
 - DotCom Secrets #21 (Product Launch Funnel): **N/A → 100** (strategy + scaffolds shipped, founder action items called out by name, no infrastructure debt).
@@ -1085,9 +1085,9 @@ Both shipped.
 
 ### Code — Cart Abandonment Recovery (the fifth cadence)
 - **`supabase/migrations/20260518000004_cart_abandonment.sql` (NEW)** — `cart_abandonment_subscribers` table mirroring `soap_opera_subscribers` conventions. Unique index on `stripe_session_id` (idempotency), partial index on `next_send_at` where `status='active' AND emails_sent BETWEEN 1 AND 2` (cron index). RLS service-role-only; no public POST endpoint because enrolment is exclusively webhook-driven.
-- **`app/src/lib/cart-recovery/emails.ts` (NEW)** — 3-email sequence with diagnostic-label-tilted parable in Email 2.
+- **`app/src/lib/cart-recovery/emails.ts` (NEW)** — 3-email sequence with diagnostic-label-tilted story in Email 2.
   - Email 1 (Day 0, inline on enrolment): `"The $1/$49 door is still open"`. 80–100 words. Reluctant Hero voice. PS line invites a reply to the real inbox.
-  - Email 2 (Day 2): `"Five-time clickers"`. Parable selector: `wrong_person` / `weak_offer` / `weak_belief` get tailored 60-word stories; null falls back to the universal "five-time clickers" parable.
+  - Email 2 (Day 2): `"Five-time clickers"`. Story selector: `wrong_person` / `weak_offer` / `weak_belief` get tailored 60-word stories; null falls back to the universal "five-time clickers" story.
   - Email 3 (Day 7): `"Last note from me, and a question"`. Soft close with three exits: resume checkout, free diagnostic, or `yes`-reply to Seinfeld.
   - Price-anchored branching (`starter` vs `machine`) — same arc, different price reference. Resume link routes to `/starter` or `/machine-sales` (NOT Stripe's expired session URL which would 404 by Day 2).
   - **NO fake urgency** per workbook 07 §3 Category 4 rejection. No countdown timers. No "your cart expires." The Brunson identity guardrail holds.
@@ -1153,8 +1153,8 @@ Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Sec
 - `strategy/facebook-channel.md` (NEW, canonical doc) — four phases:
   - **Phase 0 (NOW):** Facebook OFF. Three reasons each independently sufficient (avatar density 1/10 of X; pre-PMF + $49/mo + skeptic = 10%-of-MRR cap at $0; Marco-verbatim FB-ads-don't-work quote at `strategy/dollar-objections.md:100`). Passive listening only in 3 Marco-adjacent FB groups (IH FB / Vibe Coding / Bootstrapped Founders).
   - **Phase 1 — Pixel + Audiences (3 verified customer cycles):** Meta Pixel via `<MetaPixel/>` component env-gated by `NEXT_PUBLIC_META_PIXEL_ID`. Conversions API server-side from Stripe webhook with SHA-256-hashed PII (privacy + iOS 14.5+ ATT resilience). Business Manager + Page + domain verification. Three custom audiences seeded (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows. **ZERO ads** — data collection only.
-  - **Phase 2 — Retargeting + Lookalike-from-Buyers (50 paying customers):** 4 retargeting audiences + 2 lookalike-1% from buyer + diagnostic-completer seeds. Two creative families: Family A (60s native-feed video from VSL Beat 1+2 → /parables Reverse Squeeze) and Family B (1080×1080 Verified Builder badge → /builder/[slug] with written re-permission per ad). Budget cap = $208/mo (10% of $2,080 MRR). Kill criteria: CPL > $5, ROAS < 1.5 after $250, weekly CAC > 60% LTV.
-  - **Phase 3 — Cold Prospecting (100 paying customers + 4 CAC/retention gates):** Gates = 100+ customers AND 30-day retention ≥ 65% AND 90-day retention ≥ 50% AND Phase-2 30d CAC < $30. Lookalike 1-3% + interest (Lovable/Cursor/Claude users, indie hacker/MicroConf pages) + behavior (FB Page engagement 90d). Two cold-allowed families: Family C (90s talking-head Parable #1 or #3 → /parables — cold NEVER hits /starter or /machine-sales directly) and Family D (link-click → /bridge → /diagnostic). Budget = 10% MRR + $50/d test 14d. Kill if cold CAC > $50/wk or cohort 30-day retention < 50%.
+  - **Phase 2 — Retargeting + Lookalike-from-Buyers (50 paying customers):** 4 retargeting audiences + 2 lookalike-1% from buyer + diagnostic-completer seeds. Two creative families: Family A (60s native-feed video from VSL Beat 1+2 → /stories Reverse Squeeze) and Family B (1080×1080 Verified Builder badge → /builder/[slug] with written re-permission per ad). Budget cap = $208/mo (10% of $2,080 MRR). Kill criteria: CPL > $5, ROAS < 1.5 after $250, weekly CAC > 60% LTV.
+  - **Phase 3 — Cold Prospecting (100 paying customers + 4 CAC/retention gates):** Gates = 100+ customers AND 30-day retention ≥ 65% AND 90-day retention ≥ 50% AND Phase-2 30d CAC < $30. Lookalike 1-3% + interest (Lovable/Cursor/Claude users, indie hacker/MicroConf pages) + behavior (FB Page engagement 90d). Two cold-allowed families: Family C (90s talking-head Story #1 or #3 → /stories — cold NEVER hits /starter or /machine-sales directly) and Family D (link-click → /bridge → /diagnostic). Budget = 10% MRR + $50/d test 14d. Kill if cold CAC > $50/wk or cohort 30-day retention < 50%.
   - **Phase 4 — Conversation Domination Amplification (200 customers OR Phase-3 ROAS ≥ 2.0 for 60d):** Boost X threads > 50 likes as 60-90s FB video + boost IH long-forms > 30 upvotes as FB carousel + 2x/wk Page posts on JK5 rotation. Goal: Marco encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim).
 
 - `strategy/state.json` — added `traffic_secrets.facebook_channel` block with all 4 phases (audiences, ad creative families, budgets, kill criteria, code pre-stage paths per phase, env vars per phase), Brunson Hard-Rule reconciliation matrix (10 rules), canonical-doc pointer, next-review trigger. Prepended a `revision_history` entry as element [0] documenting scope/change/rationale/files-touched/follow-ups/no-launch-change/audit-delta.
@@ -1164,7 +1164,7 @@ Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Sec
 ### Brunson Hard-Rule audit (all 10 reconciled)
 
 - **One Funnel Away (DCS #26):** Facebook activation sequenced AFTER anchor funnel converts 3 cycles. ✓
-- **Lean Ladder (workbook 02):** No new product, no new price point. FB feeds existing ladder via /parables or /bridge. ✓
+- **Lean Ladder (workbook 02):** No new product, no new price point. FB feeds existing ladder via /stories or /bridge. ✓
 - **No Fake Scarcity (workbook 07 §3):** Zero countdown timers in creative. Founding Cohort DB-enforced scarcity is the only mechanic allowed. ✓
 - **Framework Into Engine:** Pixel + CAPI live in `lib/meta/*`, never user-facing UI. ✓
 - **Verified Builders identity:** A/B variant preserved via `?utm_source=fb_<variant>` + middleware cookie pin. ✓
@@ -1208,7 +1208,7 @@ Same pattern as the prior autonomous push entries (DCS Secret #21 PLF, DCS Secre
 
 ### Code deliverables (Surface A + B ship at launch)
 
-- `app/src/app/sitemap.ts` (NEW) — Next.js 16 file-based-metadata sitemap. Declares 9 canonical public-marketing URLs: `/`, `/diagnostic`, `/parables`, `/starter`, `/machine-sales`, `/founding`, `/bridge`, `/challenge`, `/repeatable`. Excludes private surfaces (member area, diagnostic result, builder OG pages, login, oto, welcome, onboarding, api, auth — all confirmed non-indexable via per-page `robots: { index: false }` metadata or `disallow` in robots.ts). `lastModified` set to build time; `priority` reflects funnel depth.
+- `app/src/app/sitemap.ts` (NEW) — Next.js 16 file-based-metadata sitemap. Declares 9 canonical public-marketing URLs: `/`, `/diagnostic`, `/stories`, `/starter`, `/machine-sales`, `/founding`, `/bridge`, `/challenge`, `/repeatable`. Excludes private surfaces (member area, diagnostic result, builder OG pages, login, oto, welcome, onboarding, api, auth — all confirmed non-indexable via per-page `robots: { index: false }` metadata or `disallow` in robots.ts). `lastModified` set to build time; `priority` reflects funnel depth.
 
 - `app/src/app/robots.ts` (NEW) — Next.js 16 file-based-metadata robots. Allow `/`; disallow `/machine/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`, `/oto`, `/welcome`, `/onboarding`. Sitemap reference points to `https://unlocksaas.com/sitemap.xml`. Host: `https://unlocksaas.com`.
 

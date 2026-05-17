@@ -76,14 +76,14 @@ export type Bucket =
   // "more_building" + $0 revenue.
   | "stuck_builder"
   // Tried marketing tactics (SEO, ads), still flat. The SEO Escape Hatch
-  // parable lands hardest here.
+  // story lands hardest here.
   | "tactic_shopper"
   // Shipped <30 days ago, low revenue: upstream of where the Machine helps.
   // Sent to free content, NOT to the $1 Starter. Different destination.
   | "premature"
   // Has some traction, still flat. Marco's exact profile minus the bad
   // marketing tactic — most likely to convert on the Mirror in Ten Founders
-  // parable.
+  // story.
   | "traction_but_stuck"
   // Revenue + already doing customer conversations. Past the bridge.
   // Skip the $1 Starter; go straight to the $49 Machine sales page.
@@ -136,7 +136,7 @@ export function assignBucket(
   }
 
   // 3. Tactic shopper: tried SEO or ads, 90+ days flat. The SEO Escape Hatch
-  //    parable is the bridge here.
+  //    story is the bridge here.
   if (
     (biggest_attempt === "seo_content" || biggest_attempt === "paid_ads") &&
     time_since_launch === "90_plus" &&
@@ -145,7 +145,7 @@ export function assignBucket(
     return "tactic_shopper";
   }
 
-  // 4. Stuck builder: kept building, 90+ days, $0. Blank Offer Page parable.
+  // 4. Stuck builder: kept building, 90+ days, $0. Blank Offer Page story.
   if (
     biggest_attempt === "more_building" &&
     time_since_launch === "90_plus" &&

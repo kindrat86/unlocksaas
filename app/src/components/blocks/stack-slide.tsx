@@ -34,22 +34,22 @@ type StackItem = {
 const STACK: StackItem[] = [
   {
     title: "The 7-step Machine engine",
-    value: "Comparable to $997 cohort",
+    value: "Comstory to $997 cohort",
     body: "Step-by-step workflow from named dream customer to first verified Stripe charge. No frameworks left on a notepad — every answer is structured input to the next step.",
   },
   {
     title: "Dream 100 picker (pre-loaded)",
-    value: "Comparable to $3,000 consultant",
+    value: "Comstory to $3,000 consultant",
     body: "Pulls from the locked Brunson Dream 100 workbook. You don't start with a blank canvas — you start with a list of 100 named congregations where your customer actually lives.",
   },
   {
     title: "Offer builder with engine pushback",
-    value: "Comparable to $497 copywriting course",
+    value: "Comstory to $497 copywriting course",
     body: "The engine refuses to accept vague promises. If your offer fails the specificity test, it tells you which beat is broken and rewrites the prompt.",
   },
   {
     title: "Outreach happens inside the tool",
-    value: "Comparable to $79/mo CRM",
+    value: "Comstory to $79/mo CRM",
     body: "Step 5 generates the message, picks the target, and logs the send. Outreach stops being optional. The tool tracks 20 actions before Day 60.",
   },
   {
@@ -59,12 +59,12 @@ const STACK: StackItem[] = [
   },
   {
     title: "Public builder profile page",
-    value: "Comparable to $29/mo portfolio host",
+    value: "Comstory to $29/mo portfolio host",
     body: "A live /builder/[slug] page that shows your product, your first-customer date, and your badge. Marketing surface you don't have to build.",
   },
   {
     title: "Soap Opera + Seinfeld email sequences",
-    value: "Comparable to $297 email course",
+    value: "Comstory to $297 email course",
     body: "Five days of letters, then weekly Tuesday Seinfeld emails. Already written. Each one signed from Maryan.",
   },
   {

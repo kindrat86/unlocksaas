@@ -181,10 +181,10 @@ export default function AboutPage() {
           <p>
             More from me:{" "}
             <Link
-              href="/parables"
+              href="/stories"
               className="underline underline-offset-4 hover:text-foreground"
             >
-              Five Parables for the Flat Stripe Line
+              Five Stories for the Flat Stripe Line
             </Link>{" "}
             ·{" "}
             <Link

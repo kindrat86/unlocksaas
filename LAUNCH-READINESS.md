@@ -141,7 +141,7 @@ done.
 
 ### Tier 3 — first 100 visitors
 
-6. **Post the launch X thread.** Lead with Parable #1 (The Blank Offer
+6. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
    Page). Drop link to /diagnostic at the end. Tag two of the Dream 100.
 
 7. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
