@@ -3,7 +3,7 @@ const nextConfig = {
   // Launch-window pragmatic unblock. Multiple concurrent build sessions are
   // landing in-progress scaffolding (unused state hooks, unused destructured
   // imports) for features mid-wire-up (deliverable-email resend button,
-  // diagnostic survey bucketing). Compilation passes — only ESLint's strict
+  // diagnostic survey bucketing). Compilation passes – only ESLint's strict
   // no-unused-vars rule fails the build.
   //
   // Trading lint-strictness for deploy-ability for the launch window. After
@@ -16,6 +16,62 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+
+  /**
+   * SXO / CWV bundle wins (2026-05-17).
+   *
+   * 1. `optimizePackageImports` rewrites barrel imports from the listed
+   *    packages into deep, tree-shakable imports at build time. Without this,
+   *    `import { ArrowRight } from "lucide-react"` pulls all ~1,500 icons
+   *    into the client chunk. With it, only ArrowRight ships. Verified safe
+   *    on Next 14; stable since 14.2.
+   *
+   *    - lucide-react: 23 files import from it; biggest offender by far.
+   *    - @radix-ui/react-{progress,separator,slot}: smaller barrels but each
+   *      ships its own runtime if not tree-shaken.
+   *    - posthog-js: barrel re-exports many sub-modules we never touch
+   *      (replay, surveys, exception-autocapture). Shaving them off the
+   *      analytics chunk lifts LCP on every page that mounts PostHogProvider
+   *      (i.e. all of them, via the root layout).
+   *
+   *    Follow-up not done here: dynamic-importing posthog-js itself inside
+   *    initPostHog() would move it OUT of the initial chunk entirely. That
+   *    refactor needs the PostHogProvider rewrite to drop the
+   *    posthog-js/react <Provider> dependency, which is more invasive than
+   *    a launch-window-safe change. Tracked separately.
+   *
+   * 2. `removeConsole` strips console.* (except error/warn) from production
+   *    builds. The `console.info` calls in src/lib/analytics/client.ts are
+   *    already NODE_ENV-guarded, but this catches any future-added unguarded
+   *    log so the prod bundle stays clean.
+   *
+   * 3. `poweredByHeader: false` removes the `X-Powered-By: Next.js` response
+   *    header – pure hygiene, no perf impact, smaller response by ~22 bytes.
+   *
+   * NOT enabled here, deliberately:
+   *   - `experimental.optimizeCss`: requires the `critters` peer dep and has
+   *     been flaky on Vercel CI in past 14.x patch releases. Re-evaluate
+   *     after the first verified customer cycle.
+   *   - Cache Components (`cacheComponents: true`): Next 16+ only. We are on
+   *     14.2.35. Upgrading is the right call but it crosses the middleware
+   *     -> proxy rename, async params/searchParams, and a few RSC boundary
+   *     tightenings – not a launch-window-safe autonomous change.
+   */
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-slot",
+      "posthog-js",
+    ],
+  },
+  compiler: {
+    removeConsole: {
+      exclude: ["error", "warn"],
+    },
+  },
+  poweredByHeader: false,
 
   /**
    * Content-Language HTTP header.
