@@ -1214,6 +1214,1083 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["payments", "consumer-brand", "developer-tools", "complementary"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "tally-vs-google-forms",
+    a: { name: "Tally", teardownSlug: "tally", url: "https://tally.so/" },
+    b: { name: "Google Forms", url: "https://forms.google.com/" },
+    category: "Forms and surveys",
+    oneLine:
+      "Tally and Google Forms are both free, but free-as-in-Google-product-strategy is a different thing than free-as-in-business-model.",
+    tldr:
+      "Tally and Google Forms both offer free form-building, but they sit in different product worlds. Google Forms is a feature of Google Workspace, polished enough but anchored to Google's product priorities, not yours. Tally is a focused indie SaaS where forms ARE the product, and the polish, branding, and integrations reflect that. For most public-facing forms, Tally wins; for internal surveys inside a Google Workspace org, Google Forms is the obvious pick.",
+    bestFor: {
+      a: "Indie founders, creators, and public-facing teams who want polished forms on their own marketing site without per-submission caps or Google branding.",
+      b: "Teams inside Google Workspace running internal surveys, signups, or simple data collection where the Forms-Sheets-Drive integration is the dominant factor.",
+    },
+    pickAIf: [
+      "Your form lives on your public site and you want it to look intentional rather than utilitarian.",
+      "You need conditional logic, multi-step flows, calculations, or polished branding.",
+      "You value your form data flowing into a SaaS workspace, not a Google Sheet.",
+    ],
+    pickBIf: [
+      "You are inside Google Workspace and your form data needs to land in Google Sheets, Drive, or Classroom anyway.",
+      "You need the absolute simplest form for internal use and aesthetics do not matter.",
+      "Zero-cost is non-negotiable and Google's brand on the form is acceptable.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing model",
+        a: "Free forever with unlimited submissions; paid tier (~$29/mo) for branding, logic, file uploads.",
+        b: "Completely free for Google account holders; bundled in Google Workspace.",
+        winner: "different",
+        note: "Both genuinely free for the basic case; the trade is on what 'free' means strategically.",
+      },
+      {
+        name: "Public-facing polish",
+        a: "Designed for the marketing page; clean modern aesthetic, custom branding on paid tier.",
+        b: "Utilitarian aesthetic; reads as 'this is a Google Form,' which is fine for some contexts and wrong for others.",
+        winner: "A",
+      },
+      {
+        name: "Conditional logic and multi-step flows",
+        a: "Core feature; jump logic, conditional questions, calculations on paid tier.",
+        b: "Section-based jump logic available; meaningfully less powerful than Tally or Typeform.",
+        winner: "A",
+      },
+      {
+        name: "Integration ecosystem",
+        a: "Solid: Zapier, webhooks, Notion, Slack, Sheets, native integrations.",
+        b: "Native Google ecosystem (Sheets, Drive, Classroom); broader via Apps Script and Zapier.",
+        winner: "different",
+        note: "Tally is broader across the SaaS ecosystem; Google Forms is deeper inside Google Workspace.",
+      },
+      {
+        name: "Brand recognition with respondents",
+        a: "Lower; many respondents will encounter Tally for the first time.",
+        b: "Universal; everyone knows Google Forms.",
+        winner: "B",
+      },
+      {
+        name: "Free-tier production-grade",
+        a: "Yes — most indie SaaS can ship forms in production on the free tier.",
+        b: "Yes — Google Forms's free tier is the only tier and is production-grade for internal use.",
+        winner: "tie",
+      },
+      {
+        name: "Data privacy positioning",
+        a: "Independent SaaS; data lives inside Tally and the integrations you wire.",
+        b: "Inside the Google data ecosystem; some buyers actively prefer this, some actively reject it.",
+        winner: "different",
+      },
+      {
+        name: "Form-builder UX",
+        a: "Notion-like editor; familiar to anyone who uses Notion.",
+        b: "Section-based linear builder; familiar to anyone who has ever used Google Workspace.",
+        winner: "tie",
+      },
+    ],
+    honestTake:
+      "Tally and Google Forms are both free but not interchangeable. Google Forms is Google's commodity feature in the form space — polished enough, anchored to Google's roadmap priorities, and effectively zero-cost for anyone with a Google account. Tally is a focused indie SaaS where forms are the product, which shows up in the public-facing polish, the logic depth, and the brand-removal upgrade path. For internal Google Workspace surveys, Google Forms wins by default and the comparison is not really competitive. For anything that lives on a public marketing surface, Tally's polish and conditional logic outweigh the brand recognition advantage of Google Forms.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Tally for public-facing forms, every time. The aesthetic gap on the marketing site is too large to ignore, and the logic-and-branding upgrade path on Tally's paid tier matches how most indie SaaS scale. Use Google Forms only for genuine internal-only collection inside a Workspace org.",
+    },
+    faqs: [
+      {
+        q: "Is Tally really worth paying for when Google Forms is free?",
+        a: "Yes, when the form is on your marketing site. The free tier of Tally itself is also free; the paid tier upgrade (brand removal, advanced logic) costs about $29/mo and pays for itself the moment a serious respondent decides whether to fill the form based on how the page reads.",
+      },
+      {
+        q: "Will Google Forms hurt my brand on a public site?",
+        a: "Sometimes. For some audiences (academic, internal corporate, simple surveys), the Google Forms brand is neutral or positive — it signals reliability. For founder-facing or creator-facing marketing surfaces, the Google Forms aesthetic reads as effort-light and can lower conversion.",
+      },
+      {
+        q: "Does Google Forms have logic and calculations?",
+        a: "Section-level jump logic is supported; meaningful calculations and conditional questions are not at parity with Tally or Typeform. If your form needs branching by answer or per-respondent dynamic pricing, Tally is the right tool.",
+      },
+      {
+        q: "Can I migrate from Google Forms to Tally?",
+        a: "Tally has Google Forms import. Existing Google Forms responses do not migrate; new submissions flow into Tally going forward. Most teams migrate by exporting the Sheet of past responses for archive and starting fresh in Tally.",
+      },
+      {
+        q: "What is the Brunson lens on Tally vs Google Forms?",
+        a: "Google Forms is a commodity feature inside Google Workspace; it is not a focused offer. Tally is a focused offer in the form category. The Brunson move 'a focused offer beats a commodity feature when the buyer cares about the category' applies cleanly: indie SaaS founders care about form polish, so Tally's focused offer wins.",
+      },
+    ],
+    tags: ["forms", "freemium", "indie-friendly", "commodity-vs-focused"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "notion-vs-obsidian",
+    a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
+    b: { name: "Obsidian", url: "https://obsidian.md/" },
+    category: "Notes and knowledge management",
+    oneLine:
+      "Notion is a cloud workspace built for teams. Obsidian is a local-first knowledge graph built for one brain.",
+    tldr:
+      "Notion and Obsidian look superficially similar but solve different problems. Notion is a cloud-first team workspace with databases, real-time collaboration, and SaaS pricing. Obsidian is a local-first knowledge graph built on plain markdown files, with a free single-user license and optional paid sync. For team knowledge, Notion. For a single brain building a long-term linked knowledge base, Obsidian. They rarely actually compete on the same job.",
+    bestFor: {
+      a: "Teams building shared docs, wikis, project plans, and lightly-structured workflows.",
+      b: "Individual researchers, writers, and knowledge workers building a long-term personal knowledge graph from markdown files they own.",
+    },
+    pickAIf: [
+      "You collaborate with a team and need real-time co-editing.",
+      "You want databases, kanban views, and project management tools alongside docs.",
+      "You value the polished UX and large template community more than data ownership.",
+    ],
+    pickBIf: [
+      "You want your notes as plain markdown files on your own disk, forever.",
+      "You build a personal knowledge graph (Zettelkasten, second brain) over years.",
+      "You value powerful third-party plugins and local-first software philosophy.",
+    ],
+    dimensions: [
+      {
+        name: "Data ownership",
+        a: "Cloud-hosted; your data lives in Notion's database.",
+        b: "Local-first; your notes are plain markdown files on your disk, in folders you own.",
+        winner: "B",
+      },
+      {
+        name: "Collaboration",
+        a: "Real-time multiplayer; team workspaces are the core use case.",
+        b: "Single-user by design; team plugins and sync exist but are not first-class.",
+        winner: "A",
+      },
+      {
+        name: "Pricing",
+        a: "Free personal tier; ~$10/seat/mo Plus, ~$18/seat/mo Business (verified 2026-05-17).",
+        b: "Free for personal use; Obsidian Sync ~$10/mo if you want cross-device sync; Publish ~$10/mo for public publishing.",
+        winner: "B",
+        note: "Obsidian is free for the core use case; only optional services have a cost.",
+      },
+      {
+        name: "Databases and structured data",
+        a: "First-class; relational tables, views, filters, formulas.",
+        b: "Limited; community plugins like Dataview provide query-like behavior but it is markdown-first.",
+        winner: "A",
+      },
+      {
+        name: "Knowledge graph and backlinks",
+        a: "Mentions and backlinks exist but the link graph is not the primary mental model.",
+        b: "First-class; the graph view and backlinks are central to how Obsidian is designed.",
+        winner: "B",
+      },
+      {
+        name: "Plugin ecosystem",
+        a: "Notion API and integrations; less of a 'plugin' culture.",
+        b: "Vast; thousands of community plugins for graph manipulation, themes, workflows.",
+        winner: "B",
+      },
+      {
+        name: "Mobile experience",
+        a: "Polished mobile apps; full editing supported.",
+        b: "Mobile apps available; some plugins are desktop-only.",
+        winner: "A",
+      },
+      {
+        name: "Team adoption ease",
+        a: "Easy; everyone in the team logs in and shares pages.",
+        b: "Hard; team workflows require sync setup and shared vaults, less battery-included.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Notion and Obsidian compete in the same broad notes-and-knowledge category but rarely actually replace each other. Notion is the right pick when knowledge is shared across people in a team context. Obsidian is the right pick when knowledge is built by one person over years and the data ownership, local-first philosophy, and graph thinking matter. Many serious knowledge workers run both: Notion for team collaboration and shared wikis, Obsidian for personal research and writing. The choice is almost always about who is using it, not which is better.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Notion for any indie SaaS that has more than one person or expects to. The team-collaboration shape is the immediate need. Add Obsidian later for personal long-term knowledge if that fits your workflow, but do not start with it as a team tool.",
+    },
+    faqs: [
+      {
+        q: "Can Obsidian replace Notion for a small team?",
+        a: "With effort, yes — using a shared vault (via iCloud, Dropbox, or git), the Obsidian Sync paid service, or community plugins. The collaboration experience never feels as smooth as Notion's real-time multiplayer because Obsidian is not designed around it.",
+      },
+      {
+        q: "Is Obsidian really free?",
+        a: "For personal use, yes. Obsidian's commercial-use license requires payment for teams using it in their work, and Sync/Publish are paid add-ons. For an individual building a personal knowledge base, the core product is free in perpetuity.",
+      },
+      {
+        q: "Why does data ownership matter?",
+        a: "Because Notion can change pricing, shut down, or lose your data; Obsidian's markdown files exist on your disk regardless of Obsidian the company. For long-horizon knowledge work, the asymmetry favors local-first. For short-horizon team docs, it does not matter.",
+      },
+      {
+        q: "Can I sync Obsidian notes to a team-collab tool later?",
+        a: "Yes; markdown is the universal substrate. You can pipeline Obsidian notes into Notion, into a static site, into a wiki — the files are yours. The migration in the other direction (Notion to Obsidian) is harder because Notion's block model does not cleanly export to flat markdown.",
+      },
+      {
+        q: "What is the Brunson lens on Notion vs Obsidian?",
+        a: "Both companies use a clear Dream Customer positioning — Notion for teams, Obsidian for individuals building knowledge over time. They do not actually compete on the same buyer; they share keywords and category but serve different identities. The Brunson move 'name your Dream Customer precisely' is executed cleanly by both, in opposite directions.",
+      },
+    ],
+    tags: ["notes", "knowledge-management", "local-first", "individual-vs-team"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "linear-vs-asana",
+    a: { name: "Linear", teardownSlug: "linear", url: "https://linear.app/" },
+    b: { name: "Asana", url: "https://asana.com/" },
+    category: "Project management",
+    oneLine:
+      "Linear is for engineering teams who hate Jira. Asana is for cross-functional teams who never wanted Jira in the first place.",
+    tldr:
+      "Linear and Asana solve different jobs that sometimes look the same. Linear is opinionated issue tracking for software teams; Asana is flexible task and project management for cross-functional teams (marketing, ops, design, sales). For an engineering-only team, Linear is the obvious pick. For teams where engineering, marketing, and ops collaborate on shared work, Asana is the right shape.",
+    bestFor: {
+      a: "Software engineering teams who want fast, opinionated issue tracking calibrated to dev workflows.",
+      b: "Cross-functional teams (marketing, ops, design, engineering) collaborating on shared projects with diverse workflow needs.",
+    },
+    pickAIf: [
+      "Your team is all engineers, or near it.",
+      "You value speed, keyboard-first UX, and opinionated defaults over configurability.",
+      "Your workflow maps cleanly to issues, cycles, and projects in a software sense.",
+    ],
+    pickBIf: [
+      "Your team includes meaningful non-engineering members (marketing, design, ops, sales).",
+      "You manage projects with varied workflows that do not all fit the issue-cycle-project model.",
+      "You need timeline views, workload balancing, and goal-tracking features Linear does not focus on.",
+    ],
+    dimensions: [
+      {
+        name: "Target user",
+        a: "Software engineering teams; engineers are the first-class user.",
+        b: "Cross-functional teams; designed so non-engineers and engineers can both be first-class users.",
+        winner: "different",
+      },
+      {
+        name: "Speed and UX",
+        a: "Among the fastest web apps in the category; keyboard-first.",
+        b: "Polished but slower; UX designed for cross-functional accessibility rather than power-user speed.",
+        winner: "A",
+      },
+      {
+        name: "Workflow flexibility",
+        a: "Intentionally constrained; one opinionated workflow.",
+        b: "Highly flexible; supports many project structures and team workflows.",
+        winner: "B",
+      },
+      {
+        name: "Engineering workflow fit",
+        a: "Native; cycles, projects, GitHub/Slack/Figma integrations all designed for dev work.",
+        b: "Possible but generic; engineering teams often feel the workflow does not quite fit them.",
+        winner: "A",
+      },
+      {
+        name: "Non-engineering workflow fit",
+        a: "Awkward for marketing campaigns, design reviews, sales pipelines.",
+        b: "Native; templates and integrations exist for marketing, design, ops, sales workflows.",
+        winner: "B",
+      },
+      {
+        name: "Pricing",
+        a: "Free tier (250 issues), ~$8-10/user/mo Basic, ~$14/user/mo Business (verified 2026-05-17).",
+        b: "Free tier (up to 10 users), ~$11/user/mo Starter, ~$25/user/mo Advanced (verified 2026-05-17).",
+        winner: "A",
+        note: "Linear is meaningfully cheaper at the engineering-team tier; Asana costs more partly because its surface area is larger.",
+      },
+      {
+        name: "Goal and OKR tracking",
+        a: "Limited; Linear focuses on issues, cycles, and projects.",
+        b: "Mature Goals product; OKRs and goal hierarchy are first-class.",
+        winner: "B",
+      },
+      {
+        name: "Timeline and Gantt views",
+        a: "Project roadmaps available; less mature than Asana's timeline view.",
+        b: "First-class Timeline / Gantt view; designed for project managers.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Linear and Asana are not really competing for the same buyer. Linear's audience is software engineering teams who left Jira; Asana's audience is cross-functional teams that never adopted Jira because Jira does not fit their work. The mistake some teams make is picking one without naming who actually uses it. If your team is engineers, Linear wins decisively. If your team mixes engineering with marketing, ops, design, or sales, Asana's flexibility is the right call — even if engineers grumble about the speed. There is no good universal answer; the question is who is the dominant user.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you are a solo founder or all-engineer team, Linear by default — speed and opinion match how you work. If you are running a small team across engineering plus marketing plus customer success, Asana is the more honest choice. Picking Linear because it is the cool default and then bolting on workarounds for non-engineering work is a common indie-team mistake.",
+    },
+    faqs: [
+      {
+        q: "Can Linear handle marketing or design work?",
+        a: "Workably, but awkwardly. The issue model is engineering-shaped; treating a marketing campaign or design review as a Linear issue feels like forcing a square peg. Teams that try this usually end up duplicating context across Linear and a second tool.",
+      },
+      {
+        q: "Can Asana handle engineering work?",
+        a: "Yes, but engineers typically feel it lacks the speed and integration tightness of Linear or Jira. Engineering-led teams that want to use Asana for cross-functional planning often keep a dedicated issue tracker (Linear or GitHub Issues) for actual engineering work.",
+      },
+      {
+        q: "What about a hybrid: Linear for engineering, Asana for everyone else?",
+        a: "Common at slightly larger companies. The tradeoff is two subscriptions, two systems of record, and ambiguity about where cross-functional work lives. Workable but adds operational friction.",
+      },
+      {
+        q: "Why is Asana more expensive?",
+        a: "Larger product surface area (Goals, Timeline, Workload, Portfolios, Workflow Builder) and a buyer (PMs and ops leaders) who has bigger budgets than engineering tooling buyers. The pricing reflects what the buyer expects to pay.",
+      },
+      {
+        q: "What is the Brunson lens on Linear vs Asana?",
+        a: "Both companies execute the Brunson 'Dream Customer naming' move precisely, in opposite directions. Linear names the software engineer; Asana names the cross-functional knowledge worker. Each says 'this is for you' to a different person, and that clarity is why both are growing.",
+      },
+    ],
+    tags: ["project-management", "team-tools", "engineering-vs-crossfunctional"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "figma-vs-adobe-xd",
+    a: { name: "Figma", teardownSlug: "figma", url: "https://www.figma.com/" },
+    b: { name: "Adobe XD", url: "https://www.adobe.com/products/xd.html" },
+    category: "Design and prototyping",
+    oneLine:
+      "Adobe XD effectively lost the design tool fight to Figma. The category has moved; XD is now legacy software with declining strategic priority.",
+    tldr:
+      "Adobe XD competed with Figma in the modern design tool category through the late 2010s and lost decisively. Adobe attempted to acquire Figma in 2022 (deal blocked by regulators in 2023), implicitly acknowledging the loss. XD remains supported but is no longer the strategic priority at Adobe. For new teams, Figma is the only reasonable pick. XD retains some users in Adobe-committed shops or on specific workflows but should not be considered a forward-looking option.",
+    bestFor: {
+      a: "Any new product design team in 2026. The default.",
+      b: "Existing Adobe Creative Cloud-committed shops on XD-anchored workflows who have not yet migrated.",
+    },
+    pickAIf: [
+      "You are a new team picking a design tool freely.",
+      "You collaborate with developers, PMs, or clients in real time.",
+      "You value the largest design-systems community and plugin ecosystem.",
+    ],
+    pickBIf: [
+      "You are already committed to Adobe Creative Cloud and XD bundles in your subscription.",
+      "Your workflow has historical XD assets that have not been migrated.",
+      "You have a specific reason to prefer Adobe's ecosystem integration over the design tool itself.",
+    ],
+    dimensions: [
+      {
+        name: "Strategic momentum",
+        a: "Winning the category; investment, hiring, feature velocity all strong.",
+        b: "Declining priority at Adobe; the failed Figma acquisition signaled the loss.",
+        winner: "A",
+      },
+      {
+        name: "Real-time collaboration",
+        a: "Native multiplayer; viewers, commenters, editors all in the same file.",
+        b: "Coediting available but with friction; never reached Figma parity.",
+        winner: "A",
+      },
+      {
+        name: "Cross-platform support",
+        a: "Browser-native; works on Mac, Windows, Linux, ChromeOS, iPad.",
+        b: "Native desktop app on Mac and Windows; no Linux support.",
+        winner: "A",
+      },
+      {
+        name: "Pricing",
+        a: "Free Starter; ~$15/editor/mo Professional; ~$45/editor/mo Organization (verified 2026-05-17). Viewers free.",
+        b: "Bundled in Adobe Creative Cloud subscriptions; standalone XD plans largely discontinued.",
+        winner: "A",
+      },
+      {
+        name: "Plugin ecosystem",
+        a: "Large and growing; Figma plugins are first-class.",
+        b: "Smaller and shrinking; community development has migrated to Figma.",
+        winner: "A",
+      },
+      {
+        name: "Developer handoff",
+        a: "Dev Mode is native; inspect, copy code, export assets without context-switching.",
+        b: "Inspector available; less mature than Figma's Dev Mode.",
+        winner: "A",
+      },
+      {
+        name: "Adobe ecosystem integration",
+        a: "Limited; Figma is independent of Adobe.",
+        b: "Tight; integrates with Photoshop, Illustrator, and Creative Cloud assets.",
+        winner: "B",
+      },
+      {
+        name: "Long-term viability",
+        a: "Strong; the category default with significant strategic investment.",
+        b: "Uncertain; Adobe's strategic priority is unclear post-failed-acquisition.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Adobe XD vs Figma is not really a competitive comparison in 2026. The category fight ended around 2020-2021, and Adobe's failed acquisition attempt in 2022-2023 publicly confirmed the loss. XD remains in Adobe's product portfolio and existing customers continue to use it, but it is no longer the strategic priority and feature velocity has slowed. For any new team picking a design tool, Figma is the strict upgrade. XD survives in Adobe-committed shops where Creative Cloud integration outweighs the design-tool gap, but this is an increasingly narrow use case.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Figma for any indie founder. There is no strategic case for adopting Adobe XD as a new tool in 2026. The category has moved, and the ecosystem advantages (templates, plugins, designer mindshare, developer handoff) all sit with Figma.",
+    },
+    faqs: [
+      {
+        q: "Why did Adobe XD lose to Figma?",
+        a: "Figma made the browser the design canvas and real-time collaboration native; XD remained a native desktop app with retrofitted collaboration. The structural difference compounded into network effects as designers, developers, and PMs all started living in Figma files together. XD never closed the gap.",
+      },
+      {
+        q: "Is Adobe XD being discontinued?",
+        a: "Not officially as of 2026, but standalone subscriptions have been largely withdrawn and active development has slowed. The product is in a maintenance posture rather than active competition. Long-term viability is uncertain.",
+      },
+      {
+        q: "Should I migrate from XD to Figma?",
+        a: "For most teams, yes. Migration tools and converters exist for the mechanical part; the harder part is the team habit shift. The longer a team waits, the more accumulated XD assets need conversion, so the cost of migration grows over time.",
+      },
+      {
+        q: "What about Sketch instead?",
+        a: "Sketch is in a similar 'lost the category' position but with a more defensible niche among Mac-only solo designers. For most teams, the same Figma recommendation applies.",
+      },
+      {
+        q: "What is the Brunson lens on Figma vs Adobe XD?",
+        a: "Figma is a canonical New Opportunity move (browser-native multiplayer) that escaped the existing category vehicle (native desktop app). Adobe XD was the category incumbent who could not pivot without abandoning its native-app DNA. The Brunson lesson: when a new vehicle is structurally better on a dimension the buyer cares about, the incumbent loses regardless of brand strength.",
+      },
+    ],
+    tags: ["design", "category-winner", "legacy-software", "ecosystem"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "vercel-vs-cloudflare-pages",
+    a: { name: "Vercel", teardownSlug: "vercel", url: "https://vercel.com/" },
+    b: { name: "Cloudflare Pages", url: "https://pages.cloudflare.com/" },
+    category: "Frontend cloud and hosting",
+    oneLine:
+      "Vercel and Cloudflare Pages are both modern frontend hosts. Vercel owns the developer experience tier; Cloudflare owns the global edge.",
+    tldr:
+      "Vercel and Cloudflare Pages compete in modern frontend hosting from different angles. Vercel goes deep on developer experience, Next.js integration, and the platform-services stack (AI Gateway, Marketplace, Functions). Cloudflare Pages anchors to Cloudflare's global edge network and bundles its own services (Workers, R2, KV, D1). For Next.js teams and DX-first buyers, Vercel. For teams already inside Cloudflare's ecosystem or optimizing for cost at global scale, Cloudflare Pages.",
+    bestFor: {
+      a: "Next.js teams, DX-first SaaS, and teams that value the polished hosting-plus-platform-services bundle.",
+      b: "Teams already using Cloudflare Workers, R2, KV, or D1; cost-sensitive teams at global scale; teams that prefer Cloudflare's edge-first architecture.",
+    },
+    pickAIf: [
+      "You ship Next.js. Vercel's depth here remains unmatched.",
+      "You want the latest React-ecosystem features supported on day one.",
+      "You value the Vercel AI SDK, AI Gateway, and platform marketplace.",
+    ],
+    pickBIf: [
+      "You are already using Cloudflare Workers, R2, KV, or D1 and want hosting in the same dashboard.",
+      "You optimize for global edge performance and cost at scale.",
+      "You prefer Cloudflare's pricing structure (no per-user fees, unlimited bandwidth on most plans).",
+    ],
+    dimensions: [
+      {
+        name: "Next.js support",
+        a: "Canonical; Vercel maintains Next.js and ships new features there first.",
+        b: "Strong support via the @cloudflare/next-on-pages adapter; some Next features lag.",
+        winner: "A",
+      },
+      {
+        name: "Free tier",
+        a: "Hobby (commercial use forbidden); generous compute, bandwidth, build minutes.",
+        b: "Generous free tier with commercial use permitted; 500 builds/month, unlimited bandwidth.",
+        winner: "B",
+      },
+      {
+        name: "Pricing at scale",
+        a: "~$20/user/mo Pro plus metered usage overages.",
+        b: "Free for most static use cases; Workers paid plans start at ~$5/mo with usage-based pricing.",
+        winner: "B",
+        note: "Cloudflare's pricing structure is meaningfully different — bandwidth-unlimited on most tiers, no per-user fees on Pages itself.",
+      },
+      {
+        name: "Edge compute",
+        a: "Vercel Functions (Fluid Compute and Edge); strong but slightly different model.",
+        b: "Cloudflare Workers; the canonical edge compute platform with deeper history at scale.",
+        winner: "B",
+      },
+      {
+        name: "Bundled platform services",
+        a: "Marketplace integrations for databases (Neon, Upstash), AI Gateway, Blob, Edge Config.",
+        b: "Native R2 (object storage), KV (key-value), D1 (SQLite), Durable Objects, Queues — all under Cloudflare's pricing.",
+        winner: "different",
+        note: "Vercel partners; Cloudflare builds in-house. Both approaches work; the buyer's preference varies.",
+      },
+      {
+        name: "Developer experience",
+        a: "Polished, opinionated, fast. Strong Git integration, preview deploys.",
+        b: "Improving rapidly; less polished than Vercel but the gap is shrinking.",
+        winner: "A",
+      },
+      {
+        name: "Global edge network",
+        a: "Strong; runs on Vercel's edge plus partner infrastructure.",
+        b: "Industry-leading; Cloudflare's edge network is one of the largest globally.",
+        winner: "B",
+      },
+      {
+        name: "AI tooling",
+        a: "AI SDK, AI Gateway with provider failover, tight React integration.",
+        b: "Cloudflare Workers AI; smaller but growing AI surface.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Vercel and Cloudflare Pages are competitive on different axes. Vercel wins on developer experience, Next.js integration, and the polished platform-services experience. Cloudflare Pages wins on cost (especially at scale), global edge performance, and bundled in-house services. For most Next.js teams, the DX advantage of Vercel outweighs the cost advantage of Cloudflare Pages; for non-Next teams or cost-sensitive operators, the calculation flips. The two platforms have been converging in capability; the buyer choice is increasingly about which ecosystem you want to live inside.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you ship Next.js and value DX, Vercel. If you are cost-sensitive (especially pre-revenue), already using Cloudflare for DNS or Workers, or building on non-React frameworks, Cloudflare Pages. The commercial-use-permitted free tier on Cloudflare is a real differentiator for indie founders.",
+    },
+    faqs: [
+      {
+        q: "Can I use Cloudflare Pages for a commercial Next.js app for free?",
+        a: "Yes — Cloudflare Pages permits commercial use on the free tier. This is a meaningful advantage over Vercel's Hobby tier, which forbids commercial use.",
+      },
+      {
+        q: "Will Next.js features lag on Cloudflare Pages?",
+        a: "Sometimes. Cloudflare maintains the @cloudflare/next-on-pages adapter, but new Next.js features (Cache Components, partial prerendering, latest middleware patterns) ship to Vercel first and to Cloudflare Pages on a delay measured in weeks to months.",
+      },
+      {
+        q: "What about Cloudflare Workers vs Vercel Functions?",
+        a: "Workers is the older, more mature edge compute platform; it runs at the Cloudflare edge with V8 isolates. Vercel Functions uses a different runtime model (Fluid Compute) optimized for Next.js integration. Both work well; the choice depends on whether you value Workers' raw performance and breadth or Vercel's tighter framework integration.",
+      },
+      {
+        q: "Is Vercel really worth the extra cost?",
+        a: "For Next.js teams shipping a SaaS, usually yes — the DX advantage, AI tooling, and platform integration save engineering time worth more than the price gap. For solo founders pre-revenue, the Cloudflare Pages free-commercial tier is hard to beat.",
+      },
+      {
+        q: "What is the Brunson lens on Vercel vs Cloudflare Pages?",
+        a: "Vercel ran the Dream 100 move into the React/Next community and built DX-first hosting on top. Cloudflare ran a different Dream 100 move into the global infrastructure and Workers community and built hosting as one product in a broader edge platform. Both are winning their respective Dream 100; they overlap on hosting but the underlying strategies are different.",
+      },
+    ],
+    tags: ["hosting", "developer-tools", "edge-compute", "nextjs"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "beehiiv-vs-kit",
+    a: { name: "Beehiiv", teardownSlug: "beehiiv", url: "https://www.beehiiv.com/" },
+    b: { name: "Kit (formerly ConvertKit)", url: "https://kit.com/" },
+    category: "Newsletter and creator email",
+    oneLine:
+      "Beehiiv is a publication-as-business platform. Kit is an email marketing platform for creators. Different shapes of the same business.",
+    tldr:
+      "Beehiiv and Kit (formerly ConvertKit) both serve creators monetizing an audience but with different product shapes. Beehiiv is a publication platform — write newsletters, monetize via ads, paid subscriptions, and the Boost network. Kit is an email marketing platform — write broadcasts and sequences, automate funnels, monetize via Kit Commerce or external products. For pure newsletter-as-business, Beehiiv. For broader creator email marketing with automations, Kit.",
+    bestFor: {
+      a: "Newsletter creators treating the publication as a business with ads, paid subs, referrals, and cross-promotion.",
+      b: "Creators who run product launches, paid courses, or ecommerce alongside email, and need deep automation and sequence tooling.",
+    },
+    pickAIf: [
+      "Your primary monetization is paid subscriptions, ads, or cross-promotion through the Boost network.",
+      "You think of yourself as a publisher first and an automation operator second.",
+      "You want a newsletter-first feature set rather than a generic email marketing tool.",
+    ],
+    pickBIf: [
+      "You run product launches, sell digital products, or operate paid courses alongside email.",
+      "You need sophisticated automation, segmentation, and visual sequence builders.",
+      "You want broader integrations (Teachable, Gumroad, Stripe, payment gateways) baked in.",
+    ],
+    dimensions: [
+      {
+        name: "Product shape",
+        a: "Newsletter publishing platform with monetization stack baked in.",
+        b: "Email marketing platform with broader creator commerce features.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free tier up to 2,500 subscribers; Scale ~$39-99/mo, Max ~$99-499/mo (verified 2026-05-17).",
+        b: "Free tier up to 10,000 subscribers (no automations); Creator ~$25/mo, Creator Pro ~$50/mo and up (verified 2026-05-17).",
+        winner: "B",
+        note: "Kit's free tier subscriber limit is higher; Beehiiv's free tier includes more publishing features.",
+      },
+      {
+        name: "Ad network",
+        a: "Built-in; Beehiiv ads network pays creators.",
+        b: "No native ad network; creators sell sponsorships themselves.",
+        winner: "A",
+      },
+      {
+        name: "Paid subscriptions",
+        a: "Built-in; Beehiiv handles paid subscription mechanics.",
+        b: "Available via Kit Commerce; less mature than dedicated newsletter platforms.",
+        winner: "A",
+      },
+      {
+        name: "Automations and sequences",
+        a: "Available but newsletter-flavored; less powerful than Kit.",
+        b: "Sophisticated; visual automation builder, conditional sequences, tag-based segmentation.",
+        winner: "B",
+      },
+      {
+        name: "Commerce integrations",
+        a: "Limited; primary monetization is ads and paid subs.",
+        b: "Deep; Teachable, Gumroad, ConvertKit Commerce, Stripe, Shopify all integrated.",
+        winner: "B",
+      },
+      {
+        name: "Cross-promotion network",
+        a: "Boost network; creators pay each other for referrals, Beehiiv brokers.",
+        b: "Recommendations available; less mature than Beehiiv's Boost.",
+        winner: "A",
+      },
+      {
+        name: "Best for pure newsletter creators",
+        a: "Yes — designed for this exact buyer.",
+        b: "Workable but not the focus; some friction.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Beehiiv and Kit serve overlapping creator audiences with different product centers. Beehiiv puts the newsletter at the center and bolts monetization stack around it. Kit puts email marketing at the center and treats newsletters as one use case among broadcasts, courses, and product launches. The right pick depends on what dominant business model you are building. Newsletter-first creators choose Beehiiv. Course creators, product sellers, and creators with a multi-channel business choose Kit. The mistake is picking based on familiarity (everyone has heard of ConvertKit/Kit) without checking which shape your business actually has.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you are an indie SaaS founder using a newsletter as a top-of-funnel for a product, Kit is often the better tool because automation depth matters more than newsletter-monetization features. If you are an indie founder where the newsletter IS the product or a major revenue stream, Beehiiv. Match the tool to the dominant use case.",
+    },
+    faqs: [
+      {
+        q: "Why was ConvertKit renamed to Kit?",
+        a: "The rebrand happened in 2024 to broaden the brand beyond newsletter writers toward all creators (courses, products, services). The underlying product is the same; the positioning is more inclusive of non-newsletter creators.",
+      },
+      {
+        q: "Can I monetize a newsletter on Kit?",
+        a: "Yes, via Kit Commerce (paid subscriptions, digital products) or by integrating Stripe directly. The monetization tooling is less newsletter-specific than Beehiiv's but works for serious creators.",
+      },
+      {
+        q: "Does Beehiiv have automations?",
+        a: "Yes, but they are newsletter-flavored — welcome sequences, subscriber re-engagement, basic conditional logic. For sophisticated funnel automation (course onboarding, abandoned cart recovery, multi-product cross-sells), Kit's automation depth is materially better.",
+      },
+      {
+        q: "What about Substack instead?",
+        a: "Substack is the network-first publication platform. Compared to both Beehiiv and Kit, Substack trades creator monetization control for cross-discovery network effects. The Substack vs Beehiiv comparison is the more direct head-to-head for pure newsletter creators.",
+      },
+      {
+        q: "What is the Brunson lens on Beehiiv vs Kit?",
+        a: "Both companies execute Dream Customer naming precisely — Beehiiv names the newsletter-as-business operator, Kit names the multi-channel creator. The Brunson move 'name your buyer specifically' is done cleanly by both, in different directions.",
+      },
+    ],
+    tags: ["newsletter", "creator-tools", "email-marketing", "monetization"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "resend-vs-postmark",
+    a: { name: "Resend", teardownSlug: "resend", url: "https://resend.com/" },
+    b: { name: "Postmark", url: "https://postmarkapp.com/" },
+    category: "Email API",
+    oneLine:
+      "Resend and Postmark both prioritize transactional email and developer experience. Resend is the modern React-tilted upstart; Postmark is the established deliverability-first incumbent.",
+    tldr:
+      "Resend and Postmark both target developer-led email senders with a transactional-first product philosophy. Postmark has been the deliverability gold standard for over a decade with separate streams for transactional and broadcast. Resend is newer with a sharper modern aesthetic, React Email integration, and a more generous free tier. For React teams and DX-first buyers, Resend. For teams prioritizing maximum deliverability and a longer track record, Postmark.",
+    bestFor: {
+      a: "Modern SaaS teams shipping with React who value cutting-edge DX and React Email integration.",
+      b: "Established teams prioritizing deliverability above all else, particularly for high-stakes transactional email.",
+    },
+    pickAIf: [
+      "You build with React and want React Email as a first-class template authoring tool.",
+      "You value modern documentation and SDK aesthetics.",
+      "You want a generous free tier (3K/mo) that covers indie SaaS in production.",
+    ],
+    pickBIf: [
+      "You prioritize deliverability maximally and want the platform with the strongest track record.",
+      "You need separated transactional and broadcast streams (Postmark's structural decision).",
+      "You value Postmark's mature support, documentation, and inbox-placement reputation.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Free tier (3K emails/mo); ~$20/mo for 50K (verified 2026-05-17); linear scaling.",
+        b: "100 emails/month free; paid tiers start at $15/mo for 10K (verified 2026-05-17).",
+        winner: "A",
+        note: "Resend's free tier is more generous; Postmark's paid tier pricing is roughly comparable at indie scale.",
+      },
+      {
+        name: "Deliverability",
+        a: "Strong; meets indie SaaS volume well.",
+        b: "Industry-leading; Postmark has built its reputation on inbox placement specifically.",
+        winner: "B",
+      },
+      {
+        name: "Transactional vs broadcast separation",
+        a: "Single API for both; mixing is allowed.",
+        b: "Separate streams enforced; transactional and broadcast use different servers and have different deliverability profiles.",
+        winner: "B",
+        note: "Postmark's separation is intentional — it protects transactional deliverability from broadcast incidents.",
+      },
+      {
+        name: "React Email integration",
+        a: "First-class; React Email is a Resend open-source project.",
+        b: "Templates use Postmark's MJML-based system; no native React integration.",
+        winner: "A",
+      },
+      {
+        name: "Documentation",
+        a: "Modern, polished, fast to scan.",
+        b: "Mature, thorough, deeper coverage of deliverability and bounce handling.",
+        winner: "tie",
+        note: "Different documentation styles; both are well-regarded.",
+      },
+      {
+        name: "Developer experience",
+        a: "Sharp modern SDK; React Email is the differentiator.",
+        b: "Solid mature SDK; less stylistically modern but functionally complete.",
+        winner: "A",
+      },
+      {
+        name: "Brand momentum",
+        a: "Strong; growing fast in 2026.",
+        b: "Stable; established but not growing as quickly.",
+        winner: "A",
+      },
+      {
+        name: "Support and reliability track record",
+        a: "Good; shorter history makes long-term assessment harder.",
+        b: "Excellent; 10+ year track record of reliable transactional email.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Resend and Postmark are both strong picks at the developer-friendly end of the email API category. The decision is mostly about whether you value cutting-edge modern DX (Resend) or the strongest possible deliverability track record (Postmark). Resend has closed most of the deliverability gap that newer platforms typically have, but Postmark's 10+ year reputation gives it an edge for buyers where inbox placement is a stated priority. For most indie SaaS in 2026, the choice is roughly a coin flip; the marginal advantage of React Email integration usually tips Resend.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Resend for indie SaaS in 2026. The free tier is more generous, React Email materially speeds template development, and brand momentum signals a platform that will keep improving. Postmark is excellent but the developer experience is calibrated for a slightly different buyer.",
+    },
+    faqs: [
+      {
+        q: "Is Postmark really better at deliverability than Resend?",
+        a: "Marginally, in 2026. The gap has narrowed significantly as Resend has matured. For most indie SaaS at typical volumes, both deliver well. At very high volumes or in regulated industries where deliverability is the dominant criterion, Postmark's track record still earns it the edge.",
+      },
+      {
+        q: "Why does Postmark separate transactional and broadcast streams?",
+        a: "Because a broadcast incident (high complaint rate, spam trigger) can damage IP reputation. Separating streams means a broadcast issue does not affect your transactional emails (password resets, receipts) which are usually mission-critical. It is a deliberate architectural choice that prioritizes transactional reliability.",
+      },
+      {
+        q: "Can I send marketing email on Resend?",
+        a: "Resend supports broadcast and audience features but is primarily transactional. For dedicated marketing email at scale, Mailchimp, Klaviyo, Customer.io, Loops, or Kit may serve better. Resend works for indie-scale marketing where transactional and broadcast volume are roughly comparable.",
+      },
+      {
+        q: "Can I migrate from Postmark to Resend?",
+        a: "Yes; the migration is mechanical because both speak similar API shapes. Template re-creation is the main effort (Resend uses React Email; Postmark uses MJML). Webhooks and bounce handling need re-wiring; SPF/DKIM needs re-verification.",
+      },
+      {
+        q: "What is the Brunson lens on Resend vs Postmark?",
+        a: "Postmark ran the original 'separate transactional from broadcast' play and won the deliverability-first segment for a decade. Resend ran the New Opportunity move (modern DX plus React Email) and is winning the React-developer segment. Both are still strong because they target different Dream Customers; the surface overlap is real but each owns a defensible position.",
+      },
+    ],
+    tags: ["email", "developer-tools", "deliverability", "transactional-email"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "stripe-vs-square",
+    a: { name: "Stripe", teardownSlug: "stripe", url: "https://stripe.com/" },
+    b: { name: "Square", url: "https://squareup.com/" },
+    category: "Payments processing",
+    oneLine:
+      "Stripe is for selling online. Square is for selling in person. The overlap is smaller than the brand familiarity suggests.",
+    tldr:
+      "Stripe and Square both process payments but specialize at opposite ends of the online-to-offline axis. Stripe is the canonical online payment infrastructure for SaaS, marketplaces, and ecommerce. Square is the canonical small-business POS for retail, restaurants, and service businesses with physical operations. Both have crossed into each other's territory (Square has online tooling, Stripe Terminal supports physical payments) but the centers of gravity are distinct.",
+    bestFor: {
+      a: "SaaS, online marketplaces, ecommerce, and any business where the checkout is integrated into a web or mobile product.",
+      b: "Small retail businesses, restaurants, service providers, and any business taking physical-world payments.",
+    },
+    pickAIf: [
+      "You sell online or your checkout is part of a software product.",
+      "You need sophisticated subscription billing, marketplaces, or platform payments.",
+      "Your buyer is technical or your team builds custom checkout flows.",
+    ],
+    pickBIf: [
+      "You sell in person at a physical store, restaurant, market, or service location.",
+      "You need integrated POS hardware (card readers, registers, kitchen displays).",
+      "You want a turnkey small-business platform (invoicing, payroll, lending) bundled with payments.",
+    ],
+    dimensions: [
+      {
+        name: "Primary use case",
+        a: "Online payments; SaaS, ecommerce, marketplaces.",
+        b: "Physical-world payments; retail, restaurants, services.",
+        winner: "different",
+      },
+      {
+        name: "Developer experience",
+        a: "Industry-leading; deep API, mature SDKs in every language.",
+        b: "Functional but less developer-focused; APIs exist but the platform is built for small business operators.",
+        winner: "A",
+      },
+      {
+        name: "Subscription billing",
+        a: "Stripe Billing is the canonical product with deep dunning, retention, tax automation.",
+        b: "Square Subscriptions exists but is less feature-rich than Stripe Billing.",
+        winner: "A",
+      },
+      {
+        name: "Physical hardware",
+        a: "Stripe Terminal supports physical card readers; less mature than Square.",
+        b: "Native hardware ecosystem (Square Reader, Terminal, Stand, KDS); the canonical small-business POS.",
+        winner: "B",
+      },
+      {
+        name: "Pricing",
+        a: "2.9% + 30¢ per online transaction (US standard, verified 2026-05-17).",
+        b: "2.6% + 10¢ per in-person transaction; 2.9% + 30¢ for online (verified 2026-05-17).",
+        winner: "tie",
+        note: "Square's in-person rate is lower; online rates are roughly comparable.",
+      },
+      {
+        name: "Small-business bundled services",
+        a: "Limited; Stripe focuses on payments infrastructure.",
+        b: "Mature; Square offers payroll, lending, marketing, invoicing, gift cards as integrated products.",
+        winner: "B",
+      },
+      {
+        name: "Marketplaces and platforms",
+        a: "Stripe Connect is the canonical product for marketplaces.",
+        b: "Possible but less developer-friendly; Square is not designed primarily for platform businesses.",
+        winner: "A",
+      },
+      {
+        name: "International availability",
+        a: "Broad; available in most major countries.",
+        b: "Narrower; primarily US, Canada, UK, Australia, Japan, Ireland, France, Spain.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Stripe and Square are not really competitive in 2026 the way the brand-familiarity comparison suggests. Stripe owns online; Square owns small-business physical. Both have crossed into each other's territory — Square's online tooling has matured, Stripe Terminal supports physical card readers — but the structural strengths remain on their respective sides. The right pick is almost entirely determined by whether your business is primarily online or primarily physical. Mixed businesses sometimes use both (Stripe for online checkout, Square for in-person POS).",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "For indie SaaS, Stripe by default — the entire business is online, so Square's strengths do not apply. The only exception is an indie founder running a hybrid business (e.g., a coffee shop or services business with an online component); even then, the SaaS side of the business should use Stripe.",
+    },
+    faqs: [
+      {
+        q: "Should a SaaS ever use Square instead of Stripe?",
+        a: "Rarely. Stripe's subscription billing, marketplace tooling, and developer APIs are designed for software products; Square's are not. The only reason a SaaS might use Square is if the team already runs a physical business on Square and wants one vendor.",
+      },
+      {
+        q: "Can a retail store use Stripe instead of Square?",
+        a: "Possible via Stripe Terminal, but Square's POS ecosystem (hardware, software, payroll, invoicing) is more battery-included for small businesses. Most retail operators choose Square for the bundled experience even if Stripe's rates are slightly better.",
+      },
+      {
+        q: "Why does Square offer payroll and lending?",
+        a: "Because small businesses want a single platform for operations. Square's strategy is to be the small-business platform with payments as one product; Stripe's strategy is to be the payment infrastructure with everything else handled by partners or the customer.",
+      },
+      {
+        q: "What about Toast or Lightspeed for restaurants?",
+        a: "Toast and Lightspeed are restaurant-vertical-specific POS systems that compete with Square's restaurant offering. For pure restaurant operations, vertical specialists often beat horizontal platforms like Square. The Stripe-vs-Square decision rarely involves restaurants directly.",
+      },
+      {
+        q: "What is the Brunson lens on Stripe vs Square?",
+        a: "Both companies executed precise Dream Customer naming — Stripe named the developer; Square named the small-business operator. The Brunson move 'win one Dream Customer deeply before broadening' applies to both: each owns their segment cleanly, and the broadening moves into the other's territory have been measured rather than rushed.",
+      },
+    ],
+    tags: ["payments", "online-vs-offline", "developer-tools", "small-business"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "screen-studio-vs-loom",
+    a: {
+      name: "Screen Studio",
+      teardownSlug: "screen-studio",
+      url: "https://www.screen.studio/",
+    },
+    b: { name: "Loom", url: "https://www.loom.com/" },
+    category: "Screen recording",
+    oneLine:
+      "Loom optimizes for fast async communication. Screen Studio optimizes for polished marketing video. They share the file type but solve different jobs.",
+    tldr:
+      "Loom and Screen Studio both record screens but for different jobs. Loom is built for fast async team communication — record, share a link, move on. Screen Studio is built for polished marketing videos — auto-zoom, smooth cursor, cinematic export. Loom wins for daily team async. Screen Studio wins for product demos, marketing pages, and any video where the output reflects on the brand.",
+    bestFor: {
+      a: "Indie founders, designers, and marketers producing product demos, tutorial videos, and marketing content.",
+      b: "Teams using async screen recording for fast communication, code review, customer support, and internal updates.",
+    },
+    pickAIf: [
+      "The video will appear on a marketing page, app store listing, or social media where polish matters.",
+      "You want auto-zoom and smooth cursor animation without manual editing.",
+      "You value one-time pricing over a subscription.",
+    ],
+    pickBIf: [
+      "You record async videos multiple times per day for team or customer communication.",
+      "You want instant share links, reactions, and viewer analytics.",
+      "Speed matters more than cinematic polish for your typical use case.",
+    ],
+    dimensions: [
+      {
+        name: "Primary use case",
+        a: "Polished marketing video; product demos, app store videos, tutorials.",
+        b: "Fast async communication; team updates, customer support, code review.",
+        winner: "different",
+      },
+      {
+        name: "Output polish",
+        a: "Distinctive aesthetic: auto-zoom, smooth cursor, configurable backgrounds.",
+        b: "Utilitarian; fast and functional but not cinematic.",
+        winner: "A",
+      },
+      {
+        name: "Speed of recording-to-share",
+        a: "Recording then editing then export; minutes per video.",
+        b: "Record then auto-upload then share link; near-instant.",
+        winner: "B",
+      },
+      {
+        name: "Pricing",
+        a: "One-time license, ~$229 (verified 2026-05-17), with optional yearly updates.",
+        b: "Free tier (25 videos/person); Business ~$12.50/user/mo, Enterprise custom (verified 2026-05-17).",
+        winner: "different",
+        note: "Different models entirely; one-time vs subscription.",
+      },
+      {
+        name: "Collaboration features",
+        a: "Limited; built for the solo creator producing finished output.",
+        b: "Rich; comments, reactions, view tracking, time-stamped replies.",
+        winner: "B",
+      },
+      {
+        name: "Editing capabilities",
+        a: "Native non-linear editor with cuts, zoom, music, overlays.",
+        b: "Basic editing; trim, drawing, captions; no cinematic effects.",
+        winner: "A",
+      },
+      {
+        name: "Mobile recording",
+        a: "macOS desktop app only.",
+        b: "Web, desktop, and mobile apps.",
+        winner: "B",
+      },
+      {
+        name: "Brand fit for indie founders",
+        a: "Strong — designed for the indie operator producing polished marketing assets.",
+        b: "Strong — designed for the async-communication team operator.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "Loom and Screen Studio do not really compete on the same job. Loom optimizes for the speed of going from 'I need to explain this' to 'here is a link'. Screen Studio optimizes for the polish of the final exported video. They share the format (screen recording) but the workflows and outputs diverge sharply. Most serious indie founders end up using both — Loom for daily async communication, Screen Studio for marketing-page videos and product demos that need to look intentional. Picking one to do both jobs always feels like a compromise.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Use both. Loom for daily async communication with team, customers, and contractors; Screen Studio for your marketing page video, product demos, and anything that will be seen by your public audience. The one-time Screen Studio license pays for itself on the first marketing video that would otherwise have needed a freelance editor.",
+    },
+    faqs: [
+      {
+        q: "Can Loom replace Screen Studio for marketing videos?",
+        a: "Not really. Loom's output is intentionally utilitarian for async sharing; using it for a marketing video gives a recognizably 'Loom' aesthetic that reads as effort-light. For marketing pages, app store videos, and demos shared publicly, Screen Studio's polish is the structural difference.",
+      },
+      {
+        q: "Can Screen Studio replace Loom for async team communication?",
+        a: "Workably but not naturally. Screen Studio requires editing time before share; Loom is instant. For high-frequency async communication, the friction adds up. Use Loom for that workflow.",
+      },
+      {
+        q: "Is the one-time Screen Studio license worth it?",
+        a: "For most indie founders, yes. The break-even versus subscription competitors is fast (under a year), and the polish-to-effort ratio on marketing videos is the single biggest practical advantage. The license also includes ownership rather than dependence on a SaaS subscription.",
+      },
+      {
+        q: "What about CleanShot X, Demoflow, or Tella for marketing video?",
+        a: "All valid alternatives. CleanShot X is more screenshot-and-quick-capture focused; Demoflow and Tella are SaaS alternatives to Screen Studio with subscription pricing. The Screen Studio vs Loom comparison is the most common one because the brand familiarity is similar; the alternatives serve specific niches.",
+      },
+      {
+        q: "What is the Brunson lens on Screen Studio vs Loom?",
+        a: "Loom executed Dream Customer naming for the async-team-communication operator and won that segment decisively. Screen Studio executed precise Dream Customer naming for the indie operator producing polished marketing videos and won the parallel segment. Both are clear examples of 'win a Dream Customer deeply rather than trying to serve everyone.'",
+      },
+    ],
+    tags: ["video", "screen-recording", "marketing-tools", "async-communication"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "mintlify-vs-gitbook",
+    a: { name: "Mintlify", teardownSlug: "mintlify", url: "https://mintlify.com/" },
+    b: { name: "GitBook", url: "https://www.gitbook.com/" },
+    category: "Developer documentation",
+    oneLine:
+      "Mintlify is a modern docs platform optimized for API and developer-tool companies. GitBook is a broader documentation and knowledge platform.",
+    tldr:
+      "Mintlify and GitBook both publish documentation but with different product philosophies. Mintlify is docs-as-code optimized for API companies and developer tools, with a polished aesthetic now common across modern dev-tool docs. GitBook is a broader knowledge platform supporting docs, internal wikis, and team knowledge bases with a richer editor and broader use cases. For developer-tool companies, Mintlify. For broader documentation and internal knowledge, GitBook.",
+    bestFor: {
+      a: "API companies, developer tools, and SDK publishers who want polished docs that match the modern dev-tool aesthetic.",
+      b: "Teams publishing broader documentation, internal wikis, knowledge bases, and team-collaboration content.",
+    },
+    pickAIf: [
+      "You publish API docs or developer-facing technical content.",
+      "You value the modern docs aesthetic shared by Anthropic, Stripe, Resend, Cal.com.",
+      "You want docs-as-code with Markdown/MDX and Git-based workflows.",
+    ],
+    pickBIf: [
+      "You publish broader documentation including internal wikis and team knowledge.",
+      "You value a richer WYSIWYG editor for non-technical contributors.",
+      "Your audience is mixed (developers plus product, support, sales).",
+    ],
+    dimensions: [
+      {
+        name: "Target audience",
+        a: "API companies and developer tools.",
+        b: "Broader: documentation, wikis, knowledge bases.",
+        winner: "different",
+      },
+      {
+        name: "Authoring model",
+        a: "Docs-as-code; MDX, Git-based workflow, deploys on push.",
+        b: "Mostly WYSIWYG with Git-sync option; designed for mixed-skill contributors.",
+        winner: "different",
+      },
+      {
+        name: "Output aesthetic",
+        a: "Distinctive modern docs aesthetic; recognizable from Anthropic, Cursor, Resend, others.",
+        b: "Clean but more conventional documentation aesthetic.",
+        winner: "A",
+        note: "Mintlify's aesthetic is genre-defining for modern dev-tool docs; GitBook's is more neutral.",
+      },
+      {
+        name: "Pricing",
+        a: "Free for open-source projects; paid tiers per editor seat (verified 2026-05-17).",
+        b: "Free tier; paid tiers per user with team and enterprise pricing (verified 2026-05-17).",
+        winner: "tie",
+      },
+      {
+        name: "API reference generation",
+        a: "Strong; OpenAPI imports, generated API references, code samples.",
+        b: "Supported but less specialized for API docs.",
+        winner: "A",
+      },
+      {
+        name: "AI search",
+        a: "Built-in; LLM-powered docs search and assistant.",
+        b: "Available; quality varies by tier.",
+        winner: "tie",
+      },
+      {
+        name: "Internal wiki use case",
+        a: "Possible but not the focus; designed for public-facing docs.",
+        b: "Mature; GitBook is a standard for internal wikis and team knowledge.",
+        winner: "B",
+      },
+      {
+        name: "Customer roster recognition",
+        a: "Visible roster of high-profile dev-tool customers (Anthropic, Cursor, Resend, others) recognizable to the buyer.",
+        b: "Mature customer base but less concentrated in the dev-tool category.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Mintlify and GitBook serve overlapping documentation use cases but with different centers of gravity. Mintlify owns the modern dev-tool docs aesthetic — every visible Mintlify-built docs site reinforces the platform's positioning for the next API company evaluating tooling. GitBook serves a broader documentation universe with more flexibility around contributors and use cases. For pure API documentation, Mintlify's specialization is real and the customer roster reinforces it. For mixed documentation surfaces (public docs plus internal wikis plus knowledge bases), GitBook's breadth is the right fit.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you are a dev-tool indie SaaS, Mintlify — the aesthetic match alone is worth the choice, and the visible-customer flywheel works in your favor. If you are publishing broader documentation or want a single platform for public docs and internal knowledge, GitBook. For non-developer-targeted SaaS, the choice matters less; either works.",
+    },
+    faqs: [
+      {
+        q: "Is the Mintlify aesthetic really a differentiator?",
+        a: "Yes, for dev-tool companies. The aesthetic shared by Anthropic, Resend, Cursor, and others is now what 'modern API docs' look like, and matching that pattern signals category membership to evaluating developers. The aesthetic is the marketing as much as the product.",
+      },
+      {
+        q: "Can GitBook do API docs?",
+        a: "Yes, but with less specialization than Mintlify. GitBook supports API references and OpenAPI imports but the rendering and customization are less specialized for the API-docs use case.",
+      },
+      {
+        q: "What about Docusaurus or Nextra instead?",
+        a: "Docusaurus (Facebook open-source) and Nextra (Vercel ecosystem) are open-source alternatives that you host yourself. Both are powerful but require engineering effort to deploy and maintain. Mintlify and GitBook are managed SaaS that handle hosting; the choice between SaaS and self-hosted is the first decision.",
+      },
+      {
+        q: "Should an indie founder use GitBook for internal docs?",
+        a: "GitBook works well for internal wikis and team knowledge bases. Notion is the more common indie choice for that role; GitBook is the next step up if Notion starts feeling underweight or if you want a clear separation between team knowledge and external docs.",
+      },
+      {
+        q: "What is the Brunson lens on Mintlify vs GitBook?",
+        a: "Mintlify executed Dream Customer naming precisely (API companies) and bet on the visible-customer flywheel — every Mintlify docs site advertises the platform to the next buyer. GitBook executed broader positioning that captures more use cases but loses the aesthetic specificity that wins dev-tool buyers. Both work; they target different Dream Customers.",
+      },
+    ],
+    tags: ["documentation", "developer-tools", "knowledge-base", "api-docs"],
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup.
