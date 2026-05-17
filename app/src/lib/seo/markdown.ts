@@ -56,6 +56,13 @@ import {
   type Comparison,
   getComparisonBySlug,
 } from "@/lib/comparisons";
+import {
+  CATEGORIES,
+  type CategoryDef,
+  getCategoryBySlug,
+  getProductRosterForCategory,
+  getComparisonsInCategory,
+} from "@/lib/categories";
 import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
 
 /**
@@ -496,6 +503,25 @@ ${TEARDOWNS.map(
 Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Playbook is the tool that does it.
 `;
 
+const CATEGORY_HUB_BODY = `# Categories — Best SaaS Tools by Category, Analyzed for Indie Founders
+
+> Curated category roundups across every SaaS tool we have analyzed, organized by the category you are searching in.
+
+## TL;DR
+
+The Category surface is a pSEO library that aggregates every funnel teardown, pricing teardown, and head-to-head comparison on Unlock SaaS into canonical category buckets. Each category page lists every product analyzed in that category with deep links into the underlying teardowns and comparisons. Pure data reuse — new analyses added to any manifest appear on the matching category page automatically.
+
+## Available categories
+
+${CATEGORIES.map(
+  (c) => `### ${c.displayName}\n\n${c.oneLine}\n\nBrowse: ${BASE_URL}/category/${c.slug}`,
+).join("\n\n")}
+
+## Why this surface exists
+
+Buyers searching "best [X] for indie SaaS" want a curated comparison landing page, not 27 individual comparisons to choose between. The category page IS the answer to that query — it lists every product analyzed in the category with links into the deep analytical content. Same data as the per-product surfaces; different access pattern.
+`;
+
 const COMPARE_HUB_BODY = `# Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools
 
 > Symmetric dimension-by-dimension breakdowns of the tools indie SaaS founders are mid-evaluation on. Both sides get a fair read.
@@ -713,6 +739,55 @@ ${faqs}
 ---
 
 If you want this same pricing lens applied to *your* page (not ${t.displayName}'s), the Unlock SaaS Playbook does exactly that at ${BASE_URL}/playbook-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door — pricing-page dysfunction usually shows up as the Weak Offer label.
+`;
+}
+
+/**
+ * Per-category markdown body. Aggregates products and comparisons in a
+ * canonical category bucket. Pure data reuse — every product line is
+ * derived from the underlying teardown manifests.
+ */
+function buildCategoryMarkdown(cat: CategoryDef): string {
+  const products = getProductRosterForCategory(cat.slug);
+  const comparisons = getComparisonsInCategory(cat.slug);
+
+  const productLines = products
+    .map((p) => {
+      const links: string[] = [];
+      if (p.funnelSlug)
+        links.push(`Funnel teardown: ${BASE_URL}/funnel-teardown/${p.funnelSlug}`);
+      if (p.pricingSlug)
+        links.push(`Pricing teardown: ${BASE_URL}/pricing-teardown/${p.pricingSlug}`);
+      return `### ${p.name}\n\n${p.oneLine}\n\n${links.join(" — ")}`;
+    })
+    .join("\n\n");
+
+  const comparisonLines = comparisons
+    .map(
+      (c) =>
+        `### ${c.a.name} vs ${c.b.name}\n\n${c.oneLine}\n\nFull comparison: ${BASE_URL}/compare/${c.slug}`,
+    )
+    .join("\n\n");
+
+  return `# ${cat.displayName} for Indie SaaS
+
+> ${cat.oneLine}
+
+## TL;DR
+
+${cat.intent}
+
+## Products analyzed in this category
+
+${products.length === 0 ? "_No products analyzed yet._" : productLines}
+
+## Head-to-head comparisons in this category
+
+${comparisons.length === 0 ? "_No comparisons in this category yet._" : comparisonLines}
+
+---
+
+This roundup aggregates every product and comparison in the ${cat.displayName.toLowerCase()} category that we have analyzed. New analyses appear here automatically on next build. Browse all categories at ${BASE_URL}/category.
 `;
 }
 
@@ -957,6 +1032,15 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
       "Symmetric dimension-by-dimension breakdowns of the tools indie SaaS founders are mid-evaluation on.",
     body: COMPARE_HUB_BODY,
   },
+  {
+    path: "/category",
+    mdPath: "/category.md",
+    title:
+      "Categories — Best SaaS Tools by Category, Analyzed for Indie Founders",
+    summary:
+      "Curated category roundups across every SaaS tool we have analyzed, organized by category.",
+    body: CATEGORY_HUB_BODY,
+  },
 ];
 
 const SURFACES_BY_MD_PATH = new Map<string, MarkdownSurface>(
@@ -1072,6 +1156,27 @@ export function renderPricingTeardownMarkdown(
  * Render a per-comparison markdown body. Same render contract as the
  * teardown renderers; powers /compare/<slug>/md.
  */
+/**
+ * Render a per-category markdown body. Same render contract as the
+ * teardown renderers; powers /category/<slug>/md.
+ */
+export function renderCategoryMarkdown(slug: string): string | undefined {
+  const cat = getCategoryBySlug(slug);
+  if (!cat) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/category/${cat.slug}`;
+  return [
+    frontMatter({
+      title: `${cat.displayName} — Indie SaaS Roundup`,
+      summary: cat.oneLine,
+      canonical: canonicalUrl,
+      updated: TODAY,
+    }),
+    buildCategoryMarkdown(cat).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
 export function renderComparisonMarkdown(slug: string): string | undefined {
   const c = getComparisonBySlug(slug);
   if (!c) return undefined;
@@ -1194,6 +1299,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const categories = CATEGORIES.map((cat) => {
+    const canonical = `${BASE_URL}/category/${cat.slug}`;
+    const mirror = `${BASE_URL}/category/${cat.slug}/md`;
+    return [
+      `## ${cat.displayName}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildCategoryMarkdown(cat).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -1213,6 +1333,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools",
     "",
     comparisons,
+    "",
+    "# Categories — Best SaaS Tools by Category, Analyzed for Indie Founders",
+    "",
+    categories,
     "",
     citationFooter(BASE_URL),
   ].join("\n");

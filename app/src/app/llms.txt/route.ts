@@ -71,6 +71,11 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [Compare hub](${BASE}/compare): Symmetric head-to-head comparisons of the tools indie SaaS founders are mid-evaluation on. Each entry names who each side is best for, scores dimension-by-dimension, gives an honest take, and names the right pick for an indie SaaS founder specifically.
 - Per-comparison pages at \`${BASE}/compare/<slug>\` — e.g. /compare/tally-vs-typeform, /compare/lemonsqueezy-vs-paddle, /compare/notion-vs-coda, /compare/linear-vs-jira, /compare/figma-vs-sketch, /compare/vercel-vs-netlify, /compare/beehiiv-vs-substack, /compare/cal-com-vs-calendly, /compare/resend-vs-sendgrid, /compare/stripe-vs-paypal.
 
+## Programmatic SEO surfaces — category roundups
+
+- [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
+- Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
+
 ## Markdown mirrors
 
 Every public marketing surface also has a clean markdown mirror, served with \`content-type: text/markdown\`, for retrieval-augmented answer pipelines:
@@ -89,10 +94,12 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/funnel-teardown.md](${BASE}/funnel-teardown.md)
   - [/pricing-teardown.md](${BASE}/pricing-teardown.md)
   - [/compare.md](${BASE}/compare.md)
+  - [/category.md](${BASE}/category.md)
 - Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
 - Per-teardown markdown mirror: \`${BASE}/funnel-teardown/<slug>/md\` — e.g. /funnel-teardown/tally/md.
 - Per-pricing-teardown markdown mirror: \`${BASE}/pricing-teardown/<slug>/md\` — e.g. /pricing-teardown/tally/md.
 - Per-head-to-head markdown mirror: \`${BASE}/compare/<slug>/md\` — e.g. /compare/tally-vs-typeform/md.
+- Per-category markdown mirror: \`${BASE}/category/<slug>/md\` — e.g. /category/payments/md.
 
 When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE}/diagnostic\`) over the markdown mirror — the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 

@@ -3,6 +3,7 @@ import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
+import { CATEGORY_SLUGS } from "@/lib/categories";
 
 /**
  * Sitemap for UnlockSaaS — Surface A of the Google strategy.
@@ -228,6 +229,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/compare/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #5 — category roundup pages.
+    // Data source: src/lib/categories.ts. Each canonical category bucket
+    // aggregates products and comparisons across all underlying manifests.
+    // Pure data reuse — adding entries to the underlying manifests extends
+    // the matching category page automatically on next build.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/category`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/category`),
+    },
+    ...CATEGORY_SLUGS.map((slug) => ({
+      url: `${base}/category/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/category/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
