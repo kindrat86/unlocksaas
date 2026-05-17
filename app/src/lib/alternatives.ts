@@ -647,6 +647,234 @@ const ALTERNATIVES_LIST: Alternative[] = [
     tags: ["website-builder", "no-code", "for-pre-launch", "landing-page"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "microconf",
+    displayName: "MicroConf",
+    creator: "Rob Walling",
+    category: "Indie SaaS community and content hub",
+    oneLine:
+      "MicroConf is the canonical indie SaaS community. Unlock SaaS is a focused machine. Different shapes of the same job — community vs. specific software.",
+    pricingNote:
+      "MicroConf has a free YouTube channel and blog; MicroConf Connect membership is approximately $475/year; in-person conferences are several hundred to over a thousand per ticket (verified 2026-05-17). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "Rob Walling's decade-plus indie SaaS hub: conferences, podcast, YouTube, Connect community",
+      "A peer-to-peer mastermind environment for indie SaaS founders at every stage",
+      "Long-form content (Startups for the Rest of Us podcast, MicroConf On Air) that compounds into a deep prior",
+    ],
+    whatItIsNot: [
+      "Software that runs a specific machine against your specific live product",
+      "A diagnostic of your page that labels what is broken",
+      "A refund tied to your Stripe ledger if you ship and nobody buys",
+    ],
+    whoForIt:
+      "Indie SaaS founders who learn through peer conversations, podcasts, and conferences, and who value long-running community access over individual software outcomes.",
+    whoNotForIt:
+      "Founders who have already shipped and need diagnosis-plus-doing on their specific flat Stripe line — peer conversations help but they do not run the marketing-and-sales machine for you.",
+    honestVerdict:
+      "MicroConf is the gold-standard indie SaaS community and most Unlock SaaS members benefit from being adjacent to it. The two are complementary: MicroConf gives you the peer network and long-running content; Unlock SaaS runs the specific machine against your specific page. The mistake is treating either as a substitute for the other.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a MicroConf alternative?",
+        a: "No. MicroConf is a community and content hub; Unlock SaaS is a software product that runs against your specific live page and verifies the result in Stripe. They serve different needs and most serious indie SaaS founders use both.",
+      },
+      {
+        q: "Should I join MicroConf Connect or buy Unlock SaaS?",
+        a: "If your bottleneck is peer learning and long-running founder relationships, MicroConf Connect. If your bottleneck is the specific marketing-and-sales work against your shipped product, Unlock SaaS. Most members of one benefit from the other.",
+      },
+      {
+        q: "Does Unlock SaaS have a community?",
+        a: "Not at launch. The product is the machine; community comes later if it earns its place by accelerating real customer outcomes, not as decorative add-on. MicroConf is the community founders should join in the meantime.",
+      },
+      {
+        q: "Is MicroConf still active in 2026?",
+        a: "Yes — Rob Walling continues running the podcast, conferences, and MicroConf Connect community. The hub has grown into one of the longest-running indie SaaS institutions, with consistent year-over-year founder turnout.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: false,
+    },
+    homepageUrl: "https://microconf.com/",
+    tags: ["community", "content-hub", "indie-saas-canon", "complementary"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "stacking-the-bricks",
+    displayName: "Stacking the Bricks (30x500)",
+    creator: "Amy Hoy and Alex Hillman",
+    category: "Indie SaaS curriculum and methodology",
+    oneLine:
+      "Stacking the Bricks teaches you to find your audience and validate before you build. Unlock SaaS runs the machine after you have already shipped. Same lineage, opposite ends of the timeline.",
+    pricingNote:
+      "Stacking the Bricks publishes free content; 30x500 (the flagship course) is approximately $1,995 (verified 2026-05-17). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "Amy Hoy and Alex Hillman's decade-long indie SaaS curriculum focused on audience and validation before product",
+      "The 30x500 course: a structured methodology for finding pain, building Sales Safari, shipping safe-bet products",
+      "Long-form essays, podcast appearances, and a contrarian voice in the indie SaaS canon",
+    ],
+    whatItIsNot: [
+      "Software that runs against your already-shipped product",
+      "A diagnostic of your live page",
+      "A guarantee tied to your Stripe ledger",
+    ],
+    whoForIt:
+      "Pre-product founders who have not yet shipped and want a rigorous methodology for finding audience and validating ideas before building.",
+    whoNotForIt:
+      "Founders who already shipped a product (with or without Stacking the Bricks methodology) and have a flat Stripe line — the next problem is the customer-acquisition machine, not more upstream methodology.",
+    honestVerdict:
+      "Stacking the Bricks is the most respected pre-product curriculum in the indie SaaS canon. If you have not shipped yet and have $2K to invest in a rigorous methodology, 30x500 is one of the strongest options. Unlock SaaS exists for the founder who already shipped and needs the machine that produces the first paying customer for what they built. Different rungs of the same staircase.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Stacking the Bricks alternative?",
+        a: "No. Stacking the Bricks (30x500) teaches you to find audience and validate before you build; Unlock SaaS runs the marketing-and-sales machine for the product you already shipped. They are sequential, not interchangeable.",
+      },
+      {
+        q: "Should I buy 30x500 first or Unlock SaaS first?",
+        a: "30x500 if you have not shipped a product yet and want rigorous pre-product methodology. Unlock SaaS if you already shipped and the Stripe line is flat. Some founders use both at different stages.",
+      },
+      {
+        q: "Do the methodologies conflict?",
+        a: "No. Stacking the Bricks emphasizes Sales Safari (deep audience research before building) which complements the dream-customer naming in the Unlock SaaS machine. The methodologies are upstream-vs-downstream, not contradictory.",
+      },
+      {
+        q: "Are Amy Hoy and Alex Hillman still active in 2026?",
+        a: "Yes — both continue to publish essays, speak at conferences, and run cohorts of 30x500. The curriculum has refined over a decade-plus and the contrarian-but-rigorous voice still resonates with the indie SaaS audience.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: true,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: false,
+    },
+    homepageUrl: "https://stackingthebricks.com/",
+    tags: ["curriculum", "pre-product", "methodology", "indie-saas-canon"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "demand-curve",
+    displayName: "Demand Curve",
+    creator: "Julian Shapiro and team",
+    category: "Modern marketing curriculum and growth agency",
+    oneLine:
+      "Demand Curve teaches startup marketing in long-form courses and ships growth-agency work. Unlock SaaS runs the focused machine for the indie SaaS first-customer problem.",
+    pricingNote:
+      "Demand Curve's Growth Programs are approximately $1,995-2,995 per cohort; agency services are project-based (verified 2026-05-17). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "Julian Shapiro's startup-marketing curriculum, originally the Growth Program",
+      "Long-form essays and frameworks on positioning, ads, landing pages, and growth experiments",
+      "An agency arm that runs growth campaigns for funded startups",
+    ],
+    whatItIsNot: [
+      "Software calibrated for the pre-revenue indie SaaS founder specifically",
+      "A diagnostic of your live page with a Stripe-verified guarantee",
+      "A focused machine that refuses to let you skip the work that gets paid",
+    ],
+    whoForIt:
+      "Founders and early growth hires at funded startups who want comprehensive marketing curriculum and frameworks across paid acquisition, positioning, and CRO.",
+    whoNotForIt:
+      "Pre-revenue indie SaaS founders specifically — Demand Curve is calibrated for startups with marketing budgets and team capacity, not for the solo founder with a flat Stripe line and no ad spend.",
+    honestVerdict:
+      "Demand Curve is excellent for what it is: comprehensive startup-marketing education for founders with budget and team. Unlock SaaS is narrower and indie-focused: one machine for the one job of getting the first paying customer when you shipped alone and have no marketing budget. Different audiences, different scopes, both legitimate.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Demand Curve alternative?",
+        a: "Only loosely. Demand Curve is a comprehensive startup-marketing curriculum (and agency); Unlock SaaS is a focused machine for one job (the first paying customer for an indie SaaS). The audiences overlap on the edges but the scopes are quite different.",
+      },
+      {
+        q: "Should I take the Demand Curve Growth Program or Unlock SaaS?",
+        a: "Growth Program if you are at a funded startup with marketing budget and team capacity. Unlock SaaS if you are a solo indie founder with a shipped product, no budget, and a flat Stripe line. The decisions map to different stages and shapes.",
+      },
+      {
+        q: "Does Demand Curve serve indie SaaS founders?",
+        a: "Some indie founders take the curriculum, but the canonical buyer is the funded startup. The frameworks and ad-spend examples assume budget and team that indie founders typically do not have.",
+      },
+      {
+        q: "Is Julian Shapiro still running Demand Curve in 2026?",
+        a: "Julian remains associated but the team has grown beyond him. The Growth Program continues to ship cohorts and the agency arm continues to take clients. The brand is established and the long-form essays remain widely cited in startup-marketing circles.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: true,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: false,
+    },
+    homepageUrl: "https://www.demandcurve.com/",
+    tags: ["curriculum", "marketing", "for-funded-startups", "agency"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "replit",
+    displayName: "Replit",
+    creator: "Amjad Masad",
+    category: "Browser IDE and AI agent platform",
+    oneLine:
+      "Replit builds and deploys the app in your browser, with an AI agent that can take multi-step actions. Unlock SaaS finds the first paying customer for whatever you built — Replit or otherwise.",
+    pricingNote:
+      "Replit has a free tier and paid plans (Replit Core, Replit Teams) with AI agent usage credits (verified 2026-05-17). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A browser-based IDE that ships apps without leaving the browser",
+      "Replit Agent: an AI agent that builds, deploys, and iterates on applications autonomously",
+      "A long-running platform with one of the broadest indie + education + hobbyist user bases",
+    ],
+    whatItIsNot: [
+      "A way to get someone to pay for what you generated",
+      "A diagnostic for why your shipped page is converting at zero",
+      "A guarantee tied to your Stripe ledger",
+    ],
+    whoForIt:
+      "Indie founders, non-engineers, students, and hobbyists who want a browser-first build-and-deploy environment with strong AI agent assistance.",
+    whoNotForIt:
+      "Founders who already shipped on Replit (or anything else) and have a flat Stripe line. The next problem is the customer, not better building.",
+    honestVerdict:
+      "Replit is one of the strongest browser-first builders in the AI-app-builder category, with a long-running platform advantage and broad user base. Most Unlock SaaS members ship with Replit or one of its peers (Lovable, v0, Bolt.new, Cursor). The Playbook treats whatever you shipped as input and works on the customer-acquisition problem the builders do not solve.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Replit alternative?",
+        a: "No. Replit builds and deploys your app; Unlock SaaS finds the first paying customer for the app you already built. Different categories, sequential use cases.",
+      },
+      {
+        q: "Can I use Unlock SaaS with a product I built on Replit?",
+        a: "Yes — this is exactly the canonical case. Paste the URL of your Replit-built and -deployed product into the diagnostic, and within ninety seconds it labels what is broken about the offer.",
+      },
+      {
+        q: "How is Replit different from Lovable, v0, or Bolt.new?",
+        a: "All four sit in the AI-app-builder category. Replit has the longest platform history and the broadest user base (including students and hobbyists); the others are more recently positioned around indie-founder polish. Unlock SaaS works the same way regardless of which one you shipped on.",
+      },
+      {
+        q: "Does Replit Agent compete with Cursor or Windsurf?",
+        a: "Adjacent but different — Replit Agent runs in the browser-IDE context and emphasizes deploy-as-part-of-the-loop; Cursor and Windsurf are desktop editors with more granular code control. The choice depends on whether browser-first or desktop-first matches your workflow.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://replit.com/",
+    tags: ["ai-app-builder", "browser-ide", "agent", "build-tool"],
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
