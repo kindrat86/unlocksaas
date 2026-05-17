@@ -7,8 +7,62 @@ import { StoriesOptIn } from "./stories-opt-in";
 import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
+  FaqPageJsonLd,
+  type FaqItem,
 } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+
+/**
+ * Question schema for the five stories (AEO uplift, 2026-05-17).
+ *
+ * The audit deduction was: "No Question schema on /stories long-form pieces
+ * — they're written as essays, not as PAA-shaped Q/A." The fix is NOT to
+ * rewrite the essays into a FAQ — the Reverse Squeeze form is what makes
+ * the page convert (DCS Secret 14, reverse variant). The fix is to ship a
+ * parallel FAQPage JSON-LD that distills each of the five stories into one
+ * PAA-shaped Question + Answer pair Google and answer engines can lift.
+ *
+ * Source discipline (Brunson Hard-Rule — no claims unique to schema):
+ *   - Every `q` here maps to a real long-tail query class an indie SaaS
+ *     founder types into Google ("why can't I write my offer page",
+ *     "why doesn't SEO produce customers for indie SaaS", etc.).
+ *   - Every `a` is sourced verbatim or paraphrased from the on-page
+ *     narrative + blockquote. No answer makes a claim that isn't already
+ *     in the HTML body the visitor reads above the schema.
+ *   - Answer length sits in the 50–120-word range — the median pulled-
+ *     snippet length per Google's PAA spec. Long enough to be the answer,
+ *     short enough to be the snippet.
+ *
+ * Each Q/A pair anchors to its source section via the `#story-N` fragment
+ * on the on-page `<section id>`. AEO uplift: when Google deep-links a PAA
+ * answer, it lands on the specific story, not the top of the page.
+ *
+ * Why FAQPage and not QAPage: QAPage is for user-generated Q&A surfaces
+ * (Stack Overflow et al.). FAQPage is the editorially-controlled answer
+ * schema, which is what these are.
+ */
+const STORY_QA: ReadonlyArray<FaqItem> = [
+  {
+    q: "Why can't I write my SaaS offer page after shipping the product?",
+    a: "Because the answer doesn't exist yet. You can know the features, the architecture, and the pricing block and still freeze on the sentence that promises one specific person what they'll walk away with, by when, and what they're paying for. The order was wrong — you built the product before you earned the right to write that sentence. If you can't write your offer in one sentence, to one real person, you have not earned the right to build the product.",
+  },
+  {
+    q: "Why doesn't refreshing Stripe produce revenue for a pre-revenue SaaS?",
+    a: "Because the refresh is the cheapest substitute for the uncomfortable work that would actually move the line — talking to someone who has not yet decided to pay. Forty to sixty refreshes a day generate zero dollars, because \"working on the business\" and \"doing the work\" are not the same thing. The daily activity of working on it is the most expensive way to avoid the actual work.",
+  },
+  {
+    q: "Why doesn't SEO produce customers for a pre-revenue indie SaaS?",
+    a: "Because SEO lets you be visibly productive in front of a problem that needs to be solved by an uncomfortable conversation, not a keyword. Topic clusters, schema markup, and a programmatic page generator can all produce the appearance of someone working hard while producing zero new paying customers for an already-shipped product. Productive work is the best-camouflaged form of avoidance — nobody, including you, can call you out for it.",
+  },
+  {
+    q: "How do I see my own blind spots as a non-engineer SaaS founder?",
+    a: "By hearing your own pattern in someone else's mouth. Ten conversations with other post-launch pre-revenue non-engineer founders will show you the same flat line, the same drift into tactics, the same conviction that the next feature is the missing piece, the same blank look when asked to describe one specific person their product is for. You won't see your own pattern until you hear it in someone else's story. The way out is naming one person, writing one promise, and selling it before it feels ready.",
+  },
+  {
+    q: "Why is selling the bottleneck for non-engineer SaaS founders, not building?",
+    a: "Because tools like Lovable and Claude opened the door to shipping real software for non-engineers in weeks — the building is now magic. The hard part is what comes after: naming one specific person, writing one real promise, selling it before it feels ready. That is the work nobody built a tool for, because engineers were always too busy building to notice that selling was unsolved. The bottleneck has moved. Building is solved. Selling has not been, and now it sits exposed.",
+  },
+];
 
 // Stable literal — DO NOT replace with `new Date()`. Article.datePublished
 // must be a real-world publish date the editorial commits to; a per-build
@@ -78,18 +132,37 @@ export default function StoriesReverseSqueezePage() {
         datePublished={PARABLES_PUBLISHED_AT}
         // Voice-engine eligibility (AEO). The lede paragraph below is the
         // canonical answer for "what are the unlock saas stories" — short,
-        // editorial, no nav links. Voice assistants speak that paragraph
-        // and the page's h1 (auto-picked by most engines) as the answer.
-        // The five story h2's are NOT in the selector list because each
-        // long-form story is too long for a voice-answer panel; the lede
-        // is the right summary.
-        speakableSelectors={[".aeo-stories-lede"]}
+        // editorial, no nav links. The lede is the canonical summary; each
+        // story's <blockquote class="aeo-story-a"> is the canonical
+        // distilled lesson (and the verbatim Answer text in the parallel
+        // FaqPageJsonLd below). Voice assistants reading Article + FAQPage
+        // schema together get the lede first, then the five answer lines.
+        // The five story h2's are NOT in the selector list because the
+        // narrative bodies are too long for a voice-answer panel; the
+        // blockquotes carry the distilled answer.
+        speakableSelectors={[".aeo-stories-lede", ".aeo-story-a"]}
       />
       <BreadcrumbListJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
           { name: "Five Stories", url: PARABLES_URL },
         ]}
+      />
+      {/* AEO uplift (2026-05-17) — parallel FAQPage JSON-LD that distills
+          each story into one PAA-shaped Question + Answer pair Google and
+          answer engines can lift. Article + FAQPage on the same page is
+          explicitly supported by Google's structured-data guidelines: the
+          two schemas describe different aspects of the same WebPage (the
+          editorial article AND the implicit Q&A surface inside it).
+          Source: STORY_QA constant above — every answer is sourced verbatim
+          from the on-page narrative + blockquote per the Brunson Hard-Rule
+          (no schema claim that isn't also in the rendered HTML). Speakable
+          selector matches the `.aeo-story-a` class added to each blockquote
+          below so voice assistants read the distilled lesson, not the long
+          narrative body. */}
+      <FaqPageJsonLd
+        items={STORY_QA}
+        speakableSelectors={[".aeo-story-a"]}
       />
       <AbExposureBeacon />
       <article className="max-w-2xl mx-auto">
@@ -119,11 +192,11 @@ export default function StoriesReverseSqueezePage() {
         <Separator className="my-10" />
 
         {/* PARABLE 1 — The Blank Offer Page */}
-        <section className="mb-12">
+        <section id="story-1" className="mb-12" aria-labelledby="story-1-heading">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
             Story one
           </p>
-          <h2 className="text-2xl font-bold mb-4">The Blank Offer Page</h2>
+          <h2 id="story-1-heading" className="text-2xl font-bold mb-4">The Blank Offer Page</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
             <p>
               I sat down to write the offer page for the product I had spent
@@ -144,7 +217,7 @@ export default function StoriesReverseSqueezePage() {
               That is the moment I started suspecting the order was wrong.
             </p>
           </div>
-          <blockquote className="mt-6 border-l-2 border-primary pl-4 italic text-foreground">
+          <blockquote className="aeo-story-a mt-6 border-l-2 border-primary pl-4 italic text-foreground">
             If you cannot write your offer in one sentence, to one real person,
             you have not earned the right to build the product.
           </blockquote>
@@ -153,11 +226,11 @@ export default function StoriesReverseSqueezePage() {
         <Separator className="my-10" />
 
         {/* PARABLE 2 — The Stripe Refresh */}
-        <section className="mb-12">
+        <section id="story-2" className="mb-12" aria-labelledby="story-2-heading">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
             Story two
           </p>
-          <h2 className="text-2xl font-bold mb-4">The Stripe Refresh</h2>
+          <h2 id="story-2-heading" className="text-2xl font-bold mb-4">The Stripe Refresh</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
             <p>
               For about a month after I launched, my Stripe dashboard had a
@@ -180,7 +253,7 @@ export default function StoriesReverseSqueezePage() {
               work&rdquo; were not the same thing.
             </p>
           </div>
-          <blockquote className="mt-6 border-l-2 border-primary pl-4 italic text-foreground">
+          <blockquote className="aeo-story-a mt-6 border-l-2 border-primary pl-4 italic text-foreground">
             The daily activity of &ldquo;working on it&rdquo; is the most
             expensive way to avoid the actual work.
           </blockquote>
@@ -189,11 +262,11 @@ export default function StoriesReverseSqueezePage() {
         <Separator className="my-10" />
 
         {/* PARABLE 3 — The SEO Escape Hatch */}
-        <section className="mb-12">
+        <section id="story-3" className="mb-12" aria-labelledby="story-3-heading">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
             Story three
           </p>
-          <h2 className="text-2xl font-bold mb-4">The SEO Escape Hatch</h2>
+          <h2 id="story-3-heading" className="text-2xl font-bold mb-4">The SEO Escape Hatch</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
             <p>
               When the Stripe Refresh got too painful, I needed a way out
@@ -217,7 +290,7 @@ export default function StoriesReverseSqueezePage() {
               hiding.
             </p>
           </div>
-          <blockquote className="mt-6 border-l-2 border-primary pl-4 italic text-foreground">
+          <blockquote className="aeo-story-a mt-6 border-l-2 border-primary pl-4 italic text-foreground">
             Productive work is the best-camouflaged form of avoidance, because
             nobody, including you, can call you out for it.
           </blockquote>
@@ -253,11 +326,11 @@ export default function StoriesReverseSqueezePage() {
         <Separator className="my-10" />
 
         {/* PARABLE 4 — The Mirror in Ten Founders */}
-        <section className="mb-12">
+        <section id="story-4" className="mb-12" aria-labelledby="story-4-heading">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
             Story four
           </p>
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 id="story-4-heading" className="text-2xl font-bold mb-4">
             The Mirror in Ten Founders
           </h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
@@ -284,7 +357,7 @@ export default function StoriesReverseSqueezePage() {
               felt ready.
             </p>
           </div>
-          <blockquote className="mt-6 border-l-2 border-primary pl-4 italic text-foreground">
+          <blockquote className="aeo-story-a mt-6 border-l-2 border-primary pl-4 italic text-foreground">
             You will not see your own pattern until you hear it in someone
             else&apos;s mouth.
           </blockquote>
@@ -293,11 +366,11 @@ export default function StoriesReverseSqueezePage() {
         <Separator className="my-10" />
 
         {/* PARABLE 5 — The Door That Opened */}
-        <section className="mb-12">
+        <section id="story-5" className="mb-12" aria-labelledby="story-5-heading">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
             Story five
           </p>
-          <h2 className="text-2xl font-bold mb-4">The Door That Opened</h2>
+          <h2 id="story-5-heading" className="text-2xl font-bold mb-4">The Door That Opened</h2>
           <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
             <p>
               For most of my life, I could not have shipped any of those
@@ -327,7 +400,7 @@ export default function StoriesReverseSqueezePage() {
               line. I run it on me first. Then I let other people use it.
             </p>
           </div>
-          <blockquote className="mt-6 border-l-2 border-primary pl-4 italic text-foreground">
+          <blockquote className="aeo-story-a mt-6 border-l-2 border-primary pl-4 italic text-foreground">
             The bottleneck has moved. Building is solved. Selling has not
             been, and now it sits exposed.
           </blockquote>

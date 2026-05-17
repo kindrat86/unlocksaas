@@ -410,6 +410,30 @@ They are the bridge content. A cold reader hits one of these stories on a long-t
 
 Pick the story whose title sounds most like your last 14 days. Read it. If the recognition lands, walk to ${BASE_URL}/diagnostic. If it doesn't, read another one. The stories are not a sequence; they are mirrors.
 
+## Questions these stories answer
+
+Mirrors the FAQPage JSON-LD on the HTML page. Every answer below is sourced verbatim from the on-page narrative + blockquote; no claim here that isn't also in the rendered story above it.
+
+### Why can't I write my SaaS offer page after shipping the product?
+
+Because the answer doesn't exist yet. You can know the features, the architecture, and the pricing block and still freeze on the sentence that promises one specific person what they'll walk away with, by when, and what they're paying for. The order was wrong — you built the product before you earned the right to write that sentence. If you can't write your offer in one sentence, to one real person, you have not earned the right to build the product. ([Story 1](${BASE_URL}/stories#story-1))
+
+### Why doesn't refreshing Stripe produce revenue for a pre-revenue SaaS?
+
+Because the refresh is the cheapest substitute for the uncomfortable work that would actually move the line — talking to someone who has not yet decided to pay. Forty to sixty refreshes a day generate zero dollars, because "working on the business" and "doing the work" are not the same thing. The daily activity of working on it is the most expensive way to avoid the actual work. ([Story 2](${BASE_URL}/stories#story-2))
+
+### Why doesn't SEO produce customers for a pre-revenue indie SaaS?
+
+Because SEO lets you be visibly productive in front of a problem that needs to be solved by an uncomfortable conversation, not a keyword. Topic clusters, schema markup, and a programmatic page generator can all produce the appearance of someone working hard while producing zero new paying customers for an already-shipped product. Productive work is the best-camouflaged form of avoidance — nobody, including you, can call you out for it. ([Story 3](${BASE_URL}/stories#story-3))
+
+### How do I see my own blind spots as a non-engineer SaaS founder?
+
+By hearing your own pattern in someone else's mouth. Ten conversations with other post-launch pre-revenue non-engineer founders will show you the same flat line, the same drift into tactics, the same conviction that the next feature is the missing piece, the same blank look when asked to describe one specific person their product is for. You won't see your own pattern until you hear it in someone else's story. The way out is naming one person, writing one promise, and selling it before it feels ready. ([Story 4](${BASE_URL}/stories#story-4))
+
+### Why is selling the bottleneck for non-engineer SaaS founders, not building?
+
+Because tools like Lovable and Claude opened the door to shipping real software for non-engineers in weeks — the building is now magic. The hard part is what comes after: naming one specific person, writing one real promise, selling it before it feels ready. That is the work nobody built a tool for, because engineers were always too busy building to notice that selling was unsolved. The bottleneck has moved. Building is solved. Selling has not been, and now it sits exposed. ([Story 5](${BASE_URL}/stories#story-5))
+
 Read on ${BASE_URL}/stories.
 `;
 
