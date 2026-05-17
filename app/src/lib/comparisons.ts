@@ -3646,6 +3646,626 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["email", "developer-tools", "transactional-vs-marketing", "cross-manifest"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "fathom-vs-simple-analytics",
+    a: { name: "Fathom Analytics", teardownSlug: "fathom", url: "https://usefathom.com/" },
+    b: { name: "Simple Analytics", url: "https://www.simpleanalytics.com/" },
+    category: "Privacy analytics",
+    oneLine:
+      "Fathom and Simple Analytics are both privacy-first alternatives to Google Analytics. The choice is taste — Fathom leans founder-led; Simple Analytics leans minimal.",
+    tldr:
+      "Fathom and Simple Analytics both serve the privacy-leaning indie SaaS segment with cookie-free, GDPR-by-construction web analytics. Fathom anchors trust on founder visibility (Jack Ellis and Paul Jarvis); Simple Analytics anchors on the smallest possible product surface. The functional difference is modest; the brand voice differs meaningfully. For most indie founders the choice is taste-aligned.",
+    bestFor: {
+      a: "Indie founders who prefer buying from identifiable indie operators with active founder content.",
+      b: "Indie founders who want the most stripped-down, minimal privacy-analytics product without founder-led marketing overhead.",
+    },
+    pickAIf: [
+      "You value the indie-operator brand and follow Jack or Paul's content.",
+      "You want the slightly more polished dashboard and feature surface.",
+      "You prefer a brand with a longer running-track record in privacy analytics.",
+    ],
+    pickBIf: [
+      "You want the absolutely simplest possible analytics product.",
+      "You value the EU-based operations and explicit data-residency story.",
+      "You prefer a smaller, quieter brand and a more constrained feature set.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Volume-tiered, starts ~$15/mo for 100K pageviews (verified 2026-05-17).",
+        b: "Volume-tiered, starts ~$9/mo for 100K pageviews (verified 2026-05-17).",
+        winner: "B",
+        note: "Simple Analytics is slightly cheaper at lower volume tiers.",
+      },
+      {
+        name: "Feature surface",
+        a: "Slightly broader — custom events, EU isolation, more dashboard widgets.",
+        b: "Intentionally minimal — basic dashboards, events, no UI bloat.",
+        winner: "different",
+      },
+      {
+        name: "Privacy and compliance",
+        a: "Cookie-free, GDPR-by-construction.",
+        b: "Cookie-free, GDPR-by-construction.",
+        winner: "tie",
+      },
+      {
+        name: "Founder visibility",
+        a: "Jack Ellis and Paul Jarvis publish actively (Twitter, blog, podcast).",
+        b: "Adriaan van Rossum is visible but quieter than Fathom's founders.",
+        winner: "A",
+      },
+      {
+        name: "Geography of operations",
+        a: "Distributed; emphasizes privacy operations regardless of location.",
+        b: "Explicitly EU-based with strong data-residency emphasis.",
+        winner: "different",
+      },
+      {
+        name: "Trial / free behavior",
+        a: "30-day trial, no credit card required.",
+        b: "14-day trial, no credit card required.",
+        winner: "A",
+      },
+      {
+        name: "Brand momentum in 2026",
+        a: "Strong; growing among indie SaaS that prefer named-operator brands.",
+        b: "Stable; smaller mindshare than Fathom or Plausible.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Fathom and Simple Analytics both serve the same job from slightly different positions. Fathom wins on founder-led brand visibility and the slightly broader feature surface. Simple Analytics wins on EU operations specificity and a more minimal product. For most indie SaaS in 2026, Fathom is the more recognizable pick; Simple Analytics retains a niche for buyers who specifically want the smallest possible analytics product with explicit EU data residency. Neither is wrong — the choice is preference.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Try both free trials. Fathom for the founder-led brand; Simple Analytics for the minimal-product preference. Either choice is reasonable; the meta-decision (leave Google Analytics) matters more than the choice between these two.",
+    },
+    faqs: [
+      {
+        q: "Is Simple Analytics meaningfully different from Fathom or Plausible?",
+        a: "Marginally. All three serve the same job (cookie-free privacy analytics) with similar pricing bands. The differences are texture: brand voice, feature surface, geographic emphasis. Functionally the products are near-parity at standard use cases.",
+      },
+      {
+        q: "Should I self-host Plausible instead of choosing between hosted alternatives?",
+        a: "Only if you have the engineering capacity to maintain it AND value the principle. Self-host is free in licenses but costs ongoing engineering time. For most indie SaaS, paying $9-15/mo for hosted analytics is cheaper than the engineering tax.",
+      },
+      {
+        q: "What is the Brunson lens on Fathom vs Simple Analytics?",
+        a: "Both companies execute Brunson Dream Customer naming for privacy-leaning buyers, with different brand voice anchors. Fathom anchors on Attractive Character (Jack and Paul); Simple Analytics anchors on principled minimalism. Both are legitimate within the segment.",
+      },
+      {
+        q: "Which one is most actively developed in 2026?",
+        a: "Both ship regular updates. Fathom has more visible product motion via founder content; Simple Analytics ships quietly. For a buyer judging on actively-developed signal, Fathom feels more alive — but Simple Analytics has been stable for years.",
+      },
+    ],
+    tags: ["privacy-analytics", "indie-saas", "parity-fight", "taste-aligned"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "calendly-vs-acuity",
+    a: { name: "Calendly", teardownSlug: "calendly", url: "https://calendly.com/" },
+    b: { name: "Acuity Scheduling", url: "https://acuityscheduling.com/" },
+    category: "Scheduling",
+    oneLine:
+      "Calendly serves sales teams and recruiters. Acuity serves service businesses (yoga studios, therapists, photographers). Same category, different jobs.",
+    tldr:
+      "Calendly and Acuity Scheduling both schedule meetings but for different buyers. Calendly is the canonical sales/recruiting/B2B scheduling default with deep CRM integrations. Acuity (owned by Squarespace) is the service-business platform with built-in payments, packages, intake forms, and class scheduling. For SaaS sales teams, Calendly. For service businesses (coaches, therapists, fitness studios, photographers), Acuity is the right shape.",
+    bestFor: {
+      a: "Sales teams, recruiters, B2B coordinators, and any professional whose calendar coordination is meeting-focused.",
+      b: "Service businesses, coaches, therapists, fitness studios, photographers, consultants — anyone whose scheduling involves payment and packages.",
+    },
+    pickAIf: [
+      "Your scheduling is sales calls, demos, or recruiter screens.",
+      "You need deep CRM integrations (Salesforce, HubSpot, Marketo).",
+      "Your bookers are professionals who expect the Calendly brand.",
+    ],
+    pickBIf: [
+      "You run a service business that sells appointments, classes, or packages.",
+      "You need integrated payments, intake forms, and class scheduling out of the box.",
+      "You are on Squarespace and value the bundled product experience.",
+    ],
+    dimensions: [
+      {
+        name: "Target buyer",
+        a: "B2B sales teams, recruiters, customer success.",
+        b: "Service businesses with appointments and packages.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free tier; Standard ~$12/seat/mo; Teams ~$20/seat/mo (verified 2026-05-17).",
+        b: "Emerging ~$20/mo; Growing ~$34/mo; Powerhouse ~$61/mo, all single-account tiers (verified 2026-05-17).",
+        winner: "different",
+        note: "Different pricing models entirely — per-seat (Calendly) vs per-account-tier (Acuity).",
+      },
+      {
+        name: "Integrated payments",
+        a: "Limited; payment-collection feature exists on paid tiers but not the focus.",
+        b: "Native; built around Square/Stripe payment collection at booking.",
+        winner: "B",
+      },
+      {
+        name: "Class and group scheduling",
+        a: "Group events available; not optimized for recurring classes.",
+        b: "Native class scheduling with capacity, recurring sessions, waitlists.",
+        winner: "B",
+      },
+      {
+        name: "CRM and B2B integrations",
+        a: "Deep: Salesforce, HubSpot, Marketo, Outreach.",
+        b: "Lighter; integrates with major CRMs but not the focus.",
+        winner: "A",
+      },
+      {
+        name: "Brand recognition with bookers",
+        a: "High in B2B contexts; the recipient expects Calendly.",
+        b: "High in service-business contexts; the recipient expects appointments-style flow.",
+        winner: "different",
+      },
+      {
+        name: "Squarespace integration",
+        a: "External integration via embeds.",
+        b: "Native; Acuity is owned by Squarespace and bundles seamlessly.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Calendly and Acuity Scheduling both schedule meetings but for fundamentally different buyers. Calendly serves B2B sales coordination; Acuity serves service businesses where the scheduling decision involves payment, packages, and recurring sessions. The functional overlap is real but narrow. For a SaaS sales team, Calendly is the obvious pick; for a service business, Acuity's bundled features (payments, intake, packages) save the integration work Calendly would require. The mistake is comparing them as if they competed on the same job.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Calendly for indie SaaS founders doing sales calls. Acuity is a great product but for a different audience — service businesses, not software companies. If you are running a coaching practice alongside your indie SaaS, Acuity might serve the coaching side.",
+    },
+    faqs: [
+      {
+        q: "Can I use Calendly for service-business scheduling?",
+        a: "Workably for simple cases, but you lose the integrated payments, intake forms, package management, and class scheduling Acuity provides natively. For real service-business operations, Acuity's bundled feature set saves meaningful integration work.",
+      },
+      {
+        q: "Can I use Acuity for B2B sales scheduling?",
+        a: "Possible but awkward. The product is optimized around appointment-and-payment flows, not sales-call coordination. CRM integrations are lighter and the brand recognition with B2B recipients is lower than Calendly's.",
+      },
+      {
+        q: "What about SimplyBook.me or Setmore for service businesses?",
+        a: "Both serve adjacent niches. SimplyBook.me is broader internationally; Setmore is the freemium option for small service businesses. The Acuity comparison comes up most when buyers consider the Squarespace bundle vs standalone alternatives.",
+      },
+      {
+        q: "What is the Brunson lens on Calendly vs Acuity?",
+        a: "Both companies execute Dream Customer naming in opposite directions. Calendly names the B2B sales professional; Acuity names the service-business owner. The Brunson lesson: precise audience naming beats broad category positioning; both companies own their segments cleanly.",
+      },
+    ],
+    tags: ["scheduling", "b2b-vs-service-business", "different-audiences", "payments"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "postmark-vs-mailgun",
+    a: { name: "Postmark", teardownSlug: "postmark", url: "https://postmarkapp.com/" },
+    b: { name: "Mailgun", url: "https://www.mailgun.com/" },
+    category: "Email API",
+    oneLine:
+      "Postmark obsesses over deliverability for transactional. Mailgun is the broader legacy email infrastructure with marketing and bulk-send features.",
+    tldr:
+      "Postmark and Mailgun both ship email APIs but with different scopes. Postmark is the deliverability-first transactional specialist with separated streams and a decade of single-message marketing. Mailgun is the broader legacy infrastructure platform with marketing email, validation, bulk send, and inbound parsing. For transactional-first use cases, Postmark. For teams that need a broader email infrastructure platform with both transactional and marketing capabilities, Mailgun.",
+    bestFor: {
+      a: "Developers and SaaS teams prioritizing transactional email reliability above all else.",
+      b: "Teams that need a broader email infrastructure platform (transactional + marketing + validation + inbound parsing) under one vendor.",
+    },
+    pickAIf: [
+      "Your dominant email need is transactional (password resets, receipts, notifications).",
+      "You value the deliverability track record and single-promise marketing.",
+      "You prefer to compose Postmark with a dedicated marketing platform (Loops, Customer.io) rather than bundle.",
+    ],
+    pickBIf: [
+      "You need both transactional and marketing email under one vendor.",
+      "You use Mailgun's email validation API or inbound email parsing features.",
+      "You are already on a Mailgun contract or your team has Mailgun expertise.",
+    ],
+    dimensions: [
+      {
+        name: "Primary focus",
+        a: "Deliverability-first transactional API.",
+        b: "Broader email infrastructure: transactional, marketing, validation, inbound parsing.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free 100/mo; paid starts ~$15/mo for 10K (verified 2026-05-17).",
+        b: "Pay-as-you-go pricing scaling with sends; Foundation tier starts low single-digits per month plus per-send costs (verified 2026-05-17).",
+        winner: "different",
+      },
+      {
+        name: "Transactional deliverability",
+        a: "Industry-leading; separated streams architecture protects transactional from broadcast incidents.",
+        b: "Solid; transactional reliable at scale but less single-focused than Postmark.",
+        winner: "A",
+      },
+      {
+        name: "Marketing email features",
+        a: "Available via broadcast streams; not the primary focus.",
+        b: "Mature marketing email features with segmentation and broadcast tooling.",
+        winner: "B",
+      },
+      {
+        name: "Email validation API",
+        a: "Not offered.",
+        b: "Native — Mailgun's validation API is a notable adjacent product.",
+        winner: "B",
+      },
+      {
+        name: "Inbound email parsing",
+        a: "Supported.",
+        b: "Mature inbound parsing with route configuration.",
+        winner: "B",
+      },
+      {
+        name: "Developer experience",
+        a: "Clean modern API; documentation is concise.",
+        b: "Mature API with broader feature coverage; documentation is denser.",
+        winner: "A",
+      },
+      {
+        name: "Brand voice",
+        a: "Deliverability-obsessed single-promise marketing for over a decade.",
+        b: "Broader infrastructure positioning; ownership by Sinch shapes long-term direction.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "Postmark and Mailgun ship email APIs but solve different shapes of the email infrastructure problem. Postmark is the deliverability-first transactional specialist with single-promise marketing and an architectural commitment (separated streams) that competitors cannot copy without abandoning their business model. Mailgun is the broader infrastructure platform with validation, inbound parsing, and bulk-send features that Postmark does not offer. For transactional-dominant SaaS, Postmark. For teams that need an email infrastructure platform with multiple adjacent capabilities, Mailgun. The choice maps to scope, not to which is better at any single thing.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Postmark for indie SaaS in 2026. The transactional-first focus matches what most indie SaaS need first; the single-promise marketing makes the value proposition easy to verify. Mailgun is the right pick for teams that need its specific broader features (validation, inbound parsing); for the default indie SaaS use case, Postmark wins.",
+    },
+    faqs: [
+      {
+        q: "Is Mailgun still the right pick for new SaaS in 2026?",
+        a: "Sometimes. Mailgun's broader feature set (validation API, inbound parsing, marketing email) makes it the right choice when those adjacent capabilities matter. For transactional-only needs, Postmark or Resend usually win on focus and brand promise.",
+      },
+      {
+        q: "How does Mailgun's ownership affect the product?",
+        a: "Mailgun is part of Sinch (Swedish communications infrastructure company), which keeps the platform funded and operationally stable. Long-term strategic direction is shaped by Sinch's broader infrastructure positioning; the product remains a strong enterprise email choice.",
+      },
+      {
+        q: "Can I migrate from Mailgun to Postmark?",
+        a: "Yes mechanically — both speak similar API shapes. The migration adds friction if you rely on Mailgun-specific features (validation API, inbound parsing) that Postmark does not offer. For transactional-only workloads, the migration is straightforward.",
+      },
+      {
+        q: "What about Resend, SendGrid, or AWS SES?",
+        a: "Resend is the modern transactional API with React Email integration; SendGrid is the legacy enterprise platform; SES is the cheapest option but requires more integration work. The right alternative depends on whether you optimize for developer experience (Resend, Postmark), broad feature surface (Mailgun, SendGrid), or raw cost (SES).",
+      },
+      {
+        q: "What is the Brunson lens on Postmark vs Mailgun?",
+        a: "Postmark executes Dream Customer naming for the deliverability-first transactional buyer with depth and single-promise marketing. Mailgun executes broader infrastructure positioning for teams that need multiple adjacent capabilities. Both work; they target different Dream Customers and the markets overlap less than the surface comparison suggests.",
+      },
+    ],
+    tags: ["email", "developer-tools", "transactional-vs-broader-infrastructure", "deliverability"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "linear-vs-clickup",
+    a: { name: "Linear", teardownSlug: "linear", url: "https://linear.app/" },
+    b: { name: "ClickUp", url: "https://clickup.com/" },
+    category: "Project management for software teams",
+    oneLine:
+      "Linear is opinionated and minimal. ClickUp is configurable and comprehensive. Opposite ends of the project-management axis.",
+    tldr:
+      "Linear and ClickUp solve project management with opposite philosophies. Linear constrains workflow choices to maximize speed; ClickUp gives you every configuration option imaginable and lets you decide. For engineering teams that prize velocity and reject configurability, Linear. For teams that want to model their specific (often unusual) workflow exactly, ClickUp's configurability is the differentiator. Most teams should pick Linear unless they have a specific workflow that demands ClickUp's flexibility.",
+    bestFor: {
+      a: "Software engineering teams that want fast, opinionated issue tracking and reject configurability overhead.",
+      b: "Cross-functional teams with specific workflows that require deep configuration (custom statuses, custom fields, complex automations).",
+    },
+    pickAIf: [
+      "Your team is engineers and you prioritize velocity over configuration.",
+      "You actively reject the 'configure-everything' tooling approach.",
+      "You value the keyboard-first UX and minimal interface.",
+    ],
+    pickBIf: [
+      "Your team has unusual workflows that need custom statuses, custom fields, and complex automations.",
+      "You want one tool to handle tasks, docs, chat, time tracking, and forms in one platform.",
+      "Your team values being able to configure tools rather than accepting opinionated defaults.",
+    ],
+    dimensions: [
+      {
+        name: "Configurability",
+        a: "Intentionally constrained.",
+        b: "Among the most configurable in the category — custom statuses, custom fields, complex automations.",
+        winner: "B",
+        note: "Linear's constraint is its product; ClickUp's configurability is its product. Different value props.",
+      },
+      {
+        name: "Speed",
+        a: "Among the fastest in the category.",
+        b: "Slower than Linear, especially with heavy configuration.",
+        winner: "A",
+      },
+      {
+        name: "Pricing",
+        a: "Free (250 issues); Basic ~$8-10/user/mo; Business ~$14/user/mo (verified 2026-05-17).",
+        b: "Free; Unlimited ~$10/user/mo; Business ~$19/user/mo; Business Plus ~$29/user/mo (verified 2026-05-17).",
+        winner: "tie",
+      },
+      {
+        name: "Feature breadth",
+        a: "Issues, cycles, projects. Tight scope.",
+        b: "Tasks + docs + chat + whiteboards + forms + time tracking + goals.",
+        winner: "B",
+        note: "ClickUp does many things; Linear does one thing.",
+      },
+      {
+        name: "Engineering workflow fit",
+        a: "Native — designed for software teams.",
+        b: "Possible but generic; engineering teams often feel the configurability is overkill.",
+        winner: "A",
+      },
+      {
+        name: "Non-engineering workflow fit",
+        a: "Awkward for cross-functional work.",
+        b: "Strong — designed for cross-functional teams across many use cases.",
+        winner: "B",
+      },
+      {
+        name: "Setup time",
+        a: "Minutes; opinionated defaults work immediately.",
+        b: "Hours to days; configurability requires upfront investment to model your workflow.",
+        winner: "A",
+      },
+      {
+        name: "Adoption curve for new team members",
+        a: "Easy — the minimal surface is fast to learn.",
+        b: "Steeper — each team's ClickUp setup is different, so onboarding includes learning the specific configuration.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Linear and ClickUp represent opposite philosophies in project management. Linear bets that opinionated defaults plus minimal feature surface produce the best outcomes for software teams. ClickUp bets that configurability and broad feature breadth let teams model any workflow exactly. Both philosophies work for their respective audiences; the mistake is forcing one onto a team that fits the other. For most indie SaaS engineering teams, Linear's opinionated approach reduces decision overhead and ships work faster. For teams with unusual workflows or non-engineering members who need cross-functional features, ClickUp's configurability earns its complexity.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Linear for indie SaaS engineering teams. The speed and minimal-configuration overhead match how indie founders actually work — no time to configure tooling, just ship the product. ClickUp is the right pick for cross-functional teams with non-engineering members or specific workflows that need custom modeling.",
+    },
+    faqs: [
+      {
+        q: "Why is ClickUp so feature-broad?",
+        a: "Strategic decision to be the 'one tool for everything' — tasks, docs, chat, whiteboards, forms, time tracking, goals. The feature breadth is the value proposition for teams that want to consolidate tools. The trade-off is depth in any single feature; specialists (Notion for docs, Slack for chat, Linear for engineering issues) beat ClickUp on individual features.",
+      },
+      {
+        q: "Can I use ClickUp for engineering-only work?",
+        a: "Yes, but most engineering teams find the configurability surface overkill. Linear's opinionated defaults map to engineering workflows out of the box; ClickUp requires upfront configuration to achieve similar results. For pure engineering teams, the configurability advantage is wasted.",
+      },
+      {
+        q: "What about Asana, Jira, or Notion for project management?",
+        a: "Asana serves cross-functional teams (Asana vs Linear is a related canonical comparison). Jira is the enterprise default Linear competes against. Notion handles docs-plus-light-PM. The Linear-vs-ClickUp choice is specifically about opinionated minimalism vs configurable comprehensiveness.",
+      },
+      {
+        q: "Is ClickUp's free tier really usable for indie teams?",
+        a: "Yes for small teams. The free tier is generous on user count and feature access but limits storage. For indie teams starting out, the free tier covers more use cases than Linear's free tier (which caps at 250 issues).",
+      },
+      {
+        q: "What is the Brunson lens on Linear vs ClickUp?",
+        a: "Linear executes Dream Customer naming for the speed-first engineering team with extreme opinionation. ClickUp executes the opposite move — broad positioning for teams that want flexibility. Brunson lesson: precise positioning beats broad positioning when both can claim the market; Linear wins the segments it targets; ClickUp captures the long tail that opinionated tools cannot serve.",
+      },
+    ],
+    tags: ["project-management", "developer-tools", "opinionated-vs-configurable", "minimalism-vs-breadth"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "notion-vs-clickup",
+    a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
+    b: { name: "ClickUp", url: "https://clickup.com/" },
+    category: "Productivity and workspace",
+    oneLine:
+      "Notion is a workspace canvas with project management bolted in. ClickUp is project management with docs and chat bolted in. Different centers of gravity.",
+    tldr:
+      "Notion and ClickUp both consolidate work tools but with different centers of gravity. Notion starts with docs and adds databases and project management; ClickUp starts with tasks and adds docs and chat. For teams whose primary work is writing and knowledge, Notion. For teams whose primary work is task execution and project tracking, ClickUp. Both companies overlap on the surface but the dominant use case determines the right pick.",
+    bestFor: {
+      a: "Teams whose primary work is docs, wikis, knowledge bases, and lightly-structured project planning.",
+      b: "Teams whose primary work is task execution, project tracking, and time management, with docs as a secondary surface.",
+    },
+    pickAIf: [
+      "Your team writes more than it executes tasks.",
+      "You value the largest template ecosystem and template-driven onboarding.",
+      "You want a workspace that scales from personal use to team wiki without changing tools.",
+    ],
+    pickBIf: [
+      "Your team's primary daily activity is task and project management.",
+      "You want native time tracking, goal management, and forms built in.",
+      "You value the configurability to model your exact workflow.",
+    ],
+    dimensions: [
+      {
+        name: "Center of gravity",
+        a: "Docs and knowledge first; databases and project management secondary.",
+        b: "Tasks and project tracking first; docs and chat secondary.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free personal; Plus ~$10/seat/mo; Business ~$18/seat/mo (verified 2026-05-17).",
+        b: "Free; Unlimited ~$10/user/mo; Business ~$19/user/mo (verified 2026-05-17).",
+        winner: "tie",
+      },
+      {
+        name: "Document editing",
+        a: "Best-in-class; the workspace canvas is the product.",
+        b: "Functional; docs are present but not the primary surface.",
+        winner: "A",
+      },
+      {
+        name: "Task and project management",
+        a: "Available via databases with kanban/list/calendar views; less optimized than dedicated PM.",
+        b: "Native; tasks, subtasks, dependencies, time tracking are first-class.",
+        winner: "B",
+      },
+      {
+        name: "Template ecosystem",
+        a: "Largest in the workspace category; thousands of public templates.",
+        b: "Growing but smaller than Notion's.",
+        winner: "A",
+      },
+      {
+        name: "Native chat",
+        a: "Comments and mentions; no full chat.",
+        b: "Native chat feature (ClickUp Chat).",
+        winner: "B",
+      },
+      {
+        name: "Goal and OKR tracking",
+        a: "Possible via databases; not native.",
+        b: "Native Goals feature.",
+        winner: "B",
+      },
+      {
+        name: "Onboarding ease for new users",
+        a: "Easy for individuals; template-driven; large community provides starting points.",
+        b: "Steeper; configurability creates upfront setup overhead.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Notion and ClickUp both try to be the 'one tool for work' but from opposite directions. Notion approaches consolidation from the docs side and bolts on PM features; ClickUp approaches from the PM side and bolts on docs. The result is that both teams find one feels native and the other feels forced. For docs-dominant teams (knowledge work, product, design, marketing), Notion. For execution-dominant teams (operations, project delivery, agency work), ClickUp. Neither product is wrong; the mistake is picking based on feature lists rather than on which surface your team uses 80% of the time.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Notion for indie SaaS teams. Most indie founders write more than they execute tasks at small scale — docs, specs, briefs, customer notes, marketing copy all live in the same canvas. ClickUp becomes the better pick once a team grows to where structured project management and time tracking become daily activities, which is usually a later-stage need.",
+    },
+    faqs: [
+      {
+        q: "Can Notion replace ClickUp for project management?",
+        a: "For light project management, yes. For sophisticated PM with dependencies, time tracking, and goal hierarchies, no — Notion's databases are not designed for that depth. Most teams that try to use Notion as a serious PM tool end up adding a dedicated PM tool eventually.",
+      },
+      {
+        q: "Can ClickUp replace Notion for team docs?",
+        a: "Workably for simple docs. For company wikis, knowledge bases, and rich writing surfaces, Notion's docs experience is materially better. Most teams that try to use ClickUp as the docs surface end up using Notion or a wiki tool alongside.",
+      },
+      {
+        q: "What about a hybrid: Notion for docs, ClickUp for tasks?",
+        a: "Common at slightly larger companies. The trade-off is two tools, two subscriptions, two systems of record. Workable but adds operational overhead; many teams eventually consolidate to one side.",
+      },
+      {
+        q: "What about Coda, Obsidian, or Roam Research as Notion alternatives?",
+        a: "Coda is the database-first workspace alternative; Obsidian is the local-first personal knowledge tool; Roam Research is the network-graph thinking tool. All adjacent to Notion in different ways. The Notion vs ClickUp comparison is specifically the workspace-vs-PM-consolidation question.",
+      },
+      {
+        q: "What is the Brunson lens on Notion vs ClickUp?",
+        a: "Both companies execute the 'one tool for everything' positioning from opposite starting points. Brunson lesson: when two competitors try to consolidate the same market from different starting points, the buyer's dominant use case determines the right pick — not the feature comparison.",
+      },
+    ],
+    tags: ["productivity", "workspace", "docs-vs-tasks", "consolidation"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "render-vs-fly-io",
+    a: { name: "Render", url: "https://render.com/" },
+    b: { name: "Fly.io", url: "https://fly.io/" },
+    category: "Frontend cloud and hosting",
+    oneLine:
+      "Render bundles backend services in a managed PaaS. Fly.io runs your app close to users with a global edge architecture. Same broad job, opposite execution models.",
+    tldr:
+      "Render and Fly.io both host full-stack apps for indie SaaS and growing companies but with opposite execution models. Render is the managed PaaS that bundles Postgres, Redis, background workers, and cron under one dashboard with familiar pricing. Fly.io runs your app as Firecracker VMs across a global edge network and prices on resource usage. For teams that want simplicity and bundled services, Render. For teams that want global edge deployment and care about per-region latency, Fly.io.",
+    bestFor: {
+      a: "Teams that want a managed PaaS with bundled Postgres, Redis, workers, and cron under predictable per-service pricing.",
+      b: "Teams that want global edge deployment for latency-sensitive apps and are comfortable with VM-level configuration.",
+    },
+    pickAIf: [
+      "You want one dashboard for app + database + Redis + workers + cron.",
+      "You value predictable per-service pricing and a more abstracted operational surface.",
+      "Your app does not need global edge deployment.",
+    ],
+    pickBIf: [
+      "You want your app running close to users globally for latency-sensitive workloads.",
+      "You are comfortable with VM-level configuration and Fly Machines.",
+      "You value the lower-level control and lighter operational abstraction.",
+    ],
+    dimensions: [
+      {
+        name: "Execution model",
+        a: "Managed PaaS with abstracted services.",
+        b: "Firecracker VMs across a global edge network.",
+        winner: "different",
+      },
+      {
+        name: "Bundled services",
+        a: "Native Postgres, Redis, background workers, cron jobs.",
+        b: "Fly Postgres available; less integrated than Render's bundling.",
+        winner: "A",
+      },
+      {
+        name: "Global edge deployment",
+        a: "Centralized regions; not edge-first.",
+        b: "Global edge by default; deploy machines in 30+ regions.",
+        winner: "B",
+      },
+      {
+        name: "Pricing model",
+        a: "Per-service tiers with predictable monthly cost.",
+        b: "Resource-based pricing (CPU, memory, storage, bandwidth per region).",
+        winner: "different",
+      },
+      {
+        name: "Developer experience for setup",
+        a: "Polished; opinionated for full-stack web apps.",
+        b: "Polished; CLI-first with Fly Machines as the primary primitive.",
+        winner: "tie",
+      },
+      {
+        name: "Latency for global users",
+        a: "Depends on your chosen region; not edge-distributed by default.",
+        b: "Native global edge — apps run close to users automatically.",
+        winner: "B",
+      },
+      {
+        name: "Background jobs and cron",
+        a: "Native, fully managed.",
+        b: "Possible via Fly Machines but requires more configuration.",
+        winner: "A",
+      },
+      {
+        name: "Operational abstraction",
+        a: "Higher — more managed surface, less knob-turning.",
+        b: "Lower — more knobs to turn, more control if you want it.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "Render and Fly.io both host full-stack apps but with opposite philosophies. Render is the managed PaaS for teams that want bundled services and predictable pricing — the right pick when operational simplicity matters more than per-region latency. Fly.io is the edge-first platform for teams that need global deployment and are comfortable with VM-level configuration. Neither is universally better; the choice maps to whether your priority is operational simplicity (Render) or global latency optimization (Fly.io). For indie SaaS that serve users globally and care about latency, Fly.io's edge model is structurally advantaged; for indie SaaS that serve users in a few regions and want simpler ops, Render wins.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your users are global and latency matters, Fly.io's edge model is the structural advantage. If your users are in a few regions and you want bundled services and simpler ops, Render. Both are valid for different shapes of indie SaaS; the user-geography question usually decides.",
+    },
+    faqs: [
+      {
+        q: "Is Fly.io really edge-first by default?",
+        a: "Yes — Fly Machines deploy across the global edge network, and apps can run instances close to users automatically. Render apps run in a specific chosen region by default and require manual setup to approximate multi-region.",
+      },
+      {
+        q: "Why does Render bundle backend services natively?",
+        a: "Strategic decision to be a managed PaaS that handles operational complexity for users. Fly.io's strategy is closer to 'give you the primitives and let you build' — which works for teams comfortable with that abstraction level but adds setup work for teams that want bundled services.",
+      },
+      {
+        q: "Which is cheaper at indie scale?",
+        a: "Roughly comparable. Render's per-service pricing is predictable; Fly.io's resource-based pricing can be cheaper for low-traffic apps but adds complexity. For most indie SaaS the cost difference is modest; the choice is operational rather than financial.",
+      },
+      {
+        q: "What about Railway or Heroku?",
+        a: "Railway is Render-adjacent (managed PaaS with bundled services). Heroku is the legacy PaaS that Render explicitly positions against. The Render vs Fly.io comparison is specifically the simplicity-vs-edge choice; alternatives serve adjacent niches.",
+      },
+      {
+        q: "What is the Brunson lens on Render vs Fly.io?",
+        a: "Both companies execute precise Dream Customer naming, in opposite directions. Render names the team that wants bundled simplicity; Fly.io names the team that wants global edge with VM-level control. Different audiences, different product shapes, both legitimate.",
+      },
+    ],
+    tags: ["hosting", "developer-tools", "managed-paas-vs-edge", "global-deployment"],
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup.
