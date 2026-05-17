@@ -60,14 +60,22 @@ export default function OTOPage() {
           Continue the Machine. $49/mo. 60-day guarantee.
         </Button>
 
-        {/* Secondary link */}
+        {/* Secondary link — Profit Maximizer Return Path */}
         <Link
-          href="/machine"
+          href="/welcome?path=starter_only"
           onClick={handleDecline}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
         >
           No thanks, deliver just the Starter.
         </Link>
+
+        {/* Reassurance: the no-vote does not get punished. Workbook 04 §4 Return Path. */}
+        <p className="text-xs text-muted-foreground mt-8 leading-relaxed">
+          Either button is honest. If you skip the Machine for now, the
+          Starter is yours to keep, the door at $49 stays open, and the
+          five-email sequence walking you through the work keeps arriving.
+          The clock only starts when you click the top button.
+        </p>
       </div>
     </div>
   );

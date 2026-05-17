@@ -2,8 +2,27 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
+import { SocialProofBar } from "@/components/blocks/social-proof-bar";
+import { BeforeAfter } from "@/components/blocks/before-after";
+import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
+import { VslBlock } from "@/components/blocks/vsl-block";
 
+/**
+ * UnlockSaaS Funnel Hub.
+ *
+ * Building blocks per workbook 04 §2 + 23 Building Blocks (DotCom Secrets):
+ *   1. Hero — enemy sentence + one-line bio + 3 CTAs (diagnostic / starter / machine)
+ *   2. Manifesto (half) — Verified / Paid Builders A/B from cookie
+ *   3. Founder six-line intro
+ *   4. Founder timeline — when shipped what, when figured out the gap
+ *   5. Comparison block — Machine vs Course vs DIY vs Doing-Nothing
+ *   6. FAQ — sourced from strategy/dollar-objections.md (6 entries)
+ *   7. Newsletter signup — real form, fires Day 0 of Soap Opera
+ *   8. Social links + honest "as seen in" (none yet)
+ *   9. Footer
+ */
 export default function FunnelHub() {
   const variant = readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
@@ -11,22 +30,21 @@ export default function FunnelHub() {
   return (
     <div className="min-h-screen flex flex-col">
       <AbExposureBeacon />
-      {/* Hero */}
+      {/* ---------------- HERO ---------------- */}
       <header className="py-20 px-6 text-center max-w-3xl mx-auto">
         <p className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
           Unlock SaaS
         </p>
         <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
           The problem stuck founders have is not the product. It is that an
-          entire industry profits from teaching them to keep building when the
-          only thing left is to sell.
+          entire industry profits from teaching them to keep building when
+          the only thing left is to sell.
         </h1>
         <p className="text-lg text-muted-foreground mb-8">
           Marketer, non-engineer, built a dozen AI products that nobody paid
-          for. Then I figured out why.
+          for. Then I figured out why. — Maryan
         </p>
 
-        {/* Three CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild size="lg">
             <Link href="/diagnostic">Get Your Free Diagnosis</Link>
@@ -38,28 +56,45 @@ export default function FunnelHub() {
             <Link href="/machine-sales">The Full Machine — $49/mo</Link>
           </Button>
         </div>
+
+        {/* Reverse-squeeze bridge — for the cold visitor who is not yet
+            ready to type an email or pay a dollar. DCS Secret 14 reverse
+            variant. Value-first surface; opt-in is on the page itself. */}
+        <p className="mt-6 text-sm text-muted-foreground">
+          Or{" "}
+          <Link
+            href="/parables"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            read the five parables first
+          </Link>
+          {" "}— free, no email required.
+        </p>
       </header>
+
+      {/* Building Block #20 — Social Proof Bar (honest variant, no fake counts). */}
+      <SocialProofBar />
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* Manifesto (half) — A/B identity_label variant from sticky cookie. */}
+      {/* ---------------- MANIFESTO (half) — A/B identity_label ---------------- */}
       <section className="py-16 px-6 max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">
           {labels.manifestoTitle}
         </h2>
         <blockquote className="text-muted-foreground space-y-4 leading-relaxed">
           <p>
-            We are non-engineer founders who shipped real things with AI tools we
-            did not write.
+            We are non-engineer founders who shipped real things with AI tools
+            we did not write.
           </p>
           <p>
-            We were told the answer was more building, then more traffic, then a
-            better course. We tried all three. The line stayed flat.
+            We were told the answer was more building, then more traffic, then
+            a better course. We tried all three. The line stayed flat.
           </p>
           <p>
             We stopped pretending the problem was the product. The problem was
-            the work nobody taught us to do: name one real person, make one real
-            promise, sell it before it felt ready.
+            the work nobody taught us to do: name one real person, make one
+            real promise, sell it before it felt ready.
           </p>
           <p>
             We measure progress in Stripe charges, not in encouragement. We do
@@ -70,32 +105,203 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* Founder Intro */}
-      <section className="py-16 px-6 max-w-2xl mx-auto text-center">
-        <h2 className="text-2xl font-bold mb-6">The Founder</h2>
-        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
-          <p className="text-muted-foreground">
-            Six-line intro video placeholder
-          </p>
+      {/* ---------------- BEFORE / AFTER (Block #22) ---------------- */}
+      <BeforeAfter />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- FOUNDER VSL (Block #20, six-line intro framework) ---------------- */}
+      <VslBlock />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- FOUNDER TIMELINE ---------------- */}
+      <section className="py-16 px-6 max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-center">The Timeline</h2>
+        <ol className="space-y-4">
+          {[
+            {
+              date: "2025, summer",
+              line:
+                "First AI product shipped with Lovable. Stripe stayed at zero. Told myself it was the product.",
+            },
+            {
+              date: "2025, autumn",
+              line:
+                "Three more products shipped. Two paying users across all four. Started a deep dive into SEO so I would not have to look at the line.",
+            },
+            {
+              date: "2026, winter",
+              line:
+                "Sat down to write the offer for the fifth product. Found nothing. No promise. No specific person.",
+            },
+            {
+              date: "2026, spring",
+              line:
+                "Ran ten founder conversations. Heard my own story back, every time. Stopped fixing products. Started fixing the order.",
+            },
+            {
+              date: "2026, May",
+              line:
+                "Locked the Brunson workbook chain end-to-end. Shipped this funnel.",
+            },
+          ].map((row) => (
+            <li key={row.date} className="flex gap-4">
+              <div className="shrink-0 w-32 text-xs uppercase tracking-widest text-muted-foreground pt-1">
+                {row.date}
+              </div>
+              <div className="text-sm text-muted-foreground leading-relaxed">
+                {row.line}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- COMPARISON ---------------- */}
+      <section className="py-16 px-6 max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          What you have been trying — and what is different about this.
+        </h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead className="bg-muted/40 text-foreground">
+              <tr>
+                <th className="text-left p-3 font-semibold">Approach</th>
+                <th className="text-left p-3 font-semibold">Cost</th>
+                <th className="text-left p-3 font-semibold">Guarantee</th>
+                <th className="text-left p-3 font-semibold">Removes avoidance?</th>
+              </tr>
+            </thead>
+            <tbody className="text-muted-foreground">
+              <tr className="border-t border-border">
+                <td className="p-3">Doing nothing</td>
+                <td className="p-3">Free</td>
+                <td className="p-3">None</td>
+                <td className="p-3">No — avoidance is the default state</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="p-3">Course / cohort</td>
+                <td className="p-3">$497–$2,000</td>
+                <td className="p-3">Refund-policy theatre</td>
+                <td className="p-3">No — teaching, not doing</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="p-3">Hire a consultant</td>
+                <td className="p-3">$3,000+</td>
+                <td className="p-3">Hourly</td>
+                <td className="p-3">No — outsourced understanding</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="p-3">Generic funnel/AI tool</td>
+                <td className="p-3">$29–$99/mo</td>
+                <td className="p-3">Trial only</td>
+                <td className="p-3">No — assumes you already did the work</td>
+              </tr>
+              <tr className="border-t border-border bg-primary/5">
+                <td className="p-3 font-semibold text-foreground">The Machine</td>
+                <td className="p-3 font-semibold text-foreground">$49/mo</td>
+                <td className="p-3 font-semibold text-foreground">Stripe-verified, code-enforced</td>
+                <td className="p-3 font-semibold text-foreground">Yes — outreach happens inside the tool</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <p className="text-muted-foreground leading-relaxed">
-          I&apos;m a marketer and an operator. I have never written a line of
-          production code. In 2026, Lovable and Claude opened the door and I
-          shipped real AI products in weeks. The shipping part felt like magic.
-          What came after did not. I would launch, open Stripe, and watch a line
-          lie flat. What finally broke me was talking to more than ten other
-          founders and hearing my own story back, every single time. So I built
-          the machine I wish someone had handed me.
+        <p className="text-xs text-muted-foreground italic text-center mt-4">
+          The comparison is honest. Every other approach has a place. None of
+          them remove the avoidance, which is the actual disease.
         </p>
       </section>
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* Newsletter + Social */}
+      {/* ---------------- HONEST TESTIMONIALS (Block #7) ---------------- */}
+      <HonestTestimonials />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- FAQ ---------------- */}
+      <section className="py-16 px-6 max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-center">Honest objections.</h2>
+        <p className="text-sm text-muted-foreground text-center mb-8">
+          Mined from public Indie Hackers and Hacker News threads written by
+          founders matching the Marco avatar. Full sources:{" "}
+          <code className="text-xs">strategy/dollar-objections.md</code>.
+        </p>
+        <div className="space-y-6">
+          {[
+            {
+              q: "I already have too many subscriptions.",
+              a: "Start at $1, not $49. The Starter finishes your dream customer and your offer in a week and is yours to keep regardless of whether you upgrade.",
+            },
+            {
+              q: "$49/mo is too much pre-revenue.",
+              a: "Two coffees a week, $98 capped exposure over 60 days, refunded automatically if the work was done and Stripe shows no customer. Pre-revenue is the exact case the guarantee was written for.",
+            },
+            {
+              q: "I have been burned by gurus.",
+              a: "Same. This is not a course. The deliverable is software you run yourself. The refund is enforced by code — not by a 'describe your experience' email I read at my leisure.",
+            },
+            {
+              q: "Customers are MY problem, not the tool's job.",
+              a: "Every other tool quietly agreed with you. The Machine does not. Outreach happens inside the tool, tracked. The job cannot be outsourced; it can be removed-from-your-willpower. That is the design.",
+            },
+            {
+              q: "I could build this myself in a weekend.",
+              a: "You could build the form. Not the Stripe-webhook proof, the Dream 100 picker fed from a locked workbook, the engine pushback, or the 60-day refund logic. And while you build the tool, you are not running the funnel — which is the exact disease the Machine treats.",
+            },
+            {
+              q: "What if I do the work and still get no paying customer?",
+              a: "Then the guarantee fires. The code reads your Stripe account at day 60. If you completed Steps 1–5 in-product and logged 20 outreach actions and the line is still flat, you get the two months ($98) back. In writing.",
+            },
+          ].map((item) => (
+            <div key={item.q}>
+              <p className="font-semibold">{item.q}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                {item.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- NEWSLETTER ---------------- */}
       <section className="py-16 px-6 max-w-md mx-auto text-center">
-        <h2 className="text-lg font-bold mb-4">Stay in the loop</h2>
+        <h2 className="text-lg font-bold mb-4">
+          Not ready to subscribe? Read the five-day arc first.
+        </h2>
         <p className="text-sm text-muted-foreground mb-6">
           Founders who build real things with AI deserve to get paid for them.
+          One short email a day for five days, written like a letter from one
+          founder to another. Reply STOP anytime.
+        </p>
+        <NewsletterSignup />
+      </section>
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- HONEST "AS SEEN IN" ---------------- */}
+      <section className="py-12 px-6 max-w-2xl mx-auto text-center">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          As seen in
+        </p>
+        <p className="text-sm text-muted-foreground italic">
+          Nowhere yet. Reluctant Hero rule: no fake logos. The first time a
+          podcast or newsletter mentions Unlock SaaS, that logo lands here.
+          Build in public means showing the empty version too.
+        </p>
+      </section>
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- SOCIAL ---------------- */}
+      <section className="py-12 px-6 max-w-md mx-auto text-center">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
+          Find me
         </p>
         <div className="flex gap-4 justify-center text-sm text-muted-foreground">
           <a
@@ -125,10 +331,16 @@ export default function FunnelHub() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* ---------------- FOOTER ---------------- */}
       <footer className="py-8 px-6 text-center text-xs text-muted-foreground mt-auto">
         <p>&copy; 2026 Unlock SaaS. Built by a non-engineer who shipped anyway.</p>
+        <p className="mt-2">
+          <Link href="/bridge" className="underline underline-offset-4 hover:text-foreground">
+            Came from a cold ad?
+          </Link>
+        </p>
       </footer>
+
     </div>
   );
 }
