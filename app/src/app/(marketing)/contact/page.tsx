@@ -144,17 +144,17 @@ export default function ContactPage() {
             </Link>{" "}
             ·{" "}
             <Link
-              href="/privacy"
+              href="/diagnostic"
               className="underline underline-offset-4 hover:text-foreground"
             >
-              Privacy
+              Free diagnostic
             </Link>{" "}
             ·{" "}
             <Link
-              href="/terms"
+              href="/machine-sales"
               className="underline underline-offset-4 hover:text-foreground"
             >
-              Terms
+              The Machine
             </Link>
           </p>
         </div>

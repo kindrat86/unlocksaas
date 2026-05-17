@@ -256,6 +256,10 @@ function buildFaqPageJson(items: ReadonlyArray<FaqItem>): string {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
+    // publisher cross-link: FAQPage inherits publisher attribution from
+    // the canonical Organization entity. AI Overview pipelines use this
+    // to attach answer-source confidence to the brand, not a stray page.
+    publisher: { "@id": ID.organization },
     mainEntity: items.map((it) => ({
       "@type": "Question",
       name: it.q,
@@ -286,16 +290,11 @@ function buildArticleJson(input: ArticleSchemaInput): string {
     inLanguage: "en-US",
     datePublished: input.datePublished,
     dateModified: input.dateModified ?? input.datePublished,
-    author: {
-      "@type": "Person",
-      name: "Maryan",
-      url: BASE,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: BASE,
-    },
+    // author + publisher linked by @id so Articles inherit canonical
+    // founder/brand facts. Changes to Maryan's bio or Organization fields
+    // propagate without touching this serializer.
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": input.url,
@@ -350,11 +349,7 @@ function buildVideoJson(input: VideoSchemaInput): string {
     description: input.description,
     uploadDate: input.uploadDate,
     thumbnailUrl: [input.thumbnailUrl],
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: BASE,
-    },
+    publisher: { "@id": ID.organization },
     ...(input.durationISO8601 ? { duration: input.durationISO8601 } : {}),
     ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
     ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
@@ -376,13 +371,22 @@ function JsonLdScript({ json }: { json: string }) {
 }
 
 /**
- * Organization + WebSite schema. Render on the funnel hub `/`.
- * LLMs anchor on Organization as the entity for UnlockSaaS-related queries.
+ * Organization + Person + WebSite triple. Render on the funnel hub `/`.
+ *
+ * Why all three together: this is the canonical entity-anchor block. LLMs
+ * and Knowledge Graph resolve "what is UnlockSaaS / who runs it / where
+ * does it live online" from a single page. Splitting them across pages
+ * weakens entity confidence because crawlers do not always re-traverse
+ * the full site to assemble the graph.
+ *
+ * Person is also re-exportable standalone via PersonJsonLd below — render
+ * that one on a future /about page if the hub-mounted copy is removed.
  */
 export function OrganizationJsonLd() {
   return (
     <>
       <JsonLdScript json={ORGANIZATION_JSON} />
+      <JsonLdScript json={PERSON_JSON} />
       <JsonLdScript json={WEBSITE_JSON} />
     </>
   );
