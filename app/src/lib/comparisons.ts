@@ -2291,6 +2291,745 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["documentation", "developer-tools", "knowledge-base", "api-docs"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "plausible-vs-google-analytics",
+    a: { name: "Plausible Analytics", teardownSlug: "plausible", url: "https://plausible.io/" },
+    b: { name: "Google Analytics", url: "https://analytics.google.com/" },
+    category: "Privacy analytics",
+    oneLine:
+      "Plausible vs Google Analytics is a values fight, not a features fight. Pick on the principle, not the integration list.",
+    tldr:
+      "Plausible and Google Analytics solve the same job (web analytics) from opposite ends of the privacy-vs-feature axis. GA4 is free, deeply integrated with the Google ad ecosystem, and ad-tracking-funded. Plausible is paid, privacy-first, cookie-free, and customer-funded. For most indie SaaS, Plausible's privacy positioning and simpler interface outweigh GA4's ecosystem depth. For ad-driven businesses optimizing Google Ads spend, GA4 remains the right pick.",
+    bestFor: {
+      a: "Indie SaaS, privacy-leaning teams, EU businesses dealing with GDPR, and operators who reject ad-tech-funded analytics on principle.",
+      b: "Ad-driven businesses, e-commerce optimizing Google Ads, and teams that need deep integration with Google Ad Manager, Search Console, and the Google ad ecosystem.",
+    },
+    pickAIf: [
+      "You want analytics without cookie banners or GDPR consent overhead.",
+      "Your business is not dependent on Google Ads optimization.",
+      "You value simple, focused analytics over feature breadth you will never use.",
+    ],
+    pickBIf: [
+      "You run Google Ads at meaningful scale and need GA4's conversion tracking integration.",
+      "You sell e-commerce and need GA4's enhanced ecommerce reports.",
+      "Your team already lives in the Google Workspace ecosystem and the integration depth matters.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Volume-tiered subscription; starts ~$9/mo for 10K pageviews/mo (verified 2026-05-17).",
+        b: "Free.",
+        winner: "B",
+        note: "GA4 is free; Plausible costs money. The trade is what the buyer pays for and with.",
+      },
+      {
+        name: "Privacy and compliance",
+        a: "Cookie-free by design; no consent banner needed in most jurisdictions; GDPR-compliant by construction.",
+        b: "Requires cookie consent in EU, UK, and increasingly elsewhere; GDPR-complex without configuration.",
+        winner: "A",
+      },
+      {
+        name: "Setup complexity",
+        a: "One script tag; works out of the box.",
+        b: "GA4 setup is non-trivial; configuring events, conversions, and audiences requires meaningful learning.",
+        winner: "A",
+      },
+      {
+        name: "Reporting interface",
+        a: "Single dashboard; intentionally constrained feature set.",
+        b: "Vast reporting capability; UI complexity has grown since the GA3 → GA4 transition.",
+        winner: "different",
+        note: "Plausible's constraint is its differentiation; GA4's depth is its differentiation.",
+      },
+      {
+        name: "Google Ads integration",
+        a: "None.",
+        b: "Native; conversion tracking, audience export, attribution.",
+        winner: "B",
+      },
+      {
+        name: "Real-time data",
+        a: "Real-time dashboard out of the box.",
+        b: "Real-time available but adds complexity.",
+        winner: "A",
+      },
+      {
+        name: "Data ownership",
+        a: "Plausible holds the data; you pay them to keep it; deletable on request.",
+        b: "Google holds the data; you use it under Google's terms; integration with the broader Google ad ecosystem.",
+        winner: "A",
+        note: "For privacy-conscious operators, Plausible's data-ownership model is the entire reason to switch.",
+      },
+      {
+        name: "Self-host option",
+        a: "Available (free under AGPL).",
+        b: "Not available; SaaS only.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Plausible and Google Analytics solve the same job from opposite philosophies. GA4 is free because it is part of Google's ad-tech infrastructure; Plausible is paid because it sells the analytics directly. For ad-driven businesses, GA4's ecosystem integration is the structural advantage that keeps it the default. For privacy-leaning indie SaaS, the cost of Plausible is the cost of not feeding into the Google ad ecosystem, and most buyers in that segment find the trade worth it. The honest verdict: choose by values, not by features.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Plausible for indie SaaS. The setup simplicity, GDPR-by-construction compliance, and clean dashboard match how indie founders actually work. GA4 is overkill for most indie use cases and adds compliance overhead that the small ad-attribution gain rarely justifies.",
+    },
+    faqs: [
+      {
+        q: "Is Google Analytics really free?",
+        a: "Yes for GA4. The price you pay is data flow into Google's ad ecosystem and the operational overhead of cookie consent, configuration complexity, and ongoing GA4 schema evolution. Free in dollars; not free in time or principles.",
+      },
+      {
+        q: "Will switching to Plausible cost me ad attribution?",
+        a: "If you run Google Ads, yes — Plausible does not integrate with Google Ads conversion tracking. The trade is real and you should keep GA4 for ad-attribution if Google Ads is meaningful to your business. Plausible is the right pick when ad-attribution is not central.",
+      },
+      {
+        q: "Can I run both Plausible and GA4 in parallel?",
+        a: "Yes, and many businesses do during migration or when ad-attribution matters but the team prefers Plausible for daily analytics. The downside is two analytics scripts and two dashboards, but it is a workable bridge.",
+      },
+      {
+        q: "What about Fathom, Simple Analytics, or Matomo as alternatives?",
+        a: "All valid privacy-focused alternatives. Fathom is Plausible's most direct competitor with similar positioning; Simple Analytics has its own slant; Matomo is the open-source veteran. For a vs-GA4 decision, the question is the values pivot first; the specific privacy alternative second.",
+      },
+      {
+        q: "What is the Brunson lens on Plausible vs Google Analytics?",
+        a: "Plausible runs the Brunson 'Common Enemy' move with Big Tech analytics as the enemy and a clear principle (privacy) as the rally cry. GA4 is the entrenched incumbent that cannot pivot without abandoning its ad-tech business model. Brunson positioning works when the new vehicle is structurally different on a dimension buyers care about; for the privacy-conscious segment, Plausible's positioning is exactly that.",
+      },
+    ],
+    tags: ["privacy-analytics", "values-fight", "alternative-to-incumbent", "category-anchor"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "plausible-vs-fathom",
+    a: { name: "Plausible Analytics", teardownSlug: "plausible", url: "https://plausible.io/" },
+    b: { name: "Fathom Analytics", url: "https://usefathom.com/" },
+    category: "Privacy analytics",
+    oneLine:
+      "Plausible vs Fathom is the indie privacy-analytics fight. Both are right answers; the choice is stylistic.",
+    tldr:
+      "Plausible and Fathom occupy the same category, the same principles, and the same approximate pricing band. Both are privacy-first, cookie-free, GDPR-by-construction web analytics SaaS run by small indie teams. The functional difference is minor; the choice is about which founders' aesthetic and operational style matches your own.",
+    bestFor: {
+      a: "Buyers who value Plausible's open-source code base, public revenue dashboard, and EU-based team.",
+      b: "Buyers who value Fathom's polished interface, U.S.-based hosting option, and slightly broader feature surface.",
+    },
+    pickAIf: [
+      "You value open-source code as a verifiability principle.",
+      "You like the public revenue dashboard as a trust signal.",
+      "You prefer the EU-based operator (relevant for some data-residency conversations).",
+    ],
+    pickBIf: [
+      "You prefer Fathom's interface and reporting aesthetic.",
+      "You need EU vs U.S. hosting choice for data residency.",
+      "You value Fathom's specific feature additions (uptime, events).",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Starts ~$9/mo for 10K pageviews; scales linearly (verified 2026-05-17).",
+        b: "Starts ~$15/mo for 100K pageviews; different tier structure but similar band (verified 2026-05-17).",
+        winner: "tie",
+        note: "Different shapes; competitive at similar volumes. Fathom is slightly cheaper at higher pageview tiers.",
+      },
+      {
+        name: "Open source",
+        a: "Yes (AGPL); self-host free.",
+        b: "Not open source.",
+        winner: "A",
+      },
+      {
+        name: "Privacy and compliance",
+        a: "Cookie-free, GDPR-by-construction.",
+        b: "Cookie-free, GDPR-by-construction.",
+        winner: "tie",
+      },
+      {
+        name: "Public revenue transparency",
+        a: "Public revenue dashboard.",
+        b: "No public revenue.",
+        winner: "A",
+      },
+      {
+        name: "Interface and dashboards",
+        a: "Clean, opinionated, single-page focus.",
+        b: "Slightly more polished, broader visualization options.",
+        winner: "B",
+        note: "Stylistic preference; both are well-designed.",
+      },
+      {
+        name: "Uptime and events",
+        a: "Custom events supported; no uptime monitoring.",
+        b: "Custom events plus uptime monitoring bundled.",
+        winner: "B",
+      },
+      {
+        name: "Geography of operations",
+        a: "EU-based team; EU hosting.",
+        b: "U.S.-based team; EU and U.S. hosting options.",
+        winner: "different",
+        note: "Geography matters for some data-residency and operator-preference conversations.",
+      },
+      {
+        name: "Founder visibility and community",
+        a: "Uku Taht and Marko Saric publish actively on the company blog and Twitter.",
+        b: "Jack Ellis and Paul Jarvis publish actively on Twitter and via Fathom blog.",
+        winner: "tie",
+      },
+    ],
+    honestTake:
+      "Plausible vs Fathom is the rare comparison where both products are genuinely competitive at parity. The functional difference is minor — both deliver cookie-free, GDPR-compliant analytics with clean interfaces at similar prices. The choice usually comes down to aesthetic preference (Plausible's open-source-transparency aesthetic vs Fathom's polished-product aesthetic), geographic preference (EU vs U.S. ops), or specific feature need (uptime monitoring favors Fathom). Either choice is right; neither is wrong.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Try both free trials and pick on aesthetic preference. Neither is meaningfully more 'correct' for indie SaaS. The decision matters less than the decision to leave Google Analytics.",
+    },
+    faqs: [
+      {
+        q: "Are Plausible and Fathom really at parity?",
+        a: "On core privacy analytics functionality, yes. The differences are stylistic (open-source transparency vs polished product), feature-additive (uptime monitoring on Fathom), and geographic (EU vs U.S. operations). The core job — cookie-free web analytics with clean dashboards — is delivered equally well by both.",
+      },
+      {
+        q: "Should I self-host Plausible to save money?",
+        a: "Usually no, at least at first. Hosting and maintaining the self-hosted version costs real engineering time. Most users self-host only when subscription cost meaningfully exceeds maintenance cost, or for specific data-residency reasons.",
+      },
+      {
+        q: "What about Simple Analytics, Matomo, or PostHog?",
+        a: "Simple Analytics is another privacy-focused option with its own slant. Matomo is the open-source veteran with extensive features. PostHog is product analytics (events-heavy) more than web analytics. The Plausible vs Fathom choice is the canonical privacy-analytics pair; alternatives serve adjacent needs.",
+      },
+      {
+        q: "What is the Brunson lens on Plausible vs Fathom?",
+        a: "Both companies execute essentially the same Brunson positioning (Common Enemy: Google Analytics; principle: privacy) with slightly different Attractive Character (Uku Taht and Marko Saric vs Jack Ellis and Paul Jarvis). The market is large enough to support both; neither needs to win against the other.",
+      },
+    ],
+    tags: ["privacy-analytics", "indie-saas", "parity-fight", "values-aligned"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "senja-vs-testimonial-to",
+    a: { name: "Senja", teardownSlug: "senja", url: "https://senja.io/" },
+    b: { name: "Testimonial.to", url: "https://testimonial.to/" },
+    category: "Testimonial collection",
+    oneLine:
+      "Senja and Testimonial.to are the canonical pair in testimonial-as-marketing SaaS. Pick on workflow shape, not features.",
+    tldr:
+      "Senja and Testimonial.to both collect and display video and text testimonials for SaaS marketing surfaces. The feature sets converge on the same job; the differences are workflow shape (Senja leans collection-first, Testimonial.to leans display-first), pricing structure, and brand aesthetic. For most indie SaaS, either works; the choice is which workflow feels native.",
+    bestFor: {
+      a: "Indie SaaS, agencies, and creators who think of testimonials as an ongoing collection pipeline with widgets as the output.",
+      b: "Indie SaaS that want a polished Wall of Love and embedded video testimonials with a slightly more designed display surface.",
+    },
+    pickAIf: [
+      "You want a unified collection-to-display pipeline with strong form customization.",
+      "You value Senja's brand-removal-trigger pricing model.",
+      "Your workflow includes ongoing testimonial requests rather than periodic batch collection.",
+    ],
+    pickBIf: [
+      "You value Testimonial.to's polished Wall of Love aesthetics out of the box.",
+      "You want video testimonials with native AI-assisted editing and highlights.",
+      "You prefer Testimonial.to's pricing structure (different tier shape).",
+    ],
+    dimensions: [
+      {
+        name: "Pricing model",
+        a: "Free tier with Senja branding; paid tiers start ~$19/mo (verified 2026-05-17).",
+        b: "Free tier; paid tiers start in similar low-double-digits/mo range (verified 2026-05-17).",
+        winner: "tie",
+      },
+      {
+        name: "Collection workflow",
+        a: "Strong; custom forms, request management, follow-up integrations.",
+        b: "Solid; custom forms, simpler request management.",
+        winner: "A",
+      },
+      {
+        name: "Display widgets",
+        a: "Wall of Love and embed widgets are functional and customizable.",
+        b: "Highly polished Wall of Love and grid displays; native aesthetic edge.",
+        winner: "B",
+      },
+      {
+        name: "Video testimonial features",
+        a: "Video upload and embed; less editing tooling.",
+        b: "Video collection plus AI-assisted editing and highlights.",
+        winner: "B",
+      },
+      {
+        name: "Integration ecosystem",
+        a: "Broader integrations across SaaS workflow tools.",
+        b: "Solid core integrations; smaller surface than Senja.",
+        winner: "A",
+      },
+      {
+        name: "Brand removal trigger",
+        a: "Senja branding on free tier; paid tiers remove it.",
+        b: "Testimonial.to branding on free tier; paid tiers remove it.",
+        winner: "tie",
+      },
+      {
+        name: "Team features",
+        a: "Available on higher tiers (Premium, Enterprise).",
+        b: "Available on higher tiers.",
+        winner: "tie",
+      },
+    ],
+    honestTake:
+      "Senja and Testimonial.to compete on the same job (testimonial collection and display for SaaS marketing) and have converged on similar feature sets. Senja's edge is collection workflow and integration breadth; Testimonial.to's edge is display aesthetics and video-focused features. For most indie SaaS the choice is roughly a coin flip — try both free tiers, see which workflow feels native, commit. The structural product decision (use a dedicated testimonial SaaS rather than building it yourself) matters more than the choice between these two.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Both are viable. Senja leans collection-first; Testimonial.to leans display-first. If you have testimonials and need them displayed beautifully, Testimonial.to. If you need to collect them at scale and manage the pipeline, Senja. Most indie SaaS need both; pick the one whose primary surface matches your bigger pain.",
+    },
+    faqs: [
+      {
+        q: "Are Senja and Testimonial.to really that similar?",
+        a: "Yes on the core job. Both let you collect text and video testimonials, customize the request flow, display testimonials in widgets on your marketing site, and remove third-party branding at the paid tier. The differences are matter-of-degree, not matter-of-kind.",
+      },
+      {
+        q: "Should an indie SaaS even use a testimonial SaaS?",
+        a: "Once you have testimonials and want them displayed cleanly, yes. Before you have testimonials, no — the prerequisite is the customers, not the display tooling. Most indie SaaS underuse testimonials for years; both Senja and Testimonial.to lower the friction to fixing that.",
+      },
+      {
+        q: "What about building it yourself?",
+        a: "Possible but the math rarely works. Building a testimonial collection form plus video upload plus customizable display widgets takes meaningful engineering time. Both Senja and Testimonial.to charge low double-digits per month; the build-vs-buy decision is usually buy.",
+      },
+      {
+        q: "Can I migrate testimonials from one to the other?",
+        a: "Yes mechanically — both export CSV. Video files need re-upload. The display embed code needs updating on your site. The migration cost is modest but real; pick the right tool the first time.",
+      },
+      {
+        q: "What is the Brunson lens on Senja vs Testimonial.to?",
+        a: "Both companies execute essentially the same Brunson positioning (universal-pain hook: founders need testimonials; structural upsell trigger: brand removal at publication). The market splits roughly evenly; neither needs to win against the other. The Brunson lesson: when two companies own the same play in a small market, customer choice usually defaults to whoever the buyer encountered first.",
+      },
+    ],
+    tags: ["testimonials", "social-proof", "indie-saas", "parity-fight"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "polar-vs-gumroad",
+    a: { name: "Polar", teardownSlug: "polar", url: "https://polar.sh/" },
+    b: { name: "Gumroad", url: "https://gumroad.com/" },
+    category: "Creator monetization",
+    oneLine:
+      "Polar serves the open-source maintainer. Gumroad serves the digital-product creator. Same payment plumbing, different identities.",
+    tldr:
+      "Polar and Gumroad both let creators sell digital products globally with MoR-like services bundled, but they target different identities. Gumroad is for digital-product creators (ebooks, courses, music, art) with a long history in that segment. Polar is for open-source maintainers and developers with GitHub-native integration and a more developer-friendly product. For maintainers and indie developers, Polar. For creators selling courses, ebooks, or art, Gumroad.",
+    bestFor: {
+      a: "Open-source maintainers, indie developers, and creators with technical audiences who want GitHub-native monetization.",
+      b: "Digital-product creators (course makers, ebook authors, musicians, artists) who want a turnkey storefront with broad reach.",
+    },
+    pickAIf: [
+      "You maintain an open-source project and want sponsorships, subscriptions, and licensing integrated with GitHub.",
+      "You sell developer-targeted products (templates, plugins, SaaS sponsorships) where the buyer is a developer.",
+      "You value the no-monthly-base, pure-percentage pricing model.",
+    ],
+    pickBIf: [
+      "You sell courses, ebooks, art, music, or other creator-economy digital products to non-technical buyers.",
+      "You want Gumroad's storefront and discovery features within the Gumroad marketplace.",
+      "Your audience is broader creator-economy rather than developer-specific.",
+    ],
+    dimensions: [
+      {
+        name: "Target creator type",
+        a: "Open-source maintainers and developers.",
+        b: "Digital-product creators across many categories.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Approximately 4% per transaction plus Stripe fees; no monthly base (verified 2026-05-17).",
+        b: "Approximately 10% per transaction plus Stripe fees; no monthly base on the standard plan (verified 2026-05-17).",
+        winner: "A",
+        note: "Polar is materially cheaper per transaction; the trade is Gumroad's broader audience and longer history.",
+      },
+      {
+        name: "GitHub integration",
+        a: "Native; designed around the maintainer workflow.",
+        b: "Not native; Gumroad lives outside the GitHub ecosystem.",
+        winner: "A",
+      },
+      {
+        name: "Marketplace and discovery",
+        a: "No native marketplace.",
+        b: "Yes; Gumroad has its own discovery surface and search.",
+        winner: "B",
+      },
+      {
+        name: "Storefront customization",
+        a: "Solid; designed for maintainer products.",
+        b: "Strong; long history of storefront features for creators.",
+        winner: "B",
+      },
+      {
+        name: "Subscription and recurring features",
+        a: "Built-in; sponsorships, subscriptions, licensing.",
+        b: "Available; less developer-oriented.",
+        winner: "tie",
+        note: "Different shapes; both functional.",
+      },
+      {
+        name: "Brand and aesthetic",
+        a: "Developer-friendly, modern, clean.",
+        b: "Creator-economy aesthetic, longer-established brand recognition.",
+        winner: "different",
+      },
+      {
+        name: "Tax compliance (MoR)",
+        a: "MoR included.",
+        b: "Tax handling varies by region; not a full MoR for all jurisdictions.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Polar and Gumroad sit in adjacent corners of the creator-monetization category. Gumroad has the longer history and broader category fit (everything from ebooks to music to art); Polar has the deeper developer integration and lower transaction rate. The choice is really about who your audience is — developer-buyer or general-creator-buyer. Both work; pick by audience match. For maintainers monetizing open-source work, Polar is the clear pick; for creators selling courses or ebooks to a broad audience, Gumroad's marketplace and category fit dominate.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your product is developer-targeted (templates, plugins, code, SaaS), Polar — lower rate and GitHub-native integration both compound for developer audiences. If your product is a course, ebook, or creator-economy digital good for a non-technical audience, Gumroad — the marketplace and category fit outweigh the rate gap.",
+    },
+    faqs: [
+      {
+        q: "Why is Gumroad's per-transaction rate so much higher?",
+        a: "Gumroad's rate includes marketplace exposure, storefront tooling, and a longer-established trust signal with general-creator audiences. The higher rate funds the broader feature set and the discovery layer. For creators whose audience does not need marketplace exposure, the rate gap is real cost; for creators who do benefit from Gumroad's audience, it pays back.",
+      },
+      {
+        q: "Can I use both Polar and Gumroad?",
+        a: "Yes — many creators with mixed audiences do. Use Polar for developer products and Gumroad for creator-economy products. The downside is two platforms to manage; the upside is each segment gets the right tool.",
+      },
+      {
+        q: "Should I migrate from Gumroad to Polar?",
+        a: "Only if your audience has shifted to developers and Polar's GitHub-native features matter for your workflow. The rate savings alone usually do not justify migration cost; the audience-fit shift might.",
+      },
+      {
+        q: "What about Lemon Squeezy as an alternative to either?",
+        a: "Lemon Squeezy is a third option, targeting indie SaaS and digital products with a similar MoR model. Lemon Squeezy is broader than Polar (not maintainer-specific) and developer-friendlier than Gumroad. The three-way decision depends on audience shape.",
+      },
+      {
+        q: "What is the Brunson lens on Polar vs Gumroad?",
+        a: "Both companies execute Dream Customer naming precisely, in opposite directions — Polar names the open-source maintainer; Gumroad names the digital-product creator. The Brunson lesson: name your buyer specifically and serve them deeply; both companies do this well and the market has room for both.",
+      },
+    ],
+    tags: ["creator-monetization", "developer-tools", "marketplace", "different-audiences"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "polar-vs-lemonsqueezy",
+    a: { name: "Polar", teardownSlug: "polar", url: "https://polar.sh/" },
+    b: { name: "Lemon Squeezy", teardownSlug: "lemonsqueezy", url: "https://www.lemonsqueezy.com/" },
+    category: "Creator monetization and Merchant of Record",
+    oneLine:
+      "Polar and Lemon Squeezy both offer MoR plus creator-friendly tooling. Polar targets maintainers; Lemon Squeezy targets indie SaaS.",
+    tldr:
+      "Polar and Lemon Squeezy both serve creators wanting MoR-bundled monetization but with different specializations. Polar leans toward open-source maintainers with GitHub-native integration and lower per-transaction fees. Lemon Squeezy leans toward indie SaaS and digital-product founders with broader feature surface and Stripe acquisition. For maintainers, Polar; for indie SaaS, Lemon Squeezy.",
+    bestFor: {
+      a: "Open-source maintainers and developer-targeted product creators.",
+      b: "Indie SaaS founders, digital-product sellers, and creators selling globally who need broader feature surface.",
+    },
+    pickAIf: [
+      "You maintain open-source software and want GitHub-native sponsorship and licensing.",
+      "Your audience is developer-buyer.",
+      "You value the lowest per-transaction rate among MoR providers.",
+    ],
+    pickBIf: [
+      "You build indie SaaS and want a more general-purpose MoR platform.",
+      "You sell digital products to non-developer audiences.",
+      "You value the broader feature set (Stripe-backed billing tooling, subscription depth, multi-product storefronts).",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Approximately 4% + Stripe fees per transaction (verified 2026-05-17).",
+        b: "Approximately 5% + 50¢ per transaction (verified 2026-05-17).",
+        winner: "A",
+        note: "Polar is slightly cheaper per transaction; the gap matters at volume.",
+      },
+      {
+        name: "Target buyer",
+        a: "Open-source maintainers and developer-product creators.",
+        b: "Indie SaaS founders and digital-product creators broadly.",
+        winner: "different",
+      },
+      {
+        name: "GitHub integration",
+        a: "Native; sponsorships and licensing wired to GitHub.",
+        b: "Available but not native; integration is one of many.",
+        winner: "A",
+      },
+      {
+        name: "Subscription billing depth",
+        a: "Solid; designed for the maintainer use case.",
+        b: "Deeper; broader feature surface for SaaS subscription mechanics.",
+        winner: "B",
+      },
+      {
+        name: "Acquisition and ecosystem",
+        a: "Independent; growing.",
+        b: "Acquired by Stripe in 2024; tighter Stripe integration over time.",
+        winner: "different",
+        note: "Stripe ownership is feature or risk depending on the buyer's view.",
+      },
+      {
+        name: "Onboarding speed",
+        a: "Self-serve; fast for maintainers.",
+        b: "Self-serve; fast for indie SaaS.",
+        winner: "tie",
+      },
+      {
+        name: "Multi-product storefront",
+        a: "Possible but maintainer-focused.",
+        b: "More mature multi-product storefront tooling.",
+        winner: "B",
+      },
+      {
+        name: "Indie founder fit",
+        a: "Strong for developer-audience products.",
+        b: "Strong for SaaS and broad digital-product audiences.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "Polar and Lemon Squeezy are not direct competitors despite the surface similarity. They both offer MoR-bundled monetization but with deliberately different audience focus. Polar specializes in open-source maintainers with GitHub-native tooling and a lower transaction rate; Lemon Squeezy serves indie SaaS and digital-product creators with a broader feature surface and Stripe-acquired stability. For maintainers, Polar is the obvious pick; for indie SaaS founders, Lemon Squeezy is the broader-feature default. Some creators use both for different products in their portfolio.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your product is open-source-adjacent or you sell to developers, Polar. If you build indie SaaS or sell to a broader digital-product audience, Lemon Squeezy. The decision maps to audience shape, not to feature gap.",
+    },
+    faqs: [
+      {
+        q: "Should I use Polar for non-open-source products?",
+        a: "Possible but less natural. Polar's product surface and aesthetic are calibrated for the maintainer audience. For non-open-source indie SaaS, Lemon Squeezy is the better-fit broader platform.",
+      },
+      {
+        q: "Is the per-transaction rate difference material?",
+        a: "Below ~$10K/month in transactions, the rate difference is small in absolute dollars. Above that, the gap starts to matter and is worth optimizing. For most early-stage creators, the audience-fit decision dominates the rate decision.",
+      },
+      {
+        q: "Does Stripe ownership of Lemon Squeezy change anything for the decision?",
+        a: "Strategically over time, yes — Lemon Squeezy's roadmap is set by Stripe's positioning. Some buyers view this as positive (deeper Stripe integration); some as risk (loss of independent vision). Polar remains independent.",
+      },
+      {
+        q: "Can I use both for different products?",
+        a: "Yes. Some creators use Polar for open-source-adjacent monetization and Lemon Squeezy for SaaS or non-developer products. The downside is two platforms; the upside is each product gets the right tool.",
+      },
+      {
+        q: "What is the Brunson lens on Polar vs Lemon Squeezy?",
+        a: "Both companies execute Brunson Dream Customer naming, in adjacent directions. Polar names the open-source maintainer specifically; Lemon Squeezy names the indie SaaS founder more broadly. Both are right for their respective audiences. The Brunson lesson: 'win one Dream Customer deeply' applies to both, with different Dream Customers.",
+      },
+    ],
+    tags: ["mor", "creator-monetization", "cross-manifest", "different-audiences"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "mintlify-vs-readme",
+    a: { name: "Mintlify", teardownSlug: "mintlify", url: "https://mintlify.com/" },
+    b: { name: "ReadMe", url: "https://readme.com/" },
+    category: "Developer documentation",
+    oneLine:
+      "Mintlify is the modern challenger. ReadMe is the established API-docs platform with metering and developer-onboarding tooling.",
+    tldr:
+      "Mintlify and ReadMe both serve API and developer-tool documentation but at different stages of category maturity. Mintlify is the modern docs-as-code challenger with a recognizable aesthetic and a growing customer roster. ReadMe is the older, more enterprise-shaped platform with deep API metering, developer hub features, and a longer track record at scale. For new API docs in 2026, Mintlify is the default; for enterprise API platforms with deep metering needs, ReadMe retains advantages.",
+    bestFor: {
+      a: "Modern API and developer-tool companies that want the recognizable Mintlify aesthetic and docs-as-code workflow.",
+      b: "Enterprise API platforms that need API metering, developer hub features, and a longer-established platform.",
+    },
+    pickAIf: [
+      "You want the modern docs aesthetic that matches Anthropic, Resend, Cursor.",
+      "You prefer docs-as-code with Markdown/MDX and Git workflows.",
+      "You are an indie SaaS or developer-tool company building fresh docs.",
+    ],
+    pickBIf: [
+      "You need API metering, key management, and developer hub features bundled with docs.",
+      "Your customer is enterprise and the docs platform is part of a broader developer-experience procurement.",
+      "You value ReadMe's longer track record and more mature feature set.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Free for OSS; Pro ~$150/mo; Growth ~$550/mo; Enterprise custom (verified 2026-05-17).",
+        b: "Free tier; Startup ~$99/mo; Business and Enterprise custom (verified 2026-05-17).",
+        winner: "tie",
+        note: "Similar bands at indie scale; both lean enterprise at higher tiers.",
+      },
+      {
+        name: "Aesthetic and modernity",
+        a: "Distinctive modern docs aesthetic; recognizable across the dev-tool category.",
+        b: "More conventional aesthetic; functional but less genre-defining.",
+        winner: "A",
+      },
+      {
+        name: "Authoring model",
+        a: "Docs-as-code (MDX, Git workflow).",
+        b: "WYSIWYG-first with Git-sync option.",
+        winner: "different",
+      },
+      {
+        name: "API metering and key management",
+        a: "Limited.",
+        b: "Mature; ReadMe is the canonical API-docs platform for metering and developer onboarding.",
+        winner: "B",
+      },
+      {
+        name: "Visible customer roster",
+        a: "Anthropic, Cursor, Resend, others — dev-tool category-recognizable.",
+        b: "Stripe, Notion, Brex, others — broader enterprise customer base.",
+        winner: "different",
+      },
+      {
+        name: "AI search",
+        a: "Built-in.",
+        b: "Available; quality varies by tier.",
+        winner: "tie",
+      },
+      {
+        name: "Internal documentation use case",
+        a: "Possible but not the focus.",
+        b: "Solid; ReadMe supports internal developer hubs.",
+        winner: "B",
+      },
+      {
+        name: "Brand momentum in 2026",
+        a: "Strong; winning new dev-tool company sign-ups.",
+        b: "Stable; established but slower momentum than Mintlify.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Mintlify and ReadMe both serve API documentation but at different points on the modernity-vs-maturity axis. Mintlify is the modern challenger with a distinctive aesthetic and a growing customer roster of well-known dev-tool companies. ReadMe is the established platform with deeper API-metering and developer-hub tooling that serves enterprise customers well. For new docs sites in 2026, Mintlify's aesthetic and momentum make it the default; for enterprise API platforms with specific metering and onboarding needs, ReadMe retains structural advantages.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Mintlify for indie SaaS dev-tool docs. The aesthetic match alone — every visible Mintlify docs site reinforces the category positioning — is worth the choice. ReadMe is excellent but the enterprise gravitas is not what an indie SaaS needs at this stage.",
+    },
+    faqs: [
+      {
+        q: "Is the Mintlify aesthetic really a differentiator?",
+        a: "Yes for dev-tool companies. The aesthetic shared by Anthropic, Resend, Cursor, and others has become the visual shorthand for 'serious modern API docs.' Matching that pattern signals category membership; mismatching it signals legacy or amateur.",
+      },
+      {
+        q: "Does ReadMe still make sense for new projects?",
+        a: "For enterprise API platforms with specific metering and developer-hub needs, yes. For typical indie dev-tool docs without those needs, Mintlify is usually the better choice.",
+      },
+      {
+        q: "What about open-source alternatives like Docusaurus or Nextra?",
+        a: "Docusaurus and Nextra are valid open-source self-hosted options. They require engineering effort to deploy and maintain but cost nothing in license. The trade is engineering time vs SaaS subscription. For dev-tool teams that value their engineering time, Mintlify or ReadMe usually wins.",
+      },
+      {
+        q: "Can I migrate from ReadMe to Mintlify?",
+        a: "Yes; the migration is mostly mechanical because both support Markdown-based content. The harder parts are recreating ReadMe-specific features (API metering, key management) and re-creating the visual customizations.",
+      },
+      {
+        q: "What is the Brunson lens on Mintlify vs ReadMe?",
+        a: "Mintlify executed Brunson 'visible customer flywheel' (Anthropic, Cursor, Resend all on Mintlify means the next dev-tool buyer sees Mintlify everywhere). ReadMe executed Brunson 'feature depth at enterprise scale' (mature API tooling that enterprise procurement values). Different moves, different segments, both still strong.",
+      },
+    ],
+    tags: ["documentation", "developer-tools", "api-docs", "modern-vs-mature"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "screen-studio-vs-tella",
+    a: { name: "Screen Studio", teardownSlug: "screen-studio", url: "https://www.screen.studio/" },
+    b: { name: "Tella", teardownSlug: "tella", url: "https://www.tella.tv/" },
+    category: "Screen recording for marketing video",
+    oneLine:
+      "Screen Studio is a one-time license desktop app. Tella is a browser-based subscription SaaS. Same category, opposite product shapes.",
+    tldr:
+      "Screen Studio and Tella both produce polished screen recordings for marketing video, but with opposite product shapes. Screen Studio is a macOS desktop app sold as a one-time license at premium price. Tella is a browser-based SaaS with subscription pricing and team collaboration features. For solo operators producing periodic marketing videos, Screen Studio. For teams producing video continuously with collaboration needs, Tella.",
+    bestFor: {
+      a: "Solo operators, designers, and marketers on macOS who produce marketing videos periodically and prefer one-time licenses.",
+      b: "Teams and SaaS sales operators producing async sales pitches, demos, and marketing videos continuously with collaboration features.",
+    },
+    pickAIf: [
+      "You produce marketing videos periodically rather than continuously.",
+      "You are on macOS and value native-app responsiveness.",
+      "You prefer one-time licenses over subscriptions.",
+    ],
+    pickBIf: [
+      "Your team produces video continuously and needs cross-team collaboration.",
+      "You need browser-based recording (cross-platform, no install).",
+      "You value Tella's team subscription model and shared workspace features.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing model",
+        a: "One-time license ~$229 with optional yearly updates (verified 2026-05-17).",
+        b: "Subscription, free tier with watermark; paid tiers per editor (verified 2026-05-17).",
+        winner: "different",
+      },
+      {
+        name: "Platform",
+        a: "macOS desktop app.",
+        b: "Browser-based; cross-platform.",
+        winner: "B",
+        note: "Tella's cross-platform reach matters for non-Mac teams.",
+      },
+      {
+        name: "Output polish",
+        a: "Distinctive auto-zoom, smooth cursor, configurable backgrounds.",
+        b: "Strong layered camera and screen, branded overlays, custom templates.",
+        winner: "tie",
+        note: "Both produce recognizable polished output; aesthetic preference is taste-driven.",
+      },
+      {
+        name: "Editing capabilities",
+        a: "Native non-linear editor with cuts, zoom, music, overlays.",
+        b: "Browser-based editor with cuts, zoom, captions, templates.",
+        winner: "tie",
+      },
+      {
+        name: "Collaboration features",
+        a: "Single-user; built for the solo operator producing finished output.",
+        b: "Team workspace; shared library, comments, reactions.",
+        winner: "B",
+      },
+      {
+        name: "Solo operator fit",
+        a: "Designed for it; the one-time license model matches the workflow.",
+        b: "Possible but the subscription is built for ongoing team use.",
+        winner: "A",
+      },
+      {
+        name: "Speed of recording-to-share",
+        a: "Recording then editing then export; minutes per video.",
+        b: "Record then auto-upload then share link; faster for async workflows.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Screen Studio and Tella both produce polished screen recordings for marketing video, but they solve different operational shapes. Screen Studio is the solo-operator desktop tool with one-time pricing — pay once, produce marketing videos when needed, no ongoing cost. Tella is the team SaaS with subscription pricing and collaboration features — designed for continuous team video production with shared workflow. Most indie founders sit closer to Screen Studio's shape; SaaS sales teams sit closer to Tella's. The product choice maps to operational shape, not to output quality.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you are a solo indie founder producing marketing videos periodically, Screen Studio's one-time pricing and native-Mac polish are hard to beat. If you are running a SaaS sales team where multiple people record demos and onboarding videos continuously, Tella's subscription model and team workspace match the workflow.",
+    },
+    faqs: [
+      {
+        q: "Can Screen Studio replace Tella for team async sales video?",
+        a: "Workably, but the workflow friction adds up. Screen Studio is designed for the solo operator producing finished videos; teams using it for continuous async sales pitching feel the friction of file-based exports and lack of shared library.",
+      },
+      {
+        q: "Can Tella replace Screen Studio for marketing videos?",
+        a: "Yes — Tella produces marketing-quality video. The choice is between paying once for Screen Studio's license vs paying ongoing for Tella's subscription. For periodic marketing video, one-time wins on math; for continuous team video, subscription wins on workflow fit.",
+      },
+      {
+        q: "Is the one-time vs subscription difference really that big?",
+        a: "Yes for some buyers. Solo founders often value the no-subscription model because the marketing-video need is periodic; SaaS teams value the subscription model because the video need is continuous. The pricing model is part of the product fit, not separate from it.",
+      },
+      {
+        q: "What about Loom for the same job?",
+        a: "Loom is in the async-team-communication category — faster recording-to-share but less polished output. The Screen Studio vs Loom comparison and Tella vs Loom comparison both come up frequently; the underlying axis is polish vs speed.",
+      },
+      {
+        q: "What is the Brunson lens on Screen Studio vs Tella?",
+        a: "Both companies execute Brunson Dream Customer naming, in opposite product shapes. Screen Studio names the solo operator and prices to that identity (one-time license). Tella names the team operator and prices to that identity (subscription with team features). Different Dream Customers, different product shapes, both work for their respective audiences.",
+      },
+    ],
+    tags: ["video", "screen-recording", "cross-manifest", "different-product-shapes"],
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup.
