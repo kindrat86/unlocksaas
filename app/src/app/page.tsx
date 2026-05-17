@@ -51,16 +51,16 @@ export default function FunnelHub() {
           attention bar, purple + orange palette, headline with highlighted
           punch-phrases, big blocky orange CTA. Restyle only — copy and CTA
           architecture are locked per workbook 04. */}
-      <div className="bg-yellow-300 text-black text-center py-2 px-4 text-xs sm:text-sm font-bold uppercase tracking-wider border-b-2 border-yellow-500">
+      <div className="bg-yellow-300 text-black text-center py-2 px-3 sm:px-4 text-[11px] sm:text-sm font-bold uppercase tracking-wide sm:tracking-wider border-b-2 border-yellow-500">
         Attention: Pre-revenue founders building with AI
       </div>
 
-      <header className="bg-gradient-to-b from-purple-50 via-purple-50/40 to-white py-16 sm:py-20 px-6 text-center">
+      <header className="bg-gradient-to-b from-purple-50 via-purple-50/40 to-white py-12 sm:py-20 px-4 sm:px-6 text-center">
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs sm:text-sm uppercase tracking-[0.25em] font-bold text-purple-700 mb-5">
+          <p className="text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.25em] font-bold text-purple-700 mb-4 sm:mb-5">
             Unlock SaaS Presents
           </p>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-gray-900 mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black leading-[1.1] sm:leading-[1.05] text-gray-900 mb-6 tracking-tight">
             The problem stuck founders have is{" "}
             <span className="bg-yellow-300 px-1.5 py-0.5 box-decoration-clone">
               not the product.
@@ -89,7 +89,7 @@ export default function FunnelHub() {
           <div className="flex flex-col items-center gap-3 mb-8">
             <Button
               asChild
-              className="h-auto rounded-md bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/30 px-8 py-5 text-lg sm:text-xl font-extrabold uppercase tracking-wide w-full sm:w-auto sm:min-w-[420px] border-b-4 border-orange-700 hover:border-orange-800 transition-colors"
+              className="h-auto rounded-md bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/30 px-6 sm:px-8 py-4 sm:py-5 text-base sm:text-xl font-extrabold uppercase tracking-wide w-full sm:w-auto sm:min-w-[420px] max-w-full border-b-4 border-orange-700 hover:border-orange-800 transition-colors leading-tight whitespace-normal"
             >
               <Link href="/diagnostic">Yes! Get My Free Diagnosis →</Link>
             </Button>
@@ -144,7 +144,7 @@ export default function FunnelHub() {
       <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- MANIFESTO (half) — A/B identity_label ---------------- */}
-      <section className="py-16 px-6 max-w-2xl mx-auto">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">
           {labels.manifestoTitle}
         </h2>
@@ -182,9 +182,9 @@ export default function FunnelHub() {
       <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- FOUNDER TIMELINE ---------------- */}
-      <section className="py-16 px-6 max-w-2xl mx-auto">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">The Timeline</h2>
-        <ol className="space-y-4">
+        <ol className="space-y-5 sm:space-y-4">
           {[
             {
               date: "2025, summer",
@@ -212,8 +212,11 @@ export default function FunnelHub() {
                 "Locked the Brunson workbook chain end-to-end. Shipped this funnel.",
             },
           ].map((row) => (
-            <li key={row.date} className="flex gap-4">
-              <div className="shrink-0 w-32 text-xs uppercase tracking-widest text-muted-foreground pt-1">
+            <li
+              key={row.date}
+              className="flex flex-col sm:flex-row gap-1 sm:gap-4"
+            >
+              <div className="shrink-0 sm:w-32 text-xs uppercase tracking-widest text-muted-foreground sm:pt-1">
                 {row.date}
               </div>
               <div className="text-sm text-muted-foreground leading-relaxed">
@@ -227,7 +230,7 @@ export default function FunnelHub() {
       <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- COMPARISON ---------------- */}
-      <section className="py-16 px-6 max-w-3xl mx-auto">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-3xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">
           What you have been trying — and what is different about this.
         </h2>
@@ -298,7 +301,7 @@ export default function FunnelHub() {
       <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- FAQ ---------------- */}
-      <section className="py-16 px-6 max-w-2xl mx-auto">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center">Honest objections.</h2>
         <p className="text-sm text-muted-foreground text-center mb-8">
           Mined from public Indie Hackers and Hacker News threads written by
@@ -345,7 +348,7 @@ export default function FunnelHub() {
       <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- NEWSLETTER ---------------- */}
-      <section className="py-16 px-6 max-w-md mx-auto text-center">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-md mx-auto text-center">
         <h2 className="text-lg font-bold mb-4">
           Not ready to subscribe? Read the five-day arc first.
         </h2>
@@ -365,7 +368,7 @@ export default function FunnelHub() {
           and this empty-state disappears automatically — no duplicate render. */}
       {!shouldRenderMediaBar() ? (
         <>
-          <section className="py-12 px-6 max-w-2xl mx-auto text-center">
+          <section className="py-10 sm:py-12 px-4 sm:px-6 max-w-2xl mx-auto text-center">
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
               As seen in
             </p>
@@ -381,7 +384,7 @@ export default function FunnelHub() {
       ) : null}
 
       {/* ---------------- SOCIAL ---------------- */}
-      <section className="py-12 px-6 max-w-md mx-auto text-center">
+      <section className="py-10 sm:py-12 px-4 sm:px-6 max-w-md mx-auto text-center">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
           Find me
         </p>
@@ -414,7 +417,7 @@ export default function FunnelHub() {
       </section>
 
       {/* ---------------- FOOTER ---------------- */}
-      <footer className="py-8 px-6 text-center text-xs text-muted-foreground mt-auto">
+      <footer className="py-8 px-4 sm:px-6 text-center text-xs text-muted-foreground mt-auto">
         <p>&copy; 2026 Unlock SaaS. Built by a non-engineer who shipped anyway.</p>
         <p className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
           <Link

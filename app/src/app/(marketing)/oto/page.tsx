@@ -32,7 +32,7 @@ export default function OTOPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-16 px-6">
+    <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
       <AbExposureBeacon />
       <div className="max-w-lg text-center">
         <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-6">

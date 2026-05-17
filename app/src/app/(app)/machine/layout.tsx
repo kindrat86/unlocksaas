@@ -78,9 +78,56 @@ export default async function MachineLayout({
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <aside className="w-72 border-r bg-card p-6 flex flex-col">
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Mobile top bar — horizontal scrollable step pills.
+          The lg sidebar below carries the same nav for tablet/desktop.
+          Header is sticky so the steps stay one tap away during a long
+          step page. */}
+      <div className="lg:hidden sticky top-0 z-30 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+        <div className="px-4 py-3">
+          <h2 className="text-sm font-bold">The Machine</h2>
+          <p className="text-[11px] text-muted-foreground">
+            7 steps to your first paying customer
+          </p>
+        </div>
+        <nav
+          className="flex gap-2 overflow-x-auto px-4 pb-3 -mb-px scroll-pl-4 snap-x snap-mandatory"
+          aria-label="Machine steps"
+        >
+          {steps.map((step) => {
+            const isUnlocked = unlockedSteps.includes(step.id);
+            const Icon = isUnlocked ? step.icon : Lock;
+            const className =
+              "snap-start shrink-0 flex items-center gap-2 px-3 h-10 rounded-full border text-xs whitespace-nowrap transition-colors";
+            return isUnlocked ? (
+              <Link
+                key={step.id}
+                href={`/machine/step/${step.id}`}
+                className={`${className} border-border hover:bg-accent`}
+              >
+                <Icon className="h-3.5 w-3.5 shrink-0" />
+                <span>
+                  {step.id}. {step.name}
+                </span>
+              </Link>
+            ) : (
+              <div
+                key={step.id}
+                className={`${className} border-border/60 opacity-50 cursor-not-allowed`}
+                aria-disabled="true"
+              >
+                <Icon className="h-3.5 w-3.5 shrink-0" />
+                <span>
+                  {step.id}. {step.name}
+                </span>
+              </div>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Desktop sidebar — hidden below lg, where the top bar takes over. */}
+      <aside className="hidden lg:flex w-72 shrink-0 border-r bg-card p-6 flex-col">
         <div className="mb-6">
           <h2 className="text-lg font-bold">The Machine</h2>
           <p className="text-xs text-muted-foreground mt-1">
@@ -149,7 +196,9 @@ export default async function MachineLayout({
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-8 overflow-y-auto">{children}</main>
+      <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 }

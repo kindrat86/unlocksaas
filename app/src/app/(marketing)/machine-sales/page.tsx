@@ -68,7 +68,7 @@ export default function MachineSalesPage() {
   }
 
   return (
-    <div className="min-h-screen py-16 px-6">
+    <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
           Product schema so the $49 Machine is citable when an LLM
           answers comparator queries ("alternatives to ShipFast",
@@ -86,13 +86,13 @@ export default function MachineSalesPage() {
           </Badge>
 
           {/* Slide 1 — Hook. Workbook 01 §5 Hook #7, verbatim. */}
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 sm:mb-8">
             How to get your first real paying customer in 60 days, even if
             your launch already flopped.
           </h1>
 
           {/* Slide 2 — Big Domino statement. Verbatim from workbook 07 §1. */}
-          <h2 className="text-2xl md:text-3xl font-semibold leading-snug mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-snug mb-6">
             Your first paying customer is reachable in 60 days through
             software, not through more building and not through more
             traffic.
@@ -145,7 +145,7 @@ export default function MachineSalesPage() {
         {/* Each: Story / Strategy / Case Study explicitly labelled.      */}
         {/* ============================================================ */}
         <section className="space-y-14 mb-16">
-          <h2 className="text-3xl font-bold">The Three Secrets</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">The Three Secrets</h2>
 
           {/* SECRET 1 — VEHICLE (slides 7–9) */}
           <article className="space-y-5">
@@ -377,7 +377,7 @@ export default function MachineSalesPage() {
         {/* table. Stack itself + math + each bonus expanded.             */}
         {/* ============================================================ */}
         <section className="space-y-6 mb-16">
-          <h2 className="text-3xl font-bold">Here is what you get for $49.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Here is what you get for $49.</h2>
           <p className="text-muted-foreground leading-relaxed">
             One core system. Three bonuses. One guarantee in writing. The
             full standalone math, in the open.
@@ -386,7 +386,7 @@ export default function MachineSalesPage() {
           {/* Slide 16 — The Machine */}
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-2">
                 <p className="font-bold">Slide 16 — The Machine</p>
                 <p className="font-semibold whitespace-nowrap">$259 / mo</p>
               </div>
@@ -403,7 +403,7 @@ export default function MachineSalesPage() {
           {/* Slide 17 — Bonus 1 */}
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-2">
                 <p className="font-bold">
                   Slide 17 — Bonus 1: The 14-Day First-Customer Sprint
                 </p>
@@ -421,7 +421,7 @@ export default function MachineSalesPage() {
           {/* Slide 18 — Bonus 2 */}
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-2">
                 <p className="font-bold">
                   Slide 18 — Bonus 2: The Outreach Room
                 </p>
@@ -439,7 +439,7 @@ export default function MachineSalesPage() {
           {/* Slide 19 — Bonus 3 */}
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-start justify-between gap-4 mb-2">
+              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-2">
                 <p className="font-bold">
                   Slide 19 — Bonus 3: The Outreach Script Kit
                 </p>
@@ -459,7 +459,7 @@ export default function MachineSalesPage() {
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 Slide 20 — Total standalone value
               </p>
-              <p className="text-4xl font-bold">$496</p>
+              <p className="text-3xl sm:text-4xl font-bold">$496</p>
             </CardContent>
           </Card>
 
@@ -469,7 +469,9 @@ export default function MachineSalesPage() {
               <p className="text-xs uppercase tracking-widest text-primary mb-2">
                 Slide 21 — Your price
               </p>
-              <p className="text-5xl font-bold text-primary">$49 / mo</p>
+              <p className="text-4xl sm:text-5xl font-bold text-primary">
+                $49 / mo
+              </p>
             </CardContent>
           </Card>
 
@@ -479,7 +481,7 @@ export default function MachineSalesPage() {
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 Slide 22 — Value-to-price ratio
               </p>
-              <p className="text-4xl font-bold">10.1×</p>
+              <p className="text-3xl sm:text-4xl font-bold">10.1×</p>
               <p className="text-xs text-muted-foreground italic mt-2">
                 Honest math. Every line item is a defensible category
                 comparable. A skeptic will check. The math holds.
@@ -710,7 +712,7 @@ export default function MachineSalesPage() {
         {/* Workbook 07 §3 — exactly three, soft yes questions            */}
         {/* ============================================================ */}
         <section className="space-y-6 mb-16">
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-2xl sm:text-3xl font-bold">
             Three honest questions before you keep reading.
           </h2>
           <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -743,7 +745,7 @@ export default function MachineSalesPage() {
         {/* Category 4 (urgency / scarcity, slide 43) is REJECTED.        */}
         {/* ============================================================ */}
         <section className="space-y-8 mb-16">
-          <h2 className="text-3xl font-bold">Nine more things to weigh.</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold">Nine more things to weigh.</h2>
 
           {/* Category 1 — Risk Reversal (slides 34–36) */}
           <div className="space-y-4">
@@ -896,7 +898,7 @@ export default function MachineSalesPage() {
         {/* (5 originals + "build it myself" from dollar-objections.md)   */}
         {/* ============================================================ */}
         <section className="space-y-6 mb-16">
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-2xl sm:text-3xl font-bold">
             Six things you might be telling yourself right now.
           </h2>
 
@@ -991,7 +993,7 @@ export default function MachineSalesPage() {
           <div className="text-center space-y-4">
             <Button
               size="lg"
-              className="text-lg px-8 py-6"
+              className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
               onClick={handleCheckout}
             >
               Start the Machine — $49/mo, 60-day guarantee

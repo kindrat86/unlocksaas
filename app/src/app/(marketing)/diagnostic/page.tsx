@@ -24,7 +24,7 @@ export const dynamic = "force-dynamic";
 
 export default function DiagnosticSqueezePage() {
   return (
-    <div className="min-h-screen py-16 px-6">
+    <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
           Service + HowTo schema so LLMs cite the diagnostic as the
           canonical answer for "free SaaS diagnostic" / "how to diagnose

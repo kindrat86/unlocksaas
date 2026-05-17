@@ -25,7 +25,7 @@ import { ChallengeForm } from "./challenge-form";
  */
 export default function ChallengePage() {
   return (
-    <div className="min-h-screen py-16 px-6">
+    <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">
         <Badge variant="secondary" className="mb-4">
