@@ -2126,6 +2126,460 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     pricingPageUrl: "https://testimonial.to/pricing",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "clickup",
+    displayName: "ClickUp",
+    creator: "Zeb Evans",
+    category: "Project management for software teams",
+    oneLine:
+      "ClickUp's pricing matches the consolidation promise — generous free, predictable per-user upsells, AI as orthogonal add-on. Pay for the bundle, scale with the team.",
+    tldr:
+      "ClickUp's pricing structure leans into the all-in-one positioning: a genuinely generous free tier captures cross-functional teams, per-user paid tiers add automation, storage, and admin features, AI is an orthogonal add-on across all tiers. The lesson for indie founders: when your value proposition is consolidation, the pricing model needs to make adopting the bundle cheaper than maintaining the alternatives — generous free plus predictable per-user scaling delivers that math.",
+    productSnapshot: {
+      whatTheySell:
+        "An all-in-one productivity platform combining tasks, docs, chat, whiteboards, forms, time tracking, goals in one configurable workspace.",
+      whoFor:
+        "Cross-functional teams that want to consolidate multiple SaaS tools under one bill, with deep configurability for their specific workflows.",
+    },
+    pricingStructure: {
+      model: "Per-user tiered subscription with generous free + AI as add-on",
+      tiers: [
+        {
+          name: "Free Forever",
+          pricePoint: "$0",
+          includes:
+            "Unlimited users and tasks, most core features (kanban, sprints, docs, chat, whiteboards, time tracking), 100MB storage cap.",
+          audience: "Indie teams, individuals, and small teams evaluating ClickUp at zero cost.",
+        },
+        {
+          name: "Unlimited",
+          pricePoint: "approximately $10/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Unlimited storage, integrations, dashboards, custom fields, guests, native time tracking.",
+          audience: "Growing teams hitting the storage cap or needing dashboards and integrations.",
+        },
+        {
+          name: "Business",
+          pricePoint: "approximately $19/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Advanced automations, advanced dashboards, workload management, SSO, advanced permissions.",
+          audience: "Established teams scaling collaboration and adopting governance features.",
+        },
+        {
+          name: "Business Plus",
+          pricePoint: "approximately $29/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Team sharing, custom role creation, increased automations, priority support.",
+          audience: "Larger teams with multi-department coordination.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Advanced security, dedicated success, white-label, custom SLAs.",
+          audience: "Enterprise customers with procurement requirements.",
+        },
+        {
+          name: "ClickUp AI add-on",
+          pricePoint: "approximately $7/member/mo on top of any paid plan",
+          includes:
+            "AI-assisted writing, automation suggestions, task summaries, project insights.",
+          audience: "Any paid-tier user wanting AI-augmented workflows.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount",
+      freeTrialBehavior:
+        "Free Forever tier IS the trial; paid features available on 14-day trial for evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Business Plus tier as anchor",
+      analysis:
+        "Business Plus at approximately $29/user/mo anchors the page for serious cross-functional teams. Business at approximately $19 reads as the natural growth tier; Unlimited at approximately $10 reads as the affordable upgrade from Free. Enterprise sits ready for procurement. The unusual structural element is the genuinely generous Free tier (unlimited users) — most teams adopt deeply before any paywall hits, making upgrades structural rather than feature-gate-driven.",
+    },
+    upgradeTrigger: {
+      pattern: "Storage cap plus team-scale features",
+      analysis:
+        "The Free tier's 100MB storage cap is the structural primary trigger — teams that adopt deeply hit it within weeks. Beyond that, Unlimited-to-Business is driven by advanced automations and admin features (dashboards, workload management). Business-to-Business Plus by team-sharing and custom roles. Each tier jump maps to a real organizational growth event.",
+    },
+    whatsWorking: [
+      "Genuinely generous Free tier (unlimited users) lets teams adopt deeply before paywall, making upgrade decisions structural.",
+      "Storage cap as primary upgrade trigger is mechanical and predictable — teams hit it through normal use.",
+      "AI as add-on (not as tier) captures incremental revenue without disturbing the seat-ladder psychology.",
+      "Per-user pricing aligns the bill with team-scale growth, not with feature consumption.",
+      "Cross-functional positioning matches the cross-functional pricing structure — the same teams that need ClickUp's breadth pay for it predictably.",
+      "Business Plus tier anchor mechanic makes Business tier read as the reasonable growth choice.",
+    ],
+    whatToAdapt: [
+      "If your value proposition is consolidation, your free tier needs to be generous enough for real adoption — not just evaluation. Real adoption converts at structural caps, not at feature gates.",
+      "Storage caps (or similar mechanical caps) are predictable upgrade triggers that teams understand intuitively. Feature-gate triggers create more buyer friction.",
+      "Pricing AI features as orthogonal add-ons lets you capture AI revenue without restructuring the existing tier ladder.",
+    ],
+    whatToAvoid: [
+      "Do not offer unlimited free users if you cannot serve them operationally. ClickUp can because their infrastructure and revenue model support it; smaller SaaS often cannot.",
+      "Do not anchor with a tier that has no real Enterprise customers. The Business Plus tier works as anchor because real teams adopt it, not just to make Business look cheap.",
+    ],
+    brunsonLens: {
+      stack: "Five-rung stack with progressive feature additions; Business Plus tier is the visual anchor and Enterprise sits behind a sales conversation.",
+      valueLadder: "Full Value Ladder with Free as front-end (unlimited-user acquisition), per-user paid tiers as subscription core, Enterprise as high-ticket back-end, AI as continuity add-on.",
+      decoyOrAnchor: "Business Plus tier as anchor; Business as reasonable growth tier; Unlimited as affordable upgrade; Free as visible-customer flywheel.",
+      paymentMechanics: "Per-user monthly or annual with annual discount; AI add-on per-member orthogonal to tier; no usage metering on feature use.",
+    },
+    faqs: [
+      {
+        q: "Why is ClickUp's free tier so generous compared to competitors?",
+        a: "Because the consolidation value proposition requires real adoption to demonstrate. Teams that only evaluate ClickUp briefly cannot feel the consolidation benefit; teams that adopt deeply on the free tier convert at structural scale moments (storage cap, team size, governance needs). Generous free pays back through deep adoption.",
+      },
+      {
+        q: "Should an indie SaaS use unlimited-user free tiers?",
+        a: "Only when your unit economics support it AND your value proposition genuinely requires deep adoption to demonstrate. Most SaaS fail at least one test — either the marginal cost of a free user is too high, or the value proposition can be evaluated without deep adoption. ClickUp's specific shape supports it; most do not.",
+      },
+      {
+        q: "Why is AI priced as an add-on instead of a tier feature?",
+        a: "Because AI cuts across the existing seat structure. Making it a tier would force users to choose between AI and other tier features (advanced automations, custom fields). As an orthogonal add-on, ClickUp captures AI revenue from any tier without restructuring the seat ladder.",
+      },
+      {
+        q: "What is the Brunson lens on ClickUp's pricing?",
+        a: "Full five-rung Value Ladder with structural-cap upgrade triggers (storage) plus continuity add-on (AI). The consolidation-promise marketing flows directly into a pricing model that rewards deep adoption with structural-cap-driven upgrades. Brunson lesson: when your value proposition is consolidation, your pricing must make adopting the bundle cheaper than maintaining the alternatives — generous free plus per-user scaling delivers that math.",
+      },
+    ],
+    tags: ["per-user", "generous-free", "ai-as-add-on", "consolidation-pricing"],
+    homepageUrl: "https://clickup.com/",
+    pricingPageUrl: "https://clickup.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "render",
+    displayName: "Render",
+    creator: "Anurag Goel",
+    category: "Frontend cloud and hosting",
+    oneLine:
+      "Render's pricing is per-service predictable — pay for the resources you provision, see the bill before it arrives. No bill-shock, no usage-metered surprise.",
+    tldr:
+      "Render's pricing structure matches the modern-PaaS positioning: each backend service (web service, Postgres, Redis, background worker, cron) has its own predictable monthly cost, total stacks transparently, no surprise overages from usage spikes. The lesson for indie founders: when your competitor (Vercel, Fly.io) prices on metered usage that creates bill-shock risk, predictable-bundle pricing is the structural alternative that converts buyers who want to budget reliably.",
+    productSnapshot: {
+      whatTheySell:
+        "A managed Platform-as-a-Service for full-stack web apps with bundled Postgres, Redis, background workers, cron, and static-site hosting.",
+      whoFor:
+        "Full-stack indie founders, startups, and small teams who want bundled backend services with predictable per-service pricing.",
+    },
+    pricingStructure: {
+      model: "Per-service predictable pricing with bundled backend tiers + flat team subscription",
+      tiers: [
+        {
+          name: "Static sites",
+          pricePoint: "$0 (free)",
+          includes:
+            "Static-site hosting with global CDN, free SSL, custom domains, unlimited bandwidth.",
+          audience: "Pre-revenue indie founders, side projects, documentation sites.",
+        },
+        {
+          name: "Individual",
+          pricePoint: "approximately $7/mo workspace + per-service costs (verified 2026-05-17)",
+          includes:
+            "Single-user workspace, web services starting at low-single-digits/mo for hobby compute scaling into production tiers.",
+          audience: "Solo indie founders shipping production apps with backend.",
+        },
+        {
+          name: "Team",
+          pricePoint: "approximately $19/user/mo workspace + per-service costs (verified 2026-05-17)",
+          includes:
+            "Multi-user workspace, shared infrastructure, role-based access, team-collaboration features on services.",
+          audience: "Growing teams running production full-stack apps.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Dedicated infrastructure, SLAs, custom contracts, advanced security, dedicated support.",
+          audience: "Larger companies with security or scale requirements.",
+        },
+        {
+          name: "Per-service tiers",
+          pricePoint:
+            "Web services from ~$7/mo (hobby) up to enterprise tiers; Postgres from ~$7/mo (256MB) to multi-hundred-dollar enterprise; Redis from ~$10/mo to enterprise; workers + cron predictable monthly tiers (verified 2026-05-17)",
+          includes:
+            "Each service has its own predictable monthly tier; total bill = workspace + sum of provisioned services.",
+          audience: "All paid customers — pricing transparency is the structural differentiator.",
+        },
+      ],
+      paymentFrequency: "Monthly subscription on workspace + per-service tier; no metered usage on most services",
+      freeTrialBehavior:
+        "Free static-site tier IS the trial for the platform; paid services start small and scale predictably.",
+    },
+    anchorAnalysis: {
+      pattern: "Predictability-as-anchor",
+      analysis:
+        "Render's pricing page does not lead with an aggressive anchor tier. The implicit anchor is the predictability itself — buyers comparing Render to usage-metered alternatives (Vercel, Fly.io) see one number per service and one total before they commit. Predictability is the entire pricing argument. The simplicity matches the modern-Heroku positioning: 'what Heroku used to give you, without the modern bill-shock from competitors.'",
+    },
+    upgradeTrigger: {
+      pattern: "Resource-provisioning growth and workspace tier scaling",
+      analysis:
+        "Two trigger types fire: provisioning new services or upgrading existing service tiers (more CPU, more storage) drives total bill growth; team-size growth drives the workspace tier from Individual to Team. Both triggers map to natural application growth events and are predictable in advance, which prevents the surprise overage that usage-metered competitors create.",
+    },
+    whatsWorking: [
+      "Per-service predictable pricing matches the modern-PaaS bundling positioning — pricing model and value proposition align.",
+      "Free static-site hosting captures the indie-buyer entry point and converts to paid as backend needs emerge.",
+      "No usage metering on most services prevents bill-shock — buyers can budget reliably without continuous monitoring.",
+      "Each service tier maps to provisioned resources, not consumed resources — easier mental model than VM-cycles or function-invocations.",
+      "Per-user workspace pricing scales with team-size growth predictably.",
+      "Founder-led marketing from Anurag Goel and the Render team anchors the brand to identifiable operators.",
+    ],
+    whatToAdapt: [
+      "If your competitors use usage-metered pricing that creates bill-shock, predictable per-resource pricing is the structural differentiator that converts buyers who want to budget reliably.",
+      "Make the total cost calculable in advance from the published tiers. Buyers should be able to do the math without contacting sales.",
+      "Free entry tier with one or two real value props (here: static hosting with CDN) converts free users to paid as their needs grow beyond the entry tier.",
+    ],
+    whatToAvoid: [
+      "Do not adopt predictable per-service pricing if your platform cost actually scales with usage. The model only works when your infrastructure cost matches the predictable tier.",
+      "Do not over-bundle services you cannot operate at predictable cost — the predictability claim collapses when surprise charges appear for adjacent capabilities.",
+    ],
+    brunsonLens: {
+      stack: "Two-rung workspace stack (Individual, Team) plus per-service tier stack — total bill is sum of provisioned services.",
+      valueLadder: "Four-rung Value Ladder (Free static → Individual → Team → Enterprise) with per-service tier customization.",
+      decoyOrAnchor: "Predictability-as-anchor; no explicit decoy tier. The simplicity is the conversion mechanism.",
+      paymentMechanics: "Workspace subscription + per-service predictable tiers; no metered overages on most services.",
+    },
+    faqs: [
+      {
+        q: "How does Render's predictable pricing differ from Vercel's metered?",
+        a: "Vercel prices on metered usage (bandwidth, function invocations, build minutes) plus per-user subscription. Render prices on provisioned per-service tiers (web service tier, Postgres tier, Redis tier) plus workspace subscription. For predictable workloads, Render's model is easier to budget; for variable workloads with low baselines, Vercel's metered model can be cheaper.",
+      },
+      {
+        q: "Why does Render bundle Postgres and Redis natively?",
+        a: "Strategic decision to be the bundled-services PaaS. Competitors push these to marketplace partners (Vercel) or require manual setup (Fly.io). Render's bundling means one dashboard, one bill, one operational surface for the full stack.",
+      },
+      {
+        q: "Should an indie SaaS use predictable per-resource pricing?",
+        a: "Only if your infrastructure cost scales with provisioned resources rather than consumed usage. Hosting platforms, database services, monitoring tools fit this model. Per-API-call or per-event services do not — usage metering aligns with their cost shape.",
+      },
+      {
+        q: "What is the Brunson lens on Render's pricing?",
+        a: "Predictability-as-anchor with bundled-services Value Ladder. The pricing structure mirrors the modern-Heroku positioning exactly — bundling and predictability are both the marketing and the pricing model. Brunson lesson: when your value proposition is 'simpler than the modern alternatives,' your pricing must demonstrate that simplicity numerically.",
+      },
+    ],
+    tags: ["per-service", "predictable", "bundled-paas", "no-metering"],
+    homepageUrl: "https://render.com/",
+    pricingPageUrl: "https://render.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "loom",
+    displayName: "Loom",
+    creator: "Joe Thomas, Shahed Khan, Vinay Hiremath (acquired by Atlassian in 2023)",
+    category: "Screen recording for marketing video",
+    oneLine:
+      "Loom prices free-with-branding plus team-subscription upsell. The free tier is the marketing engine; team adoption is the monetization.",
+    tldr:
+      "Loom's pricing structure is built around the product-is-the-marketing flywheel: the free tier (with Loom branding on every video) seeds the visible-output flywheel, and team subscriptions monetize the workflow once a team adopts async video as standard practice. The lesson for indie founders: when your product creates publicly-shareable artifacts, free-with-branding can be the most efficient acquisition channel — but the upgrade trigger must align with team-scale adoption, not individual feature gates.",
+    productSnapshot: {
+      whatTheySell:
+        "An async video communication platform — screen recording with webcam overlay, instant shareable links, viewer analytics, team workspaces.",
+      whoFor:
+        "Distributed teams, customer success operators, sales teams, engineering teams — anyone whose communication includes async video updates.",
+    },
+    pricingStructure: {
+      model: "Freemium with team-scale upgrade trigger and Loom branding flywheel",
+      tiers: [
+        {
+          name: "Starter (Free)",
+          pricePoint: "$0",
+          includes:
+            "25 videos per person, 5-minute video limit, basic Loom-branded shareable links, viewer analytics.",
+          audience: "Individuals trying Loom or using async video lightly.",
+        },
+        {
+          name: "Business",
+          pricePoint: "approximately $12.50/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Unlimited videos, unlimited recording length, custom branding, viewer engagement insights, transcripts, password protection, advanced sharing controls.",
+          audience: "Teams adopting async video as standard practice.",
+        },
+        {
+          name: "Business + AI",
+          pricePoint: "approximately $20/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "All Business features plus AI auto-titles, auto-summaries, auto-tasks, AI workflows.",
+          audience: "Teams wanting AI-augmented async-video workflows.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "SSO, SCIM, advanced security, custom retention, dedicated success, advanced governance.",
+          audience: "Large organizations with procurement requirements.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount; per-user pricing on paid tiers",
+      freeTrialBehavior:
+        "Starter free tier IS the trial; Business and Business + AI offer time-limited trials for team evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Business + AI tier as anchor",
+      analysis:
+        "Business + AI at approximately $20/user/mo anchors the page above Business at approximately $12.50. The price gap (60% premium) makes Business read as the affordable team tier; the AI version is the upgrade option for teams that specifically want AI features. Enterprise sits ready for procurement-driven buyers. The structural anchor is the Business tier itself — calibrated to be the obvious adoption choice for teams ready to commit.",
+    },
+    upgradeTrigger: {
+      pattern: "Video-count cap plus team-adoption moment",
+      analysis:
+        "Two triggers fire: the 25-video cap on Starter forces individual heavy users to upgrade; the team-adoption moment (when a team decides async video is part of their workflow) drives broader Business-tier conversion. The video-count trigger is mechanical and individual; the team-adoption trigger is structural and organizational. Both contribute to Loom's conversion rate.",
+    },
+    whatsWorking: [
+      "Free tier with Loom branding seeds the visible-output flywheel — every shared video is implicit marketing.",
+      "Video-count cap (25 on Starter) is a predictable trigger for individual heavy users.",
+      "Team-adoption moment is the structural trigger for broader Business tier conversion.",
+      "AI as separate tier (not add-on) captures AI revenue from teams already willing to upgrade.",
+      "Per-user pricing aligns the bill with team scale, which matches how async-video adoption spreads through organizations.",
+      "Atlassian acquisition (2023) keeps the platform funded while preserving the indie-friendly brand on marketing surfaces.",
+    ],
+    whatToAdapt: [
+      "If your product creates publicly-shareable artifacts, free-with-branding is the most efficient acquisition channel — but the artifacts must be high-value enough that recipients want to use the product themselves.",
+      "Layer triggers: mechanical (count caps) for individual conversion, structural (team-adoption moments) for broader conversion. Both contribute to total conversion rate.",
+      "When AI is the forward-state expectation, pricing it as a separate tier rather than add-on works if buyers self-segment cleanly — teams that want AI know they want it.",
+    ],
+    whatToAvoid: [
+      "Do not adopt free-with-branding if your product output is internal-only. The flywheel needs publicly-visible artifacts to compound.",
+      "Do not skip the team-adoption trigger by relying only on individual feature caps. Async-video adoption spreads through teams; individual triggers undermonetize the team conversion path.",
+    ],
+    brunsonLens: {
+      stack: "Four-rung stack with predictable feature additions per tier; AI as separate tier rather than add-on.",
+      valueLadder: "Full four-rung Value Ladder with Free as front-end (Loom-branded acquisition), per-user team tiers as subscription core, Enterprise as back-end.",
+      decoyOrAnchor: "Business + AI tier as anchor; Business as reasonable team choice; Starter as visible-output flywheel.",
+      paymentMechanics: "Per-user monthly or annual with annual discount; no usage metering on video count or send volume below tier caps.",
+    },
+    faqs: [
+      {
+        q: "Why does Loom keep branding on free-tier videos?",
+        a: "Because the branding is the marketing channel. Every shared Loom video exposes a new recipient to the product; the cumulative network effect produces brand recognition that paid acquisition could not match efficiently. The branding is not 'a limitation we'll remove for $12.50' — it is the structural mechanism that makes the free tier economically viable.",
+      },
+      {
+        q: "Should an indie SaaS price AI as a separate tier or as an add-on?",
+        a: "Add-on (ClickUp model) when AI cuts across team-size and use-case segments — captures revenue from any tier without restructuring. Separate tier (Loom model) when buyers self-segment cleanly into AI-wanters and non-wanters. Both models work; the choice depends on how naturally your buyers split on AI adoption.",
+      },
+      {
+        q: "Why is the Business tier price gap with Business + AI so large?",
+        a: "Because the price gap is the anchor mechanic. Business + AI at approximately $20/user/mo makes Business at approximately $12.50 read as the affordable team option. Without the AI tier's premium, Business itself would feel expensive instead of reasonable.",
+      },
+      {
+        q: "What is the Brunson lens on Loom's pricing?",
+        a: "Four-rung Value Ladder with branded-flywheel acquisition (Brunson 'visible-customer' move) plus team-adoption trigger plus AI-tier upgrade. The unusual element is the depth of the free-tier flywheel — Loom's free tier IS the marketing budget, replacing what most companies spend on paid acquisition.",
+      },
+    ],
+    tags: ["freemium-with-branding", "per-user", "team-trigger", "ai-as-tier"],
+    homepageUrl: "https://www.loom.com/",
+    pricingPageUrl: "https://www.loom.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "gitbook",
+    displayName: "GitBook",
+    creator: "Samy Pesse and Aaron O'Mullan",
+    category: "Developer documentation",
+    oneLine:
+      "GitBook prices per-user with feature-tier upsells. The pricing matches the broader-knowledge-platform positioning — scale with team size, not with documentation scope.",
+    tldr:
+      "GitBook's pricing structure scales with team size through per-user tiers, with feature upgrades at each tier rather than usage limits. This matches the broader-knowledge-platform positioning — the value scales with how many people use the platform across docs, wikis, and knowledge bases, not with documentation volume. The lesson for indie founders: when your value scales with team adoption rather than with usage, per-user pricing aligns the bill with the actual value driver.",
+    productSnapshot: {
+      whatTheySell:
+        "A knowledge platform for public documentation, internal wikis, and team knowledge bases with WYSIWYG editing and Git-sync option.",
+      whoFor:
+        "Teams that want one platform for public docs and internal knowledge, with a writer-friendly editor for non-developer contributors.",
+    },
+    pricingStructure: {
+      model: "Per-user tiered subscription with feature-tier upsells",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0",
+          includes:
+            "1 space, up to 5 users, basic editor, basic integrations, GitBook branding.",
+          audience: "Individuals, small teams evaluating GitBook for personal or small-team knowledge.",
+        },
+        {
+          name: "Plus",
+          pricePoint: "approximately $8/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Unlimited spaces, custom domain, brand removal, advanced editor features, more integrations, version history.",
+          audience: "Small teams ready to publish branded docs and run shared workspaces.",
+        },
+        {
+          name: "Pro",
+          pricePoint: "approximately $15/user/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Advanced analytics, advanced permissions, SSO, audit logs, premium support, advanced AI features.",
+          audience: "Growing teams with collaboration depth and security needs.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Custom contracts, advanced security, SCIM, dedicated success, custom retention.",
+          audience: "Larger organizations with procurement requirements.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount",
+      freeTrialBehavior:
+        "Free tier IS the trial for small teams; paid tiers offer time-limited trials for evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Pro tier as anchor",
+      analysis:
+        "Pro at approximately $15/user/mo anchors the page for serious knowledge-platform buyers. Plus at approximately $8 reads as the natural starting tier for small teams; Free is the entry. Enterprise sits behind a sales conversation. The unusual structural element is that the entire tier ladder scales with team size rather than with knowledge volume — buyers do not pay more for writing more docs, only for adding more people.",
+    },
+    upgradeTrigger: {
+      pattern: "User-count cap plus advanced-feature need",
+      analysis:
+        "Two triggers fire: the 5-user cap on Free forces teams to upgrade when they grow beyond initial adoption; the advanced-feature need (analytics, SSO, advanced permissions) drives Plus-to-Pro conversion. Both triggers map to natural team-growth events rather than usage-based limits, which matches how knowledge-platform adoption actually scales inside organizations.",
+    },
+    whatsWorking: [
+      "Per-user pricing aligns the bill with team-adoption value rather than with documentation volume.",
+      "5-user cap on Free is a predictable trigger that fires when a team genuinely adopts the platform.",
+      "Plus tier brand-removal trigger captures the publication-moment willingness-to-pay spike.",
+      "Pro tier advanced-feature gating captures the team-maturity upgrade as governance and analytics matter.",
+      "Enterprise tier provides the procurement-driven upsell without exposing custom pricing publicly.",
+      "WYSIWYG editor accessibility expands the contributor base beyond developers — pricing per-user captures the broader team value.",
+    ],
+    whatToAdapt: [
+      "When your value scales with team adoption rather than with usage volume, per-user pricing aligns the bill with the actual value driver.",
+      "Layer triggers: count caps (5 users on Free) for team-growth, feature gates (SSO, analytics) for team-maturity. Both contribute to total conversion rate.",
+      "Brand removal as Plus-tier trigger captures the publication-moment willingness-to-pay without forcing all users to pay.",
+    ],
+    whatToAvoid: [
+      "Do not adopt per-user pricing if individual users do not get clear individual value. For knowledge platforms most users get value as readers; per-user pricing on read-only access undervalues the platform.",
+      "Do not gate advanced features at Pro if buyers expect them at Plus. The feature-tier expectations evolve over time — what was Pro-tier three years ago may be Plus-tier now.",
+    ],
+    brunsonLens: {
+      stack: "Four-rung stack with progressive feature additions; Pro tier is the visual anchor.",
+      valueLadder: "Full four-rung Value Ladder with Free as front-end, per-user paid tiers as subscription core, Enterprise as high-ticket back-end.",
+      decoyOrAnchor: "Pro tier as anchor; Plus as reasonable starting tier; Free as evaluation entry.",
+      paymentMechanics: "Per-user monthly or annual with annual discount; no usage metering on documentation volume.",
+    },
+    faqs: [
+      {
+        q: "Why does GitBook price per-user instead of per-document?",
+        a: "Because the value of a knowledge platform scales with how many people use it, not with how much is written. Documentation volume is a poor proxy for value; team adoption is a strong one. Per-user pricing aligns the bill with the actual value driver.",
+      },
+      {
+        q: "Should documentation platforms use per-user or per-document pricing?",
+        a: "Per-user when the value scales with team adoption (most knowledge platforms). Per-document or per-page when the value scales with content publication volume (some publication platforms). The choice depends on which metric correlates more closely with your platform's actual cost and customer value.",
+      },
+      {
+        q: "Why is the 5-user cap on Free so low compared to ClickUp's unlimited-user free?",
+        a: "Different consolidation strategies. ClickUp's consolidation requires deep adoption to demonstrate value; GitBook's knowledge-platform value can be evaluated by small teams. The 5-user cap is calibrated to allow real evaluation without making free the production tier — which protects the upgrade conversion path.",
+      },
+      {
+        q: "What is the Brunson lens on GitBook's pricing?",
+        a: "Four-rung Value Ladder with per-user scaling matching the team-adoption value driver. The pricing structure mirrors the broader-knowledge-platform positioning — the value scales with team scope, not with documentation volume. Brunson lesson: when your value proposition is broader-than-competitors, your pricing should reward broader use rather than penalize it.",
+      },
+    ],
+    tags: ["per-user", "team-scaling", "feature-tier-upsells", "knowledge-platform"],
+    homepageUrl: "https://www.gitbook.com/",
+    pricingPageUrl: "https://www.gitbook.com/pricing",
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access.
