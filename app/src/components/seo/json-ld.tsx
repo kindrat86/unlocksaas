@@ -75,7 +75,14 @@ const ORGANIZATION_JSON = JSON.stringify({
     contactType: "customer support",
     email: "maryan@unlocksaas.com",
     url: `${BASE}/contact`,
-    availableLanguage: ["en"],
+    // BCP 47 locale tag. Matches inLanguage ("en-US"), <html lang>,
+    // Content-Language HTTP header, and Service.availableLanguage so the
+    // locale signal is internally consistent across every structured-data
+    // surface. Prior value was the ISO 639-1 "en" which is valid per
+    // schema.org but triggers "Item may be missing or invalid" warnings in
+    // some Rich Results testers and weakens the locale signal that LLMs
+    // aggregate across the entity. Normalized 2026-05-17.
+    availableLanguage: ["en-US"],
   },
   sameAs: SAME_AS,
 });
