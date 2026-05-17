@@ -5,9 +5,59 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { createClient as createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
+
+const TARGET_DURATION_S = 60;
+const INSIGHT_INTERVAL_S = 7;
+
+const STEPS: ReadonlyArray<{ at: number; label: string }> = [
+  { at: 0, label: "Pulling your page." },
+  { at: 8, label: "Reading the headline and the first scroll." },
+  { at: 18, label: "Checking the offer against the outcome you promised." },
+  { at: 28, label: "Mapping your funnel stage against the playbook." },
+  { at: 40, label: "Drafting your diagnosis and the rewrite candidates." },
+  { at: 55, label: "Almost there. Tightening the language." },
+  { at: 90, label: "Taking longer than usual. Dense pages do that. Still working." },
+];
+
+const INSIGHTS: ReadonlyArray<string> = [
+  "Pre-revenue is rarely a product problem. It is almost always a page problem.",
+  "Your headline has about three seconds to name the visitor's pain. If it does not, nothing else on the page matters.",
+  "The offer you think you are making and the offer the visitor reads are rarely the same offer.",
+  "Most $0 MRR products were over-built and under-promised. The rewrite is almost always shorter than the original.",
+  "Hooks earn the scroll. Stories earn the belief. Offers earn the click.",
+  "If your headline could swap onto a competitor's page without anyone noticing, that is the diagnosis.",
+  "A landing page is a conversation between two strangers. Most pages never let the visitor speak first.",
+  "Most founders rewrite the product when they should rewrite the page above it.",
+];
+
+function stepLabelFor(elapsed: number): string {
+  let label = STEPS[0].label;
+  for (const s of STEPS) {
+    if (elapsed >= s.at) label = s.label;
+  }
+  return label;
+}
+
+function insightFor(elapsed: number): string {
+  const idx = Math.floor(elapsed / INSIGHT_INTERVAL_S) % INSIGHTS.length;
+  return INSIGHTS[idx];
+}
+
+// Asymptotic curve toward 95% so completion stays visually distinct.
+// At 60s → ~86%, at 90s → ~94%. Caps at 95%.
+function progressFor(elapsed: number): number {
+  return Math.min(95, 95 * (1 - Math.exp(-elapsed / 25)));
+}
+
+function formatElapsed(s: number): string {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${m}:${sec.toString().padStart(2, "0")}`;
+}
 
 const PENDING_KEY = "diagnostic_pending";
 
@@ -135,20 +185,64 @@ export function DiagnosticFinish() {
 }
 
 function RunningShell() {
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setElapsed((e) => e + 1);
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const step = stepLabelFor(elapsed);
+  const insight = insightFor(elapsed);
+  const progress = progressFor(elapsed);
+
   return (
     <Card>
-      <CardContent className="pt-6">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Reading your page
-        </p>
-        <h1 className="text-2xl font-bold leading-tight mb-3">
-          Finishing your diagnosis.
-        </h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Hold on for a few seconds. The engine is reading what is publicly on
-          your page and labelling the upstream failure. You will land on your
-          diagnosis automatically.
-        </p>
+      <CardContent className="pt-6 space-y-6">
+        <div>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            Reading your page
+          </p>
+          <h1 className="text-2xl font-bold leading-tight mb-3">
+            Finishing your diagnosis.
+          </h1>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Hold on while the engine reads what is publicly on your page and
+            labels the upstream failure. You will land on your diagnosis
+            automatically.
+          </p>
+        </div>
+
+        <div
+          className="space-y-3"
+          role="status"
+          aria-live="polite"
+          aria-label="Diagnosis progress"
+        >
+          <div className="flex items-baseline justify-between gap-4 font-mono text-xs text-muted-foreground tabular-nums">
+            <span>{formatElapsed(elapsed)} elapsed</span>
+            <span>~{formatElapsed(TARGET_DURATION_S)} typical</span>
+          </div>
+          <Progress value={progress} className="h-1.5" />
+          <div className="flex items-center gap-2">
+            <span
+              className="inline-block h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
+              aria-hidden="true"
+            />
+            <p className="text-sm text-foreground/90 leading-tight">{step}</p>
+          </div>
+        </div>
+
+        <div className="border-t pt-5">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+            While you wait
+          </p>
+          <p className="text-sm text-foreground/90 leading-relaxed italic min-h-[5rem]">
+            {insight}
+          </p>
+        </div>
       </CardContent>
     </Card>
   );
