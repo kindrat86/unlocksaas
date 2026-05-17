@@ -1133,6 +1133,433 @@ const TEARDOWNS_LIST: FunnelTeardown[] = [
     homepageUrl: "https://www.screen.studio/",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "notion",
+    displayName: "Notion",
+    creator: "Ivan Zhao, Simon Last and team",
+    category: "Productivity and workspace",
+    oneLine:
+      "Notion's funnel turns personal free use into team-paid revenue. The free tier is the acquisition channel; the team-collaboration friction is the upgrade trigger.",
+    tldr:
+      "Notion's funnel is the canonical personal-free-leads-to-team-paid pattern. Personal free use is genuinely valuable, which seeds adoption inside companies; team-collaboration friction (guest limits, version history, SSO) creates the structural upgrade trigger. The lesson for indie founders: when your buyer's individual use creates artifacts a team will eventually want to share, free-personal can be the most efficient acquisition channel.",
+    productSnapshot: {
+      whatTheySell:
+        "A workspace product combining notes, docs, wikis, databases, and project management in one canvas.",
+      whoFor:
+        "Individuals, small teams, and growing companies who want a flexible workspace instead of separate tools per use case.",
+      pricingNote:
+        "Free personal tier; Plus ~$10/seat/mo, Business ~$18/seat/mo, Enterprise custom; AI add-on ~$8-10/seat/mo (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Identity-based positioning",
+      analysis:
+        "The hero appeals to who the reader wants to BE (someone who has their thinking organized in one place) rather than what the tool does. The screenshot rotations show real-looking workspaces from different roles, so the reader self-identifies before evaluating features. Identity-based hooks compress evaluation when the category is broad enough that feature-comparison would lose the reader.",
+    },
+    story: {
+      pattern: "Template gallery as social proof",
+      analysis:
+        "Story is told through a vast template gallery showing what real people have built. The reader does not need to take a marketing claim on faith because the artifacts are linked. Templates also serve as on-ramp scaffolding — many users copy a template as their starting point, which lowers activation cost.",
+    },
+    offer: {
+      pattern: "Free-personal plus seat-ladder team upsell",
+      analysis:
+        "Personal free is the offer floor; team-tier upgrades fire at the collaboration boundary (guest limits, version history, SSO). AI is priced as an orthogonal add-on rather than a tier, which lets Notion add revenue without disturbing seat psychology. The structure is a textbook Value Ladder with each rung mapped to a natural team-growth event.",
+    },
+    whatsWorking: [
+      "Personal-free tier is good enough for real individual use, seeding viral adoption inside companies.",
+      "Team-collaboration boundary as upgrade trigger captures conversion at the moment a personal tool becomes a team tool.",
+      "Template gallery doubles as long-tail SEO and as activation scaffolding for new users.",
+      "AI priced as add-on (not as tier) lets Notion capture incremental revenue without restructuring the seat ladder.",
+      "Identity-based hero meets the broad category where feature-comparison would lose readers.",
+      "Custom Enterprise tier handles the largest deals without exposing the price to seat-counting competitors.",
+    ],
+    whatToAdapt: [
+      "Free-personal can be the most efficient acquisition channel when your buyer's individual use creates artifacts a team will eventually want to share.",
+      "Price new feature categories as add-ons rather than tiers when they cut across the existing seat structure.",
+      "Use templates as both SEO surface and activation scaffolding — they compress the time from signup to first valuable use.",
+    ],
+    whatToAvoid: [
+      "Do not launch personal-free without unit economics that support it. Notion has venture funding and a long horizon.",
+      "Do not adopt seat-based pricing if individual seats do not get clear individual value.",
+      "Do not build a template gallery before you have users to populate it; an empty gallery is worse than no gallery.",
+    ],
+    brunsonLens: {
+      hook: "Identity hook (Brunson Expert Secrets) — the reader buys the version of themselves who has their thinking organized.",
+      story:
+        "Hero's-Journey-via-templates: each template represents a real person's solved problem; the reader is invited to copy the pattern.",
+      offer:
+        "Full Value Ladder embedded inside one product: free personal → paid team → enterprise → AI continuity add-on across all rungs.",
+      valueLadderTier:
+        "Front-end lead funnel (free personal) plus per-seat subscription core (Plus, Business, Enterprise) plus continuity add-on (AI).",
+    },
+    faqs: [
+      {
+        q: "Why is Notion's free tier so generous?",
+        a: "Because the free tier IS the acquisition channel. A personal user who builds a real workspace eventually brings that workspace into their team — at which point the collaboration boundary fires the upgrade trigger. Generous free pays back through team-paid conversion that a stingy free tier would never trigger.",
+      },
+      {
+        q: "Can an indie SaaS copy Notion's free-personal model?",
+        a: "Only when your unit economics support it AND when individual use produces artifacts that a team will want to share. Notion's free-personal works because both conditions are met. Most indie SaaS fail at least one — and ship freemium that bleeds money without converting.",
+      },
+      {
+        q: "Why is AI priced as an add-on, not a tier?",
+        a: "Because AI cuts across the existing seat structure. Making it a tier would force users to choose between AI features and other tier features. As an add-on it captures AI revenue from every tier without restructuring the seat ladder.",
+      },
+      {
+        q: "What is the Brunson lens on Notion's funnel?",
+        a: "Identity hook plus template-gallery story plus a four-rung Value Ladder with AI as continuity-program upsell. Textbook Brunson structure executed at scale; the identity hook is the most-replicable move for indie founders in broad categories.",
+      },
+      {
+        q: "How does Unlock SaaS think about Notion's pattern?",
+        a: "The team-collaboration trigger is a model for any SaaS where individual use eventually requires sharing. The harder lesson is the unit-economics discipline — Notion can afford the free tier because the team-conversion rate is high enough to fund it. Without that math, the pattern fails.",
+      },
+    ],
+    tags: ["identity-hook", "freemium", "team-trigger", "value-ladder", "template-gallery"],
+    homepageUrl: "https://www.notion.so/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "linear",
+    displayName: "Linear",
+    creator: "Karri Saarinen, Tuomas Artman, Jori Lallo",
+    category: "Project management for software teams",
+    oneLine:
+      "Linear's funnel is restraint as positioning. The hero, the page, the product, and the pricing all communicate one message: software teams who hate process bloat.",
+    tldr:
+      "Linear's funnel makes minimalism the marketing. The hero, the screenshots, the pricing page, and the product itself all signal the same value: software teams who reject configurability for speed. The lesson for indie founders: when your audience resents the dominant incumbent's specific structural choice, naming that rejection and embodying its opposite is the highest-conversion positioning available.",
+    productSnapshot: {
+      whatTheySell:
+        "Issue tracking and project management built for high-velocity software teams.",
+      whoFor:
+        "Software engineering teams from startup to scale-up who reject Jira's complexity.",
+      pricingNote:
+        "Free tier (250 issues); Basic ~$8-10/user/mo, Business ~$14/user/mo, Enterprise custom (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Aesthetic-as-positioning",
+      analysis:
+        "The hero is a single screenshot of the product working fast. There is no manifesto, no industry-problem framing, no founder narrative on the first scroll. The implicit argument is: if you have used Jira and resent it, you already know why Linear exists; the rest of the page just confirms. The aesthetic compression IS the positioning.",
+    },
+    story: {
+      pattern: "Implied-rejection-of-incumbent",
+      analysis:
+        "Linear never names Jira directly on the marketing surface, but the entire page reads as 'this is what issue tracking looks like when it does not feel like Jira.' The story is told by absence — no configurability theater, no admin-required workflows, no enterprise gravitas. Readers who have lived in Jira recognize the contrast instantly.",
+    },
+    offer: {
+      pattern: "Restrained price ladder",
+      analysis:
+        "Free tier with a structural cap (250 issues), Basic that removes the cap, Business that adds team-scale features (cycles, roadmaps), Enterprise that handles procurement. Pricing-page minimalism is so consistent it becomes its own message: 'we trust you to read four rows.' The restraint signals product confidence the way a verbose page signals defensiveness.",
+    },
+    whatsWorking: [
+      "Aesthetic minimalism IS positioning when your audience resents tooling complexity.",
+      "Implied rejection of Jira is the entire story; naming Jira would weaken the move.",
+      "Volume cap on free tier maps to natural team growth, not arbitrary feature gating.",
+      "Layered upgrade triggers (volume first, then workflow features) ensure conversion fires across buyer paths.",
+      "Single screenshot in hero compresses category recognition; no scrolling needed to understand what Linear is.",
+      "Founder-led marketing on Twitter (Karri Saarinen, Tuomas Artman) anchors the brand to credible humans.",
+    ],
+    whatToAdapt: [
+      "If your audience resents the incumbent's structural decision (configurability, complexity, gatekeeping), embody the opposite without naming the incumbent. Implied rejection is stronger than direct attack.",
+      "Use volume caps on free tier when usage scales with team success; map the trigger to natural growth events.",
+      "Trust the reader's intelligence. Restrained pages signal product confidence; verbose pages signal defensiveness.",
+    ],
+    whatToAvoid: [
+      "Do not adopt restrained positioning if your buyer requires per-feature breakdowns to justify procurement.",
+      "Do not name the incumbent directly when implied rejection is stronger. Naming Jira would force comparison-shopping; not naming forces self-identification.",
+      "Do not skip an Enterprise tier; procurement-driven buyers need the option even if most never take it.",
+    ],
+    brunsonLens: {
+      hook: "Aesthetic-positioning hook (rare in Brunson canon but legitimate) — the page's restraint is the message.",
+      story:
+        "Implied-villain story (Brunson 'Common Enemy' executed without naming the enemy) — readers who have lived in Jira recognize the contrast.",
+      offer:
+        "Restrained four-rung Value Ladder with a structural free-tier cap as the volume trigger and feature unlocks as the workflow trigger.",
+      valueLadderTier:
+        "Front-end lead funnel (free with cap) plus per-seat subscription core (Basic, Business) plus high-ticket Enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Why does Linear not mention Jira on the marketing site?",
+        a: "Because implied rejection converts better than direct attack for this audience. A page that names Jira invites comparison-shopping; a page that embodies the opposite of Jira lets readers self-identify as 'someone who wants this kind of tool.' The audience does not need to be told what Linear is rejecting.",
+      },
+      {
+        q: "Can an indie SaaS use aesthetic-as-positioning?",
+        a: "Only when your audience values restraint and resents complexity. Developer-tool, modern-productivity, and design-conscious audiences respond well. Procurement-driven and feature-list audiences do not — they read restraint as missing features.",
+      },
+      {
+        q: "Why is Linear's pricing page so short?",
+        a: "Same reason the rest of the marketing is short: the page's brevity IS the positioning. A long pricing page would contradict the product promise. Trust the reader to read four tiers.",
+      },
+      {
+        q: "What is the Brunson lens on Linear's funnel?",
+        a: "Aesthetic-positioning hook plus implied-villain story plus restrained four-rung Value Ladder. The unusual move is the deliberate absence of explicit Common Enemy naming — Linear trusts the audience to recognize the implied incumbent. This works because the audience has all lived in Jira; it would fail with a less-shared incumbent.",
+      },
+      {
+        q: "How does Unlock SaaS apply this lesson?",
+        a: "Indie SaaS founders often over-explain their differentiation. The Linear lesson: if your audience already lives the pain you reject, you can show the alternative without explaining the rejection. The shorter page often outconverts the longer one when the audience-incumbent context is shared.",
+      },
+    ],
+    tags: ["aesthetic-positioning", "implied-villain", "developer-tools", "restraint", "minimalism"],
+    homepageUrl: "https://linear.app/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "vercel",
+    displayName: "Vercel",
+    creator: "Guillermo Rauch and team",
+    category: "Frontend cloud and hosting",
+    oneLine:
+      "Vercel's funnel runs through Next.js. The hosting is the product; the framework is the acquisition channel; the developer community is the distribution.",
+    tldr:
+      "Vercel's funnel works because Vercel maintains Next.js, which makes Next.js documentation, examples, and community content effectively a permanent acquisition channel for Vercel hosting. The lesson for indie founders: owning the canonical reference for a tool in your category creates compounding distribution that paid acquisition cannot match.",
+    productSnapshot: {
+      whatTheySell:
+        "A frontend cloud platform with hosting, serverless functions, edge networking, and platform services (AI Gateway, Blob, Edge Config) for modern web apps.",
+      whoFor:
+        "Developers, startups, and enterprises building modern web applications, particularly those using Next.js or React.",
+      pricingNote:
+        "Hobby tier free (no commercial use); Pro ~$20/user/mo plus metered overages; Enterprise custom (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Framework-coupled-hosting",
+      analysis:
+        "The hero leads with Next.js capability and the hosting follows implicitly. Developers learning Next.js encounter Vercel inside the Next.js documentation, the Next.js examples, the deployment quick-starts. The hook is not 'come use Vercel' — it is 'come learn Next.js, the canonical platform happens to be Vercel.' This is the canonical Dream 100 play executed at platform scale.",
+    },
+    story: {
+      pattern: "Founder-led plus ecosystem-led",
+      analysis:
+        "Story is layered: Guillermo Rauch's personal Twitter presence, the Vercel changelog, the Next.js release notes, the AI SDK blog, the customer case studies. Each layer reinforces the others. The story is built continuously through publishing rather than told in a marketing campaign.",
+    },
+    offer: {
+      pattern: "Commercial-use boundary plus metered overages",
+      analysis:
+        "Hobby tier is generous; commercial use is forbidden. This is a structural upgrade trigger that fires precisely when the customer starts earning revenue. Pro at $20/user/mo plus metered usage means revenue scales with customer success without bill-shock. Enterprise is a sales conversation. Clean alignment between offer mechanics and customer state.",
+    },
+    whatsWorking: [
+      "Framework ownership (Next.js) creates a permanent acquisition channel through documentation, examples, and community content.",
+      "Commercial-use boundary as upgrade trigger fires conversion at the exact moment customers start earning revenue.",
+      "Round Pro price ($20/user/mo) is memorable and signals confidence rather than micro-optimized pricing.",
+      "Founder-led marketing through Guillermo Rauch's Twitter presence anchors the brand to a credible human.",
+      "Metered usage scales with customer success, lowering commitment friction.",
+      "AI SDK and AI Gateway extend the product surface into adjacent value without disturbing the core hosting model.",
+      "Customer case studies on the marketing site lean into recognizable companies, borrowing authority into the platform.",
+    ],
+    whatToAdapt: [
+      "If you can own the canonical reference (framework, tool, standard) in your category, the documentation becomes a permanent acquisition channel.",
+      "Use structural upgrade triggers (commercial use, scale threshold) rather than feature gates when possible. Structural triggers fire at value moments.",
+      "Round, memorable headline prices signal product confidence; odd numbers invite comparison-shopping.",
+    ],
+    whatToAvoid: [
+      "Do not free commercial use if your competitive position depends on monetizing small commercial users.",
+      "Do not adopt metered usage if your customer cannot predict their bill — bill-shock is the biggest churn driver in usage-priced SaaS.",
+      "Do not invest in maintaining a canonical reference unless you can sustain that investment for years; the acquisition channel only compounds with continued maintenance.",
+    ],
+    brunsonLens: {
+      hook: "Dream 100 framework hook (Brunson canonical move) — own the canonical reference in your category and the audience comes to you.",
+      story:
+        "Continuous-publishing story across multiple layers (founder, changelog, blog, case studies) — the Brunson 'Attractive Character' compounded through ecosystem.",
+      offer:
+        "Three-rung Value Ladder with structural commercial-use trigger plus metered overages — Brunson 'two-step upsell' (subscription core plus usage upgrade) executed through alignment with customer state.",
+      valueLadderTier:
+        "Front-end lead funnel (Hobby) plus subscription core (Pro) plus high-ticket Enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Why does Vercel maintain Next.js as open source?",
+        a: "Because the framework IS the acquisition channel. Every Next.js learner encounters Vercel inside the documentation; every Next.js project deploys to Vercel by default. The cost of maintaining Next.js is the cost of the acquisition channel — and it is more efficient than any paid alternative.",
+      },
+      {
+        q: "Can an indie SaaS use the framework-coupled-hosting pattern?",
+        a: "Rarely directly, because few indie SaaS can credibly maintain a framework. The transferable lesson is owning a canonical reference (an open-source tool, a published standard, a definitive guide) in your category. The reference becomes a permanent acquisition surface.",
+      },
+      {
+        q: "Why is the commercial-use boundary on Hobby so strict?",
+        a: "Because the boundary IS the upgrade trigger. Vercel's Hobby tier is generous because Pro conversion fires the moment a project earns revenue, which is the moment willingness-to-pay rises. Without the commercial-use restriction, the conversion rate would collapse.",
+      },
+      {
+        q: "What is the Brunson lens on Vercel's funnel?",
+        a: "Dream 100 framework hook plus continuous-publishing story plus three-rung Value Ladder with structural upgrade triggers. The framework ownership is the Brunson 'congregations are easier to convert than individuals' principle executed at scale — the Next.js learner is a pre-qualified Vercel customer.",
+      },
+    ],
+    tags: ["framework-ownership", "dream-100", "developer-tools", "usage-based", "founder-led"],
+    homepageUrl: "https://vercel.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "figma",
+    displayName: "Figma",
+    creator: "Dylan Field and team",
+    category: "Design and prototyping",
+    oneLine:
+      "Figma's funnel turns viewers into ads. Every shared design file is a Figma demo running on someone else's site.",
+    tldr:
+      "Figma's funnel works because viewers, commenters, developers, and clients all encounter Figma at zero cost when designers share files. Per-editor pricing means the high-multiplier role (viewer) is free and the value-capture role (editor) pays. The lesson for indie founders: if your product has a high viewer-to-editor ratio, freeing the viewer turns shared output into a permanent acquisition channel.",
+    productSnapshot: {
+      whatTheySell:
+        "Collaborative design and prototyping in the browser, plus FigJam whiteboard and Slides.",
+      whoFor:
+        "Designers, product teams, agencies, and developers who collaborate on design.",
+      pricingNote:
+        "Starter free; Professional ~$15/editor/mo, Organization ~$45/editor/mo, Enterprise ~$75/editor/mo (verified 2026-05-17). Viewers free.",
+    },
+    hook: {
+      pattern: "Network-effect-as-demo",
+      analysis:
+        "The hero shows a design file with multiple cursors moving — real-time collaboration as the differentiator. Designers who have used the older generation of design tools (Sketch, Adobe XD) recognize the move from file-based to browser-native instantly. The hook is a single visual: many people in one file. Compression beats explanation.",
+    },
+    story: {
+      pattern: "Customer-roster authority borrow",
+      analysis:
+        "Story is told through visible logo bar of design teams at well-known companies. Each logo borrows authority into the platform; design-conscious buyers recognize the pattern (if Spotify, Airbnb, and GitHub use Figma, the question shifts from 'is this credible' to 'why are we not using this'). Borrowed authority compresses trust-building when the logos are credible to the buyer.",
+    },
+    offer: {
+      pattern: "Per-editor with viewer-free leverage",
+      analysis:
+        "The structural pricing decision is the entire funnel: viewers, commenters, developers, and clients all access files for free; only editors pay. This makes every shared file a viral acquisition asset. Editor-tier pricing (Professional, Organization, Enterprise) creates a clear value ladder; the Enterprise anchor at $75/editor/mo makes Professional at $15/editor/mo feel reasonable.",
+    },
+    whatsWorking: [
+      "Viewer-free model turns every shared file into a free demo on someone else's site.",
+      "Per-editor pricing aligns revenue with value-capture role and frees the discovery role.",
+      "Triple-anchor pricing (Enterprise high, Organization middle, Professional accessible) makes the most-purchased tier feel like the deal.",
+      "Real-time collaboration as hero compresses category-recognition for designers who have used file-based tools.",
+      "Visible customer roster borrows authority from credible design-conscious companies.",
+      "FigJam and Slides expansion into adjacent use cases captures revenue without disturbing the core design pricing.",
+    ],
+    whatToAdapt: [
+      "If your product has a high viewer-to-editor multiplier, free the viewer and price the editor. The viewers become your acquisition channel.",
+      "Use Enterprise-tier pricing as a visible anchor even if few buyers reach that tier; anchoring works on visible price, not on revenue mix.",
+      "Visible customer rosters work when the logos are credible to your buyer's category. Mismatched logos hurt more than they help.",
+    ],
+    whatToAvoid: [
+      "Do not free viewers if your viewer role IS the buyer (e.g. analytics dashboards where the executive viewing is the one paying).",
+      "Do not seek a customer-logo bar before you have customers; empty grids signal absence more than presence.",
+      "Do not assume per-editor pricing works for non-collaborative products. The multiplier model requires shared output.",
+    ],
+    brunsonLens: {
+      hook: "Visual-differentiation hook (real-time collaboration as the entire visible category difference) executed in a single screenshot.",
+      story:
+        "Borrowed-authority story (Brunson Expert Secrets 'Authority Hack') executed through visible customer logos in the buyer's own category.",
+      offer:
+        "Four-rung Value Ladder with viewer-free acquisition rung that does not count toward seat revenue.",
+      valueLadderTier:
+        "Front-end lead funnel (viewer-free) plus three-tier per-editor subscription core (Professional, Organization, Enterprise).",
+    },
+    faqs: [
+      {
+        q: "Why is Figma's viewer access free?",
+        a: "Because viewers are the acquisition channel. Every shared design file exposes developers, PMs, and clients to Figma at zero cost. The viewer role drives discovery; the editor role drives revenue. Pricing this way maximizes both metrics simultaneously.",
+      },
+      {
+        q: "Can an indie SaaS use per-editor pricing?",
+        a: "Only when there is a clear distinction between roles AND viewers are abundant relative to editors. Design tools, documentation, dashboards, and collaboration products usually fit. Single-user productivity tools and admin-panel SaaS do not.",
+      },
+      {
+        q: "Why does Figma show customer logos so prominently?",
+        a: "Because the buyer (designer or design-leader) recognizes the logos as credible peers. Borrowed authority from credible logos compresses the trust-building step in evaluation. The logos do not work in audiences that do not recognize them as peers.",
+      },
+      {
+        q: "What is the Brunson lens on Figma's funnel?",
+        a: "Visual-differentiation hook plus borrowed-authority story plus per-editor Value Ladder. The viewer-free rung is unusual — it generates zero revenue but is structurally critical to the funnel's compounding acquisition. This is the Brunson 'Dream 100 channel' executed as a product feature rather than a marketing campaign.",
+      },
+      {
+        q: "How does Unlock SaaS think about Figma's pattern?",
+        a: "Per-editor pricing is the transferable lesson for any SaaS where the production role and the consumption role diverge. The harder lesson is that the viewer-free model has to be designed in from the start; retrofitting it later breaks the unit economics.",
+      },
+    ],
+    tags: ["per-editor", "viewer-free", "borrowed-authority", "collaboration", "design"],
+    homepageUrl: "https://www.figma.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "stripe",
+    displayName: "Stripe",
+    creator: "Patrick and John Collison",
+    category: "Payments infrastructure",
+    oneLine:
+      "Stripe's funnel is documentation. The marketing site sets the appointment; the docs close the deal; the brand is built one developer at a time.",
+    tldr:
+      "Stripe's funnel is structured around developers evaluating payment infrastructure: the marketing site states the simple proposition, the documentation answers every implementation question, the case studies anchor the brand to credible companies. The lesson for indie founders: when your buyer evaluates by trying the product, documentation IS the closing surface and should be treated as part of the funnel.",
+    productSnapshot: {
+      whatTheySell:
+        "Payment processing infrastructure with subscriptions, billing, fraud prevention, payouts, and a deep API ecosystem.",
+      whoFor:
+        "Developers, indie SaaS, growing companies, and enterprises accepting payments online.",
+      pricingNote:
+        "2.9% + 30¢ per successful charge (US standard, verified 2026-05-17). Custom pricing at scale.",
+    },
+    hook: {
+      pattern: "Single-line value proposition",
+      analysis:
+        "The hero communicates one promise: 'payments infrastructure for the internet.' There is no story, no founder narrative, no industry framing. The implicit argument is that developers know what they need from a payments platform and the hero exists to confirm Stripe is that thing. Compression beats persuasion when the buyer is already qualified.",
+    },
+    story: {
+      pattern: "Documentation-as-story",
+      analysis:
+        "The story is in the docs, not the marketing site. Stripe's documentation is famous in developer circles for clarity, completeness, and code samples in every major language. The docs are the closing surface — a developer evaluating Stripe reads them while deciding, and the experience of reading them tells the story that the marketing copy cannot.",
+    },
+    offer: {
+      pattern: "Single transparent rate plus custom enterprise",
+      analysis:
+        "Headline pricing is one line: 2.9% + 30¢. No setup fees, no monthly fees, no minimum volume. This simplicity is the entire pricing-page argument — developers evaluating against PayPal, Square, or legacy processors see the simplest comparison and convert without deeper analysis. Enterprise pricing exists behind a sales conversation, which captures large deals without exposing volume discounts.",
+    },
+    whatsWorking: [
+      "Documentation as closing surface — clarity and completeness compress evaluation time materially.",
+      "Single round percentage (2.9%) signals confidence and removes pricing-comparison friction.",
+      "Case studies feature recognizable companies, borrowing authority from category-credible brands.",
+      "Add-on products (Connect, Atlas, Tax, Radar, Billing) priced on their own pages prevent main pricing-page clutter.",
+      "Founder-credible (Patrick Collison's Twitter and writing) anchors the brand to humans who understand the developer audience.",
+      "International expansion published as documentation events, not marketing campaigns, matches the developer audience's preference for substance over splash.",
+    ],
+    whatToAdapt: [
+      "If your buyer evaluates by trying the product, treat documentation as part of the funnel. Bad docs are a leak; great docs compress evaluation.",
+      "Single-line round pricing signals confidence and removes the comparison-shopping friction that detailed tier pages create.",
+      "Case studies work when the logos are credible to your buyer's category. Match the logos to the audience.",
+    ],
+    whatToAvoid: [
+      "Do not adopt single-line pricing if your unit economics require negotiation at certain volume bands; you need at least a custom tier.",
+      "Do not over-invest in documentation polish if your product is not stable enough to warrant it; rapidly changing docs are worse than minimal ones.",
+      "Do not use case-study logos if you do not have the customers; aspirational logos signal absence.",
+    ],
+    brunsonLens: {
+      hook: "Single-line value-proposition hook (Brunson 'one-sentence pitch') for an already-qualified audience.",
+      story:
+        "Documentation-as-story (rare in Brunson canon but legitimate) — the docs are the proof asset, more credible than any case study.",
+      offer:
+        "Single transparent rate plus custom enterprise — Brunson 'simplicity-as-anchor' move that removes comparison-shopping mental math.",
+      valueLadderTier:
+        "Single transactional rung with custom enterprise back-end and add-on products as parallel ladders.",
+    },
+    faqs: [
+      {
+        q: "Why is Stripe's marketing site so simple?",
+        a: "Because the docs do the work. Developers evaluating Stripe spend most of their evaluation time reading documentation and implementing test transactions; the marketing site exists to send qualified developers to the docs, not to convince. Simplicity matches the actual conversion path.",
+      },
+      {
+        q: "Can an indie SaaS make documentation the closing surface?",
+        a: "Yes, when your buyer is technical. The documentation has to be genuinely good — code samples that work, clear structure, examples covering the common use cases. Polished docs paired with mediocre product fail; great product paired with bad docs fails. Both matter.",
+      },
+      {
+        q: "Why is the headline price a round percentage?",
+        a: "Because 2.9% is memorable and signals confidence. '2.87%' would invite comparison-shopping mental math; '2.9%' reads as a deliberate price the customer can recall after closing the tab. Round numbers function as anchors more reliably than optimized ones.",
+      },
+      {
+        q: "What is the Brunson lens on Stripe's funnel?",
+        a: "Single-line value-proposition hook plus documentation-as-story plus single-rate-plus-custom Value Ladder. The unusual move is that the marketing site is intentionally lightweight while the docs are heavyweight — the funnel inverts what most marketers would design. It works because the audience prefers substance to splash.",
+      },
+      {
+        q: "How does Unlock SaaS apply this lesson?",
+        a: "For technical buyers, the post-marketing surface (docs, onboarding, first-use experience) often matters more than the marketing site itself. Founders who pour effort into landing pages while shipping bad onboarding leave money on the table that better docs would have captured.",
+      },
+    ],
+    tags: ["documentation-as-funnel", "simplicity", "developer-tools", "single-line-pricing"],
+    homepageUrl: "https://stripe.com/",
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
