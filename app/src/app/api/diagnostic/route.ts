@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   assignBucket,
-  classifyUrl,
+  deepAnalyzeUrl,
   isBiggestAttempt,
   isDiagnosticError,
   isRecentRevenue,
   isTimeSinceLaunch,
   normalizeUrl,
   type Bucket,
-  type DiagnosticResult,
+  type DeepDiagnosticResult,
   type SurveyAnswers,
 } from "@/lib/diagnostic";
 import { createAdminClient } from "@/lib/supabase/server";
@@ -29,28 +29,28 @@ import type { DiagnosticResult as SoapDiagnosis } from "@/lib/soap-opera/emails"
  *
  * Flow:
  *   1. Validate email + URL.
- *   2. Run classifyUrl() — fetch + strip + Claude label. Any expected failure
- *      path (invalid URL, blocked host, fetch failure, empty page, engine
- *      failure) is caught and persisted as label='error' so the funnel never
- *      dead-ends and we have an audit trail.
- *   3. Upsert into diagnostic_leads keyed on (lower(email), product_url). A
- *      founder re-diagnosing the same URL updates their row; a different URL
- *      from the same email gets a new row.
+ *   2. Run deepAnalyzeUrl() — fetch + strip + Claude deep-analysis. Returns the
+ *      v1 fields (label, headline, explanation, evidence, nextStep) PLUS the
+ *      v2 payload (three-axis scorecard, rewrites, 30-day plan, competitors,
+ *      strengths). Any expected failure path is caught and persisted as
+ *      label='error' so the funnel never dead-ends and we have an audit trail.
+ *   3. Insert into diagnostic_leads. The quota gate above intercepts every
+ *      repeat email; this is effectively-an-insert. Both the v1 columns and
+ *      the v2 `analysis_detail` JSONB are written.
  *   4. Return the row id so the result page can read the full diagnosis.
  *
- * The classification is synchronous so the result page is renderable the
- * moment the client navigates. Tradeoff: the form sits on "Running the
- * diagnostic…" for the duration of the Claude call (typically 4–8 s). That
- * is the correct UX for "the engine is reading your page" — the verb
- * describes the wait honestly. A background-job + polling architecture would
- * be over-engineered for v1.
+ * The analysis is synchronous so the result page is renderable the moment the
+ * client navigates. Tradeoff: the form sits on "Running the diagnostic…" for
+ * ~30-45 s while Claude reads the page and writes the teardown. The squeeze
+ * sets a 90-second expectation, so this fits within the promise. A background-
+ * job + polling architecture would be over-engineered for v1.
  *
  * Runtime: Node.js (Anthropic SDK + Supabase need full Node).
- * maxDuration: 60 s (page fetch ≤8 s + Claude ≤30 s typical + margin).
+ * maxDuration: 90 s (page fetch ≤8 s + deep Claude call ≤60 s typical + margin).
  */
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 90;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -160,11 +160,13 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Classify. classifyUrl throws DiagnosticError on expected failures; anything
-  // else is logged and turned into an "error" row so the visitor still lands
-  // on a page that tells them what to do next.
+  // Deep-analyze. deepAnalyzeUrl throws DiagnosticError on expected failures;
+  // anything else is logged and turned into an "error" row so the visitor
+  // still lands on a page that tells them what to do next. The "error" branch
+  // returns the v1 shape (no analysis_detail); the result page renders the
+  // engine-error bridge for those.
   let diagnosis:
-    | DiagnosticResult
+    | DeepDiagnosticResult
     | {
         label: "error";
         headline: string;
@@ -173,7 +175,7 @@ export async function POST(req: NextRequest) {
         nextStep: string;
       };
   try {
-    diagnosis = await classifyUrl(productUrl);
+    diagnosis = await deepAnalyzeUrl(productUrl);
   } catch (err) {
     if (isDiagnosticError(err)) {
       diagnosis = {
@@ -197,6 +199,21 @@ export async function POST(req: NextRequest) {
       };
     }
   }
+
+  // Carve the deep-analysis payload out for JSONB storage. The five top-level
+  // v1 fields stay in their own columns for backward compat with old rows;
+  // the rest of the structured report lives in analysis_detail.
+  const analysisDetail =
+    diagnosis.label === "error"
+      ? null
+      : {
+          product_snapshot: diagnosis.product_snapshot,
+          scores: diagnosis.scores,
+          rewrites: diagnosis.rewrites,
+          plan_30_day: diagnosis.plan_30_day,
+          competitors: diagnosis.competitors,
+          strengths: diagnosis.strengths,
+        };
 
   const userAgent = req.headers.get("user-agent");
   const ip = clientIp(req);
@@ -305,11 +322,16 @@ export async function POST(req: NextRequest) {
     biggest_attempt: survey?.biggest_attempt ?? null,
     bucket,
     is_returning: isReturning,
+    analysis_detail: analysisDetail,
   };
 
+  // `analysis_detail` was added by migration 20260518000010 but the auto-
+  // generated database.types.ts has not been regenerated yet, so the cast
+  // bypasses the column-name check at the boundary. Same pattern used by
+  // the result page on the read side.
   const { data, error } = await supabase
     .from("diagnostic_leads")
-    .insert(row)
+    .insert(row as unknown as never)
     .select("id")
     .single();
 

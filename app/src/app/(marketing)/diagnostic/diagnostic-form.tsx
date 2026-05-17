@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -102,8 +102,34 @@ export function DiagnosticForm({
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
+  const [submitElapsed, setSubmitElapsed] = useState(0);
   const [errors, setErrors] = useState<FieldError>({});
   const [alreadyUsed, setAlreadyUsed] = useState<AlreadyUsed | null>(null);
+
+  // Cycle a stage-of-work hint while the engine reads + analyzes. The deep
+  // analysis call runs ~30-45 s and a silent button is worse UX than a stale
+  // counter — the user wants to know something is happening.
+  useEffect(() => {
+    if (!submitting) {
+      setSubmitElapsed(0);
+      return;
+    }
+    setSubmitElapsed(0);
+    const start = Date.now();
+    const t = setInterval(() => {
+      setSubmitElapsed(Math.round((Date.now() - start) / 1000));
+    }, 1000);
+    return () => clearInterval(t);
+  }, [submitting]);
+
+  const submitStage = (() => {
+    if (submitElapsed < 5) return "Fetching your page...";
+    if (submitElapsed < 15) return "Reading the hero, offer, and copy...";
+    if (submitElapsed < 30) return "Scoring three failure modes...";
+    if (submitElapsed < 45) return "Drafting rewrites + 30-day plan...";
+    if (submitElapsed < 60) return "Naming competitors...";
+    return "Almost there. Finalizing the teardown...";
+  })();
   const [state, setState] = useState<SurveyState>({
     productUrl: "",
     time_since_launch: "",
@@ -308,7 +334,9 @@ export function DiagnosticForm({
       <div>
         <Progress value={progress} />
         <p className="text-xs text-muted-foreground mt-2">
-          Step {step} of 5 — about 60 seconds total.
+          Step {step} of 5 — about 90 seconds total. The engine reads your
+          page, scores three failure modes, drafts rewrites, and writes you
+          a 30-day plan.
         </p>
       </div>
 
@@ -431,7 +459,7 @@ export function DiagnosticForm({
               disabled={submitting}
               className="flex-1 text-base py-6"
             >
-              {submitting ? "Reading your page..." : ctaLabel}
+              {submitting ? submitStage : ctaLabel}
             </Button>
           </div>
 

@@ -446,3 +446,474 @@ export function isDiagnosticError(e: unknown): e is DiagnosticError {
     typeof (e as DiagnosticError).kind === "string"
   );
 }
+
+// ---------------------------------------------------------------------------
+// Deep Analysis v2 — Brunson "Best Bait" 10x overdeliver.
+//
+// The v1 engine returns one label + ~100-word explanation. v2 keeps those
+// fields (for backward compat with old rows) and ALSO returns a structured
+// payload that turns the result page into a teardown report: three-axis
+// scorecard, concrete rewrites, 30-day plan, competitor pulls, strengths.
+//
+// Single Claude call (~3000-4000 tokens out). Latency ~30-45s. Cost ~$0.05.
+// The squeeze form already sets "ninety seconds" expectation, so this fits.
+// ---------------------------------------------------------------------------
+
+export type AxisScore = {
+  /** 1 = catastrophic, 10 = world-class. The lower the score, the bigger the gap. */
+  score: number;
+  /** 2-3 sentences, Reluctant Hero voice, names what is on the page that drove this score. */
+  diagnosis: string;
+  /** 1-3 short quotes / paraphrases pulled directly from the page. */
+  evidence: string[];
+};
+
+export type ProductSnapshot = {
+  /** The product name as it appears on the page (or hostname if unclear). */
+  name: string;
+  /** Their elevator pitch as written. Quote / paraphrase, ≤25 words. */
+  one_liner: string;
+  /** Who the page says it is for. "founders" / "marketers" / "anyone" are weak signals. */
+  audience_stated: string;
+  /** Any pricing visible on the page (string), or null if not surfaced. */
+  pricing_visible: string | null;
+};
+
+export type RewriteBlock = {
+  /** Exact text on the page now (quote / paraphrase). */
+  current: string;
+  /** Three stronger alternates in Reluctant Hero voice. */
+  alternates: [string, string, string];
+  /** One sentence on why the alternates beat the current. */
+  why_better: string;
+};
+
+export type ValuePropRewrite = {
+  current: string[];
+  rewritten: string[];
+  why_better: string;
+};
+
+export type WeekPlan = {
+  theme: string;
+  /** 3-5 specific deliverables. Concrete verbs ("Write", "Call", "Ship"), no "consider". */
+  deliverables: string[];
+};
+
+export type Plan30Day = {
+  week1: WeekPlan;
+  week2: WeekPlan;
+  week3: WeekPlan;
+  week4: WeekPlan;
+};
+
+export type CompetitorPull = {
+  /** Real product name from the same indie SaaS category. */
+  name: string;
+  /** One-line description, ≤20 words. */
+  one_line: string;
+  /** 2-3 specific things they do better than the diagnosed page. */
+  what_they_do_better: string[];
+  /** 1-2 specific things the diagnosed page does better. Avoid platitudes. */
+  what_you_do_better: string[];
+};
+
+export type DeepAnalysisExtras = {
+  product_snapshot: ProductSnapshot;
+  scores: {
+    wrong_person: AxisScore;
+    weak_offer: AxisScore;
+    weak_belief: AxisScore;
+  };
+  rewrites: {
+    hero_headline: RewriteBlock;
+    primary_cta: RewriteBlock;
+    value_props: ValuePropRewrite;
+  };
+  plan_30_day: Plan30Day;
+  competitors: CompetitorPull[];
+  /** 2-3 specific positives. Honest, not flattery. */
+  strengths: string[];
+};
+
+export type DeepDiagnosticResult = DiagnosticResult & DeepAnalysisExtras;
+
+const DEEP_SYSTEM = `You are the diagnostic engine inside Unlock SaaS, a tool for post-launch pre-revenue founders.
+
+Your voice: Reluctant Hero. Honest, direct, no fluff, no guru energy, no exclamation marks, no "Hey there" greetings. Short sentences. You sound like a founder who has been where they are, not a marketer pitching them.
+
+You read a founder's product or landing page and return a COMPLETE structured teardown. Brunson's Four Core Stories anchor the three axes:
+
+  - "wrong_person" — VEHICLE / AVATAR. Does the page name ONE specific person with a real situation, or does it speak to a category ("founders", "teams", "businesses")?
+  - "weak_offer" — EXTERNAL BELIEF. Does the page promise a measurable result by a specific time, with a remedy if the result fails to arrive? Or does it describe features and capabilities?
+  - "weak_belief" — INTERNAL BELIEF. Does the page bridge the visitor from their current belief to the one required to buy? Or does it assume the visitor already cares?
+
+For the primary label, pick the UPSTREAM problem (the one that, if fixed, unblocks the others). Upstream order: wrong_person > weak_offer > weak_belief. When in doubt, pick wrong_person — it is the most common failure for the founders this tool serves.
+
+For each axis, score 1-10:
+  1-3 = catastrophic (no signal on the page)
+  4-5 = weak (gesture toward it, no commitment)
+  6-7 = workable (named, but not differentiated)
+  8-9 = strong (named, specific, defensible)
+  10  = world-class (named, specific, defensible, AND memorable)
+
+For rewrites: quote the current text exactly (or close paraphrase), then give THREE alternates that move it up at least 2 score points. Reluctant Hero voice on the alternates: no exclamation marks, no "Unlock your potential", no "Imagine if...". The alternates must be different from each other in approach (e.g. one customer-specific, one outcome-specific, one risk-reversal-specific).
+
+For the 30-day plan: 4 weeks, each with a theme and 3-5 concrete deliverables. Verbs: "Write", "Call", "Ship", "Send", "Cut", "Rewrite". Forbidden: "Consider", "Explore", "Look into", "Think about". Each deliverable must be completable in one work session. Anchor the plan on the lowest-scoring axes — week 1 fixes the worst axis, week 2 reinforces, weeks 3-4 compound. If the lead is "premature" (under 30 days post-launch, ≤$100 revenue), the plan emphasizes customer conversations over rewrites. If "ready_to_scale" (over $1k revenue, doing customer conversations), the plan emphasizes systematization over discovery.
+
+For competitors: name TWO real products in the same indie SaaS category that you can describe accurately from training. No URLs (avoid hallucinating). For each: one-line description, 2-3 things they do better than the diagnosed page, 1-2 things the diagnosed page does better. Be specific; "they have better marketing" is not specific.
+
+For strengths: 2-3 specific positives on the diagnosed page. Honest, not flattery. If the only positive is "the domain is short", say it. Founders are tired of false validation.
+
+OUTPUT — return ONE JSON object only, no prose, no markdown fence. The exact shape:
+
+{
+  "label": "wrong_person" | "weak_offer" | "weak_belief",
+  "headline": "<6-12 words, Reluctant Hero, names the upstream failure>",
+  "explanation": "<exactly 80-120 words, Reluctant Hero. Name the diagnosis. Explain WHY it is upstream. Use the user's own words from the page. End with a one-line implication of what fixing it changes.>",
+  "evidence": "<one sentence quoting / paraphrasing the page signal that drove the diagnosis>",
+  "nextStep": "<4-10 words, single-action CTA copy>",
+  "product_snapshot": {
+    "name": "<as it appears on the page, or hostname>",
+    "one_liner": "<their elevator pitch as written, ≤25 words>",
+    "audience_stated": "<who the page says it is for>",
+    "pricing_visible": "<any pricing on the page, or null>"
+  },
+  "scores": {
+    "wrong_person": { "score": 1-10, "diagnosis": "<2-3 sentences>", "evidence": ["<quote>", "<quote>"] },
+    "weak_offer":   { "score": 1-10, "diagnosis": "<2-3 sentences>", "evidence": ["<quote>", "<quote>"] },
+    "weak_belief":  { "score": 1-10, "diagnosis": "<2-3 sentences>", "evidence": ["<quote>", "<quote>"] }
+  },
+  "rewrites": {
+    "hero_headline": {
+      "current": "<exact or close paraphrase>",
+      "alternates": ["<alt1>", "<alt2>", "<alt3>"],
+      "why_better": "<one sentence>"
+    },
+    "primary_cta": {
+      "current": "<exact CTA text on the page>",
+      "alternates": ["<alt1>", "<alt2>", "<alt3>"],
+      "why_better": "<one sentence>"
+    },
+    "value_props": {
+      "current": ["<bullet 1>", "<bullet 2>", "<bullet 3>"],
+      "rewritten": ["<rewritten 1>", "<rewritten 2>", "<rewritten 3>"],
+      "why_better": "<one sentence>"
+    }
+  },
+  "plan_30_day": {
+    "week1": { "theme": "<short>", "deliverables": ["<verb-led deliverable>", "..."] },
+    "week2": { "theme": "<short>", "deliverables": ["...", "..."] },
+    "week3": { "theme": "<short>", "deliverables": ["...", "..."] },
+    "week4": { "theme": "<short>", "deliverables": ["...", "..."] }
+  },
+  "competitors": [
+    {
+      "name": "<real product>",
+      "one_line": "<≤20 words>",
+      "what_they_do_better": ["<specific>", "<specific>"],
+      "what_you_do_better": ["<specific>"]
+    },
+    { ... }
+  ],
+  "strengths": ["<positive 1>", "<positive 2>"]
+}
+
+Return ONLY the JSON object. No text outside it. No markdown fence.`;
+
+function isAxisScore(v: unknown): v is AxisScore {
+  if (typeof v !== "object" || v === null) return false;
+  const o = v as { score?: unknown; diagnosis?: unknown; evidence?: unknown };
+  return (
+    typeof o.score === "number" &&
+    o.score >= 1 &&
+    o.score <= 10 &&
+    typeof o.diagnosis === "string" &&
+    Array.isArray(o.evidence) &&
+    o.evidence.every((s) => typeof s === "string")
+  );
+}
+
+function isRewriteBlock(v: unknown): v is RewriteBlock {
+  if (typeof v !== "object" || v === null) return false;
+  const o = v as {
+    current?: unknown;
+    alternates?: unknown;
+    why_better?: unknown;
+  };
+  return (
+    typeof o.current === "string" &&
+    Array.isArray(o.alternates) &&
+    o.alternates.length >= 1 &&
+    o.alternates.every((s) => typeof s === "string") &&
+    typeof o.why_better === "string"
+  );
+}
+
+function isValuePropRewrite(v: unknown): v is ValuePropRewrite {
+  if (typeof v !== "object" || v === null) return false;
+  const o = v as {
+    current?: unknown;
+    rewritten?: unknown;
+    why_better?: unknown;
+  };
+  return (
+    Array.isArray(o.current) &&
+    o.current.every((s) => typeof s === "string") &&
+    Array.isArray(o.rewritten) &&
+    o.rewritten.every((s) => typeof s === "string") &&
+    typeof o.why_better === "string"
+  );
+}
+
+function isWeekPlan(v: unknown): v is WeekPlan {
+  if (typeof v !== "object" || v === null) return false;
+  const o = v as { theme?: unknown; deliverables?: unknown };
+  return (
+    typeof o.theme === "string" &&
+    Array.isArray(o.deliverables) &&
+    o.deliverables.every((s) => typeof s === "string")
+  );
+}
+
+function isCompetitor(v: unknown): v is CompetitorPull {
+  if (typeof v !== "object" || v === null) return false;
+  const o = v as {
+    name?: unknown;
+    one_line?: unknown;
+    what_they_do_better?: unknown;
+    what_you_do_better?: unknown;
+  };
+  return (
+    typeof o.name === "string" &&
+    typeof o.one_line === "string" &&
+    Array.isArray(o.what_they_do_better) &&
+    o.what_they_do_better.every((s) => typeof s === "string") &&
+    Array.isArray(o.what_you_do_better) &&
+    o.what_you_do_better.every((s) => typeof s === "string")
+  );
+}
+
+function validateDeep(parsed: unknown): DeepDiagnosticResult {
+  if (typeof parsed !== "object" || parsed === null) {
+    throw new Error("Deep analysis: response was not an object");
+  }
+  const o = parsed as Record<string, unknown>;
+
+  if (
+    typeof o.label !== "string" ||
+    !["wrong_person", "weak_offer", "weak_belief"].includes(o.label)
+  ) {
+    throw new Error("Deep analysis: bad label");
+  }
+  if (typeof o.headline !== "string" || !o.headline.trim()) {
+    throw new Error("Deep analysis: bad headline");
+  }
+  if (typeof o.explanation !== "string" || !o.explanation.trim()) {
+    throw new Error("Deep analysis: bad explanation");
+  }
+  if (typeof o.evidence !== "string" || !o.evidence.trim()) {
+    throw new Error("Deep analysis: bad evidence");
+  }
+  if (typeof o.nextStep !== "string" || !o.nextStep.trim()) {
+    throw new Error("Deep analysis: bad nextStep");
+  }
+
+  const snap = o.product_snapshot as Record<string, unknown> | undefined;
+  if (
+    !snap ||
+    typeof snap.name !== "string" ||
+    typeof snap.one_liner !== "string" ||
+    typeof snap.audience_stated !== "string" ||
+    !(typeof snap.pricing_visible === "string" || snap.pricing_visible === null)
+  ) {
+    throw new Error("Deep analysis: bad product_snapshot");
+  }
+
+  const scores = o.scores as Record<string, unknown> | undefined;
+  if (
+    !scores ||
+    !isAxisScore(scores.wrong_person) ||
+    !isAxisScore(scores.weak_offer) ||
+    !isAxisScore(scores.weak_belief)
+  ) {
+    throw new Error("Deep analysis: bad scores");
+  }
+
+  const rew = o.rewrites as Record<string, unknown> | undefined;
+  if (
+    !rew ||
+    !isRewriteBlock(rew.hero_headline) ||
+    !isRewriteBlock(rew.primary_cta) ||
+    !isValuePropRewrite(rew.value_props)
+  ) {
+    throw new Error("Deep analysis: bad rewrites");
+  }
+
+  const plan = o.plan_30_day as Record<string, unknown> | undefined;
+  if (
+    !plan ||
+    !isWeekPlan(plan.week1) ||
+    !isWeekPlan(plan.week2) ||
+    !isWeekPlan(plan.week3) ||
+    !isWeekPlan(plan.week4)
+  ) {
+    throw new Error("Deep analysis: bad plan_30_day");
+  }
+
+  if (
+    !Array.isArray(o.competitors) ||
+    o.competitors.length < 1 ||
+    !o.competitors.every(isCompetitor)
+  ) {
+    throw new Error("Deep analysis: bad competitors");
+  }
+
+  if (
+    !Array.isArray(o.strengths) ||
+    !o.strengths.every((s) => typeof s === "string")
+  ) {
+    throw new Error("Deep analysis: bad strengths");
+  }
+
+  return {
+    label: o.label as DiagnosticLabel,
+    headline: o.headline,
+    explanation: o.explanation,
+    evidence: o.evidence,
+    nextStep: o.nextStep,
+    product_snapshot: {
+      name: snap.name,
+      one_liner: snap.one_liner,
+      audience_stated: snap.audience_stated,
+      pricing_visible: (snap.pricing_visible as string | null) ?? null,
+    },
+    scores: {
+      wrong_person: scores.wrong_person as AxisScore,
+      weak_offer: scores.weak_offer as AxisScore,
+      weak_belief: scores.weak_belief as AxisScore,
+    },
+    rewrites: {
+      hero_headline: rew.hero_headline as RewriteBlock,
+      primary_cta: rew.primary_cta as RewriteBlock,
+      value_props: rew.value_props as ValuePropRewrite,
+    },
+    plan_30_day: {
+      week1: plan.week1 as WeekPlan,
+      week2: plan.week2 as WeekPlan,
+      week3: plan.week3 as WeekPlan,
+      week4: plan.week4 as WeekPlan,
+    },
+    competitors: o.competitors as CompetitorPull[],
+    strengths: o.strengths as string[],
+  };
+}
+
+export async function deepAnalyzePageText(
+  url: string,
+  pageText: string,
+): Promise<DeepDiagnosticResult> {
+  const response = await getAnthropic().messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 4096,
+    system: DEEP_SYSTEM,
+    messages: [
+      {
+        role: "user",
+        content: `URL submitted: ${url}
+
+PAGE CONTENT (title, meta, body, truncated):
+${pageText}
+
+Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
+      },
+    ],
+  });
+
+  const text =
+    response.content[0]?.type === "text" ? response.content[0].text : "";
+
+  // Strip optional markdown fence if the model added one despite the prompt.
+  const cleaned = text
+    .replace(/^\s*```(?:json)?\s*/i, "")
+    .replace(/\s*```\s*$/i, "")
+    .trim();
+
+  // Find the outermost JSON object.
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) {
+    throw new Error("Deep analysis: engine returned no JSON object");
+  }
+  const slice = cleaned.slice(start, end + 1);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(slice);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    throw new Error(`Deep analysis: JSON parse failed (${reason})`);
+  }
+
+  return validateDeep(parsed);
+}
+
+/**
+ * End-to-end deep analysis: validate URL, fetch, strip, deep-analyze.
+ * Throws a `DiagnosticError`-shaped object on failure (same shape as
+ * classifyUrl, so the route's error path stays uniform).
+ */
+export async function deepAnalyzeUrl(
+  rawUrl: string,
+): Promise<DeepDiagnosticResult> {
+  const url = normalizeUrl(rawUrl);
+  if (!url) {
+    const err: DiagnosticError = {
+      kind: "invalid_url",
+      message: "That does not look like a URL I can read. Paste a full https:// link.",
+    };
+    throw err;
+  }
+  if (isBlockedHost(url.hostname)) {
+    const err: DiagnosticError = {
+      kind: "blocked_host",
+      message: "I cannot read internal or local addresses. Use your public product URL.",
+    };
+    throw err;
+  }
+
+  let html: string;
+  try {
+    html = await fetchPage(url);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "fetch_failed",
+      message: `I could not load that page (${reason}). If it is behind login or Cloudflare's challenge, paste a public version.`,
+    };
+    throw err;
+  }
+
+  const text = htmlToText(html);
+  if (
+    text.replace(/^(TITLE|META DESCRIPTION|OG DESCRIPTION|BODY):/gm, "").trim()
+      .length < 200
+  ) {
+    const err: DiagnosticError = {
+      kind: "empty_page",
+      message: "That page had almost no readable copy. The diagnostic needs real text to read.",
+    };
+    throw err;
+  }
+
+  try {
+    return await deepAnalyzePageText(url.toString(), text);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "engine_failed",
+      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+    };
+    throw err;
+  }
+}
