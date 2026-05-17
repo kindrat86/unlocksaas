@@ -265,6 +265,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
       alternates: hreflang(`${base}/about`),
     },
+    // Press / media kit. Off-page lift surface – built so journalists,
+    // podcasters, and newsletter writers can self-serve canonical
+    // descriptions, fast facts, and brand assets without having to
+    // contact the founder. Honest empty state on "recent coverage"
+    // until earned mentions land. Same Brunson Hard-Rule discipline
+    // as /about and /faq.
+    {
+      url: `${base}/press`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/press`),
+    },
+    // Editorial policy + disclosures + corrections log. E-E-A-T Trust
+    // uplift (2026-05-17). Google Search Quality Rater Guidelines §3.1
+    // and §3.4 explicitly look for a stated editorial policy + a
+    // corrections policy on sites that publish opinions or comparisons —
+    // which UnlockSaaS does on every pSEO surface. Same crawl priority
+    // as /about and /press: low standalone SERP value, high structural
+    // signal weight. BreadcrumbList JSON-LD on the page itself.
+    {
+      url: `${base}/editorial-policy`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/editorial-policy`),
+    },
     {
       url: `${base}/contact`,
       lastModified: now,

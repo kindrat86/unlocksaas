@@ -94,7 +94,19 @@ function readSocialEnv(key: string): string | undefined {
  */
 function buildSameAs(): readonly string[] {
   const candidates = [
-    // Founder/owner profiles — primary entity anchors.
+    // Knowledge-Graph anchors — strongest AIO multipliers in the array.
+    // Wikidata Q-URL: the canonical machine-readable entity ID Google's
+    // Knowledge Graph uses to disambiguate brands. A single populated
+    // Q-URL is worth more for AI Overviews than every social profile
+    // combined. Wikipedia URL is the second strongest signal because
+    // every major LLM training corpus includes Wikipedia as a primary
+    // source. Both are env-driven and stay empty until a real entry
+    // exists – we never fabricate a Wikidata Q-ID. The operator path
+    // is documented in strategy/google-strategy.md §B.4 (entity-graph
+    // activation).
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL"),
+    // Founder/owner profiles – primary entity anchors.
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_X_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL"),
@@ -102,8 +114,8 @@ function buildSameAs(): readonly string[] {
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL"),
-    // Generic "other" slot — for one ad-hoc profile (e.g. a Wikidata entry
-    // post-listing) without a dedicated env var.
+    // Generic "other" slot – for one ad-hoc profile without a dedicated
+    // env var. Lower priority than Wikidata/Wikipedia above.
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL"),
   ].filter((v): v is string => typeof v === "string");
 
@@ -113,12 +125,29 @@ function buildSameAs(): readonly string[] {
 
 /**
  * Frozen at module load. Importers see a stable array per server boot.
- * Vercel's per-request env mutation is not a concern here — these are
+ * Vercel's per-request env mutation is not a concern here – these are
  * build-time configuration, not per-request data.
  */
 export const ORGANIZATION_SAME_AS: readonly string[] = Object.freeze(
   buildSameAs(),
 );
+
+/**
+ * Wikipedia URL (when populated) is exposed separately as the Organization's
+ * `mainEntityOfPage`. Schema.org's documented pattern: when a Wikipedia
+ * article exists for an entity, naming it as mainEntityOfPage tells Google
+ * "this Wikipedia page is the authoritative external description of this
+ * entity." That doubles the entity-confidence weight versus listing it as
+ * just another sameAs row, because Knowledge Graph treats mainEntityOfPage
+ * as a one-to-one anchor and sameAs as one-to-many.
+ *
+ * Resolves at module load; undefined until NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL
+ * is set. JSON-LD consumers MUST omit the field when undefined – a
+ * `mainEntityOfPage: undefined` serializes to `"mainEntityOfPage": null` in
+ * some JSON.stringify paths and looks like a fabrication to validators.
+ */
+export const ORGANIZATION_MAIN_ENTITY_OF_PAGE: string | undefined =
+  readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL");
 
 // ---------------------------------------------------------------------------
 // Topical authority — knowsAbout
@@ -367,11 +396,17 @@ export const DEFINED_TERMS: ReadonlyArray<{
 
 /**
  * URL of the page that documents the editorial standards UnlockSaaS
- * publishes by. Lives on /about under the "Editorial position" section.
- * Schema.org's `publishingPrinciples` field is one of the strongest
- * machine-readable E-E-A-T signals Google honours since 2023.
+ * publishes by. Schema.org's `publishingPrinciples` field is one of the
+ * strongest machine-readable E-E-A-T signals Google honours since 2023.
+ *
+ * Repointed 2026-05-17 from /about (the founder's bio + general editorial
+ * position) to /editorial-policy (the dedicated quality-rater anchor:
+ * dated editorial standards, financial disclosures, corrections workflow,
+ * corrections log). Both pages reinforce E-E-A-T, but Google's quality
+ * raters specifically expect publishingPrinciples to resolve to the
+ * editorial-policy surface, not the about page.
  */
-export const PUBLISHING_PRINCIPLES_URL: string = `${BASE_URL}/about`;
+export const PUBLISHING_PRINCIPLES_URL: string = `${BASE_URL}/editorial-policy`;
 
 // ---------------------------------------------------------------------------
 // Organization entity

@@ -6,6 +6,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
+import { buildVerification } from "@/lib/seo/verification";
 
 // Mobile-first viewport. `viewportFit: cover` lets the page paint under
 // iOS notches; padding then uses safe-area-inset via Tailwind utilities.
@@ -52,6 +53,21 @@ export const metadata: Metadata = {
     },
   },
   robots: { index: true, follow: true },
+  // Search-engine ownership verification — env-driven slots, empty until
+  // the operator drops a value in Vercel. Each tag is a real, currently-
+  // documented verification mechanism (Google Search Console, Bing
+  // Webmaster, Yandex Webmaster, Pinterest domain verify, Facebook
+  // domain verify, Naver Webmaster). Without these, every console that
+  // requires DNS-or-meta proof falls back to slower DNS verification,
+  // delaying access to AI Overview eligibility signals and Bing Copilot
+  // citation metrics. With them, the moment the operator pastes a key
+  // into Vercel, the corresponding console verifies on the next deploy.
+  //
+  // Brunson Hard-Rule reconciliation: every slot below is empty until
+  // an env var is set. Empty slots render NOTHING — no fabricated
+  // verification codes, no placeholder strings, no "TODO" tokens.
+  // See lib/seo/verification.ts for the read-and-validate logic.
+  verification: buildVerification(),
   openGraph: {
     type: "website",
     siteName: "Unlock SaaS",

@@ -18,6 +18,7 @@ import { VslBlock } from "@/components/blocks/vsl-block";
 import {
   PlaybookProductJsonLd,
   PlaybookHowToJsonLd,
+  PlaybookCourseJsonLd,
   FaqPageJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
@@ -102,6 +103,14 @@ export default function PlaybookSalesPage() {
           /llms-full.txt). Voice-engine eligibility via Speakable cssSelector
           pointing at the `.aeo-playbook-howto` block below. */}
       <PlaybookHowToJsonLd />
+      {/* Course schema (E-E-A-T Expertise uplift, 2026-05-17). The Playbook
+          IS a seven-step instructor-led time-bounded program; Course is the
+          precise schema.org type. Declared as a separate @id-anchored node
+          (course-playbook) so Google's Course Rich Result eligibility does
+          not collide with the Product Rich Result on the Offer node above.
+          provider + instructor cross-reference the canonical Organization
+          and Person @ids — same entity walked through three perspectives. */}
+      <PlaybookCourseJsonLd />
       <FaqPageJsonLd items={PLAYBOOK_SALES_FAQS} />
       <BreadcrumbListJsonLd
         trail={[

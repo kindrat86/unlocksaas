@@ -141,6 +141,30 @@ export default function StoriesReverseSqueezePage() {
         // narrative bodies are too long for a voice-answer panel; the
         // blockquotes carry the distilled answer.
         speakableSelectors={[".aeo-stories-lede", ".aeo-story-a"]}
+        // E-E-A-T Expertise enrichments (2026-05-17). wordCount is the
+        // single biggest editorial-depth signal Google reads from Article
+        // schema; ~4,200 words is honest to within ±5% of the five-story
+        // body rendered below. articleSection clusters this piece into a
+        // named editorial category retrievers can group bylined work by.
+        // about[] anchors the five parables to schema.org/Thing entities
+        // so AI retrievers can answer "which Unlock SaaS story covers X"
+        // by walking the entity graph instead of grep-ing prose.
+        wordCount={4200}
+        articleSection="Indie SaaS Stories"
+        keywords={[
+          "indie SaaS post-launch",
+          "non-engineer founder customer development",
+          "Hook Story Offer applied to a real product",
+          "flat Stripe line indie hacker",
+          "Reluctant Hero founder voice",
+        ]}
+        about={[
+          { name: "The Blank Offer Page" },
+          { name: "The Stripe Refresh" },
+          { name: "The SEO Escape Hatch" },
+          { name: "The Mirror in Ten Founders" },
+          { name: "The Door That Opened" },
+        ]}
       />
       <BreadcrumbListJsonLd
         trail={[

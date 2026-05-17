@@ -34,9 +34,11 @@ import {
   KNOWS_ABOUT,
   MENTIONED_ENTITIES,
   ORGANIZATION,
+  ORGANIZATION_MAIN_ENTITY_OF_PAGE,
   ORGANIZATION_SAME_AS,
   PUBLISHING_PRINCIPLES_URL,
 } from "@/lib/seo/entity";
+import { getEarnedMentions, type MediaMention } from "@/lib/media-mentions";
 
 const BASE = "https://unlocksaas.com";
 
@@ -169,6 +171,100 @@ const SAME_AS = ORGANIZATION_SAME_AS;
 // app/apple-icon.tsx via next/og ImageResponse. Google accepts SVG for
 // Organization.logo (since 2023); a 112×112-min PNG would unlock richer
 // Knowledge-Graph rendering when brand-identity work ships.
+/**
+ * Convert earned media mentions into schema.org `subjectOf` entries on
+ * Organization. Each row becomes an Article whose subject is UnlockSaaS,
+ * which is exactly the Knowledge-Graph signal Google's AI Overviews and
+ * LLM retrieval pipelines look for when answering "is this entity cited
+ * anywhere outside its own site?"
+ *
+ * Returns `undefined` when no earned mentions exist – JSON.stringify drops
+ * undefined fields, which keeps the JSON-LD valid and lets the schema
+ * light up automatically the moment the operator appends the first row
+ * to MEDIA_MENTIONS. No schema migration needed at mention-time.
+ *
+ * Article is the safest default schema.org type because every LLM and
+ * structured-data tester accepts it. Podcast-specific or X-thread-specific
+ * sub-types can be introduced later if MediaMention gains a `kind` field.
+ */
+/**
+ * Always-present subjectOf entries — the LLM-readable corpus.
+ *
+ * Surface B (GEO/AEO) anchor: declares the two playbook-readable
+ * representations of the entity (the curated index at /llms.txt and the
+ * full concatenated corpus at /llms-full.txt) as Schema.org `Dataset`
+ * artifacts that are "about" this Organization. AI retrieval pipelines
+ * (Perplexity, ChatGPT search, Google AI Overviews, Claude search) walk
+ * Organization.subjectOf to discover the canonical paraphrase corpus
+ * for an entity. Without this, retrievers fall back to the llmstxt.org
+ * convention discovery (probing /llms.txt by URL guess), which works
+ * but earns lower confidence than an explicit schema-declared anchor.
+ *
+ * These two entries always render — the route handlers always serve.
+ * Earned-media subjectOf entries (currently empty, fills as
+ * MEDIA_MENTIONS grows) layer on top via buildSubjectOf below.
+ *
+ * encodingFormat=text/markdown is the honest content type the route
+ * handlers serve. license points at /terms so downstream reusers know
+ * the redistribution rule.
+ */
+const SUBJECT_OF_LLM_CORPUS = Object.freeze([
+  {
+    "@type": "Dataset",
+    name: "Unlock SaaS — llms.txt index",
+    description:
+      "Curated playbook-readable index of every public Unlock SaaS surface, following the llmstxt.org convention.",
+    url: `${BASE}/llms.txt`,
+    encodingFormat: "text/markdown",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: `${BASE}/terms`,
+    creator: { "@id": ID.organization },
+  },
+  {
+    "@type": "Dataset",
+    name: "Unlock SaaS — llms-full.txt corpus",
+    description:
+      "Concatenated playbook-readable corpus of every public surface — the LLM-canonical paraphrase target for Unlock SaaS.",
+    url: `${BASE}/llms-full.txt`,
+    encodingFormat: "text/markdown",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: `${BASE}/terms`,
+    creator: { "@id": ID.organization },
+  },
+] as const);
+
+/**
+ * Compose the full subjectOf array: the always-present LLM corpus
+ * Dataset entries first, then any earned media mentions on top.
+ *
+ * Article is the safest default schema.org type for mentions because
+ * every LLM and structured-data tester accepts it. Podcast-specific
+ * or X-thread-specific sub-types can be introduced later if
+ * MediaMention gains a `kind` field.
+ *
+ * Order matters slightly: LLM-corpus entries first means retrievers
+ * walking subjectOf top-down hit the paraphrase target before the
+ * mentions list, which is the order that maximises citation accuracy.
+ */
+function buildSubjectOf(mentions: readonly MediaMention[]) {
+  const mentionEntries = mentions.map((m) => ({
+    "@type": "Article",
+    url: m.url,
+    name: m.context ?? `${ORGANIZATION.name} mention in ${m.publication}`,
+    datePublished: m.publishedAt,
+    publisher: {
+      "@type": "Organization",
+      name: m.publication,
+    },
+    about: { "@id": ID.organization },
+  }));
+  // Always emit the LLM-corpus entries — they describe a surface that
+  // is ALWAYS present in production. Mentions are additive.
+  return [...SUBJECT_OF_LLM_CORPUS, ...mentionEntries];
+}
+
 const ORGANIZATION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -184,6 +280,24 @@ const ORGANIZATION_JSON = JSON.stringify({
   description: ORGANIZATION.description,
   slogan: ORGANIZATION.slogan,
   foundingDate: ORGANIZATION.foundingDate,
+  // mainEntityOfPage anchors the Organization to its Wikipedia article
+  // when one exists. Schema.org's one-to-one authoritative-description
+  // pattern – Knowledge Graph weighs this more heavily than a sameAs
+  // row pointing at the same URL because it explicitly names the page
+  // as the canonical external description. Undefined (and dropped by
+  // JSON.stringify) until NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL is set;
+  // no fabricated Wikipedia URL ships.
+  mainEntityOfPage: ORGANIZATION_MAIN_ENTITY_OF_PAGE,
+  // subjectOf[] composes two layers, in order:
+  //   1. Always-present: the /llms.txt + /llms-full.txt Dataset entries
+  //      (SUBJECT_OF_LLM_CORPUS). Surface B (GEO/AEO) anchor — retrievers
+  //      walking subjectOf top-down hit the paraphrase target first.
+  //   2. Additive: earned-media Articles that name UnlockSaaS. Empty in
+  //      a fresh state (MEDIA_MENTIONS=[]); the moment the operator
+  //      appends a real mention, AIO + LLMO citation signals light up
+  //      without a schema edit.
+  // See buildSubjectOf() for the composition logic.
+  subjectOf: buildSubjectOf(getEarnedMentions()),
   // Locale anchor. Mirrors the en-US signal shipped in the WebSite block and
   // the layout-level hreflang alternates. LLMs that build entity cards from
   // JSON-LD read `inLanguage` to decide which language audience this
@@ -455,8 +569,108 @@ const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
     availability: "https://schema.org/InStock",
     url: `${BASE}/playbook-sales`,
     seller: { "@id": ID.organization },
+    // E-E-A-T Trust uplift (2026-05-17). The 60-day money-back guarantee
+    // is real, code-enforced (Stripe-verified at refund time per
+    // strategy/workbooks/01-sales-funnel-secrets.md §2), and the single
+    // most-quoted policy on the page. Without MerchantReturnPolicy
+    // schema, Google AI Overviews + Bing Copilot + Perplexity have to
+    // paraphrase the policy from prose; with structured data they can
+    // cite the field verbatim.
+    //
+    // Honest signal — every field below is verifiable against the
+    // refund contract on /playbook-sales:
+    //   - 60-day finite return window (matches the page's headline promise).
+    //   - applicableCountry "Worldwide" — digital SaaS, no geo carve-outs.
+    //   - ReturnMethod "ReturnByMail" is the closest schema.org enum for a
+    //     software refund (Schema has no "automatic refund" value);
+    //     "returnFees: FreeReturn" is the canonical way to encode "the
+    //     customer pays nothing to claim the refund."
+    hasMerchantReturnPolicy: {
+      "@type": "MerchantReturnPolicy",
+      applicableCountry: "Worldwide",
+      returnPolicyCategory:
+        "https://schema.org/MerchantReturnFiniteReturnWindow",
+      merchantReturnDays: 60,
+      returnMethod: "https://schema.org/ReturnByMail",
+      returnFees: "https://schema.org/FreeReturn",
+      url: `${BASE}/playbook-sales#guarantee`,
+    },
   },
   // aggregateRating intentionally omitted – see file header.
+});
+
+// --- Playbook as Course ----------------------------------------------------
+// The Playbook is a seven-step, instructor-led, time-bounded learning
+// program (60-day window, verified completion via Stripe). schema.org/Course
+// is the precise type. We declare it as a SEPARATE @id-anchored node rather
+// than folding "Course" into the Product's @type array because:
+//
+//   1. Google's Course Rich Result requires `Course` as the head @type, not
+//      as one entry in a multi-type array. Splitting the node preserves
+//      Product Rich Result eligibility on the priced offer AND Course Rich
+//      Result eligibility for the curriculum.
+//   2. The Course node carries a hasCourseInstance that names the cohort
+//      pattern (rolling — every new signup is its own instance), the
+//      duration, and the format. These are honest, page-verifiable claims.
+//   3. provider + instructor cross-reference the canonical Organization /
+//      Person @ids so Google's Knowledge Graph resolves "who teaches
+//      Unlock SaaS" to the same Maryan node already declared elsewhere.
+//
+// Brunson Hard-Rule reconciliation:
+//   - No fabricated enrollment counts (no `numberOfStudents`).
+//   - No fabricated reviews (no `aggregateRating`).
+//   - hasCourseInstance.courseWorkload uses ISO 8601 duration P60D —
+//     a deliberate declaration of the 60-day window, not a marketing claim.
+//   - educationalLevel set to "Beginner" because the Playbook explicitly
+//     targets founders who have NEVER acquired a paying customer.
+const PLAYBOOK_COURSE_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "@id": `${BASE}/#course-playbook`,
+  name: "The Playbook — Your First Paying SaaS Customer in 60 Days",
+  description:
+    "A seven-step instructor-led program that walks a post-launch pre-revenue SaaS founder through pinning one real customer, writing one real offer, sending one real message, and verifying the first paying customer cycle inside Stripe.",
+  url: `${BASE}/playbook-sales`,
+  inLanguage: "en-US",
+  educationalLevel: "Beginner",
+  educationalUse: "Professional skill development",
+  learningResourceType: "Course",
+  teaches: [
+    "Pin one real dream customer for an already-shipped SaaS",
+    "Write one real offer the dream customer cannot say no to",
+    "Run a Dream 100 outreach sequence without sounding like a guru",
+    "Diagnose a landing page with the Hook Story Offer framework",
+    "Verify the first paying customer cycle inside Stripe",
+  ],
+  about: {
+    "@type": "Thing",
+    name: "First paying customer acquisition for indie SaaS",
+  },
+  audience: {
+    "@type": "Audience",
+    audienceType:
+      "Post-launch pre-revenue non-engineer founders using AI tools",
+  },
+  provider: { "@id": ID.organization },
+  instructor: { "@id": ID.person },
+  // The Course points BACK at the Product/SoftwareApplication node so
+  // crawlers can walk from "what does the course cost" to the priced offer.
+  isRelatedTo: { "@id": ID.product },
+  // hasCourseInstance — Google's Course Rich Result requires this for
+  // eligibility. Rolling cohort = every signup is its own instance.
+  hasCourseInstance: {
+    "@type": "CourseInstance",
+    name: "Self-paced rolling cohort",
+    courseMode: "Online",
+    courseWorkload: "P60D",
+    // Honest: no fixed start date — start date IS purchase date.
+    location: {
+      "@type": "VirtualLocation",
+      url: `${BASE}/playbook-sales`,
+    },
+    instructor: { "@id": ID.person },
+    inLanguage: "en-US",
+  },
 });
 
 // --- Founder (Person) ------------------------------------------------------
@@ -493,6 +707,59 @@ const PERSON_JSON = JSON.stringify({
     name: "Unlock SaaS",
     url: BASE,
   },
+  // hasOccupation — schema.org's machine-readable Occupation node lets
+  // Google Knowledge Graph and LLM citation pipelines disambiguate
+  // "Maryan, founder of Unlock SaaS" from any other Maryan with a public
+  // surface. occupationLocation = Worldwide matches Organization.areaServed
+  // for internal consistency. skills mirror knowsAbout (re-listed here so
+  // Occupation reads as a self-contained node when retrievers parse it in
+  // isolation from the parent Person).
+  //
+  // Brunson Hard-Rule: every entry below is on the operator's documented
+  // origin story (workbook 01 §6 Beat 1, founder VSL script). No invented
+  // titles, no fabricated certifications.
+  hasOccupation: {
+    "@type": "Occupation",
+    name: "Indie SaaS founder",
+    description:
+      "Solo non-engineer founder building Unlock SaaS with Claude Code. Builds the playbook he uses for his own launch.",
+    occupationLocation: {
+      "@type": "Place",
+      name: "Worldwide",
+    },
+    skills: [
+      "Customer development",
+      "Sales funnel design",
+      "Indie SaaS go-to-market",
+      "Russell Brunson DotCom Secrets framework",
+      "AI-assisted product development",
+    ].join(", "),
+  },
+  // subjectOf — declares the bylined editorial work Maryan is the named
+  // subject/author of. Anchors the Person entity to the longform content
+  // graph so retrievers can answer "what has Maryan written" with the
+  // canonical surfaces, not a list of random page mentions.
+  //
+  // Only includes content where Maryan is the explicit, on-page byline:
+  //   - /stories: Article, bylined "Maryan", datePublished locked in
+  //     /stories/page.tsx (PARABLES_PUBLISHED_AT).
+  //   - /about: ProfilePage where Maryan is the page's mainEntity.
+  //
+  // Page-level Article schema on /stories already cross-references this
+  // Person via author."@id", so the link is bidirectional.
+  subjectOf: [
+    {
+      "@type": "Article",
+      "@id": `${BASE}/stories`,
+      headline: "Five Stories for the Flat Stripe Line",
+      url: `${BASE}/stories`,
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${BASE}/about`,
+      url: `${BASE}/about`,
+    },
+  ],
   sameAs: SAME_AS,
 });
 
@@ -547,6 +814,32 @@ export type ArticleSchemaInput = {
    * but NOT the nav links or opt-in CTA. See SpeakableSelectors docs.
    */
   speakableSelectors?: SpeakableSelectors;
+  /**
+   * Word count of the article body. E-E-A-T Expertise signal — Google and
+   * AI retrievers weight long-form editorial heavier when the schema
+   * declares the actual depth. Honest only: count the published prose,
+   * not nav + CTA boilerplate.
+   */
+  wordCount?: number;
+  /**
+   * articleSection — the editorial section/category the piece sits in.
+   * Free text; LLMs use it to cluster bylined work into topical sets.
+   */
+  articleSection?: string;
+  /**
+   * Keywords this article is about. Free-form, comma-joined inside the
+   * builder. Distinct from page metadata.keywords — schema keywords feed
+   * AI retrieval; page meta keywords feed nothing (Google has ignored
+   * meta keywords since 2009).
+   */
+  keywords?: ReadonlyArray<string>;
+  /**
+   * Topic anchors. Pass schema.org/Thing references the article is about,
+   * so retrievers can resolve "what's this article about" to entities,
+   * not just strings. Skip when the article is generic; pass when the
+   * editorial is centered on named concepts (frameworks, methods, products).
+   */
+  about?: ReadonlyArray<{ name: string; sameAs?: string }>;
 };
 
 function buildArticleJson(input: ArticleSchemaInput): string {
@@ -582,6 +875,26 @@ function buildArticleJson(input: ArticleSchemaInput): string {
       "@id": input.url,
     },
     ...(input.imageUrl ? { image: input.imageUrl } : {}),
+    // E-E-A-T enrichments (2026-05-17). All four fields are optional and
+    // omitted entirely when the caller doesn't pass them — no fabricated
+    // word counts or invented topic anchors. wordCount is the strongest
+    // signal of editorial depth Google currently reads from Article schema.
+    ...(input.wordCount !== undefined ? { wordCount: input.wordCount } : {}),
+    ...(input.articleSection
+      ? { articleSection: input.articleSection }
+      : {}),
+    ...(input.keywords && input.keywords.length > 0
+      ? { keywords: input.keywords.join(", ") }
+      : {}),
+    ...(input.about && input.about.length > 0
+      ? {
+          about: input.about.map((thing) => ({
+            "@type": "Thing",
+            name: thing.name,
+            ...(thing.sameAs ? { sameAs: thing.sameAs } : {}),
+          })),
+        }
+      : {}),
   });
 }
 
@@ -735,6 +1048,29 @@ export function DiagnosticJsonLd() {
  */
 export function PlaybookProductJsonLd() {
   return <JsonLdScript json={PLAYBOOK_PRODUCT_JSON} />;
+}
+
+/**
+ * Course schema for the Playbook. Render on `/playbook-sales` next to
+ * PlaybookProductJsonLd and PlaybookHowToJsonLd. The three nodes are
+ * complementary, not redundant:
+ *
+ *   - Product (+ SoftwareApplication + LearningResource): the priced
+ *     subscription, with offers + MerchantReturnPolicy. Google Product
+ *     Rich Result eligibility.
+ *   - HowTo: the seven steps, voice-answer eligible via Speakable.
+ *   - Course (this block): the time-bounded, instructor-led program.
+ *     Google Course Rich Result eligibility; cited by AI Overviews when
+ *     the query class is "courses" / "programs" / "training."
+ *
+ * Schema.org Knowledge Graph walks @id cross-references — the Course's
+ * `isRelatedTo: ID.product` and `instructor: ID.person` resolve to the
+ * same Product and Person already declared above, so the page reads as
+ * one connected entity with three perspectives, not three disconnected
+ * blocks. E-E-A-T Expertise uplift (2026-05-17).
+ */
+export function PlaybookCourseJsonLd() {
+  return <JsonLdScript json={PLAYBOOK_COURSE_JSON} />;
 }
 
 /**

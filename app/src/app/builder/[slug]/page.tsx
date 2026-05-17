@@ -132,6 +132,14 @@ export default async function BuilderBadgePage({ params }: Props) {
             >
               Take the Free Diagnostic
             </Link>
+            <span>·</span>
+            <Link
+              href={`/builder/${badge.slug}/embed`}
+              className="underline-offset-4 hover:underline"
+              prefetch={false}
+            >
+              Embed this badge
+            </Link>
           </div>
         </article>
       </main>
