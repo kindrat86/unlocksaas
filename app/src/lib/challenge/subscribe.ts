@@ -62,8 +62,12 @@ export async function subscribeToChallenge(
   const supabase = createAdminClient();
   const nowIso = new Date().toISOString();
 
+  // `as never` casts match the dual-schema reconciliation pattern used in
+  // machine/page.tsx — the migration shipped (20260518000001) but the
+  // generated database.types.ts has not been regenerated yet. Row type
+  // narrowing happens explicitly below via the rowTyped → row cast.
   const { data: rowTyped, error: upsertError } = await supabase
-    .from("challenge_subscribers")
+    .from("challenge_subscribers" as never)
     .upsert(
       {
         email: emailRaw,
@@ -79,7 +83,7 @@ export async function subscribeToChallenge(
         next_send_at: null,
         last_error: null,
         unsubscribed_at: null,
-      },
+      } as never,
       { onConflict: "email" }
     )
     .select("id, email, first_name, emails_sent")

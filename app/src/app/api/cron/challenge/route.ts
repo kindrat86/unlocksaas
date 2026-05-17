@@ -38,8 +38,11 @@ export async function GET(req: NextRequest) {
 
   // Subscribe owns Day 0 (emails_sent: 0 → 1). Cron handles Days 1..14
   // (emails_sent: 1..14 → 2..15). Sequence length is 15.
-  const { data: due, error } = await supabase
-    .from("challenge_subscribers")
+  // `as never` matches the dual-schema reconciliation pattern used in
+  // lib/challenge/dispatch.ts — the migration shipped (20260518000001)
+  // but the generated database.types.ts has not been regenerated yet.
+  const { data: dueRaw, error } = await supabase
+    .from("challenge_subscribers" as never)
     .select("id, email, first_name, emails_sent")
     .eq("status", "active")
     .gte("emails_sent", 1)
@@ -47,6 +50,13 @@ export async function GET(req: NextRequest) {
     .not("next_send_at", "is", null)
     .lte("next_send_at", nowIso)
     .limit(500);
+
+  const due = dueRaw as unknown as Array<{
+    id: string;
+    email: string;
+    first_name: string;
+    emails_sent: number;
+  }> | null;
 
   if (error) {
     console.error("[challenge-cron] select_failed", error);

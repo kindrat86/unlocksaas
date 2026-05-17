@@ -679,3 +679,30 @@ Closed the Russell audit's Chapter 14 gap from 45/100 → 100/100. The Lead Sque
 - PostHog key pending — the new `ParablesPageViewed` + `ParablesOptInSubmitted` events fire to a no-op tracker until the key lands.
 
 **Next coherent unit:** drive a single X thread expanding Parable 2 (Stripe Refresh) or Parable 3 (SEO Escape Hatch) to `/parables` instead of `/diagnostic`. The reverse squeeze fits cold social traffic better than the squeeze — no email ask in the first scroll.
+
+## DCS Secret #13 / Traffic Secrets Secret #2 + #4 — Deployable Dream 100 Outreach Kit
+**Status: SHIPPED (kit ready to send; per-message Maryan confirmation required for any actual send)**
+
+User instruction: "Proceed autonomously to get 100%" on the Russell audit's Secret #13 finding (scored 20/100 with the rationale "Dream 100 list exists. Zero work-your-way-in started. Zero affiliate deals. Zero podcast guest spots. 10 empty influencer slots"). Reading the actual files showed two of the four sub-findings were already closed by an earlier autonomous pass (workbook 08 + dream-100.csv had the 10 names locked; affiliate program spec existed in workbook 10 §3) — state.json + 00-RESUME-HERE.md just carried stale "pending" language. The remaining real gap was the bridge artifact between "list is locked" and "I can press send Monday morning."
+
+**Files shipped:**
+
+- `strategy/dream-100-outreach.md` (NEW) — 7-section deployable kit. §0 master rules (story-first, one question per DM, no pitch in cold reach, sender identity locked to `maryan@unlocksaas.com`, pitch gates enforced per workbook 08 §3 + workbook 10 §2 + workbook 10 §3, 5-DM/week cap per workbook 09 §1). §1 4-week launch cadence with Mon-Fri shape and Tier A/B/C/D rotation. §2 20 per-influencer dossiers organized in 4 ICP-overlap tiers — each with handle/channel, recent canon to reference, warm-up reps for Mon-Wed, and a ready-to-send DM template for Thu that follows the Reluctant Hero voice from workbook 01 §6 with one fill-the-blank for a specific recent post / podcast / launch from the last 30 days. §3 5 Tier-1 podcast pitch templates (universal shape + per-host angles for Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air). §4 5 integration partner pitches (Lovable, Stripe, Indie Hackers, Bootstrapped Founder, Kit). §5 tracking table schema with controlled action vocabulary (`follow` / `read` / `public_reply` / `newsletter_reply` / `community_reply` / `dm` / `dm_response` / `pitch`) and pre-launch grading rule (≥3 `public_reply` per target before any `dm`). §6 affiliate army one-pager (deferred to 50+ customers per workbook 10 §3) with who-we-accept / tier compensation / application form spec / dashboard contents. §7 honest scope of what the kit does NOT do (no auto-sending, no podcast yes earned, no integration deal closed, no affiliate onboarded, no IH long-forms written).
+
+- `strategy/state.json` (RECONCILED) — `traffic_secrets.dream_100.status` to v3; added `traffic_secrets.dream_100.outreach_kit` block with path/shipped/purpose/sections/pitch_gates_enforced/tier_a_week_1_targets/send_method/audit_delta; `progress.skill_08_status` to v3 referencing the kit; `progress.founder_open_items_pre_launch` swapped from generic "begin warm-up reps" to a specific "Execute Week 1 of strategy/dream-100-outreach.md §1 cadence" item naming the Tier A 5 targets and the Mon-Fri activity per day; new `revision_history` entry as the most recent.
+
+- `strategy/workbooks/08-your-dream-customer.md` (RECONCILED) — §8 Status block updated to v3, references the kit, lists its 7 sections, restates sender identity and the per-message-confirmation rule.
+
+- `00-RESUME-HERE.md` (RECONCILED) — founder open item #1 now points at the kit, names Week 1 targets, names the Mon-Fri shape, enforces the per-message confirmation rule.
+
+**What this does NOT do (intentional):**
+
+- No auto-send. Per `project_unlocksaas_email_identity.md`, customer-facing sends require per-message Maryan confirmation via `scripts/mail.py` (email) or manual X DM. The kit is "ready to send," not "sent."
+- No podcast pitches sent. Pitch gate per workbook 08 §3: first verified-customer cycle complete. Until that closes, podcast pitches are warm-up only.
+- No integration partner pitches sent. Gate per workbook 10 §2: 3+ verified-customer cycles complete.
+- No affiliate onboarding. Gate per workbook 10 §3: 50+ paying customers active.
+- No IH long-forms written. The cadence schedules one per week; the parables exist in workbook 01 §6 Beat 3 but the long-form prose is operator-time-bound (or a separate ship).
+
+**Audit-score delta:** DCS Secret #13 + Traffic Secrets Secret #2 + Secret #4 move from 20/100 to ~95/100 pre-launch ceiling. Remaining 5 points gate on post-launch customer evidence (first podcast yes, first integration deal, first affiliate onboarded) — none of which can be earned in a workbook edit. Operator unlock path: execute Week 1 of §1 cadence (5 hours founder time across Mon-Fri) → first verified customer closes → send a §3 podcast pitch → +1 point. Each subsequent gate opens the next point.
+
+**Next coherent unit:** Operator runs Week 1 cadence. If a Tier A DM gets a reply, the kit's §5 tracking schema is the immediate next-action lookup (`dm_response` → what to do next). If no reply by end of Thursday, Friday's IH long-form still ships — the asymmetric thing about work-your-way-in is that the public reps are uncapped and visible, so the next week's DM lands warmer regardless of the prior week's reply rate.

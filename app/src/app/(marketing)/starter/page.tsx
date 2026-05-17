@@ -189,6 +189,20 @@ function StarterSalesPageInner() {
           built the machine I wish someone had handed me.
         </p>
 
+        {/* Founder VSL — the in-110-seconds version for cold scrollers who
+            will not read the long-form below. Autoplay off here because the
+            page is high-intent (visitor already clicked through); we want
+            the visitor to opt-in to the watch rather than have motion start
+            uninvited above the fold. */}
+        <div className="mb-10">
+          <VslPlayer
+            surface="starter"
+            showHeadline
+            showCta={false}
+            autoplay={false}
+          />
+        </div>
+
         <Separator className="my-8" />
 
         {/* Star Story Solution */}
