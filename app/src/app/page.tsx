@@ -1,8 +1,10 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
+import { TopTagline } from "@/components/blocks/top-tagline";
 import { Hero } from "@/components/blocks/hero";
 import { BigDomino } from "@/components/blocks/big-domino";
 import { SocialProofBar } from "@/components/blocks/social-proof-bar";
@@ -17,6 +19,7 @@ import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { FinalCta } from "@/components/blocks/final-cta";
 import { StickyCta } from "@/components/blocks/sticky-cta";
 import { SignatureFooter } from "@/components/blocks/signature-footer";
+import { ExitIntentPopup } from "@/components/exit-intent-popup";
 import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
   DefinedTermSetJsonLd,
@@ -28,35 +31,49 @@ import {
 /**
  * UnlockSaaS Funnel Hub — Perfect Webinar arc.
  *
- * Section order follows DotCom Secrets §2 + Expert Secrets §3 (Perfect Webinar
- * Framework) + Funnel Hacker's Cookbook v1 (strategy/funnel-hackers-cookbook.md):
+ * Section order follows Brunson Expert Secrets §2 (emotion before logic) +
+ * DotCom Secrets §2 Hook/Story/Offer + Funnel Hacker's Cookbook v1
+ * (strategy/funnel-hackers-cookbook.md). Reordered 2026-05-17 so the page
+ * runs EMOTIONAL → SCARCITY → LOGIC, with the free diagnostic as the primary
+ * conversion target on every CTA surface.
  *
- *   1. Hook            — promise + polarity move in <3 seconds
- *   2. Big Domino      — the one claim the page must prove
- *   3. Proof Bar       — structural credibility (refund-by-code + scar tissue)
- *   4. Media Bar       — earned mentions, auto-renders at ≥3
- *   5. Mirror Moment   — Honest testimonials (public pain in real founders'
- *                        own words); positioned high so the visitor recognizes
- *                        themselves BEFORE the longer origin story
- *   6. Founder VSL     — origin story in the founder's voice
- *   7. Manifesto       — A/B identity label (Verified / Paid Builders)
- *   8. Timeline        — receipts that the story is real
- *   9. Before / After  — the transformation made concrete
- *  10. Comparison      — anti-secrets (what they tried that did not work)
- *  11. Stack Slide     — the offer reveal + anchored price ($4,900 → $49)
- *  12. Guarantee Hero  — the polarity move with refund conditions
- *  13. Avatar Wall     — Verified Builder proof (renders at ≥9)
- *  14. FAQ             — objection handling sourced from dollar-objections
- *  15. Newsletter      — last-resort soft opt-in (Soap Opera Day 0 trigger)
- *  16. Final CTA       — three doors one more time (close before the close)
- *  17. Honest empty    — "as seen in" empty state when MediaBar hidden
- *  18. Social links    — find-me row
- *  19. Signature       — Maryan footer (Cookbook Swipe 4)
- *  20. Sticky CTA      — always-visible offer bar below the hero
+ *   0. Top Tagline       — one-line emotional promise + founding-rate cue
+ *                          ABOVE the hero (Brunson "one line at the top").
+ *   1. Hook              — promise + polarity move in <3 seconds. Primary
+ *                          CTA is the free diagnostic; 5 emails demoted to
+ *                          subscribe link.
+ *   2. Big Domino        — the one claim the page must prove.
+ *   3. Proof Bar         — structural credibility (refund-by-code + scar).
+ *   4. Media Bar         — earned mentions, auto-renders at ≥3.
  *
- * Theming: shadcn dark tokens only — no explicit colors, no script fonts, no
- * ClickFunnels 1.0 yellow attention bars. The header now reads as the same
- * visual family as every block below it (eyebrow → heading → body → CTAs).
+ *   --- EMOTIONAL ARC (story / mirror) ---
+ *
+ *   5. Mirror Moment     — Honest testimonials. Visitor recognizes their
+ *                          own pain in real founders' own words.
+ *   6. Founder VSL       — origin story in the founder's voice.
+ *   7. Manifesto         — A/B identity label (Verified / Paid Builders).
+ *   8. Timeline          — receipts that the story is real.
+ *   9. Before / After    — the transformation made concrete.
+ *
+ *   --- SCARCITY (the bridge from emotion to logic) ---
+ *
+ *  10. Founding Builder  — honest scarcity moved EARLIER so the visitor
+ *                          sees the urgency before the longer logical
+ *                          section. Three real levers, no fake countdown.
+ *
+ *   --- LOGIC (the proof and the offer) ---
+ *
+ *  11. Comparison        — anti-secrets (what they tried that did not work).
+ *  12. Stack Slide       — the offer reveal + anchored price ($4,900 → $49).
+ *  13. Guarantee Hero    — the polarity move with refund conditions.
+ *  14. Avatar Wall       — Verified Builder proof (renders at ≥9).
+ *  15. FAQ               — objection handling from dollar-objections.
+ *  16. Newsletter tail   — small subscribe block for the visitor who is
+ *                          still not ready to paste a URL.
+ *  17. Final CTA         — three doors one more time (close before close).
+ *  18. Signature footer  — Maryan signature (Cookbook Swipe 4).
+ *  19. Sticky CTA        — always-visible offer bar below the hero.
+ *  20. Exit-intent popup — last-chance diagnostic + newsletter offer.
  */
 export default function FunnelHub() {
   const variant = readIdentityFromCookies();
@@ -64,20 +81,14 @@ export default function FunnelHub() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Surface B (AEO/GEO/AIO) — Organization + Person + FAQPage schema for
-          LLM citation anchoring. The FAQPage block consumes the same
-          HOMEPAGE_FAQS list rendered below, so visible content and structured
-          data never diverge. */}
       <OrganizationJsonLd />
       <PersonJsonLd />
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
-      {/* AIO uplift (2026-05-17): DefinedTermSet declares UnlockSaaS as the
-          publisher of the Brunson glossary the site teaches. Voiced in our
-          own words, sourced from entity.DEFINED_TERMS – each term appears
-          in at least one shipped surface, so the schema and the visible
-          corpus never diverge. */}
       <DefinedTermSetJsonLd />
       <AbExposureBeacon />
+
+      {/* ---------------- 0. TOP TAGLINE ---------------- */}
+      <TopTagline />
 
       {/* ---------------- 1. HOOK ---------------- */}
       <Hero />
@@ -93,13 +104,14 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 5. MIRROR MOMENT — moved up ----------------
+      {/* ================= EMOTIONAL ARC ================= */}
+
+      {/* ---------------- 5. MIRROR MOMENT ----------------
           Brunson rule: the visitor must recognize themselves in real public
           pain BEFORE the longer origin story. Mirror first, autobiography
           second. */}
       <HonestTestimonials />
 
-      {/* Cookbook Swipe 6 — Verified Builder avatar wall (pre-staged at ≥9). */}
       <Suspense fallback={null}>
         <AvatarWall />
       </Suspense>
@@ -210,7 +222,20 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 10. ANTI-SECRETS — Comparison ---------------- */}
+      {/* ================= SCARCITY BRIDGE ================= */}
+
+      {/* ---------------- 10. FOUNDING BUILDER – honest scarcity ----------------
+          Moved EARLIER 2026-05-17. The visitor has just seen the emotional
+          arc; before the longer logical section, name the honest urgency:
+          first-100 founding-price lock + personal-capacity ceiling + cost-
+          of-waiting calendar argument. No fake countdown, no neon. */}
+      <FoundingBuilder tone="full" />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ================= LOGICAL ARC ================= */}
+
+      {/* ---------------- 11. ANTI-SECRETS — Comparison ---------------- */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
@@ -280,28 +305,17 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 11. STACK SLIDE — the offer ---------------- */}
+      {/* ---------------- 12. STACK SLIDE — the offer ---------------- */}
       <StackSlide />
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 12. GUARANTEE HERO — polarity move ---------------- */}
+      {/* ---------------- 13. GUARANTEE HERO — polarity move ---------------- */}
       <GuaranteeHero />
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 12.5 FOUNDING BUILDER – honest scarcity ----------------
-          Brunson 10X Secrets §3 Category 4, in the honest variant the Marco
-          avatar will accept. Three real levers: founding-price lock, personal
-          capacity ceiling, and the cost-of-waiting calendar argument. No fake
-          countdown timer, no neon. Placed AFTER the guarantee on purpose –
-          the visitor must read the polarity move first so the scarcity reads
-          as "decide now" rather than "buy now or else". */}
-      <FoundingBuilder tone="full" />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 13. FAQ — objection handling ---------------- */}
+      {/* ---------------- 14. FAQ — objection handling ---------------- */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
@@ -330,45 +344,59 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 14. NEWSLETTER – second-chance opt-in ----------------
-          The hero already offered the email opt-in cold. This block is the
-          mid-page second chance for the visitor who scrolled past the hero
-          to read first and decide later. Soap Opera Sequence Day 0 fires on
-          submit; cron picks up Days 1–4. Source tag splits hero vs. tail in
-          the metrics dashboard. The `#newsletter-tail` anchor is the target
-          of the sticky CTA "Get the 5 emails" button below the hero. */}
+      {/* ---------------- 15. NEWSLETTER TAIL — small subscribe link ----------------
+          Demoted 2026-05-17. The 5-email arc is no longer the primary CTA on
+          this surface; it lives here as a small subscribe block for the
+          visitor who is not ready to paste a URL into the diagnostic. The
+          `#newsletter-tail` anchor is still the target of the "subscribe"
+          links in the hero, the sticky CTA, and the final CTA. */}
       <section
         id="newsletter-tail"
-        className="py-14 sm:py-20 px-4 sm:px-6 max-w-md mx-auto text-center scroll-mt-24"
+        className="py-12 sm:py-16 px-4 sm:px-6 max-w-md mx-auto text-center scroll-mt-24"
       >
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Still reading? Take the five letters.
+          Not ready to paste a URL?
         </p>
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 leading-tight text-balance">
-          The 5 emails I wish someone had sent me before I shipped 12 products
-          to flat Stripe lines.
+        <h2 className="text-lg sm:text-xl font-bold mb-3 leading-tight text-balance">
+          Get the 5-email arc instead.
         </h2>
-        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
           One short letter a day for five days. Written like one founder to
-          another, not a marketing sequence. By Friday you will know which
-          beat is keeping your line flat – and whether the Playbook is the
-          right answer for you, or not.
+          another, not a marketing sequence. By Friday you will know whether
+          the Playbook is the right answer for you.
         </p>
         <div className="text-left">
-          <NewsletterSignup variant="hero" source="midpage" />
+          <NewsletterSignup
+            variant="stacked"
+            source="midpage_tail"
+            ctaLabel="Subscribe to the newsletter"
+          />
         </div>
+        <p className="text-xs text-muted-foreground italic mt-5">
+          Or{" "}
+          <Link
+            href="/diagnostic"
+            className="underline underline-offset-4 hover:text-foreground transition-colors"
+          >
+            skip the letters and run the free diagnostic
+          </Link>
+          .
+        </p>
       </section>
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 15. FINAL CTA — close-the-loop ---------------- */}
+      {/* ---------------- 16. FINAL CTA — close-the-loop ---------------- */}
       <FinalCta />
 
-      {/* ---------------- 18. SIGNATURE FOOTER ---------------- */}
+      {/* ---------------- 17. SIGNATURE FOOTER ---------------- */}
       <SignatureFooter />
 
-      {/* ---------------- 19. STICKY SCROLL CTA ---------------- */}
+      {/* ---------------- 18. STICKY SCROLL CTA ---------------- */}
       <StickyCta />
+
+      {/* ---------------- 19. EXIT-INTENT POPUP ---------------- */}
+      <ExitIntentPopup />
     </div>
   );
 }

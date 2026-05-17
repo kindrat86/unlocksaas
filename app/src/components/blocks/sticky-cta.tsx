@@ -4,21 +4,18 @@
  * Sticky scroll CTA – Brunson "always visible offer" rule (Funnel Hacker's
  * Cookbook §3 momentum signal).
  *
+ * Pivoted 2026-05-17 from newsletter-primary to diagnostic-primary so the
+ * sticky bar reflects the new home-surface conversion target. Newsletter is
+ * preserved as a small text link for the visitor who is not ready to paste
+ * a URL.
+ *
  * The hero CTA sits above the fold. Every block below the hero pushes the
  * CTA off-screen, which means a visitor scrolling through the manifesto,
  * before/after, and stack slide has no one-tap way back to the offer until
  * they hit the Final CTA at the bottom.
  *
- * This bar mounts a slim CTA strip to the bottom of the viewport that
- * appears AFTER the visitor has scrolled past the hero, and hides at the
- * footer (no point doubling up with the Final CTA's own buttons).
- *
- * The homepage's primary target is the email opt-in, so the sticky CTA
- * leads with the five-day arc and offers the diagnostic + $1 as quieter
- * fallbacks for the visitor who is already further down the ladder.
- *
- * Mobile: full-width strip with the newsletter CTA only.
- * Desktop: same strip with secondary diagnostic + $1 links exposed.
+ * Mobile: full-width strip with the diagnostic CTA only.
+ * Desktop: same strip with secondary $1 link + tiny newsletter text link.
  *
  * Visual treatment: restrained shadcn – background/border tokens, default
  * Button. Same aesthetic as the rest of the app.
@@ -57,30 +54,30 @@ export function StickyCta() {
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
         <div className="hidden sm:block flex-1 min-w-0">
           <p className="text-xs uppercase tracking-widest text-muted-foreground">
-            Still scrolling?
+            First paying customer in 60 days
           </p>
           <p className="text-sm font-medium leading-tight truncate">
-            The 5 emails I wish someone had sent me before I shipped 12 products
-            to flat Stripe lines.
+            Find out in 90 seconds why your line is flat – free, no card, no
+            login.
           </p>
         </div>
 
         <div className="flex items-center gap-3 flex-1 sm:flex-initial">
           <Button asChild className="flex-1 sm:flex-initial">
-            <a href="#newsletter-tail">Get the 5 emails</a>
+            <Link href="/diagnostic">Free 2-min diagnosis</Link>
           </Button>
-          <Link
-            href="/diagnostic"
-            className="hidden md:inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 whitespace-nowrap transition-colors"
-          >
-            or free 2-min diagnosis
-          </Link>
           <Link
             href="/starter"
             className="hidden md:inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 whitespace-nowrap transition-colors"
           >
             or Start for $1
           </Link>
+          <a
+            href="#newsletter-tail"
+            className="hidden md:inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 whitespace-nowrap transition-colors"
+          >
+            or subscribe
+          </a>
         </div>
       </div>
     </div>
