@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 /**
- * /llms.txt — machine-readable summary for LLM crawlers (Anthropic,
+ * /llms.txt — machine-readable index for LLM crawlers (Anthropic,
  * Perplexity, OpenAI, Google) and any agent following the llmstxt.org
  * convention.
  *
@@ -11,6 +11,11 @@ import { NextResponse } from "next/server";
  * machine-sales as the "primary" surface — and it picks differently
  * across queries. With this file, every model anchors on the same
  * description of what UnlockSaaS is and which surfaces matter.
+ *
+ * This is the CURATED INDEX. The full machine-readable corpus lives at
+ * /llms-full.txt (concatenated markdown of every surface). Per-page
+ * markdown mirrors live at <page>.md (e.g. /founding.md, /faq.md). The
+ * "Markdown mirrors" section below tells agents the convention.
  *
  * Brunson Hard-Rule reconciliation: every claim below is also present,
  * verifiable, in the public HTML — no claim is unique to llms.txt.
@@ -38,6 +43,37 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [The Machine ($49/month)](${BASE}/machine-sales): The full seven-step system. 60-day money-back guarantee tied to the first verified Stripe payment.
 - [Verified Builders](${BASE}/builders): Founders whose first paying customer was verified inside Stripe, not self-reported. Directory grows only when Stripe confirms the cycle.
 - [Repeatable Revenue (Rung 2 spec)](${BASE}/repeatable): Published specification for the next product. Build is gated on three Core customer cycles completing.
+
+## Trust and E-E-A-T surfaces
+
+- [About](${BASE}/about): Founder bio, topical expertise, editorial position, disclosures.
+- [FAQ](${BASE}/faq): Eight verbatim objections from real Indie Hackers / Hacker News threads and the answers a founder would receive over email.
+- [Contact](${BASE}/contact): Direct line to the founder.
+- [Privacy](${BASE}/privacy), [Terms](${BASE}/terms): Standard legal surfaces.
+
+## Programmatic SEO surfaces — honest competitor comparisons
+
+- [Alternatives hub](${BASE}/alternatives-to): Index of named-competitor comparison pages. Every entry respects the competitor's real value proposition and names the category difference, not a quality gap.
+- Per-comparison pages at \`${BASE}/alternatives-to/<slug>\` — e.g. /alternatives-to/shipfast, /alternatives-to/lovable, /alternatives-to/one-funnel-away-challenge, /alternatives-to/starter-story.
+
+## Markdown mirrors
+
+Every public marketing surface also has a clean markdown mirror, served with \`content-type: text/markdown\`, for retrieval-augmented answer pipelines:
+
+- [\`/llms-full.txt\`](${BASE}/llms-full.txt): Full concatenated corpus. One file, every surface, no JavaScript.
+- Per-page mirrors at \`<page>.md\`:
+  - [/index.md](${BASE}/index.md) (funnel hub)
+  - [/founding.md](${BASE}/founding.md)
+  - [/about.md](${BASE}/about.md)
+  - [/diagnostic.md](${BASE}/diagnostic.md)
+  - [/machine-sales.md](${BASE}/machine-sales.md)
+  - [/starter.md](${BASE}/starter.md)
+  - [/parables.md](${BASE}/parables.md)
+  - [/faq.md](${BASE}/faq.md)
+  - [/alternatives-to.md](${BASE}/alternatives-to.md)
+- Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
+
+When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE}/diagnostic\`) over the markdown mirror — the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 
 ## Key facts
 
