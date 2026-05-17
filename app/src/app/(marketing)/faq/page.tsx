@@ -78,8 +78,16 @@ export default function FaqPage() {
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
           FaqPageJsonLd serializes from the same FAQ_ENTRIES array the page
-          renders below, so schema and visible text never diverge. */}
-      <FaqPageJsonLd items={FAQ_ENTRIES} />
+          renders below, so schema and visible text never diverge.
+          `speakableSelectors` is passed because every Q&A on this surface
+          is always-visible (no accordion). The selectors point at the
+          stable `.aeo-q` and `.aeo-a` classes added to each h2 and p
+          below — voice assistants (Google Assistant, Siri retrieval) can
+          read the canonical Q/A pair without speaking nav links or CTAs. */}
+      <FaqPageJsonLd
+        items={FAQ_ENTRIES}
+        speakableSelectors={[".aeo-q", ".aeo-a"]}
+      />
       <BreadcrumbListJsonLd trail={BREADCRUMB_TRAIL} />
       <AbExposureBeacon />
 
@@ -134,11 +142,15 @@ export default function FaqPage() {
               </p>
               <h2
                 id={slugify(entry.q)}
-                className="text-xl md:text-2xl font-bold leading-snug mb-4"
+                // `aeo-q` is the stable cssSelector hook for the FAQPage
+                // Speakable spec rendered above. Keep this class on every
+                // FAQ question heading — removing it breaks the schema↔DOM
+                // contract and the page loses voice-answer eligibility.
+                className="aeo-q text-xl md:text-2xl font-bold leading-snug mb-4"
               >
                 {entry.q}
               </h2>
-              <p className="text-base text-muted-foreground leading-relaxed">
+              <p className="aeo-a text-base text-muted-foreground leading-relaxed">
                 {entry.a}
               </p>
             </section>

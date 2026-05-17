@@ -75,6 +75,14 @@ export default function StoriesReverseSqueezePage() {
         description="Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened."
         url={PARABLES_URL}
         datePublished={PARABLES_PUBLISHED_AT}
+        // Voice-engine eligibility (AEO). The lede paragraph below is the
+        // canonical answer for "what are the unlock saas stories" — short,
+        // editorial, no nav links. Voice assistants speak that paragraph
+        // and the page's h1 (auto-picked by most engines) as the answer.
+        // The five story h2's are NOT in the selector list because each
+        // long-form story is too long for a voice-answer panel; the lede
+        // is the right summary.
+        speakableSelectors={[".aeo-stories-lede"]}
       />
       <BreadcrumbListJsonLd
         trail={[
@@ -92,7 +100,11 @@ export default function StoriesReverseSqueezePage() {
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
             What I tell other founders before I show them the Playbook.
           </h1>
-          <p className="text-base text-muted-foreground leading-relaxed mb-4">
+          {/* Class `aeo-stories-lede` is the Speakable cssSelector that
+              ArticleJsonLd above points at. Voice assistants speak this
+              paragraph as the canonical summary. Must stay on this <p>;
+              renaming breaks the schema↔DOM contract. */}
+          <p className="aeo-stories-lede text-base text-muted-foreground leading-relaxed mb-4">
             These are the five stories I keep coming back to in DMs, in calls,
             and in my own head when I am avoiding the work. They are not
             tactics. They are the order I had to learn the hard way.

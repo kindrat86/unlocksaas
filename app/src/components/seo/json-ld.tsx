@@ -17,7 +17,39 @@
  * Vercel React Best Practices guide.
  */
 
+import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
+
 const BASE = "https://unlocksaas.com";
+
+/**
+ * Speakable Specification cssSelector list.
+ *
+ * Surface B (AEO + voice-engine optimization) extension. Schema.org's
+ * `Speakable` property tells text-to-speech engines (Google Assistant,
+ * Siri-style retrieval, screen-readers that follow the spec) which DOM
+ * nodes are safe to read aloud — i.e. the prose, not the navigation /
+ * call-to-action / footer.
+ *
+ * Two layout rules for callers:
+ *   1. Selectors MUST point at DOM that actually exists on the rendered
+ *      page. A Speakable selector pointing at a non-existent node is the
+ *      same drift class as a JSON-LD field that disagrees with rendered
+ *      text — both get the page demoted in voice answer panels.
+ *   2. Prefer stable class names prefixed with `aeo-` (e.g. `.aeo-q`,
+ *      `.aeo-a`, `.aeo-tldr`) over heading-tag selectors. Tag selectors
+ *      pick up nav links and CTA copy that should not be spoken; an
+ *      explicit class lets each page opt the right nodes in.
+ *
+ * Schema.org reference: https://schema.org/SpeakableSpecification
+ */
+export type SpeakableSelectors = ReadonlyArray<string>;
+
+function speakableSpec(selectors: SpeakableSelectors) {
+  return {
+    "@type": "SpeakableSpecification",
+    cssSelector: selectors,
+  };
+}
 
 /**
  * Off-platform entity anchors shared by Organization.sameAs and Person.sameAs.
@@ -151,6 +183,76 @@ const DIAGNOSTIC_HOWTO_JSON = JSON.stringify({
     },
   ],
   totalTime: "PT90S",
+  // Speakable: the "What I am reading on your page" section on /diagnostic
+  // renders the three diagnoses (Wrong Person / Weak Offer / Weak Belief) as
+  // a bulleted list. Class `.aeo-diagnostic-howto` on that <section> makes
+  // the same three answers voice-readable.
+  speakable: speakableSpec([".aeo-diagnostic-howto"]),
+});
+
+/**
+ * The seven-step Playbook as schema.org `HowTo`.
+ *
+ * Mounted on `/playbook-sales`. The same `PLAYBOOK_STEPS` array feeds the
+ * "## The seven steps" section in `/playbook-sales.md` and `/llms-full.txt`
+ * via `src/lib/seo/markdown.ts`, so the HowTo schema, the visible HTML
+ * page, and the markdown mirror cannot drift.
+ *
+ * Why HowTo (not Article) for the seven steps: a numbered named-step list
+ * is the literal shape Google's featured-snippet engine pulls when a
+ * searcher types "how to get my first paying SaaS customer." Article fires
+ * a generic Rich Result; HowTo fires the carousel-style step Rich Result
+ * AND voice-answer eligibility, which is the entire AEO point.
+ *
+ * `estimatedCost` and `totalTime` are real, contracted values: $98 capped
+ * exposure (the two-month Core price), 60 days from Playbook start. Both
+ * are stated on /playbook-sales and in /faq verbatim; the Brunson Hard-Rule
+ * "every schema field is in the public HTML" check passes.
+ */
+const PLAYBOOK_HOWTO_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How to get your first paying SaaS customer in 60 days",
+  description:
+    "The Unlock SaaS Playbook is a seven-step system that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder is refunded automatically.",
+  inLanguage: "en-US",
+  totalTime: "P60D",
+  estimatedCost: {
+    "@type": "MonetaryAmount",
+    currency: "USD",
+    value: "98",
+  },
+  supply: [
+    {
+      "@type": "HowToSupply",
+      name: "A live, already-shipped SaaS product (any stack — Lovable, Claude, Replit, v0, Cursor, Bolt, Bubble, hand-coded).",
+    },
+    {
+      "@type": "HowToSupply",
+      name: "A connected Stripe account (the guarantee reads from it).",
+    },
+    {
+      "@type": "HowToSupply",
+      name: "Willingness to do at least 20 logged outreach actions over 60 days.",
+    },
+  ],
+  tool: [
+    {
+      "@type": "HowToTool",
+      name: "The Playbook engine — outreach generation, response tracking, Stripe-webhook verification.",
+    },
+  ],
+  step: PLAYBOOK_STEPS.map((s, i) => ({
+    "@type": "HowToStep",
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+    url: `${BASE}/playbook-sales#step-${i + 1}`,
+  })),
+  // Speakable: the seven steps render on /playbook-sales inside the Block 2
+  // "Three Secrets" prose. Class `.aeo-playbook-howto` on the wrapping
+  // <section> opts that block into voice answer panels.
+  speakable: speakableSpec([".aeo-playbook-howto"]),
 });
 
 // Multi-typed as Product + SoftwareApplication: schema.org allows array @type
@@ -236,7 +338,10 @@ const PERSON_JSON = JSON.stringify({
 
 export type FaqItem = { q: string; a: string };
 
-function buildFaqPageJson(items: ReadonlyArray<FaqItem>): string {
+function buildFaqPageJson(
+  items: ReadonlyArray<FaqItem>,
+  speakable?: SpeakableSelectors,
+): string {
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -249,6 +354,12 @@ function buildFaqPageJson(items: ReadonlyArray<FaqItem>): string {
         text: it.a,
       },
     })),
+    // Speakable is optional because the FAQ accordion variant on
+    // /playbook-sales hides answers in collapsed `<details>` — pointing
+    // voice engines at hidden text is the same drift class as a JSON-LD
+    // field that disagrees with rendered text. The /faq surface, where
+    // every answer is always visible, opts in by passing selectors.
+    ...(speakable ? { speakable: speakableSpec(speakable) } : {}),
   });
 }
 
@@ -259,6 +370,12 @@ export type ArticleSchemaInput = {
   datePublished: string; // ISO 8601
   dateModified?: string; // ISO 8601 — defaults to datePublished
   imageUrl?: string;
+  /**
+   * Speakable cssSelector list. Pass for long-form editorial pages where a
+   * voice assistant should read the TL;DR / lede / per-story heading prose
+   * but NOT the nav links or opt-in CTA. See SpeakableSelectors docs.
+   */
+  speakableSelectors?: SpeakableSelectors;
 };
 
 function buildArticleJson(input: ArticleSchemaInput): string {
@@ -286,6 +403,9 @@ function buildArticleJson(input: ArticleSchemaInput): string {
       "@id": input.url,
     },
     ...(input.imageUrl ? { image: input.imageUrl } : {}),
+    ...(input.speakableSelectors
+      ? { speakable: speakableSpec(input.speakableSelectors) }
+      : {}),
   });
 }
 
@@ -410,9 +530,34 @@ export function PersonJsonLd() {
  * HTML — Google penalizes Rich Results when schema diverges from rendered
  * text, so the source of truth lives in src/lib/content/faqs.ts and both
  * the page and this component import from there.
+ *
+ * Optional `speakableSelectors`: pass a cssSelector list for surfaces where
+ * every answer is always-visible (e.g. /faq) so voice engines opt in. The
+ * accordion variant on /playbook-sales should NOT pass this — hidden text
+ * is invisible to voice and creates schema↔DOM drift.
  */
-export function FaqPageJsonLd({ items }: { items: ReadonlyArray<FaqItem> }) {
-  return <JsonLdScript json={buildFaqPageJson(items)} />;
+export function FaqPageJsonLd({
+  items,
+  speakableSelectors,
+}: {
+  items: ReadonlyArray<FaqItem>;
+  speakableSelectors?: SpeakableSelectors;
+}) {
+  return <JsonLdScript json={buildFaqPageJson(items, speakableSelectors)} />;
+}
+
+/**
+ * HowTo schema for the seven-step Playbook. Render on `/playbook-sales`.
+ *
+ * Mounted alongside `PlaybookProductJsonLd` (the priced Offer) so a single
+ * page emits two complementary Rich-Result candidacies: HowTo (the seven
+ * steps, voice-answer eligible via the Speakable child) AND Product (the
+ * priced offer that powers AI Overviews price-pull). Both fields are drawn
+ * from `PLAYBOOK_STEPS` and the canonical `BASE` constant — no per-render
+ * allocation, no drift surface.
+ */
+export function PlaybookHowToJsonLd() {
+  return <JsonLdScript json={PLAYBOOK_HOWTO_JSON} />;
 }
 
 /**

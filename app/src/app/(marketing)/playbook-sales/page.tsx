@@ -16,6 +16,7 @@ import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { VslBlock } from "@/components/blocks/vsl-block";
 import {
   PlaybookProductJsonLd,
+  PlaybookHowToJsonLd,
   FaqPageJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
@@ -94,6 +95,11 @@ export default function PlaybookSalesPage() {
           BreadcrumbList earns the SERP sitelink and helps Google render
           the (Home › The Playbook) crumb under the page title. */}
       <PlaybookProductJsonLd />
+      {/* HowTo with 7 named, numbered HowToSteps for the Playbook. Schema
+          mirrors PLAYBOOK_STEPS (single source of truth shared with
+          /llms-full.txt). Voice-engine eligibility via Speakable cssSelector
+          pointing at the `.aeo-playbook-howto` block below. */}
+      <PlaybookHowToJsonLd />
       <FaqPageJsonLd items={PLAYBOOK_SALES_FAQS} />
       <BreadcrumbListJsonLd
         trail={[
@@ -209,8 +215,15 @@ export default function PlaybookSalesPage() {
               </p>
             </div>
 
-            {/* Strategy — 7 steps named in order, one sentence each */}
-            <div>
+            {/* Strategy — 7 steps named in order, one sentence each.
+                Class `aeo-playbook-howto` is the Speakable cssSelector that
+                PlaybookHowToJsonLd (above, in the HowTo schema block) points
+                at — voice engines speak this paragraph as the canonical
+                seven-step answer for "how to get my first paying SaaS
+                customer." Must stay on this div; renaming or removing it
+                breaks the schema↔DOM contract and demotes the HowTo Rich
+                Result. */}
+            <div className="aeo-playbook-howto">
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 The Strategy
               </p>

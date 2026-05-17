@@ -119,8 +119,14 @@ export default async function DiagnosticSqueezePage({
           </p>
         </section>
 
-        {/* What the diagnostic actually checks. Reduces "magic AI box" suspicion. */}
-        <section className="mb-10">
+        {/* What the diagnostic actually checks. Reduces "magic AI box"
+            suspicion. Class `aeo-diagnostic-howto` is the Speakable cssSelector
+            that DiagnosticJsonLd's HowTo block points at — voice assistants
+            speak the three diagnoses (Wrong Person / Weak Offer / Weak Belief)
+            as the canonical answer for "how does the Unlock SaaS diagnostic
+            work." Must stay on this section; renaming breaks the schema↔DOM
+            contract and demotes voice-answer eligibility. */}
+        <section className="aeo-diagnostic-howto mb-10">
           <h2 className="text-lg font-bold mb-3">What I am reading on your page</h2>
           <ul className="space-y-3 text-sm text-muted-foreground leading-relaxed">
             <li>

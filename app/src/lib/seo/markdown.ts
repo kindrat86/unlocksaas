@@ -56,6 +56,7 @@ import {
   type Comparison,
   getComparisonBySlug,
 } from "@/lib/comparisons";
+import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -331,13 +332,9 @@ ${AUDIENCE_LINE}
 
 ## The seven steps
 
-1. **Pin one real customer.** Name one specific human at one specific company in one specific role. The Playbook pushes back on persona-language until the answer is a person.
-2. **Write one real offer.** One sentence, naming the person and the result. The engine surfaces vague verbs ("help," "support," "enable") and forces specificity.
-3. **Build one real proof.** The smallest artifact that proves the offer is real. A loom video, a screenshot, a one-page doc — whichever is the lowest-effort thing that proves the result is possible.
-4. **Send one real message.** The Playbook generates the outreach copy inside the tool and tracks the send. No copy-pasting out to a separate CRM tab.
-5. **Track the response.** The same dashboard surfaces replies, calls, and the Stripe webhook — so the founder watches the same thing that determines the guarantee.
-6. **Iterate or escalate.** If 20 logged actions produce no Stripe ping, the engine has a deterministic playbook for offer revision or audience revision — based on which signal arrived (silence vs. praise without payment).
-7. **Verify the cycle.** Stripe webhook confirms the first paying customer. The Verified Builders directory updates the moment the cycle closes.
+${PLAYBOOK_STEPS.map(
+  (s, i) => `${i + 1}. **${s.name}.** ${s.text}`,
+).join("\n")}
 
 ## What the Playbook is not
 
