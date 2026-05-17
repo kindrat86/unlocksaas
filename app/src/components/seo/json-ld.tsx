@@ -17,30 +17,29 @@
  * Vercel React Best Practices guide.
  */
 
-const BASE = "https://unlocksaas.com";
+import {
+  BASE_URL,
+  ID,
+  ORGANIZATION,
+  ORGANIZATION_SAME_AS,
+  KNOWS_ABOUT,
+  PRIMARY_AUDIENCE_TYPE,
+} from "@/lib/seo/entity";
+
+// Local alias so the schema literals below keep reading like the original
+// inline-constant form. BASE_URL is the canonical export from entity.ts.
+const BASE = BASE_URL;
 
 /**
  * Off-platform entity anchors shared by Organization.sameAs and Person.sameAs.
  *
- * LLMs (Perplexity, ChatGPT, Claude, Gemini) and Google's Knowledge Graph
- * walk `sameAs` to link the UnlockSaaS entity to its representation on other
- * indexed sites. Empty list = isolated entity = ~zero topical authority lift.
- *
- * **Activation rule** (Brunson Hard-Rule: no fabricated identity):
- *   Only append a URL once the linked profile actually exists, is public,
- *   and credibly identifies Maryan / Unlock SaaS. Do not seed placeholders.
- *   strategy/google-strategy.md §B.3 (off-platform signal loop) is the
- *   publishing schedule that fills this list.
- *
- * Suggested order to fill, by GEO/AIO impact per effort:
- *   1. Twitter/X profile        2. Indie Hackers profile
- *   3. LinkedIn personal        4. GitHub
- *   5. YouTube channel          6. Crunchbase company page
- *   7. Wikidata Q-number
+ * Sourced from lib/seo/entity.ts which reads NEXT_PUBLIC_UNLOCKSAAS_*_URL env
+ * vars at module load. Empty in a fresh checkout (no fabricated identity);
+ * the array lights up the moment an operator drops a verified profile URL
+ * into Vercel env. See entity.ts header for the activation rule and the
+ * complete list of recognized env keys.
  */
-const SAME_AS: readonly string[] = [
-  // Activation slot. See activation rule above.
-];
+const SAME_AS = ORGANIZATION_SAME_AS;
 
 // --- Pre-built JSON strings (module-level; serialized once at import time) ---
 
@@ -52,28 +51,41 @@ const SAME_AS: readonly string[] = [
 const ORGANIZATION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Unlock SaaS",
-  legalName: "Unlock SaaS",
-  url: BASE,
-  logo: `${BASE}/icon.svg`,
-  description:
-    "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+  // @id anchor: lets the Person, WebSite, Product, and Service blocks
+  // reference this Organization by @id rather than inlining a duplicate
+  // Organization object. Canonical Schema.org pattern for connected
+  // entity graphs; Google Knowledge Graph and AI Overview pipelines
+  // resolve them as a single node.
+  "@id": ID.organization,
+  name: ORGANIZATION.name,
+  legalName: ORGANIZATION.legalName,
+  url: ORGANIZATION.url,
+  logo: ORGANIZATION.logo,
+  description: ORGANIZATION.description,
+  // Audit v2 (Entity / Topical Authority) — fields added:
+  //   slogan       Brunson promise; LLMs quote slogans verbatim in answers.
+  //   foundingDate strategy-lock date; lets retrieval engines reason recency.
+  //   areaServed   Worldwide; honest signal for digital-only product reach.
+  //   knowsAbout   Topical-authority anchors (12 entries in entity.ts).
+  slogan: ORGANIZATION.slogan,
+  foundingDate: ORGANIZATION.foundingDate,
+  areaServed: ORGANIZATION.areaServed,
+  email: ORGANIZATION.email,
   // Locale anchor. Mirrors the en-US signal shipped in the WebSite block and
   // the layout-level hreflang alternates. LLMs that build entity cards from
   // JSON-LD read `inLanguage` to decide which language audience this
   // organization serves; Google reads it as a corroborating International
   // SEO signal alongside hreflang.
   inLanguage: "en-US",
-  founder: {
-    "@type": "Person",
-    name: "Maryan",
-    email: "maryan@unlocksaas.com",
-    url: `${BASE}/about`,
-  },
+  knowsAbout: KNOWS_ABOUT,
+  // founder is linked by @id, not inlined. This is the canonical entity-
+  // graph pattern: the Person block stands alone and is referenced from
+  // wherever needed. Cuts duplicated facts and lets crawlers de-dupe.
+  founder: { "@id": ID.person },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer support",
-    email: "maryan@unlocksaas.com",
+    email: ORGANIZATION.email,
     url: `${BASE}/contact`,
     availableLanguage: ["en"],
   },
@@ -83,29 +95,33 @@ const ORGANIZATION_JSON = JSON.stringify({
 const WEBSITE_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Unlock SaaS",
+  "@id": ID.website,
+  name: ORGANIZATION.name,
   url: BASE,
   inLanguage: "en-US",
+  // publisher cross-link makes WebSite a child of Organization in the
+  // entity graph rather than a disconnected sibling. Article and HowTo
+  // nodes elsewhere inherit publisher attribution through this edge.
+  publisher: { "@id": ID.organization },
 });
 
 const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": ID.diagnosticService,
   name: "Free Launch Diagnostic",
   description:
     "Paste your live product URL. In 90 seconds we label what is actually wrong with one of three diagnoses: Wrong Person, Weak Offer, or Weak Belief — and hand you the door that fixes it.",
   inLanguage: "en-US",
   availableLanguage: ["en-US"],
-  provider: {
-    "@type": "Organization",
-    name: "Unlock SaaS",
-    url: BASE,
-  },
+  // provider linked by @id — the canonical Organization above carries the
+  // operational facts (founder, contact, sameAs); duplicating them here
+  // would risk drift.
+  provider: { "@id": ID.organization },
   serviceType: "Pre-launch SaaS diagnostic",
   audience: {
     "@type": "Audience",
-    audienceType:
-      "Post-launch pre-revenue non-engineer founders using AI tools",
+    audienceType: PRIMARY_AUDIENCE_TYPE,
   },
   offers: {
     "@type": "Offer",
@@ -119,6 +135,7 @@ const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
 const DIAGNOSTIC_HOWTO_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "HowTo",
+  "@id": ID.diagnosticHowTo,
   name: "How to get a free diagnosis of your stuck SaaS",
   description:
     "A three-step process that labels what is actually broken on your already-shipped product page.",
@@ -153,21 +170,24 @@ const DIAGNOSTIC_HOWTO_JSON = JSON.stringify({
 const MACHINE_PRODUCT_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": ["Product", "SoftwareApplication"],
+  "@id": ID.product,
   name: "The Machine — Unlock SaaS",
   description:
     "A seven-step machine that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay. Built by a non-engineer for non-engineer founders shipping with AI tools.",
-  brand: {
-    "@type": "Brand",
-    name: "Unlock SaaS",
-  },
+  // brand, manufacturer, and seller all link back to the canonical
+  // Organization by @id. Three cross-references on the same Product node
+  // is the strongest entity signal an AI Overview pipeline gets when
+  // deciding "which company makes this product" — every traversal path
+  // resolves to the same #organization.
+  brand: { "@id": ID.organization },
+  manufacturer: { "@id": ID.organization },
   url: `${BASE}/machine-sales`,
   inLanguage: "en-US",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   audience: {
     "@type": "Audience",
-    audienceType:
-      "Post-launch pre-revenue non-engineer founders using AI tools",
+    audienceType: PRIMARY_AUDIENCE_TYPE,
   },
   offers: {
     "@type": "Offer",
@@ -175,10 +195,7 @@ const MACHINE_PRODUCT_JSON = JSON.stringify({
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: `${BASE}/machine-sales`,
-    seller: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-    },
+    seller: { "@id": ID.organization },
   },
   // aggregateRating intentionally omitted — see file header.
 });

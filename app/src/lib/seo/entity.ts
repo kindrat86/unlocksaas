@@ -169,7 +169,11 @@ export const ORGANIZATION = {
   name: "Unlock SaaS",
   legalName: "Unlock SaaS",
   url: BASE_URL,
-  logo: `${BASE_URL}/icon`, // Next.js dynamic icon at app/icon.tsx serves PNG at /icon
+  // Logo asset shipped at app/icon.svg (file-based metadata, stable URL).
+  // SVG is accepted by Google for Organization.logo since 2023 and by all
+  // major AI Overview / Knowledge Graph pipelines. Apple home-screen 180×180
+  // PNG is generated separately at app/apple-icon.tsx via next/og.
+  logo: `${BASE_URL}/icon.svg`,
   email: "maryan@unlocksaas.com",
   slogan: "Your first paying customer in 60 days, or you do not pay.",
   foundingDate: "2026-05-17",
