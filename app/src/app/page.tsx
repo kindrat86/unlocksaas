@@ -30,46 +30,92 @@ export default function FunnelHub() {
   return (
     <div className="min-h-screen flex flex-col">
       <AbExposureBeacon />
-      {/* ---------------- HERO ---------------- */}
-      <header className="py-20 px-6 text-center max-w-3xl mx-auto">
-        <p className="text-sm uppercase tracking-widest text-muted-foreground mb-4">
-          Unlock SaaS
-        </p>
-        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-          The problem stuck founders have is not the product. It is that an
-          entire industry profits from teaching them to keep building when
-          the only thing left is to sell.
-        </h1>
-        <p className="text-lg text-muted-foreground mb-8">
-          Marketer, non-engineer, built a dozen AI products that nobody paid
-          for. Then I figured out why. — Maryan
-        </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg">
-            <Link href="/diagnostic">Get Your Free Diagnosis</Link>
-          </Button>
-          <Button asChild variant="secondary" size="lg">
-            <Link href="/starter">Start the Machine for $1</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link href="/machine-sales">The Full Machine — $49/mo</Link>
-          </Button>
-        </div>
+      {/* ---------------- HERO (ClickFunnels 1.0 visual treatment) ----------------
+          Marco-avatar shoppers recognize Brunson's funnel pages by sight: yellow
+          attention bar, purple + orange palette, headline with highlighted
+          punch-phrases, big blocky orange CTA. Restyle only — copy and CTA
+          architecture are locked per workbook 04. */}
+      <div className="bg-yellow-300 text-black text-center py-2 px-4 text-xs sm:text-sm font-bold uppercase tracking-wider border-b-2 border-yellow-500">
+        Attention: Pre-revenue founders building with AI
+      </div>
 
-        {/* Reverse-squeeze bridge — for the cold visitor who is not yet
-            ready to type an email or pay a dollar. DCS Secret 14 reverse
-            variant. Value-first surface; opt-in is on the page itself. */}
-        <p className="mt-6 text-sm text-muted-foreground">
-          Or{" "}
-          <Link
-            href="/parables"
-            className="underline underline-offset-4 hover:text-foreground"
+      <header className="bg-gradient-to-b from-purple-50 via-purple-50/40 to-white py-16 sm:py-20 px-6 text-center">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs sm:text-sm uppercase tracking-[0.25em] font-bold text-purple-700 mb-5">
+            Unlock SaaS Presents
+          </p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-gray-900 mb-6 tracking-tight">
+            The problem stuck founders have is{" "}
+            <span className="bg-yellow-300 px-1.5 py-0.5 box-decoration-clone">
+              not the product.
+            </span>{" "}
+            It is that an entire industry profits from teaching them to{" "}
+            <span className="text-purple-700">keep building</span>{" "}
+            when the only thing left is{" "}
+            <span className="bg-yellow-300 px-1.5 py-0.5 box-decoration-clone">
+              to sell.
+            </span>
+          </h1>
+          <p className="text-base sm:text-lg text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Marketer, non-engineer, built a dozen AI products that nobody paid
+            for. Then I figured out why.{" "}
+            <span className="font-semibold text-gray-900">— Maryan</span>
+          </p>
+
+          <div
+            className="text-3xl text-orange-500 mb-3 animate-bounce select-none"
+            aria-hidden="true"
           >
-            read the five parables first
-          </Link>
-          {" "}— free, no email required.
-        </p>
+            ↓
+          </div>
+
+          {/* Primary CTA — classic CF orange blocky button with bottom-border depth */}
+          <div className="flex flex-col items-center gap-3 mb-8">
+            <Button
+              asChild
+              className="h-auto rounded-md bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/30 px-8 py-5 text-lg sm:text-xl font-extrabold uppercase tracking-wide w-full sm:w-auto sm:min-w-[420px] border-b-4 border-orange-700 hover:border-orange-800 transition-colors"
+            >
+              <Link href="/diagnostic">Yes! Get My Free Diagnosis →</Link>
+            </Button>
+            <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">
+              Free · 2 minutes · No card required
+            </p>
+          </div>
+
+          {/* Secondary CTAs — restrained, purple-trimmed for CF visual coherence */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-xl mx-auto">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="bg-white border-2 border-purple-700 text-purple-700 hover:bg-purple-50 hover:text-purple-900 font-bold"
+            >
+              <Link href="/starter">Start the Machine for $1</Link>
+            </Button>
+            <Button
+              asChild
+              variant="ghost"
+              size="lg"
+              className="text-purple-700 hover:bg-purple-50 hover:text-purple-900 font-semibold"
+            >
+              <Link href="/machine-sales">The Full Machine — $49/mo</Link>
+            </Button>
+          </div>
+
+          {/* Reverse-squeeze bridge — DCS Secret 14 reverse variant. Value-first
+              surface for the cold visitor not yet ready to opt in. */}
+          <p className="mt-10 text-sm text-gray-600">
+            Or{" "}
+            <Link
+              href="/parables"
+              className="font-bold text-purple-700 underline underline-offset-4 decoration-2 hover:text-purple-900"
+            >
+              read the five parables first
+            </Link>
+            {" "}— free, no email required.
+          </p>
+        </div>
       </header>
 
       {/* Building Block #20 — Social Proof Bar (honest variant, no fake counts). */}
