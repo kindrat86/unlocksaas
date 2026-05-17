@@ -755,3 +755,31 @@ Reversed the skip. PLF runs ONCE at product birth as the founding-cohort launch.
 
 ### Blockers
 None for the code. The founding cohort is one button push away from being live once: (1) founder records PLV1/PLV2/PLV3 per `strategy/founding-plv-scripts.md`, (2) founder sets the four env vars (cart open/close + three playback IDs), (3) `CRON_SECRET` is already documented for the soap-opera cron — same secret works.
+
+## Autonomous Deploy of Founding-Cohort PLF
+**Status: LIVE on production**
+
+After the founder's "deploy everything autonomously" instruction:
+
+1. Hardened `/api/unsubscribe` to tolerate missing `founding_waitlist` table (non-fatal warning instead of 500), so the deploy was safe to ship before the migration was applied.
+2. Committed PLF deliverables on `claude/peaceful-gates-9ae377` (commit `ea99ec2`).
+3. Rebased onto `origin/main` (which had advanced through 6 parallel audit-100 PRs from sister sessions). Three additive conflicts resolved cleanly: `.env.local.example` (both VSL and Founding env blocks kept), `build-log.md` (both audit passes interleaved), `strategy/state.json` (all 4 revision_history entries preserved). JSON validated post-resolve.
+4. Pushed to `claude/peaceful-gates-9ae377` and fast-forwarded `origin/main` via refspec push (`git push origin claude/peaceful-gates-9ae377:main`). Worktrees can't checkout `main`; refspec is the working pattern.
+5. Vercel git integration auto-triggered production build `dpl_EjA2CGMGAZ4Jam4rcdsxM371NYin`. **First build FAILED** at `next build` typecheck step: `Argument of type "founding_waitlist" is not assignable` — the generated `database.types.ts` doesn't yet know about migration 20260518000002 tables.
+6. Hot-fixed by casting `(supabase as unknown as { from: (t: string) => any })` at all 11 founding-table call sites across 6 files. Same pattern the codebase already uses for `billing_payments`. Committed (`4d47442`) and pushed to main.
+7. Second production build `dpl_unlocksaas-izck7eavv` succeeded in 38s. ● Ready.
+
+**Live verification on https://unlocksaas.com:**
+- `GET /founding` → HTTP 200, 32.7 KB. Renders "50 Founding Verified Builders" hero, cohort meter showing "Waitlist open. Cart-open date to be announced." (correct pre-launch state since FOUNDING_CART_OPEN_AT env is intentionally unset), waitlist form with "Hold a founding seat" CTA, the three PLV placeholder blocks pointing at their respective env vars, the stack + founding bonuses + 28.9x value math, the 60-day guarantee restated, the AGAINST polarity line.
+- `POST /api/founding/waitlist` with `{"email":"not-an-email"}` → HTTP 400 `{"error":"invalid_email"}`. Email validation working.
+- `GET /api/cron/founding` without bearer → HTTP 401. Cron auth working (same `CRON_SECRET` already pushed for soap-opera + seinfeld).
+
+**What's live but no-op until activated:**
+- Cron schedule `0 16 * * *` UTC for `/api/cron/founding`. Will tick daily but find 0 due rows until anyone subscribes via the waitlist + the migration is applied so the table exists.
+- Stripe webhook `recordFoundingSeat()`. Will pass through silently on any session whose `metadata.attribution_from !== 'founding'`. The first founding-session can't be created until the cart-open env vars are set and the founding migration is applied.
+
+**Remaining founder action items (none block the live deploy):**
+1. **Apply Supabase migration `20260518000002_founding_cohort.sql`** to project `iihtadgnpheuwkcuumhw`. Requires Supabase MCP confirmation. Until applied, the `/founding` waitlist form will POST 500s (table doesn't exist) but the page itself renders cleanly. Approve the MCP migration or run via `supabase db push` from the CLI.
+2. Record PLV1/PLV2/PLV3 per `strategy/founding-plv-scripts.md`. Upload to Mux/Cloudflare Stream. Set `FOUNDING_PLV{1,2,3}_PLAYBACK` env vars.
+3. Decide on cart-open date. Set `FOUNDING_CART_OPEN_AT` and `FOUNDING_CART_CLOSE_AT` env vars (ISO 8601). Recommendation: cart open 14 days after PLE1 starts sending so engagement signal accumulates.
+4. After migration is applied, regenerate `database.types.ts` via Supabase MCP `generate_typescript_types` and remove the per-call casts (small refactor pass).
