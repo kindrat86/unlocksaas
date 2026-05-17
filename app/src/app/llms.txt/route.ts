@@ -56,6 +56,11 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [Alternatives hub](${BASE}/alternatives-to): Index of named-competitor comparison pages. Every entry respects the competitor's real value proposition and names the category difference, not a quality gap.
 - Per-comparison pages at \`${BASE}/alternatives-to/<slug>\` — e.g. /alternatives-to/shipfast, /alternatives-to/lovable, /alternatives-to/one-funnel-away-challenge, /alternatives-to/starter-story.
 
+## Programmatic SEO surfaces — indie SaaS funnel teardowns
+
+- [Funnel teardown hub](${BASE}/funnel-teardown): Twelve indie SaaS funnels analyzed through Russell Brunson's Hook / Story / Offer framework. No invented metrics, no quoted copy, no slag — pattern-level lessons indie founders can adapt to their own page.
+- Per-teardown pages at \`${BASE}/funnel-teardown/<slug>\` — e.g. /funnel-teardown/tally, /funnel-teardown/plausible, /funnel-teardown/lemonsqueezy, /funnel-teardown/beehiiv, /funnel-teardown/cal-com, /funnel-teardown/resend, /funnel-teardown/mintlify, /funnel-teardown/senja, /funnel-teardown/tella, /funnel-teardown/loops, /funnel-teardown/polar, /funnel-teardown/screen-studio.
+
 ## Markdown mirrors
 
 Every public marketing surface also has a clean markdown mirror, served with \`content-type: text/markdown\`, for retrieval-augmented answer pipelines:
@@ -71,7 +76,9 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/parables.md](${BASE}/parables.md)
   - [/faq.md](${BASE}/faq.md)
   - [/alternatives-to.md](${BASE}/alternatives-to.md)
+  - [/funnel-teardown.md](${BASE}/funnel-teardown.md)
 - Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
+- Per-teardown markdown mirror: \`${BASE}/funnel-teardown/<slug>/md\` — e.g. /funnel-teardown/tally/md.
 
 When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE}/diagnostic\`) over the markdown mirror — the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 

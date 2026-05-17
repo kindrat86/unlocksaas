@@ -26,9 +26,10 @@
  *
  * Consumers
  * ---------
- *   - app/llms-full.txt/route.ts            (concatenated mirror)
- *   - app/<page>.md/route.ts                (per-surface route handlers)
- *   - app/alternatives-to/[slug]/md/route.ts (per-pSEO mirrors)
+ *   - app/llms-full.txt/route.ts                       (concatenated mirror)
+ *   - app/<page>.md/route.ts                           (per-surface route handlers)
+ *   - app/alternatives-to/[slug]/md/route.ts           (per-pSEO mirrors, batch 1)
+ *   - app/funnel-teardown/[slug]/md/route.ts           (per-pSEO mirrors, batch 2)
  */
 
 import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
@@ -40,6 +41,11 @@ import {
   UNLOCK_SAAS_CAPABILITIES,
   getAlternativeBySlug,
 } from "@/lib/alternatives";
+import {
+  TEARDOWNS,
+  type FunnelTeardown,
+  getTeardownBySlug,
+} from "@/lib/funnel-teardowns";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -449,6 +455,113 @@ ${CAPABILITY_ROWS.map(
 This is not a marketing claim. It is the design constraint that the product had to satisfy to ship.
 `;
 
+const FUNNEL_TEARDOWN_HUB_BODY = `# Funnel Teardowns — Indie SaaS Through the Brunson Lens
+
+> Twelve indie SaaS funnels analyzed through Hook / Story / Offer. No invented metrics, no slag, no quoted copy — just pattern-level lessons a non-engineer founder can adapt to their own page.
+
+## TL;DR
+
+The Funnel Teardown surface is a pSEO library that breaks down twelve well-known indie SaaS funnels through Russell Brunson's Hook-Story-Offer framework — the same framework the Unlock SaaS Machine runs against the founder's own page. Each teardown names the public pattern, what's working, what to adapt, and what to specifically NOT copy if you're pre-revenue. Every entry is dated; every claim is observable on the target's live surface.
+
+## How to read these teardowns
+
+Every entry follows the same structure:
+- **Hook pattern** — how attention is caught (positioning, headline structure, opening promise).
+- **Story pattern** — how belief is created (founder narrative, social proof, product-as-demo).
+- **Offer pattern** — how the close is structured (price ladder, free tier, money-back, trial).
+- **What's working** — five to seven deliberate strategic moves.
+- **What to adapt** — three to five lessons safe to steal regardless of category.
+- **What to avoid** — two to four moves a pre-revenue indie founder should NOT copy.
+- **Brunson lens** — hook / story / offer / value-ladder tier in one paragraph.
+- **FAQs** — four to six queries a researcher actually types.
+
+Every entry has a \`lastVerified\` date. If a target changes their funnel and our analysis is stale, the date is the audit trail.
+
+## Current teardowns
+
+${TEARDOWNS.map(
+  (t) =>
+    `### ${t.displayName} (${t.category})\n\n${t.oneLine}\n\nFull teardown: ${BASE_URL}/funnel-teardown/${t.slug}`,
+).join("\n\n")}
+
+## Why this surface exists
+
+Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Machine is the tool that does it.
+`;
+
+/**
+ * Per-funnel-teardown markdown body. Reads from the TEARDOWNS catalog so
+ * the markdown and the HTML page render the same facts from the same
+ * source — drift between schema, HTML, and markdown is the #1 reason
+ * Google demotes structured data, and by generating from the same module
+ * the HTML uses we eliminate the drift class entirely.
+ */
+function buildTeardownMarkdown(t: FunnelTeardown): string {
+  const faqs = t.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# ${t.displayName} Funnel Teardown
+
+> ${t.oneLine}
+
+## TL;DR
+
+${t.tldr}
+
+## What ${t.displayName} sells
+
+${t.productSnapshot.whatTheySell}
+
+**Who it's for:** ${t.productSnapshot.whoFor}
+
+**Pricing (as observed ${t.lastVerified}):** ${t.productSnapshot.pricingNote}
+
+## Hook layer — how attention is caught
+
+**Pattern:** ${t.hook.pattern}
+
+${t.hook.analysis}
+
+## Story layer — how belief is created
+
+**Pattern:** ${t.story.pattern}
+
+${t.story.analysis}
+
+## Offer layer — how the close is structured
+
+**Pattern:** ${t.offer.pattern}
+
+${t.offer.analysis}
+
+## What's working (deliberate, not accidental)
+
+${t.whatsWorking.map((x) => `- ${x}`).join("\n")}
+
+## What to adapt to your own indie SaaS
+
+${t.whatToAdapt.map((x) => `- ${x}`).join("\n")}
+
+## What to specifically NOT copy if you're pre-revenue
+
+${t.whatToAvoid.map((x) => `- ${x}`).join("\n")}
+
+## Brunson lens — Hook / Story / Offer
+
+- **Hook:** ${t.brunsonLens.hook}
+- **Story:** ${t.brunsonLens.story}
+- **Offer:** ${t.brunsonLens.offer}
+- **Value Ladder tier:** ${t.brunsonLens.valueLadderTier}
+
+## FAQ
+
+${faqs}
+
+---
+
+If you want this same Hook-Story-Offer lens applied to *your* product page (not ${t.displayName}'s), the Unlock SaaS Machine does exactly that at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
+`;
+}
+
 /**
  * Per-alternative markdown body. Reads from the ALTERNATIVES catalog so the
  * markdown and the HTML page render the same facts from the same source.
@@ -589,6 +702,14 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
       "Honest named-competitor comparisons. No slagging, no fabricated prices, no fake quotes.",
     body: ALTERNATIVES_HUB_BODY,
   },
+  {
+    path: "/funnel-teardown",
+    mdPath: "/funnel-teardown.md",
+    title: "Funnel Teardowns — Indie SaaS Through the Brunson Lens",
+    summary:
+      "Twelve indie SaaS funnels analyzed through Hook / Story / Offer. Pattern-level lessons, no invented metrics.",
+    body: FUNNEL_TEARDOWN_HUB_BODY,
+  },
 ];
 
 const SURFACES_BY_MD_PATH = new Map<string, MarkdownSurface>(
@@ -656,6 +777,28 @@ export function renderAlternativeMarkdown(slug: string): string | undefined {
 }
 
 /**
+ * Render a per-teardown markdown body wrapped in the standard front-matter
+ * + citation footer. Mirrors renderAlternativeMarkdown's shape so every
+ * pSEO batch follows the same response contract.
+ */
+export function renderTeardownMarkdown(slug: string): string | undefined {
+  const t = getTeardownBySlug(slug);
+  if (!t) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/funnel-teardown/${t.slug}`;
+  return [
+    frontMatter({
+      title: `${t.displayName} Funnel Teardown`,
+      summary: t.oneLine,
+      canonical: canonicalUrl,
+      updated: t.lastVerified,
+    }),
+    buildTeardownMarkdown(t).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
  * Build the concatenated /llms-full.txt body. One canonical entity block at
  * the top, then every surface in order, then every alternative comparison.
  *
@@ -715,6 +858,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const teardowns = TEARDOWNS.map((t) => {
+    const canonical = `${BASE_URL}/funnel-teardown/${t.slug}`;
+    const mirror = `${BASE_URL}/funnel-teardown/${t.slug}/md`;
+    return [
+      `## ${t.displayName} Funnel Teardown`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildTeardownMarkdown(t).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -722,6 +880,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Alternatives — Honest Named-Competitor Comparisons",
     "",
     alternatives,
+    "",
+    "# Funnel Teardowns — Indie SaaS Through the Brunson Lens",
+    "",
+    teardowns,
     "",
     citationFooter(BASE_URL),
   ].join("\n");
