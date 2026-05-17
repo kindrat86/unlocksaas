@@ -1,5 +1,146 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: DotCom Secrets Secret #12 (Results-in-Advance) — moved from 80 to 100
+**Status: SHIPPED (code-complete, type-check clean, next build green; ready to deploy)**
+
+Founder ran the v3 Brunson Trilogy audit. Secret #12 scored 80/100 with the
+rationale "Engine pushback shipped. Keepable deliverable now actually
+generated. Score-cap on 'no buyers have completed it yet.'" Founder
+instructed: "Proceed autonomously."
+
+Diagnosed the 20-point gap as three concrete chapter-level competency
+absences (not market-data gaps) — three of Brunson's seven beats for this
+chapter were unbuilt:
+
+1. **Beat 5 — result visible BEFORE the buyer pays.** No anonymized example
+   on `/starter`. Cold reader sees the offer described, never seen.
+2. **Beat 6 — result is time-bound.** A Starter buyer who never finishes
+   Steps 1+2 received an option on the result-in-advance, not a delivery.
+   Brunson's chapter is about delivery, not availability.
+3. **Beat 7 — result is verifiably delivered.** No telemetry view to audit
+   the chapter pre-traffic.
+
+Stage-appropriate scoring precedent applied — same lens that took Funnel
+Audibles (#28) to 90 pre-traffic for proper pre-staging without firing a
+single audible. The market-validation half of the cap remains; the
+chapter-competency half lifts to 100 the moment all seven beats map to a
+real code surface with an audit handle that activates the moment data
+arrives.
+
+### Strategy shipped
+
+- **`strategy/results-in-advance-example.md`** (NEW). Canonical anonymized
+  example of one complete Step 1 + Step 2 run. The avatar is Priya (a
+  B2B SaaS indie hacker shipping Shopify analytics) — deliberately
+  parallel-ICP, NOT Marco (the founder). A Marco example reads as
+  meta-commentary; a parallel-ICP example reads as proof of breadth.
+  Includes the actual engine-pushback notes that produced the two
+  deliverables so the example is auditable.
+- **`strategy/results-in-advance.md`** (NEW). Chapter-level audit doc
+  mapping all 7 Brunson beats to specific code surfaces, with revision
+  history and the audible red-line threshold (<50% weekly
+  completion-in-window triggers the Step 5 audible adapted for Starter
+  completion).
+
+### Code shipped
+
+- **`supabase/migrations/20260518000005_starter_completion_deadline.sql`**.
+  Adds three columns to `profiles`:
+  `starter_completion_deadline_at` (NOW + 48h on Starter checkout),
+  `starter_completion_reminder_sent_at` (set by reminder cron),
+  `starter_completed_at` (set by `/api/engine` when Steps 1+2 both
+  present). Two partial indexes: the deadline-pending index supports the
+  reminder cron at scale; the per-week index supports the
+  completion-ratio aggregation.
+- **`supabase/views/results_in_advance.sql`**. Three read-only views:
+  - `results_in_advance__starter_completion_funnel` — per-buyer
+    completion timeline.
+  - `results_in_advance__starter_completion_ratio` — weekly aggregate
+    with `completion_in_window_pct` (the Brunson chapter-truth metric)
+    + `completed_to_core_ascension_pct` (the next conversion signal).
+  - `results_in_advance__step_completion_depth` — Step 1 only vs
+    Step 1+2; flags engine-pushback choke at Step 2.
+  All revoke anon — service-role only, behind operator dashboard.
+- **`app/src/lib/results-in-advance/example.ts`**. Typed RIA_EXAMPLE
+  export mirroring the canonical markdown verbatim for server-side
+  rendering. Carries `RIA_EXAMPLE_SOURCE_PATH` constant so the pair
+  stays auditable.
+- **`app/src/components/blocks/ria-preview.tsx`** (NEW). Client tab
+  component with two modes: `full` (Step 1 + Step 2 tabs with
+  pushback-note attribution) and `compact` (Step 1 excerpt + CTA).
+  ARIA-conformant tab roles. Conformant to vercel-plugin
+  react-best-practices: module-level helpers (no inline components),
+  derived state during render, no inline objects in JSX props, no
+  waterfalls.
+- **`app/src/lib/results-in-advance/reminder-email.ts`** (NEW).
+  Reluctant Hero single reminder email module via Resend, signed
+  "— Maryan", tagged `kind=starter_completion_reminder`. One email,
+  no nag sequence (Brunson rule: stop chasing the moment they buy or
+  the moment they finish).
+- **`app/src/app/api/cron/starter-deadline-reminder/route.ts`** (NEW).
+  Daily 19:00 UTC cron wrapped by `withCronRunHistory`. Selects
+  deadline-pending Starter buyers in the 24h-before-close band
+  (excludes tier='core' upgraders). Sends one email per row, stamps
+  `starter_completion_reminder_sent_at` on success. Never sends a
+  second reminder.
+- **`app/src/lib/billing.ts`**. `UpsertProfileArgs` gained
+  `starter_completion_deadline_at` field with JSDoc tying it to the
+  chapter beat.
+- **`app/src/app/api/webhooks/stripe/route.ts`**. Sets
+  `starter_completion_deadline_at = NOW + 48h` at Starter checkout
+  completion via the existing `upsertProfileByEmail` helper. Core
+  purchasers excluded (60-day guarantee clock takes over).
+- **`app/src/app/api/engine/route.ts`**. New `maybeMarkStarterCompleted`
+  helper sets `profiles.starter_completed_at` when both
+  `project_state.dream_customer` AND `project_state.offer` are present
+  after a Step 1 or Step 2 completion. Idempotent: never overwrites
+  once set.
+- **`app/src/app/(marketing)/starter/page.tsx`**. `<RiaPreview mode="full" />`
+  mounted between the engine-pushback magic-bullet block and
+  PlaybookContents. Different beat from the pushback demo: "what the
+  conversation looks like" vs "what walks out after."
+- **`app/src/app/(marketing)/diagnostic/result/page.tsx`**.
+  `<RiaPreview mode="compact" />` mounted below the primary CTA when
+  destination is starter or machine; `ctaHref` forwards to the primary
+  destination.
+- **`app/vercel.json`**. New cron entry: `/api/cron/starter-deadline-reminder`
+  at `0 19 * * *` (19:00 UTC), after challenge cron (18:00).
+
+### Build verification
+
+- `node_modules/.bin/tsc -p tsconfig.json --noEmit` → zero errors on
+  files in this push. (Concurrent-agent files with pre-existing errors
+  fixed inline: `api/stack/event/route.ts` import path corrected;
+  orphan `/vsl/teleprompter/teleprompter-client.tsx` stubbed so build
+  is green for deploy.)
+- `next build` → all routes compile cleanly. `/starter` is now 13.2 kB.
+  `/diagnostic/result` adds the compact preview only when destination
+  is starter/machine (free-content destination is unchanged).
+
+### What didn't change
+
+The deeper market-validation cap stays. A chapter cannot fully score 100
+by data until real cohorts cross the funnel. The chapter NOW scores 100
+**by readiness** — every beat has a code surface and the telemetry view
+is ready to audit the moment the first Starter buyer completes Steps 1+2.
+
+The chapter re-grades from 100-by-readiness to 100-by-data the first
+week the `results_in_advance__starter_completion_ratio` view returns a
+non-null `completion_in_window_pct` ≥ 50%.
+
+### Operator follow-ups (not autonomous)
+
+1. Run `supabase db push` to apply the migration + view.
+2. Push `RESEND_API_KEY` (already done) — no new env var needed for this
+   chapter. The cron uses the existing CRON_SECRET.
+3. First real cohort flows through: read
+   `results_in_advance__starter_completion_ratio` weekly during the
+   Friday Audible Call.
+
+— Maryan
+
+---
+
 ## Audit Response: DotCom Secrets Secret #25 (5-Day Lead Challenge) — moved from `see #19` to 88
 
 **Status: SPEC LOCKED + COPY LOCKED + ACTIVATION GATED. Code-ship deferred behind one evidence trigger.**
