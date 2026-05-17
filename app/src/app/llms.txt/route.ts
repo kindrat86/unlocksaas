@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ORGANIZATION_SAME_AS, KNOWS_ABOUT } from "@/lib/seo/entity";
 
 /**
  * /llms.txt — machine-readable summary for LLM crawlers (Anthropic,
@@ -16,12 +17,30 @@ import { NextResponse } from "next/server";
  * verifiable, in the public HTML — no claim is unique to llms.txt.
  * No fabricated numbers, no testimonial counts before they exist.
  *
+ * Two sections are composed from lib/seo/entity.ts so they cannot drift
+ * from the JSON-LD entity graph: "Off-platform anchors (sameAs)" and
+ * "Topical expertise (knowsAbout)". sameAs is env-driven and starts
+ * empty — the day the operator adds a verified profile URL to Vercel
+ * env, this file claims it without a code edit.
+ *
  * Caching: route handler is static (no request-time inputs) and the
  * content changes about as often as the strategy/google-strategy.md
  * doc — i.e. quarterly. Cache aggressively at the edge.
  */
 
 const BASE = "https://unlocksaas.com";
+
+/**
+ * Render the env-driven sameAs section as bullet list, or the honest
+ * empty-state line. Composed at module load — no per-request cost.
+ */
+const SAME_AS_SECTION =
+  ORGANIZATION_SAME_AS.length > 0
+    ? ORGANIZATION_SAME_AS.map((url) => `- ${url}`).join("\n")
+    : "_(no verified off-platform profiles claimed yet; this list is operator-gated and ships empty rather than fabricated)_";
+
+/** Topical expertise — same array used by Organization.knowsAbout in JSON-LD. */
+const KNOWS_ABOUT_SECTION = KNOWS_ABOUT.map((topic) => `- ${topic}`).join("\n");
 
 const BODY = `# Unlock SaaS
 
