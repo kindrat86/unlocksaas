@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Sticky scroll CTA — Brunson "always visible offer" rule (Funnel Hacker's
+ * Sticky scroll CTA – Brunson "always visible offer" rule (Funnel Hacker's
  * Cookbook §3 momentum signal).
  *
  * The hero CTA sits above the fold. Every block below the hero pushes the
@@ -9,14 +9,18 @@
  * before/after, and stack slide has no one-tap way back to the offer until
  * they hit the Final CTA at the bottom.
  *
- * This bar mounts a slim CTA strip to the bottom of the viewport that appears
- * AFTER the visitor has scrolled past the hero, and hides at the footer (no
- * point doubling up with the Final CTA's own buttons).
+ * This bar mounts a slim CTA strip to the bottom of the viewport that
+ * appears AFTER the visitor has scrolled past the hero, and hides at the
+ * footer (no point doubling up with the Final CTA's own buttons).
  *
- * Mobile: full-width strip with the diagnostic CTA only.
- * Desktop: same strip with secondary $1 link exposed.
+ * The homepage's primary target is the email opt-in, so the sticky CTA
+ * leads with the five-day arc and offers the diagnostic + $1 as quieter
+ * fallbacks for the visitor who is already further down the ladder.
  *
- * Visual treatment: restrained shadcn — background/border tokens, default
+ * Mobile: full-width strip with the newsletter CTA only.
+ * Desktop: same strip with secondary diagnostic + $1 links exposed.
+ *
+ * Visual treatment: restrained shadcn – background/border tokens, default
  * Button. Same aesthetic as the rest of the app.
  */
 
@@ -56,15 +60,21 @@ export function StickyCta() {
             Still scrolling?
           </p>
           <p className="text-sm font-medium leading-tight truncate">
-            Free 2-minute diagnosis — find out which beat is breaking the
-            line.
+            The 5 emails I wish someone had sent me before I shipped 12 products
+            to flat Stripe lines.
           </p>
         </div>
 
         <div className="flex items-center gap-3 flex-1 sm:flex-initial">
           <Button asChild className="flex-1 sm:flex-initial">
-            <Link href="/diagnostic">Free diagnosis</Link>
+            <a href="#newsletter-tail">Get the 5 emails</a>
           </Button>
+          <Link
+            href="/diagnostic"
+            className="hidden md:inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 whitespace-nowrap transition-colors"
+          >
+            or free 2-min diagnosis
+          </Link>
           <Link
             href="/starter"
             className="hidden md:inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground underline underline-offset-4 whitespace-nowrap transition-colors"

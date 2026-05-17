@@ -13,6 +13,7 @@ import { MediaBar } from "@/components/blocks/media-bar";
 import { AvatarWall } from "@/components/blocks/avatar-wall";
 import { StackSlide } from "@/components/blocks/stack-slide";
 import { GuaranteeHero } from "@/components/blocks/guarantee-hero";
+import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { FinalCta } from "@/components/blocks/final-cta";
 import { StickyCta } from "@/components/blocks/sticky-cta";
 import { SignatureFooter } from "@/components/blocks/signature-footer";
@@ -282,6 +283,17 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
+      {/* ---------------- 12.5 FOUNDING BUILDER – honest scarcity ----------------
+          Brunson 10X Secrets §3 Category 4, in the honest variant the Marco
+          avatar will accept. Three real levers: founding-price lock, personal
+          capacity ceiling, and the cost-of-waiting calendar argument. No fake
+          countdown timer, no neon. Placed AFTER the guarantee on purpose –
+          the visitor must read the polarity move first so the scarcity reads
+          as "decide now" rather than "buy now or else". */}
+      <FoundingBuilder tone="full" />
+
+      <Separator className="max-w-4xl mx-auto" />
+
       {/* ---------------- 13. FAQ — objection handling ---------------- */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
         <div className="text-center mb-8">
@@ -311,20 +323,33 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 14. NEWSLETTER — soft opt-in ---------------- */}
-      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-md mx-auto text-center">
+      {/* ---------------- 14. NEWSLETTER – second-chance opt-in ----------------
+          The hero already offered the email opt-in cold. This block is the
+          mid-page second chance for the visitor who scrolled past the hero
+          to read first and decide later. Soap Opera Sequence Day 0 fires on
+          submit; cron picks up Days 1–4. Source tag splits hero vs. tail in
+          the metrics dashboard. The `#newsletter-tail` anchor is the target
+          of the sticky CTA "Get the 5 emails" button below the hero. */}
+      <section
+        id="newsletter-tail"
+        className="py-14 sm:py-20 px-4 sm:px-6 max-w-md mx-auto text-center scroll-mt-24"
+      >
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Not ready to subscribe?
+          Still reading? Take the five letters.
         </p>
         <h2 className="text-xl sm:text-2xl font-bold mb-4 leading-tight text-balance">
-          Read the five-day arc first.
+          The 5 emails I wish someone had sent me before I shipped 12 products
+          to flat Stripe lines.
         </h2>
         <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-          Founders who build real things with AI deserve to get paid for them.
-          One short email a day for five days, written like a letter from one
-          founder to another. Reply STOP anytime.
+          One short letter a day for five days. Written like one founder to
+          another, not a marketing sequence. By Friday you will know which
+          beat is keeping your line flat – and whether the Playbook is the
+          right answer for you, or not.
         </p>
-        <NewsletterSignup />
+        <div className="text-left">
+          <NewsletterSignup variant="hero" source="midpage" />
+        </div>
       </section>
 
       <Separator className="max-w-4xl mx-auto" />

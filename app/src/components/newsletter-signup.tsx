@@ -16,8 +16,27 @@ type State =
  * Newsletter signup for the Funnel Hub. Wires the visitor into the Soap
  * Opera Sequence with `source: "funnel_hub"` (Day 0 fires immediately,
  * cron picks up Days 1-4). One field, one CTA. No "spam free" cliches.
+ *
+ * Variants:
+ *   - "stacked" (default) – vertical input + button, for the in-page panels.
+ *   - "hero"              – primary CTA in the homepage hero. Same vertical
+ *     stack, larger button, slightly different microcopy beat.
+ *
+ * The `source` prop wires attribution into the Soap Opera Sequence so the
+ * brunson-funnel-metrics dashboard can split first-touch surface ("hero" vs
+ * "tail of the homepage" vs "outside the homepage entirely").
  */
-export function NewsletterSignup() {
+type Props = {
+  variant?: "stacked" | "hero";
+  ctaLabel?: string;
+  source?: string;
+};
+
+export function NewsletterSignup({
+  variant = "stacked",
+  ctaLabel,
+  source = "funnel_hub",
+}: Props = {}) {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<State>({ kind: "idle" });
 
@@ -31,13 +50,13 @@ export function NewsletterSignup() {
     }
 
     setState({ kind: "submitting" });
-    track(Event.FunnelHubCtaClicked, { surface: "newsletter" });
+    track(Event.FunnelHubCtaClicked, { surface: `newsletter:${source}` });
 
     try {
       const res = await fetch("/api/soap-opera/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, source: "funnel_hub" }),
+        body: JSON.stringify({ email: trimmed, source }),
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
@@ -60,12 +79,18 @@ export function NewsletterSignup() {
 
   if (state.kind === "ok") {
     return (
-      <div className="rounded-lg border border-primary/20 bg-primary/5 px-5 py-4 text-sm leading-relaxed">
+      <div className="rounded-lg border border-primary/20 bg-primary/5 px-5 py-4 text-sm leading-relaxed text-left">
         First email is in your inbox. One short note a day for five days.
-        Reply STOP to unsubscribe. — Maryan
+        Reply STOP to unsubscribe. – Maryan
       </div>
     );
   }
+
+  const submitLabel =
+    ctaLabel ??
+    (variant === "hero"
+      ? "Yes – send me the 5 emails"
+      : "Send me the five emails");
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3" noValidate>
@@ -85,12 +110,12 @@ export function NewsletterSignup() {
         className="w-full"
         disabled={state.kind === "submitting"}
       >
-        {state.kind === "submitting" ? "Subscribing..." : "Send me the five emails"}
+        {state.kind === "submitting" ? "Subscribing..." : submitLabel}
       </Button>
       {state.kind === "error" && (
-        <p className="text-xs text-destructive">{state.message}</p>
+        <p className="text-xs text-destructive text-left">{state.message}</p>
       )}
-      <p className="text-xs text-muted-foreground">
+      <p className="text-xs text-muted-foreground text-left">
         Five emails over five days. Reply STOP anytime. No spam, ever.
       </p>
     </form>

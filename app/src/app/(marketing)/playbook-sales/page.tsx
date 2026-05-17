@@ -12,6 +12,7 @@ import { BeforeAfter } from "@/components/blocks/before-after";
 import { ComparisonTable } from "@/components/blocks/comparison-table";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { FounderTimeline } from "@/components/blocks/founder-timeline";
+import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { VslBlock } from "@/components/blocks/vsl-block";
 import {
   PlaybookProductJsonLd,
@@ -913,13 +914,19 @@ export default function PlaybookSalesPage() {
             </div>
           </div>
 
-          {/* Category 4 — deliberately rejected. Workbook 07 §3. */}
+          {/* Category 4 – Honest scarcity. Workbook 07 §3.
+
+              Originally rejected on grounds that fake scarcity destroys trust
+              with the Marco avatar. The replacement is below: three honest,
+              defensible levers (FoundingBuilder block) that can be argued
+              with a calculator. No countdown timer. No "3 seats left." Just:
+              founding price is finite, my reading capacity is finite, and
+              the 60-day clock starts the day you join. */}
           <p className="text-xs text-muted-foreground italic">
-            There is no countdown timer on this page. There is no
-            &ldquo;3 seats left.&rdquo; The avatar is a skeptic and fake
-            scarcity destroys trust faster than it sells. The only
-            urgency is in slide 36 above: another year of the flat line
-            is expensive in a way the $98 cap is not.
+            No countdown timer. No &ldquo;3 seats left.&rdquo; The avatar is a
+            skeptic and fake scarcity destroys trust faster than it sells.
+            The honest urgency lives in the Founding Builder block below –
+            three real levers a skeptic can audit with a calculator.
           </p>
         </section>
 
@@ -953,6 +960,58 @@ export default function PlaybookSalesPage() {
           </div>
         </section>
 
+      </div>
+
+      {/* ============================================================ */}
+      {/* BLOCK 7.5 – HONEST SCARCITY (Founding Builder, full tone)     */}
+      {/* Brunson 10X Secrets §3 Category 4, the honest variant.        */}
+      {/* Three real levers: founding-price lock (first 100), personal  */}
+      {/* reading-capacity ceiling, the 60-day clock starts on join.    */}
+      {/* Full-bleed section – the visual weight is intentional, this   */}
+      {/* is the polarity move's emotional twin.                        */}
+      {/* ============================================================ */}
+      <FoundingBuilder tone="full" />
+
+      <div className="max-w-3xl mx-auto">
+        <Separator className="my-12" />
+
+        {/* ============================================================ */}
+        {/* BLOCK 7.6 – COST OF WAITING (emotional close)                 */}
+        {/* Brunson Expert Secrets "Stake" close (10X Secrets §3 slide   */}
+        {/* 36 expanded). Loss-aversion reframe of the same calendar     */}
+        {/* argument the scarcity block opened. No threats, no guru      */}
+        {/* energy – just the mechanical cost of one more month of the   */}
+        {/* refresh-tweak-close ritual.                                  */}
+        {/* ============================================================ */}
+        <section className="mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-5">
+            The cost of waiting, in writing.
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            If you close this tab without joining, here is what the next 60
+            days look like. You will still open Stripe every night. You will
+            still read another founder&apos;s launch thread and tell yourself
+            you are &ldquo;learning.&rdquo; You will still close the laptop
+            telling yourself tomorrow is the day. Two months from now your
+            Stripe line will look exactly the way it looks tonight. That is
+            not a story. That is just math.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            The other math is also simple. Two months at $49 is $98. If the
+            tool produces nothing, the webhook returns the $98 to your card
+            – automatically, with no inbox between you and the refund. If it
+            produces one paying customer at your current price, the cost of
+            this decision pays itself back forever. There is no third outcome
+            the math allows for.
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            Picture the next time someone asks how the launch is going.
+            Picture saying &ldquo;we got our first paying customer last
+            week.&rdquo; That sentence is what you are buying. The price is
+            $98 capped, refunded if the sentence stays out of reach.
+          </p>
+        </section>
+
         <Separator className="my-12" />
 
         {/* ============================================================ */}
@@ -971,11 +1030,11 @@ export default function PlaybookSalesPage() {
               surface="playbook_sales"
               className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
             >
-              Start the Playbook — $49/mo, 60-day guarantee
+              Start the Playbook – $49/mo, 60-day guarantee
             </CheckoutButton>
             <p className="text-xs text-muted-foreground">
-              Cancel anytime. No long-term contract. The guarantee
-              covers both monthly payments.
+              Founding-Builder price. Cancel anytime. No long-term contract.
+              The guarantee covers both monthly payments.
             </p>
             <p className="text-xs text-muted-foreground">
               Or start at{" "}
@@ -985,7 +1044,7 @@ export default function PlaybookSalesPage() {
               and upgrade once Steps 1 and 2 are done.
             </p>
             <p className="text-sm text-muted-foreground italic pt-4">
-              — Maryan
+              – Maryan
             </p>
           </div>
         </section>

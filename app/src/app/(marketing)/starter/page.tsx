@@ -10,6 +10,7 @@ import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { VslPlayer } from "@/components/vsl/vsl-player";
+import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
@@ -456,16 +457,115 @@ function StarterSalesPageInner() {
           </div>
         </section>
 
-        {/* Trial Close — one soft-yes question before the CTA. Workbook 07
-            §2 trial-close inventory item #4. The CTA reads better after a
-            commitment-priming question than cold. */}
-        <p className="text-base text-foreground font-medium leading-relaxed mb-6 text-center">
-          Would you trade your next sixty days of tactic-shopping for one
-          verified paying customer?
-        </p>
+        {/* The Cost of Waiting – Brunson loss-aversion close (Expert Secrets
+            §3 "Stake" close + DotCom Secrets Story-Strategy-Service emotional
+            reframe). The visitor has heard the upside; this block flips the
+            mirror so they feel the downside of skipping the dollar.
+
+            Voice: Reluctant Hero. No threats, no manipulation. Just the
+            mechanical cost of one more month of the same ritual the visitor
+            already knows by heart. */}
+        <section className="mb-10 rounded-lg border border-border bg-muted/40 p-6">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            The honest cost of clicking away
+          </p>
+          <h2 className="text-xl font-bold mb-3 leading-snug">
+            One dollar is not the question. Another month of refreshing Stripe is.
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+            If you do not click below, here is what tonight looks like.
+            Dinner done. Laptop open. Refresh Stripe. Same flat line. Open a
+            new tab. Read another founder&apos;s post about their launch. Tell
+            yourself you&apos;ll &ldquo;sit with it.&rdquo; Close the laptop.
+            That ritual costs nothing on the credit-card statement. It is
+            still the most expensive hour you spent today, because you spent
+            it not finishing the only two pieces of work that move the line.
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            One dollar buys the version of those ninety minutes where the
+            work actually finishes. Same Tuesday night. Different outcome.
+          </p>
+        </section>
+
+        {/* Logical Math – the Brunson "comparison" mini-close (workbook 07
+            §3 Category 2 slide 38). Marco is a skeptic. Honest math beats
+            adjectives. Three lines, three anchors, all defensible to a
+            cynic with a calculator. */}
+        <section className="mb-10">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            The math, in the open
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                  vs. nothing
+                </p>
+                <p className="text-base font-semibold leading-snug mb-1">
+                  $1 vs. $0
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Free is what you have been paying for the flat line. The
+                  dollar is the line item that ends that.
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                  vs. a course
+                </p>
+                <p className="text-base font-semibold leading-snug mb-1">
+                  $1 vs. $497
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  The same Step-1-and-2 work inside a typical cohort runs
+                  $497 with no refund mechanism. You pay 497× less, and you
+                  do the work tonight.
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                  vs. a consultant
+                </p>
+                <p className="text-base font-semibold leading-snug mb-1">
+                  $1 vs. $300/hr
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  A positioning consultant at $300/hr needs three hours to
+                  reach a worse Step-1 output than the engine produces in
+                  forty minutes. The math does not survive contact with the
+                  reality.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Trial Close – Brunson Workbook 07 §2, three trial closes instead
+            of one. Each one a soft-yes question, in increasing emotional
+            temperature. The CTA reads as a release after three small yeses,
+            not as a cold ask. */}
+        <section className="mb-8 space-y-3">
+          <p className="text-base text-foreground font-medium leading-relaxed">
+            Would you trade your next sixty days of tactic-shopping for one
+            verified paying customer?
+          </p>
+          <p className="text-base text-foreground font-medium leading-relaxed">
+            Would you spend ninety minutes this week pinning a real customer
+            and writing a real offer, if it cost the same as a vending-machine
+            soda?
+          </p>
+          <p className="text-base text-foreground font-medium leading-relaxed">
+            Would you rather be the founder who decided, or the founder who
+            scrolled to the next tab?
+          </p>
+        </section>
 
         {/* CTA */}
-        <div className="text-center">
+        <div className="text-center mb-2">
           <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
             Start the Playbook for $1
           </Button>
@@ -474,11 +574,37 @@ function StarterSalesPageInner() {
           </p>
         </div>
 
-        {/* Reluctant Hero signature — per project_unlocksaas_email_identity
-            memory: customer-facing surfaces close with "— Maryan". */}
-        <div className="mt-12 text-right text-sm text-muted-foreground italic">
-          — Maryan
+        {/* Reluctant Hero signature – per project_unlocksaas_email_identity
+            memory: customer-facing surfaces close with "– Maryan". */}
+        <div className="mt-12 mb-12 text-right text-sm text-muted-foreground italic">
+          – Maryan
         </div>
+      </div>
+
+      {/* Honest scarcity block – full-bleed below the dollar CTA. The Starter
+          variant of FoundingBuilder reframes the three levers for the $1
+          surface: founding price applies to the $49 upgrade, capacity ceiling
+          applies to the Step-1 reading queue, and the calendar argument is
+          the same. */}
+      <FoundingBuilder tone="starter" />
+
+      {/* Final restate CTA – Brunson "close before the close": after the
+          scarcity block, the visitor either acts or leaves. Do not let the
+          page end on prose. */}
+      <div className="max-w-2xl mx-auto py-14 sm:py-20 px-4 sm:px-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 leading-tight text-balance">
+          Same Tuesday night. Different outcome.
+        </h2>
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-md mx-auto">
+          One dollar. Ninety minutes. Steps 1 and 2 of the Playbook, finished,
+          yours to keep – whether you upgrade or not.
+        </p>
+        <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
+          Start the Playbook for $1
+        </Button>
+        <p className="text-xs text-muted-foreground mt-3">
+          One-time payment. No subscription. No auto-upgrade.
+        </p>
       </div>
     </div>
   );
