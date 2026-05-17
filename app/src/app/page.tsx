@@ -16,7 +16,6 @@ import { GuaranteeHero } from "@/components/blocks/guarantee-hero";
 import { FinalCta } from "@/components/blocks/final-cta";
 import { StickyCta } from "@/components/blocks/sticky-cta";
 import { SignatureFooter } from "@/components/blocks/signature-footer";
-import { shouldRenderMediaBar } from "@/lib/media-mentions";
 import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
   OrganizationJsonLd,
@@ -60,7 +59,6 @@ import {
 export default function FunnelHub() {
   const variant = readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
-  const showHonestEmptyState = !shouldRenderMediaBar();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -333,24 +331,6 @@ export default function FunnelHub() {
 
       {/* ---------------- 15. FINAL CTA — close-the-loop ---------------- */}
       <FinalCta />
-
-      {/* ---------------- 16. HONEST "AS SEEN IN" EMPTY-STATE ----------------
-          Only renders when the MediaBar above is hidden (< 3 earned mentions). */}
-      {showHonestEmptyState ? (
-        <>
-          <Separator className="max-w-4xl mx-auto" />
-          <section className="py-10 sm:py-12 px-4 sm:px-6 max-w-2xl mx-auto text-center">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-              As seen in
-            </p>
-            <p className="text-sm text-muted-foreground italic">
-              Nowhere yet. Reluctant Hero rule: no fake logos. The first time
-              a podcast or newsletter mentions Unlock SaaS, that logo lands
-              here. Build in public means showing the empty version too.
-            </p>
-          </section>
-        </>
-      ) : null}
 
       {/* ---------------- 18. SIGNATURE FOOTER ---------------- */}
       <SignatureFooter />
