@@ -200,6 +200,30 @@ export default function AlternativesHub() {
         </Card>
       </section>
 
+      {/* Cross-link to funnel teardowns surface */}
+      <section
+        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+        aria-labelledby="cross"
+      >
+        <h2
+          id="cross"
+          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
+        >
+          Also see
+        </h2>
+        <p className="text-sm leading-relaxed">
+          <Link
+            href="/funnel-teardown"
+            className="text-primary hover:underline font-semibold"
+          >
+            Funnel teardowns →
+          </Link>{" "}
+          Pattern-level breakdowns of the indie SaaS funnels you are already
+          studying. Hook / Story / Offer through the Brunson lens, with what
+          to adapt and what to skip.
+        </p>
+      </section>
+
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
