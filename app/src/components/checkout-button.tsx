@@ -15,6 +15,12 @@ interface CheckoutButtonProps {
    * starter or OTO pages.
    */
   surface?: "starter" | "playbook_sales" | "oto";
+  /**
+   * Button size. Defaults to "lg" – the buy button is large by design at
+   * the page-level CTA placements. The sticky persistent-offer bar uses
+   * "default" to fit a thinner strip.
+   */
+  size?: "default" | "sm" | "lg";
 }
 
 export function CheckoutButton({
@@ -22,6 +28,7 @@ export function CheckoutButton({
   children,
   className,
   surface = "playbook_sales",
+  size = "lg",
 }: CheckoutButtonProps) {
   const [loading, setLoading] = useState(false);
 
@@ -57,7 +64,7 @@ export function CheckoutButton({
 
   return (
     <Button
-      size="lg"
+      size={size}
       className={className}
       onClick={handleClick}
       disabled={loading}

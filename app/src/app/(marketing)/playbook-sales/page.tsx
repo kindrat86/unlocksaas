@@ -13,6 +13,7 @@ import { ComparisonTable } from "@/components/blocks/comparison-table";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
+import { StickyPlaybookCta } from "@/components/blocks/sticky-playbook-cta";
 import { VslBlock } from "@/components/blocks/vsl-block";
 import {
   PlaybookProductJsonLd,
@@ -116,6 +117,11 @@ export default function PlaybookSalesPage() {
         event={Event.PlaybookSalesPageViewed}
         properties={{ surface: "playbook_sales" }}
       />
+      {/* Brunson "always-visible offer" – sticky $49 strip mounts after the
+          hero scrolls off, hides at the footer. The Marco-skeptic guardrails
+          (no fake countdown, no "X seats left") are enforced inside the
+          component itself. */}
+      <StickyPlaybookCta />
       <div className="max-w-3xl mx-auto">
         {/* ============================================================ */}
         {/* BLOCK 1 — BIG DOMINO (slides 1–6)                             */}
@@ -167,6 +173,43 @@ export default function PlaybookSalesPage() {
           <p className="text-muted-foreground leading-relaxed">
             Here are the three things you have to believe for The Playbook
             to work for you.
+          </p>
+        </section>
+
+        {/* ============================================================ */}
+        {/* BLOCK 1.5 – MARCO MIRROR (recognition moment)                 */}
+        {/* Brunson "is this for me?" qualifier + polarity (workbook 01   */}
+        {/* §6 Beat 5). Marco hears his own ritual in his own vocabulary  */}
+        {/* before the three secrets fire. The right reader sees himself. */}
+        {/* The wrong reader self-disqualifies and leaves. Both outcomes  */}
+        {/* are wins. Voice: Reluctant-Hero, second-person address.       */}
+        {/* ============================================================ */}
+        <section className="mb-12 border-l-2 border-primary/40 pl-5 sm:pl-6">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            Before you keep reading
+          </p>
+          <h2 className="text-xl sm:text-2xl font-bold leading-snug mb-4">
+            If the next paragraph reads like a transcript of your week,
+            stay. If it doesn&apos;t, close the tab.
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-4">
+            You shipped with Lovable or Cursor. The product works. People
+            who try it tell you it is good. Your Stripe dashboard is a flat
+            line with one heartbeat a month. Twelve users. Two who pay. The
+            number has not moved in months. Every evening looks the same:
+            day job done, dinner done, laptop open, refresh Stripe, same
+            number, tweak one small thing, call it progress, close the
+            laptop. You have been telling yourself the problem is the
+            product. A part of you knows that is not true. You have not
+            said the real thing out loud yet, which is that you never
+            knew who this was for.
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            If none of that lands, you are not the person this page is
+            written for. If all of it lands, you are reading the only
+            page on the internet that was written by someone who lived
+            the exact same year and then built the way out in code. Keep
+            going.
           </p>
         </section>
 
@@ -664,6 +707,23 @@ export default function PlaybookSalesPage() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Mid-page CTA #1 – Brunson "buy button at the emotional peak."
+              The 10.1x reveal + the restack is the first moment the math
+              has fully landed. The CTA goes here, not after another wall
+              of text. Microcopy stays inside Marco's voice. */}
+          <div className="pt-6 text-center space-y-3">
+            <CheckoutButton
+              priceType="playbook"
+              surface="playbook_sales"
+              className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
+            >
+              Start the Playbook – $49/mo, refund by code if it doesn&apos;t fire
+            </CheckoutButton>
+            <p className="text-xs text-muted-foreground">
+              $98 capped. 60 days from today. Cancel anytime.
+            </p>
+          </div>
         </section>
 
         <Separator className="my-12" />
@@ -737,6 +797,26 @@ export default function PlaybookSalesPage() {
               </ul>
             </CardContent>
           </Card>
+
+          {/* Mid-page CTA #2 – Brunson "risk reversed, decision now."
+              The guarantee block is the moment skepticism collapses.
+              The math: $98 max downside, refund enforced by webhook,
+              no inbox between Marco and his money. The CTA goes
+              immediately after that math, before the page distracts
+              with social proof and timeline. */}
+          <div className="pt-8 text-center space-y-3">
+            <CheckoutButton
+              priceType="playbook"
+              surface="playbook_sales"
+              className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
+            >
+              I&apos;ll take the $98 risk – start the Playbook
+            </CheckoutButton>
+            <p className="text-xs text-muted-foreground">
+              Founding-Builder price. Cancel anytime. The webhook returns the
+              $98 if your Stripe stays flat.
+            </p>
+          </div>
         </section>
 
         <Separator className="my-12" />
@@ -987,6 +1067,24 @@ export default function PlaybookSalesPage() {
       <FoundingBuilder tone="full" />
 
       <div className="max-w-3xl mx-auto">
+        {/* Mid-page CTA #3 – Brunson "scarcity peak = decision moment."
+            The FoundingBuilder block names three honest levers (founding
+            price, capacity ceiling, 60-day clock). The CTA goes
+            immediately at the peak of the urgency moment, while the
+            calendar argument is still on the screen. */}
+        <div className="pt-12 text-center space-y-3">
+          <CheckoutButton
+            priceType="playbook"
+            surface="playbook_sales"
+            className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
+          >
+            Lock my Founding-Builder rate – $49/mo forever
+          </CheckoutButton>
+          <p className="text-xs text-muted-foreground">
+            First 100 builders. Then the public price moves to $79/mo.
+          </p>
+        </div>
+
         <Separator className="my-12" />
 
         {/* ============================================================ */}
@@ -1003,48 +1101,104 @@ export default function PlaybookSalesPage() {
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-4">
             If you close this tab without joining, here is what the next 60
-            days look like. You will still open Stripe every night. You will
-            still read another founder&apos;s launch thread and tell yourself
-            you are &ldquo;learning.&rdquo; You will still close the laptop
-            telling yourself tomorrow is the day. Two months from now your
-            Stripe line will look exactly the way it looks tonight. That is
-            not a story. That is just math.
+            days look like. You already know them. Day job. Dinner. Laptop
+            open. Refresh Stripe. Same number. Tweak one small thing on the
+            product. Call it progress. Close the laptop. Tell yourself
+            tomorrow is the day. Open Indie Hackers. Read another
+            founder&apos;s launch thread. Tell yourself you are
+            &ldquo;learning.&rdquo; Close the laptop. Sixty of those
+            evenings from now, your Stripe line will look exactly the way
+            it looks tonight. That is not a story. That is the math of
+            another sixty Tuesdays spent the way you already know how to
+            spend them.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             The other math is also simple. Two months at $49 is $98. If the
             tool produces nothing, the webhook returns the $98 to your card
             – automatically, with no inbox between you and the refund. If it
             produces one paying customer at your current price, the cost of
-            this decision pays itself back forever. There is no third outcome
-            the math allows for.
+            this decision pays itself back forever, on the first charge.
+            There is no third outcome the math allows for. The price of
+            staying where you are is not zero. It is another quarter of
+            your life spent refreshing a number you already know.
           </p>
-          <p className="text-muted-foreground leading-relaxed">
-            Picture the next time someone asks how the launch is going.
-            Picture saying &ldquo;we got our first paying customer last
-            week.&rdquo; That sentence is what you are buying. The price is
-            $98 capped, refunded if the sentence stays out of reach.
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            Picture the next time someone in your life asks how the launch
+            is going. Picture not changing the subject. Picture saying
+            &ldquo;we got our first paying customer last week.&rdquo;
+            Picture the moment the Stripe email pings on your phone and you
+            do not have to fake the reaction. That sentence and that ping
+            are what you are buying. The price is $98 capped, refunded by
+            code if the sentence stays out of reach.
           </p>
+
+          {/* CTA #4 – the close, immediately after the future-pace. */}
+          <div className="text-center space-y-3 pt-2">
+            <CheckoutButton
+              priceType="playbook"
+              surface="playbook_sales"
+              className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
+            >
+              I&apos;m done refreshing a flat line – start the Playbook
+            </CheckoutButton>
+            <p className="text-xs text-muted-foreground">
+              $49/mo. 60-day guarantee. $98 maximum out of pocket.
+            </p>
+          </div>
         </section>
 
         <Separator className="my-12" />
 
         {/* ============================================================ */}
         {/* BLOCK 8 — DISQUALIFIER + FINAL CTA                            */}
-        {/* Workbook 01 §6 Beat 5 polarity AGAINST                        */}
+        {/* Workbook 01 §6 Beat 5 polarity AGAINST + workbook 07 §3       */}
+        {/* identity close (slide 41). The disqualifier is sharpened to   */}
+        {/* a list because Marco-the-skeptic respects a list more than    */}
+        {/* a soft paragraph. The identity callout above the button is    */}
+        {/* the polarity peak: praised builder for another year, or      */}
+        {/* Verified Builder by August. Pick one.                         */}
         {/* ============================================================ */}
         <section className="mb-12">
-          <p className="text-sm text-muted-foreground italic mb-8">
-            This is not for you if you have not shipped anything yet. Go
-            ship first. Come back when your Stripe is flat.
-          </p>
+          <div className="rounded-lg border border-border bg-muted/30 p-5 sm:p-6 mb-10 text-sm text-muted-foreground leading-relaxed space-y-3">
+            <p className="font-semibold text-foreground">
+              Read this before you click.
+            </p>
+            <p>
+              This is not for you if you have not shipped anything yet. Go
+              ship first. Come back when your Stripe is flat. The Playbook
+              starts after the launch, not before it.
+            </p>
+            <p>
+              This is not for you if you are looking for the next tactic.
+              You already know the tactics. The Playbook is what removes
+              the option to skip the work the tactics live inside.
+            </p>
+            <p>
+              This is not for you if you believe one more feature will fix
+              it. The product is not the problem. You half-know that
+              already. That sentence either landed or it did not.
+            </p>
+            <p>
+              This <em>is</em> for you if you shipped, the Stripe line is
+              flat, and the only honest thing left to do is the work you
+              have been avoiding inside a tool that does not let you skip
+              it.
+            </p>
+          </div>
 
           <div className="text-center space-y-4">
+            <p className="text-base sm:text-lg font-semibold leading-snug max-w-xl mx-auto">
+              You can spend the next sixty days the way you spent the last
+              sixty. Or you can spend $98 capped and find out if your
+              launch was three wasted months or the start of the rest of
+              it.
+            </p>
             <CheckoutButton
               priceType="playbook"
               surface="playbook_sales"
               className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
             >
-              Start the Playbook – $49/mo, 60-day guarantee
+              Start the Playbook – $49/mo, refund by code in 60 days
             </CheckoutButton>
             <p className="text-xs text-muted-foreground">
               Founding-Builder price. Cancel anytime. No long-term contract.
@@ -1058,7 +1212,7 @@ export default function PlaybookSalesPage() {
               and upgrade once Steps 1 and 2 are done.
             </p>
             <p className="text-sm text-muted-foreground italic pt-4">
-              – Maryan
+              I built this because I was you. – Maryan
             </p>
           </div>
         </section>
