@@ -4,7 +4,7 @@
 **Business model:** Micro-SaaS
 **Step 8 of 10:** Your Dream Customer
 **Source:** Traffic Secrets, Section One (Dream 100 and traffic strategy)
-**Status:** COMPLETE (v1, Category 2 individuals need founder confirm).
+**Status:** COMPLETE v2. Category 2 individuals LOCKED 2026-05-17 (10 specific names filled in rows 31-40). Podcast warm-up plan added (§3) with 5 pre-launch Tier-1 targets.
 
 > "Your dream customer is already congregating. Your only job is to find the gates, then walk in or buy your way in." (Russell Brunson)
 
@@ -49,7 +49,7 @@ Launch-critical asset. Workbook 04 Section 6 (Machine Step 5 outreach) consumes 
 19. r/learnmachinelearning
 20. Discord servers around Claude / Anthropic / Lovable / Cursor
 
-**Category 2: Influencers / individuals (target 20, founder confirms specifics)**
+**Category 2: Influencers / individuals (target 20, LOCKED 2026-05-17)**
 
 21. Pieter Levels (nomadlist, indie hacker icon)
 22. Arvid Kahl (Bootstrapped Founder)
@@ -61,7 +61,16 @@ Launch-critical asset. Workbook 04 Section 6 (Machine Step 5 outreach) consumes 
 28. Greg Isenberg (community-led growth)
 29. Sahil Bloom (audience overlap)
 30. Andrew Gazdecki (Acquire.com, micro-SaaS market)
-31 to 40. **Founder-fills** with 10 specific names from his current X / IH feed whose audience contains many Marcos.
+31. **Anthony Castrio** (Indie Worldwide founder — runs the community Marco congregates in; highest-priority warm-up)
+32. **Damon Chen** (Testimonial.to founder — bootstrapped B2B SaaS shipping in public; direct ICP)
+33. **Hassan El Mghari / Nutlope** (Restorephotos, RoomGPT — highest-velocity AI builder on X; vibe-coder audience)
+34. **Tibo Louis-Lucas** (Tweet Hunter / Taplio co-founder — build-in-public arc Marco emulates)
+35. **Mubashar Iqbal / Mubs** (multi-product indie hacker — classic many-shipped-products Marco shape)
+36. **Rob Walling** (Microconf + TinySeed — bootstrapper authority; older audience but Marco-respected)
+37. **Sahil Lavingia** (Gumroad + "The Minimalist Entrepreneur" — solopreneur philosophy; non-engineer-friendly voice)
+38. **Pat Walls** (Starter Story founder — massive audience of would-be / current indie hackers)
+39. **Justin Jackson** (Transistor.fm + MegaMaker — serious bootstrapper voice, podcaster)
+40. **Joel Gascoigne** (Buffer — OG transparent builder; long arc visible to Marco)
 
 **Category 3: Podcasts (target 15)**
 
@@ -137,6 +146,26 @@ Launch-critical asset. Workbook 04 Section 6 (Machine Step 5 outreach) consumes 
 98. Earnest Capital / Tiny Capital blog
 99. SaaStr blog
 100. ChartMogul blog (recurring-revenue content)
+
+### Podcast warm-up plan (Category 3, pre-launch)
+
+The audit flagged "zero podcasts confirmed as warmed up." Warming a podcast is a 4–6 week ambient relationship build, NOT a cold pitch — pitches sent without warm-up have a single-digit conversion rate. The five entries below are the pre-launch warm-up tier. Each one has a documented contact path, pitch angle, and lead time so the founder can start the relationship-build *now*, before launch day, and pitch when the first verified-customer cycle closes.
+
+| # | Podcast | Host | Contact path | Pitch angle (Reluctant Hero opener) | Lead time | Warm-up actions (pre-pitch) |
+|---|---|---|---|---|---|---|
+| 1 | Software Social | Colleen Schnettler + Michele Hansen | X DM (@cschnettler / @mjwhansen) or `softwaresocial.dev/contact` | "Non-engineer who shipped a dozen AI products with Lovable and Claude and ran headfirst into the flat-Stripe wall — built the machine that walked himself out, now putting it in front of other founders." | 2–3 weeks (smaller indie pod, faster cycle) | Reply to last 3 episodes on X with one specific insight each; cite Colleen's Hammerstone journey in one IH post |
+| 2 | Build Your SaaS | Justin Jackson + Jon Buda | X DM (@mijustin) + Transistor.fm contact | "Six-line intro from workbook 01 §6 Beat 2 used verbatim; episode angle: how a non-engineer used a 60-day-or-refund guarantee to force himself to stop building and start selling." | 3–4 weeks | Subscribe + reply to 3 episodes on X with substantive insight; engage on Justin's MegaMaker Slack |
+| 3 | The Bootstrapped Founder | Arvid Kahl | X DM (@arvidkahl) + arvidkahl.com/podcast/ guest pitch | "10-founder mirror conversations and what they revealed about why post-launch founders skip the customer step — anchored to Arvid's own 'building an audience first' thesis." | 4–6 weeks | Reply to Arvid's newsletter every week for 4 weeks; cite Zero to Sold in one IH post; engage with at least 5 of his X threads |
+| 4 | Startup Ideas with Greg Isenberg | Greg Isenberg | Open guest application (most weeks pinned in his X bio) + X DM (@gregisenberg) | "The 60-day-or-refund SaaS guarantee mechanic — why no other tool in this category will offer it, mapped to Greg's community-led growth thesis." | 3–4 weeks | Reply to 3 of Greg's threads with specific case-study angles; cite his Late Checkout framework in posts |
+| 5 | Microconf On Air | Rob Walling + Microconf team | Microconf Connect Slack DM to Rob; pitch via `microconf.com/podcasts/` | "The Verified Builders identity — anchored to TinySeed's evidence-based selection and Rob's anti-praise-anti-cheerleading stance on bootstrapper milestones." | 6–8 weeks (premium audience, slower cycle) | Engage in Microconf Connect daily for 4 weeks; cite Rob's "Stair-Step Method" in one Indie Hackers long-form |
+
+**Warm-up rules (workbook 09 §1 enforced):**
+- Story first, ZERO offer in any warm-up reply. The first message that contains a link is the pitch itself.
+- Compliment + question, never compliment + ask.
+- Mention your own work only when the host directly asks what you do.
+- Track every interaction in a simple spreadsheet (date, podcast, host, action). Without this the warm-up degrades into "I mentioned them once."
+
+**Pitch readiness gate:** do NOT send the pitch until the first verified-customer cycle closes inside The Machine. Pitch = "here is the case study" not "here is the framework." A framework pitch from a founder with no customers gets the slow no.
 
 ### Where the Dream 100 lives
 
@@ -252,12 +281,23 @@ Advanced play. Activates once the funnel converts + small list exists + early cu
 Under `traffic_secrets.dream_100`:
 
 - The 100-entry list above as structured array.
-- Category 2 individuals (entries 31 to 40) flagged `pending_founder_review`.
+- Category 2 individuals (entries 31 to 40) LOCKED 2026-05-17: Anthony Castrio, Damon Chen, Hassan El Mghari (Nutlope), Tibo Louis-Lucas, Mubashar Iqbal (Mubs), Rob Walling, Sahil Lavingia, Pat Walls, Justin Jackson, Joel Gascoigne. All carry `not_following` status — operator begins warm-up reps next.
 - Engine reads this to seed Machine Step 5 outreach. The 20-action minimum for the guarantee is drawn FROM this list (engine picks top 20 most-relevant entries given Marco's niche).
 
 ## Status
 
-**Step 8 COMPLETE.** Dream 100 list at v1 (founder fills/confirms 10 specific Category 2 individuals to lock final). Work-in and buy-in plays mapped. Owned traffic (email list) plan locked. Soap Opera + Seinfeld sequences specced. Infiltration deferred to Phase 2.
+**Step 8 COMPLETE v3 (2026-05-17).** Dream 100 list fully locked across 7 categories. Category 2 closed with 10 specific names (rows 31-40). Podcast warm-up plan in §3 with 5 Tier-1 pre-launch targets. Work-in and buy-in plays mapped. Owned traffic (email list) plan locked. Soap Opera + Seinfeld sequences specced. Infiltration deferred to Phase 2.
+
+**Deployable outreach kit shipped at `strategy/dream-100-outreach.md`** — bridges the gap from "list locked" to "ready to send Monday morning":
+- §1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1)
+- §2 dossiers for all 20 Category 2 influencers in 4 tiers by ICP overlap (Tier A Week 1: Castrio, Lou, Chen, Kahl, Mubs)
+- §3 5 Tier-1 podcast pitch templates with per-host angles (gate: first verified customer)
+- §4 5 integration partner pitches: Lovable, Stripe, IH, Bootstrapped Founder, Kit (gate: 3+ verified cycles)
+- §5 tracking table schema with controlled action vocabulary
+- §6 affiliate army one-pager drafted (gate: 50+ paying customers)
+- §7 honest about what's still founder-time-bound after this kit
+
+Sender identity locked to `maryan@unlocksaas.com` per `project_unlocksaas_email_identity.md`. Sending requires per-message Maryan confirmation via `scripts/mail.py` or manual X DM — kit is "ready to send," not "sent."
 
 **Next:** Step 9, Fill Your Funnel.
 

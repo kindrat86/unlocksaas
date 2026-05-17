@@ -8,13 +8,54 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { VslPlayer } from "@/components/vsl/vsl-player";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
-// Per-label one-liner that opens the page when the visitor comes from the
-// diagnostic. Voice rule: name the diagnosis in their own words, then point
-// at what the Starter actually does. Workbook 04 §3 Page 2 + workbook 06 §3.
+// Per-label / per-bucket one-liner that opens the page when the visitor comes
+// from the diagnostic Bridge Page (/diagnostic/result/). The Bridge Page owns
+// the long-form pattern interrupt + identification + story + strategy + trial
+// close. This banner is the short re-anchor on the Starter — "you came here
+// because of X, and X is exactly what the $1 buys."
+//
+// Voice rule: name the bucket in their own words, then point at what the
+// Starter actually does. Workbook 04 §3 Page 2 + workbook 06 §3 + Brunson
+// DCS Secret 15 (the bridge points to the door; the door confirms the bridge).
+//
+// Resolution order in DiagnosticHandoffBanner():
+//   1. bucket (if present)         → bucket-specific copy
+//   2. label  (if present)         → legacy fallback for pre-survey rows
+//   3. "missing"                   → no diagnostic param at all
+//
+// Keys must stay in sync with app/src/lib/diagnostic.ts BUCKETS + DiagnosticLabel.
 const DIAGNOSTIC_HANDOFF: Record<string, { title: string; body: string }> = {
+  // -- Bucket-aware (Brunson Survey Funnel + Bridge Scripts) ----------------
+  customer_avoider: {
+    title: "Customer Avoider. The bridge said it; the door confirms it.",
+    body: "The $1 below is Machine Steps 1 and 2: pin one real customer, write one real offer for them. The two pieces of work you have been avoiding, finished this week.",
+  },
+  stuck_builder: {
+    title: "Stuck Builder. The bridge said it; the door confirms it.",
+    body: "Step 2 — Build Offer — has engine pushback that rejects features, hedging, and unnamed timeframes. That is what the $1 below buys. Plus Step 1 for the person it is for.",
+  },
+  tactic_shopper: {
+    title: "Tactic Shopper. The bridge said it; the door confirms it.",
+    body: "More tactics on a wrong-person page produces more flat. The $1 below pins a real customer (Step 1) and rewrites the offer (Step 2). Then tactics start working.",
+  },
+  traction_but_stuck: {
+    title: "Traction but Stuck. The bridge said it; the door confirms it.",
+    body: "You already have a few buyers. The $1 below sits with them, finds the pattern, and rewrites the offer around what they actually bought. Steps 1 and 2.",
+  },
+  premature: {
+    title: "You said skip the wait. Eyes open.",
+    body: "Most founders less than 30 days post-launch benefit more from sitting with the silence than running the Machine. If you have made up your mind, the $1 below still does the same work. Just know I told you.",
+  },
+  ready_to_scale: {
+    title: "You took the downgrade door. That is allowed.",
+    body: "The $1 below is Steps 1 and 2 — the part of the Machine you may already have done. Run it anyway as a sanity check, then the $49 upgrade is on the next page.",
+  },
+
+  // -- Legacy label fallback (rows from before the survey shipped) ----------
   wrong_person: {
     title: "Wrong Person. Got it. Here is the door.",
     body: "Steps 1 and 2 of the Machine are exactly the work that pins a real person and writes a real offer for them. That is what the $1 below buys.",
@@ -42,8 +83,13 @@ function DiagnosticHandoffBanner() {
   const from = params.get("from");
   if (from !== "diagnostic") return null;
 
+  // Bucket wins; label is the fallback for pre-survey rows.
+  const bucketKey = params.get("bucket") ?? "";
   const labelKey = params.get("label") ?? "";
-  const copy = DIAGNOSTIC_HANDOFF[labelKey] ?? DIAGNOSTIC_HANDOFF.missing;
+  const copy =
+    DIAGNOSTIC_HANDOFF[bucketKey] ??
+    DIAGNOSTIC_HANDOFF[labelKey] ??
+    DIAGNOSTIC_HANDOFF.missing;
 
   return (
     <aside
@@ -77,14 +123,19 @@ function StarterSalesPageInner() {
   const params = useSearchParams();
 
   // Stable across renders so the click handler closes over the right values.
+  // The bucket joins label as a first-class attribution key so the Stripe
+  // webhook can stamp diagnostic_leads.bucket on conversion if we ever need
+  // to back-fill it (currently bucket is written at diagnostic-submit time).
   const attribution = useMemo(() => {
     const from = params.get("from");
     const label = params.get("label");
+    const bucket = params.get("bucket");
     const lead = params.get("lead");
-    if (!from && !label && !lead) return null;
+    if (!from && !label && !bucket && !lead) return null;
     return {
       from: from ?? undefined,
       label: label ?? undefined,
+      bucket: bucket ?? undefined,
       lead: lead ?? undefined,
     };
   }, [params]);

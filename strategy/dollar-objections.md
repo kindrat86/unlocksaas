@@ -225,3 +225,88 @@ Workbook 06 had 5 External Belief rewrites synthesized from Maryan's interpretat
 - [IH: My failed solo projects and why I paused my indie hacker journey](https://www.indiehackers.com/post/my-failed-solo-projects-and-why-i-paused-my-indie-hacker-journey-5120caa4a6) — Categories 4, 7
 
 **Method:** WebSearch + WebFetch over public Indie Hackers and Hacker News threads on 2026-05-17. Excluded paywalled, login-gated, and Reddit (blocked by Reddit's fetch policy). All quotes copied verbatim from the linked threads; usernames preserved as shown in the source.
+
+---
+
+## Round 2 Public Mine (2026-05-17)
+
+Second pass after the round 1 source set was reviewed. New threads surfaced via WebSearch on: "I cancelled subscription", "another SaaS tool tired", "built nobody came", "AI killed subscriptions", "post launch silence", and "indie hackers shipping garbage". 17 new verbatim quotes captured. One new category surfaced — **"Built Beside, Not Inside"** (founders shipping AI/SaaS that sits *next to* the user's workflow rather than replacing a step in it).
+
+### New Verbatim Quotes
+
+| # | Source | User | Quote | Category |
+|---|---|---|---|---|
+| R2-1 | [IH: Most SaaS subscriptions aren't worth it](https://www.indiehackers.com/post/most-saas-subscriptions-aren-t-worth-it-dfff617e78) | Amardeep S Parmar | *"It's painful to see how much comes out of my accounts each month for subscriptions I barely use."* | 1 — Subscription Fatigue |
+| R2-2 | [IH: Most SaaS subscriptions aren't worth it](https://www.indiehackers.com/post/most-saas-subscriptions-aren-t-worth-it-dfff617e78) | Amardeep S Parmar | *"I paid $360 for an annual subscription to TillyPay. A month later my bank released a similar feature and I stopped using it."* | 1 — Subscription Fatigue |
+| R2-3 | [IH: Most SaaS subscriptions aren't worth it](https://www.indiehackers.com/post/most-saas-subscriptions-aren-t-worth-it-dfff617e78) | ryanthemaker | *"I'm guilty of buying a bunch of saas tools I don't actually use then hating myself."* | 1 — Subscription Fatigue |
+| R2-4 | [IH: Most SaaS subscriptions aren't worth it](https://www.indiehackers.com/post/most-saas-subscriptions-aren-t-worth-it-dfff617e78) | _pear | *"SaaS subscription hell is such a thing."* | 1 — Subscription Fatigue |
+| R2-5 | [IH: Most SaaS subscriptions aren't worth it](https://www.indiehackers.com/post/most-saas-subscriptions-aren-t-worth-it-dfff617e78) | cotterdonovan | *"I'm always hesitant to do an annual subscription because there's a good chance I'd no longer need the product in a year."* | 1 — Subscription Fatigue |
+| R2-6 | [IH: Built something good but nobody came](https://www.indiehackers.com/post/built-something-good-but-nobody-came-the-real-reason-products-get-ghosted-p8ehZ4d2HZ8MGG5gDjkx) | Abdelrahman Al Omari | *"Most of us don't fail because we can't build. We fail because we build… and nobody shows up."* | 4 — "Not the Tool's Job" |
+| R2-7 | [IH: Built something good but nobody came](https://www.indiehackers.com/post/built-something-good-but-nobody-came-the-real-reason-products-get-ghosted-p8ehZ4d2HZ8MGG5gDjkx) | Abdelrahman Al Omari | *"No users. No feedback. No revenue. Just silence."* | 7 — Praise-Without-Payment (silence variant) |
+| R2-8 | [IH: Built something good but nobody came](https://www.indiehackers.com/post/built-something-good-but-nobody-came-the-real-reason-products-get-ghosted-p8ehZ4d2HZ8MGG5gDjkx) | erichjeff | *"I've shipped products to crickets more times than I'd like to admit."* | 7 — Praise-Without-Payment |
+| R2-9 | [IH: Built something good but nobody came](https://www.indiehackers.com/post/built-something-good-but-nobody-came-the-real-reason-products-get-ghosted-p8ehZ4d2HZ8MGG5gDjkx) | Abdelrahman Al Omari | *"Runway doesn't usually die from bad ideas. It dies from slow customer acquisition."* | 4 — "Not the Tool's Job" |
+| R2-10 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | Daniil Khanin | *"10,947 registered users over 9 years. 90 ever paid anything. Total revenue: €6,356."* | 7 — Praise-Without-Payment |
+| R2-11 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | Daniil Khanin | *"I'm bad at selling. Nine years of proof."* | 7 — Praise-Without-Payment |
+| R2-12 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | Daniil Khanin | *"The product works. What's broken is everything around it — how I sell, who I sell to, what I sell."* | 4 — "Not the Tool's Job" |
+| R2-13 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | clawback | *"A lot of founders think they have a product problem when they really have a market-motion problem."* | 4 — "Not the Tool's Job" |
+| R2-14 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | plugiva | *"Tools used a few times a year almost fight against recurring pricing, no matter how valuable."* | 1 — Subscription Fatigue |
+| R2-15 | [Medium: I'm Tired of Indie Hackers](https://medium.com/@jovan.cicmil.dev/im-tired-of-indie-hackers-ac5c0ca1bde7) | Jovan Cicmil | *"The indie hacker ecosystem has become a machine for shipping micro-apps, scraping together landing pages, and bragging about revenue that never materializes."* | 3 — Burned by Gurus |
+| R2-16 | [Medium: I'm Tired of Indie Hackers](https://medium.com/@jovan.cicmil.dev/im-tired-of-indie-hackers-ac5c0ca1bde7) | Jovan Cicmil | *"Just ship as many half-baked ideas as possible, and generate some of that sweet Twitter engagement."* | 3 — Burned by Gurus |
+| R2-17 | [Medium: Indie Hackers Distribution Paradox 2026](https://medium.com/@Travel4Fun4U/the-indie-hackers-distribution-paradox-2026-edition-why-your-product-is-perfect-and-nobody-d47c9070523a) | r/indiehackers (cited) | *"I have a great product with 37 users. I'm exhausted. I feel like I'm shouting into the void."* | 7 — Praise-Without-Payment |
+| R2-18 | [IH: Most SaaS products fail for the same boring reason](https://www.indiehackers.com/post/most-saas-products-fail-for-the-same-boring-reason-8c3b1cd51b) | Astra Wysocka | *"The product doesn't actually replace anything. It exists next to the user's workflow instead of inside it."* | **8 — Built Beside, Not Inside (NEW)** |
+| R2-19 | [IH: Most SaaS products fail for the same boring reason](https://www.indiehackers.com/post/most-saas-products-fail-for-the-same-boring-reason-8c3b1cd51b) | Astra Wysocka | *"Most founders think they are building a product. In reality they are often building a second tool that sits beside the thing people already use."* | **8 — Built Beside, Not Inside (NEW)** |
+| R2-20 | [HN: AI is going to kill app subscriptions](https://news.ycombinator.com/item?id=47024387) | barnabee | *"Good riddance to software subscriptions."* | 1 — Subscription Fatigue |
+| R2-21 | [HN: AI is going to kill app subscriptions](https://news.ycombinator.com/item?id=47024387) | LordHumungous | *"Did it ever make sense? I always scoffed at the idea of paying a subscription to use a text editor or paint tool."* | 1 — Subscription Fatigue |
+| R2-22 | [HN: Cancelled subscriptions because AI replaced them](https://news.ycombinator.com/item?id=47436526) | _pdp_ | *"Yep. We've canceled some software we could build internally."* | 5 — "I Can Build It Myself" |
+
+### New Category Surfaced
+
+**Category 8 — "Built Beside, Not Inside" (workflow-replacement objection):** Founders who shipped a tool that adds a step rather than removing one. Marco's exact pattern: he built an AI tool, but it sits *next to* the founder's existing workflow (Notion, Stripe, Indie Hackers feed) instead of replacing a step in it. UnlockSaaS itself faces this objection — the Machine must be the *one* place the founder does the post-launch work, not "another tab open."
+
+**Brunson classification:** New External Belief #7 — "Even good tools fail because they sit beside my real work." Engine rewrite: *"The Machine isn't a place you visit. It's the place outreach is sent from and the place Stripe pings when your first customer pays. If those two events don't live inside it, kill the tool. Both do."*
+
+---
+
+### Updated FAQ Copy
+
+Six rebuttals, one per External Belief (the original 5 + the round-1 "build it myself" + new "built beside"). 60–100 words each. Voice: Reluctant Hero. Acknowledge in their own language first, then reframe.
+
+**Q1 — "I do not have time for another framework."**
+> I get it. You've already read the books, watched the YouTube breakdowns, joined two Slack groups. None of it shipped a customer. The Machine isn't a framework — the framework is buried *inside* the engine. You answer 3–5 questions per step, the engine assembles the work, you take the action it tells you to take. By Step 7 either Stripe pings with your first sale or the guarantee fires and you get $98 back. You don't read this. You finish it.
+
+**Q2 — "I have tried customer interviews and they did not help."**
+> Most founders who say this did two interviews, got polite feedback, and concluded the market was wrong. Be honest about what "tried" means. The Machine forces 20 logged outreach actions before the guarantee can fire — that's the floor. If you complete 20 and no Stripe charge lands, the offer was wrong, and the refund tells you that for free. Most founders never get to 20. That's why most still don't know what's actually broken.
+
+**Q3 — "Praise without payment means my market is dead."**
+> A founder on Indie Hackers just posted: 10,947 signups, 90 paid, nine years. He wrote *"I'm bad at selling. Nine years of proof."* That's not a dead market. That's a missing motion. The Machine assumes the people clapping on your launch post are not the people who pay — and forces you to go find the ones who do, with logged outreach the engine tracks. If 20 of the right conversations still produce no charge, the guarantee fires.
+
+**Q4 — "$49/mo is too much pre-revenue."**
+> Two coffees a week. And the cap on your downside is $98, not $49. If the Machine doesn't produce a verified Stripe charge in 60 days AND you completed the in-product milestones, you get the $98 back. Most founders I built this for spend more than $98/mo on tools they don't open. This is the one tool with a contract: it pays for itself in your Stripe dashboard or it pays itself back into your bank.
+
+**Q5 — "I can already see the path. I just need to execute."**
+> Then execute. Open Stripe right now. If you charged a new customer in the last 14 days, close this tab. If you didn't, the path you can see is the path you've been seeing for six months — and you're still here reading FAQs. The Machine doesn't sell you a new plan. It runs the plan you already wrote down and never finished. The proof it works is the Stripe charge it produces, not the dashboard it shows.
+
+**Q6 — "Couldn't I build this myself?"**
+> Yes. Probably in three weekends. While you're building, you're not running the funnel — which is the exact disease the Machine treats. The Stripe-webhook proof, the Dream 100 picker fed from your locked workbook, the engine pushback that mirrors your own avoidance back at you, the 60-day refund logic — you'd ship those in a month. And during that month, zero outreach. You'd be a founder who chose to ship one more tool nobody pays for. That's not a tool decision. That's a story.
+
+**Q7 — "Even if it works, it'll just sit beside my real workflow."**
+> Fair. Most tools do. That's why outreach is *sent* from inside the Machine, not copy-pasted out to another tab — and why the Stripe webhook fires inside the Machine when your first customer pays. Those are the two events that matter on the post-launch stretch. If both live somewhere else, kill the tool. Both live here. The Machine isn't a tab you open. It's the room you do the work in for 60 days. If you finish, the guarantee never fires.
+
+---
+
+### Disqualifier Lines
+
+Each ≤25 words. Voice: workbook 01 §6 Beat 5 — polarity AGAINST the buyer's avoidance pattern. Same Reluctant Hero who built the thing tells you out loud who he won't sell to.
+
+1. *"This is not for you if you've shipped less than one real thing. The Machine repairs funnels. It doesn't build first products."*
+2. *"This is not for you if you want a coach who tells you you're doing great. The engine pushes back. That's the point."*
+3. *"This is not for you if you've already concluded the market is wrong. The Machine assumes the order is wrong. If you've decided otherwise, no tool helps."*
+4. *"This is not for you if $98 over 60 days is the difference between rent and no-rent. The free Diagnostic stays free. Use that."*
+5. *"This is not for you if what you actually want is permission to ship product #4. The Machine finishes the funnel under product #3."*
+6. *"This is not for you if you need another tab open beside your work. The Machine IS the work for 60 days, or it isn't bought."*
+
+---
+
+## Mine Status Update
+
+Total quote count after round 2: **52 verbatim quotes** (30 from round 1 + 22 new in round 2) across **8 categories** (the 7 originals + one new: "Built Beside, Not Inside"). The new category is meaningful — it names Marco's own diagnostic blindspot in his peers' words (`Astra Wysocka`: *"a second tool that sits beside the thing people already use"*) and gives the sales page a 7th FAQ that pre-empts the "this'll just be another tab" objection. Still gated by private MCP access: Maryan's Slack DMs, Gmail threads, and Granola/Fireflies recordings from his 10 founder conversations — the public mine confirms patterns but does not contain the niche-specific dollar language those private conversations almost certainly carry (launch-critical, per Open Item 1). **Highest-leverage sales-page change from round 2:** replace the current $49 FAQ #4 (cash constraint) with FAQ Q3 above ("praise without payment"). The Daniil Khanin quote — *"10,947 signups, 90 paid, nine years"* — is the single strongest dollar-objection mirror in the entire mine because it is specific, public, dated, and ends with *"nine years of proof."* That line lands harder than any rewrite the engine could synthesize.

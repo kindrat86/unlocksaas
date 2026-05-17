@@ -136,6 +136,8 @@ export type Database = {
       }
       diagnostic_leads: {
         Row: {
+          biggest_attempt: string | null
+          bucket: string | null
           converted_session_id: string | null
           converted_to_starter_at: string | null
           created_at: string
@@ -146,15 +148,20 @@ export type Database = {
           id: string
           identity_variant: string | null
           ip: string | null
+          is_returning: boolean
           label: string
           next_step: string | null
           product_url: string
+          recent_revenue: string | null
           source: string | null
           subscriber_id: string | null
+          time_since_launch: string | null
           updated_at: string
           user_agent: string | null
         }
         Insert: {
+          biggest_attempt?: string | null
+          bucket?: string | null
           converted_session_id?: string | null
           converted_to_starter_at?: string | null
           created_at?: string
@@ -165,15 +172,20 @@ export type Database = {
           id?: string
           identity_variant?: string | null
           ip?: string | null
+          is_returning?: boolean
           label: string
           next_step?: string | null
           product_url: string
+          recent_revenue?: string | null
           source?: string | null
           subscriber_id?: string | null
+          time_since_launch?: string | null
           updated_at?: string
           user_agent?: string | null
         }
         Update: {
+          biggest_attempt?: string | null
+          bucket?: string | null
           converted_session_id?: string | null
           converted_to_starter_at?: string | null
           created_at?: string
@@ -184,11 +196,14 @@ export type Database = {
           id?: string
           identity_variant?: string | null
           ip?: string | null
+          is_returning?: boolean
           label?: string
           next_step?: string | null
           product_url?: string
+          recent_revenue?: string | null
           source?: string | null
           subscriber_id?: string | null
+          time_since_launch?: string | null
           updated_at?: string
           user_agent?: string | null
         }

@@ -103,9 +103,24 @@ The Starter delivers Machine Steps 1 and 2 only. It does NOT give away Steps 3 t
 
 ---
 
-## Section 5: Phone / High-Ticket Funnel (Rung 3) — Deferred
+## Section 5: Rung 2 — Repeatable Revenue Layer (SPEC LOCKED 2026-05-17, BUILD GATED)
 
-Brunson's Phone Funnel template is what carries the $2K+ tier. For Unlock SaaS, this corresponds to the future repeatable-revenue tier for the founder doing it again on product 2. Locked decision from Step 1: **not built at launch.** Slot reserved.
+Updated 2026-05-17 under "improve everything autonomously" pass. The original framing — *"Rung 2 noted, not built"* — was deducted in the Russell audit (workbook 02 scored 88, dragged down by no Rung 2 commitment). This section now closes that gap.
+
+**Rung 2 is the Repeatable Revenue Layer.** Self-serve. Sits above $49/mo Core. NOT coaching, NOT DFY (workbook 01 §3 design rule preserved). It is what the Core customer ascends into the day they earn the Verified Builder badge and start Product 2 — and the asset carry-over (dream customer, AC, outreach playbook, Stripe pattern library) saves them a week per product launch.
+
+**Price (locked target):** $149/mo.
+**Activation gate:** 3 paying Core customers complete the full Machine loop + 1 unprompted "what's next" ask + founder self-dogfood pass.
+**Spec file:** `strategy/decisions/rung-2-repeatable-revenue.md` — full offer math, build minimum, what-it-is-not, target ratio ~5.7×, refund mechanic with 90-day window.
+**Public placeholder:** `/repeatable` — explains the spec, routes to `/machine-sales`, no fake countdown, no waitlist gate. Same honesty-as-polarity discipline used on `/diagnostic` and `/machine-sales` during their pre-Sprint windows.
+
+### Why ship the spec pre-build
+
+Brunson rule: once a buyer says yes, there must always be a next yes. The ladder is incomplete until the Core customer can see the rung above them — *even if it does not exist yet*. Publishing the spec before activation signals (a) the ladder is real, (b) the operator does not invent demand, (c) honest math is the brand. This is itself a piece of polarity: every competitor in `strategy/funnel-hacks.md` either pretends the next rung exists (Marc Lou's "coming soon") or pretends it does not need to exist (Arvid Kahl's dispersed back-end). UnlockSaaS publishes the spec and gates the build by evidence.
+
+## Section 5b: Phone / High-Ticket Funnel (Rung 3) — Still Deferred Indefinitely
+
+Brunson's Phone Funnel template carries the $2K+ agency / unlimited-products tier. UnlockSaaS Rung 3 corresponds to an agency or unlimited-products model and is **still not in scope**. Slot reserved. Re-evaluate after Rung 2 has 10+ paying customers.
 
 ---
 
@@ -147,14 +162,15 @@ Full audit runs in workbook 04. Six pre-launch checks per funnel:
 
 ## Status
 
-**Step 2 COMPLETE.**
+**Step 2 COMPLETE + Rung 2 SPEC LOCKED (revision 2026-05-17).**
 
 - Three launch funnels mapped to ladder rungs.
 - Hook / Story / Offer assigned per funnel.
 - 7-phase customer journey laid in.
 - Build order locked: $1 Starter first.
+- **Rung 2 (Repeatable Revenue Layer) spec locked**, build gated on 3 verified Core customer cycles. Public placeholder `/repeatable` live. Full spec in `strategy/decisions/rung-2-repeatable-revenue.md`.
 
-**Next:** Step 3, Funnel Scripts.
+**Next:** Step 3, Funnel Scripts (already complete; see workbook 03).
 
 ---
 

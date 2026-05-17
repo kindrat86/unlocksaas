@@ -66,25 +66,31 @@ done.
 
 ### Tier 1 — blocks revenue today
 
-1. **Push these env vars to Vercel (all 3 environments — production,
-   preview, development):**
+1. **Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel** (all
+   3 environments — production, preview, development).
 
-   ```
-   CRON_SECRET=09649ea721635a1d71c7a1c2dbc11ff5a38fb9e048f288ab0c7c1addb5b4e4d3
-   UNSUBSCRIBE_SECRET=7b6d7daf647cf5f0542a5c31c87a9eb7619f4842a5878420582b67787078cefb
-   ```
+   Per the secret-entry convention (locked 2026-05-17 after the zsh-leak
+   incident), generation + push MUST go through the dedicated getpass
+   scripts. Raw secret values must NEVER appear in any markdown file, chat
+   scrollback, or shell history — including this checklist.
 
-   These were freshly generated above. Until both are set, the Soap Opera +
-   Seinfeld daily crons cannot fire and unsubscribe links cannot verify
-   against a stable secret.
-
-   Command pattern:
    ```bash
-   vercel env add CRON_SECRET production --sensitive
-   vercel env add CRON_SECRET preview --sensitive
-   vercel env add CRON_SECRET development   # --sensitive fails on dev; omit
-   # repeat for UNSUBSCRIBE_SECRET
+   # Each script generates a fresh 32-byte hex secret, confirms with you,
+   # and pushes to Vercel via the CLI for all three environments:
+   ./scripts/setup-cron-secret.py
+   ./scripts/setup-unsubscribe-secret.py
    ```
+
+   Until both are set in Vercel, the Soap Opera + Seinfeld daily crons
+   cannot fire and unsubscribe links cannot verify against a stable secret.
+
+   Notes:
+   - `--sensitive` works on production + preview but fails server-side on
+     development (Vercel CLI limitation). The setup scripts handle this
+     branching automatically.
+   - Any candidate values that ever appeared in a plaintext file or chat
+     transcript are considered compromised — regenerate fresh ones via the
+     scripts above.
 
 2. **Create PostHog project + push project key.**
    Sign in at posthog.com → New project (EU region recommended for GDPR) →

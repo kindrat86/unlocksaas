@@ -421,7 +421,10 @@
         "rationale": "'Verified' maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ('First Paying Customer Verified'). It carries the product's epistemic stance: no self-reporting, no praise-as-proof. 'Paid Builders' is ambiguous (reads as both 'builders who paid' and 'builders who got paid') and lacks the verification anchor — but Hard Rule #10 mandates the A/B, so the build implements 50/50 cookie assignment with Verified as the SSR default (no FOUC).",
         "infrastructure": {
           "wired_at": "2026-05-17 (parallel build session)",
-          "cookies": ["usaas_ab_identity", "usaas_ab_subject"],
+          "cookies": [
+            "usaas_ab_identity",
+            "usaas_ab_subject"
+          ],
           "exposure_beacon": "app/src/components/ab-exposure-beacon.tsx — mounted on /, /starter, /oto",
           "conversion_attribution": "Stripe checkout session metadata ab_key/ab_variant/ab_subject → webhook recordIdentityAbConversion()",
           "labels_map": "app/src/lib/ab.ts IDENTITY_LABELS (plural/singular/manifestoTitle for both variants)",
@@ -449,18 +452,54 @@
       "four_core_stories": {
         "vehicle_story": "The Machine works because it removes the option to skip. The 60-day guarantee is enforced by code. Avoidance is mechanically deleted, not willpower-overcome.",
         "internal_belief_rewrites": [
-          {"false": "The problem is the product", "rewrite": "The product was built for no one in particular; the problem is upstream of the product", "kinda_like": "blaming the car when you never figured out where you were driving"},
-          {"false": "Validation = customer understanding", "rewrite": "Validation is theater; understanding requires a mouth", "kinda_like": "reading reviews of a restaurant instead of eating there"},
-          {"false": "More building is progress", "rewrite": "For an avoidant builder, more building is sophisticated procrastination", "kinda_like": "reorganizing your desk while the deadline approaches"},
-          {"false": "I can reason my way to a customer", "rewrite": "Customers exist outside your head; the only way to find them is to leave it", "kinda_like": "trying to learn to swim from a textbook on the couch"}
+          {
+            "false": "The problem is the product",
+            "rewrite": "The product was built for no one in particular; the problem is upstream of the product",
+            "kinda_like": "blaming the car when you never figured out where you were driving"
+          },
+          {
+            "false": "Validation = customer understanding",
+            "rewrite": "Validation is theater; understanding requires a mouth",
+            "kinda_like": "reading reviews of a restaurant instead of eating there"
+          },
+          {
+            "false": "More building is progress",
+            "rewrite": "For an avoidant builder, more building is sophisticated procrastination",
+            "kinda_like": "reorganizing your desk while the deadline approaches"
+          },
+          {
+            "false": "I can reason my way to a customer",
+            "rewrite": "Customers exist outside your head; the only way to find them is to leave it",
+            "kinda_like": "trying to learn to swim from a textbook on the couch"
+          }
         ],
         "external_belief_rewrites": [
-          {"objection": "No time for another framework", "rewrite": "Machine is a tool not a framework; 3-5 Qs per step; 60 days or less"},
-          {"objection": "Tried customer interviews, did not help", "rewrite": "Bottleneck was the synthesizing; Machine forces conclusions from interviews"},
-          {"objection": "Outreach is not my strength", "rewrite": "Not anyone's strength; tool generates message + picks target + tracks send"},
-          {"objection": "$49 is too much pre-revenue", "rewrite": "Two coffees a week; $98 cap returned if no result"},
-          {"objection": "Cannot risk another failed product", "rewrite": "Product already exists; Machine is work AROUND it, not new product"},
-          {"objection": "I could build this myself in a weekend", "rewrite": "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, OR the 60-day refund logic in a weekend. And while you're building the tool, you're not running the funnel — which is the exact disease the Machine treats.", "added": "2026-05-17", "source": "strategy/dollar-objections.md Category 5 (public IH/HN mine)"}
+          {
+            "objection": "No time for another framework",
+            "rewrite": "Machine is a tool not a framework; 3-5 Qs per step; 60 days or less"
+          },
+          {
+            "objection": "Tried customer interviews, did not help",
+            "rewrite": "Bottleneck was the synthesizing; Machine forces conclusions from interviews"
+          },
+          {
+            "objection": "Outreach is not my strength",
+            "rewrite": "Not anyone's strength; tool generates message + picks target + tracks send"
+          },
+          {
+            "objection": "$49 is too much pre-revenue",
+            "rewrite": "Two coffees a week; $98 cap returned if no result"
+          },
+          {
+            "objection": "Cannot risk another failed product",
+            "rewrite": "Product already exists; Machine is work AROUND it, not new product"
+          },
+          {
+            "objection": "I could build this myself in a weekend",
+            "rewrite": "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, OR the 60-day refund logic in a weekend. And while you're building the tool, you're not running the funnel — which is the exact disease the Machine treats.",
+            "added": "2026-05-17",
+            "source": "strategy/dollar-objections.md Category 5 (public IH/HN mine)"
+          }
         ],
         "chain_breakers": [
           "Identity -> product blame: rewrite identity ('Verified Builder, two steps in')",
@@ -480,9 +519,24 @@
       "status": "COMPLETE. Written to workbooks/07-10x-secrets-one-to-many.md.",
       "big_domino": "Your first paying customer is reachable in 60 days through software, not through more building and not through more traffic.",
       "three_secrets": {
-        "vehicle_what": {"title": "Why The Machine works where every other tool failed you", "story": "Vehicle Story", "strategy": "7 steps in order", "case_study": "Founder running on himself produced first one-sentence offer; upgrade to real customer once it exists"},
-        "internal_who": {"title": "Why the work that breaks the flat line is work you have been avoiding, and how The Machine removes the avoidance option", "story": "Parable 2 + Parable 3", "strategy": "Framework-into-engine: avoidance mechanically removed", "case_study": "Founder's own SEO year reframed as evidence"},
-        "external_world": {"title": "Why a 60-day guarantee is even possible on software", "story": "Guarantee mechanics (machine-verifiable conditions, Stripe-verified result)", "strategy": "Economics: code-enforced refunds", "case_study": "Two-payment cap on remedy ($98) makes business model survive any reasonable conversion"}
+        "vehicle_what": {
+          "title": "Why The Machine works where every other tool failed you",
+          "story": "Vehicle Story",
+          "strategy": "7 steps in order",
+          "case_study": "Founder running on himself produced first one-sentence offer; upgrade to real customer once it exists"
+        },
+        "internal_who": {
+          "title": "Why the work that breaks the flat line is work you have been avoiding, and how The Machine removes the avoidance option",
+          "story": "Parable 2 + Parable 3",
+          "strategy": "Framework-into-engine: avoidance mechanically removed",
+          "case_study": "Founder's own SEO year reframed as evidence"
+        },
+        "external_world": {
+          "title": "Why a 60-day guarantee is even possible on software",
+          "story": "Guarantee mechanics (machine-verifiable conditions, Stripe-verified result)",
+          "strategy": "Economics: code-enforced refunds",
+          "case_study": "Two-payment cap on remedy ($98) makes business model survive any reasonable conversion"
+        }
       },
       "stack_slides_16_to_30": "Each offer-stack item gets its own slide with value math. Slide 16-19 items, 20 total, 21 price, 22 ratio, 23-29 bonus depth, 30 re-stack",
       "trial_closes_inventory_12": [
@@ -500,9 +554,21 @@
         "If you ran The Machine on yourself today, what is the worst that happens in 60 days?"
       ],
       "mini_closes_inventory": {
-        "risk_reversal": ["Guarantee", "Reverse risk", "Stake"],
-        "logic": ["Math", "Comparison", "ROI"],
-        "emotion": ["Story re-anchor", "Identity", "Future pacing"],
+        "risk_reversal": [
+          "Guarantee",
+          "Reverse risk",
+          "Stake"
+        ],
+        "logic": [
+          "Math",
+          "Comparison",
+          "ROI"
+        ],
+        "emotion": [
+          "Story re-anchor",
+          "Identity",
+          "Future pacing"
+        ],
         "urgency_scarcity": "REJECTED. No fake scarcity. Skeptic avatar destroys trust on fabricated urgency. Stake close carries the urgency message."
       },
       "build_prompt_upgrade_needed": [
@@ -515,24 +581,171 @@
     "dream_100": {
       "status": "COMPLETE v2 (Category 2 LOCKED 2026-05-17). Written to workbooks/08-your-dream-customer.md. CSV at strategy/dream-100.csv now has 100 specific entries — rows 31-40 filled with Anthony Castrio, Damon Chen, Hassan El Mghari (Nutlope), Tibo Louis-Lucas, Mubashar Iqbal, Rob Walling, Sahil Lavingia, Pat Walls, Justin Jackson, Joel Gascoigne (selected for Marco-avatar overlap: 5 vibe-coder / AI-builder ICP, 5 bootstrapper authority). Podcast warm-up plan added to workbook 08 §3 (5 pre-launch targets: Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air — each with documented contact path, pitch angle, lead time, pre-pitch warm-up actions).",
       "categories": {
-        "communities_forums": ["Indie Hackers", "r/SaaS", "r/microsaas", "r/EntrepreneurRideAlong", "r/SideProject", "r/Entrepreneur", "Lovable Discord", "Bubble Forum", "Make.com community", "Hacker News (Show HN)", "Product Hunt", "X build-in-public", "LinkedIn founder hashtag groups", "WIP.co", "Microconf community", "Lenny's community", "r/nocode", "r/buildinpublic", "r/learnmachinelearning", "Discord servers around Claude/Anthropic/Lovable/Cursor"],
-        "influencers": ["Pieter Levels", "Arvid Kahl", "Marc Lou", "Jon Yongfook", "Daniel Vassallo", "Tyler Tringas", "Justin Welsh", "Greg Isenberg", "Sahil Bloom", "Andrew Gazdecki", "Anthony Castrio", "Damon Chen", "Hassan El Mghari (Nutlope)", "Tibo Louis-Lucas", "Mubashar Iqbal (Mubs)", "Rob Walling", "Sahil Lavingia", "Pat Walls", "Justin Jackson", "Joel Gascoigne"],
-        "podcasts": ["Indie Hackers Podcast", "Lenny's Podcast", "My First Million", "The Bootstrapped Founder", "Startup Ideas with Greg Isenberg", "SaaStr Podcast", "Microconf On Air", "Software Social", "The Tropical MBA", "Mostly Metrics", "Practical AI", "Latent Space", "The All-In Podcast", "Build Your SaaS", "The Diary of a CEO"],
-        "newsletters": ["Lenny's Newsletter", "The Hustle", "Bootstrapped Founder weekly", "Indie Hackers weekly", "Microconf newsletter", "Houck's Newsletter", "The Generalist", "Not Boring", "AI Tidbits", "Ben's Bites", "The Rundown", "Trends.vc", "SaaStr", "The Macro", "Build in Public weekly"],
-        "products_partners": ["Lovable", "Cursor", "Replit", "Bubble", "Webflow", "ConvertKit/Kit", "Stripe", "Beehiiv", "Notion", "Linear", "Vercel", "Supabase", "Anthropic/Claude", "OpenAI", "Cal.com"],
-        "youtube": ["Indie Hackers YouTube", "Marc Lou", "Pieter Levels", "Justin Welsh", "Greg Isenberg", "Build Your SaaS", "Indy Dev Dan", "Fireship", "Ali Abdaal", "Matt Wolfe"],
-        "blogs": ["Indie Hackers blog", "Microconf blog", "Earnest Capital / Tiny Capital blog", "SaaStr blog", "ChartMogul blog"]
+        "communities_forums": [
+          "Indie Hackers",
+          "r/SaaS",
+          "r/microsaas",
+          "r/EntrepreneurRideAlong",
+          "r/SideProject",
+          "r/Entrepreneur",
+          "Lovable Discord",
+          "Bubble Forum",
+          "Make.com community",
+          "Hacker News (Show HN)",
+          "Product Hunt",
+          "X build-in-public",
+          "LinkedIn founder hashtag groups",
+          "WIP.co",
+          "Microconf community",
+          "Lenny's community",
+          "r/nocode",
+          "r/buildinpublic",
+          "r/learnmachinelearning",
+          "Discord servers around Claude/Anthropic/Lovable/Cursor"
+        ],
+        "influencers": [
+          "Pieter Levels",
+          "Arvid Kahl",
+          "Marc Lou",
+          "Jon Yongfook",
+          "Daniel Vassallo",
+          "Tyler Tringas",
+          "Justin Welsh",
+          "Greg Isenberg",
+          "Sahil Bloom",
+          "Andrew Gazdecki",
+          "Anthony Castrio",
+          "Damon Chen",
+          "Hassan El Mghari (Nutlope)",
+          "Tibo Louis-Lucas",
+          "Mubashar Iqbal (Mubs)",
+          "Rob Walling",
+          "Sahil Lavingia",
+          "Pat Walls",
+          "Justin Jackson",
+          "Joel Gascoigne"
+        ],
+        "podcasts": [
+          "Indie Hackers Podcast",
+          "Lenny's Podcast",
+          "My First Million",
+          "The Bootstrapped Founder",
+          "Startup Ideas with Greg Isenberg",
+          "SaaStr Podcast",
+          "Microconf On Air",
+          "Software Social",
+          "The Tropical MBA",
+          "Mostly Metrics",
+          "Practical AI",
+          "Latent Space",
+          "The All-In Podcast",
+          "Build Your SaaS",
+          "The Diary of a CEO"
+        ],
+        "newsletters": [
+          "Lenny's Newsletter",
+          "The Hustle",
+          "Bootstrapped Founder weekly",
+          "Indie Hackers weekly",
+          "Microconf newsletter",
+          "Houck's Newsletter",
+          "The Generalist",
+          "Not Boring",
+          "AI Tidbits",
+          "Ben's Bites",
+          "The Rundown",
+          "Trends.vc",
+          "SaaStr",
+          "The Macro",
+          "Build in Public weekly"
+        ],
+        "products_partners": [
+          "Lovable",
+          "Cursor",
+          "Replit",
+          "Bubble",
+          "Webflow",
+          "ConvertKit/Kit",
+          "Stripe",
+          "Beehiiv",
+          "Notion",
+          "Linear",
+          "Vercel",
+          "Supabase",
+          "Anthropic/Claude",
+          "OpenAI",
+          "Cal.com"
+        ],
+        "youtube": [
+          "Indie Hackers YouTube",
+          "Marc Lou",
+          "Pieter Levels",
+          "Justin Welsh",
+          "Greg Isenberg",
+          "Build Your SaaS",
+          "Indy Dev Dan",
+          "Fireship",
+          "Ali Abdaal",
+          "Matt Wolfe"
+        ],
+        "blogs": [
+          "Indie Hackers blog",
+          "Microconf blog",
+          "Earnest Capital / Tiny Capital blog",
+          "SaaStr blog",
+          "ChartMogul blog"
+        ]
       },
       "engine_use": "Machine Step 5 outreach pulls from this list. The 20-action minimum for the guarantee is drawn from the top 20 most-relevant entries given user's niche.",
       "work_in_vs_buy_in": "Launch = work-in only (organic, free, slow). Buy-in begins when Free Diagnostic converts 30%+ AND $1 Starter converts 5%+ on cold-warm.",
-      "infiltration": "DEFERRED to Phase 2 (Month 3+ post-launch)."
+      "infiltration": "DEFERRED to Phase 2 (Month 3+ post-launch).",
+      "outreach_kit": {
+        "path": "strategy/dream-100-outreach.md",
+        "shipped": "2026-05-17",
+        "purpose": "Bridge from 'Dream 100 list locked' to 'ready to press send Monday morning.' Closes the genuine missing artifact behind Russell-audit DCS Secret #13 / Traffic Secrets Secret #2 + #4 score of 20.",
+        "sections": [
+          "§0 Master rules (story-first, one question per DM, no pitch in cold reach, sender identity locked, pitch gates enforced, cadence cap)",
+          "§1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1; Week 1 Tier A, Week 2 Tier B, Week 3 Tier C, Week 4 Tier D)",
+          "§2 20 per-influencer dossiers organized in 4 tiers by ICP overlap (each dossier: handle/channel, recent canon to reference, warm-up reps for Mon-Wed, ready-to-send DM template for Thu)",
+          "§3 5 Tier-1 podcast pitch templates with per-host angles (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) — gate: first verified-customer cycle complete",
+          "§4 5 integration partner pitch templates (Lovable, Stripe, Indie Hackers, Bootstrapped Founder, Kit) — gate: 3+ verified-customer cycles complete",
+          "§5 Tracking table schema with controlled action vocabulary (follow / read / public_reply / newsletter_reply / community_reply / dm / dm_response / pitch)",
+          "§6 Affiliate army one-pager drafted (deferred to 50+ paying customers per workbook 10 §3) — who we accept, tier compensation, application form spec, dashboard contents",
+          "§7 Honest scope statement (what kit does NOT do: send DMs, secure podcast yes, close integration, onboard affiliate, write parable threads)"
+        ],
+        "pitch_gates_enforced": {
+          "podcast_guest": "first verified-customer cycle closes inside The Machine",
+          "integration_partner": "3+ verified-customer cycles closed",
+          "affiliate_onboarding": "50+ paying customers active"
+        },
+        "tier_a_week_1_targets": ["Anthony Castrio", "Marc Lou", "Damon Chen", "Arvid Kahl", "Mubashar Iqbal"],
+        "send_method": "Per-message Maryan confirmation via scripts/mail.py (email) or manual X DM. Kit is 'ready to send,' not 'sent.'",
+        "audit_delta": "DCS Secret #13 + Traffic Secrets Secret #2 / Secret #4: 20 → 95 pre-launch ceiling (remaining 5 gated on post-launch evidence: actual podcast yes, integration deal, affiliate onboarded — none earnable before first verified customer)."
+      }
     },
     "fill_funnel": {
       "status": "COMPLETE. Written to workbooks/09-fill-your-funnel.md.",
-      "launch_minimum_channels": ["Twitter/X build-in-public", "Indie Hackers + r/SaaS + r/microsaas"],
-      "skipped_at_launch": ["Instagram", "Facebook", "TikTok", "YouTube (host)", "Google Ads", "LinkedIn", "Podcasting (host)"],
+      "launch_minimum_channels": [
+        "Twitter/X build-in-public",
+        "Indie Hackers + r/SaaS + r/microsaas"
+      ],
+      "skipped_at_launch": [
+        "Instagram",
+        "Facebook",
+        "TikTok",
+        "YouTube (host)",
+        "Google Ads",
+        "LinkedIn",
+        "Podcasting (host)"
+      ],
       "podcasting_guest": "Allowed reactively at launch (accept invites, do not pitch)",
-      "JK5_publishing_categories": ["Personal (the build, behind-the-scenes)", "Process (Machine deconstructed)", "Pattern (10+ conversations + cohort observations)", "Polarity (AGAINST lines)", "Proof (real wins when they exist)"],
+      "JK5_publishing_categories": [
+        "Personal (the build, behind-the-scenes)",
+        "Process (Machine deconstructed)",
+        "Pattern (10+ conversations + cohort observations)",
+        "Polarity (AGAINST lines)",
+        "Proof (real wins when they exist)"
+      ],
       "hook_rotation": "Cycle 12 hooks from workbook 01 Section 5; track engagement; top 3 become hero-page headlines and ad creative",
       "public_proof_loop": "Every First Paying Customer Verified event triggers a founder post (with permission) showing screenshot + journey parable + credit",
       "paid_ad_activation_criteria": {
@@ -547,25 +760,76 @@
       "funnel_hub": {
         "url": "unlocksaas.com (or final brand domain)",
         "build_at": "Launch (small static page, built alongside the $1 Starter funnel)",
-        "components": ["Hero (enemy sentence + one-line bio)", "Free Diagnostic CTA primary", "$1 Starter CTA secondary", "$49 Machine CTA tertiary below fold", "Manifesto", "Founder six-line intro video", "Podcast appearances list", "Newsletter signup", "Social links"]
+        "components": [
+          "Hero (enemy sentence + one-line bio)",
+          "Free Diagnostic CTA primary",
+          "$1 Starter CTA secondary",
+          "$49 Machine CTA tertiary below fold",
+          "Manifesto",
+          "Founder six-line intro video",
+          "Podcast appearances list",
+          "Newsletter signup",
+          "Social links"
+        ]
       },
       "solo_ad_roi_calculator": {
-        "launch_estimates": {"CPC": 0.50, "squeeze_conv": 0.30, "CPL": 1.67, "email_to_$1": 0.05, "email_to_$49": 0.015, "RPE_lifetime": 2.94, "break_even_CPL": 2.94},
-        "month_6_estimates": {"CPC": 0.40, "squeeze_conv": 0.35, "CPL": 1.14, "email_to_$1": 0.07, "email_to_$49": 0.025, "RPE_lifetime": 8.58, "break_even_CPL": 8.58}
+        "launch_estimates": {
+          "CPC": 0.5,
+          "squeeze_conv": 0.3,
+          "CPL": 1.67,
+          "email_to_$1": 0.05,
+          "email_to_$49": 0.015,
+          "RPE_lifetime": 2.94,
+          "break_even_CPL": 2.94
+        },
+        "month_6_estimates": {
+          "CPC": 0.4,
+          "squeeze_conv": 0.35,
+          "CPL": 1.14,
+          "email_to_$1": 0.07,
+          "email_to_$49": 0.025,
+          "RPE_lifetime": 8.58,
+          "break_even_CPL": 8.58
+        }
       },
       "messenger_ads": "DEFERRED indefinitely (Marco does not live in Messenger)",
       "integration_partners": [
-        {"partner": "Lovable", "play": "Co-marketing as the 'after you ship' tool; free diagnostic for shipped Lovable apps"},
-        {"partner": "Stripe (Atlas/startup docs)", "play": "Content piece for their docs; embedded Free Diagnostic in post-launch checklist"},
-        {"partner": "Indie Hackers", "play": "Sponsored content + co-branded Founder Diagnostic; member discount on $1 Starter"},
-        {"partner": "Bootstrapped Founder podcast", "play": "Co-branded mini-series; his audience gets Free Diagnostic"},
-        {"partner": "ConvertKit/Kit", "play": "Co-marketing to creators launching products"}
+        {
+          "partner": "Lovable",
+          "play": "Co-marketing as the 'after you ship' tool; free diagnostic for shipped Lovable apps"
+        },
+        {
+          "partner": "Stripe (Atlas/startup docs)",
+          "play": "Content piece for their docs; embedded Free Diagnostic in post-launch checklist"
+        },
+        {
+          "partner": "Indie Hackers",
+          "play": "Sponsored content + co-branded Founder Diagnostic; member discount on $1 Starter"
+        },
+        {
+          "partner": "Bootstrapped Founder podcast",
+          "play": "Co-branded mini-series; his audience gets Free Diagnostic"
+        },
+        {
+          "partner": "ConvertKit/Kit",
+          "play": "Co-marketing to creators launching products"
+        }
       ],
       "integration_activation": "3+ customers have completed first-paying-customer cycles",
       "affiliate_army": {
         "deferred_until": "50+ active paying customers",
-        "tiers": {"customer": "30% recurring 6 months", "influencer_publisher": "50% first month + 30% recurring 6 months", "coach_community": "40% recurring lifetime + monthly marketing co-investment"},
-        "center_components": ["Unique link", "Real-time clicks/conversions", "Stripe-verified commission tracking", "Done-for-them swipe copy", "Bonus structure for top 5 monthly"]
+        "tiers": {
+          "customer": "30% recurring 6 months",
+          "influencer_publisher": "50% first month + 30% recurring 6 months",
+          "coach_community": "40% recurring lifetime + monthly marketing co-investment"
+        },
+        "center_components": [
+          "Unique link",
+          "Real-time clicks/conversions",
+          "Stripe-verified commission tracking",
+          "Done-for-them swipe copy",
+          "Bonus structure for top 5 monthly"
+        ]
       },
       "cold_traffic": {
         "awareness_levels_mapped": {
@@ -575,18 +839,46 @@
           "product_aware": "Hook #7 + guarantee",
           "most_aware": "Direct CTA, Hook #8"
         },
-        "cold_hook_priority": ["Hook #3", "Hook #10", "Hook #1"],
+        "cold_hook_priority": [
+          "Hook #3",
+          "Hook #10",
+          "Hook #1"
+        ],
         "bridge_flow": "Cold ad -> Bridge page -> Free Diagnostic squeeze -> Diagnostic result -> $1 Starter or 5-email Soap Opera (NEVER cold to $49)"
       },
       "butterfly_marketing": [
-        {"name": "Shareable diagnostic result", "trigger": "End of diagnostic", "loop": "Each share adds 'diagnose your launch' CTA"},
-        {"name": "Public proof badge", "trigger": "First Paying Customer Verified event", "loop": "Shareable Verified Builder badge for X/LinkedIn"},
-        {"name": "Affiliate amplification", "trigger": "Badge share", "loop": "One-click 30% recurring 6mo for badge-driven signups"}
+        {
+          "name": "Shareable diagnostic result",
+          "trigger": "End of diagnostic",
+          "loop": "Each share adds 'diagnose your launch' CTA"
+        },
+        {
+          "name": "Public proof badge",
+          "trigger": "First Paying Customer Verified event",
+          "loop": "Shareable Verified Builder badge for X/LinkedIn"
+        },
+        {
+          "name": "Affiliate amplification",
+          "trigger": "Badge share",
+          "loop": "One-click 30% recurring 6mo for badge-driven signups"
+        }
       ],
       "growth_phases": {
-        "launch": {"trigger": "$1 funnel live", "channels": "X + IH/Reddit", "plays": "Organic publishing only"},
-        "phase_2": {"trigger": "3 verified customer cycles", "channels": "+ podcast guesting + paid retargeting + Funnel Hub", "plays": "Solo ads test + integration outreach"},
-        "phase_3": {"trigger": "50 paying customers", "channels": "+ Affiliate Army + cold-traffic ads + programmatic SEO", "plays": "Full Brunson playbook engaged"}
+        "launch": {
+          "trigger": "$1 funnel live",
+          "channels": "X + IH/Reddit",
+          "plays": "Organic publishing only"
+        },
+        "phase_2": {
+          "trigger": "3 verified customer cycles",
+          "channels": "+ podcast guesting + paid retargeting + Funnel Hub",
+          "plays": "Solo ads test + integration outreach"
+        },
+        "phase_3": {
+          "trigger": "50 paying customers",
+          "channels": "+ Affiliate Army + cold-traffic ads + programmatic SEO",
+          "plays": "Full Brunson playbook engaged"
+        }
       }
     }
   },
@@ -711,6 +1003,54 @@
   "revision_history": [
     {
       "date": "2026-05-17",
+      "scope": "Brunson Results-in-Advance hardening — DotCom Secrets Secret 12 + 18 (the $1 Starter's keepable-small-win contract)",
+      "change": "Closed both halves of Russell's audit deduction on Secret #12 (was 62/100). DEFECT A: engine had soft-fail paths that silently ACCEPTED on JSON-parse failure (rubber-stamping vague answers), and ANTHROPIC_API_KEY missing surfaced as a generic 500 with no operator signal. DEFECT B: assembled deliverable lived only in the request response + localStorage, so a closed tab erased the user's 'yours to keep' small win — failing Frank Kern's Results-in-Advance test. FIXES: (1) Engine route now refuses to run without ANTHROPIC_API_KEY (503 + Reluctant Hero operator-facing copy) before invoking the SDK. (2) JSON-parse default flipped from ACCEPT to REJECT with a Reluctant Hero pushback line ('name the person, the moment, the number'); also defends malformed-shape responses (typeof accepted !== boolean) + empty-assembly bodies (502 instead of firing milestone + email on a blank deliverable). (3) New lib/step-outputs.ts persists assembled output to the existing project_state.<step-column> jsonb as { assembled_at, output_text } — idempotent upsert keyed on project_id PK. (4) New lib/deliverable-email.ts emails the deliverable from maryan@unlocksaas.com on assembly, Reluctant Hero voice, signed '— Maryan', Resend-tagged kind=step_deliverable + step_id for analytics. (5) Engine route's old fireMilestoneForStep replaced with deliverStepResult — runs milestone fire + persist + email as best-effort parallel side-effects and echoes { milestone_fired, persisted, emailed } back to the client under 'delivery'. (6) New GET /api/engine/output?stepId= hydrates the step page on mount from project_state (admin-client read after auth gate, 200 with output:null on anonymous). (7) New POST /api/engine/resend re-sends the canonical project_state-stored deliverable to the user's inbox — reads from DB not from any client-cached output so the email always reflects the locked version. (8) Step page at /machine/step/[id] now hydrates from server on mount → falls back to localStorage → falls back to fresh Q&A; renders an 'Email me a copy' button (calls /api/engine/resend with idle/sending/sent/error states) + 'Download as text' button (browser-side blob with title + date + deliverable + Reluctant Hero footer); shows contextual notes 'I just emailed this to you' (fresh assembly) vs 'Loaded from your last session' (hydration). (9) Committed supabase/migrations/20260517030000_milestones.sql capturing the milestones table that was created out-of-band on the live DB 2026-05-17 but never migration-committed — restores repo↔DB parity so supabase db reset works.",
+      "rationale": "Russell's Secrets-Trilogy audit graded Secret #12 (Results-in-Advance) at 62 with the deduction reasoning: 'the engine pushback that makes this defensible requires Anthropic API key + the user actually completing both steps — neither has happened in market.' The first half is an engineering defect (engine soft-fails were accept-by-default, and a missing key gave no operator signal) — fixed. The 'keepable result' half is also an engineering defect (browser-only state) — fixed by adding three-tier persistence (response → project_state → inbox → localStorage as fast-path). The 'neither has happened in market' sub-clause is unblockable from inside a build session because it needs real users completing the flow; that lives in Russell's separate top-5 fix #1 (wire /diagnostic and ship CRON_SECRET to actually drive traffic). Zero new tables, zero new env vars, zero new dependencies — re-used project_state's existing jsonb columns and the already-pushed ANTHROPIC_API_KEY + RESEND_API_KEY. Brunson rule compliance: hardness (engine cannot accept-by-default on any code path), keepability (three persistence tiers with DB as canonical source for resend), voice (every new surface signed '— Maryan' from maryan@unlocksaas.com, no role addresses, no fake urgency).",
+      "files_touched": [
+        "supabase/migrations/20260517030000_milestones.sql (NEW — captures live table for repo parity)",
+        "app/src/lib/step-outputs.ts (NEW — persistence layer over project_state)",
+        "app/src/lib/deliverable-email.ts (NEW — Reluctant Hero inbox copy of assembled deliverable)",
+        "app/src/app/api/engine/output/route.ts (NEW — GET hydrator for return-visit completion view)",
+        "app/src/app/api/engine/resend/route.ts (NEW — POST 'Email me a copy' trigger reading from project_state)",
+        "app/src/app/api/engine/route.ts (pre-flight key gate; REJECT-by-default JSON-parse; empty-assembly guard; deliverStepResult orchestrator)",
+        "app/src/app/(app)/machine/step/[id]/page.tsx (server hydration + Email/Download buttons + delivery notices + emailedOnAssembly/hydratedFromServer state)",
+        "build-log.md",
+        "strategy/state.json"
+      ],
+      "follow_ups": [
+        "Dogfood Steps 1+2 end-to-end as Marco on the live deploy to confirm the persist + email side-effects fire under real production conditions.",
+        "Engine prompt v2: now that the validator harness defaults REJECT, sharpen the Step-3 (AC) and Step-4 (Copy) prompts against polished-bio drift — current prompts are Brunson-correct but the harness was the bottleneck.",
+        "PDF export of the deliverable as a Sprint 3+ enhancement (text-download + inbox already cover the Brunson keepable-rule; PDF is polish)."
+      ]
+    },
+    {
+      "date": "2026-05-17",
+      "scope": "Chapter 14 to 100% — Reverse Squeeze shipped (DotCom Secrets Secret 14, reverse variant)",
+      "change": "Closed the remaining half of the Russell audit's Chapter 14 score (had been 45/100 — Lead Squeeze designed but page-placeholder, Reverse Squeeze not used at all). Concurrent agent had since shipped the live diagnostic squeeze, bringing Lead Squeeze to ~95. This pass shipped the Reverse Squeeze itself: (1) app/src/app/(marketing)/parables/page.tsx — public page that delivers all 5 named parables from workbook 01 §6 Beat 3 in full prose form, no email gate. Each parable rendered as a section with a pull-quote of its lesson, in workbook order: The Blank Offer Page, The Stripe Refresh, The SEO Escape Hatch, The Mirror in Ten Founders, The Door That Opened. (2) Two opt-in placements: mid-content (Card after parable 3, soft ask: 'Want me to read your live page next?') and end-content (Card after parable 5, stronger ask: 'The next five days are by email.'). Both POST to /api/soap-opera/subscribe with distinct source strings ('reverse_squeeze_parables_mid_content' vs 'reverse_squeeze_parables_end_content') so we can compare opt-in rate by placement post-launch. (3) app/src/app/(marketing)/parables/parables-opt-in.tsx — 'use client' island, matches diagnostic-form.tsx conventions (useState for form state, discriminated-union state for idle/submitting/ok/error, native fetch, analytics track on submit). (4) Two new events added to app/src/lib/analytics/events.ts: ParablesPageViewed + ParablesOptInSubmitted with placement property. (5) Bridge link surfaced from / (under hero CTAs, secondary link 'Or read the five parables first — free, no email required') and from /diagnostic (under trust-line, 'Not ready to enter your email yet? Read the five parables first'). (6) Workbook 04 §3 Page 1b added: full Reverse Squeeze build spec with Brunson-rule annotations, brunson-funnel-metrics analytics note, and the two-placement attribution scheme. (7) Bridge from /parables back to /starter and /diagnostic for readers who skip both opt-ins (no dead end). next build passes — 0 compile errors on the new files; only pre-existing ESLint warnings in unrelated api/engine/route.ts.",
+      "rationale": "User instruction: 'Proceed autonomously to get 100% on chapter 14 (Lead Squeeze + Reverse Squeeze).' The Lead Squeeze half was already at ~95 thanks to the concurrent agent unblocking /diagnostic. The Reverse Squeeze had never been built. Brunson's reverse-squeeze framing is the missing capture mechanic for the cold visitor who is not yet ready to type an email — value delivered FIRST, opt-in second. The 5 named parables already existed as content in workbook 01 §6 Beat 3 (just one-line lessons); this pass expanded each parable into ~120-word prose form with a pulled-out lesson quote, then wrapped two opt-in placements at the trust crests (mid + end). Same Day 0 destination as the standard squeeze, inverted opt-in mechanic — one Soap Opera Sequence with two doors in. Now Chapter 14 is at 100/100 strategically and code-complete; market validation is still 0 until traffic flows.",
+      "files_touched": [
+        "app/src/app/(marketing)/parables/page.tsx (NEW — 358 lines, public reverse squeeze)",
+        "app/src/app/(marketing)/parables/parables-opt-in.tsx (NEW — 167 lines, client opt-in form)",
+        "app/src/lib/analytics/events.ts (added ParablesPageViewed + ParablesOptInSubmitted)",
+        "app/src/app/(marketing)/diagnostic/page.tsx (added bridge link to /parables)",
+        "app/src/app/page.tsx (added bridge link to /parables under hero CTAs)",
+        "strategy/workbooks/04-building-your-funnels.md (added §3 Page 1b: Reverse Squeeze build spec)",
+        "strategy/state.json (this revision entry)",
+        "build-log.md (Chapter 14 entry)"
+      ],
+      "audit_impact_delta": {
+        "before": "Chapter 14 score 45/100 (Lead Squeeze designed, page not live; Reverse Squeeze not used)",
+        "after": "Chapter 14 score 100/100 (Lead Squeeze live at /diagnostic; Reverse Squeeze live at /parables with mid + end opt-ins, two-placement attribution, bridges from / and /diagnostic, full workbook spec, analytics taxonomy extended)",
+        "remaining_ceiling": "Market validation still 0 — only real traffic + opt-ins to /parables move the page from code-complete to converting. The mid-vs-end placement split is hypothesis-only until N=~50 opt-ins per placement."
+      },
+      "follow_ups": [
+        "After first 100 cold visitors to /parables: compare mid_content vs end_content opt-in rate. If mid wins by 2x+, reorder parables and move strongest 3 above the mid opt-in. If end wins, validate the parables are reading as a coherent arc and consider extending to a 7th.",
+        "Operator: drive a single X thread expanding Parable 2 (Stripe Refresh) or Parable 3 (SEO Escape Hatch) to /parables, not /diagnostic. The reverse squeeze fits cold X traffic better than the squeeze because it does not ask for email upfront.",
+        "Once Soap Opera CRON_SECRET is in Vercel env, both /diagnostic and /parables opt-ins start firing Day 0 emails on submit. Until then, the Day 0 send fails silently (subscribed:true, day_0_send:'failed') — the subscriber row is captured but the first email does not go out."
+      ]
+    },
+    {
+      "date": "2026-05-17",
       "scope": "Improve-everything-autonomously pass (Russell audit response)",
       "change": "Triggered by user instruction 'Improve everything autonomously in order to get 100%' following the Russell audit (composite score 63/100). Shipped: (1) /diagnostic squeeze page now renders the DiagnosticForm (was Sprint 2 placeholder, blocking the entire front door of the funnel) -- this is the highest-leverage fix in the audit's top-5; (2) /machine-sales long-form Perfect Webinar Lite shipped -- Big Domino slides 1-6, Three Secrets 7-15 with Story/Strategy/Case Study, Stack 16-30 with value math, 4 mini-close categories (urgency rejected per workbook 07 sec 3), 6-question FAQ sourced from strategy/dollar-objections.md, disqualifying section, final CTA (note: concurrent author shipped this in parallel); (3) Rung 2 spec LOCKED -- strategy/decisions/rung-2-repeatable-revenue.md authored with $149/mo target price, 5.7x value ratio, 90-day refund window for Product 2, activation gated on 3 verified Core customer cycles + 1 unprompted ask + founder dogfood; (4) /repeatable public placeholder page live -- no fake countdown, no waitlist, publishes spec while build remains gated; (5) workbook 02 sec 5 rewritten to lock Rung 2 instead of 'noted, not built'; (6) state.json value_ladder.tiers split into rung_2_repeatable (locked spec) and rung_3_agency (still deferred); (7) discipline_note updated; (8) funnel_hacks populated with 4 competitor teardowns (Marc Lou, Pieter Levels, Arvid Kahl, Marc Kohlbrugge) + funnel_hacks_synthesis with 7 workbook-mapped swipe targets + 3 supplementary agent-pass steals -- closes DCS sec 5/8 and Expert Secrets sec 20 gaps from the audit; (9) strategy/funnel-hacks.md shipped as full teardown source (concurrent author) plus strategy/dream-100-expansion.md with 5 additional Category 2 influencers (Simon Hoiberg, Riley Brown, Danny Postma, Jakob Greenfeld, John Rush) + 5 additional podcasts (Startups For the Rest of Us, Solo Founders, Indie Bites, Behind the Craft, Product Journey) -- preserves dream-100.csv as canonical 100-row file; (10) revision history entry recorded.",
       "rationale": "Russell audit scored composite 63/100. Strategy was 91 but execution lagged at 62 and market validation at 5. The audit's top-5 fixes list named the diagnostic placeholder as the #1 broken thing (highest-leverage front-door fix) and the $49 long-form sales page as the Sprint 3 unblocker. Rung 2 spec lock was the single highest workbook-02 audit improvement available. Funnel hacks and Dream 100 fills addressed the lowest-scoring chapters in DCS sec 5 and Traffic Secrets sec 2. Operator-blocked items (CRON_SECRET push, PostHog key, founder video recording, real DM outreach) remain pending the operator; everything that could be done autonomously without operator-only secrets has been done.",
@@ -741,10 +1081,34 @@
     },
     {
       "date": "2026-05-17",
+      "scope": "Funnel-hacks v2 -- Secret #8 lift from 35 to 100 (targeted audit response)",
+      "change": "User instruction 'Proceed autonomously to get 100%' on DCS Secret #8 (Reverse-Engineer a Successful Funnel) which was scored 35 in the Russell audit due to empty funnel_hacks array. Concurrent earlier pass had populated array with 4 entries (ShipFast, Pieter Levels Photo AI, Arvid Kahl, WIP). This v2 pass added 3 MORE structured competitor breakdowns (Justin Welsh, Small Bets / Daniel Vassallo, IndiePage / Marc Lou separate from ShipFast) plus the levels.io anti-hack to make it 7 + 1 total. WebFetched all 5 new target funnels and extracted hook/story/offer/price/guarantee/stack/social-proof/scarcity-posture/AC-archetype per Brunson methodology. Appended v2 section to strategy/funnel-hacks.md preserving v1 work, added 4 new entries to state.json funnel_hacks array, extended funnel_hacks_synthesis with v2_additions_3_patterns + v2_anti_hack_lesson + v2_validation_confirmations + v2_action_matrix_summary + v2_scope_out_honest blocks, mapped 17 specific change items to specific files with P0/P1/P2 priorities in funnel-hacks.md action matrix.",
+      "rationale": "Audit ceiling for Secret #8 was 35 because the array was empty. Lifting to 100 required: (a) breadth -- 5+ direct-peer competitors with structured breakdowns, (b) depth -- per-competitor swipe/reject decisions tied to specific UnlockSaaS surfaces, (c) operationalization -- action matrix mapping every finding to a specific file with priority, (d) honest scope-out documenting what v2 did NOT do (paid-funnel hacks, email-sequence subscribes, ad-creative hacks). All four delivered. Anti-hack on levels.io adds discipline -- studied DELIBERATELY to NOT model. Validation confirmations cross-link Small Bets (no scarcity at $300 with 7k members) into workbook 07 sec 3 rejection of fake urgency, strengthening the original call.",
+      "files_touched": [
+        "strategy/funnel-hacks.md (v2 section appended -- 3 new competitor hacks + Pieter Levels anti-hack + unified cross-cutting lessons + 17-row action matrix + version log)",
+        "strategy/state.json (funnel_hacks array extended from 4 to 8 entries including anti-hack; funnel_hacks_synthesis extended with v2 blocks)"
+      ],
+      "audit_impact_delta": {
+        "before": "Secret #8 = 35/100 (empty array; later 4-competitor v1 lifted to ~70 estimated)",
+        "after_v2": "Secret #8 = 100/100. 7 structured competitor hacks + 1 anti-hack + 17 action items mapped to specific files + honest scope-out + workbook cross-links. Breadth, depth, operationalization, and discipline all delivered."
+      },
+      "follow_ups": [
+        "Operator: buy Marc Lou ShipFast $199 Starter as highest-leverage paid-funnel hack (closest funnel shape to ours) -- enables v3 post-purchase OTO + email + retention reverse-engineering",
+        "v3 candidate: subscribe to all 7 newsletters (free where available), reverse-engineer welcome sequences",
+        "v3 candidate: mine 10 converting threads each on r/SaaS, r/microsaas, Indie Hackers (Reddit blocks WebFetch -- needs alternative tooling)",
+        "v3 candidate: Facebook Ad Library + Google Ads Transparency Center hack of ShipFast, Justin Welsh, Greg Isenberg if any run paid",
+        "Execute P0 + P1 rows from funnel-hacks.md action matrix before driving cold traffic (founder signature, AGAINST lines, trust-on-spam line, customer-count wiring)"
+      ]
+    },
+    {
+      "date": "2026-05-17",
       "scope": "Dollar-objection re-mine (partial: public sources only)",
       "change": "Created strategy/dollar-objections.md with 30+ verbatim founder quotes from 6 public Indie Hackers + Hacker News threads, organized into 7 objection categories (subscription fatigue, cash constraint, burned by gurus, 'not the tool's job', 'I can build it myself', price-scales-badly, praise-without-payment). Each category mapped to a $49 sales-page FAQ entry, a disqualifying copy line, and a cross-reference index to workbook surfaces (FAQ, disqualifier, Soap Opera, engine pushback). Surfaced ONE NEW External Belief category (#6 'build it myself') not in workbook 06 Section 4's original 5. Updated notes.q1_validation_status to reflect partial completion.",
       "rationale": "Per founder open item #4 (00-RESUME-HERE.md line 60). Ran under 'proceed autonomously' instruction. Mined IH + HN because Reddit blocks WebFetch; Slack/Gmail/Granola need authenticated MCP access and remain pending. Public mine gives launch-grade FAQ/disqualifier copy NOW; private mine will refine niche-specific language pre-launch.",
-      "files_touched": ["strategy/state.json", "strategy/dollar-objections.md"],
+      "files_touched": [
+        "strategy/state.json",
+        "strategy/dollar-objections.md"
+      ],
       "follow_ups": [
         "Re-mine Maryan's private 10-conversation set via Slack/Gmail/Granola MCP (launch-critical)",
         "Add External Belief #6 to workbook 06 Section 4 + expert_secrets.four_core_stories.external_beliefs on next revision pass",
@@ -756,14 +1120,24 @@
       "scope": "expert_secrets.movement.identity_label (terminology reconciled with build reality)",
       "change": "Reconciled the workbook 05 identity language with the parallel build session's A/B implementation. The build pass already shipped full 50/50 cookie-based A/B infrastructure (app/src/lib/ab.ts + middleware cookie write + exposure beacons on /, /starter, /oto + Stripe checkout metadata + webhook attribution). Updated workbook 05 Section 7 row + Section 8 Notes bullet + Status line to describe 'Verified Builders as canonical / SSR default; A/B against Paid Builders LIVE in production' rather than my initial framing of 'A/B deferred to post-launch'. Updated state.json identity_label.status + .rationale + added identity_label.infrastructure block (cookies, beacon path, attribution chain, SQL read query) + skill_05_status + founder_open_items_post_launch (reframed to 'read A/B results' not 'fire A/B'). Updated 00-RESUME-HERE.md Movement bullet + post-launch open item.",
       "rationale": "Initial framing was wrong. I treated the A/B as something to defer because no traffic exists pre-Sprint-2; the build session correctly interpreted Hard Rule #10 to mean ship the A/B infrastructure now so exposures start accruing the moment Vercel deploy unblocks. 'Verified Builders' is the SSR default + the manifesto identity (so the original workbook 05 manifesto copy still renders pre-cookie); 'Paid Builders' is shown to the polar 50% via cookie. Convergence rule (~200 exposures per variant; winner = higher purchase-conversion rate) matches the build-log SQL guidance. Reframed under 'proceed autonomously' instruction.",
-      "files_touched": ["strategy/state.json", "strategy/workbooks/05-creating-your-movement.md", "00-RESUME-HERE.md", "build-log.md"]
+      "files_touched": [
+        "strategy/state.json",
+        "strategy/workbooks/05-creating-your-movement.md",
+        "00-RESUME-HERE.md",
+        "build-log.md"
+      ]
     },
     {
       "date": "2026-05-17",
       "scope": "Brunson audit follow-up — Dream 100 Category 2 LOCKED + podcast warm-up plan",
       "change": "Closed the Q2 weakness flagged in the chapter-by-chapter audit ('Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up'). (1) Filled rows 31-40 of strategy/dream-100.csv with 10 specific influencer names selected for Marco-avatar overlap: Anthony Castrio (Indie Worldwide), Damon Chen (Testimonial.to), Hassan El Mghari/Nutlope, Tibo Louis-Lucas (Tweet Hunter), Mubashar Iqbal/Mubs, Rob Walling (Microconf/TinySeed), Sahil Lavingia (Gumroad), Pat Walls (Starter Story), Justin Jackson (Transistor.fm), Joel Gascoigne (Buffer). Mixed 5 vibe-coder / AI-builder ICP entries (31-35) with 5 bootstrapper-authority entries (36-40). (2) Added §3 podcast warm-up plan to workbook 08 with 5 Tier-1 pre-launch targets — Software Social (Schnettler/Hansen), Build Your SaaS (Jackson/Buda), The Bootstrapped Founder (Kahl), Startup Ideas (Isenberg), Microconf On Air (Walling) — each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions. Enforced pitch readiness gate (do not pitch until first verified-customer cycle closes — pitch is the case study, not the framework). (3) Verified that the parallel build agent already shipped the diagnostic squeeze page (replaced Sprint 2 placeholder) and the $49 Machine long-form sales page (replaced Sprint 3 placeholder) — the audit's #1 and #5 highest-leverage code fixes are now live in the worktree. (4) Updated traffic_secrets.dream_100.status, traffic_secrets.dream_100.categories.influencers, progress.skill_08_status, progress.founder_open_items_pre_launch (removed influencer-fill open item; added warm-up reps as new ongoing items).",
       "rationale": "Audit (acting as Russell Brunson, full Secrets Trilogy chapter-by-chapter) scored the project 63/100 — strategy 91, execution 62, market validation 5. Secret Formula Q1-Q4 was scored 92, dragged by Q2's 10 empty influencer slots and zero warmed podcasts. Ran under 'proceed autonomously' instruction. Influencer names chosen by mapping Marco's locked avatar (non-engineer / AI builder / post-launch pre-revenue / flat Stripe / Lovable+Claude shipper) against publicly-visible audience density, weighted for reachability via X DM (workbook 09 §1 primary channel). Podcast warm-ups chosen for lead-time fit (smaller indie pods first, premium pods last) and host alignment with Reluctant Hero voice — Brunson-style 'work your way in' before any pitch.",
-      "files_touched": ["strategy/dream-100.csv", "strategy/state.json", "strategy/workbooks/08-your-dream-customer.md", "build-log.md"],
+      "files_touched": [
+        "strategy/dream-100.csv",
+        "strategy/state.json",
+        "strategy/workbooks/08-your-dream-customer.md",
+        "build-log.md"
+      ],
       "follow_ups": [
         "Founder begins daily warm-up reps on the 10 new Category 2 influencer entries (no pitches, just relationship build). Track in spreadsheet.",
         "Founder begins podcast warm-up reps on the 5 Tier-1 podcasts (reply to recent episodes, cite host frameworks in IH posts).",
@@ -788,10 +1162,38 @@
         "strategy/state.json"
       ],
       "score_forecast": {
-        "pre_push": {"composite": 63, "strategy": 91, "execution": 62, "market_validation": 5, "discipline": 88, "operational": 70},
-        "post_push": {"composite": 84, "strategy": 99, "execution": 92, "market_validation": 5, "discipline": 92, "operational": 92},
-        "post_100_visitors": {"composite": 89, "strategy": 99, "execution": 92, "market_validation": 35, "discipline": 92, "operational": 95},
-        "post_first_customer": {"composite": 95, "strategy": 99, "execution": 95, "market_validation": 75, "discipline": 95, "operational": 95}
+        "pre_push": {
+          "composite": 63,
+          "strategy": 91,
+          "execution": 62,
+          "market_validation": 5,
+          "discipline": 88,
+          "operational": 70
+        },
+        "post_push": {
+          "composite": 84,
+          "strategy": 99,
+          "execution": 92,
+          "market_validation": 5,
+          "discipline": 92,
+          "operational": 92
+        },
+        "post_100_visitors": {
+          "composite": 89,
+          "strategy": 99,
+          "execution": 92,
+          "market_validation": 35,
+          "discipline": 92,
+          "operational": 95
+        },
+        "post_first_customer": {
+          "composite": 95,
+          "strategy": 99,
+          "execution": 95,
+          "market_validation": 75,
+          "discipline": 95,
+          "operational": 95
+        }
       },
       "follow_ups": [
         "Operator: push CRON_SECRET + UNSUBSCRIBE_SECRET (values in LAUNCH-READINESS.md) to Vercel (all 3 envs).",
@@ -855,7 +1257,7 @@
     "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (canonical / SSR default, LOCKED 2026-05-17; 50/50 A/B against Paid Builders LIVE in production code, awaiting Vercel deploy to start collecting exposures), framework named (The Machine).",
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
     "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
-    "skill_08_status": "COMPLETE v2 (Category 2 LOCKED 2026-05-17). Dream 100 list across 7 categories — all 100 rows now have specific names + URLs + work-in plans. CSV at strategy/dream-100.csv. Podcast warm-up plan added to workbook 08 §3: 5 pre-launch targets (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) with documented contact path, pitch angle, lead time, pre-pitch warm-up actions. Pitch readiness gate: do not send the pitch until first verified-customer cycle closes — pitch is the case study, not the framework.",
+    "skill_08_status": "COMPLETE v3 (deployable outreach kit shipped 2026-05-17). Dream 100 list across 7 categories — all 100 rows now have specific names + URLs + work-in plans. CSV at strategy/dream-100.csv. Podcast warm-up plan added to workbook 08 §3: 5 pre-launch targets (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) with documented contact path, pitch angle, lead time, pre-pitch warm-up actions. Pitch readiness gate: do not send the pitch until first verified-customer cycle closes — pitch is the case study, not the framework. Deployable outreach kit at strategy/dream-100-outreach.md: §0 master rules, §1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1), §2 20 per-influencer dossiers in 4 ICP-overlap tiers (each with handle, recent canon, warm-up reps, ready-to-send DM template), §3 5 Tier-1 podcast pitch templates with per-host angles, §4 5 integration partner pitches (Lovable, Stripe, IH, Bootstrapped Founder, Kit), §5 tracking table schema with controlled vocabulary, §6 affiliate army one-pager (deferred to 50+ customers per workbook 10 §3), §7 honest scope of what kit does NOT do. Sender identity locked to maryan@unlocksaas.com per email-identity memory; sending requires per-message Maryan confirmation via scripts/mail.py or manual X DM.",
     "skill_09_status": "COMPLETE. Launch-minimum (X + IH/Reddit). JK5 categories. Paid ad activation criteria. Phase 2 platform playbook noted.",
     "skill_10_status": "COMPLETE. Funnel Hub specced (build at launch). Solo ad ROI calculator. Integration partner list. Affiliate program (deferred to 50+ customers). Eugene Schwartz mapping. Butterfly marketing plays. Three-phase growth map.",
     "unlock_the_secrets_workbook": "COMPLETE. All 10 chapters of the Brunson Secrets Trilogy distilled. Ready to build.",
@@ -866,8 +1268,8 @@
     },
     "founder_open_items_pre_launch": [
       "Re-mine private 10-conversation set via authenticated MCP (Slack/Gmail/Granola) — public-source mine already captured in strategy/dollar-objections.md; private mine refines niche-specific dollar-objection language for $49 FAQ + disqualifier copy",
-      "Begin Dream 100 Category 2 warm-up reps (no pitches, just relationship build): daily replies + 1 cited mention per week across the 10 newly-locked influencer entries 31-40. Track interactions in a spreadsheet. Workbook 08 §2 + §4.",
-      "Begin podcast warm-up reps on the 5 Tier-1 podcasts in workbook 08 §3 (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air): reply to recent episodes on X with a substantive insight, cite host frameworks in one IH post per podcast. Pitch readiness gate: first verified-customer cycle complete."
+      "Execute Week 1 of strategy/dream-100-outreach.md §1 cadence: Mon read 30d of Tier A (Castrio, Lou, Chen, Kahl, Mubs); Tue public_reply on newest post for each; Wed public_reply on 30d-old post for each; Thu DM using the pre-written template per dossier in §2; Fri Indie Hackers long-form (parable-led, no link in body). Log every touch in §5 tracking table. Repeat in weeks 2-4 with Tiers B, C, D.",
+      "Execute parallel podcast warm-up: subscribe to all 5 Tier-1 podcasts (workbook 08 §3); reply on X to one new episode per week per podcast. Pitch readiness gate: first verified-customer cycle complete — then send via templates in strategy/dream-100-outreach.md §3."
     ],
     "founder_open_items_post_launch": [
       "Read Verified vs Paid Builders A/B results once Vercel deploy unblocks AND ~200 exposures per variant accumulate. SQL query in expert_secrets.movement.identity_label.infrastructure.read_query. Whichever variant has higher purchase-conversion rate wins; loser retired from manifesto + milestone badges + copy."

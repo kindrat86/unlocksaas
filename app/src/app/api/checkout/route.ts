@@ -13,6 +13,8 @@ type CheckoutBody = {
   attribution?: {
     from?: string;
     label?: string;
+    // Brunson Survey Funnel bucket (DCS Secret 15). See app/src/lib/diagnostic.ts.
+    bucket?: string;
     lead?: string;
   } | null;
 };
@@ -46,9 +48,11 @@ export async function POST(req: NextRequest) {
   // matching diagnostic_leads row.
   const diagnosticFrom = clampMeta(attribution?.from);
   const diagnosticLabel = clampMeta(attribution?.label);
+  const diagnosticBucket = clampMeta(attribution?.bucket);
   const diagnosticLeadId = clampMeta(attribution?.lead);
   if (diagnosticFrom) abMetadata.attribution_from = diagnosticFrom;
   if (diagnosticLabel) abMetadata.diagnostic_label = diagnosticLabel;
+  if (diagnosticBucket) abMetadata.diagnostic_bucket = diagnosticBucket;
   if (diagnosticLeadId && /^[0-9a-f-]{36}$/i.test(diagnosticLeadId)) {
     abMetadata.diagnostic_lead_id = diagnosticLeadId;
   }

@@ -58,3 +58,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* VSL scene-entry tween used by the kinetic-typography fallback.
+ * Lives outside @layer so utility ordering does not strip it. Respects
+ * prefers-reduced-motion: visitors who opt out see scenes pop in instantly. */
+@keyframes vsl-scene-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-vsl-scene {
+  animation: vsl-scene-in 320ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-vsl-scene {
+    animation: none;
+  }
+}
