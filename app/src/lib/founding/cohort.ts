@@ -23,7 +23,11 @@ export const FOUNDING_COHORT_CAP = 50;
 /** Returns the current count of claimed seats. Service-role read. */
 export async function seatsClaimed(): Promise<number> {
   const supabase = createAdminClient();
-  const { count, error } = await supabase
+  // founding_cohort lives in migration 20260518000002 which is not yet
+  // reflected in the generated database.types.ts. Cast to bypass strict
+  // typing until the next `supabase gen types typescript` pass — same
+  // pattern the webhook uses for billing_payments.
+  const { count, error } = await (supabase as unknown as { from: (t: string) => any })
     .from("founding_cohort")
     .select("id", { count: "exact", head: true });
   if (error) {
@@ -90,7 +94,7 @@ export async function isCartOpen(now: Date = new Date()): Promise<boolean> {
  */
 export async function nextSeatNumber(): Promise<number> {
   const supabase = createAdminClient();
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as unknown as { from: (t: string) => any })
     .from("founding_cohort")
     .select("seat_number")
     .order("seat_number", { ascending: false })

@@ -43,7 +43,8 @@ async function handle(email: string, token: string) {
       .from("seinfeld_subscribers")
       .update({ status: "unsubscribed", unsubscribed_at: nowIso })
       .eq("email", lower),
-    supabase
+    // Cast: founding_waitlist not yet in generated database.types.ts.
+    (supabase as unknown as { from: (t: string) => any })
       .from("founding_waitlist")
       .update({ status: "unsubscribed" })
       .ilike("email", lower),

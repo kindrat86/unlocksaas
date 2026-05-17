@@ -759,10 +759,14 @@ async function recordFoundingSeat(session: Stripe.Checkout.Session) {
   const identityVariant = parseIdentityVariant(metadata.ab_variant);
 
   const admin = createAdminClient();
+  // Cast: founding_cohort + founding_waitlist live in migration 20260518000002
+  // and are not yet in the generated database.types.ts. Same pattern this file
+  // already uses for billing_payments (`as unknown as never` on the update).
+  const adminLoose = admin as unknown as { from: (t: string) => any };
 
   // Optimistic seat-number assignment. The unique index will reject the
   // duplicate write if two concurrent webhooks race past the cap check.
-  const { data: maxRow, error: maxErr } = await admin
+  const { data: maxRow, error: maxErr } = await adminLoose
     .from("founding_cohort")
     .select("seat_number")
     .order("seat_number", { ascending: false })
@@ -792,13 +796,13 @@ async function recordFoundingSeat(session: Stripe.Checkout.Session) {
 
   // Look up waitlist row by email so we can stamp converted_to_founding_at
   // and link the founding row back to the waitlist (for funnel analysis).
-  const { data: waitlistRow } = await admin
+  const { data: waitlistRow } = await adminLoose
     .from("founding_waitlist")
     .select("id")
     .ilike("email", email)
     .maybeSingle();
 
-  const { error: insertErr } = await admin.from("founding_cohort").insert({
+  const { error: insertErr } = await adminLoose.from("founding_cohort").insert({
     seat_number: seatNumber,
     email: email.toLowerCase(),
     stripe_customer_id: customerId,
@@ -827,7 +831,7 @@ async function recordFoundingSeat(session: Stripe.Checkout.Session) {
   }
 
   if (waitlistRow?.id) {
-    await admin
+    await adminLoose
       .from("founding_waitlist")
       .update({
         converted_to_founding_at: new Date().toISOString(),

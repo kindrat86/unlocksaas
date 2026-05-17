@@ -60,7 +60,9 @@ export async function POST(request: NextRequest) {
   // Idempotent upsert: if the email already exists, reset its sequence so
   // PLE1 fires again. The form copy on /founding promises a confirmation
   // email; that contract has to hold even on second submit.
-  const { data: row, error: upsertError } = await supabase
+  // Cast: founding_waitlist not yet in generated database.types.ts (migration
+  // 20260518000002 lands the table; types regenerate on the next gen pass).
+  const { data: row, error: upsertError } = await (supabase as unknown as { from: (t: string) => any })
     .from("founding_waitlist")
     .upsert(
       {

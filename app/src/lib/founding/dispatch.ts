@@ -108,7 +108,8 @@ export async function sendNextFoundingAndAdvance(
       error: sendError,
     });
     // Stamp last_error so the founder can see failures in the DB.
-    await supabase
+    // Cast: founding_waitlist not yet in generated database.types.ts.
+    await (supabase as unknown as { from: (t: string) => any })
       .from("founding_waitlist")
       .update({ last_error: sendError })
       .eq("id", row.id);
@@ -142,7 +143,7 @@ export async function sendNextFoundingAndAdvance(
   };
   if (isFinal) update.status = "complete";
 
-  const { error: dbError } = await supabase
+  const { error: dbError } = await (supabase as unknown as { from: (t: string) => any })
     .from("founding_waitlist")
     .update(update)
     .eq("id", row.id);

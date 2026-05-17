@@ -39,7 +39,8 @@ export async function GET(request: NextRequest) {
   const supabase = createAdminClient();
   const now = new Date().toISOString();
 
-  const { data: rows, error } = await supabase
+  // Cast: founding_waitlist not yet in generated database.types.ts.
+  const { data: rows, error } = await (supabase as unknown as { from: (t: string) => any })
     .from("founding_waitlist")
     .select("id, email, emails_sent")
     .eq("status", "active")
