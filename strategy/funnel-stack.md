@@ -272,15 +272,17 @@ What flips on, when, and who flips it.
 
 | Layer | Trigger | Flipper | Pre-work required at trigger |
 |---|---|---|---|
-| 0 | Launch day | Maryan | Workbook 09 §1 cadence starts |
-| 1 | Launch day | Engineering | Ship `/diagnostic/page.tsx` (replace placeholder with form) |
+| 0 | Launch day (SHIPPED) | — | Workbook 09 §1 cadence starts (operator action) |
+| 1 | Launch day (SHIPPED) | — | `/diagnostic/page.tsx` ships the real form |
 | 2 | Launch day (SHIPPED) | — | None |
 | 3 | Launch day (SHIPPED) | — | None |
-| 4 | Sprint 3 | Engineering | Ship long-form `/machine-sales` per workbook 07 |
+| 4 | Sprint 3 (SHIPPED) | — | `/machine-sales` long-form (995 lines, workbook 07) |
 | 5 | Launch day (SHIPPED) | — | Anthropic API key in prod env |
 | 6 | 3 verified customer cycles | Maryan | Provision Layer 6 Stripe products (ascension $24.50/mo + community $79/mo); ship invitation email |
 | 7 | 50 paying customers | Maryan | Affiliate center build (workbook 10 §3) |
 | 8 | Phase 2 + 100 captured exits | Engineering | Exit-intent modal + 3-email mini-sequence + bridge pages |
+
+**Cross-funnel attribution infrastructure SHIPPED 2026-05-17** for every layer in the table above, including the gated ones (Layers 6/7/8). The schema, RLS, cookies, Stripe metadata stamping, webhook persistence, and SQL views are all live — when Layer 6 / 7 / 8 UI ships, those layers attribute correctly with no migration or schema change.
 
 ---
 
@@ -288,16 +290,20 @@ What flips on, when, and who flips it.
 
 The full attribution scheme above is locked but NOT all of it ships at launch. What ships at launch (compatible with One Funnel Away):
 
-1. `app/src/lib/stack-attribution.ts` — type definitions, cookie names, layer enum, helper functions. Mirrors `lib/ab.ts` pattern.
-2. Middleware writes `usaas_stack_subject` + `usaas_stack_entry` + `usaas_stack_current` on first request, alongside the existing A/B cookies.
-3. Stack stamps are added to Stripe checkout metadata in `/api/checkout/route.ts` (joins existing A/B + diagnostic stamps).
-4. The `stack_events` table migration is **deferred** until Layer 4 ships (Sprint 3) — there's no second layer to bridge to until then, so the table would only hold Layer-1-only paths.
+1. `app/src/lib/stack-attribution.ts` — type definitions, cookie names, layer enum, helper functions. Mirrors `lib/ab.ts` pattern. **SHIPPED.**
+2. Middleware writes `usaas_stack_subject` + `usaas_stack_entry` + `usaas_stack_current` + `usaas_stack_path` on first request, alongside the existing A/B cookies. **SHIPPED 2026-05-17** in `app/src/middleware.ts` via the `pathnameToEntryLayer()` helper. The path cookie appends on layer transitions and dedupes against the last entry to keep refreshes idempotent.
+3. Stack stamps are added to Stripe checkout metadata in `/api/checkout/route.ts` (joins existing A/B + diagnostic stamps). **SHIPPED 2026-05-17.** `stackStripeStamp()` is now called from both the `starter` and `machine` branches; the stamp carries subject + entry + current + path + layerPurchased + optional affiliate slug.
+4. The `stack_events` table migration. **SHIPPED 2026-05-17** at `supabase/migrations/20260518000007_stack_events.sql`. The original deferral was "until Layer 4 ships." Layer 4 is now live at `/machine-sales` (995-line long-form), so the precondition is satisfied. Table is RLS-enabled: service_role full read/write, anon INSERT-only with shape constraints + event-type whitelist (`enter` / `bridge_out` / `bridge_in` / `exit`; never `convert` from anon), authenticated SELECT denied by default.
+5. The `/api/stack/event` ingestion endpoint. **SHIPPED 2026-05-17.** Client-side beacons POST bridge-out / bridge-in / enter / exit events; subject id is server-derived from the cookie (clients cannot forge another visitor's path); affiliate slug joined from `usaas_affiliate` cookie. Fire-and-forget — always returns 204, never surfaces error state to the visitor.
+6. The Stripe webhook persists conversions to `stack_events`. **SHIPPED 2026-05-17** via `recordStackConversion(session)` in `app/src/app/api/webhooks/stripe/route.ts`, called alongside the existing `recordIdentityAbConversion` / `recordDiagnosticAttribution` / `recordFoundingSeat` handlers. Idempotent via the existing `markEventProcessed` short-circuit at the top of the webhook.
+7. SQL views. **SHIPPED 2026-05-17** at `supabase/views/funnel_stack.sql`: `funnel_stack__conversions_by_path`, `funnel_stack__entry_layer_performance`, `funnel_stack__affiliate_performance`, `funnel_stack__path_lengths`, `funnel_stack__weekly_summary`. The weekly summary view is the Friday Audible Call's stack panel — single row, current-7-day window, counts conversions by event type and A/B variant.
+8. PostHog event taxonomy. **SHIPPED 2026-05-17** — added `FunnelStackEntered` / `FunnelStackBridgeCrossed` / `FunnelStackExited` / `FunnelStackConverted` to `app/src/lib/analytics/events.ts` so client-side beacons can fire to PostHog in parallel with the Supabase insert.
 
 What does NOT ship at launch:
-- Layer 4, 6, 7, 8 funnels themselves (per One Funnel Away).
-- The exit-intent modal (Layer 8, Phase 2).
-- The affiliate dashboard (Layer 7, Phase 3).
-- The ascension Stripe products (Layer 6, Phase 2).
+- Layer 4, 6, 7, 8 *funnels themselves* (per One Funnel Away). Layer 4 ($49 Machine sales page at `/machine-sales`) shipped as a long-form page in Sprint 3; the cross-funnel infrastructure to attribute it is now also live.
+- The exit-intent modal UI (Layer 8 UI, Phase 2). The schema accepts `event='exit'` rows so when the modal ships there's no migration debt.
+- The affiliate dashboard UI (Layer 7, Phase 3). The schema, `affiliate_slug` column, view, and cookie carrier are all live so the day a Verified Builder signs up as an affiliate, the conversion path attributes correctly without code changes.
+- The ascension Stripe products (Layer 6, Phase 2). The schema accepts `conversion_event='ascension_purchase'` and `'community_purchase'` so the webhook attribution lifts without migration debt.
 
 ---
 

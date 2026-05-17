@@ -96,6 +96,18 @@ export const Event = {
   // Per-channel bio link surfaces (workbook 09 §1 — Traffic Secrets #15
   // funnel-hub-from-cold-channel attribution). Used by IgBioLinkTracker.
   IgBioLinkViewed: "ig_bio_link_viewed",
+
+  // Funnel Stack (DCS Secret #27 / strategy/funnel-stack.md) — bridge-event
+  // beacons. Fired client-side when a known CTA crosses two layers explicitly
+  // (e.g. Diagnostic result → Starter, OTO accept → Onboarding). The
+  // server-side mirror lands in public.stack_events via /api/stack/event.
+  // The two together (PostHog + Supabase) give us both visitor-stream
+  // funneling AND SQL-joinable path attribution without choosing one or
+  // the other.
+  FunnelStackEntered: "funnel_stack_entered",
+  FunnelStackBridgeCrossed: "funnel_stack_bridge_crossed",
+  FunnelStackExited: "funnel_stack_exited",
+  FunnelStackConverted: "funnel_stack_converted",
 } as const;
 
 export type EventName = (typeof Event)[keyof typeof Event];

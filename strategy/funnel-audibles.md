@@ -230,6 +230,17 @@ The complete decision table. One number per row. Read top-down weekly.
 
 **The Friday Audible Call:** 30 minutes, every Friday at the same time. Read the dashboard. Identify the worst-performing metric. Fire one audible. Document what you fired and the prediction. Re-read the same metric next Friday.
 
+**The call is automated (locked 2026-05-17).** The ritual fires every Friday at 14:00 UTC via Vercel cron at `/api/cron/friday-audible-call`. The cron reads `funnel_audibles__weekly_top_of_funnel`, computes the verdict against the Trigger Matrix (Part 4), inserts a row into `public.friday_audible_calls`, and emails the read to `maryan@unlocksaas.com` via Resend. Pre-traffic, the call still fires — the verdict is just `pre_launch_no_data` and no audible is recommended. Components:
+
+- **Orchestrator:** [`app/src/lib/audibles/friday-call.ts`](../app/src/app/api/cron/friday-audible-call/route.ts) — the trigger matrix as code, the verdict computer, the email formatter, and the audit-row writer.
+- **Cron route:** [`app/src/app/api/cron/friday-audible-call/route.ts`](../app/src/app/api/cron/friday-audible-call/route.ts) — wraps the orchestrator with CRON_SECRET auth + `cron_run_history` bookkeeping.
+- **Schedule entry:** `app/vercel.json` cron `0 14 * * 5`.
+- **CLI mirror:** [`scripts/friday-audible-call.py`](../scripts/friday-audible-call.py) — same trigger matrix in Python; lets the operator fire the call manually (used for the inaugural pre-launch dry-run before the Vercel cron has CRON_SECRET).
+- **Audit table:** `public.friday_audible_calls` (migration `20260518000008`) — append-only record of every read with source, snapshot, verdict, recommended audible, fired audible, prediction.
+- **Narrative log:** [`strategy/audibles-log.md`](audibles-log.md) — one markdown entry per call. Entry 0001 is the inaugural dry-run.
+
+The automation does NOT replace the operator's judgment on which audible to fire. It removes the founder-discipline dependency for the **read**, surfaces the worst metric, and recommends the first audible per the matrix. The operator confirms the fire by updating `friday_audible_calls.audible_fired` (and writing the matching prediction) after deploying the swap from Part 8's copy vault.
+
 ### Monthly (post-30-day Core-subs)
 - Month-2 retention cohort
 - Month-3 retention cohort
@@ -265,7 +276,7 @@ Source: `app/src/lib/analytics/events.ts`. Build these as PostHog Insights:
 ### Supabase SQL views (mid- and conversion-funnel, server-side truth)
 Source: `supabase/views/funnel_audibles.sql`. These are the views that back the weekly audible call:
 
-1. `funnel_audibles__diagnostic_conversion` — per-day diagnoses → starter purchases by label.
+1. `funnel_audibles__diagnostic_conversion` — per-day diagnoses → starter purchases by Claude label (3 buckets).
 2. `funnel_audibles__starter_to_core` — per-cohort starter buyers → core subs.
 3. `funnel_audibles__outreach_velocity` — days from Core start to 20-action milestone.
 4. `funnel_audibles__guarantee_pressure` — active Core subs approaching day-60 without a verified charge.
@@ -273,6 +284,22 @@ Source: `supabase/views/funnel_audibles.sql`. These are the views that back the 
 6. `funnel_audibles__soap_opera_funnel` — per-day SOS cohort with active / unsubscribed / completed counts.
 7. `funnel_audibles__refund_eligible` — Hard Rule #4 refund queue.
 8. `funnel_audibles__weekly_top_of_funnel` — single-row weekly summary; the input to the Friday Audible Call.
+
+### Survey-Funnel views (DCS Secret 15, per-bucket — separate file)
+Source: `supabase/views/diagnostic_buckets.sql`. Companion to the main views above; per-bucket truth instead of per-label. The bucket is the cross-tab of Claude label × the three survey signals (time_since_launch × recent_revenue × biggest_attempt) — see `app/src/lib/diagnostic.ts` `assignBucket()`. Reads:
+
+9. `funnel_audibles__diagnostic_buckets` — per-day, per-bucket diagnostic counts and Starter conversion (7 buckets).
+10. `funnel_audibles__bucket_oto` — lifetime per-bucket cohort: diagnosis → Starter → Core. The OTO take-rate per Survey-Funnel segment. Use to verify that ready_to_scale converts higher than customer_avoider on Core (if the inversion ever shows up, `assignBucket` needs revision).
+11. `funnel_audibles__soap_opera_buckets` — per-day SOS subscribers by source + bucket; audits the diagnostic→Day-0 personalization chain.
+
+Read recipe (weekly survey-funnel scan, 30 seconds, after the standard Friday Call):
+```sql
+select * from public.funnel_audibles__diagnostic_buckets
+where day > now() - interval '30 days'
+order by day desc, diagnoses desc;
+
+select * from public.funnel_audibles__bucket_oto;
+```
 
 ### The One Number Per Step view
 The Friday Audible Call reads exactly one screen: `select * from public.funnel_audibles__weekly_top_of_funnel;`. That row holds the 14 most consequential metrics in column order matching the Trigger Matrix. Anyone glancing at it in 60 seconds should be able to point at the column that's red.
@@ -434,15 +461,15 @@ Per `project_unlocksaas_strategy.md`, the following decisions are locked. Changi
 
 The whole playbook compresses into one ritual.
 
-Every Friday, 30 minutes:
+**The cron does steps 1–3 automatically every Friday 14:00 UTC.** It reads the view, identifies the worst metric, cross-checks against the trigger matrix, and emails the verdict to `maryan@unlocksaas.com` with the recommended audible. The operator's job is steps 4–6:
 
-1. Open `funnel_audibles__weekly_top_of_funnel`. Read the row.
-2. Identify the worst metric vs Target (Part 2 column 4).
-3. Cross-check it against the Trigger Matrix (Part 4). If it's below the red-line AND the window count is met, fire the **first** audible listed for that row.
 4. Pull the alternate copy from Part 8. Swap. Deploy.
-5. Write one line in `build-log.md` under "Audibles": date, metric, audible fired, prediction.
-6. Re-read the same metric next Friday. Did it move? Document the result.
+5. Update the audit row: set `audible_fired` and `prediction` on the matching `public.friday_audible_calls` row. Append a narrative entry to `strategy/audibles-log.md`.
+6. Re-read the same metric next Friday. Did it move? The next entry's "Delta from last entry" field captures the answer.
 
-Audibles don't compound from cleverness. They compound from the **discipline of the Friday Call**. The playbook is the call's preparation. Run the call.
+The pre-automation version of this ritual asked the founder to do all six steps every week. The automation locks in steps 1–3 by code so they happen even on weeks the founder forgets. Steps 4–6 are still founder-judgment work — the system surfaces, the founder decides.
+
+Audibles don't compound from cleverness. They compound from the **discipline of the Friday Call**. The playbook is the call's preparation. The cron makes sure the call always fires. Run the call.
 
 — locked 2026-05-17.
+— automated 2026-05-17 (DCS Secret #28: 90 → 100).

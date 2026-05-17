@@ -135,18 +135,26 @@ export async function POST(req: NextRequest) {
   // typed insert path through @supabase/ssr's anon client would also work.
   // Using admin keeps the path uniform with the webhook's insert path and
   // avoids an extra round-trip through middleware's session refresh.
+  //
+  // Cast: stack_events not yet in generated database.types.ts (the migration
+  // 20260518000007_stack_events.sql is fresh; same pattern as
+  // cart_abandonment_subscribers in lib/cart-recovery/subscribe.ts).
   const admin = createAdminClient();
-  const { error } = await admin.from("stack_events").insert({
-    subject_id: subjectId,
-    layer,
-    event,
-    source_layer: sourceLayer,
-    destination_layer: destinationLayer,
-    affiliate_slug: affiliate,
-    utm_source,
-    utm_medium,
-    utm_campaign,
-  });
+  const { error } = await (
+    admin as unknown as { from: (t: string) => any }
+  )
+    .from("stack_events")
+    .insert({
+      subject_id: subjectId,
+      layer,
+      event,
+      source_layer: sourceLayer,
+      destination_layer: destinationLayer,
+      affiliate_slug: affiliate,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+    });
 
   if (error) {
     // Log but do not surface to the visitor — the beacon is fire-and-forget.

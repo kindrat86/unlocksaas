@@ -481,7 +481,7 @@ export async function runFridayCall<DB>(
       notes: opts.notes ?? null,
     })
     .select("id")
-    .single<{ id: string }>();
+    .single();
 
   if (insertError) {
     console.error("[friday-call] audit_insert_failed", insertError.message);

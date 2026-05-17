@@ -2940,6 +2940,27 @@
         "Once results_in_advance__step_completion_depth shows Step-1-only-stuck > Step-1+2-complete for two weeks in a row, investigate Step 2 engine-pushback friction — likely a prompt-sharpening pass on Offer validation.",
         "Re-grade the chapter to 100-by-data (not 100-by-readiness) once weekly completion_in_window_pct holds >= 50% for 3 consecutive weeks."
       ]
+    },
+    {
+      "date": "2026-05-17",
+      "scope": "dotcom_secrets.lead_challenge_5day (closure of DCS Secret #25)",
+      "change": "v3 Brunson Trilogy audit scored DCS Secret #25 as 'see #19' — a punt. Founder instructed 'Proceed autonomously: 25 5-Day Lead Challenge see #19'. Closure shape: spec-locked + copy-locked + activation-gated, matching the strategy/facebook-channel.md and strategy/decisions/rung-2-repeatable-revenue.md pattern. SHIPPED today: (1) strategy/lead-challenge-5day.md — full spec with 6-email curriculum copy (Day 0 welcome + Days 1–5 daily lessons + Day 6 ascension), Day-5 keepable one-pager artifact design, subscriber table SQL block, squeeze hero + disqualifier copy, overlap priority insertion (Founding > Cart Recovery > Sprint-5day > Soap Opera > Challenge > Seinfeld), activation gate (LEAD_CHALLENGE_5DAY_ACTIVE env var), audible matrix row, code-ship enumeration (8 files + ~3-hour build estimate). (2) strategy/audits/2026-05-17-dcs-25-lead-challenge.md — Russell-voice closure doc. (3) strategy/workbooks/04-building-your-funnels.md §11 — workbook pointer added with cross-link. (4) build-log.md entry. NOT shipped today (deliberately, per One Funnel Away): the migration file, lib code, page route, form component, API route, cron route. All enumerated in spec doc; build cost ~3 hours when activation trigger fires.",
+      "rationale": "Two Brunson disciplines reconciled: (a) the chapter is genuinely distinct from Secret #19 (the 14-Day Sprint covers the mechanic but not the lead-magnet shape; the 5-day's no-URL email-curriculum entry vector targets a different traffic temperature than /diagnostic), so 'see #19' was a real punt; (b) shipping a second top-of-funnel surface at launch violates One Funnel Away by splitting attention before the anchor funnel has proven on real traffic. The Facebook-channel pattern resolves both: lock the spec + lock the copy + define a measurable evidence trigger + defer the code-ship to activation. Score-cap at 88 (not 100) because no human has run the curriculum and the activation trigger has not fired; +12 path enumerated in the closure doc.",
+      "files": [
+        "strategy/lead-challenge-5day.md (NEW, ~400 lines spec + copy + activation gate)",
+        "strategy/audits/2026-05-17-dcs-25-lead-challenge.md (NEW, closure doc)",
+        "strategy/workbooks/04-building-your-funnels.md (added §11 with cross-link)",
+        "strategy/state.json (this entry)",
+        "build-log.md (audit response entry)"
+      ],
+      "follow_ups": [
+        "Monitor /diagnostic form-submit rate via PostHog (diagnostic_form_submitted / diagnostic_page_viewed). Activation trigger: <30% over ≥100 sessions.",
+        "When trigger fires: flip LEAD_CHALLENGE_5DAY_ACTIVE=true in Vercel + ship the 8 enumerated files in one autonomous Claude Code pass (~3 hours).",
+        "Update strategy/funnel-audibles.md Trigger Matrix Part 3 with the new audible row (diagnostic-conversion red-line → 5-day activation).",
+        "Update strategy/follow-up-funnels.md cadence table with the 5-day row + overlap priority adjustment.",
+        "Re-grade DCS #25 from 88 → 92 the day one human completes Day 5 and replies with their one-pager."
+      ],
+      "audit_delta": "DotCom Secrets Secret #25: 'see #19' (≈65) → 88. DCS sub-score: 80 → ~80.8 (rounding-bounded). Composite 73 → ~73 (rounding-bounded; market validation still dominates at 5). Strategic-completeness sense: workbook stack now covers every numbered chapter of all three books at ≥75 except chapters genuinely N/A for a micro-SaaS at this stage (Phone Funnels, High-Ticket 3-Step Application, Invisible Funnel)."
     }
   ],
   "notes": {

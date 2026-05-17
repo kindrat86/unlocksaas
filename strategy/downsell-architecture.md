@@ -1,5 +1,31 @@
 # OTO Downsell Architecture — UnlockSaaS
 
+> **DEPRECATED 2026-05-17 PM.** This spec is **superseded** by
+> [`strategy/decisions/seven-phases-coverage.md`](decisions/seven-phases-coverage.md)
+> §"Phase 5 — Profit Maximizer: why it is deliberately not a downsell."
+>
+> The lean-ladder doctrine rejected a $19 downsell on four grounds (workbook
+> 02 §3 contested resolution, avatar incompatibility, one-funnel-away
+> discipline, Soap Opera IS the Return Path). The integrity claim "SOS is
+> the lossless Return Path for OTO decliners" was previously broken in code:
+> a $1 buyer entering via `/starter` direct (skipping `/diagnostic`) was
+> not enrolled in the SOS. The Stripe webhook now closes that integrity
+> gap on `checkout.session.completed` (mode=payment) via
+> `subscribeStarterBuyerToSoapOpera()` — idempotent, respects existing
+> subscribers, respects unsubscribes. Code-side close in
+> `app/src/lib/soap-opera/subscribe.ts` + `app/src/app/api/webhooks/stripe/route.ts`.
+>
+> Companion pause-on-conversion: `maybeShortCircuitSoapOpera()` flips active
+> SOS rows to `paused` on `customer.subscription.created` so paying Core
+> customers do not receive Email 5's offer-for-Core (Brunson rule: never
+> email a customer like a lead). Mirrors `maybeShortCircuitSeinfeld()`.
+>
+> The doctrine for re-opening this spec: workbook 02 §3 four-condition gate
+> in seven-phases-coverage.md §"What would have to change before a downsell
+> becomes correct." Until all four hold, **do not implement the downsell
+> below.** This file remains as the documented spec for the day those
+> conditions fire, not as an active build instruction.
+
 This document closes the audit gap on **DotCom Secrets Secret #18 (Cart Funnel + OTO/Stack Scripts)**. The current OTO at `/oto` correctly enforces ONE decision (per workbook 03 Script 4), but the "No thanks" path leaks every buyer to silence. This spec adds a single recoverable downsell without violating the Reluctant Hero + Verified Builders identity or breaking the one-decision-per-page rule.
 
 **Source workbooks:** 02 (Value Ladder), 03 Script 4 (OTO), 04 §2 (Starter funnel spec), 06 §4 (Internal Belief rewrites — for the downsell copy).

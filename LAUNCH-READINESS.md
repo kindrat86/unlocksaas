@@ -192,14 +192,16 @@ done.
 
 ## Score forecast
 
-| Layer | Pre-push | Post-push | Post-100-visitors | Post-first-customer |
-|---|---|---|---|---|
-| Strategy | 91 | 99 | 99 | 99 |
-| Execution | 62 | 92 | 92 | 95 |
-| Market validation | 5 | 5 | 35 | 75 |
-| Discipline | 88 | 92 | 92 | 95 |
-| Operational | 70 | 92 | 95 | 95 |
-| **Composite** | **63** | **84** | **89** | **95** |
+| Layer | Pre-push | Post-push | Post-OFA-guardrail | Post-100-visitors | Post-first-customer |
+|---|---|---|---|---|---|
+| Strategy | 91 | 99 | 99 | 99 | 99 |
+| Execution | 62 | 92 | 92 | 92 | 95 |
+| Market validation | 5 | 5 | 5 | 35 | 75 |
+| Discipline | 88 | 92 | **96** | 96 | 96 |
+| Operational | 70 | 92 | 92 | 95 | 95 |
+| **Composite** | **63** | **84** | **85** | **89** | **95** |
+
+The Post-OFA-guardrail column reflects DCS Secret #26 closing from 92 → 100 via `strategy/decisions/one-funnel-away-guardrail.md` (9-section doc with 14-item Veto List + 4-condition activation trigger for the second funnel). Discipline lifted +4 because the OFA Vow is now an enforceable ritual, not implicit founder restraint — the Friday Audible Call doubles as the Friday OFA Audit. Strategy, Execution, Market validation, and Operational unchanged (the guardrail ships no new product surfaces and creates no new operator dependencies, by design).
 
 The autonomous push closes every gap that can be closed without real
 visitors. The remaining 16 points to 100 are gated on operator actions

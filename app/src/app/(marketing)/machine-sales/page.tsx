@@ -24,6 +24,7 @@ import {
 } from "@/components/seo/json-ld";
 import { MACHINE_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
+import { DiagnosticHandoffBanner } from "./diagnostic-handoff-banner";
 
 /**
  * Per-page metadata. Surface A of strategy/google-strategy.md — this page is
@@ -124,6 +125,16 @@ export default function MachineSalesPage() {
         event={Event.MachineSalesPageViewed}
         properties={{ surface: "machine_sales" }}
       />
+
+      {/* Brunson Survey Funnel Bridge → Door consistency banner (DCS Secret
+          15). Renders only when ?from=diagnostic is on the URL. The Bridge
+          Page at /diagnostic/result routes ready_to_scale visitors directly
+          here; this banner is the door confirming the bridge label, so the
+          Reluctant Hero voice does not break mid-funnel. Mirrors the /starter
+          handoff banner pattern. The banner self-wraps in <Suspense> because
+          useSearchParams forces CSR bailout in App Router. */}
+      <DiagnosticHandoffBanner />
+
       <div className="max-w-3xl mx-auto">
         {/* ============================================================ */}
         {/* BLOCK 1 — BIG DOMINO (slides 1–6)                             */}

@@ -795,22 +795,29 @@ async function recordStackConversion(session: Stripe.Checkout.Session) {
   const conversionEvent: "starter_purchase" | "core_purchase" =
     session.mode === "subscription" ? "core_purchase" : "starter_purchase";
 
+  // Cast: stack_events not yet in generated database.types.ts (migration
+  // 20260518000007_stack_events.sql is fresh; same pattern as
+  // cart_abandonment_subscribers in lib/cart-recovery/subscribe.ts).
   const admin = createAdminClient();
-  const { error } = await admin.from("stack_events").insert({
-    subject_id: stamp.subject,
-    layer: stamp.layerPurchased,
-    event: "convert",
-    source_layer: stamp.current,
-    destination_layer: stamp.layerPurchased,
-    conversion_event: conversionEvent,
-    path: JSON.stringify(stamp.path),
-    ab_variant: parseIdentityVariant(metadata.ab_variant),
-    affiliate_slug: stamp.affiliate,
-    utm_source: metadata.utm_source ?? null,
-    utm_medium: metadata.utm_medium ?? null,
-    utm_campaign: metadata.utm_campaign ?? null,
-    stripe_session_id: session.id,
-  });
+  const { error } = await (
+    admin as unknown as { from: (t: string) => any }
+  )
+    .from("stack_events")
+    .insert({
+      subject_id: stamp.subject,
+      layer: stamp.layerPurchased,
+      event: "convert",
+      source_layer: stamp.current,
+      destination_layer: stamp.layerPurchased,
+      conversion_event: conversionEvent,
+      path: JSON.stringify(stamp.path),
+      ab_variant: parseIdentityVariant(metadata.ab_variant),
+      affiliate_slug: stamp.affiliate,
+      utm_source: metadata.utm_source ?? null,
+      utm_medium: metadata.utm_medium ?? null,
+      utm_campaign: metadata.utm_campaign ?? null,
+      stripe_session_id: session.id,
+    });
 
   if (error) {
     console.error(

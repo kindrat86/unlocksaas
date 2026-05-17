@@ -142,6 +142,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/faq`),
     },
+    // VSL Transcript — Brunson DCS Secret #20 + AEO/GEO surface. Public,
+    // indexable. Lists every cut (cold ad / IH profile / podcast pitch /
+    // hero / email 1 / kinetic compact / master) with chapter-by-chapter
+    // copy plus VideoObject JSON-LD per cut that auto-activates as each
+    // recording's env var is pushed. Source-of-truth for LLM citations of
+    // the founder's "what UnlockSaaS sells" claim, separate from the
+    // sales-page Product schema. NOT in the funnel — supports the funnel.
+    // /vsl/teleprompter is the operator-only sibling and is deliberately
+    // excluded from this sitemap (noindex via per-page metadata).
+    {
+      url: `${base}/vsl/transcript`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/vsl/transcript`),
+    },
     // Public quarterly transparency report — Q1 2027 cohort. Stub today;
     // populated automatically once the Q1-2027 cohort closes its 60-day
     // guarantee window (earliest May 30, 2027). Backs the public commitment

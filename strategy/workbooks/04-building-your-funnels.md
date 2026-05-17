@@ -375,6 +375,55 @@ Suggested targets to hack post-launch: Lovable's own funnel (most directly model
 
 ---
 
+## Section 10: Invisible Funnel — Canonical Doc Pointer (DCS Secret #24)
+
+The full canonical doc lives at [`strategy/invisible-funnel.md`](../invisible-funnel.md). This section is the workbook-side pointer following the §3.5 / §3.6 / §8b pattern.
+
+**Why a dedicated doc:** DotCom Secrets Secret #24 (The Invisible Funnel) was scored N/A in the v2 audit on the reasoning "Not the model." That call pattern-matched on Brunson's canonical variant 1 (free 4-day cohort training, pay-after-value) and missed two surfaces UnlockSaaS actually has. [`strategy/invisible-funnel.md`](../invisible-funnel.md) re-grades the chapter to **70** under the stage-appropriate scoring lens already used for Funnel Audibles, Funnel Hub, Facebook, Google, and More Money / Same Framework.
+
+**What the canonical doc locks:**
+
+1. **Brunson's Invisible Funnel taxonomy** — three variants (pay-after-value / reversible-payment / trial-as-invisible) and the unifying mechanic (decouple the buyer's commitment to pay from the moment of first payment).
+2. **Surface A (LIVE today)** — the 60-day Stripe-verified guarantee on the $49/mo Core is structurally variant 2. Buyer pays upfront; engine tracks machine-verifiable milestones; outcome is Stripe-verified; automatic $98 refund fires at day 60 if work-conditions are met and Stripe shows no new paying customer. Distinct from a generic risk-reversal close (ES #14 Category 1) because it is a structural property of the funnel, enforced by code, not a promise made in copy.
+3. **Surface B (BUILD-GATED)** — Verified Builder Sprint, canonical variant 1. Free 4-day cohort training mapped to Machine Steps 1–5 with one Reluctant Hero parable per day. Day 4 ends with a single $49/mo CTA on the same stack the rest of the funnel sells. Activation-gated to: 3+ verified Core cycles + PLF run once + cron drips live + VSL recorded. 8-week build estimate post-gate.
+4. **Anti-patterns explicitly named** — `/diagnostic` (lead-squeeze), `/parables` (reverse-squeeze), `/starter` (direct-sale entry), the 14-Day Sprint bonus (lives inside Core), and the Summit "free first month in All-Access Pass" (promotional bridge) are NOT Invisible Funnels and the chapter score does not credit them.
+5. **One Funnel Away compliance** — Surface A introduces no new funnel; Surface B is Phase 2 with explicit build gates. PASS.
+6. **Honest math** — Phase-2 launch model: 200–500 Day-1 attendees → 35–45% Day-4 retention → 3–7% Day-4 conversion → 2–16 net new customers per run.
+7. **Score path** — 70 today; 100 only after Surface B runs evergreen with verified ROI across 3+ cohorts.
+
+**The rule the canonical doc enforces above all others:** the Invisible Funnel is a psychological architecture (decouple commitment from payment), not a single delivery format. The 60-day Stripe-verified guarantee is variant 2 of the same architecture, enforced by code. Future audits MUST score the chapter; "Not the model" is no longer an acceptable verdict.
+
+**Audit-side close:** `strategy/audits/2026-05-17-brunson-trilogy-audit.md` Addendum v3.4. State.json structured block: `invisible_funnel` (peer of `funnel_hacks`, `funnel_hacks_synthesis`, `product_launch_funnel`).
+
+---
+
+## Section 11: 5-Day Lead Challenge — Spec Locked, Activation Gated (DCS Secret #25)
+
+**Added 2026-05-17** to close DotCom Secrets Secret #25 from the v3 Trilogy audit's `see #19` punt. The full spec, full email curriculum, and full activation gate live in [`strategy/lead-challenge-5day.md`](../lead-challenge-5day.md). This section is the workbook-side pointer.
+
+**Why a dedicated chapter, distinct from §10 (the 14-Day Sprint):** Brunson separates Secret #19 (Challenge Funnel mechanic) and Secret #25 (5-Day Lead Challenge shape) for a reason. The mechanic is satisfied by the 14-day sprint. The 5-day shape — free, email-only, no URL paste, daily action, Day-5 keepable artifact, Day-6 ascension to $1 — is a different entry vector for a different traffic temperature (solution-aware founders who refuse the diagnostic URL paste).
+
+**What the spec locks:**
+
+1. **6-email curriculum** (Day 0 welcome + Days 1–5 daily lessons + Day 6 ascension). Copy verbatim in spec doc. Each day = one lesson + one small action + one reply prompt.
+2. **Day-5 artifact** — the four-sentence one-pager: **For** (one real person) / **They Said** (one quoted sentence) / **Avoided Cost** (90-day cost of staying stuck) / **Promise** (timeframe + result + remedy).
+3. **Subscriber model** — `lead_challenge_5day_subscribers` table mirroring `challenge_subscribers` at half the length (8 sent counter, 6-state status enum).
+4. **Squeeze copy** at `/sprint-5day` — Hero + AC bio + disqualifier. Two-field form (firstName + email). No URL field.
+5. **Overlap priority** — `Founding > Cart Recovery > Sprint-5day > Soap Opera > Challenge > Seinfeld`. The 5-day sits above Soap Opera because a 5-day opt-in is a more recent + more deliberate signal.
+6. **Activation gate** — `/diagnostic` form-submit rate < 30% over ≥100 sessions. Until that fires, `LEAD_CHALLENGE_5DAY_ACTIVE` env var stays unset and `/sprint-5day` returns 404.
+7. **Code-ship enumeration** — 8 files specced for the activation build. Estimated ~3 hours one autonomous pass when the trigger fires.
+
+**What is NOT shipped today (deliberately):**
+
+- Migration file, lib code, page route, form, API route, cron route.
+- Reason: building it pre-activation costs nothing of value (it would sit unused). The activation trigger is the evidence that says "the diagnostic isn't capturing this audience temperature." Pre-evidence build = guess.
+
+**Audible link:** `strategy/funnel-audibles.md` Trigger Matrix gains one row — `/diagnostic` form-submit < 30% over ≥100 sessions → flip `LEAD_CHALLENGE_5DAY_ACTIVE=true`. The Friday Audible Call surfaces this trigger when the data crosses the line.
+
+**Audit close:** DotCom Secrets Secret #25 lifted from `see #19` (≈65) → **88** under stage-appropriate scoring. Capped at 88 (not 100) until one human completes Day 5 and replies with their one-pager. Full closure rationale at [`strategy/audits/2026-05-17-dcs-25-lead-challenge.md`](../audits/2026-05-17-dcs-25-lead-challenge.md).
+
+---
+
 ## Status
 
 **Step 4 COMPLETE.**
