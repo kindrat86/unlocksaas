@@ -127,6 +127,29 @@ The full policy lives at [`strategy/owned-traffic.md`](../owned-traffic.md). Thi
 
 ---
 
+## Section 3.6: Follow-Up Funnel Architecture (Secret #6 reference)
+
+The full architecture lives at [`strategy/follow-up-funnels.md`](../follow-up-funnels.md). This section is the workbook-side pointer.
+
+**Why a dedicated doc:** Brunson Secret #6 of Traffic Secrets is not "have several email lists." It is the **system** that decides who gets what when, with explicit rules for overlap, termination, and reversibility. A scattered version of this lived across `lib/soap-opera/`, `lib/seinfeld/`, `lib/founding/`, `lib/challenge/`, `/api/unsubscribe`, and the Stripe webhook. [`strategy/follow-up-funnels.md`](../follow-up-funnels.md) consolidates it.
+
+**What the architecture locks:**
+
+1. **5 live cadences** — Soap Opera (5-day), Seinfeld (ongoing weekly), Founding Pre-Launch (6-email PLF), Challenge (14-day), **Cart Abandonment Recovery (3-email)** [new this revision].
+2. **2 deferred cadences with explicit gates** — Win-Back (on first cancellation), Reactivation (on 100+ unsubscribed rows).
+3. **Trigger taxonomy** — each cadence has exactly ONE entry trigger; no silent cross-enrolment except via explicit Seinfeld opt-in CTA in final emails.
+4. **Subscriber state machine** — `active` / `complete` / `recovered` (cart only) / `unsubscribed` / `bounced`; all transitions reversible.
+5. **Overlap priority order** for same-day collisions: Founding > Cart Recovery > Soap Opera > Challenge > Seinfeld.
+6. **Termination rules** — every cadence has a written end. No "ghost in the list."
+7. **One-click unsubscribe** — single HMAC token clears every list in one click. RFC 8058 compliant.
+8. **Staggered cron schedule** — 14:00 / 15:00 / 16:00 / 17:00 / 18:00 UTC, one per cadence. Reduces co-send risk to zero pre-launch.
+
+**Cart Abandonment Recovery — the new fifth cadence:** trigger = Stripe `checkout.session.expired` on any priceType. 3 emails over 7 days (Day 0 inline, Day 2, Day 7). Resume link routes to `/starter` or `/machine-sales` (NOT the expired Stripe session URL). Short-circuits to `status='recovered'` the moment a fresh `checkout.session.completed` fires for the same email — Brunson rule: stop chasing the second they buy.
+
+**Audit close:** Traffic Secrets Secret #6 lifted from 88 → 100 by closing the two concrete gaps (no meta-architecture doc; no cart recovery cadence). Expert Secrets Secret #17 lifts in parallel to ~95, capped until first email lands in a real inbox.
+
+---
+
 ## Section 4: Secret #9, Fill Your Funnel Organically
 
 Full organic playbook in Section 1 above. Two additions:

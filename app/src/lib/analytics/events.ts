@@ -57,6 +57,7 @@ export const Event = {
 
   // Conversion (server-side, Stripe webhook is source of truth)
   CheckoutSessionCreated: "checkout_session_created",
+  CheckoutSessionExpired: "checkout_session_expired",
   StarterPurchased: "starter_purchased",
   MachineSubscribed: "machine_subscribed",
   InvoicePaymentSucceeded: "invoice_payment_succeeded",
@@ -66,9 +67,20 @@ export const Event = {
   // The single event brunson-funnel-metrics cares about most:
   FirstCustomerVerified: "first_customer_verified",
 
+  // Follow-Up Funnels — Cart Abandonment Recovery cadence
+  // (Traffic Secrets Secret #6 / strategy/follow-up-funnels.md cadence #5).
+  CartRecoveryEnrolled: "cart_recovery_enrolled",
+  CartRecoveryEmailSent: "cart_recovery_email_sent",
+  CartRecoveryRecovered: "cart_recovery_recovered",
+  CartRecoveryCompleted: "cart_recovery_completed",
+
   // Auth / lifecycle
   MagicLinkRequested: "magic_link_requested",
   UserSignedIn: "user_signed_in",
+
+  // Per-channel bio link surfaces (workbook 09 §1 — Traffic Secrets #15
+  // funnel-hub-from-cold-channel attribution). Used by IgBioLinkTracker.
+  IgBioLinkViewed: "ig_bio_link_viewed",
 } as const;
 
 export type EventName = (typeof Event)[keyof typeof Event];

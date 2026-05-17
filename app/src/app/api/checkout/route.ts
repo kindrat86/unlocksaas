@@ -56,6 +56,12 @@ export async function POST(req: NextRequest) {
   if (diagnosticLeadId && /^[0-9a-f-]{36}$/i.test(diagnosticLeadId)) {
     abMetadata.diagnostic_lead_id = diagnosticLeadId;
   }
+  // Price type stamped in Stripe metadata so the Cart Abandonment Recovery
+  // cadence can branch its copy on `checkout.session.expired` events. See
+  // app/src/lib/cart-recovery/subscribe.ts.
+  if (priceType === "starter" || priceType === "machine") {
+    abMetadata.price_type = priceType;
+  }
 
   // Distinct id for server-side analytics. At checkout-time we don't have a
   // Stripe customer id yet (Stripe assigns one at session completion), so we

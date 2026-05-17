@@ -20,6 +20,10 @@ import {
   sixtyDayExpiry,
   upsertProfileByEmail,
 } from "@/lib/billing";
+import {
+  recordCartAbandonment,
+  maybeShortCircuitRecovery,
+} from "@/lib/cart-recovery/subscribe";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
 export const runtime = "nodejs";
@@ -97,6 +101,21 @@ export async function POST(req: NextRequest) {
         await recordDiagnosticAttribution(session);
         await recordFoundingSeat(session);
         await capturePurchase(session);
+        // FOLLOW-UP: short-circuit any active Cart Abandonment Recovery row
+        // for this email so the cron stops chasing a paid customer.
+        // strategy/follow-up-funnels.md Part 6 "recovery short-circuit."
+        const completedEmail =
+          session.customer_details?.email ?? session.customer_email ?? null;
+        if (completedEmail) {
+          await maybeShortCircuitRecovery(completedEmail, session.id);
+        }
+        break;
+      }
+      case "checkout.session.expired": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        // FOLLOW-UP: enrol into Cart Abandonment Recovery cadence (3-email
+        // arc over 7 days). strategy/follow-up-funnels.md Part 2 cadence #5.
+        await recordCartAbandonment(session);
         break;
       }
       case "invoice.payment_succeeded": {
