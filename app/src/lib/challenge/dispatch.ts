@@ -91,9 +91,12 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
       error: sendError,
     });
     // Persist last_error so the operator can see why the row is stuck.
+    // `as never` matches the dual-schema reconciliation pattern used in
+    // machine/page.tsx — the migration shipped (20260518000001) but the
+    // generated database.types.ts has not been regenerated yet.
     await supabase
-      .from("challenge_subscribers")
-      .update({ last_error: sendError.slice(0, 500) })
+      .from("challenge_subscribers" as never)
+      .update({ last_error: sendError.slice(0, 500) } as never)
       .eq("id", row.id);
     return { email: row.email, index, ok: false, error: sendError };
   }
@@ -123,8 +126,8 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
   }
 
   const { error: dbError } = await supabase
-    .from("challenge_subscribers")
-    .update(update)
+    .from("challenge_subscribers" as never)
+    .update(update as never)
     .eq("id", row.id);
 
   if (dbError) {

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { VslPlayer } from "@/components/vsl/vsl-player";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
