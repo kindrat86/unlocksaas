@@ -2,17 +2,24 @@
  * Seinfeld send-and-advance for a single subscriber row.
  *
  * Mirrors lib/soap-opera/dispatch.ts in shape. Differences:
- *   - Selects content from a per-weekday pool (PARABLES / BEHIND_THE_BUILD /
- *     INDUSTRY_OBSERVATIONS) instead of a fixed 5-item sequence.
- *   - Increments two counters: current_index (rotation cursor) and
- *     sends_count (drives PS alternation). Never flips status to 'complete' —
- *     the Seinfeld nurture is indefinite by design.
+ *   - Selects content via JK5 rotation (per-send, not per-weekday). The 5
+ *     JK5 categories (Personal / Process / Pattern / Polarity / Proof) come
+ *     from strategy/workbooks/09-fill-your-funnel.md §2. Send N goes to
+ *     JK5[N mod 5]; item inside that pool indexes by floor(N / 5).
+ *   - Increments two counters: current_index (rotation cursor, kept for
+ *     legacy analytics queries) and sends_count (the actual driver of the
+ *     JK5 picker). Status never flips to 'complete' — Seinfeld is indefinite
+ *     by design.
+ *   - Cadence (Mon/Wed/Fri UTC) is preserved by the schedule layer; this
+ *     function still guards a non-send-day call so manual /admin paths can't
+ *     fire on a Tuesday by accident.
  */
 
 import { createAdminClient } from "@/lib/supabase/server";
 import { getResend, FROM_ADDRESS, REPLY_TO } from "@/lib/resend";
 import { buildUnsubscribeUrl } from "@/lib/soap-opera/tokens";
-import { poolForWeekday, type SeinfeldItem } from "./content";
+import { isSendDay } from "./schedule";
+import { pickForSend } from "./content";
 import { renderEmail, pickPsTarget } from "./emails";
 
 export interface DueRow {
@@ -26,6 +33,7 @@ export interface SendResult {
   email: string;
   ok: boolean;
   contentId?: string;
+  jk5?: string;
   error?: string;
 }
 
@@ -38,22 +46,23 @@ function baseUrl(): string {
 }
 
 /**
- * Send the right Seinfeld email for this subscriber on today's weekday, then
- * advance counters. No-op (ok=false, error='not_send_day') if today's weekday
- * has no pool — the caller (cron) should guard before calling, but we double-
- * check here so manual /admin send-now paths can't accidentally fire on a
- * Tuesday.
+ * Send the right Seinfeld email for this subscriber, then advance counters.
+ *
+ * JK5 rotation is driven by `row.sends_count` (lifetime sends before this
+ * one). Send #0 → Personal[0], #1 → Process[0], #2 → Pattern[0], #3 →
+ * Polarity[0], #4 → Proof[0], #5 → Personal[1], etc.
+ *
+ * No-op (ok=false, error='not_send_day') if today is not a Mon/Wed/Fri UTC.
  */
 export async function sendNextAndAdvance(
   row: DueRow,
   now: Date = new Date(),
 ): Promise<SendResult> {
-  const pool = poolForWeekday(now.getUTCDay());
-  if (!pool || pool.length === 0) {
+  if (!isSendDay(now)) {
     return { email: row.email, ok: false, error: "not_send_day" };
   }
 
-  const item: SeinfeldItem = pool[row.current_index % pool.length];
+  const { item, jk5 } = pickForSend(row.sends_count);
 
   const rendered = renderEmail(item, {
     email: row.email,
@@ -80,7 +89,10 @@ export async function sendNextAndAdvance(
       },
       tags: [
         { name: "sequence", value: "seinfeld" },
+        // `kind` retains the pre-JK5 label for back-compat with existing
+        // Resend dashboards. `jk5` is the new authoritative category.
         { name: "kind", value: item.kind },
+        { name: "jk5", value: jk5 },
         { name: "content_id", value: item.id },
         { name: "ps_target", value: psTarget },
       ],
@@ -97,12 +109,21 @@ export async function sendNextAndAdvance(
       .from("seinfeld_subscribers")
       .update({ last_error: sendError })
       .eq("id", row.id);
-    return { email: row.email, ok: false, contentId: item.id, error: sendError };
+    return {
+      email: row.email,
+      ok: false,
+      contentId: item.id,
+      jk5,
+      error: sendError,
+    };
   }
 
   const { error: dbError } = await supabase
     .from("seinfeld_subscribers")
     .update({
+      // current_index trails sends_count; both increment in lockstep. Kept
+      // distinct so a future feature (e.g. skip-ahead on a topic) can
+      // diverge them without a migration.
       current_index: row.current_index + 1,
       sends_count: row.sends_count + 1,
       last_sent_at: now.toISOString(),
@@ -115,9 +136,10 @@ export async function sendNextAndAdvance(
       email: row.email,
       ok: false,
       contentId: item.id,
+      jk5,
       error: `db_${dbError.message}`,
     };
   }
 
-  return { email: row.email, ok: true, contentId: item.id };
+  return { email: row.email, ok: true, contentId: item.id, jk5 };
 }

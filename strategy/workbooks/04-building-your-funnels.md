@@ -292,7 +292,7 @@ If 60 days pass without a Stripe-verified new customer AND the tracked outreach 
 
 ---
 
-## Section 8: Funnel Audit Worksheet (Secret #28)
+## Section 8: Funnel Audit Worksheet (Secret #28, pre-launch sanity)
 
 Run this before flipping each funnel live.
 
@@ -310,6 +310,32 @@ Run this before flipping each funnel live.
 | 10. Disqualifying copy present | [ ] | [ ] | [ ] |
 
 A funnel does not ship until every applicable box is checked.
+
+### Section 8b: Funnel Audibles Playbook (Secret #28, live operation)
+
+The audit worksheet above is a one-time pre-launch sanity check. The live, ongoing operation of Secret #28 lives in `strategy/funnel-audibles.md` — the Funnel Audibles Playbook. It covers:
+
+- **The funnel map** (Part 2) — every step with Brunson benchmark, UnlockSaaS target, and the red-line threshold below which an audible MUST fire.
+- **The audible library** (Part 3) — per-step leak hypotheses, ranked audible options, decision rules.
+- **The trigger matrix** (Part 4) — single decision table: if metric X is below threshold Y after window Z, fire audible A.
+- **The audit cadence** (Part 5) — daily / weekly / monthly / quarterly rhythm, anchored on the Friday Audible Call.
+- **The dashboards** (Part 6) — PostHog Insights to build + Supabase SQL views (`supabase/views/funnel_audibles.sql`).
+- **The anti-audibles** (Part 7) — what looks like an audible but is actually a strategy violation.
+- **The pre-staged copy vault** (Part 8) — alternate headlines, CTAs, subject lines, button copy, and the OTO Big Domino expansion block, all written and ready to swap in inside 10 minutes when the trigger fires.
+- **The audible veto list** (Part 9) — workbook-locked decisions (avatar, price, guarantee, identity, scarcity, channels) that are NOT audibleable; changing them is Revision Mode with full documentation.
+
+**SQL views** (`supabase/views/funnel_audibles.sql`):
+- `funnel_audibles__diagnostic_conversion` — per-day, per-label diagnoses → Starter conversion.
+- `funnel_audibles__starter_to_core` — weekly cohort OTO take-rate.
+- `funnel_audibles__machine_progression` — milestone-by-milestone depth funnel among Core subs.
+- `funnel_audibles__outreach_velocity` — days to 20 verified actions per Core sub. **The existential view.**
+- `funnel_audibles__guarantee_pressure` — Core subs approaching day-60 grouped by state.
+- `funnel_audibles__ab_identity_results` — Verified vs Paid Builders A/B.
+- `funnel_audibles__soap_opera_funnel` — SOS per-day status mix.
+- `funnel_audibles__weekly_top_of_funnel` — single-row weekly summary. The Friday Audible Call screen.
+- `funnel_audibles__refund_eligible` — Hard Rule #4 refund queue.
+
+**The Friday Audible Call** is the operational ritual. 30 minutes, once a week. Read `funnel_audibles__weekly_top_of_funnel`. Identify the worst metric. Cross-check against the Trigger Matrix. Fire the first audible listed. Document in `build-log.md`. Re-read next Friday. The discipline of the call is what compounds, not the cleverness of any single audible.
 
 ---
 
