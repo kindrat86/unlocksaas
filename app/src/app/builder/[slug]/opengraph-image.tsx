@@ -14,7 +14,16 @@ import { loadPublicBadge } from "@/lib/builder-badge";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const alt = "Verified Builder";
+// Static alt is intentional even though the page is force-dynamic: per-
+// slug alt would force a third loadPublicBadge call per OG fetch (the
+// page already calls it in generateMetadata + the page render). The card's
+// builder name + product line are the per-slug signal; og:title and
+// og:description on the page already carry both, so screen-reader and
+// preview-card users get the name from those.
+// Follow-up: wrap loadPublicBadge in React.cache() for request-scoped
+// memoization, then promote this to generateImageMetadata.
+export const alt =
+  "Verified Builder badge – Stripe-verified first paying customer, not self-reported";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

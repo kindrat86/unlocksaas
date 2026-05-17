@@ -24,7 +24,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
 export const runtime = "nodejs";
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const alt = "Unlock SaaS pricing teardown";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
@@ -33,6 +32,25 @@ export function generateStaticParams() {
 }
 
 type Params = { slug: string };
+
+/**
+ * Per-slug og:image:alt. Pricing teardowns are shared in founder
+ * communities mid-evaluation ("how is X actually priced") – the named-
+ * target alt is what makes the preview earn the click instead of the
+ * generic "indie SaaS pricing" alt that gets ignored.
+ */
+export function generateImageMetadata({ params }: { params: Params }) {
+  const t = getPricingTeardownBySlug(params.slug);
+  const name = t?.displayName ?? "Indie SaaS";
+  return [
+    {
+      id: "card",
+      alt: `${name} pricing teardown – tier structure, anchor mechanics, upgrade triggers`,
+      size: OG_SIZE,
+      contentType: OG_CONTENT_TYPE,
+    },
+  ];
+}
 
 export default function OgImage({ params }: { params: Params }) {
   const t = getPricingTeardownBySlug(params.slug);

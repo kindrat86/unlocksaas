@@ -13,7 +13,7 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
  *
  * Brunson Hard-Rule reconciliation: symmetric framing extends to the OG
  * card. The card names both products on the headline line and renders no
- * verdict — the honest take is the click-through payoff.
+ * verdict – the honest take is the click-through payoff.
  *
  * All visual logic lives in src/lib/seo/og-card.tsx so the four pSEO OG
  * routes render as one visual fleet; this file stays a thin route handler.
@@ -22,7 +22,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
 export const runtime = "nodejs";
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const alt = "Unlock SaaS head-to-head comparison";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
@@ -31,6 +30,25 @@ export function generateStaticParams() {
 }
 
 type Params = { slug: string };
+
+/**
+ * Per-slug og:image:alt. The "[A] vs [B]" query class is the highest
+ * intent on the property – a named-pair alt is the difference between
+ * a generic shared preview and a "this is exactly what I'm researching"
+ * preview for retrieval pipelines AND screen-reader users.
+ */
+export function generateImageMetadata({ params }: { params: Params }) {
+  const c = getComparisonBySlug(params.slug);
+  const headline = c ? `${c.a.name} vs ${c.b.name}` : "Indie SaaS tools";
+  return [
+    {
+      id: "card",
+      alt: `${headline} – honest head-to-head comparison for indie SaaS founders`,
+      size: OG_SIZE,
+      contentType: OG_CONTENT_TYPE,
+    },
+  ];
+}
 
 export default function OgImage({ params }: { params: Params }) {
   const c = getComparisonBySlug(params.slug);

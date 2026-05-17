@@ -1,10 +1,10 @@
 /**
- * Brunson DCS Chapter 11 — bait-result OG card.
+ * Brunson DCS Chapter 11 – bait-result OG card.
  *
  * Renders the public diagnosis as a 1200x630 social preview. Read by X,
  * LinkedIn, Facebook, Slack, and any other surface that fetches OG metadata
  * when a /diagnosis/<id> URL is shared. This card is the bait amplification
- * — it tells the scroller "your peer ran this for free, you can too" in a
+ * – it tells the scroller "your peer ran this for free, you can too" in a
  * Reluctant-Hero visual register, before they click.
  *
  * Pattern mirrored from app/src/app/builder/[slug]/opengraph-image.tsx.
@@ -18,7 +18,16 @@ import {
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const alt = "Unlock SaaS diagnosis";
+// Static alt is intentional even though the page is force-dynamic: per-id
+// alt would force a second loadPublicDiagnosis call per OG fetch (the page
+// already calls it twice – once in generateMetadata, once in the default
+// export). The card's hostname + label badge are the per-id signal; og:title
+// and og:description on the page already carry both. A descriptive alt that
+// covers the entire surface beats a per-id alt that doubles DB read load.
+// Follow-up: wrap loadPublicDiagnosis in React.cache() for request-scoped
+// memoization, then promote this to generateImageMetadata.
+export const alt =
+  "Reluctant-Hero diagnosis card – Wrong Person, Weak Offer, or Weak Belief";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -35,7 +44,7 @@ export default async function OgImage({ params }: Props) {
     ? `${diag.hostname} got diagnosed.`
     : "Run your free diagnostic.";
   const subline = diag
-    ? "Reluctant-Hero diagnosis. Wrong Person, Weak Offer, or Weak Belief — one of three. Run yours in 90 seconds."
+    ? "Reluctant-Hero diagnosis. Wrong Person, Weak Offer, or Weak Belief – one of three. Run yours in 90 seconds."
     : "Paste your live URL. The engine labels the upstream failure mode.";
 
   return new ImageResponse(

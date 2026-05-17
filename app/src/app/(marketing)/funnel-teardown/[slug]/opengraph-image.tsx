@@ -21,7 +21,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
 export const runtime = "nodejs";
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const alt = "Unlock SaaS funnel teardown";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
@@ -30,6 +29,30 @@ export function generateStaticParams() {
 }
 
 type Params = { slug: string };
+
+/**
+ * Per-slug og:image:alt. Image-SEO uplift (2026-05-17) – without this, every
+ * teardown card emits the same generic alt ("Unlock SaaS funnel teardown"),
+ * which costs us image-search reach AND a real accessibility surface for
+ * screen-reader users who share/preview the card. The file convention beats
+ * generateMetadata.openGraph.images, so per-slug alts MUST be declared here.
+ *
+ * Single-item array (generateImageMetadata is documented as the multi-image
+ * API, but a single-entry return is the supported way to get a per-slug alt
+ * while keeping one image per route).
+ */
+export function generateImageMetadata({ params }: { params: Params }) {
+  const t = getTeardownBySlug(params.slug);
+  const name = t?.displayName ?? "Indie SaaS";
+  return [
+    {
+      id: "card",
+      alt: `${name} funnel teardown – Hook, Story, Offer pattern lessons for indie SaaS founders`,
+      size: OG_SIZE,
+      contentType: OG_CONTENT_TYPE,
+    },
+  ];
+}
 
 export default function OgImage({ params }: { params: Params }) {
   const t = getTeardownBySlug(params.slug);

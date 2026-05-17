@@ -30,7 +30,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
 export const runtime = "nodejs";
 export const dynamic = "force-static";
 export const dynamicParams = false;
-export const alt = "Unlock SaaS comparison";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
@@ -39,6 +38,25 @@ export function generateStaticParams() {
 }
 
 type Params = { slug: string };
+
+/**
+ * Per-slug og:image:alt. Named-competitor comparison cards carry the
+ * highest social-share CTR on the property – the per-slug alt is what
+ * makes Slack/Discord/X previews convert founders mid-evaluation, AND
+ * what screen-reader users actually hear when the preview lands.
+ */
+export function generateImageMetadata({ params }: { params: Params }) {
+  const a = getAlternativeBySlug(params.slug);
+  const name = a?.displayName ?? "competitor";
+  return [
+    {
+      id: "card",
+      alt: `Unlock SaaS vs ${name} – honest comparison for indie SaaS founders`,
+      size: OG_SIZE,
+      contentType: OG_CONTENT_TYPE,
+    },
+  ];
+}
 
 export default function OgImage({ params }: { params: Params }) {
   const a = getAlternativeBySlug(params.slug);
