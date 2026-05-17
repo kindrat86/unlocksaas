@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -8,20 +9,30 @@ import { SocialProofBar } from "@/components/blocks/social-proof-bar";
 import { BeforeAfter } from "@/components/blocks/before-after";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { VslBlock } from "@/components/blocks/vsl-block";
+import { MediaBar } from "@/components/blocks/media-bar";
+import { AvatarWall } from "@/components/blocks/avatar-wall";
+import { shouldRenderMediaBar } from "@/lib/media-mentions";
 
 /**
  * UnlockSaaS Funnel Hub.
  *
- * Building blocks per workbook 04 §2 + 23 Building Blocks (DotCom Secrets):
+ * Building blocks per workbook 04 §2 + 23 Building Blocks (DotCom Secrets) +
+ * Funnel Hacker's Cookbook v1 trust columns (strategy/funnel-hackers-cookbook.md):
  *   1. Hero — enemy sentence + one-line bio + 3 CTAs (diagnostic / starter / machine)
- *   2. Manifesto (half) — Verified / Paid Builders A/B from cookie
- *   3. Founder six-line intro
- *   4. Founder timeline — when shipped what, when figured out the gap
- *   5. Comparison block — Machine vs Course vs DIY vs Doing-Nothing
- *   6. FAQ — sourced from strategy/dollar-objections.md (6 entries)
- *   7. Newsletter signup — real form, fires Day 0 of Soap Opera
- *   8. Social links + honest "as seen in" (none yet)
- *   9. Footer
+ *   2. Social proof bar (structural proof, not numeric)
+ *   3. Media bar — earned mentions, auto-renders at ≥3 (Cookbook Swipe 3)
+ *   4. Manifesto (half) — Verified / Paid Builders A/B from cookie
+ *   5. Before / After block
+ *   6. Founder VSL (env-driven, kinetic fallback)
+ *   7. Founder timeline
+ *   8. Comparison block — Machine vs Course vs DIY vs Doing-Nothing
+ *   9. Honest testimonials — public quotes from real founders
+ *  10. Avatar wall — verified builders, auto-renders at ≥9 (Cookbook Swipe 6)
+ *  11. FAQ — sourced from strategy/dollar-objections.md (6 entries)
+ *  12. Newsletter signup — real form, fires Day 0 of Soap Opera
+ *  13. Honest "as seen in" empty-state — only renders when MediaBar is hidden
+ *  14. Social links
+ *  15. Footer
  */
 export default function FunnelHub() {
   const variant = readIdentityFromCookies();
@@ -120,6 +131,11 @@ export default function FunnelHub() {
 
       {/* Building Block #20 — Social Proof Bar (honest variant, no fake counts). */}
       <SocialProofBar />
+
+      {/* Cookbook Swipe 3 — "As seen in" earned-media bar. Pre-staged.
+          Renders only when >= 3 earned mentions exist; returns null otherwise.
+          Operator appends new mentions to lib/media-mentions.ts. */}
+      <MediaBar />
 
       <Separator className="max-w-4xl mx-auto" />
 
@@ -266,6 +282,15 @@ export default function FunnelHub() {
       {/* ---------------- HONEST TESTIMONIALS (Block #7) ---------------- */}
       <HonestTestimonials />
 
+      {/* Cookbook Swipe 6 — Verified Builder avatar wall. Pre-staged.
+          Renders only when >= 9 public verified builders exist; returns null
+          otherwise (the HonestTestimonials block above carries the proof
+          layer until the wall lights up). Async — wrapped in Suspense so
+          the DB read does not block the rest of the page. */}
+      <Suspense fallback={null}>
+        <AvatarWall />
+      </Suspense>
+
       <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- FAQ ---------------- */}
@@ -330,19 +355,26 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- HONEST "AS SEEN IN" ---------------- */}
-      <section className="py-12 px-6 max-w-2xl mx-auto text-center">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          As seen in
-        </p>
-        <p className="text-sm text-muted-foreground italic">
-          Nowhere yet. Reluctant Hero rule: no fake logos. The first time a
-          podcast or newsletter mentions Unlock SaaS, that logo lands here.
-          Build in public means showing the empty version too.
-        </p>
-      </section>
+      {/* ---------------- HONEST "AS SEEN IN" EMPTY-STATE ----------------
+          Only renders when the MediaBar above is hidden (< 3 earned mentions).
+          Once 3+ mentions land, MediaBar takes over near the top of the page
+          and this empty-state disappears automatically — no duplicate render. */}
+      {!shouldRenderMediaBar() ? (
+        <>
+          <section className="py-12 px-6 max-w-2xl mx-auto text-center">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+              As seen in
+            </p>
+            <p className="text-sm text-muted-foreground italic">
+              Nowhere yet. Reluctant Hero rule: no fake logos. The first time
+              a podcast or newsletter mentions Unlock SaaS, that logo lands
+              here. Build in public means showing the empty version too.
+            </p>
+          </section>
 
-      <Separator className="max-w-4xl mx-auto" />
+          <Separator className="max-w-4xl mx-auto" />
+        </>
+      ) : null}
 
       {/* ---------------- SOCIAL ---------------- */}
       <section className="py-12 px-6 max-w-md mx-auto text-center">
@@ -380,8 +412,17 @@ export default function FunnelHub() {
       {/* ---------------- FOOTER ---------------- */}
       <footer className="py-8 px-6 text-center text-xs text-muted-foreground mt-auto">
         <p>&copy; 2026 Unlock SaaS. Built by a non-engineer who shipped anyway.</p>
-        <p className="mt-2">
-          <Link href="/bridge" className="underline underline-offset-4 hover:text-foreground">
+        <p className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <Link
+            href="/builders"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Verified Builder directory
+          </Link>
+          <Link
+            href="/bridge"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
             Came from a cold ad?
           </Link>
         </p>

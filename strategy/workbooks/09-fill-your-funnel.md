@@ -50,13 +50,14 @@ Before the first paying customer, run TWO channels and ignore all others. Master
 | Channel | Why skipped |
 |---|---|
 | Instagram | Marco does not congregate here. |
-| Facebook | Same. |
+| Facebook | OFF at launch — Marco's density per dollar is ~1/10 of X; $0 MRR caps the 10%-of-MRR ad budget at $0; `strategy/dollar-objections.md:100` cites Marco-verbatim "FB ads don't work" experience. Full four-phase evidence-gated channel spec at `strategy/facebook-channel.md` (Phase 1 trigger: 3 verified customer cycles; Phase 2: 50 paying customers; Phase 3: 100 + CAC/retention gates; Phase 4: 200 customers for Conversation Domination amplification). |
 | TikTok | Possible Phase 2 if short-form video pulls Marco's audience; not at launch. |
-| YouTube (host) | Phase 2. Production cost too high pre-PMF. |
+| YouTube (host) | Phase 2. Production cost too high pre-PMF. Full 4-condition activation rule at `strategy/decisions/youtube-channel-stance.md` (50+ customers + 3 evergreen tutorial topics + bandwidth + cohort/organic-pull). |
 | Google Ads | Phase 2. Cold-traffic conversion at $49 burns money pre-PMF. |
 | LinkedIn | Possible Phase 2 if B2B Marco-equivalent exists. Skip at launch. |
 | Podcasting (host) | Phase 2. Hard to produce, slow to compound. |
-| Podcasting (guest) | Allowed at launch but reactive only (accept invites, do not pitch). |
+| Podcasting (guest) | Allowed at launch but reactive only (accept invites, do not pitch). Deployable pitch kit at `strategy/podcast-outreach.md` — gate: first verified-customer cycle. |
+| YouTube (guest) | Allowed at launch (reactive accept any time; cold-outbound gated to first verified-customer). Deployable pitch kit at `strategy/youtube-outreach.md` — 7 channel dossiers (Riley Brown / Indy Dev Dan / Build Your SaaS / IH YouTube / Marc Lou contribution / Justin Welsh / Greg Isenberg). |
 
 Launch focus: X + Indie Hackers + Reddit. Master those before expanding.
 
@@ -106,6 +107,26 @@ Every channel feeds the top of this flow. Flow itself does not change channel to
 
 ---
 
+## Section 3.5: Owned-Traffic Policy (Secret #5 reference)
+
+The full policy lives at [`strategy/owned-traffic.md`](../owned-traffic.md). This section is the workbook-side pointer so future audits and revisions know where the canonical doc lives without re-deriving the policy here.
+
+**Why a dedicated policy file:** Brunson Secret #5 (Traffic You Own) demands three things — a written audit of every owned asset against the exportable/off-platform-reachable/replicable test, a portability proof you can run on demand, and at least one owned discovery channel beyond email. A scattered version of this lives across this workbook + workbook 10 + the marketing-ESP decision; [`strategy/owned-traffic.md`](../owned-traffic.md) consolidates it.
+
+**What the policy locks:**
+
+1. **7 owned assets at launch** — Soap Opera, Seinfeld, Founding waitlist, Challenge subscribers, Verified Builder directory, Member area, Stripe customer list. Each passes Brunson's three-test rule.
+2. **8 capture surfaces** — every page that can opt-in to email or buy. No orphan surfaces.
+3. **List-portability proof** — `scripts/export-subscribers.py` dumps all 4 subscriber tables to timestamped CSV. Service-role gated. Run monthly pre-PMF, on-demand for ESP migration or GDPR Article 20.
+4. **Second owned-discovery surface** — `/builders` route. Public Verified Builder directory. The second-most-valuable owned asset after email.
+5. **ESP migration plan** — Resend now, Kit at 100 subs. 8-step checklist + rollback condition. No re-permission email (sender identity preserved across vendor swap).
+6. **Cross-channel re-engagement matrix** — every owned asset's "from → to" trigger documented (Soap Opera → buyer, Founding waitlist → buyer, member → Verified Builder, etc.).
+7. **Honest value-per-asset math** — pre-launch all assets price at $0 (no subscribers yet). At first verified customer + 100 list members: ~$3,800/mo equivalent. At 50 customers: ~$19,400/mo + brand-equity directory value.
+
+**The rule the policy enforces above all others:** an owned asset is only owned if you can export it tomorrow, reach it without paying a platform, and replicate it on a second provider. Anything failing any one of those three is rented. Re-grade quarterly.
+
+---
+
 ## Section 4: Secret #9, Fill Your Funnel Organically
 
 Full organic playbook in Section 1 above. Two additions:
@@ -150,26 +171,43 @@ For Unlock SaaS, the four chapters reduce to:
 | Platform | Phase 2 role | First test |
 |---|---|---|
 | Instagram | Likely never (Marco does not live here) | Skip indefinitely unless data proves otherwise |
-| Facebook | Likely never | Same |
+| Facebook | Evidence-gated four-phase activation (Phase 1 pixel + Conversions API at 3 verified; Phase 2 retargeting + lookalike-from-buyers at 50 customers; Phase 3 cold prospecting at 100 + 4 CAC/retention gates; Phase 4 Conversation Domination amplification at 200) | Phase 1 first test = install Meta Pixel + Conversions API via Stripe webhook server-side, seed three custom audiences (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows, ZERO ads. Full spec at `strategy/facebook-channel.md` with ad creative families, kill criteria, and code pre-stage. |
 | Google (search) | Phase 2 paid + SEO long-tail | Bid on "my saas isn't converting" once $1 funnel works |
-| YouTube | Phase 2 long-tail SEO | One channel-trailer video + 3 tutorial videos on running The Machine, after one customer case study exists |
+| YouTube | Phase 2 long-tail SEO (host) + active guesting at launch (kit at `strategy/youtube-outreach.md`) | Host: trigger conditions in `strategy/decisions/youtube-channel-stance.md` Part 1 (4 conditions, all required). Guest: Tier A pitches (Riley Brown + Indy Dev Dan) send Thu post-first-customer; Tier B-D follow per kit §A 4-week cadence. |
 
 Each gets a deep dive in Brunson's full Traffic Secrets. For Unlock SaaS the launch focus does not include them.
 
 ---
 
-## Section 7: Secret #15, Conversation Domination (Phase 2)
+## Section 7: Secret #15, Conversation Domination (MVP at launch + Phase 2/3 expansion)
 
-The omnipresence play. Once daily on X and weekly on IH/Reddit, Phase 2 adds:
+**Status (revised 2026-05-17):** SUPERSEDED by [strategy/conversation-domination.md](../conversation-domination.md). The MVP version is a publishing discipline that ships at launch (Layers 0–5 in the canonical doc); the mature version is a Phase 2/3 expansion. Originally scored N/A by the Russell audit; re-graded to 95 pre-launch with the canonical doc + the `traffic_secrets.growth_hacking.conversation_domination` block in `state.json`. Re-grading pattern matches `funnel-stack.md`, `funnel-hackers-cookbook.md`, `seven-phases-coverage.md`.
 
-| Layer | Adds |
+### What ships at launch (MVP)
+
+| Layer | Surface |
 |---|---|
-| Podcast guest tour | 12 to 15 guest spots over 6 months |
-| Newsletter mentions | Co-feature with 5 to 10 Category 4 newsletters |
-| Community presence | Office hours / AMA in 2 to 3 communities per month |
-| Content amplification | Repurpose every X thread into LinkedIn, Reddit, podcast clip |
+| 0 — Sound bites | Five rotating JK5-keyed phrases in copy on `/`, `/diagnostic`, `/machine-sales`. Meta-canon: "We measure progress in Stripe charges, not in encouragement." |
+| 1 — Weekly anchor | Indie Hackers long-form, parable-led, one per week (Week 1 = `strategy/content-queue-week-1.md`) |
+| 2 — Atomic fragments | 7–12 derivatives per anchor (X thread + shorts + Reddit drop + comment templates + newsletter snippet) |
+| 3 — Channel deployment | X + Indie Hackers + r/SaaS + r/microsaas + owned newsletter |
+| 4 — Comment craft | 5 substantive value-first comments per day across the active channels |
+| 5 — Frequency target | 7+ touches before `/diagnostic` opt-in, measured via PostHog `$first_touch` + `usaas_stack_subject` cookie |
 
-Goal: Marco encounters the Reluctant Hero voice 5 times across different surfaces in one month, by accident. That is when conversion compounds.
+**Channels deliberately skipped:** Instagram, Facebook primary, TikTok, LinkedIn-primary. Facebook has its own evidence-gated activation track per `strategy/facebook-channel.md` (Section 6 of this workbook). Re-evaluate the rest quarterly with data.
+
+### Phase 2 / Phase 3 expansions
+
+| Trigger | Adds |
+|---|---|
+| First verified customer | First podcast pitch sent (Tier 1 = Bootstrapped Founder per `strategy/podcast-outreach.md`) |
+| 3+ verified customer cycles | Layer 1 anchor type expands to include podcast guest spots alongside IH long-forms |
+| 50+ paying customers | Layer 1 expands to own podcast (founder-hosted weekly); paid retargeting tested |
+| 100+ cold opt-ins / week | A/B test channel-specific hooks for the same parable |
+
+Goal: Marco encounters the Reluctant Hero voice 7+ times across different surfaces, by accident, before he opts in. The MVP makes that measurable; the Phase 2 expansion makes it inevitable.
+
+See [strategy/conversation-domination.md](../conversation-domination.md) for the full Brunson Hard-Rule reconciliation table, the frequency-distribution SQL, the atomic-content workflow rules, and the activation-gate enumeration.
 
 ---
 
