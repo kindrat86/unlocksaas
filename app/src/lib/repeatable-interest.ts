@@ -133,7 +133,25 @@ export async function captureInterest(
   };
 
   // Upsert on the unique index lower(email).
-  const { data, error } = await admin
+  // Cast at the .from() boundary because database.types.ts has not been
+  // regenerated yet for migration 20260518000005_repeatable_interest.sql.
+  // Lifts the moment `supabase gen types typescript` runs against the new
+  // schema. Same boundary-cast pattern used for row shapes on lines 119, 152.
+  const { data, error } = await (admin as unknown as {
+    from: (t: string) => {
+      upsert: (
+        payload: typeof insertPayload,
+        opts: { onConflict: string },
+      ) => {
+        select: (cols: string) => {
+          single: () => Promise<{
+            data: { id: string } | null;
+            error: { message: string } | null;
+          }>;
+        };
+      };
+    };
+  })
     .from("repeatable_interest")
     .upsert(insertPayload, { onConflict: "email" })
     .select("id")
@@ -165,7 +183,17 @@ export async function captureInterest(
  */
 export async function readInterestSignal(): Promise<InterestSignal | null> {
   const admin = createAdminClient();
-  const { data, error } = await admin
+  // Cast at the .from() boundary — same reason as captureInterest above.
+  const { data, error } = await (admin as unknown as {
+    from: (t: string) => {
+      select: (cols: string) => {
+        maybeSingle: () => Promise<{
+          data: Record<string, unknown> | null;
+          error: { message: string } | null;
+        }>;
+      };
+    };
+  })
     .from("repeatable_interest_signal")
     .select("*")
     .maybeSingle();
