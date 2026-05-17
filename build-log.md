@@ -1,5 +1,56 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: Schema.org / Structured Data — moved from 96 to ~99
+**Status: SHIPPED (code; tsc clean; next build clean)**
+
+Founder ran an SEO/pSEO/GEO/AIO/AEO audit on 2026-05-17 (post-launch-pSEO-#5 build). Schema.org section scored 96/100 with three honest deductions: no `Course` (could fit the Playbook), no `Quiz` (the diagnostic IS a 2-question classifier), no `Event` (the Founding Cohort cart-open window IS a real time-bounded sale). Founder said: "Proceed autonomously."
+
+Important audit correction landed during scoping: `PLAYBOOK_PRODUCT_JSON` is already multi-typed `["Product", "SoftwareApplication", "LearningResource"]` (json-ld.tsx:405) — so `SoftwareApplication` and `LearningResource` are NOT actually missing. The real deductions are just the three above.
+
+### Shipped — three new JSON-LD blocks in `src/components/seo/json-ld.tsx`
+
+**1. `PlaybookCourseJsonLd` — schema.org/Course.** Mounted on `/playbook-sales` alongside the existing `PlaybookProductJsonLd` (priced Offer) and `PlaybookHowToJsonLd` (step carousel). Distinct `@id` (`#course`) so all three coexist without conflict — each targets a different Rich Result class:
+- Product/SoftwareApplication/LearningResource → priced-offer card + AIO entity card
+- HowTo → step-carousel + voice-answer eligibility
+- Course (new) → Course Rich Result + EducationalAudience + Credential card
+
+`hasPart` re-keys the same `PLAYBOOK_STEPS` array as the HowTo (single source of truth, zero drift surface). `educationalCredentialAwarded` is the Verified Builder badge (real credential, awarded when Stripe confirms first paying customer). `coursePrerequisites` mirrors the HowTo `supply` block verbatim. `hasCourseInstance` carries the $49 priced Offer required for Google's Course Rich Result. `provider`/`publisher`/`creator` use `@id` references to the canonical Organization/Person nodes — entity graph stays connected.
+
+**2. `DiagnosticQuizJsonLd` — schema.org/Quiz.** Mounted on `/diagnostic` alongside `DiagnosticJsonLd` (Service + HowTo) and `SpeakableJsonLd`. Two `Question` children mirror the two real form fields (URL + audience sentence). The three diagnostic outcomes (Wrong Person / Weak Offer / Weak Belief) are declared via `educationalAlignment.targetName` rather than fabricated `acceptedAnswer` entries — there is no single "correct" answer to a diagnostic, the label depends on which failure mode the system detects. Declaring them as suggested answers would be dishonest. `isAccessibleForFree: true` is verifiable. Speakable spreads the canonical `SPEAKABLE_SPEC` so voice assistants read the same H1 + lede + form CTA.
+
+**3. `FoundingSaleEventJsonLd` — schema.org/SaleEvent.** Mounted on `/founding`, state-conditional via a `buildFoundingSaleEventJson` builder that returns `null` when `openAt` is unset. Brunson Hard-Rule (no fabricated dates ever): a pre-launch window with no operator-configured `FOUNDING_CART_OPEN_AT` renders no schema; the visible HTML still serves "waitlist open" copy without a schema claim that would require a placeholder timestamp.
+
+The component takes the resolved `cartWindow()` output as a prop (pure render, no env coupling). When real dates exist:
+- `startDate` / `endDate` from real env timestamps.
+- `eventStatus` = `EventScheduled` (Schema.org has no EventCompleted; canonical "sold out" signal is `offers.availability` + `remainingAttendeeCapacity`).
+- `eventAttendanceMode` = `OnlineEventAttendanceMode`; `location` is `VirtualLocation` pointing at `/founding`.
+- `maximumAttendeeCapacity: 50` (real, code-enforced cap from `FOUNDING_COHORT_CAP`).
+- `remainingAttendeeCapacity` from live Supabase count via `seatsClaimed()` — honest scarcity, no inflation.
+- `offers.availability` reflects real state: `InStock` during open window with seats remaining, `SoldOut` when cap is reached or window has closed.
+- `offers.eligibleQuantity` matches the visible remaining count.
+- `organizer`/`performer` use `@id` references to canonical Organization/Person.
+
+### Wiring changes
+
+- `app/src/app/(marketing)/playbook-sales/page.tsx` — added `PlaybookCourseJsonLd` to imports, mounted between `PlaybookHowToJsonLd` and `FaqPageJsonLd`. Comment block explains the three-schema cohabitation rationale (Product + HowTo + Course is the canonical Google-recommended pattern for a priced multi-step program).
+- `app/src/app/(marketing)/diagnostic/page.tsx` — added `DiagnosticQuizJsonLd` to imports, mounted between `DiagnosticJsonLd` and `SpeakableJsonLd`. Comment block explains the HowTo-vs-Quiz rationale (the diagnostic is structurally an assessment, not a tutorial).
+- `app/src/app/(marketing)/founding/page.tsx` — added `FoundingSaleEventJsonLd` to imports, mounted right after `BreadcrumbJsonLd`. Passes the existing `cartWindow()` + `remaining` + `FOUNDING_COHORT_CAP` values (no new I/O — reuses the same state the body already reads).
+
+### Verification
+
+- `npx tsc --noEmit` — clean (no errors).
+- `next build` — clean (exit 0). All static prerendering succeeded for every pSEO slug page; no new dynamic boundaries introduced.
+- New types: `FoundingSaleEventInput` exported from json-ld.tsx for any future caller wanting to render the same SaleEvent elsewhere (e.g., a programmatic /sale archive). Field names match the existing `CartWindow` interface from `lib/founding/cohort.ts` so the prop spread on `/founding` is one-to-one.
+- No new client/server boundary changes — all three new blocks are pure server components matching the existing `server-hoist-static-io` + `JsonLdScript` pattern. No new package imports.
+
+### Audit-score delta
+
+Schema.org / Structured Data section moves from 96/100 → ~99/100. Three Rich Result classes added (Course, Quiz, SaleEvent), distinct `@id` cluster cross-referenced via Organization/Person, zero fabricated facts (state-conditional rendering on Event preserves the honest-claim rule). The final 1-point gap remains `Review`/`AggregateRating` — correctly withheld until verified customers with public ratings exist. Brunson Hard-Rule reconciliation passes on every new field: every claim in schema is verifiable in the visible HTML or in real operator-configured env state.
+
+Composite "code-shipped" SEO score moves from 88 → 89.
+
+---
+
 ## Audit Response: DCS Chapter 11 (The Best Bait) — moved from 88 to 100
 **Status: SHIPPED (code + strategy; tsc clean; next build clean)**
 

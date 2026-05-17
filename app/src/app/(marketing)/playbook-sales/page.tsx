@@ -18,6 +18,7 @@ import { VslBlock } from "@/components/blocks/vsl-block";
 import {
   PlaybookProductJsonLd,
   PlaybookHowToJsonLd,
+  PlaybookCourseJsonLd,
   FaqPageJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
@@ -102,6 +103,14 @@ export default function PlaybookSalesPage() {
           /llms-full.txt). Voice-engine eligibility via Speakable cssSelector
           pointing at the `.aeo-playbook-howto` block below. */}
       <PlaybookHowToJsonLd />
+      {/* Course schema — separate Rich Result class from Product and HowTo.
+          Same seven steps re-keyed as `hasPart` LearningResource children;
+          declares the Verified Builder badge as `educationalCredentialAwarded`
+          and the $49 CourseInstance with $49 priced Offer. Google's Course
+          carousel + Knowledge Graph educational-entity card both index this.
+          See PlaybookCourseJsonLd docstring for the three-schema cohabitation
+          rationale (Product + HowTo + Course on one page is canonical). */}
+      <PlaybookCourseJsonLd />
       <FaqPageJsonLd items={PLAYBOOK_SALES_FAQS} />
       <BreadcrumbListJsonLd
         trail={[

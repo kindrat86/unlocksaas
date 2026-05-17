@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
 import {
   DiagnosticJsonLd,
+  DiagnosticQuizJsonLd,
   BreadcrumbListJsonLd,
   SpeakableJsonLd,
 } from "@/components/seo/json-ld";
@@ -72,6 +73,15 @@ export default async function DiagnosticSqueezePage({
           SpeakableSpecification directly; this page-level WebPage
           companion gives voice assistants a second surface to walk. */}
       <DiagnosticJsonLd />
+      {/* Quiz schema — separate Rich Result class from Service + HowTo.
+          The diagnostic is structurally a 2-question assessment that returns
+          one of three labels (Wrong Person / Weak Offer / Weak Belief).
+          Declaring the three outcomes via educationalAlignment.targetName
+          (not as fabricated acceptedAnswer entries) keeps the schema honest
+          while still giving LLM retrievers + Google's Quiz Rich Result the
+          full diagnostic taxonomy. See DiagnosticQuizJsonLd docstring for
+          the HowTo-vs-Quiz rationale. */}
+      <DiagnosticQuizJsonLd />
       <SpeakableJsonLd url="https://unlocksaas.com/diagnostic" />
       <BreadcrumbListJsonLd
         trail={[

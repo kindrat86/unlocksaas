@@ -7,7 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { FoundingCohortMeter } from "@/components/founding-cohort-meter";
-import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import {
+  BreadcrumbJsonLd,
+  FoundingSaleEventJsonLd,
+} from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { FoundingWaitlistForm } from "./waitlist-form";
 import { FoundingClaimButton } from "./claim-button";
@@ -66,6 +69,22 @@ export default async function FoundingPage() {
           { name: "The Playbook", url: "https://unlocksaas.com/playbook-sales" },
           { name: "Founding Cohort", url: "https://unlocksaas.com/founding" },
         ]}
+      />
+      {/* SaleEvent schema for the cart-open window. State-conditional: the
+          component returns null when openAt is unset (Brunson Hard-Rule —
+          no fabricated dates ever). When operator-configured FOUNDING_CART_
+          OPEN_AT / FOUNDING_CART_CLOSE_AT env vars are real, this emits a
+          schema.org/SaleEvent with the real dates, real seat capacity (50),
+          and real remaining-seat count from Supabase. Google's SaleEvent
+          Rich Result + LLM retrieval pipelines both index this — a "what is
+          the unlock saas founding cohort" query gets a structured answer
+          with dates, price, and capacity instead of a paraphrased guess. */}
+      <FoundingSaleEventJsonLd
+        state={window.state}
+        openAt={window.openAt}
+        closeAt={window.closeAt}
+        remaining={remaining}
+        capacity={FOUNDING_COHORT_CAP}
       />
       <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">

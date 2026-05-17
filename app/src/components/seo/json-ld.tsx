@@ -972,3 +972,369 @@ function buildSpeakableJson(input: SpeakableInput): string {
 export function SpeakableJsonLd(props: SpeakableInput) {
   return <JsonLdScript json={buildSpeakableJson(props)} />;
 }
+
+// ---------------------------------------------------------------------------
+// Schema uplift (2026-05-17 audit follow-up) — Course, Quiz, SaleEvent
+// ---------------------------------------------------------------------------
+//
+// The 96/100 Schema score from the 2026-05-17 audit had three honest deductions:
+//   - no Course schema (the Playbook IS a structured learning program)
+//   - no Quiz schema (the diagnostic IS a 2-question classifier)
+//   - no Event schema (the Founding Cohort cart-open window IS a real,
+//     time-bounded SaleEvent)
+//
+// Each block below closes one deduction. All facts are already in the public
+// HTML / strategy docs; the additions are pure structural re-keying, not new
+// claims. Brunson Hard-Rule reconciliation per block.
+// ---------------------------------------------------------------------------
+
+/**
+ * Course schema for the seven-step Playbook. Render on `/playbook-sales`
+ * alongside `PlaybookProductJsonLd` (priced Offer) and `PlaybookHowToJsonLd`
+ * (HowTo step list). All three coexist without conflict — each declares a
+ * different `@id` and a different Rich Result eligibility:
+ *
+ *   - Product/SoftwareApplication/LearningResource  → priced-offer Rich Result
+ *                                                     + AIO entity card
+ *   - HowTo                                         → step-carousel Rich Result
+ *                                                     + voice-answer eligibility
+ *   - Course (this block)                           → Course Rich Result
+ *                                                     + EducationalAudience
+ *                                                     + Credential card
+ *
+ * Why a separate Course block (instead of pushing "Course" into the multi-type
+ * Product array): Course has its own structural fields Google's Course Rich
+ * Result indexer expects (`hasCourseInstance`, `coursePrerequisites`,
+ * `educationalCredentialAwarded`, `hasPart` linking to LearningResource
+ * children). Inlining them on the Product node would either (a) bloat the
+ * Product schema with fields Product-indexers ignore, or (b) put them on the
+ * wrong subject. Two clean entities cross-linked by `@id` is the canonical
+ * pattern Google's structured-data documentation recommends.
+ *
+ * Brunson Hard-Rule reconciliation:
+ *   - The seven `hasPart` LearningResource children re-use `PLAYBOOK_STEPS`,
+ *     which is the same single source of truth the visible /playbook-sales
+ *     prose, the .md mirror, and PlaybookHowToJsonLd consume. No drift surface.
+ *   - `educationalCredentialAwarded` is the Verified Builder badge — a real
+ *     credential awarded the moment Stripe confirms the first paying customer
+ *     (see /builder/[slug] route + the public Verified Builders directory).
+ *   - `coursePrerequisites` mirrors the HowTo `supply` block verbatim.
+ *   - `provider`/`publisher`/`creator` all `@id`-reference the canonical
+ *     Organization/Person nodes so Google's entity graph walks the same
+ *     three-node cluster across all three schemas on the page.
+ *   - `offers` mirrors the Product `offers` exactly. The Course schema
+ *     surfaces the same $49 price; Google Course Rich Results require a
+ *     priced Offer for the priced-course carousel.
+ */
+const PLAYBOOK_COURSE_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "@id": `${BASE}/playbook-sales#course`,
+  name: "The Unlock SaaS Playbook",
+  description:
+    "A seven-step Course that turns an already-shipped SaaS into a verified paying customer in 60 days. Built for non-engineer founders shipping with AI tools (Lovable, Claude, Replit, v0, Cursor, Bolt). The credential — a Verified Builder badge — is awarded the moment Stripe confirms the first paying customer.",
+  url: `${BASE}/playbook-sales`,
+  inLanguage: "en-US",
+  provider: { "@id": ID.organization },
+  publisher: { "@id": ID.organization },
+  creator: { "@id": ID.person },
+  about: {
+    "@type": "Thing",
+    name: "First paying customer acquisition for indie SaaS",
+  },
+  audience: {
+    "@type": "EducationalAudience",
+    educationalRole: "Founder",
+    audienceType:
+      "Post-launch pre-revenue non-engineer founders using AI tools",
+  },
+  educationalLevel: "Intermediate",
+  educationalUse: "Professional skill development",
+  learningResourceType: "Playbook",
+  teaches: [
+    "How to pin one real customer at one specific company in one specific role",
+    "How to write one real offer in one sentence, naming the person and the result",
+    "How to build the smallest real proof artifact the offer needs",
+    "How to send one real outreach message and track the response",
+    "How to iterate or escalate when 20 logged actions produce no Stripe ping",
+    "How to verify the cycle inside Stripe and earn the Verified Builder badge",
+  ].join(", "),
+  coursePrerequisites:
+    "A live, already-shipped SaaS product (any stack — Lovable, Claude, Replit, v0, Cursor, Bolt, Bubble, hand-coded). A connected Stripe account (the guarantee reads from it). Willingness to do at least 20 logged outreach actions over 60 days.",
+  educationalCredentialAwarded: {
+    "@type": "EducationalOccupationalCredential",
+    name: "Verified Builder badge",
+    description:
+      "Awarded the moment Stripe confirms the first paying customer through the Playbook. Listed publicly in the Verified Builders directory at unlocksaas.com/builders.",
+    credentialCategory: "badge",
+    recognizedBy: { "@id": ID.organization },
+    url: `${BASE}/builders`,
+  },
+  // CourseInstance — the concrete delivery. courseMode=online (web app),
+  // courseWorkload=P60D (the guarantee window), instructor=founder.
+  hasCourseInstance: {
+    "@type": "CourseInstance",
+    name: "Self-paced Playbook (always open)",
+    courseMode: "online",
+    courseWorkload: "P60D",
+    instructor: { "@id": ID.person },
+    location: {
+      "@type": "VirtualLocation",
+      url: `${BASE}/playbook`,
+    },
+    inLanguage: "en-US",
+    offers: {
+      "@type": "Offer",
+      price: "49",
+      priceCurrency: "USD",
+      category: "Subscription",
+      url: `${BASE}/playbook-sales`,
+      availability: "https://schema.org/InStock",
+      seller: { "@id": ID.organization },
+    },
+  },
+  // hasPart maps the seven steps as schema.org LearningResource children.
+  // Same source array as PlaybookHowToJsonLd — single-source-of-truth.
+  hasPart: PLAYBOOK_STEPS.map((s, i) => ({
+    "@type": "LearningResource",
+    name: s.name,
+    description: s.text,
+    position: i + 1,
+    url: `${BASE}/playbook-sales#step-${i + 1}`,
+    learningResourceType: "Step",
+    inLanguage: "en-US",
+  })),
+  // Speakable: anchor on the same `.aeo-playbook-howto` selector as the
+  // HowTo block, so voice answer panels read the same seven-step prose
+  // regardless of which schema triggers the panel.
+  speakable: speakableSpec([".aeo-playbook-howto"]),
+});
+
+/**
+ * Course schema for the Playbook. Render on `/playbook-sales` alongside
+ * `PlaybookProductJsonLd` and `PlaybookHowToJsonLd`. See module-level
+ * docstring for the three-schema cohabitation rationale.
+ */
+export function PlaybookCourseJsonLd() {
+  return <JsonLdScript json={PLAYBOOK_COURSE_JSON} />;
+}
+
+/**
+ * Quiz schema for the Free Launch Diagnostic. Render on `/diagnostic`
+ * alongside `DiagnosticJsonLd` (Service + HowTo) and `SpeakableJsonLd`
+ * (voice-answer eligibility for the H1 / lede / form CTA).
+ *
+ * Why Quiz vs. a stretched HowTo: the diagnostic is structurally an
+ * assessment, not a tutorial. The visitor supplies inputs (URL + audience
+ * sentence); the system classifies the launch as one of three failure
+ * modes (Wrong Person / Weak Offer / Weak Belief) and hands back a next
+ * step. Schema.org's `Quiz` type captures that exactly. Stretching HowTo
+ * to model it would be the kind of schema-DOM drift that gets Rich
+ * Results demoted.
+ *
+ * Brunson Hard-Rule reconciliation:
+ *   - The two `Question` children are the two real form fields a visitor
+ *     fills out on /diagnostic. Verbatim labels match the visible form.
+ *   - The three diagnostic labels (Wrong Person / Weak Offer / Weak Belief)
+ *     are declared via `educationalAlignment.targetName` rather than as
+ *     fabricated `acceptedAnswer` entries — there is no single "correct"
+ *     answer to a diagnostic, the label depends on which failure mode
+ *     the system detects from the inputs. Declaring them as suggested
+ *     answers would be dishonest.
+ *   - `isAccessibleForFree: true` is true and verifiable — the diagnostic
+ *     has no payment gate and no email gate on the squeeze.
+ *   - `educationalUse: "Diagnostic assessment"` is exactly what it is.
+ */
+const DIAGNOSTIC_QUIZ_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Quiz",
+  "@id": `${BASE}/diagnostic#quiz`,
+  name: "The Free Launch Diagnostic",
+  description:
+    "A 90-second, 2-question assessment that classifies an already-shipped SaaS launch as Wrong Person, Weak Offer, or Weak Belief — and hands the founder the specific next step that fixes it.",
+  url: `${BASE}/diagnostic`,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  ...ACCESS_MODE_TEXTUAL,
+  educationalUse: "Diagnostic assessment",
+  learningResourceType: "Quiz",
+  about: {
+    "@type": "Thing",
+    name: "Indie SaaS launch failure-mode diagnosis",
+  },
+  audience: {
+    "@type": "Audience",
+    audienceType:
+      "Post-launch pre-revenue non-engineer founders using AI tools",
+  },
+  // Alignment names the three diagnostic outcomes as the assessment's
+  // target taxonomy. Declarative without fabricating answers.
+  educationalAlignment: {
+    "@type": "AlignmentObject",
+    alignmentType: "assesses",
+    educationalFramework: "Russell Brunson Hook / Story / Offer",
+    targetName:
+      "Wrong Person, Weak Offer, or Weak Belief — three diagnostic outcomes",
+    targetDescription:
+      "Wrong Person: the page describes a generic persona, not a specific human. Weak Offer: the page sells features or a category, not a falsifiable result. Weak Belief: the page asks for a paid commitment with no honest proof artifact.",
+  },
+  provider: { "@id": ID.organization },
+  author: { "@id": ID.person },
+  publisher: { "@id": ID.organization },
+  isPartOf: { "@id": ID.website },
+  hasPart: [
+    {
+      "@type": "Question",
+      position: 1,
+      name: "What is the live URL of your SaaS product?",
+      text: "Paste the live URL of your shipped SaaS product. The diagnostic reads the public landing page.",
+      inLanguage: "en-US",
+    },
+    {
+      "@type": "Question",
+      position: 2,
+      name: "Who, specifically, is the customer?",
+      text: "Name one specific human at one specific company in one specific role. Persona language gets pushed back on.",
+      inLanguage: "en-US",
+    },
+  ],
+  // Speakable: the squeeze's H1 + lede + form CTA already carry the
+  // canonical SPEAKABLE_SELECTORS attribute set. Voice assistants reading
+  // Quiz schema will read those nodes aloud first.
+  speakable: SPEAKABLE_SPEC,
+});
+
+/**
+ * Quiz schema for the diagnostic. Render on `/diagnostic`. See block-level
+ * docstring above for HowTo-vs-Quiz rationale.
+ */
+export function DiagnosticQuizJsonLd() {
+  return <JsonLdScript json={DIAGNOSTIC_QUIZ_JSON} />;
+}
+
+/**
+ * SaleEvent input — the Founding Cohort cart-open window.
+ *
+ * The cart window is state-dependent (pre_launch / open / closed) and the
+ * dates come from operator env vars (FOUNDING_CART_OPEN_AT /
+ * FOUNDING_CART_CLOSE_AT) read at runtime by `cartWindow()` in
+ * src/lib/founding/cohort.ts. The caller passes the resolved window so this
+ * module stays a pure render with no env-coupling.
+ */
+export type FoundingSaleEventInput = {
+  /** Cart window state from `cartWindow()`. */
+  state: "pre_launch" | "open" | "closed";
+  /** ISO-resolved cart-open timestamp, or null if env unset. */
+  openAt: Date | null;
+  /** ISO-resolved cart-close timestamp, or null if env unset. */
+  closeAt: Date | null;
+  /** Seats remaining out of FOUNDING_COHORT_CAP. Drives Offer.eligibleQuantity
+   *  and `remainingAttendeeCapacity`. */
+  remaining: number;
+  /** Total seat cap (FOUNDING_COHORT_CAP). Drives `maximumAttendeeCapacity`. */
+  capacity: number;
+};
+
+/**
+ * Build the SaleEvent JSON-LD body. Returns null when `openAt` is unset —
+ * the Brunson Hard-Rule (no fabricated dates) forbids emitting an Event
+ * schema with a placeholder startDate. A pre-launch window with no
+ * operator-configured dates renders no schema; visible HTML still says
+ * "waitlist open" because that claim doesn't need a date.
+ *
+ * `eventStatus`:
+ *   - open    → EventScheduled (cart is live, sale is happening now)
+ *   - pre_launch → EventScheduled (sale is announced but hasn't started)
+ *   - closed  → EventScheduled if window-ended naturally; the visible page
+ *               handles the closed messaging. Schema.org has no
+ *               EventCompleted; the canonical signal for "sold out" is
+ *               `offers.availability = SoldOut` (set below) plus
+ *               `remainingAttendeeCapacity: 0`.
+ *
+ * Brunson Hard-Rule reconciliation per field:
+ *   - `startDate` and `endDate` come from real env-configured timestamps.
+ *     If they are null this function returns null — no schema at all.
+ *   - `maximumAttendeeCapacity: 50` is the real, code-enforced cap.
+ *   - `remainingAttendeeCapacity` comes from a live Supabase count via
+ *     `seatsClaimed()`. Honest scarcity, no inflation.
+ *   - `offers.price` mirrors the visible $49/mo on the page.
+ *   - `offers.availability` reflects real state — SoldOut only when the
+ *     cap is actually reached; InStock only during the open window with
+ *     seats remaining.
+ *   - `organizer` / `performer` `@id`-reference the canonical Org / Person
+ *     entities so the entity graph stays connected.
+ */
+function buildFoundingSaleEventJson(
+  input: FoundingSaleEventInput,
+): string | null {
+  if (!input.openAt) return null;
+
+  const isOpen = input.state === "open";
+  const isClosed = input.state === "closed";
+  const isSoldOut = input.remaining <= 0;
+
+  const availability = isSoldOut
+    ? "https://schema.org/SoldOut"
+    : isOpen
+      ? "https://schema.org/InStock"
+      : isClosed
+        ? "https://schema.org/SoldOut"
+        : "https://schema.org/PreOrder";
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "SaleEvent",
+    "@id": `${BASE}/founding#sale`,
+    name: "Unlock SaaS Founding Cohort — 50 seats, lifetime price lock",
+    description:
+      "A 50-seat, 7-day Founding Cohort window. Same $49/month as the eventual evergreen price, locked for the life of the subscription. Founding-variant Verified Builder badge. The founder's email for 30 days. After 50 seats or 7 days, whichever comes first, the founding bonuses retire forever.",
+    url: `${BASE}/founding`,
+    inLanguage: "en-US",
+    startDate: input.openAt.toISOString(),
+    ...(input.closeAt ? { endDate: input.closeAt.toISOString() } : {}),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+    location: {
+      "@type": "VirtualLocation",
+      url: `${BASE}/founding`,
+    },
+    organizer: { "@id": ID.organization },
+    performer: { "@id": ID.person },
+    image: `${BASE}/icon.svg`,
+    maximumAttendeeCapacity: input.capacity,
+    remainingAttendeeCapacity: Math.max(0, input.remaining),
+    offers: {
+      "@type": "Offer",
+      name: "Founding Verified Builder seat",
+      description:
+        "$49/month locked for the life of the subscription. Founding-variant Verified Builder badge. Founder's email for 30 days.",
+      price: "49",
+      priceCurrency: "USD",
+      category: "Subscription",
+      url: `${BASE}/founding`,
+      availability,
+      validFrom: input.openAt.toISOString(),
+      ...(input.closeAt ? { validThrough: input.closeAt.toISOString() } : {}),
+      eligibleQuantity: {
+        "@type": "QuantitativeValue",
+        value: Math.max(0, input.remaining),
+        maxValue: input.capacity,
+        unitText: "seats",
+      },
+      seller: { "@id": ID.organization },
+    },
+  });
+}
+
+/**
+ * SaleEvent schema for the Founding Cohort. Render on `/founding`. The
+ * caller supplies the resolved `cartWindow()` output so this component
+ * stays pure (no env reads, no I/O). Returns null when no real dates are
+ * configured — the visible page still serves its pre-launch / waitlist
+ * copy without a schema claim that would require fabricating timestamps.
+ */
+export function FoundingSaleEventJsonLd(props: FoundingSaleEventInput) {
+  const json = buildFoundingSaleEventJson(props);
+  if (!json) return null;
+  return <JsonLdScript json={json} />;
+}
