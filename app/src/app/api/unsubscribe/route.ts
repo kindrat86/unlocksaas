@@ -28,10 +28,13 @@ async function handle(email: string, token: string) {
   const lower = email.trim().toLowerCase();
   const nowIso = new Date().toISOString();
 
-  // One token unsubscribes from BOTH sequences. The HMAC is keyed on email,
-  // not on sequence, so re-issuing per-sequence tokens would just hide rows
-  // from the wrong-named footer link. Best UX: one click clears everything.
-  const [soapResult, seinfeldResult] = await Promise.all([
+  // One token unsubscribes from ALL sequences (Soap Opera, Seinfeld, Founding
+  // pre-launch). The HMAC is keyed on email, not on sequence, so re-issuing
+  // per-sequence tokens would just hide rows from the wrong-named footer
+  // link. Best UX: one click clears everything. The founding_waitlist row
+  // does NOT carry an unsubscribed_at column (it has status only) so we
+  // update only what each schema supports.
+  const [soapResult, seinfeldResult, foundingResult] = await Promise.all([
     supabase
       .from("soap_opera_subscribers")
       .update({ status: "unsubscribed", unsubscribed_at: nowIso })
@@ -40,8 +43,22 @@ async function handle(email: string, token: string) {
       .from("seinfeld_subscribers")
       .update({ status: "unsubscribed", unsubscribed_at: nowIso })
       .eq("email", lower),
+    supabase
+      .from("founding_waitlist")
+      .update({ status: "unsubscribed" })
+      .ilike("email", lower),
   ]);
 
+  // Founding waitlist failures are non-fatal — the table may not yet exist
+  // in environments where migration 20260518000002 hasn't been applied. Log
+  // and continue. Soap Opera + Seinfeld are the primary sequences; if either
+  // of those fails, treat as a real error worth surfacing.
+  if (foundingResult.error) {
+    console.warn("[unsubscribe] founding_waitlist_update_skipped", {
+      email,
+      reason: foundingResult.error.message,
+    });
+  }
   if (soapResult.error || seinfeldResult.error) {
     console.error("[unsubscribe] db_update_failed", {
       email,

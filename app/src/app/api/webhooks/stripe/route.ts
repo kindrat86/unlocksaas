@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
         // ATTRIBUTION + ANALYTICS side-channels (preserved unchanged).
         await recordIdentityAbConversion(session);
         await recordDiagnosticAttribution(session);
+        await recordFoundingSeat(session);
         await capturePurchase(session);
         break;
       }
@@ -702,4 +703,142 @@ async function recordDiagnosticAttribution(session: Stripe.Checkout.Session) {
       error.message
     );
   }
+}
+
+// ── Founding-Cohort PLF: seat grant ──────────────────────────────────────────
+//
+// Workbook 03 Script 8 (revised 2026-05-17). When a Core subscription session
+// completes with metadata.attribution_from === "founding", attempt to grant
+// a founding seat. Three gates must pass:
+//
+//   1. Cart window must be OPEN (FOUNDING_CART_OPEN_AT <= now < FOUNDING_CART_CLOSE_AT).
+//   2. Current seat count must be < 50.
+//   3. The DB unique index on founding_cohort.seat_number provides the final
+//      race protection — the second of two concurrent 50th claims fails cleanly
+//      and the subscription is still honored at $49/mo evergreen (no bonuses).
+//
+// If any gate fails, the seat is NOT granted and the founding bonuses do not
+// apply. The Core subscription itself still completes — Brunson rule: never
+// punish the buyer for the seller's race condition.
+//
+// On success: insert founding_cohort row, stamp founding_waitlist.converted_to_founding_at
+// (if the email is on the waitlist), and set direct_line_expires_at to 30 days out.
+async function recordFoundingSeat(session: Stripe.Checkout.Session) {
+  const metadata = session.metadata ?? {};
+  if (metadata.attribution_from !== "founding") return;
+  if (session.mode !== "subscription") return;
+
+  // Lazy import to keep the webhook bootstrap path lean — these modules only
+  // load when a founding session actually completes.
+  const { cartWindow, FOUNDING_COHORT_CAP } = await import(
+    "@/lib/founding/cohort"
+  );
+
+  const win = cartWindow();
+  if (win.state !== "open") {
+    console.warn(
+      `[founding-cohort] session ${session.id} carries founding attribution but cart is ${win.state}; no seat granted`
+    );
+    return;
+  }
+
+  const email =
+    session.customer_details?.email ??
+    session.customer_email ??
+    null;
+  if (!email) return;
+
+  const customerId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.customer?.id ?? null;
+  const subscriptionId =
+    typeof session.subscription === "string"
+      ? session.subscription
+      : session.subscription?.id ?? null;
+  const identityVariant = parseIdentityVariant(metadata.ab_variant);
+
+  const admin = createAdminClient();
+
+  // Optimistic seat-number assignment. The unique index will reject the
+  // duplicate write if two concurrent webhooks race past the cap check.
+  const { data: maxRow, error: maxErr } = await admin
+    .from("founding_cohort")
+    .select("seat_number")
+    .order("seat_number", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (maxErr) {
+    console.error(
+      `[founding-cohort] seat-count read failed for ${session.id}:`,
+      maxErr.message
+    );
+    return;
+  }
+
+  const currentMax = maxRow?.seat_number ?? 0;
+  if (currentMax >= FOUNDING_COHORT_CAP) {
+    console.warn(
+      `[founding-cohort] cap reached (${currentMax}/${FOUNDING_COHORT_CAP}); ${session.id} did not get a founding seat`
+    );
+    return;
+  }
+
+  const seatNumber = currentMax + 1;
+  const directLineExpires = new Date(
+    Date.now() + 30 * 24 * 60 * 60 * 1000
+  ).toISOString();
+
+  // Look up waitlist row by email so we can stamp converted_to_founding_at
+  // and link the founding row back to the waitlist (for funnel analysis).
+  const { data: waitlistRow } = await admin
+    .from("founding_waitlist")
+    .select("id")
+    .ilike("email", email)
+    .maybeSingle();
+
+  const { error: insertErr } = await admin.from("founding_cohort").insert({
+    seat_number: seatNumber,
+    email: email.toLowerCase(),
+    stripe_customer_id: customerId,
+    stripe_subscription_id: subscriptionId,
+    stripe_session_id: session.id,
+    identity_variant: identityVariant,
+    waitlist_id: waitlistRow?.id ?? null,
+    direct_line_expires_at: directLineExpires,
+  });
+
+  if (insertErr) {
+    // Code 23505 = unique violation. Likely a race past the cap. Subscription
+    // is already created; the user gets the product at $49 evergreen but no
+    // founding bonuses. This is the documented fallback behaviour.
+    if ((insertErr as { code?: string }).code === "23505") {
+      console.warn(
+        `[founding-cohort] unique violation on seat ${seatNumber} for ${session.id}; cap race lost`
+      );
+      return;
+    }
+    console.error(
+      `[founding-cohort] seat insert failed for ${session.id}:`,
+      insertErr.message
+    );
+    return;
+  }
+
+  if (waitlistRow?.id) {
+    await admin
+      .from("founding_waitlist")
+      .update({
+        converted_to_founding_at: new Date().toISOString(),
+        converted_session_id: session.id,
+        status: "complete",
+      })
+      .eq("id", waitlistRow.id)
+      .is("converted_to_founding_at", null);
+  }
+
+  console.log(
+    `[founding-cohort] granted seat ${seatNumber} to ${email} (session ${session.id})`
+  );
 }

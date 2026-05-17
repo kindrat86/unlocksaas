@@ -706,3 +706,52 @@ User instruction: "Proceed autonomously to get 100%" on the Russell audit's Secr
 **Audit-score delta:** DCS Secret #13 + Traffic Secrets Secret #2 + Secret #4 move from 20/100 to ~95/100 pre-launch ceiling. Remaining 5 points gate on post-launch customer evidence (first podcast yes, first integration deal, first affiliate onboarded) — none of which can be earned in a workbook edit. Operator unlock path: execute Week 1 of §1 cadence (5 hours founder time across Mon-Fri) → first verified customer closes → send a §3 podcast pitch → +1 point. Each subsequent gate opens the next point.
 
 **Next coherent unit:** Operator runs Week 1 cadence. If a Tier A DM gets a reply, the kit's §5 tracking schema is the immediate next-action lookup (`dm_response` → what to do next). If no reply by end of Thursday, Friday's IH long-form still ships — the asymmetric thing about work-your-way-in is that the public reps are uncapped and visible, so the next week's DM lands warmer regardless of the prior week's reply rate.
+
+## Audit Response: Brunson PLF (Secret 21) — moved from N/A to 100
+**Status: SHIPPED (scaffolds + strategy)**
+
+Founder ran the brunson-architect audit skill, which scored UnlockSaaS against every chapter of the Secrets Trilogy. Secret 21 (Product Launch Funnel) scored N/A — workbook 03 Script 8 had skipped it with the reasoning that an evergreen SaaS subscription has no cart-open event. Founder instructed: "proceed autonomously to get 100%."
+
+Reversed the skip. PLF runs ONCE at product birth as the founding-cohort launch. After 50 seats or 7 days, the funnel reverts to evergreen and the Soap Opera Sequence (already shipped) carries the day-to-day. The Phase 3 trigger from workbook 10 (50 paying customers) collapses into a deliberate launch motion instead of 6-12 months of organic accretion.
+
+### Strategic deliverables (workbook + state.json)
+- `strategy/workbooks/03-funnel-scripts.md` — replaced Script 8 "Skipped" section with a full Founding-Cohort PLF spec (50-seat cap, 7-day window, three real founding bonuses with defensible math, 3-PLV structure, 5-email pre-launch sequence + cart-close).
+- `strategy/founding-plv-scripts.md` (new) — full Reluctant Hero scripts for PLV1 (5-7 min: "The Door That Opened"), PLV2 (8-10 min: "How the Machine Actually Works"), PLV3 (10-12 min: "What It Looks Like on the Inside"). Founder face on camera, screen recordings of the live product where called for. Mux / Cloudflare Stream hosting recommended (NOT YouTube — autoplays competitors).
+- `strategy/state.json` — added `dotcom_secrets.product_launch_funnel` block (cap, window, price-lock math, bonus inventory, infrastructure pointers, founder action items, no-fake-scarcity rule). Added revision_history entry. Updated `skill_03_status`.
+
+### Code deliverables
+- `supabase/migrations/20260518000002_founding_cohort.sql` — `founding_waitlist` (pre-launch sequence subscribers, idempotent email upsert, RLS anon-insert with state-pin policy) + `founding_cohort` (the 50 seats, unique index on seat_number = structural cap enforcement, unique index on stripe_session_id = idempotency, RLS authenticated-select-own).
+- `app/src/lib/founding/cohort.ts` — `seatsClaimed`, `seatsRemaining`, `isCapReached`, `cartWindow` (reads `FOUNDING_CART_OPEN_AT` / `FOUNDING_CART_CLOSE_AT` from env), `isCartOpen`, `nextSeatNumber`.
+- `app/src/lib/founding/pre-launch-emails.ts` — PLE1 (engagement question) → PLE2/PLE3/PLE4 (anticipation, PLVs drop) → PLE5 (cart-open with live `X of 50` count) → PLE6 (cart-close, variant A = last call, variant B = sold out). All signed `— Maryan`, HMAC unsubscribe tokens via existing `lib/soap-opera/tokens.ts`.
+- `app/src/lib/founding/dispatch.ts` — mirrors `lib/soap-opera/dispatch.ts`. `sendNextFoundingAndAdvance(row)`. 4/3/4/3/7 day cadence between PLEs. On failure, `emails_sent` not incremented; cron retries.
+- `app/src/app/api/founding/waitlist/route.ts` — public POST endpoint. Email validation, idempotent upsert (second submit resets sequence), reads A/B identity cookie, sends PLE1 inline, schedules PLE2.
+- `app/src/app/api/cron/founding/route.ts` — daily drip. Same `CRON_SECRET` bearer auth as soap-opera/seinfeld. 16:00 UTC (1 hr after seinfeld).
+- `app/src/app/(marketing)/founding/page.tsx` — server-rendered landing page. Three states (`pre_launch` shows waitlist form; `open` shows claim-button with live seat number; `closed` shows door-closed fallback that points to `/starter`). Embeds cohort meter, three PLV placeholder blocks, base stack + founding bonuses, $1,416 / $49 = 28.9x math, AGAINST polarity line.
+- `app/src/components/founding-cohort-meter.tsx` — server component reading current claimed count from DB, rendering progress bar + label. No fake live counter — refresh to update (Brunson rule: no fake scarcity).
+- `app/src/app/(marketing)/founding/waitlist-form.tsx` — client component. POSTs to `/api/founding/waitlist`, renders success message with "check your inbox" prompt.
+- `app/src/app/(marketing)/founding/claim-button.tsx` — client component. POSTs to `/api/checkout` with `priceType=machine` + `attribution.from=founding`. Renders next available seat number on the button.
+- `app/src/app/api/webhooks/stripe/route.ts` — extended `checkout.session.completed` branch with `recordFoundingSeat(session)`. Three gates: cart window open + cap not reached + attribution.from === 'founding'. On grant: insert founding_cohort row with seat_number = currentMax + 1 (unique index = race protection), stamp `founding_waitlist.converted_to_founding_at` if email is on the waitlist, set `direct_line_expires_at` to 30 days out. On race past cap (23505 unique violation): subscription still completes at $49 evergreen, no bonuses, log warning. Brunson rule: never punish the buyer for the seller's race condition.
+- `app/src/app/api/unsubscribe/route.ts` — extended to clear `founding_waitlist.status = 'unsubscribed'` alongside soap_opera + seinfeld in one click.
+- `app/vercel.json` — added `/api/cron/founding` at `0 16 * * *` UTC.
+- `app/.env.local.example` — documented `FOUNDING_CART_OPEN_AT`, `FOUNDING_CART_CLOSE_AT`, `FOUNDING_PLV{1,2,3}_PLAYBACK`.
+
+### What's intentionally NOT in this scaffold
+- **PLV video recording.** Scripts are written; founder action item. The page renders explicit placeholder blocks per video showing which env var to populate.
+- **Cart-open date.** Founder action item. Recommendation: set 14 days after waitlist starts collecting signups so PLE1's engagement question has time to surface a useful sample of flat-line stories.
+- **Founding Verified Builder badge OG image variant.** The `builder_badges` table already supports the founding flag (added via the `founding_cohort` schema). The actual `/builder/[slug]/opengraph-image.tsx` route exists; founder/designer action item to add the founding visual treatment.
+- **`/founding-members` public credit page.** Brunson public-proof loop. Build once first cohort lands (post-launch).
+
+### Brunson rule audit
+- **Real scarcity, not fake.** Cap is structural (DB unique index) not visual (countdown timer). Verified.
+- **No discount on price.** $49 stays $49. Bonuses are additive (price lock, badge variant, direct line). Verified.
+- **Cart-close means cart-close.** After 50 seats OR 7 days, founding bonuses retire forever. Product continues at $49 evergreen — no second cohort, no "limited reopening." Verified by `cartWindow()` state machine — once `closed`, stays `closed`.
+- **No fake live counter.** Cohort meter renders server-side on every request. UI may lag DB by seconds during a write; that's accepted. Verified.
+- **Reluctant Hero voice everywhere.** PLV scripts open with the founder's flat-Stripe-line scar, parables 1-5 referenced, no expert posturing. Emails signed `— Maryan`. Verified.
+- **Brunson Hook-Story-Offer on every email.** PLE1 = story (your flat line) → question (engagement). PLE2-4 = story (parables) → soft pointer to video. PLE5 = full HSO with stack and cart-open. PLE6 = scarcity-or-closure binary. Verified.
+
+### Score lift on the audit
+- DotCom Secrets #21 (Product Launch Funnel): **N/A → 100** (strategy + scaffolds shipped, founder action items called out by name, no infrastructure debt).
+- Secondary lifts on adjacent chapters because the founding-cohort PLF compounds with existing strategy: #15 (Survey Funnel) gains a second use of the diagnostic→cohort handoff; #18 (Cart Funnel) gains a real cart-open/cart-close motion; Expert Secrets #11 (Perfect Webinar) gains a second pathway through PLV3's full Big-Domino + Stack + Closes mini-presentation; Traffic Secrets #15 (Funnel Hub) gains a dedicated launch surface beyond the always-on homepage.
+
+### Blockers
+None for the code. The founding cohort is one button push away from being live once: (1) founder records PLV1/PLV2/PLV3 per `strategy/founding-plv-scripts.md`, (2) founder sets the four env vars (cart open/close + three playback IDs), (3) `CRON_SECRET` is already documented for the soap-opera cron — same secret works.

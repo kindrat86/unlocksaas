@@ -1109,6 +1109,54 @@
     ]
   },
   "advisory_board_notes": {},
+  "product_launch_funnel": {
+    "status": "LOCKED 2026-05-17. Workbook 03 Script 8 revised from skipped to one-time Founding-Cohort PLF. Code scaffolds shipped this revision pass.",
+    "shape": "Jeff Walker 3-PLV + 5-pre-launch-email + cart-open/cart-close, run ONCE at product launch. Reverts to evergreen Soap Opera afterwards.",
+    "cohort_cap": 50,
+    "cap_rationale": "Matches Phase 3 trigger from workbook 10 (50 paying customers). Real (not fake) scarcity — structural cohort cap, not a countdown that resets on refresh.",
+    "window_days": 7,
+    "window_rationale": "Hard cap on Maryan's personal-onboarding bandwidth. After 7 days OR 50 seats, founding bonuses retire forever; product continues evergreen at same $49/mo.",
+    "price_during_launch": "$49/mo (no discount)",
+    "price_lock_promise": "Lifetime: $49/mo never increases for founding members for the life of an active subscription.",
+    "founding_bonuses": [
+      {"name": "Lifetime $49/mo price lock", "math": "$30/mo × 24mo = ~$720 of locked-in value", "delivery": "Stripe price object marked grandfathered + commitment in writing"},
+      {"name": "Founding Verified Builder badge variant", "math": "Distinct visual frame on existing /builder/[slug] OG image taxonomy", "delivery": "founding flag on builder_badges row + new OG template"},
+      {"name": "30-day direct line to Maryan", "math": "1 business day reply to any email at maryan@unlocksaas.com for 30 days from signup", "delivery": "Maryan time (capped at 50 founders × 30 days)"}
+    ],
+    "total_value_math": "$496 base stack + $920 founding bonuses = $1,416 / $49 = 28.9x",
+    "plvs": {
+      "plv1": {"label": "Wow & How / Opportunity", "title": "The Door That Opened", "length_target_minutes": "5-7", "script_at": "strategy/founding-plv-scripts.md"},
+      "plv2": {"label": "Transformation / Education", "title": "How the Machine Actually Works", "length_target_minutes": "8-10", "script_at": "strategy/founding-plv-scripts.md"},
+      "plv3": {"label": "Ownership Experience / Big Reveal", "title": "What It Looks Like on the Inside", "length_target_minutes": "10-12", "script_at": "strategy/founding-plv-scripts.md"}
+    },
+    "email_sequence": {
+      "ple1": {"day": -14, "role": "Engagement", "subject_working": "Before I open the door, I have one question."},
+      "ple2": {"day": -10, "role": "Anticipation (PLV1)", "subject_working": "The Door That Opened."},
+      "ple3": {"day": -7, "role": "Anticipation (PLV2)", "subject_working": "How the Machine actually works (and where every other tool quits)."},
+      "ple4": {"day": -3, "role": "Anticipation (PLV3)", "subject_working": "What it looks like on the inside."},
+      "ple5": {"day": 0, "role": "Cart-open", "subject_working": "The 50 Founding Verified Builder seats are open."},
+      "ple6": {"day": "+7 OR cap", "role": "Cart-close", "subject_working_variant_a": "12 of 50 claimed — 6 hours left.", "subject_working_variant_b": "50 of 50 claimed."}
+    },
+    "infrastructure_shipped_2026_05_17": {
+      "landing_page": "app/src/app/(marketing)/founding/page.tsx",
+      "cohort_meter_component": "app/src/components/founding-cohort-meter.tsx",
+      "cohort_lib": "app/src/lib/founding/cohort.ts (seatsClaimed, seatsRemaining, isCartOpen, isCapReached)",
+      "pre_launch_emails": "app/src/lib/founding/pre-launch-emails.ts (PLE1-PLE6 content functions)",
+      "dispatch": "app/src/lib/founding/dispatch.ts (mirrors lib/soap-opera/dispatch.ts pattern)",
+      "waitlist_api": "app/src/app/api/founding/waitlist/route.ts",
+      "cron_route": "app/src/app/api/cron/founding/route.ts",
+      "stripe_webhook_extension": "app/src/app/api/webhooks/stripe/route.ts (recordFoundingSeat on subscription.created)",
+      "migration": "supabase/migrations/20260518000002_founding_cohort.sql (founding_waitlist + founding_cohort tables, RLS, cap-enforcing index)"
+    },
+    "founder_action_items": [
+      "Record PLV1, PLV2, PLV3 per strategy/founding-plv-scripts.md and upload to Mux or Cloudflare Stream",
+      "Drop playback IDs into env vars FOUNDING_PLV1_PLAYBACK / FOUNDING_PLV2_PLAYBACK / FOUNDING_PLV3_PLAYBACK",
+      "Choose cart-open date (recommendation: 14 days after PLE1 sends, to give engagement signal time to surface)",
+      "Set FOUNDING_CART_OPEN_AT and FOUNDING_CART_CLOSE_AT env vars (ISO 8601)",
+      "Add a /founding-members public credit page once first cohort lands (Brunson public-proof loop)"
+    ],
+    "no_fake_scarcity_rule": "Cohort cap MUST be enforced by Stripe webhook reading row count BEFORE granting founding bonus. Frontend counter MAY lag DB by a few seconds (cache TTL 30s acceptable) but cap is non-negotiable. If 51st purchase fires, founding bonus is denied silently and subscription is still honored at $49/mo evergreen."
+  },
   "revision_history": [
     {
       "date": "2026-05-17",
@@ -1374,6 +1422,33 @@
         "revised_score": 100,
         "basis": "stage-appropriate scoring: every phase has either a live surface OR a documented lean-discipline reason for being thin, with explicit activation criteria for when that stance flips"
       }
+    },
+    {
+      "date": "2026-05-17",
+      "scope": "dotcom_secrets.product_launch_funnel (revised from skipped to founding-cohort PLF)",
+      "change": "Reversed the 'Script 8 skipped' decision in workbook 03. Replaced the skip rationale with a full Founding-Cohort Product Launch Funnel spec: 50-seat cap (matches workbook 10 Phase 3 trigger), 7-day window, $49/mo with three real founding bonuses (lifetime price lock = $720 defensible value, Founding Verified Builder badge variant, 30-day direct line to Maryan). Wrote PLV1/PLV2/PLV3 scripts at strategy/founding-plv-scripts.md (5-7/8-10/10-12 min, Reluctant Hero voice, founder face on camera). Wrote PLE1-PLE6 pre-launch email sequence (engagement → 3 anticipation → cart-open → cart-close). Added product_launch_funnel block to state.json. Shipped code infrastructure this same pass: launch page /founding, cohort meter component, founding cohort lib, pre-launch emails, dispatch, waitlist API, cron route, Stripe webhook extension recordFoundingSeat, migration 20260518000002_founding_cohort.sql with founding_waitlist + founding_cohort tables + RLS + cap-enforcing constraints. Updated skill_03_status: one script (Setter/Closer) skipped, one script (Product Launch) REVISED from skipped to founding-cohort PLF.",
+      "rationale": "Audit on 2026-05-17 (Brunson architect skill running 0-100 score across the Secrets Trilogy) flagged Secret 21 (Product Launch Funnel) as 'N/A — Skipped with reason' and the founder asked to proceed autonomously to bring this chapter to 100. The original skip reasoning ('evergreen SaaS has no cart-open event') was correct for steady state but wrong for the one-time launch moment — there IS a discrete cart-open event at product birth, and the Phase 3 trigger from workbook 10 (50 paying customers) can be reached as a deliberate launch motion rather than 6-12 months of organic accretion. The cohort cap is real scarcity (structural, not countdown-timer fake), which the locked skeptic-avatar polarity permits (workbook 07 explicitly rejects fake urgency; this is not fake). Price stays $49/mo per locked offer decision — no discount, only bonuses. Founding bonuses are defensible math, not inflated fantasy ($720 lifetime price lock = real future-price-rise forfeit; badge variant = zero-cost identity asset; 30-day direct line = founder time, capped). After 50 seats OR 7 days, bonuses retire forever and product continues evergreen at same $49 — this preserves Brunson rule 'never train them to wait for a sale.'",
+      "files_touched": [
+        "strategy/state.json",
+        "strategy/workbooks/03-funnel-scripts.md",
+        "strategy/founding-plv-scripts.md (new)",
+        "app/src/app/(marketing)/founding/page.tsx (new)",
+        "app/src/components/founding-cohort-meter.tsx (new)",
+        "app/src/lib/founding/cohort.ts (new)",
+        "app/src/lib/founding/pre-launch-emails.ts (new)",
+        "app/src/lib/founding/dispatch.ts (new)",
+        "app/src/app/api/founding/waitlist/route.ts (new)",
+        "app/src/app/api/cron/founding/route.ts (new)",
+        "app/src/app/api/webhooks/stripe/route.ts (extended with recordFoundingSeat)",
+        "supabase/migrations/20260518000002_founding_cohort.sql (new)",
+        "build-log.md"
+      ],
+      "follow_ups": [
+        "Founder records PLV1/PLV2/PLV3 per script, uploads to Mux or Cloudflare Stream, drops playback IDs into FOUNDING_PLV{1,2,3}_PLAYBACK env vars",
+        "Founder sets FOUNDING_CART_OPEN_AT and FOUNDING_CART_CLOSE_AT env vars (ISO 8601). Recommendation: cart open 14 days after PLE1 sends.",
+        "Push CRON_SECRET to Vercel env (already required by soap-opera; founding cron uses same secret)",
+        "Add /founding-members public credit page once first cohort lands (Brunson public-proof loop)"
+      ]
     }
   ],
   "notes": {
@@ -1408,7 +1483,7 @@
     ],
     "skill_01_status": "COMPLETE. Step 1 of 4 closed.",
     "skill_02_status": "COMPLETE. Funnel-type-per-rung mapped, build order locked ($1 Starter first).",
-    "skill_03_status": "COMPLETE. Launch-critical scripts written. Setter/Closer + Product Launch skipped with reason.",
+    "skill_03_status": "COMPLETE. Launch-critical scripts written. Setter/Closer skipped with reason. Script 8 (Product Launch Sequence) REVISED 2026-05-17 from skipped to one-time Founding-Cohort PLF — full spec in workbook 03 + state.json product_launch_funnel block + strategy/founding-plv-scripts.md.",
     "skill_04_status": "COMPLETE. Page-by-page build specs, Soap Opera sequence, outreach engine spec, Funnel Audit checklist.",
     "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (canonical / SSR default, LOCKED 2026-05-17; 50/50 A/B against Paid Builders LIVE in production code, awaiting Vercel deploy to start collecting exposures), framework named (The Machine).",
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
