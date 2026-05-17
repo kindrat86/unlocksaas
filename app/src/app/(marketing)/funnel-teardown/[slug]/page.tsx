@@ -13,6 +13,12 @@ import {
 } from "@/lib/funnel-teardowns";
 import { hasPricingTeardown } from "@/lib/pricing-teardowns";
 import { getComparisonsForProductSlug } from "@/lib/comparisons";
+import { ID } from "@/lib/seo/entity";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 /**
  * Programmatic SEO surface — Funnel teardown: {Company}.
@@ -63,7 +69,12 @@ export function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical },
+    // Advertise the playbook-readable markdown mirror via the standard
+    // content-negotiation alternate link. Surface B (GEO/AEO) extension
+    // landed 2026-05-17 — retrievers (Perplexity, ChatGPT search,
+    // Google AI Overviews) now have a deterministic discovery path to
+    // the .md without parsing /llms.txt or guessing at URL conventions.
+    alternates: markdownAlternate(canonical, `/funnel-teardown/${t.slug}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       title,
@@ -83,43 +94,68 @@ export function generateMetadata({
 // ----- JSON-LD (per-slug, inlined for static-render simplicity) --------------
 
 function buildJsonLd(t: FunnelTeardown, canonicalUrl: string): string[] {
+  // Subject-entity reference for both `about` and `mentions`. When the
+  // manifest provides a homepageUrl we name the subject as a real
+  // Organization with a URL Google's Knowledge Graph can walk back to.
+  // When it doesn't, we fall back to a bare name string — still valid
+  // schema.org, just lower entity-graph density.
+  const subjectEntity = t.homepageUrl
+    ? {
+        "@type": "Organization",
+        name: t.displayName,
+        url: t.homepageUrl,
+      }
+    : t.displayName;
+
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${t.displayName} Funnel Teardown — What Indie SaaS Founders Can Learn`,
     description: t.oneLine,
     abstract: t.tldr,
-    author: {
-      "@type": "Person",
-      name: "Maryan",
-      url: `${BASE}/about`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: `${BASE}/`,
-    },
+    // Author + publisher now point at the canonical @ids declared on the
+    // funnel hub via OrganizationJsonLd / PersonJsonLd. Google resolves
+    // these by walking the @id graph across the site instead of treating
+    // each Article as carrying its own disconnected Person/Org records.
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    isPartOf: { "@id": ID.website },
     datePublished: t.lastVerified,
     dateModified: t.lastVerified,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
     },
-    about: t.displayName,
+    // `about` names the primary subject of the Article. `mentions` lists
+    // every named entity discussed — for a single-subject teardown the two
+    // align, but separating them is what GEO retrievers (Perplexity,
+    // Gemini, AI Overviews) walk when answering "what does Unlock SaaS
+    // say about <product>" – the answer surfaces both the canonical URL
+    // and the named subject as a citable entity neighbour.
+    about: subjectEntity,
+    mentions: [subjectEntity],
     keywords: t.tags.join(", "),
     inLanguage: "en-US",
+    // VEO — TL;DR section wraps in `aria-labelledby="tldr"`, matched by
+    // SPEAKABLE_SELECTORS. Voice assistants and LLM voice modes (ChatGPT
+    // Voice, Perplexity voice) read the teardown summary aloud first.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: t.faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        inLanguage: "en-US",
       },
     })),
   };

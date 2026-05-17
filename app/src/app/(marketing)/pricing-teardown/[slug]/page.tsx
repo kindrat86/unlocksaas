@@ -13,6 +13,12 @@ import {
 } from "@/lib/pricing-teardowns";
 import { getTeardownBySlug as getFunnelTeardownBySlug } from "@/lib/funnel-teardowns";
 import { getComparisonsForProductSlug } from "@/lib/comparisons";
+import { ID } from "@/lib/seo/entity";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 /**
  * Programmatic SEO surface — Pricing teardown: {Company}.
@@ -65,7 +71,7 @@ export function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical },
+    alternates: markdownAlternate(canonical, `${canonical}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       title,
@@ -85,43 +91,65 @@ export function generateMetadata({
 // ----- JSON-LD --------------------------------------------------------------
 
 function buildJsonLd(t: PricingTeardown, canonicalUrl: string): string[] {
+  // Subject-entity for `about` and `mentions`. Pricing teardowns prefer
+  // the pricingPageUrl when available (it's the literal subject of the
+  // article); fall back to homepageUrl, then to a bare name string.
+  const subjectUrl = t.pricingPageUrl ?? t.homepageUrl;
+  const subjectEntity = subjectUrl
+    ? {
+        "@type": "Organization",
+        name: t.displayName,
+        url: subjectUrl,
+      }
+    : t.displayName;
+
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${t.displayName} Pricing Teardown — Model, Tiers, and Strategy`,
     description: t.oneLine,
     abstract: t.tldr,
-    author: {
-      "@type": "Person",
-      name: "Maryan",
-      url: `${BASE}/about`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: `${BASE}/`,
-    },
+    // @id references to the canonical Organization / Person / WebSite
+    // declared on the funnel hub. Closes the entity graph so retrievers
+    // walk one node instead of treating each Article as carrying its
+    // own disconnected Person/Org records.
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    isPartOf: { "@id": ID.website },
     datePublished: t.lastVerified,
     dateModified: t.lastVerified,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
     },
-    about: t.displayName,
+    // `about` names the primary subject; `mentions` is the broader
+    // entity-graph anchor. GEO retrievers (Perplexity, AI Overviews,
+    // Gemini) walk one or the other when answering "what does Unlock
+    // SaaS say about <product>'s pricing".
+    about: subjectEntity,
+    mentions: [subjectEntity],
     keywords: t.tags.join(", "),
     inLanguage: "en-US",
+    // VEO — TL;DR block wraps in `aria-labelledby="tldr"`, matched by
+    // SPEAKABLE_SELECTORS. Voice modes read the pricing-teardown summary
+    // aloud first.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: t.faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        inLanguage: "en-US",
       },
     })),
   };

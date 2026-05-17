@@ -4,6 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ALTERNATIVES } from "@/lib/alternatives";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+
+// Latest lastVerified across the manifest – feeds Dataset.dateModified.
+const ALTERNATIVES_LATEST_VERIFIED = ALTERNATIVES.reduce(
+  (latest, a) => (a.lastVerified > latest ? a.lastVerified : latest),
+  ALTERNATIVES[0]?.lastVerified ?? "2026-05-17",
+);
 
 /**
  * Alternatives hub — pSEO surface index.
@@ -28,7 +36,7 @@ export const metadata: Metadata = {
   title: "Honest Alternatives to Unlock SaaS — and Why Most Are Different Products",
   description:
     "Side-by-side comparisons against ShipFast, Lovable, the One Funnel Away Challenge, Starter Story, and other tools the typical post-launch pre-revenue SaaS founder evaluates. Honest framing, no slag.",
-  alternates: { canonical: "/alternatives-to" },
+  alternates: markdownAlternate("/alternatives-to", "/alternatives-to.md"),
   robots: { index: true, follow: true },
   openGraph: {
     title: "Honest Alternatives Comparisons — Unlock SaaS",
@@ -102,6 +110,21 @@ export default function AlternativesHub() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: COLLECTION_JSON }}
+      />
+      {/* AIO uplift: Dataset schema declares the alternatives catalog as
+          a dated, dual-distribution dataset. Google Dataset Search indexes
+          it; LLM training corpora that prioritise structured data ingest
+          it at a higher tier. */}
+      <HubDatasetJsonLd
+        name="Honest Indie SaaS Alternatives Catalog"
+        description="Honest named-competitor comparisons against Unlock SaaS. Each entry names the category difference, respects the competitor's value proposition, and carries a lastVerified ISO date."
+        hubPath="/alternatives-to"
+        mdPath="/alternatives-to.md"
+        lastVerified={ALTERNATIVES_LATEST_VERIFIED}
+        entries={ALTERNATIVES.map((a) => ({
+          slug: a.slug,
+          displayName: a.displayName,
+        }))}
       />
 
       {/* Breadcrumb */}

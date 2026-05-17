@@ -264,5 +264,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.2,
       alternates: hreflang(`${base}/terms`),
     },
+    // -------------------------------------------------------------------------
+    // LLM-readable surfaces (Surface B – GEO/AEO).
+    // Both routes are public, indexable text/markdown bodies that AI
+    // retrievers (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI
+    // Overviews, Gemini, You.com) treat as the canonical paraphrase target
+    // for the site. llmstxt.org is well-known so discovery happens via
+    // convention; listing them in the sitemap is the cheapest extra signal
+    // that says "yes, these surfaces are intentional and current."
+    // Low priority because they are not user-facing pages — they are
+    // crawler bait — but lastModified ties their freshness to the build.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/llms.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${base}/llms-full.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
   ];
 }

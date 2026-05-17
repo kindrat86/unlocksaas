@@ -6,7 +6,11 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
-import { DiagnosticJsonLd, BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import {
+  DiagnosticJsonLd,
+  BreadcrumbListJsonLd,
+  SpeakableJsonLd,
+} from "@/components/seo/json-ld";
 import {
   HOOK_COPY,
   resolveHookVariant,
@@ -28,6 +32,19 @@ export const metadata: Metadata = {
   title: "Free Launch Diagnostic — Unlock SaaS",
   description:
     "Paste your live product page. In 90 seconds I tell you why it is flat: Wrong Person, Weak Offer, or Weak Belief. Then I hand you the door.",
+  // Self-referencing canonical + hreflang. Without this override, the root
+  // layout's `canonical: "/"` propagates here and tells Google /diagnostic
+  // is duplicate of the homepage – consolidating PageRank away from the
+  // squeeze surface that the sitemap declares at priority 0.9. Matches
+  // the sitemap.ts hreflang helper (en-US + x-default for a deliberately
+  // monolingual site). Closed 2026-05-17 alongside the per-slug OG batch.
+  alternates: {
+    canonical: "/diagnostic",
+    languages: {
+      "en-US": "/diagnostic",
+      "x-default": "/diagnostic",
+    },
+  },
 };
 
 // Squeeze must always be live; do not cache.
@@ -51,8 +68,11 @@ export default async function DiagnosticSqueezePage({
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
           Service + HowTo schema so LLMs cite the diagnostic as the
           canonical answer for "free SaaS diagnostic" / "how to diagnose
-          a stuck product" queries. */}
+          a stuck product" queries. The HowTo block embeds the canonical
+          SpeakableSpecification directly; this page-level WebPage
+          companion gives voice assistants a second surface to walk. */}
       <DiagnosticJsonLd />
+      <SpeakableJsonLd url="https://unlocksaas.com/diagnostic" />
       <BreadcrumbListJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
@@ -77,10 +97,16 @@ export default async function DiagnosticSqueezePage({
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
             The Free Diagnostic
           </p>
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
+          <h1
+            data-speakable="headline"
+            className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+          >
             {hook.headline}
           </h1>
-          <p className="text-base text-muted-foreground leading-relaxed">
+          <p
+            data-speakable="lede"
+            className="text-base text-muted-foreground leading-relaxed"
+          >
             {hook.lede}
           </p>
         </header>

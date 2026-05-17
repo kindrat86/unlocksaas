@@ -13,6 +13,12 @@ import {
 } from "@/lib/comparisons";
 import { getTeardownBySlug as getFunnelTeardownBySlug } from "@/lib/funnel-teardowns";
 import { getPricingTeardownBySlug } from "@/lib/pricing-teardowns";
+import { ID } from "@/lib/seo/entity";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 /**
  * Programmatic SEO surface — Compare: {Product A} vs {Product B}.
@@ -56,7 +62,7 @@ export function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical },
+    alternates: markdownAlternate(canonical, `${canonical}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       title,
@@ -76,43 +82,65 @@ export function generateMetadata({
 // ----- JSON-LD --------------------------------------------------------------
 
 function buildJsonLd(c: Comparison, canonicalUrl: string): string[] {
+  // Comparison pages have TWO subject entities by construction (A vs B).
+  // Build each as a real Organization when the manifest carries a URL,
+  // otherwise fall back to a bare name. `about` and `mentions` both carry
+  // the two-element list so retrievers that walk either field resolve
+  // both products as citable entity neighbours.
+  const subjectA = c.a.url
+    ? { "@type": "Organization", name: c.a.name, url: c.a.url }
+    : { "@type": "Organization", name: c.a.name };
+  const subjectB = c.b.url
+    ? { "@type": "Organization", name: c.b.name, url: c.b.url }
+    : { "@type": "Organization", name: c.b.name };
+
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${c.a.name} vs ${c.b.name} — Honest Head-to-Head Comparison`,
     description: c.oneLine,
     abstract: c.tldr,
-    author: {
-      "@type": "Person",
-      name: "Maryan",
-      url: `${BASE}/about`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: `${BASE}/`,
-    },
+    // @id references back to the canonical Organization / Person /
+    // WebSite declared on the funnel hub. Closes the entity graph so
+    // Google walks the @id graph instead of treating each Article as
+    // its own disconnected Person/Org block.
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    isPartOf: { "@id": ID.website },
     datePublished: c.lastVerified,
     dateModified: c.lastVerified,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
     },
-    about: [c.a.name, c.b.name].join(", "),
+    // Two-subject article: name both Organizations as `about` and
+    // `mentions` so AEO direct-answer pulls for "[A] vs [B]" queries
+    // resolve both products as named entities, not a comma-joined
+    // string. Pure prose-to-string about[] was the legacy shape.
+    about: [subjectA, subjectB],
+    mentions: [subjectA, subjectB],
     keywords: c.tags.join(", "),
     inLanguage: "en-US",
+    // VEO — TL;DR block wraps in `aria-labelledby="tldr"`, matched by
+    // SPEAKABLE_SELECTORS. Voice modes read the head-to-head summary
+    // aloud first.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: c.faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        inLanguage: "en-US",
       },
     })),
   };

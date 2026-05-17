@@ -106,10 +106,16 @@ export default function FaqPage() {
             </span>
             <span>FAQ</span>
           </nav>
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
+          <h1
+            data-speakable="headline"
+            className="text-3xl md:text-4xl font-bold leading-tight mb-4"
+          >
             Every objection answered. Each one sourced from a real founder.
           </h1>
-          <p className="text-base text-muted-foreground leading-relaxed mb-4">
+          <p
+            data-speakable="lede"
+            className="text-base text-muted-foreground leading-relaxed mb-4"
+          >
             These are the eight questions post-launch pre-revenue founders
             actually raise — about price, time, identity, DIY temptation, and
             whether praise without payment means the market is dead. They are

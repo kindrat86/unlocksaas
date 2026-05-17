@@ -7,6 +7,8 @@ import {
   TEARDOWNS,
   groupTeardownsByCategory,
 } from "@/lib/funnel-teardowns";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubDatasetJsonLd } from "@/components/seo/json-ld";
 
 /**
  * Funnel teardowns hub — pSEO surface index.
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
     "Funnel Teardowns — What Indie SaaS Founders Can Learn From the Best Marketing Pages",
   description:
     "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking. Hook, Story, Offer breakdowns through the Brunson lens, with what to adapt and what to skip.",
-  alternates: { canonical: "/funnel-teardown" },
+  alternates: markdownAlternate("/funnel-teardown", "/funnel-teardown.md"),
   robots: { index: true, follow: true },
   openGraph: {
     title: "Funnel Teardowns — Unlock SaaS",
@@ -95,6 +97,14 @@ const COLLECTION_JSON = JSON.stringify({
   },
 });
 
+// Latest lastVerified across the manifest – feeds Dataset.dateModified.
+// Computed at module load (the manifest is a static const), so it's a
+// one-time cost paid at import.
+const LATEST_VERIFIED = TEARDOWNS.reduce(
+  (latest, t) => (t.lastVerified > latest ? t.lastVerified : latest),
+  TEARDOWNS[0]?.lastVerified ?? "2026-05-17",
+);
+
 export default function FunnelTeardownHub() {
   const groups = groupTeardownsByCategory();
 
@@ -107,6 +117,22 @@ export default function FunnelTeardownHub() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: COLLECTION_JSON }}
+      />
+      {/* AIO uplift (2026-05-17): Dataset schema declares the manifest as
+          a structured, dated, dual-distribution dataset. Google Dataset
+          Search indexes it; LLM training corpora that prioritise
+          structured data ingest it at a higher tier. Cross-references
+          the markdown mirror at /funnel-teardown.md as a DataDownload. */}
+      <HubDatasetJsonLd
+        name="Indie SaaS Funnel Teardowns"
+        description="Pattern-level Hook / Story / Offer teardowns of indie SaaS funnels. Each entry includes hook, story, offer, what to adapt, what to avoid, FAQ, and a Brunson-lens summary."
+        hubPath="/funnel-teardown"
+        mdPath="/funnel-teardown.md"
+        lastVerified={LATEST_VERIFIED}
+        entries={TEARDOWNS.map((t) => ({
+          slug: t.slug,
+          displayName: t.displayName,
+        }))}
       />
 
       {/* Breadcrumb */}

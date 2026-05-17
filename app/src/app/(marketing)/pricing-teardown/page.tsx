@@ -7,6 +7,14 @@ import {
   PRICING_TEARDOWNS,
   groupPricingTeardownsByCategory,
 } from "@/lib/pricing-teardowns";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+
+// Latest lastVerified across the manifest – feeds Dataset.dateModified.
+const PRICING_LATEST_VERIFIED = PRICING_TEARDOWNS.reduce(
+  (latest, t) => (t.lastVerified > latest ? t.lastVerified : latest),
+  PRICING_TEARDOWNS[0]?.lastVerified ?? "2026-05-17",
+);
 
 /**
  * Pricing teardowns hub — third pSEO surface index.
@@ -30,7 +38,7 @@ export const metadata: Metadata = {
     "Pricing Teardowns — How Indie SaaS Actually Price Their Products",
   description:
     "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens. Built for post-launch pre-revenue founders building their own pricing page.",
-  alternates: { canonical: "/pricing-teardown" },
+  alternates: markdownAlternate("/pricing-teardown", "/pricing-teardown.md"),
   robots: { index: true, follow: true },
   openGraph: {
     title: "Pricing Teardowns — Unlock SaaS",
@@ -106,6 +114,18 @@ export default function PricingTeardownHub() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: COLLECTION_JSON }}
+      />
+      {/* AIO uplift: Dataset schema. See funnel-teardown hub for rationale. */}
+      <HubDatasetJsonLd
+        name="Indie SaaS Pricing Teardowns"
+        description="Pattern-level pricing-page teardowns of indie SaaS through the Brunson Stack lens: tier structure, anchor mechanics, upgrade triggers, payment mechanics. Approximate prices with dated lastVerified."
+        hubPath="/pricing-teardown"
+        mdPath="/pricing-teardown.md"
+        lastVerified={PRICING_LATEST_VERIFIED}
+        entries={PRICING_TEARDOWNS.map((t) => ({
+          slug: t.slug,
+          displayName: t.displayName,
+        }))}
       />
 
       {/* Breadcrumb */}

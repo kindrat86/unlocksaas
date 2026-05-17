@@ -15,9 +15,28 @@
  * per-request allocation, no per-render serialization. This is the
  * `server-hoist-static-io` + `rendering-hoist-jsx` pattern from the
  * Vercel React Best Practices guide.
+ *
+ * @id anchors (added 2026-05-17 GEO uplift)
+ * --------------------------------------------------------
+ * Organization, WebSite, and Person each carry a stable fragment-style
+ * `@id`. Per-slug Article schemas on the pSEO surfaces then reference
+ * those @ids via `isPartOf` and `publisher`, so Google's structured-data
+ * graph and LLM retrieval pipelines resolve the four entities as one
+ * connected node — not four disconnected blocks. The fragment URLs come
+ * from `ID` in src/lib/seo/entity.ts (single source of truth).
  */
 
 import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
+import {
+  ALTERNATE_NAMES,
+  DEFINED_TERMS,
+  ID,
+  KNOWS_ABOUT,
+  MENTIONED_ENTITIES,
+  ORGANIZATION,
+  ORGANIZATION_SAME_AS,
+  PUBLISHING_PRINCIPLES_URL,
+} from "@/lib/seo/entity";
 
 const BASE = "https://unlocksaas.com";
 
@@ -26,19 +45,30 @@ const BASE = "https://unlocksaas.com";
  *
  * Surface B (AEO + voice-engine optimization) extension. Schema.org's
  * `Speakable` property tells text-to-speech engines (Google Assistant,
- * Siri-style retrieval, screen-readers that follow the spec) which DOM
- * nodes are safe to read aloud — i.e. the prose, not the navigation /
- * call-to-action / footer.
+ * Alexa, Siri Reader Mode, Bixby, ChatGPT Voice, Perplexity voice) which
+ * DOM nodes are safe to read aloud – the prose, not the navigation,
+ * call-to-action, or footer.
  *
- * Two layout rules for callers:
- *   1. Selectors MUST point at DOM that actually exists on the rendered
- *      page. A Speakable selector pointing at a non-existent node is the
- *      same drift class as a JSON-LD field that disagrees with rendered
- *      text — both get the page demoted in voice answer panels.
- *   2. Prefer stable class names prefixed with `aeo-` (e.g. `.aeo-q`,
- *      `.aeo-a`, `.aeo-tldr`) over heading-tag selectors. Tag selectors
- *      pick up nav links and CTA copy that should not be spoken; an
- *      explicit class lets each page opt the right nodes in.
+ * Two parallel selector conventions are supported and both ship – callers
+ * may pick either depending on page-level needs:
+ *
+ *   1. **Class-selector convention** (`aeo-*` classes via `speakableSpec`
+ *      helper): used by /faq, where always-visible Q/A pairs let us mark
+ *      them with stable `.aeo-q` / `.aeo-a` classes. Callers pass the
+ *      selector list to `FaqPageJsonLd` and the helper builds the
+ *      SpeakableSpecification inline.
+ *
+ *   2. **Data-attribute convention** (`SPEAKABLE_SELECTORS` /
+ *      `SPEAKABLE_SPEC`): used by /diagnostic + the four pSEO slug
+ *      surfaces, where `[data-speakable]` opt-ins and `[aria-labelledby]`
+ *      anchors are stable retrieval handles. Pages spread `SPEAKABLE_SPEC`
+ *      into their inline Article / WebPage schema.
+ *
+ * Selector contract (both conventions): every selector MUST resolve to
+ * DOM that the page actually renders verbatim. Brunson Hard-Rule: no
+ * fabricated speakable regions. A selector pointing at a non-existent
+ * node is the same drift class as a JSON-LD field that disagrees with
+ * rendered text – both get the page demoted in voice answer panels.
  *
  * Schema.org reference: https://schema.org/SpeakableSpecification
  */
@@ -52,27 +82,85 @@ function speakableSpec(selectors: SpeakableSelectors) {
 }
 
 /**
+ * Data-attribute selectors used by /diagnostic and the four pSEO slug
+ * surfaces. See `speakableSpec` above for the parallel class-selector
+ * convention used by /faq.
+ */
+export const SPEAKABLE_SELECTORS: readonly string[] = Object.freeze([
+  "[data-speakable]",
+  '[aria-labelledby="tldr"]',
+  '[aria-labelledby="quick-take"]',
+]);
+
+/**
+ * Pre-built SpeakableSpecification subobject. Spread into any Article /
+ * WebPage / HowTo schema. Frozen at module load to keep the embedded
+ * reference identity-stable across renders.
+ */
+export const SPEAKABLE_SPEC = Object.freeze({
+  "@type": "SpeakableSpecification",
+  cssSelector: SPEAKABLE_SELECTORS,
+});
+
+/**
+ * Accessibility / access-mode signals. `accessMode` declares the sensory
+ * modes the content uses; `accessModeSufficient` declares which single mode
+ * suffices. A page that declares `["textual"]` as a sufficient mode tells
+ * a voice assistant the text alone is a complete experience – safe to read
+ * aloud without missing meaning carried by images or video.
+ *
+ * Exported so per-slug inline Article schemas can spread the same subobject
+ * (the 4 pSEO slug pages build their Article JSON-LD in-line for static-
+ * render simplicity; centralising the access-mode constant keeps the
+ * declared signal consistent across every surface).
+ */
+export const ACCESS_MODE_TEXTUAL = Object.freeze({
+  accessMode: ["textual"],
+  accessModeSufficient: [
+    { "@type": "ItemList", itemListElement: ["textual"] },
+  ],
+});
+
+/**
  * Off-platform entity anchors shared by Organization.sameAs and Person.sameAs.
  *
  * LLMs (Perplexity, ChatGPT, Claude, Gemini) and Google's Knowledge Graph
  * walk `sameAs` to link the UnlockSaaS entity to its representation on other
- * indexed sites. Empty list = isolated entity = ~zero topical authority lift.
+ * indexed sites. Empty array = isolated entity = ~zero topical authority lift.
+ *
+ * Wired (2026-05-17 E-E-A-T audit fix) to the env-driven array exported by
+ * src/lib/seo/entity.ts. Pre-fix this block was a local hardcoded `[]`, so
+ * even though entity.ts already validated and froze a candidate list from
+ * eight Vercel env vars, the consumer never read it – the operator could
+ * have set every social handle on Vercel and the Organization / Person
+ * blocks would still ship empty `sameAs`. Connecting this alias closes the
+ * loop: set NEXT_PUBLIC_UNLOCKSAAS_*_URL on Vercel, redeploy, schema picks
+ * it up – no code edit, no audit cycle.
  *
  * **Activation rule** (Brunson Hard-Rule: no fabricated identity):
- *   Only append a URL once the linked profile actually exists, is public,
- *   and credibly identifies Maryan / Unlock SaaS. Do not seed placeholders.
- *   strategy/google-strategy.md §B.3 (off-platform signal loop) is the
- *   publishing schedule that fills this list.
+ *   Only set an env var once the linked profile actually exists, is public,
+ *   and credibly identifies Maryan / Unlock SaaS. Bidirectional claim is
+ *   the bar: this site claims the handle via sameAs; the handle's bio
+ *   claims unlocksaas.com. Knowledge Graph rewards the round-trip;
+ *   one-way sameAs entries earn the lower confidence weight.
  *
- * Suggested order to fill, by GEO/AIO impact per effort:
- *   1. Twitter/X profile        2. Indie Hackers profile
- *   3. LinkedIn personal        4. GitHub
- *   5. YouTube channel          6. Crunchbase company page
- *   7. Wikidata Q-number
+ * Env vars consulted (see entity.ts buildSameAs), in suggested fill order
+ * by GEO / AIO impact per effort:
+ *   1. NEXT_PUBLIC_UNLOCKSAAS_X_URL             (Twitter / X)
+ *   2. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL (Indie Hackers)
+ *   3. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL      (LinkedIn personal)
+ *   4. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL        (GitHub)
+ *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL       (YouTube)
+ *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL    (Crunchbase company)
+ *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL  (Product Hunt)
+ *   8. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL         (Wikidata Q-number or ad-hoc)
+ *
+ * Defaults to a frozen empty array in a fresh checkout. That is honest:
+ * no env vars set = no off-platform anchors claimed. strategy/google-
+ * strategy.md §B.3 (off-platform signal loop) is the publishing schedule
+ * that fills the env vars.
  */
-const SAME_AS: readonly string[] = [
-  // Activation slot. See activation rule above.
-];
+const SAME_AS = ORGANIZATION_SAME_AS;
 
 // --- Pre-built JSON strings (module-level; serialized once at import time) ---
 
@@ -84,20 +172,46 @@ const SAME_AS: readonly string[] = [
 const ORGANIZATION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Unlock SaaS",
-  legalName: "Unlock SaaS",
+  "@id": ID.organization,
+  name: ORGANIZATION.name,
+  legalName: ORGANIZATION.legalName,
+  // alternateName declares every public spelling resolves to one entity.
+  // Without this, "UnlockSaaS" and "Unlock SaaS" can split into two weak
+  // entity clusters in LLM training corpora. See entity.ALTERNATE_NAMES.
+  alternateName: ALTERNATE_NAMES,
   url: BASE,
   logo: `${BASE}/icon.svg`,
-  description:
-    "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+  description: ORGANIZATION.description,
+  slogan: ORGANIZATION.slogan,
+  foundingDate: ORGANIZATION.foundingDate,
   // Locale anchor. Mirrors the en-US signal shipped in the WebSite block and
   // the layout-level hreflang alternates. LLMs that build entity cards from
   // JSON-LD read `inLanguage` to decide which language audience this
   // organization serves; Google reads it as a corroborating International
   // SEO signal alongside hreflang.
   inLanguage: "en-US",
+  // Worldwide digital SaaS. Honest declaration: no fabricated geo-targeting.
+  areaServed: ORGANIZATION.areaServed,
+  // knowsAbout declares topical authority. LLM retrieval pipelines use this
+  // to decide "which entity is the authority on X" – specificity beats
+  // breadth. See entity.KNOWS_ABOUT (28 entries, each verifiable in the
+  // strategy/ folder or a shipped pSEO surface).
+  knowsAbout: KNOWS_ABOUT,
+  // publishingPrinciples points at /about's "Editorial position" block –
+  // one of the strongest machine-readable E-E-A-T signals since 2023.
+  publishingPrinciples: PUBLISHING_PRINCIPLES_URL,
+  // mentions[] anchors UnlockSaaS in the entity neighbourhood of the
+  // third-party entities the public surface already discusses. Every
+  // entry is real and verifiable on at least one shipped page (funnel
+  // teardowns, pricing teardowns, /alternatives-to, /about, /faq).
+  mentions: MENTIONED_ENTITIES.map((m) => ({
+    "@type": m.type,
+    name: m.name,
+    url: m.url,
+  })),
   founder: {
     "@type": "Person",
+    "@id": ID.person,
     name: "Maryan",
     email: "maryan@unlocksaas.com",
     url: `${BASE}/about`,
@@ -122,24 +236,26 @@ const ORGANIZATION_JSON = JSON.stringify({
 const WEBSITE_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": ID.website,
   name: "Unlock SaaS",
   url: BASE,
   inLanguage: "en-US",
+  // Link the WebSite back to the publishing Organization so the graph
+  // resolves as one entity, not two. Per-page Article schemas reference
+  // ID.website via `isPartOf`, closing the loop.
+  publisher: { "@id": ID.organization },
 });
 
 const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": ID.diagnosticService,
   name: "Free Launch Diagnostic",
   description:
     "Paste your live product URL. In 90 seconds we label what is actually wrong with one of three diagnoses: Wrong Person, Weak Offer, or Weak Belief — and hand you the door that fixes it.",
   inLanguage: "en-US",
   availableLanguage: ["en-US"],
-  provider: {
-    "@type": "Organization",
-    name: "Unlock SaaS",
-    url: BASE,
-  },
+  provider: { "@id": ID.organization },
   serviceType: "Pre-launch SaaS diagnostic",
   audience: {
     "@type": "Audience",
@@ -152,16 +268,37 @@ const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
   },
+  // Free surface – declare it explicitly. LLMs answering "is X free" pull
+  // this field directly. Pairs with the $0 Offer above.
+  isAccessibleForFree: true,
+  // Keywords expand the entity's lexical surface for retrieval-augmented
+  // answer pipelines that don't walk knowsAbout on Service nodes.
+  keywords: [
+    "SaaS diagnostic",
+    "indie SaaS launch audit",
+    "Wrong Person Weak Offer Weak Belief",
+    "Hook Story Offer page audit",
+    "post-launch pre-revenue founder diagnostic",
+  ].join(", "),
+  category: "Pre-launch SaaS diagnostic",
   url: `${BASE}/diagnostic`,
 });
 
 const DIAGNOSTIC_HOWTO_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "HowTo",
+  "@id": ID.diagnosticHowTo,
   name: "How to get a free diagnosis of your stuck SaaS",
   description:
     "A three-step process that labels what is actually broken on your already-shipped product page.",
   inLanguage: "en-US",
+  // VEO — HowTo steps are inherently voice-readable: a voice assistant
+  // already reads the `name` + `text` of each step out loud when answering
+  // "how do I do X." Declaring `speakable` extends the same affordance to
+  // the page's headline+lede (tagged data-speakable) so the voice intro
+  // also reads naturally.
+  speakable: SPEAKABLE_SPEC,
+  ...ACCESS_MODE_TEXTUAL,
   step: [
     {
       "@type": "HowToStep",
@@ -255,14 +392,20 @@ const PLAYBOOK_HOWTO_JSON = JSON.stringify({
   speakable: speakableSpec([".aeo-playbook-howto"]),
 });
 
-// Multi-typed as Product + SoftwareApplication: schema.org allows array @type
-// and Google indexes both. The SoftwareApplication facet lets LLMs answer
-// "what SaaS tool helps me get my first paying customer" with the entity name,
-// while Product keeps the priced offer Rich Result eligible.
+// Multi-typed as Product + SoftwareApplication + LearningResource: schema.org
+// allows array @type and Google + LLM training corpora index all three.
+//   - Product keeps the priced offer Rich Result eligible.
+//   - SoftwareApplication lets LLMs answer "what SaaS tool helps me get my
+//     first paying customer" with the entity name.
+//   - LearningResource (added 2026-05-17 AIO uplift) declares the Playbook
+//     as a structured learning resource; AI training pipelines for
+//     educational corpora prioritise this type. Honest: the Playbook IS
+//     a seven-step instructional surface, this is not stretching the type.
 const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": ["Product", "SoftwareApplication"],
-  name: "The Playbook — Unlock SaaS",
+  "@type": ["Product", "SoftwareApplication", "LearningResource"],
+  "@id": ID.product,
+  name: "The Playbook – Unlock SaaS",
   description:
     "A seven-step playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay. Built by a non-engineer for non-engineer founders shipping with AI tools.",
   brand: {
@@ -273,23 +416,48 @@ const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
   inLanguage: "en-US",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
+  // LearningResource fields. educationalUse + learningResourceType + about
+  // give training corpora a clean handle on what the Playbook teaches.
+  learningResourceType: "Playbook",
+  educationalUse: "Professional skill development",
+  teaches: [
+    "How to acquire the first paying customer for a SaaS",
+    "Hook Story Offer landing-page diagnosis",
+    "Dream 100 outreach for indie founders",
+    "Stripe-verified validation of go-to-market work",
+  ].join(", "),
+  about: {
+    "@type": "Thing",
+    name: "First paying customer acquisition for indie SaaS",
+  },
   audience: {
     "@type": "Audience",
     audienceType:
       "Post-launch pre-revenue non-engineer founders using AI tools",
   },
+  // Keywords lift retrieval surface area beyond knowsAbout. Aligned to
+  // verbatim queries indie SaaS founders type.
+  keywords: [
+    "first paying customer SaaS",
+    "indie SaaS go-to-market",
+    "Russell Brunson playbook for SaaS",
+    "Hook Story Offer SaaS playbook",
+    "Stripe-verified founder validation",
+    "money-back guarantee SaaS playbook",
+    "non-engineer SaaS founder playbook",
+  ].join(", "),
+  isAccessibleForFree: false,
+  publisher: { "@id": ID.organization },
+  creator: { "@id": ID.person },
   offers: {
     "@type": "Offer",
     price: "49",
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: `${BASE}/playbook-sales`,
-    seller: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-    },
+    seller: { "@id": ID.organization },
   },
-  // aggregateRating intentionally omitted — see file header.
+  // aggregateRating intentionally omitted – see file header.
 });
 
 // --- Founder (Person) ------------------------------------------------------
@@ -300,6 +468,7 @@ const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
 const PERSON_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": ID.person,
   name: "Maryan",
   url: `${BASE}/about`,
   mainEntityOfPage: {
@@ -346,12 +515,18 @@ function buildFaqPageJson(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
+    // VEO — voice assistants reading FAQPage schema will read aloud whichever
+    // DOM regions match these selectors. The /faq page tags each <h2>Question
+    // and <p>Answer with data-speakable so the entire Q/A pair is voice-safe.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: items.map((it) => ({
       "@type": "Question",
       name: it.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: it.a,
+        inLanguage: "en-US",
       },
     })),
     // Speakable is optional because the FAQ accordion variant on
@@ -388,16 +563,21 @@ function buildArticleJson(input: ArticleSchemaInput): string {
     inLanguage: "en-US",
     datePublished: input.datePublished,
     dateModified: input.dateModified ?? input.datePublished,
+    // VEO — voice assistants and reader-mode renderers pull `speakable` to
+    // decide which DOM regions to read aloud first. The TL;DR section on
+    // every Article-typed page already wraps in `aria-labelledby="tldr"` /
+    // `aria-labelledby="quick-take"`, so the selectors below target real
+    // rendered content (Brunson Hard-Rule: no fabricated speakable regions).
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     author: {
       "@type": "Person",
+      "@id": ID.person,
       name: "Maryan",
       url: BASE,
     },
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: BASE,
-    },
+    publisher: { "@id": ID.organization },
+    isPartOf: { "@id": ID.website },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": input.url,
@@ -455,15 +635,59 @@ function buildVideoJson(input: VideoSchemaInput): string {
     description: input.description,
     uploadDate: input.uploadDate,
     thumbnailUrl: [input.thumbnailUrl],
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: BASE,
-    },
+    inLanguage: "en-US",
+    publisher: { "@id": ID.organization },
     ...(input.durationISO8601 ? { duration: input.durationISO8601 } : {}),
     ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
     ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
     ...(input.transcriptUrl ? { transcript: input.transcriptUrl } : {}),
+  });
+}
+
+/**
+ * AudioObject — schema.org type for an audio asset (podcast episode, voiceover,
+ * audio version of an essay). Mirrors the VideoObject builder pattern. All
+ * playable-asset fields are optional: until an audio asset ships, the builder
+ * can still emit `name`, `description`, `uploadDate`, `transcript`, and
+ * `publisher` so retrieval pipelines see the AudioObject node and link it to
+ * the canonical page; Rich-Results eligibility unlocks once `contentUrl` is
+ * populated.
+ *
+ * Brunson Hard-Rule: do NOT render AudioJsonLd on a page until the audio (or
+ * the transcript that an audio asset would mirror) actually exists. The
+ * existing markdown mirrors (/llms-full.txt, /<page>.md) ARE the canonical
+ * "spoken-content" source for the founder's narration — when the VSL audio
+ * track ships, `transcriptUrl` should point at the same MD mirror, which is
+ * what an LLM voice mode will read aloud anyway.
+ */
+export type AudioSchemaInput = {
+  name: string;
+  description: string;
+  uploadDate: string; // ISO 8601
+  durationISO8601?: string; // e.g. "PT3M42S"
+  contentUrl?: string; // canonical playable URL once the asset ships
+  embedUrl?: string;
+  /** URL of a transcript document. For UnlockSaaS this is the .md mirror of
+   *  the spoken-content source page. */
+  transcriptUrl?: string;
+  /** Encoding format, e.g. `audio/mpeg`. Honest signal for AI ingestion. */
+  encodingFormat?: string;
+};
+
+function buildAudioJson(input: AudioSchemaInput): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "AudioObject",
+    name: input.name,
+    description: input.description,
+    uploadDate: input.uploadDate,
+    inLanguage: "en-US",
+    publisher: { "@id": ID.organization },
+    ...(input.durationISO8601 ? { duration: input.durationISO8601 } : {}),
+    ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
+    ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
+    ...(input.transcriptUrl ? { transcript: input.transcriptUrl } : {}),
+    ...(input.encodingFormat ? { encodingFormat: input.encodingFormat } : {}),
   });
 }
 
@@ -590,6 +814,23 @@ export function VideoJsonLd(props: VideoSchemaInput) {
   return <JsonLdScript json={buildVideoJson(props)} />;
 }
 
+/**
+ * AudioObject schema. Render on any page hosting a hosted audio asset
+ * (founder narration, podcast episode, audio version of an essay) — and
+ * also on any page that publishes a transcript that an audio asset would
+ * mirror. Voice engines (Siri, Alexa, Google Assistant podcast surface,
+ * ChatGPT Voice) and AI audio-search pipelines walk AudioObject + transcript
+ * to attach the spoken content to the canonical page.
+ *
+ * Brunson Hard-Rule: do not render this on a page until either (a) the
+ * audio asset has a real hosted URL, or (b) a transcript URL exists that
+ * truthfully represents what the audio would say. The .md mirrors qualify
+ * as (b) — they are the spoken-content source of truth.
+ */
+export function AudioJsonLd(props: AudioSchemaInput) {
+  return <JsonLdScript json={buildAudioJson(props)} />;
+}
+
 // Duplicate `export function` declarations of PersonJsonLd, ArticleJsonLd,
 // FaqPageJsonLd, and BreadcrumbListJsonLd previously sat below this point —
 // concurrent build sessions landed two copies plus a stale re-export alias.
@@ -598,3 +839,140 @@ export function VideoJsonLd(props: VideoSchemaInput) {
 // that has not migrated to the schema.org-literal `BreadcrumbListJsonLd` name)
 // so renames in this file do not break consumers.
 export { BreadcrumbListJsonLd as BreadcrumbJsonLd };
+
+// ---------------------------------------------------------------------------
+// AIO uplift (2026-05-17) — DefinedTermSet, Hub Dataset, Speakable
+// ---------------------------------------------------------------------------
+
+/**
+ * DefinedTermSet — declares UnlockSaaS as the publisher of a glossary
+ * of Brunson terms the site teaches. LLM training corpora that ingest
+ * DefinedTermSet treat the publisher as a primary citation source for
+ * the term. Pre-revenue, this is one of the few entity-graph anchors
+ * a brand-new site CAN claim honestly: "we teach this term, here is
+ * our definition, in our own words." Sourced from entity.DEFINED_TERMS.
+ *
+ * Render once on the funnel hub (`/`). The set is hoisted at module
+ * load – no per-render allocation.
+ */
+const DEFINED_TERM_SET_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  "@id": `${BASE}/#brunson-glossary`,
+  name: "Unlock SaaS Brunson Glossary",
+  description:
+    "Working definitions of the Russell Brunson sales-funnel concepts Unlock SaaS teaches and applies to indie SaaS pages.",
+  inLanguage: "en-US",
+  publisher: { "@id": ID.organization },
+  url: `${BASE}/`,
+  hasDefinedTerm: DEFINED_TERMS.map((t) => ({
+    "@type": "DefinedTerm",
+    name: t.term,
+    description: t.definition,
+    inDefinedTermSet: `${BASE}/#brunson-glossary`,
+  })),
+});
+
+export function DefinedTermSetJsonLd() {
+  return <JsonLdScript json={DEFINED_TERM_SET_JSON} />;
+}
+
+/**
+ * Hub Dataset — the four pSEO catalogs (alternatives, funnel teardowns,
+ * pricing teardowns, comparisons) are structurally datasets: each has a
+ * defined schema, dated entries, and a stable distribution URL. Declaring
+ * them as schema.org Dataset lifts AIO because:
+ *   - Google Dataset Search discovers them.
+ *   - LLM training corpora that prioritise structured data (Common Crawl
+ *     dataset detection, academic crawlers) ingest them at a higher tier.
+ *   - The `distribution` field points at the markdown mirror, so retrieval
+ *     pipelines find the JS-free corpus directly.
+ *
+ * Caller passes the hub-specific facts. Built per-call, but the inputs
+ * are static arrays from the manifests so this is cheap.
+ */
+export type HubDatasetInput = {
+  name: string;
+  description: string;
+  /** Canonical HTML URL of the hub, e.g. `/funnel-teardown`. */
+  hubPath: string;
+  /** Markdown-mirror URL of the hub, e.g. `/funnel-teardown.md`. */
+  mdPath: string;
+  /** Date the latest entry in the catalog was verified (ISO 8601). */
+  lastVerified: string;
+  /** Catalog entries. Names appear in keywords + variableMeasured. */
+  entries: ReadonlyArray<{ slug: string; displayName: string }>;
+};
+
+function buildHubDatasetJson(input: HubDatasetInput): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: input.name,
+    description: input.description,
+    url: `${BASE}${input.hubPath}`,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    creator: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    license: `${BASE}/terms`,
+    keywords: input.entries.map((e) => e.displayName).join(", "),
+    dateModified: input.lastVerified,
+    variableMeasured: input.entries.map((e) => e.displayName),
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/html",
+        contentUrl: `${BASE}${input.hubPath}`,
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/markdown",
+        contentUrl: `${BASE}${input.mdPath}`,
+      },
+    ],
+  });
+}
+
+export function HubDatasetJsonLd(props: HubDatasetInput) {
+  return <JsonLdScript json={buildHubDatasetJson(props)} />;
+}
+
+/**
+ * Speakable schema — declares which CSS selectors voice assistants
+ * (Google Assistant, Siri shortcuts via the Vision Pro web client,
+ * Alexa Show web fetches) should read aloud. Render on `/faq`,
+ * `/diagnostic`, and any pSEO slug page where the Q/A + TL;DR pattern
+ * is voice-friendly.
+ *
+ * `cssSelectors` is optional — when omitted, the canonical
+ * SPEAKABLE_SELECTORS set is used so every speakable surface declares
+ * the same selector contract. The Article/FAQPage/HowTo schemas elsewhere
+ * in this module embed the same `speakable` object directly via
+ * SPEAKABLE_SPEC; this WebPage-level block is the page-level companion.
+ */
+export type SpeakableInput = {
+  /** Page URL the SpeakableSpecification applies to. */
+  url: string;
+  /** CSS selectors a voice assistant should read aloud. Defaults to the
+   *  canonical SPEAKABLE_SELECTORS set. */
+  cssSelectors?: ReadonlyArray<string>;
+};
+
+function buildSpeakableJson(input: SpeakableInput): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: input.url,
+    inLanguage: "en-US",
+    ...ACCESS_MODE_TEXTUAL,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: input.cssSelectors ?? SPEAKABLE_SELECTORS,
+    },
+  });
+}
+
+export function SpeakableJsonLd(props: SpeakableInput) {
+  return <JsonLdScript json={buildSpeakableJson(props)} />;
+}

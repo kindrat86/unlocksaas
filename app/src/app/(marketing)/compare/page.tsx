@@ -7,6 +7,14 @@ import {
   COMPARISONS,
   groupComparisonsByCategory,
 } from "@/lib/comparisons";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+
+// Latest lastVerified across the manifest – feeds Dataset.dateModified.
+const COMPARE_LATEST_VERIFIED = COMPARISONS.reduce(
+  (latest, c) => (c.lastVerified > latest ? c.lastVerified : latest),
+  COMPARISONS[0]?.lastVerified ?? "2026-05-17",
+);
 
 /**
  * Compare hub — fourth pSEO surface index.
@@ -24,7 +32,7 @@ export const metadata: Metadata = {
     "Compare — Honest Head-to-Head Comparisons of the Tools Indie SaaS Founders Evaluate",
   description:
     "Symmetric head-to-head comparisons. Dimension-by-dimension verdicts, honest take, and the right pick for indie SaaS founders specifically.",
-  alternates: { canonical: "/compare" },
+  alternates: markdownAlternate("/compare", "/compare.md"),
   robots: { index: true, follow: true },
   openGraph: {
     title: "Compare — Unlock SaaS",

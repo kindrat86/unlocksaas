@@ -19,9 +19,10 @@ import { StickyCta } from "@/components/blocks/sticky-cta";
 import { SignatureFooter } from "@/components/blocks/signature-footer";
 import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
+  DefinedTermSetJsonLd,
+  FaqPageJsonLd,
   OrganizationJsonLd,
   PersonJsonLd,
-  FaqPageJsonLd,
 } from "@/components/seo/json-ld";
 
 /**
@@ -70,6 +71,12 @@ export default function FunnelHub() {
       <OrganizationJsonLd />
       <PersonJsonLd />
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
+      {/* AIO uplift (2026-05-17): DefinedTermSet declares UnlockSaaS as the
+          publisher of the Brunson glossary the site teaches. Voiced in our
+          own words, sourced from entity.DEFINED_TERMS – each term appears
+          in at least one shipped surface, so the schema and the visible
+          corpus never diverge. */}
+      <DefinedTermSetJsonLd />
       <AbExposureBeacon />
 
       {/* ---------------- 1. HOOK ---------------- */}

@@ -12,6 +12,12 @@ import {
   getAlternativeBySlug,
   type Alternative,
 } from "@/lib/alternatives";
+import { ID } from "@/lib/seo/entity";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 /**
  * Programmatic SEO surface — Unlock SaaS vs {Alternative}.
@@ -59,7 +65,7 @@ export function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical },
+    alternates: markdownAlternate(canonical, `${canonical}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       title,
@@ -83,38 +89,64 @@ export function generateMetadata({
  * so this runs at build time. Safe to keep simple; no user input flows in.
  */
 function buildJsonLd(alt: Alternative, canonicalUrl: string): string[] {
+  // Subject-entity for `about` and `mentions`. If the manifest carries a
+  // homepageUrl we name the competitor as a real Organization with a URL
+  // Google's Knowledge Graph and LLM retrievers can walk; otherwise we
+  // fall back to a bare name string (still valid, lower density).
+  const subjectEntity = alt.homepageUrl
+    ? {
+        "@type": "Organization",
+        name: alt.displayName,
+        url: alt.homepageUrl,
+      }
+    : alt.displayName;
+
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${alt.displayName} vs Unlock SaaS — Honest Comparison`,
     description: alt.oneLine,
-    author: {
-      "@type": "Person",
-      name: "Maryan",
-      url: `${BASE}/`,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Unlock SaaS",
-      url: `${BASE}/`,
-    },
+    // Reference the canonical @ids declared on the funnel hub via
+    // OrganizationJsonLd / PersonJsonLd. Google walks the @id graph
+    // instead of treating each Article as carrying its own disconnected
+    // Person/Org records. See src/lib/seo/entity.ts ID.* for the
+    // single source of truth.
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    isPartOf: { "@id": ID.website },
+    inLanguage: "en-US",
     datePublished: alt.lastVerified,
     dateModified: alt.lastVerified,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
     },
+    // `about` names the primary subject of the comparison; `mentions`
+    // is the broader entity-graph anchor list. For a head-to-head page
+    // both surfaces resolve to the same competitor; declaring both
+    // satisfies retrievers that walk one but not the other.
+    about: subjectEntity,
+    mentions: [subjectEntity],
+    // VEO — Quick-take section on this page wraps in
+    // `aria-labelledby="quick-take"`, matched by SPEAKABLE_SELECTORS.
+    // Voice modes read the comparison summary first.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: "en-US",
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: alt.faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        inLanguage: "en-US",
       },
     })),
   };

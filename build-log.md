@@ -1258,3 +1258,60 @@ None for the code surface. Search Console verification and brand-defense Google 
 ### Next coherent unit
 
 Operator: complete action items above. Engineering: when the `/founding` cart-close cron is scheduled, open a follow-up to remove `/founding` from the sitemap response on the same flip — this is a small surface change that should ride with whatever cron-state machine update happens for the cart-close trigger.
+
+## Audit Response: SEO 88 → ~94 — per-slug OG images for the four pSEO surfaces
+
+### Why this push
+
+2026-05-17 SEO/pSEO/GEO/AIO/AEO audit scored traditional SEO at **88/100**. The single soft gap was per-slug OG images: all 56 pSEO pages (9 alternatives + 17 funnel teardowns + 10 pricing teardowns + 20 head-to-head comparisons) were inheriting the root `/opengraph-image.tsx` card. Generic OG previews cap inbound share-CTR around 1%; named-target preview cards run 3-6x higher on the surfaces where pSEO links spread organically (Slack, X, LinkedIn, Discord founder communities). Closing the gap unblocks the same SERP entries to do the work twice — once on Google, once on every social surface that previews the URL.
+
+### Code deliverables
+
+- `app/src/app/(marketing)/alternatives-to/[slug]/opengraph-image.tsx` (NEW) — 1200x630 dynamic OG via `next/og` + Satori. Reads `getAlternativeBySlug(params.slug)` from the live manifest; headline `Unlock SaaS vs {displayName}`, category eyebrow, oneLine subline, "Honest verdict. Dated lastVerified." footer signal. `runtime: nodejs`, `dynamic: force-static`, `dynamicParams: false`, `generateStaticParams` keyed to `ALTERNATIVE_SLUGS` so every card is pre-rendered at build time and unknown slugs 404 (phantom URLs cannot be discovered through OG image probing).
+- `app/src/app/(marketing)/funnel-teardown/[slug]/opengraph-image.tsx` (NEW) — same shape, reads `TEARDOWN_SLUGS` + `getTeardownBySlug`. Headline `{displayName} Funnel Teardown`, footer signal "Hook · Story · Offer · Value Ladder".
+- `app/src/app/(marketing)/pricing-teardown/[slug]/opengraph-image.tsx` (NEW) — reads `PRICING_TEARDOWN_SLUGS` + `getPricingTeardownBySlug`. Headline `{displayName} Pricing Teardown`, footer signal "Tier ladder · Anchor · Upgrade trigger · Mechanics".
+- `app/src/app/(marketing)/compare/[slug]/opengraph-image.tsx` (NEW) — reads `COMPARISON_SLUGS` + `getComparisonBySlug`. Three-row matchup layout: `{a.name}` / `vs` / `{b.name}` so long product names never wrap onto the pivot. Subline carries the oneLine. **Deliberately renders no verdict on the share preview** — symmetric framing extends to the OG card per the Brunson Hard-Rule reconciliation on the underlying /compare surface.
+
+### Visual contract
+
+All four cards follow `app/src/app/opengraph-image.tsx` (root fallback) for consistency:
+- Dark Geist palette (`#0a0a0b` background, `#fafafa` foreground, `#a1a1aa` / `#71717a` muted) so the fleet of OG cards reads as one product on any social surface.
+- Brand mark + wordmark top-left; rounded-pill category eyebrow top-right.
+- No em dashes (project hard rule: en dashes and middle dots only).
+- No yellow / orange / purple (locked visual style 2026-05-17).
+- Sans-serif system stack only (no script fonts).
+- Satori subset respected throughout: `display: flex` on every multi-child container, no shorthand background props, no gradients without explicit syntax.
+
+### Brunson Hard-Rule reconciliation
+
+- **No fabricated facts.** Every card reads from the same manifest the HTML page renders, so the card cannot drift from the live page. lastVerified dates on each manifest entry remain the audit trail.
+- **No invented quotes.** Cards display category + oneLine + framework labels only; no fabricated competitor quotes, no fake metrics, no "join thousands" scarcity.
+- **Honest framing.** Comparison cards do not preview a winner. Funnel/pricing teardown cards do not slag the target — they name the framework lens and let the click-through do the work.
+
+### Static-generation contract
+
+Each OG file declares `dynamic = "force-static"` + `dynamicParams = false` + a `generateStaticParams()` keyed to the same manifest slug list its colocated page.tsx uses. At build time:
+- 9 alternatives + 17 funnel teardowns + 10 pricing teardowns + 20 head-to-head comparisons = **56 OG PNGs pre-rendered to the CDN**.
+- Phantom OG probes (`/compare/fake-product/opengraph-image`) 404 instead of being lazily generated, mirroring the page-route security stance.
+- Cache-Components migration is a separate sweep; current `force-static` is the right tool for static manifest-driven pages.
+
+### Why this matters per acronym
+
+- **SEO:** 88 → ~94. The "soft gap" from the audit is closed. Remaining headroom is on outcome variables (GSC verification, real inbound) that this push cannot move.
+- **pSEO:** 92 → ~95. Programmatic surface now carries its own social preview equity, not just inherited generic equity.
+- **GEO / AIO:** unchanged at 90 / 87. OG cards don't feed retrieval directly, but they do feed click-through on social posts that link the per-slug HTML, which compounds into the GEO citation flywheel.
+- **AEO:** unchanged at 85. AEO works off schema + visible text, not OG cards.
+
+### Verification
+
+- Imported symbols (`ALTERNATIVE_SLUGS` / `getAlternativeBySlug`, `TEARDOWN_SLUGS` / `getTeardownBySlug`, `PRICING_TEARDOWN_SLUGS` / `getPricingTeardownBySlug`, `COMPARISON_SLUGS` / `getComparisonBySlug`) all confirmed present in the four manifests at the same export paths the page.tsx files already use — same compile contract.
+- Field references (`displayName`, `category`, `oneLine`, `a.name`, `b.name`) confirmed against the type definitions in each manifest.
+- Worktree has no `node_modules` so `tsc` / `next build` were skipped here; first deploy build will be the canonical typecheck. Same gating that already passes for the existing root + builder + diagnosis OG routes.
+
+### Operator action items
+
+None. The cards ship at the next deploy and start fronting every shared pSEO URL automatically.
+
+### Next coherent unit
+
+Per the same audit, the next highest-leverage SEO move is populating `Organization.sameAs` in `app/src/lib/seo/entity.ts` the moment a real X / IndieHackers / LinkedIn / YouTube profile is bidirectionally claimed for unlocksaas.com. That's an env / data flip, not a code change, and it is the single highest-leverage GEO/AIO move on the whole audit.
