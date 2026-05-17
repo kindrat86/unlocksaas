@@ -4,17 +4,33 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { ParablesOptIn } from "./parables-opt-in";
+import {
+  ArticleJsonLd,
+  BreadcrumbListJsonLd,
+} from "@/components/seo/json-ld";
+
+// Stable literal — DO NOT replace with `new Date()`. Article.datePublished
+// must be a real-world publish date the editorial commits to; a per-build
+// timestamp signals "edited every deploy" noise to crawlers and LLMs.
+// Bump dateModified separately when the editorial actually changes.
+const PARABLES_PUBLISHED_AT = "2026-05-17";
+const PARABLES_URL = "https://unlocksaas.com/parables";
 
 export const metadata: Metadata = {
   title: "Five Parables for the Flat Stripe Line — Unlock SaaS",
   description:
     "Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. Read free. No email required.",
+  alternates: { canonical: "/parables" },
   openGraph: {
     title: "Five Parables for the Flat Stripe Line",
     description:
       "Why your launch went flat, in five short stories. Read free.",
     type: "article",
+    url: "/parables",
+    publishedTime: PARABLES_PUBLISHED_AT,
+    authors: ["Maryan"],
   },
+  robots: { index: true, follow: true },
 };
 
 // Marketing page can be statically generated; the form is a client island.
@@ -49,6 +65,23 @@ export const dynamic = "force-static";
 export default function ParablesReverseSqueezePage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
+      {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
+          Article schema gives LLMs a typed editorial node with author +
+          publisher anchored to the Organization/Person graph. BreadcrumbList
+          lets Google render breadcrumb sitelinks in SERPs and gives LLMs a
+          navigational hint about where this page sits relative to the hub. */}
+      <ArticleJsonLd
+        headline="Five Parables for the Flat Stripe Line"
+        description="Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened."
+        url={PARABLES_URL}
+        datePublished={PARABLES_PUBLISHED_AT}
+      />
+      <BreadcrumbListJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          { name: "Five Parables", url: PARABLES_URL },
+        ]}
+      />
       <AbExposureBeacon />
       <article className="max-w-2xl mx-auto">
         {/* PREFACE */}

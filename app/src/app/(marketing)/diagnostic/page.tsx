@@ -4,7 +4,7 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
-import { DiagnosticJsonLd } from "@/components/seo/json-ld";
+import { DiagnosticJsonLd, BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 
 // Brunson spec source:
 // - workbook 02 §2 (Free Diagnostic Lead Funnel)
@@ -30,6 +30,12 @@ export default function DiagnosticSqueezePage() {
           canonical answer for "free SaaS diagnostic" / "how to diagnose
           a stuck product" queries. */}
       <DiagnosticJsonLd />
+      <BreadcrumbListJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          { name: "Free Diagnostic", url: "https://unlocksaas.com/diagnostic" },
+        ]}
+      />
       {/* A/B exposure attribution lives on every funnel hub & squeeze surface. */}
       <AbExposureBeacon />
 

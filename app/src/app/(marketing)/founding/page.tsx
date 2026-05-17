@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +12,24 @@ import { FoundingClaimButton } from "./claim-button";
 import { cartWindow, seatsClaimed, FOUNDING_COHORT_CAP } from "@/lib/founding/cohort";
 
 export const dynamic = "force-dynamic";
+
+// Per-page metadata — Surface A of the Google strategy. The Founding Cohort
+// PLF is state-dependent (pre_launch / open / closed); the title/description
+// stay constant because the same URL serves all three windows and SERP titles
+// must not whiplash between deploys. State-specific copy lives in the body.
+export const metadata: Metadata = {
+  title: "The Founding Cohort — 50 seats, lifetime $49 price lock",
+  description:
+    "50 Founding Verified Builders. 7-day window. Same $49/mo as the eventual evergreen price, locked for the life of your subscription. Founding-variant Verified Builder badge. The founder's email for 30 days.",
+  alternates: { canonical: "/founding" },
+  openGraph: {
+    title: "The Founding Cohort — Unlock SaaS",
+    description:
+      "50 Founding Verified Builders. 7-day window. Lifetime price lock. After 50 seats or 7 days, the founding bonuses retire forever.",
+    url: "/founding",
+    type: "website",
+  },
+};
 
 /**
  * Founding-Cohort PLF landing page.

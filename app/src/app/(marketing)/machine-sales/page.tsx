@@ -1,22 +1,56 @@
-"use client";
-
-import { useEffect } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, ShieldCheck } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { CheckoutButton } from "@/components/checkout-button";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { SocialProofBar } from "@/components/blocks/social-proof-bar";
 import { BeforeAfter } from "@/components/blocks/before-after";
 import { ComparisonTable } from "@/components/blocks/comparison-table";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { VslBlock } from "@/components/blocks/vsl-block";
-import { MachineProductJsonLd } from "@/components/seo/json-ld";
-import { track } from "@/lib/analytics/client";
+import {
+  MachineProductJsonLd,
+  FaqPageJsonLd,
+  BreadcrumbListJsonLd,
+} from "@/components/seo/json-ld";
+import { MACHINE_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
+
+/**
+ * Per-page metadata. Surface A of strategy/google-strategy.md — this page is
+ * the product-aware decision page that the LLM-citation Product schema
+ * (MachineProductJsonLd, rendered below) anchors to. Title is question-shaped
+ * to grease AEO featured-snippet capture for "is unlock saas legit",
+ * "unlock saas review", "what is the machine unlock saas" intent classes.
+ *
+ * `alternates.canonical` is path-relative; the metadataBase in app/layout.tsx
+ * resolves it to https://unlocksaas.com/machine-sales.
+ */
+export const metadata: Metadata = {
+  title: "The Machine — First Paying Customer in 60 Days or You Don't Pay",
+  description:
+    "A seven-step machine for already-shipped, pre-revenue SaaS founders. $49/month. If it does not produce a verified paying customer in 60 days, you do not pay. Built by a non-engineer for non-engineer founders.",
+  alternates: { canonical: "/machine-sales" },
+  openGraph: {
+    type: "website",
+    title: "The Machine — First Paying Customer in 60 Days or You Don't Pay",
+    description:
+      "Seven steps. Sixty days. $49/month. A verified paying customer or your money back.",
+    url: "/machine-sales",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "The Machine — First Paying Customer in 60 Days or You Don't Pay",
+    description:
+      "Seven steps. Sixty days. $49/month. A verified paying customer or your money back.",
+  },
+  robots: { index: true, follow: true },
+};
 
 /**
  * Long-form $49 Machine sales page.
@@ -41,40 +75,38 @@ import { Event } from "@/lib/analytics/events";
  * cookie default in lib/ab.ts; the AbExposureBeacon logs the A/B exposure
  * row so the variant the visitor actually sees gets counted.
  *
- * Marked "use client" because the checkout POST is interactive and the
- * MachineSalesPageViewed event fires on mount. No useSearchParams reads
- * here — there is no diagnostic-style attribution carry from upstream OTOs
- * into this surface — so no Suspense wrapper is required.
+ * Rendered as a Server Component. The two pieces that genuinely need the
+ * browser — the page-view event and the Stripe Checkout POST — are tiny
+ * client islands (<PageViewTracker> and <CheckoutButton>) that hydrate
+ * around an otherwise-static long-form sales page. This keeps the ~1000
+ * lines of sales copy out of the client bundle (CWV: smaller LCP, lower
+ * INP) and lets the page export per-route Metadata (SEO: real title +
+ * description + canonical, not the layout-template fallback).
  */
 export default function MachineSalesPage() {
-  useEffect(() => {
-    track(Event.MachineSalesPageViewed, { surface: "machine_sales" });
-  }, []);
-
-  async function handleCheckout() {
-    track(Event.MachineSalesCheckoutClicked, {
-      price_type: "machine",
-      surface: "machine_sales",
-    });
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ priceType: "machine" }),
-    });
-    const body = (await res.json().catch(() => ({}))) as { url?: string };
-    if (body.url) {
-      window.location.href = body.url;
-    }
-  }
-
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
           Product schema so the $49 Machine is citable when an LLM
           answers comparator queries ("alternatives to ShipFast",
-          "tool that helps me get my first SaaS customer"). */}
+          "tool that helps me get my first SaaS customer").
+          BreadcrumbList earns the SERP sitelink and helps Google render
+          the (Home › The Machine) crumb under the page title. */}
       <MachineProductJsonLd />
+      <BreadcrumbListJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          {
+            name: "The Machine",
+            url: "https://unlocksaas.com/machine-sales",
+          },
+        ]}
+      />
       <AbExposureBeacon />
+      <PageViewTracker
+        event={Event.MachineSalesPageViewed}
+        properties={{ surface: "machine_sales" }}
+      />
       <div className="max-w-3xl mx-auto">
         {/* ============================================================ */}
         {/* BLOCK 1 — BIG DOMINO (slides 1–6)                             */}
@@ -991,13 +1023,13 @@ export default function MachineSalesPage() {
           </p>
 
           <div className="text-center space-y-4">
-            <Button
-              size="lg"
+            <CheckoutButton
+              priceType="machine"
+              surface="machine_sales"
               className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
-              onClick={handleCheckout}
             >
               Start the Machine — $49/mo, 60-day guarantee
-            </Button>
+            </CheckoutButton>
             <p className="text-xs text-muted-foreground">
               Cancel anytime. No long-term contract. The guarantee
               covers both monthly payments.

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,6 +15,25 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
  * Used as the destination for solo ads, sponsored content, and cold
  * social posts that need their own pre-frame before the diagnostic.
  */
+
+// Per-page metadata — Surface A of the Google strategy. The Funnel Hub
+// layout template provides global fallbacks; this override gives the bridge
+// its own crawler-visible title and meta description so cold ad traffic and
+// SERP listings carry the pain-mirror language rather than the hub's promise.
+export const metadata: Metadata = {
+  title: "For founders who already shipped — the flat-Stripe-line bridge",
+  description:
+    "You shipped a real product. The Stripe line is flat. The 90-second free diagnostic labels what is actually broken — Wrong Person, Weak Offer, or Weak Belief — and hands you the door that fixes it.",
+  alternates: { canonical: "/bridge" },
+  openGraph: {
+    title: "For founders who already shipped — Unlock SaaS",
+    description:
+      "You shipped a real product. The Stripe line is flat. Get the labeled diagnosis that fixes it.",
+    url: "/bridge",
+    type: "website",
+  },
+};
+
 export default function ColdTrafficBridge() {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">

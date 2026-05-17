@@ -12,7 +12,12 @@ import { VslBlock } from "@/components/blocks/vsl-block";
 import { MediaBar } from "@/components/blocks/media-bar";
 import { AvatarWall } from "@/components/blocks/avatar-wall";
 import { shouldRenderMediaBar } from "@/lib/media-mentions";
-import { OrganizationJsonLd } from "@/components/seo/json-ld";
+import { HOMEPAGE_FAQS } from "@/lib/faqs";
+import {
+  OrganizationJsonLd,
+  PersonJsonLd,
+  FaqPageJsonLd,
+} from "@/components/seo/json-ld";
 
 /**
  * UnlockSaaS Funnel Hub.
@@ -41,9 +46,16 @@ export default function FunnelHub() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
-          Organization + WebSite schema for LLM citation anchoring. */}
+      {/* Surface B (AEO/GEO/AIO) — strategy/google-strategy.md §B.2.
+          Organization + WebSite + Person + FAQPage schema for LLM citation
+          anchoring. The four together let an AI resolve the entity graph:
+          Organization (the brand) → Person (the founder) → WebSite (the
+          surface) → FAQPage (the Q&A an answer engine paraphrases). The
+          FAQPage block consumes the same HOMEPAGE_FAQS list rendered below,
+          so visible content and structured data never diverge. */}
       <OrganizationJsonLd />
+      <PersonJsonLd />
+      <FaqPageJsonLd items={HOMEPAGE_FAQS} />
       <AbExposureBeacon />
 
       {/* ---------------- HERO (ClickFunnels 1.0 visual treatment) ----------------
@@ -309,32 +321,7 @@ export default function FunnelHub() {
           <code className="text-xs">strategy/dollar-objections.md</code>.
         </p>
         <div className="space-y-6">
-          {[
-            {
-              q: "I already have too many subscriptions.",
-              a: "Start at $1, not $49. The Starter finishes your dream customer and your offer in a week and is yours to keep regardless of whether you upgrade.",
-            },
-            {
-              q: "$49/mo is too much pre-revenue.",
-              a: "Two coffees a week, $98 capped exposure over 60 days, refunded automatically if the work was done and Stripe shows no customer. Pre-revenue is the exact case the guarantee was written for.",
-            },
-            {
-              q: "I have been burned by gurus.",
-              a: "Same. This is not a course. The deliverable is software you run yourself. The refund is enforced by code — not by a 'describe your experience' email I read at my leisure.",
-            },
-            {
-              q: "Customers are MY problem, not the tool's job.",
-              a: "Every other tool quietly agreed with you. The Machine does not. Outreach happens inside the tool, tracked. The job cannot be outsourced; it can be removed-from-your-willpower. That is the design.",
-            },
-            {
-              q: "I could build this myself in a weekend.",
-              a: "You could build the form. Not the Stripe-webhook proof, the Dream 100 picker fed from a locked workbook, the engine pushback, or the 60-day refund logic. And while you build the tool, you are not running the funnel — which is the exact disease the Machine treats.",
-            },
-            {
-              q: "What if I do the work and still get no paying customer?",
-              a: "Then the guarantee fires. The code reads your Stripe account at day 60. If you completed Steps 1–5 in-product and logged 20 outreach actions and the line is still flat, you get the two months ($98) back. In writing.",
-            },
-          ].map((item) => (
+          {HOMEPAGE_FAQS.map((item) => (
             <div key={item.q}>
               <p className="font-semibold">{item.q}</p>
               <p className="text-sm text-muted-foreground leading-relaxed mt-1">

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +7,24 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { ChallengeForm } from "./challenge-form";
+
+// Per-page metadata — Surface A of the Google strategy. Targets the
+// problem-aware long-tail ("how to get first saas customer", "14 day
+// challenge for founders") with a title that names the contract and a
+// description that previews the daily-action structure.
+export const metadata: Metadata = {
+  title: "The 14-Day First-Customer Sprint — free, email-only",
+  description:
+    "14 days. 14 actions. One per day. By Day 14 you will have done more selling than in the last six months — or proven to yourself that you will not. Free, email-only, no card, no course.",
+  alternates: { canonical: "/challenge" },
+  openGraph: {
+    title: "The 14-Day First-Customer Sprint — Unlock SaaS",
+    description:
+      "14 days. 14 actions. One per day. The work most founders skip between launch and revenue, broken into one-email-a-day. Free.",
+    url: "/challenge",
+    type: "website",
+  },
+};
 
 /**
  * 14-Day First-Customer Sprint Challenge — opt-in landing page.

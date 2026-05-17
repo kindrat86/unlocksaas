@@ -16,6 +16,31 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+
+  /**
+   * Content-Language HTTP header.
+   *
+   * Pairs with `<html lang="en-US">` (src/app/layout.tsx), the hreflang
+   * alternates in metadata + sitemap, and the `inLanguage` JSON-LD fields.
+   * The HTTP header is the canonical locale signal for crawlers and assistive
+   * tech that read response headers before parsing HTML — some bots (Bing,
+   * older Googlebot mobile, accessibility tools) prioritize it over markup.
+   *
+   * Deliberately monolingual. If multi-locale ever ships, swap to a matcher
+   * that emits the per-route locale (e.g. en-US for `/`, es-ES for `/es/*`).
+   * Until then this single header is the honest declaration: every URL on
+   * unlocksaas.com is en-US, and there is no alternate.
+   */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Language", value: "en-US" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

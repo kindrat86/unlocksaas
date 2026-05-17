@@ -40,6 +40,16 @@ export const metadata: Metadata = {
   publisher: "Unlock SaaS",
   alternates: {
     canonical: "/",
+    // Self-referencing hreflang for a deliberately monolingual surface.
+    // `x-default` tells Google there is no language-specific alternate; the
+    // en-US page IS the canonical for every locale. Without this declaration
+    // a single-language site looks "unspecified" and forfeits International
+    // SEO signal points it could trivially claim. See google-strategy.md §A.4
+    // (locale declarations) — extension landing 2026-05-17.
+    languages: {
+      "en-US": "/",
+      "x-default": "/",
+    },
   },
   robots: { index: true, follow: true },
   openGraph: {
@@ -66,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(GeistSans.variable, GeistMono.variable, "dark")}>
+    <html lang="en-US" className={cn(GeistSans.variable, GeistMono.variable, "dark")}>
       <body className="antialiased bg-background text-foreground">
         <PostHogProvider>
           {/* PageView lives in Suspense because useSearchParams forces CSR. */}
