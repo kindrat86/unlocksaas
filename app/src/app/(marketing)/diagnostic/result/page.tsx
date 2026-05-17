@@ -281,6 +281,20 @@ function BridgePage({ row }: { row: LeadRow }) {
 
   return (
     <PageFrame hostLine={`Diagnosis for ${host}.`}>
+      {/* One-free-per-founder framing. Permanent link, no expiry. The bridge
+          below carries the actual upsell — this banner just sets the frame so
+          the visitor doesn't try to come back for a second freebie. */}
+      <div className="mb-6 rounded-md border border-primary/20 bg-primary/5 px-4 py-3">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+          Your one free diagnosis
+        </p>
+        <p className="text-sm leading-relaxed">
+          This is the one diagnosis I run on the house. The link is permanent —
+          bookmark it. When you are ready for the work that fixes it, the door
+          is at the bottom of this page.
+        </p>
+      </div>
+
       {/* CLAUDE READ-OUT — the story (workbook rule: story first). */}
       <article className="mb-8">
         <Card className={isError ? "border-destructive/30" : "border-primary/30"}>

@@ -138,6 +138,28 @@ export async function POST(req: NextRequest) {
   const productUrl = parsedUrl.toString();
   const source = explicitSource ?? (referrer ? "referrer" : null);
 
+  // One-free-report-per-email quota gate. Before spending an Anthropic call,
+  // check whether this email has ever been diagnosed. If yes, return the
+  // existing row id with `already_used: true` so the client can show the
+  // upsell panel (Starter primary + Core secondary) without re-classifying.
+  const supabase = createAdminClient();
+  {
+    const { data: prior } = await supabase
+      .from("diagnostic_leads")
+      .select("id, product_url")
+      .ilike("email", email)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (prior?.id) {
+      return NextResponse.json({
+        id: prior.id,
+        already_used: true,
+        previous_url: prior.product_url,
+      });
+    }
+  }
+
   // Classify. classifyUrl throws DiagnosticError on expected failures; anything
   // else is logged and turned into an "error" row so the visitor still lands
   // on a page that tells them what to do next.
@@ -176,7 +198,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const supabase = createAdminClient();
   const userAgent = req.headers.get("user-agent");
   const ip = clientIp(req);
 
@@ -191,17 +212,11 @@ export async function POST(req: NextRequest) {
         ? assignBucket(diagnosis.label, survey)
         : "customer_avoider";
 
-  // Returning-visitor detection. Drives Prospect Bridge vs Customer Bridge
-  // variant on the result page (Brunson DCS Secret 15). True iff ANY prior
-  // diagnostic_leads row exists for this email (across products).
-  let isReturning = false;
-  {
-    const { count } = await supabase
-      .from("diagnostic_leads")
-      .select("id", { count: "exact", head: true })
-      .ilike("email", email);
-    isReturning = (count ?? 0) > 0;
-  }
+  // is_returning is now always false on insert — the quota gate above
+  // intercepts every repeat email before we reach this point. The column
+  // remains in schema for historical rows and for the Customer Bridge UX on
+  // the result page if we ever loosen the gate.
+  const isReturning = false;
 
   // A/B split from workbook 05 §7 / 09 §3. Same lead, same variant across
   // surfaces — we look up an existing subscriber by email and reuse their
