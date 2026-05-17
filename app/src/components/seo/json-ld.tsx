@@ -208,7 +208,11 @@ const MACHINE_PRODUCT_JSON = JSON.stringify({
 const PERSON_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Person",
+  // @id makes the founder a first-class entity in the graph, linked
+  // bidirectionally with Organization via founder + worksFor.
+  "@id": ID.person,
   name: "Maryan",
+  givenName: "Maryan",
   url: `${BASE}/about`,
   mainEntityOfPage: {
     "@type": "ProfilePage",
@@ -221,6 +225,9 @@ const PERSON_JSON = JSON.stringify({
   knowsLanguage: ["en-US"],
   description:
     "Marketer and non-engineer. Built a dozen AI products with Lovable and Claude, watched them flatline in Stripe, then built the Machine to fix the work nobody taught indie SaaS founders to do.",
+  // Person.knowsAbout is intentionally tighter than Organization.knowsAbout.
+  // Person claims demonstrate-able personal expertise; Organization claims
+  // operational scope. Schema.org rewards specificity per entity.
   knowsAbout: [
     "Customer development",
     "Sales funnel design",
@@ -228,11 +235,9 @@ const PERSON_JSON = JSON.stringify({
     "Russell Brunson DotCom Secrets framework",
     "AI-assisted product development",
   ],
-  worksFor: {
-    "@type": "Organization",
-    name: "Unlock SaaS",
-    url: BASE,
-  },
+  // worksFor linked by @id — same pattern as Organization.founder. The
+  // two cross-references close the entity loop.
+  worksFor: { "@id": ID.organization },
   sameAs: SAME_AS,
 });
 
