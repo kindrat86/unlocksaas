@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -6,6 +6,21 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
+
+// Mobile-first viewport. `viewportFit: cover` lets the page paint under
+// iOS notches; padding then uses safe-area-inset via Tailwind utilities.
+// `maximumScale: 5` (not 1) preserves accessibility — Marco's avatar
+// includes older eyes that pinch-zoom.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
+  ],
+};
 
 // Surface A of the Google strategy — strategy/google-strategy.md §A.3 #3.
 // metadataBase makes canonical URLs and OG image URLs resolve against the

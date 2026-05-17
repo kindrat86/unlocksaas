@@ -42,7 +42,7 @@ function WelcomeInner() {
 
   if (path === "core_activated") {
     return (
-      <div className="min-h-screen flex items-center justify-center py-16 px-6">
+      <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
         <div className="max-w-lg text-center">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
             Core activated
@@ -69,7 +69,7 @@ function WelcomeInner() {
 
   // path === "starter_only" (default)
   return (
-    <div className="min-h-screen flex items-center justify-center py-16 px-6">
+    <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-lg text-center">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
           Starter delivered

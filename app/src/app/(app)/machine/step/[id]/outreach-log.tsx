@@ -138,7 +138,7 @@ export function OutreachLog() {
         <Card>
           <CardContent className="pt-6">
             <form onSubmit={addAction} className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Input
                   value={draft.channel}
                   onChange={(e) =>

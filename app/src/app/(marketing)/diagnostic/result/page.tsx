@@ -492,7 +492,7 @@ function PageFrame({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen py-16 px-6">
+    <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           Your Diagnosis

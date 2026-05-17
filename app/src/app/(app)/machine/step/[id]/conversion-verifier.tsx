@@ -203,7 +203,7 @@ export function ConversionVerifier() {
               }
               placeholder="Stripe charge id (ch_… or py_… — optional)"
             />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Input
                 value={draft.customerEmail}
                 onChange={(e) =>

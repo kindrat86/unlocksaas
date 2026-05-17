@@ -22,7 +22,7 @@ export default async function LoginPage({
   const next = searchParams.next || "/machine";
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-16 px-6">
+    <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
       <div className="w-full max-w-sm">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-2">Sign in.</h1>

@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
 
 export default function RepeatablePlaceholderPage() {
   return (
-    <div className="min-h-screen py-16 px-6">
+    <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <AbExposureBeacon />
 
       <article className="max-w-2xl mx-auto">

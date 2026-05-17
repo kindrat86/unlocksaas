@@ -99,7 +99,7 @@ export default async function BuildersDirectoryPage() {
   const count = builders.length;
 
   return (
-    <div className="min-h-screen py-16 px-6">
+    <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         {/* ── Header ───────────────────────────────────────────────────── */}
         <header className="mb-12">
