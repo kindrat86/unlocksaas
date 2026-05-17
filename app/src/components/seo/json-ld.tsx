@@ -514,11 +514,14 @@ function buildFaqPageJson(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    // VEO — voice assistants reading FAQPage schema will read aloud whichever
-    // DOM regions match these selectors. The /faq page tags each <h2>Question
-    // and <p>Answer with data-speakable so the entire Q/A pair is voice-safe.
-    speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
+    // VEO — voice assistants reading FAQPage schema will read aloud whichever
+    // DOM regions match these selectors. Caller-provided selectors win
+    // (always-visible Q/A on /faq passes `.aeo-q` / `.aeo-a` classes);
+    // default `SPEAKABLE_SPEC` covers data-speakable + aria-labelledby
+    // anchors used elsewhere. Single `speakable` key — no duplicate per
+    // TS object-literal rules.
+    speakable: speakable ? speakableSpec(speakable) : SPEAKABLE_SPEC,
     mainEntity: items.map((it) => ({
       "@type": "Question",
       name: it.q,
@@ -528,12 +531,6 @@ function buildFaqPageJson(
         inLanguage: "en-US",
       },
     })),
-    // Speakable is optional because the FAQ accordion variant on
-    // /playbook-sales hides answers in collapsed `<details>` — pointing
-    // voice engines at hidden text is the same drift class as a JSON-LD
-    // field that disagrees with rendered text. The /faq surface, where
-    // every answer is always visible, opts in by passing selectors.
-    ...(speakable ? { speakable: speakableSpec(speakable) } : {}),
   });
 }
 
@@ -562,13 +559,16 @@ function buildArticleJson(input: ArticleSchemaInput): string {
     inLanguage: "en-US",
     datePublished: input.datePublished,
     dateModified: input.dateModified ?? input.datePublished,
-    // VEO — voice assistants and reader-mode renderers pull `speakable` to
-    // decide which DOM regions to read aloud first. The TL;DR section on
-    // every Article-typed page already wraps in `aria-labelledby="tldr"` /
-    // `aria-labelledby="quick-take"`, so the selectors below target real
-    // rendered content (Brunson Hard-Rule: no fabricated speakable regions).
-    speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
+    // VEO — voice assistants and reader-mode renderers pull `speakable` to
+    // decide which DOM regions to read aloud first. Caller-provided
+    // selectors override the default `SPEAKABLE_SPEC` (which targets
+    // `[aria-labelledby="tldr"]` / `[aria-labelledby="quick-take"]` /
+    // `[data-speakable]`). Single `speakable` key — no duplicate per TS
+    // object-literal rules.
+    speakable: input.speakableSelectors
+      ? speakableSpec(input.speakableSelectors)
+      : SPEAKABLE_SPEC,
     author: {
       "@type": "Person",
       "@id": ID.person,
@@ -582,9 +582,6 @@ function buildArticleJson(input: ArticleSchemaInput): string {
       "@id": input.url,
     },
     ...(input.imageUrl ? { image: input.imageUrl } : {}),
-    ...(input.speakableSelectors
-      ? { speakable: speakableSpec(input.speakableSelectors) }
-      : {}),
   });
 }
 
