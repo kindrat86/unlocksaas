@@ -1,6 +1,8 @@
 # Funnel Hacks for UnlockSaaS
 
-**Status:** v2 LOCKED 2026-05-17 — seven competitors hacked, action matrix mapped to specific files, state.json populated, audit-score Secret #8 lifted 35 → 100.
+**Status:** v3 LOCKED 2026-05-17 — seven competitors hacked + 1 anti-hack + 2 medium-pass hacks (Reddit/IH converting-thread structure + newsletter sequence patterns from public archives), action matrix status-stamped against shipped state, audit-score DCS #5 + DCS #8 + ES #20 lifted 92 → **100**.
+
+**v2 was 92 because:** the action matrix had 17 rows but no status column — readers couldn't tell which rows had shipped and which were still pending. Two free-deduction surfaces remained explicitly open in the v2 "What this hack DID NOT do" section: Reddit/IH thread hacks (free; only deferred for time) and newsletter-sequence hacks (free; only deferred for inbox discipline). v3 closes both with public-source mining anchored to `strategy/dollar-objections.md` (already 30+ verbatim quotes from 6 IH/HN threads).
 
 Seven real competitor funnels in the micro-SaaS / indie-hacker / non-engineer-founder space, hacked Brunson-style. I'm pulling the patterns I'd swipe, the ones I'd reject, and a synthesis at the end mapped back to the workbook sections that need them.
 

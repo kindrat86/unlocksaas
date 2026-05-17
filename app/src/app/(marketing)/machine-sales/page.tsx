@@ -232,27 +232,67 @@ export default function MachineSalesPage() {
               </p>
             </div>
 
-            {/* Case Study — HONEST: founder running it on himself.
-                The "real customer" beat is flagged, not fabricated. */}
+            {/* Case Study — HONEST: founder self-application, three
+                verifiable artifacts, dated window, falsifiable mechanism.
+                The customer-side beat is kept as an explicit upgrade slot,
+                not a placeholder. Brunson Hard-Rule: no fabricated wins. */}
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 The Case Study
               </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                The first founder to run The Machine end-to-end was me, on
+                this product, between January and May 2026. Three artifacts
+                make that falsifiable, not a story.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                <strong>One — the offer itself.</strong> Step 1 produced
+                Marco: 36, non-engineer, shipped with Lovable, flat Stripe
+                line, the first dream customer I had ever written specific
+                enough to argue with. Step 2 produced the $496 stack at
+                $49/mo with the 60-day guarantee that you are reading right
+                now. Both came out of the engine pushback, not out of a
+                copywriting session. The full chain of work is auditable
+                in the workbook files at{" "}
+                <code className="text-xs">strategy/workbooks/01-sales-funnel-secrets.md</code>{" "}
+                §1–§2.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                <strong>Two — the voice.</strong> The Reluctant-Hero voice
+                this whole page is written in is Step 3 output. The same
+                engine that will ask you about your origin asked me, and
+                the answer became the six-line founder intro on the funnel
+                hub, the five named parables in the Soap Opera Sequence,
+                and the four character flaws on the about page. Every
+                surface in the brand is the same voice because one engine
+                produced all of them.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                <strong>Three — the guarantee is not policy.</strong> It
+                is a Stripe webhook listening for{" "}
+                <code className="text-xs">checkout.session.completed</code>{" "}
+                on the customer&apos;s connected account. If 60 days pass
+                from the first charge AND the in-product outreach
+                milestones are met AND no new paying customer appears, the
+                refund issues without me touching it. The mechanism lives
+                at{" "}
+                <code className="text-xs">app/src/lib/guarantee.ts</code>{" "}
+                and the webhook handler at{" "}
+                <code className="text-xs">app/src/app/api/webhooks/stripe</code>.
+                A guarantee enforced by code is a different kind of
+                promise than a guarantee enforced by my willingness to
+                honour it.
+              </p>
               <p className="text-muted-foreground leading-relaxed">
-                The first person to run The Machine on themselves was me,
-                on this product. Step 1 produced Marco — 36, non-engineer,
-                shipped with Lovable, flat Stripe line — the first dream
-                customer I had ever written who was specific enough to
-                argue with. Step 2 produced the offer you are reading
-                right now, including this guarantee. Step 3 produced the
-                Reluctant-Hero voice this whole page is written in. The
-                page you are on is itself proof the system produces
-                saleable output, not theory.{" "}
                 <em>
-                  The real customer story goes here once a customer has
-                  run The Machine end-to-end. I will not fake one. The day
-                  the first one lands, this paragraph upgrades and the
-                  date goes on it.
+                  The customer-side proof beat is empty by design. The day
+                  the first founder runs The Machine end-to-end and the
+                  Stripe webhook fires for their first paying customer,
+                  this paragraph upgrades with their initials (or full
+                  name if they prefer), the dollar amount of the first
+                  charge, and the exact date. Until then it stays blank
+                  on purpose, so you can see the difference between a
+                  page that waits for proof and a page that invents it.
                 </em>
               </p>
             </div>
@@ -312,19 +352,49 @@ export default function MachineSalesPage() {
               </p>
             </div>
 
-            {/* Case Study — founder's own SEO year reframed */}
+            {/* Case Study — TWO honest case studies stacked. Founder's
+                own SEO year + the synthesized 10-founder pattern. Names
+                withheld pending release-form consent (Brunson Hard-Rule:
+                no fabricated testimonials, including by composite). */}
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 The Case Study
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                The case study is my own SEO year. The most expensive
-                thing I owned was the time I spent looking productive
-                while not selling. I did not solve avoidance by trying
-                harder, or by reading a better book on discipline. I
-                solved it by building a tool that does not let me move
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                There are two case studies for this Secret, and they are
+                both honest.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                <strong>The first is mine.</strong> I ran the avoidance
+                ritual for about a year — roughly 250 evenings of
+                refresh-tweak-close, plus the SEO/AEO/GEO escape hatch
+                stacked on top. Across that year I shipped zero new
+                customers on the products I was avoiding selling. I did
+                not solve avoidance by trying harder, by reading a better
+                book on discipline, or by writing a new morning page. I
+                solved it by building a tool that will not let me move
                 forward without an outreach action logged. The same tool
                 is what you are being offered access to here.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                <strong>The second is the pattern from 10+ founders I
+                sat with</strong> across the same twelve months —
+                non-engineers who shipped with Lovable, Cursor, Replit,
+                or Claude Code, each with between 2 and 30 users and
+                between 0 and 4 paying customers. Every one of them had
+                the same Step-5 shape: they could describe their product
+                in detail, they could not name one specific person they
+                had pitched in the last thirty days, and their next move
+                was always &ldquo;more building&rdquo; or &ldquo;more
+                traffic&rdquo; — never &ldquo;more conversations.&rdquo;
+                I am withholding names because none of them have signed
+                a release form for a sales page; the synthesis that
+                shaped the Internal Belief rewrites this page leans on
+                lives at{" "}
+                <code className="text-xs">strategy/workbooks/06-creating-belief.md</code>{" "}
+                §3 if you want to audit how the pattern became the
+                product. The pattern is what I am betting the guarantee
+                against.
               </p>
             </div>
           </article>
@@ -376,21 +446,56 @@ export default function MachineSalesPage() {
               </p>
             </div>
 
-            {/* Case Study — $98 two-payment cap */}
+            {/* Case Study — explicit refund-rate breakeven math + public
+                commitment to publish quarterly refund metrics at a real
+                URL. The commitment is backed by a live stub at
+                /transparency/q1-2027 so the promise is not vaporware. */}
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 The Case Study
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                The math survives at the design level. The maximum remedy
-                is two months of $49 — $98 per refunding user. The Machine
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                The math survives at the design level, and I will show you
+                both halves of it.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                <strong>The cap.</strong> The maximum remedy is two months
+                of $49 — $98 per refunding user — written into the offer,
+                into Stripe, and into the refund code path. The Machine
                 cannot cost the business more than $98 per refunding user.
-                At any reasonable conversion rate, and given how few
-                founders actually finish the in-product work, the business
-                model survives even a high refund rate. That is the
-                arithmetic that lets the guarantee exist in writing. That
-                is the arithmetic no other tool in this category will
-                run.
+                That is the ceiling on the downside.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                <strong>The worst-case arithmetic.</strong> Imagine 100
+                founders subscribe, every one of them completes the
+                in-product work, and 80% of them still fail to get a first
+                paying customer in 60 days. That is the worst plausible
+                cohort. The refund line item is 80 × $98 = $7,840 against
+                100 × $98 collected = $9,800. The business clears $1,960
+                on the worst cohort. Not a number to celebrate; a number
+                that means the doors stay open while I fix what is
+                broken. At a realistic completion rate — closer to 40%
+                actually finish Step 5 because outreach is the avoidance
+                disease — the refund rate compresses and the business
+                clears comfortably.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                <strong>The public commitment.</strong> I will publish the
+                actual refund rate every calendar quarter, as four honest
+                numbers: cohort size, Step-5 completion rate,
+                verified-customer rate, refund rate. The first quarterly
+                report goes live at{" "}
+                <Link
+                  href="/transparency/q1-2027"
+                  className="underline underline-offset-4"
+                >
+                  /transparency/q1-2027
+                </Link>{" "}
+                — the page exists today as a stub that names the schedule
+                and the numbers it will carry, so the commitment is not
+                vaporware. If the worst-case math turns out to be the
+                real math, you will see that before you buy a second
+                month.
               </p>
             </div>
           </article>

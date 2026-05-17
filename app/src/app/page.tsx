@@ -84,10 +84,19 @@ export default function FunnelHub() {
               to sell.
             </span>
           </h1>
-          <p className="text-base sm:text-lg text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-700 mb-6 max-w-2xl mx-auto leading-relaxed">
             Marketer, non-engineer, built a dozen AI products that nobody paid
             for. Then I figured out why.{" "}
             <span className="font-semibold text-gray-900">— Maryan</span>
+          </p>
+
+          {/* Cookbook Swipe 12 — Lovable/Cursor handoff line. Positions
+              UnlockSaaS as the sequel to the build tool, not the competitor.
+              Source: workbook funnel-hacks.md v2 action-matrix Row 12. */}
+          <p className="text-sm sm:text-base italic text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            You already shipped with Lovable, Cursor, or Claude Code. The flat
+            Stripe line is the next problem. That&apos;s what The Machine
+            solves.
           </p>
 
           <div

@@ -447,9 +447,16 @@ export function DiagnosticForm() {
             </>
           )}
 
-          <p className="text-xs text-muted-foreground">
-            I email the diagnosis. No spam. Reply STOP to unsubscribe.
-          </p>
+          {/* Cookbook Swipe 8 — Justin Welsh trust line + what-happens-next.
+              Source: justinwelsh.me opt-in ("I will never spam or sell your
+              info. Ever."). Adapted to Reluctant Hero voice. Workbook 04 §3. */}
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>
+              Your email enters a 5-day sequence and a weekly Friday note.
+              Unsubscribe in 1 click. I never sell your data.
+            </p>
+            <p>Replies land in my inbox, not a support queue. — Maryan</p>
+          </div>
         </form>
       )}
     </div>
