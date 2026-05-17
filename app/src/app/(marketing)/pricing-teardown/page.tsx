@@ -4,22 +4,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
-  TEARDOWNS,
-  groupTeardownsByCategory,
-} from "@/lib/funnel-teardowns";
+  PRICING_TEARDOWNS,
+  groupPricingTeardownsByCategory,
+} from "@/lib/pricing-teardowns";
 
 /**
- * Funnel teardowns hub — pSEO surface index.
+ * Pricing teardowns hub — third pSEO surface index.
  *
- * Same shape as /alternatives-to: a CollectionPage that:
- *   1. Is itself indexable for the broader query class ("indie saas
- *      funnel teardowns", "saas marketing strategy breakdowns").
- *   2. Recycles internal PageRank across the programmatic block — every
- *      detail page links back here in its breadcrumb; the hub links out
- *      to every detail; the related-teardowns block on each detail page
- *      cross-links to siblings.
+ * Same shape as /alternatives-to and /funnel-teardown:
+ *   1. Indexable for the broader query class ("saas pricing teardowns",
+ *      "indie saas pricing strategy breakdowns").
+ *   2. Recycles internal PageRank across the programmatic block: detail
+ *      pages link back; the hub links out; related-by-tag block on each
+ *      detail page cross-links siblings.
  *
- * Statically rendered. All data is module-level constants.
+ * Statically rendered. All data module-level.
  */
 
 const BASE = "https://unlocksaas.com";
@@ -28,28 +27,28 @@ export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title:
-    "Funnel Teardowns — What Indie SaaS Founders Can Learn From the Best Marketing Pages",
+    "Pricing Teardowns — How Indie SaaS Actually Price Their Products",
   description:
-    "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking. Hook, Story, Offer breakdowns through the Brunson lens, with what to adapt and what to skip.",
-  alternates: { canonical: "/funnel-teardown" },
+    "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens. Built for post-launch pre-revenue founders building their own pricing page.",
+  alternates: { canonical: "/pricing-teardown" },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Funnel Teardowns — Unlock SaaS",
+    title: "Pricing Teardowns — Unlock SaaS",
     description:
-      "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking.",
+      "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens.",
     type: "website",
-    url: "/funnel-teardown",
+    url: "/pricing-teardown",
     siteName: "Unlock SaaS",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Funnel Teardowns — Unlock SaaS",
+    title: "Pricing Teardowns — Unlock SaaS",
     description:
-      "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking.",
+      "Pattern-level teardowns of indie SaaS pricing models.",
   },
 };
 
-// ----- JSON-LD (module-hoisted, serialized once at import) -------------------
+// ----- JSON-LD (module-hoisted) ----------------------------------------------
 
 const BREADCRUMB_JSON = JSON.stringify({
   "@context": "https://schema.org",
@@ -64,8 +63,8 @@ const BREADCRUMB_JSON = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
-      name: "Funnel teardowns",
-      item: `${BASE}/funnel-teardown`,
+      name: "Pricing teardowns",
+      item: `${BASE}/pricing-teardown`,
     },
   ],
 });
@@ -73,11 +72,11 @@ const BREADCRUMB_JSON = JSON.stringify({
 const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Funnel teardowns — Unlock SaaS",
-  url: `${BASE}/funnel-teardown`,
+  name: "Pricing teardowns — Unlock SaaS",
+  url: `${BASE}/pricing-teardown`,
   inLanguage: "en-US",
   description:
-    "Pattern-level teardowns of indie SaaS funnels through the Brunson Hook / Story / Offer lens. Built for post-launch pre-revenue SaaS founders who are funnel-hacking the products they admire.",
+    "Pattern-level teardowns of indie SaaS pricing models through the Brunson Stack and Value Ladder lens. Built for post-launch pre-revenue founders building their own pricing page.",
   isPartOf: {
     "@type": "WebSite",
     name: "Unlock SaaS",
@@ -85,18 +84,18 @@ const COLLECTION_JSON = JSON.stringify({
   },
   mainEntity: {
     "@type": "ItemList",
-    numberOfItems: TEARDOWNS.length,
-    itemListElement: TEARDOWNS.map((t, i) => ({
+    numberOfItems: PRICING_TEARDOWNS.length,
+    itemListElement: PRICING_TEARDOWNS.map((t, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: `${t.displayName} funnel teardown`,
-      url: `${BASE}/funnel-teardown/${t.slug}`,
+      name: `${t.displayName} pricing teardown`,
+      url: `${BASE}/pricing-teardown/${t.slug}`,
     })),
   },
 });
 
-export default function FunnelTeardownHub() {
-  const groups = groupTeardownsByCategory();
+export default function PricingTeardownHub() {
+  const groups = groupPricingTeardownsByCategory();
 
   return (
     <main className="min-h-screen">
@@ -122,7 +121,7 @@ export default function FunnelTeardownHub() {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-foreground">
-            Funnel teardowns
+            Pricing teardowns
           </li>
         </ol>
       </nav>
@@ -130,60 +129,56 @@ export default function FunnelTeardownHub() {
       {/* Hero */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Funnel teardowns
+          Pricing teardowns
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          What indie SaaS funnels actually do
+          How indie SaaS pricing actually works
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Post-launch pre-revenue founders are already funnel-hacking the indie
-          SaaS they admire. We do the work explicitly: pattern-level teardowns
-          of the hook, story, and offer running on each surface, with what to
-          adapt and what to skip for your own page. Same Brunson framework the
-          Machine runs on your live product, applied to the products you study.
+          Tier structure, anchor mechanics, upgrade triggers, and payment
+          model — read through the Brunson Stack and Value Ladder lens. The
+          same four levers the Machine applies when critiquing your own
+          pricing page, applied to the indie SaaS pages founders are already
+          studying.
         </p>
       </header>
 
       <Separator className="my-2" />
 
-      {/* How we read these */}
-      <section
-        className="max-w-3xl mx-auto px-6 py-8"
-        aria-labelledby="lens"
-      >
+      {/* How to read */}
+      <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="lens">
         <h2 id="lens" className="text-xl font-bold mb-4 leading-tight">
-          How to read a teardown
+          How to read a pricing teardown
         </h2>
         <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
           <li>
-            <span className="text-foreground font-semibold">Hook</span> is how
-            the page catches attention in the first three seconds.
+            <span className="text-foreground font-semibold">Structure</span> is
+            the tier ladder — what each rung includes and what it costs.
           </li>
           <li>
-            <span className="text-foreground font-semibold">Story</span> is how
-            the page creates belief between the hook and the close.
+            <span className="text-foreground font-semibold">Anchor</span> is
+            the tier doing psychological work — usually the highest tier
+            making the middle tier look reasonable.
           </li>
           <li>
-            <span className="text-foreground font-semibold">Offer</span> is
-            what the page asks for and what it gives in return.
+            <span className="text-foreground font-semibold">Upgrade trigger</span>{" "}
+            is the specific behavior or scale event that converts a free or
+            lower-tier user to the next rung.
           </li>
           <li>
-            <span className="text-foreground font-semibold">Adapt vs avoid</span>{" "}
-            names what to safely steal and what is specific to that company&apos;s
-            scale or category.
+            <span className="text-foreground font-semibold">Brunson lens</span>{" "}
+            maps the page to Stack, Value Ladder, decoy or anchor psychology,
+            and payment mechanics.
           </li>
         </ul>
       </section>
 
       <Separator className="my-2" />
 
-      {/* Grouped list by category */}
-      <section
-        className="max-w-3xl mx-auto px-6 py-8"
-        aria-labelledby="list"
-      >
+      {/* Grouped list */}
+      <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="list">
         <h2 id="list" className="sr-only">
-          All teardowns
+          All pricing teardowns
         </h2>
         <div className="space-y-10">
           {groups.map((group) => (
@@ -200,10 +195,10 @@ export default function FunnelTeardownHub() {
                     <CardContent className="pt-6">
                       <h4 className="text-lg font-semibold leading-tight mb-2">
                         <Link
-                          href={`/funnel-teardown/${t.slug}`}
+                          href={`/pricing-teardown/${t.slug}`}
                           className="hover:text-primary transition"
                         >
-                          {t.displayName} funnel teardown
+                          {t.displayName} pricing teardown
                         </Link>
                       </h4>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-3">
@@ -211,7 +206,7 @@ export default function FunnelTeardownHub() {
                       </p>
                       <div className="flex items-center justify-between gap-4">
                         <Link
-                          href={`/funnel-teardown/${t.slug}`}
+                          href={`/pricing-teardown/${t.slug}`}
                           className="text-sm font-semibold text-primary hover:underline"
                         >
                           Read the teardown →
@@ -234,12 +229,13 @@ export default function FunnelTeardownHub() {
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Run the same teardown on your own page
+              Run the same teardown on your own pricing page
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              The 90-second diagnostic applies the Hook / Story / Offer
-              framework to your live product page and labels what is broken:
-              Wrong Person, Weak Offer, or Weak Belief.
+              The diagnostic labels what is broken on your offer: Wrong
+              Person, Weak Offer, or Weak Belief. Pricing-page dysfunction
+              usually shows up as Weak Offer — and the Machine names the
+              specific fix.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
@@ -267,23 +263,22 @@ export default function FunnelTeardownHub() {
         <div className="space-y-3 text-sm leading-relaxed">
           <p>
             <Link
-              href="/pricing-teardown"
+              href="/funnel-teardown"
               className="text-primary hover:underline font-semibold"
             >
-              Pricing teardowns →
+              Funnel teardowns →
             </Link>{" "}
-            Tier structure, anchor mechanics, and upgrade triggers through
-            the Brunson Stack lens. Several companies have both a funnel and
-            a pricing teardown.
+            Hook / Story / Offer breakdowns of indie SaaS marketing surfaces.
+            Several companies have both a pricing and a funnel teardown.
           </p>
           <p>
             <Link
               href="/alternatives-to"
               className="text-primary hover:underline font-semibold"
             >
-              Honest alternatives comparisons →
+              Honest alternatives →
             </Link>{" "}
-            Side-by-side breakdowns against the tools indie SaaS founders
+            Side-by-side comparisons against the tools indie SaaS founders
             actually evaluate before buying.
           </p>
         </div>
@@ -292,10 +287,9 @@ export default function FunnelTeardownHub() {
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          We do not slag the companies we tear down. We respect what each is
-          doing well, name the pattern, and pull what is useful for an indie
-          SaaS founder building their own page. If anything on a teardown is
-          unfair, wrong, or out of date, email{" "}
+          Prices in these teardowns are approximate, with lastVerified ISO
+          dates on each entry. Pricing pages shift; we re-verify periodically.
+          If anything is wrong, unfair, or out of date, email{" "}
           <a
             href="mailto:maryan@unlocksaas.com"
             className="underline hover:text-foreground"

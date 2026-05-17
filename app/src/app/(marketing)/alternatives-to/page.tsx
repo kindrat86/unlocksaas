@@ -200,7 +200,7 @@ export default function AlternativesHub() {
         </Card>
       </section>
 
-      {/* Cross-link to funnel teardowns surface */}
+      {/* Cross-links to other pSEO surfaces */}
       <section
         className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
         aria-labelledby="cross"
@@ -211,17 +211,29 @@ export default function AlternativesHub() {
         >
           Also see
         </h2>
-        <p className="text-sm leading-relaxed">
-          <Link
-            href="/funnel-teardown"
-            className="text-primary hover:underline font-semibold"
-          >
-            Funnel teardowns →
-          </Link>{" "}
-          Pattern-level breakdowns of the indie SaaS funnels you are already
-          studying. Hook / Story / Offer through the Brunson lens, with what
-          to adapt and what to skip.
-        </p>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            <Link
+              href="/funnel-teardown"
+              className="text-primary hover:underline font-semibold"
+            >
+              Funnel teardowns →
+            </Link>{" "}
+            Pattern-level breakdowns of the indie SaaS funnels you are
+            already studying. Hook / Story / Offer through the Brunson lens.
+          </p>
+          <p>
+            <Link
+              href="/pricing-teardown"
+              className="text-primary hover:underline font-semibold"
+            >
+              Pricing teardowns →
+            </Link>{" "}
+            Tier structure, anchor mechanics, upgrade triggers, and Brunson
+            Stack lens — the same four levers the Machine applies to your
+            own pricing page.
+          </p>
+        </div>
       </section>
 
       {/* Honesty footer */}

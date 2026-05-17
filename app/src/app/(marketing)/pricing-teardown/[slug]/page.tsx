@@ -6,33 +6,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
-  TEARDOWN_SLUGS,
-  getTeardownBySlug,
-  getRelatedTeardowns,
-  type FunnelTeardown,
-} from "@/lib/funnel-teardowns";
-import { hasPricingTeardown } from "@/lib/pricing-teardowns";
+  PRICING_TEARDOWN_SLUGS,
+  getPricingTeardownBySlug,
+  getRelatedPricingTeardowns,
+  type PricingTeardown,
+} from "@/lib/pricing-teardowns";
+import { getTeardownBySlug as getFunnelTeardownBySlug } from "@/lib/funnel-teardowns";
 
 /**
- * Programmatic SEO surface — Funnel teardown: {Company}.
+ * Programmatic SEO surface — Pricing teardown: {Company}.
  *
- * Surface A (organic) of strategy/google-strategy.md, second pSEO block
- * after /alternatives-to/. Target intent: "[product] funnel teardown",
- * "how does [product] sell", "[product] landing page breakdown".
+ * Surface A (organic) of strategy/google-strategy.md, third pSEO block
+ * after /alternatives-to and /funnel-teardown. Target intent:
+ * "[product] pricing teardown", "how does [product] price",
+ * "[category] pricing strategy", "[product] pricing model explained".
+ *
+ * Cross-pattern linking: if a slug also exists in the funnel-teardowns
+ * manifest, the page renders a "Also see funnel teardown" callout so
+ * readers researching pricing find the funnel analysis (and vice
+ * versa from the funnel-teardown route). The cross-link compounds the
+ * SEO authority across both surfaces.
  *
  * Brunson Hard-Rule reconciliation:
- *   - Pattern-level analysis only. No quoted competitor copy.
- *   - Honest framing: "what's working", "what to adapt", "what to avoid".
- *     The page is for the reader's benefit, not for our positioning.
+ *   - Pattern-level analysis only. Approximate prices, not exact.
  *   - lastVerified ISO is visible in the footer.
+ *   - "What's working / what to adapt / what to avoid" framing keeps
+ *     the page useful to the reader rather than positioning Unlock SaaS.
  *
- * JSON-LD on every page: Article (the teardown), FAQPage (Q/A pairs an
- * LLM can paraphrase), BreadcrumbList (sitelink hint). All three are
- * built from module-level static data with no user input.
- *
- * Static rendering: force-static + dynamicParams=false. Every slug is
- * prerendered at build; unknown slugs 404 instead of being lazily
- * generated, so crawlers cannot discover phantom URLs.
+ * Static rendering: force-static + dynamicParams=false. Every slug
+ * prerendered at build; unknown slugs 404.
  */
 
 const BASE = "https://unlocksaas.com";
@@ -41,7 +43,7 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return TEARDOWN_SLUGS.map((slug) => ({ slug }));
+  return PRICING_TEARDOWN_SLUGS.map((slug) => ({ slug }));
 }
 
 // ----- Per-page metadata -----------------------------------------------------
@@ -52,11 +54,11 @@ export function generateMetadata({
 }: {
   params: RouteParams;
 }): Metadata {
-  const t = getTeardownBySlug(params.slug);
+  const t = getPricingTeardownBySlug(params.slug);
   if (!t) return {};
 
-  const canonical = `/funnel-teardown/${t.slug}`;
-  const title = `${t.displayName} Funnel Teardown — What Indie SaaS Founders Can Learn`;
+  const canonical = `/pricing-teardown/${t.slug}`;
+  const title = `${t.displayName} Pricing Teardown — Model, Tiers, and Strategy`;
   const description = t.oneLine;
 
   return {
@@ -79,13 +81,13 @@ export function generateMetadata({
   };
 }
 
-// ----- JSON-LD (per-slug, inlined for static-render simplicity) --------------
+// ----- JSON-LD --------------------------------------------------------------
 
-function buildJsonLd(t: FunnelTeardown, canonicalUrl: string): string[] {
+function buildJsonLd(t: PricingTeardown, canonicalUrl: string): string[] {
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: `${t.displayName} Funnel Teardown — What Indie SaaS Founders Can Learn`,
+    headline: `${t.displayName} Pricing Teardown — Model, Tiers, and Strategy`,
     description: t.oneLine,
     abstract: t.tldr,
     author: {
@@ -136,13 +138,13 @@ function buildJsonLd(t: FunnelTeardown, canonicalUrl: string): string[] {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Funnel teardowns",
-        item: `${BASE}/funnel-teardown`,
+        name: "Pricing teardowns",
+        item: `${BASE}/pricing-teardown`,
       },
       {
         "@type": "ListItem",
         position: 3,
-        name: `${t.displayName} funnel teardown`,
+        name: `${t.displayName} pricing teardown`,
         item: canonicalUrl,
       },
     ],
@@ -166,18 +168,19 @@ function JsonLdBlock({ json }: { json: string }) {
 
 // ----- Page ------------------------------------------------------------------
 
-export default function FunnelTeardownPage({
+export default function PricingTeardownPage({
   params,
 }: {
   params: RouteParams;
 }) {
-  const t = getTeardownBySlug(params.slug);
+  const t = getPricingTeardownBySlug(params.slug);
   if (!t) notFound();
 
-  const canonicalUrl = `${BASE}/funnel-teardown/${t.slug}`;
+  const canonicalUrl = `${BASE}/pricing-teardown/${t.slug}`;
   const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(t, canonicalUrl);
-  const related = getRelatedTeardowns(t.slug, 4);
-  const hasPricing = hasPricingTeardown(t.slug);
+  const related = getRelatedPricingTeardowns(t.slug, 4);
+  // Cross-pattern: does this company also have a funnel teardown?
+  const hasFunnelTeardown = Boolean(getFunnelTeardownBySlug(t.slug));
 
   return (
     <article className="min-h-screen">
@@ -185,7 +188,7 @@ export default function FunnelTeardownPage({
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
 
-      {/* Breadcrumb visible trail (matches BreadcrumbList JSON-LD) */}
+      {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
         className="max-w-3xl mx-auto px-6 pt-10 text-xs text-muted-foreground"
@@ -198,8 +201,8 @@ export default function FunnelTeardownPage({
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link href="/funnel-teardown" className="hover:underline">
-              Funnel teardowns
+            <Link href="/pricing-teardown" className="hover:underline">
+              Pricing teardowns
             </Link>
           </li>
           <li aria-hidden="true">/</li>
@@ -212,10 +215,10 @@ export default function FunnelTeardownPage({
       {/* Hero */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Funnel teardown · {t.category}
+          Pricing teardown · {t.category}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          {t.displayName} funnel teardown
+          {t.displayName} pricing teardown
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           {t.oneLine}
@@ -224,11 +227,8 @@ export default function FunnelTeardownPage({
 
       <Separator className="my-2" />
 
-      {/* TL;DR — explicit citation block for LLMs */}
-      <section
-        className="max-w-3xl mx-auto px-6 py-8"
-        aria-labelledby="tldr"
-      >
+      {/* TL;DR — AEO citation block */}
+      <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="tldr">
         <h2 id="tldr" className="sr-only">
           TL;DR
         </h2>
@@ -242,8 +242,8 @@ export default function FunnelTeardownPage({
         </Card>
       </section>
 
-      {/* Cross-pattern callout to pricing teardown when both exist */}
-      {hasPricing ? (
+      {/* Cross-pattern callout */}
+      {hasFunnelTeardown ? (
         <section
           className="max-w-3xl mx-auto px-6 py-4"
           aria-labelledby="cross-pattern"
@@ -255,13 +255,13 @@ export default function FunnelTeardownPage({
             <p className="text-sm leading-relaxed">
               Studying{" "}
               <span className="font-semibold">{t.displayName}</span>&apos;s
-              pricing model specifically?
+              broader funnel, not just pricing?
             </p>
             <Link
-              href={`/pricing-teardown/${t.slug}`}
+              href={`/funnel-teardown/${t.slug}`}
               className="text-sm font-semibold text-primary hover:underline shrink-0"
             >
-              Read the pricing teardown →
+              Read the funnel teardown →
             </Link>
           </div>
         </section>
@@ -275,7 +275,7 @@ export default function FunnelTeardownPage({
         <h2 id="snapshot" className="text-2xl font-bold mb-6 leading-tight">
           What {t.displayName} actually sells
         </h2>
-        <dl className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <dt className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
               What they sell
@@ -292,60 +292,112 @@ export default function FunnelTeardownPage({
               {t.productSnapshot.whoFor}
             </dd>
           </div>
-          <div>
-            <dt className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-              Pricing observed
-            </dt>
-            <dd className="text-sm leading-relaxed">
-              {t.productSnapshot.pricingNote}
-            </dd>
-          </div>
         </dl>
       </section>
 
-      {/* Hook / Story / Offer breakdown */}
+      {/* Pricing structure */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
-        aria-labelledby="hso"
+        aria-labelledby="structure"
       >
-        <h2 id="hso" className="text-2xl font-bold mb-6 leading-tight">
-          The funnel, layer by layer
+        <h2
+          id="structure"
+          className="text-2xl font-bold mb-6 leading-tight"
+        >
+          The pricing structure
         </h2>
-        <div className="space-y-6">
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-xs uppercase tracking-widest text-primary mb-2">
-                Hook · how they catch attention
+        <Card className="mb-6">
+          <CardContent className="pt-6 space-y-3">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                Model
               </p>
-              <p className="text-base font-semibold mb-3">{t.hook.pattern}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t.hook.analysis}
+              <p className="text-sm font-semibold">
+                {t.pricingStructure.model}
               </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-xs uppercase tracking-widest text-primary mb-2">
-                Story · how they create belief
+            </div>
+            <Separator />
+            <div>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                Payment frequency
               </p>
-              <p className="text-base font-semibold mb-3">{t.story.pattern}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t.story.analysis}
+              <p className="text-sm">{t.pricingStructure.paymentFrequency}</p>
+            </div>
+            <Separator />
+            <div>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
+                Free or trial behavior
               </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-xs uppercase tracking-widest text-primary mb-2">
-                Offer · how they close
+              <p className="text-sm">
+                {t.pricingStructure.freeTrialBehavior}
               </p>
-              <p className="text-base font-semibold mb-3">{t.offer.pattern}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t.offer.analysis}
-              </p>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
+
+        <h3 className="text-lg font-semibold mb-4">Tiers, as observed</h3>
+        <div className="space-y-3">
+          {t.pricingStructure.tiers.map((tier) => (
+            <Card key={tier.name}>
+              <CardContent className="pt-6">
+                <div className="flex items-baseline justify-between gap-3 mb-2 flex-wrap">
+                  <h4 className="text-base font-bold leading-tight">
+                    {tier.name}
+                  </h4>
+                  <p className="text-sm font-mono text-primary">
+                    {tier.pricePoint}
+                  </p>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                  {tier.includes}
+                </p>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                  For: {tier.audience}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
+      </section>
+
+      {/* Anchor analysis */}
+      <section
+        className="max-w-3xl mx-auto px-6 py-10"
+        aria-labelledby="anchor"
+      >
+        <h2 id="anchor" className="text-2xl font-bold mb-6 leading-tight">
+          Anchor analysis
+        </h2>
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-base font-semibold mb-3">
+              {t.anchorAnalysis.pattern}
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t.anchorAnalysis.analysis}
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Upgrade trigger */}
+      <section
+        className="max-w-3xl mx-auto px-6 py-10"
+        aria-labelledby="trigger"
+      >
+        <h2 id="trigger" className="text-2xl font-bold mb-6 leading-tight">
+          The upgrade trigger
+        </h2>
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-base font-semibold mb-3">
+              {t.upgradeTrigger.pattern}
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t.upgradeTrigger.analysis}
+            </p>
+          </CardContent>
+        </Card>
       </section>
 
       {/* What's working */}
@@ -354,7 +406,7 @@ export default function FunnelTeardownPage({
         aria-labelledby="working"
       >
         <h2 id="working" className="text-2xl font-bold mb-6 leading-tight">
-          What is working in this funnel
+          What is working in this pricing model
         </h2>
         <ul className="space-y-3">
           {t.whatsWorking.map((bullet) => (
@@ -419,39 +471,44 @@ export default function FunnelTeardownPage({
           The Brunson lens
         </h2>
         <p className="text-sm text-muted-foreground italic mb-6 leading-relaxed">
-          The same Hook / Story / Offer framework Unlock SaaS runs against
-          your own page. We use it on every teardown so the vocabulary stays
-          consistent across the surface.
+          Four levers the Machine applies when critiquing your own pricing
+          page: how the offer stacks, where it sits on the Value Ladder, what
+          psychology drives the tier choice, and what payment mechanics do
+          to commitment.
         </p>
         <Card>
           <CardContent className="pt-6 space-y-4">
             <div>
               <p className="text-xs uppercase tracking-widest text-primary mb-1">
-                Hook
+                Stack
               </p>
-              <p className="text-sm leading-relaxed">{t.brunsonLens.hook}</p>
+              <p className="text-sm leading-relaxed">{t.brunsonLens.stack}</p>
             </div>
             <Separator />
             <div>
               <p className="text-xs uppercase tracking-widest text-primary mb-1">
-                Story
-              </p>
-              <p className="text-sm leading-relaxed">{t.brunsonLens.story}</p>
-            </div>
-            <Separator />
-            <div>
-              <p className="text-xs uppercase tracking-widest text-primary mb-1">
-                Offer
-              </p>
-              <p className="text-sm leading-relaxed">{t.brunsonLens.offer}</p>
-            </div>
-            <Separator />
-            <div>
-              <p className="text-xs uppercase tracking-widest text-primary mb-1">
-                Value Ladder tier
+                Value Ladder
               </p>
               <p className="text-sm leading-relaxed">
-                {t.brunsonLens.valueLadderTier}
+                {t.brunsonLens.valueLadder}
+              </p>
+            </div>
+            <Separator />
+            <div>
+              <p className="text-xs uppercase tracking-widest text-primary mb-1">
+                Decoy or anchor
+              </p>
+              <p className="text-sm leading-relaxed">
+                {t.brunsonLens.decoyOrAnchor}
+              </p>
+            </div>
+            <Separator />
+            <div>
+              <p className="text-xs uppercase tracking-widest text-primary mb-1">
+                Payment mechanics
+              </p>
+              <p className="text-sm leading-relaxed">
+                {t.brunsonLens.paymentMechanics}
               </p>
             </div>
           </CardContent>
@@ -461,7 +518,7 @@ export default function FunnelTeardownPage({
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
-          {t.displayName} funnel — FAQ
+          {t.displayName} pricing — FAQ
         </h2>
         <div className="space-y-3">
           {t.faqs.map((f) => (
@@ -491,13 +548,12 @@ export default function FunnelTeardownPage({
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Want this teardown applied to your own page?
+              Want this pricing teardown applied to your own page?
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              The 90-second diagnostic runs the same Hook / Story / Offer
-              framework against your live product page and labels what is
-              broken: Wrong Person, Weak Offer, or Weak Belief. No email gate
-              to see the diagnosis category.
+              The 90-second diagnostic labels what is broken on your offer:
+              Wrong Person, Weak Offer, or Weak Belief. Pricing-page
+              dysfunction usually shows up as Weak Offer.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
@@ -511,23 +567,20 @@ export default function FunnelTeardownPage({
         </Card>
       </section>
 
-      {/* Related teardowns (internal linking graph) */}
+      {/* Related pricing teardowns */}
       {related.length > 0 ? (
         <section
           className="max-w-3xl mx-auto px-6 py-10 border-t border-border/40"
           aria-labelledby="related"
         >
-          <h2
-            id="related"
-            className="text-lg font-bold mb-4 leading-tight"
-          >
-            Related funnel teardowns
+          <h2 id="related" className="text-lg font-bold mb-4 leading-tight">
+            Related pricing teardowns
           </h2>
           <ul className="space-y-2">
             {related.map((r) => (
               <li key={r.slug}>
                 <Link
-                  href={`/funnel-teardown/${r.slug}`}
+                  href={`/pricing-teardown/${r.slug}`}
                   className="group flex items-start gap-2 text-sm hover:text-primary transition"
                 >
                   <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
@@ -541,10 +594,10 @@ export default function FunnelTeardownPage({
           </ul>
           <p className="mt-6 text-xs text-muted-foreground">
             <Link
-              href="/funnel-teardown"
+              href="/pricing-teardown"
               className="underline hover:text-foreground"
             >
-              Browse every funnel teardown →
+              Browse every pricing teardown →
             </Link>
           </p>
         </section>
@@ -553,14 +606,30 @@ export default function FunnelTeardownPage({
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          Last verified {t.lastVerified}. This teardown describes publicly
-          observable funnel patterns on {t.displayName}&apos;s marketing surface
-          at that date. No quoted copy, no fabricated metrics, no claims about
-          internal performance.
-          {t.homepageUrl ? (
+          Last verified {t.lastVerified}. Prices noted in this teardown are
+          approximations as observed on {t.displayName}&apos;s public pricing
+          page at that date; the exact figures and tier composition may shift
+          between verifications.
+          {t.pricingPageUrl ? (
             <>
               {" "}
-              Visit {t.displayName} at{" "}
+              See the live pricing at{" "}
+              <a
+                href={t.pricingPageUrl}
+                target="_blank"
+                rel="noopener noreferrer external"
+                className="underline hover:text-foreground"
+              >
+                {t.pricingPageUrl
+                  .replace(/^https?:\/\//, "")
+                  .replace(/\/$/, "")}
+              </a>
+              .
+            </>
+          ) : t.homepageUrl ? (
+            <>
+              {" "}
+              See{" "}
               <a
                 href={t.homepageUrl}
                 target="_blank"
@@ -572,7 +641,7 @@ export default function FunnelTeardownPage({
               .
             </>
           ) : null}{" "}
-          If anything on this page is wrong, unfair, or out of date, email{" "}
+          If anything on this page is wrong or out of date, email{" "}
           <a
             href="mailto:maryan@unlocksaas.com"
             className="underline hover:text-foreground"

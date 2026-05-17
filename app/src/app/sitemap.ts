@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
+import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 
 /**
  * Sitemap for UnlockSaaS — Surface A of the Google strategy.
@@ -185,6 +186,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/funnel-teardown/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #3 — pricing teardowns of indie SaaS.
+    // Data source: src/lib/pricing-teardowns.ts. Same pattern as
+    // funnel-teardown: Article + FAQPage + BreadcrumbList JSON-LD per
+    // detail page, CollectionPage on the hub. Companies that appear in
+    // both manifests get bidirectional cross-link callouts on each page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/pricing-teardown`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/pricing-teardown`),
+    },
+    ...PRICING_TEARDOWN_SLUGS.map((slug) => ({
+      url: `${base}/pricing-teardown/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/pricing-teardown/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
