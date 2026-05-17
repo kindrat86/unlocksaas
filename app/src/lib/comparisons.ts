@@ -2081,7 +2081,7 @@ const COMPARISONS_LIST: Comparison[] = [
       teardownSlug: "screen-studio",
       url: "https://www.screen.studio/",
     },
-    b: { name: "Loom", url: "https://www.loom.com/" },
+    b: { name: "Loom", teardownSlug: "loom", url: "https://www.loom.com/" },
     category: "Screen recording",
     oneLine:
       "Loom optimizes for fast async communication. Screen Studio optimizes for polished marketing video. They share the file type but solve different jobs.",
@@ -2188,7 +2188,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "mintlify-vs-gitbook",
     a: { name: "Mintlify", teardownSlug: "mintlify", url: "https://mintlify.com/" },
-    b: { name: "GitBook", url: "https://www.gitbook.com/" },
+    b: { name: "GitBook", teardownSlug: "gitbook", url: "https://www.gitbook.com/" },
     category: "Developer documentation",
     oneLine:
       "Mintlify is a modern docs platform optimized for API and developer-tool companies. GitBook is a broader documentation and knowledge platform.",
@@ -3235,7 +3235,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "vercel-vs-render",
     a: { name: "Vercel", teardownSlug: "vercel", url: "https://vercel.com/" },
-    b: { name: "Render", url: "https://render.com/" },
+    b: { name: "Render", teardownSlug: "render", url: "https://render.com/" },
     category: "Frontend cloud and hosting",
     oneLine:
       "Vercel optimizes for frontend deployment depth. Render optimizes for full-stack-app simplicity.",
@@ -3950,7 +3950,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "linear-vs-clickup",
     a: { name: "Linear", teardownSlug: "linear", url: "https://linear.app/" },
-    b: { name: "ClickUp", url: "https://clickup.com/" },
+    b: { name: "ClickUp", teardownSlug: "clickup", url: "https://clickup.com/" },
     category: "Project management for software teams",
     oneLine:
       "Linear is opinionated and minimal. ClickUp is configurable and comprehensive. Opposite ends of the project-management axis.",
@@ -4058,7 +4058,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "notion-vs-clickup",
     a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
-    b: { name: "ClickUp", url: "https://clickup.com/" },
+    b: { name: "ClickUp", teardownSlug: "clickup", url: "https://clickup.com/" },
     category: "Productivity and workspace",
     oneLine:
       "Notion is a workspace canvas with project management bolted in. ClickUp is project management with docs and chat bolted in. Different centers of gravity.",
@@ -4163,7 +4163,7 @@ const COMPARISONS_LIST: Comparison[] = [
 
   {
     slug: "render-vs-fly-io",
-    a: { name: "Render", url: "https://render.com/" },
+    a: { name: "Render", teardownSlug: "render", url: "https://render.com/" },
     b: { name: "Fly.io", url: "https://fly.io/" },
     category: "Frontend cloud and hosting",
     oneLine:

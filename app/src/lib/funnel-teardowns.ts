@@ -1897,6 +1897,346 @@ const TEARDOWNS_LIST: FunnelTeardown[] = [
     homepageUrl: "https://testimonial.to/",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "clickup",
+    displayName: "ClickUp",
+    creator: "Zeb Evans",
+    category: "Project management for software teams",
+    oneLine:
+      "ClickUp's funnel runs on the 'one tool to replace them all' positioning. The breadth IS the marketing, and the configurability IS the moat against opinionated competitors.",
+    tldr:
+      "ClickUp's funnel works because the marketing leads with the consolidation promise (replace tasks + docs + chat + whiteboards + forms + time tracking + goals with one tool). The configurability that gets criticized as overkill in head-to-head comparisons becomes the moat against opinionated competitors — buyers who need that flexibility have nowhere else to go. The lesson for indie founders: the right positioning depends on whether your category is fragmented (consolidation wins) or simple (opinionated minimalism wins).",
+    productSnapshot: {
+      whatTheySell:
+        "An all-in-one productivity platform combining tasks, docs, chat, whiteboards, forms, time tracking, goals, and more in one configurable workspace.",
+      whoFor:
+        "Cross-functional teams with specific workflows that require deep configuration, or teams that want to consolidate multiple SaaS tools under one bill.",
+      pricingNote:
+        "Free tier with most features; Unlimited ~$10/user/mo; Business ~$19/user/mo; Business Plus ~$29/user/mo (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Consolidation-as-promise",
+      analysis:
+        "The hero leads with the explicit consolidation message: 'one app to replace them all.' This works because the target buyer (cross-functional teams paying for 4-7 separate SaaS tools) feels the consolidation pain directly. The hook is structurally honest — ClickUp does in fact offer features competitors specialize in, even if the depth varies.",
+    },
+    story: {
+      pattern: "Feature-comprehensive demonstration",
+      analysis:
+        "The story is told through feature carousels and use-case templates — see this for sales, this for marketing, this for product, this for ops. The breadth doubles as proof: a tool that claims to consolidate 7 categories must show all 7 in action. The marketing site is dense by design because the value proposition is density.",
+    },
+    offer: {
+      pattern: "Free-tier comprehensive plus per-user upsell ladder",
+      analysis:
+        "The free tier is unusually generous on user count and feature access — designed to let teams adopt ClickUp deeply before any paywall hits. Per-user paid tiers add storage, automation runs, advanced features. The conversion happens not at the free-tier feature limit but at the storage and team-size scale limits.",
+    },
+    whatsWorking: [
+      "Consolidation hook resonates with cross-functional teams paying for 4-7 separate SaaS tools.",
+      "Free tier is generous enough that teams adopt deeply before any paywall hits, making upgrade decisions structural rather than feature-gate-driven.",
+      "Configurability that opinionated tools criticize becomes the moat — buyers who need flexible workflows have nowhere else to go.",
+      "Use-case template library scales the activation surface across multiple buyer personas (sales, marketing, product, ops).",
+      "Aggressive feature shipping signals platform momentum and reassures buyers that consolidation will continue improving.",
+      "Pricing per user with predictable tier jumps avoids the per-feature comparison shopping that fragmented competitors create.",
+    ],
+    whatToAdapt: [
+      "If your category is fragmented (buyers pay for 4+ separate tools), consolidation is a legitimate positioning. If your category is already simple, consolidation messaging confuses rather than converts.",
+      "Configurability as moat works when your buyer has unusual workflows opinionated competitors cannot serve. For standard workflows, opinionated minimalism converts better.",
+      "Free tiers should be generous enough that adoption is real, not just evaluation. Real adoption converts at structural scale limits, not at feature gates.",
+    ],
+    whatToAvoid: [
+      "Do not adopt consolidation positioning if you cannot credibly serve all the categories you claim to replace. ClickUp can serve PM, docs, and chat at adequate depth; SaaS that overpromise on breadth lose trust quickly.",
+      "Do not match ClickUp's feature-shipping pace as a smaller team — the shipping velocity is part of how the consolidation promise stays credible at scale.",
+    ],
+    brunsonLens: {
+      hook: "Big-promise consolidation hook (Brunson 'New Opportunity' move) — buyers are not buying a better PM tool, they are stepping into the 'one tool' category.",
+      story:
+        "Use-case-driven story serving multiple Dream Customers simultaneously — only viable for a platform that genuinely consolidates.",
+      offer:
+        "Generous free-tier acquisition plus per-user paid tiers with predictable upgrade structure.",
+      valueLadderTier:
+        "Front-end lead funnel (free comprehensive) plus per-user subscription core (Unlimited, Business, Business Plus) plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Is ClickUp really one tool to replace them all?",
+        a: "Functionally close at adequate depth for most use cases. Specialists (Notion for docs, Slack for chat, Linear for engineering issues) win on depth in any single feature. The consolidation value depends on whether your team values one bill and one platform over best-of-breed depth in each feature.",
+      },
+      {
+        q: "Why is ClickUp's configurability sometimes called overkill?",
+        a: "Because configurability requires upfront setup investment that opinionated tools (Linear, Asana for cross-functional) avoid. For teams with standard workflows, the configuration overhead is wasted. For teams with unusual workflows, the configuration is the only way to model their work — opinionated tools cannot serve them at all.",
+      },
+      {
+        q: "Can an indie SaaS replicate ClickUp's positioning?",
+        a: "Only in fragmented categories where buyers pay for 4-7 separate tools. In simple categories or against opinionated incumbents, consolidation messaging confuses rather than converts. The strategic move is to identify whether your category is fragmented enough to support consolidation positioning.",
+      },
+      {
+        q: "What is the Brunson lens on ClickUp's funnel?",
+        a: "New Opportunity positioning (Brunson Expert Secrets) — buyers are not buying a better PM tool, they are stepping into the 'one tool' category that did not exist before consolidation. Combined with use-case-driven story for multiple Dream Customers and generous-free-tier acquisition. The Brunson lesson: New Opportunity works when the new category genuinely solves a real fragmentation pain.",
+      },
+      {
+        q: "How does Unlock SaaS think about ClickUp's pattern?",
+        a: "Consolidation positioning is high-leverage when your category is genuinely fragmented and your product can credibly replace multiple specialists. It is high-risk when either condition fails. For most indie SaaS, opinionated minimalism converts better; ClickUp's consolidation play works because the category is structurally fragmented.",
+      },
+    ],
+    tags: ["consolidation", "configurability", "free-tier-generous", "all-in-one"],
+    homepageUrl: "https://clickup.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "render",
+    displayName: "Render",
+    creator: "Anurag Goel",
+    category: "Frontend cloud and hosting",
+    oneLine:
+      "Render's funnel runs on bundled-PaaS simplicity. The marketing promises 'modern Heroku' — and the bundled Postgres, Redis, workers, and cron deliver it.",
+    tldr:
+      "Render's funnel works because the positioning is precise: modern PaaS that bundles every backend service under one dashboard with predictable per-service pricing. The 'modern Heroku' framing converts developers who lived through Heroku's decline and want the bundled-services experience without Heroku's pricing and operational problems. The lesson for indie founders: precise positioning that names a specific pain (Heroku's pricing and ops decline) beats broad positioning that tries to serve everyone.",
+    productSnapshot: {
+      whatTheySell:
+        "A managed Platform-as-a-Service for full-stack web apps, with bundled Postgres, Redis, background workers, cron jobs, and static-site hosting under one dashboard.",
+      whoFor:
+        "Full-stack indie founders, startups, and small teams who want bundled backend services without assembling them across separate vendors.",
+      pricingNote:
+        "Free static-site hosting; Individual ~$7/mo; Team ~$19/user/mo; service-tier pricing on Postgres and Redis (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Modern-Heroku positioning",
+      analysis:
+        "The hero leads with the implicit promise: PaaS bundling that Heroku used to provide, modernized for current pricing and operational expectations. This works because the audience (developers who built on Heroku and felt the operational decline) recognizes the gap immediately. The hook compresses category-evaluation time by tapping into existing shared pain.",
+    },
+    story: {
+      pattern: "Bundled-services demonstration",
+      analysis:
+        "Story is told through the dashboard — one place for app deploys, Postgres provisioning, Redis instances, background workers, cron schedules, static-site hosting. The demonstration IS the proof; competitors that require assembling these from separate vendors (or paying marketplace partner pricing) make the bundled experience feel structurally simpler.",
+    },
+    offer: {
+      pattern: "Per-service pricing with predictable scaling",
+      analysis:
+        "Each service tier (web service, Postgres, Redis, worker, cron) has its own predictable monthly cost. The total cost stacks predictably — no surprise overage bills, no per-resource metering complexity. The pricing model favors buyers who want operational simplicity over aggressive cost optimization at scale.",
+    },
+    whatsWorking: [
+      "Modern-Heroku positioning taps shared pain with a specific named incumbent — converts the segment that lived through Heroku's decline.",
+      "Bundled-services dashboard is the structural differentiator competitors require assembly to match.",
+      "Per-service predictable pricing avoids the bill-shock that usage-metered hosting (Vercel, Fly.io) sometimes creates.",
+      "Free static-site hosting captures the indie-buyer entry point and converts to paid as backend needs emerge.",
+      "GitHub-native deploys with branch previews match the modern Git-driven workflow buyers expect.",
+      "Founder-led marketing from Anurag Goel and the Render team anchors the brand to identifiable operators.",
+    ],
+    whatToAdapt: [
+      "If your category has a named incumbent in decline, position explicitly against the incumbent's specific failures — not against the broader category.",
+      "Bundled-services experience converts when buyers feel the operational cost of assembling separate vendors. Position the bundle as the simplicity, not just the cost.",
+      "Predictable pricing structures convert buyers who want to budget reliably — not all customers want usage-optimized billing.",
+    ],
+    whatToAvoid: [
+      "Do not position against a named incumbent if the incumbent's audience has already moved past you. Modern-Heroku positioning works because the decline is recent enough that buyers remember.",
+      "Do not bundle services you cannot operate well — the bundle's value collapses if any single service is meaningfully worse than the specialist alternative.",
+    ],
+    brunsonLens: {
+      hook: "Named-incumbent-replacement hook (Brunson 'Common Enemy' executed against a specific company's decline rather than against the broader category).",
+      story:
+        "Demonstration-by-dashboard — the bundled-services experience IS the proof.",
+      offer:
+        "Per-service predictable pricing with free static-site entry — Brunson 'two-rung Value Ladder' with bundled-product upsell.",
+      valueLadderTier:
+        "Front-end (free static hosting) plus per-service subscription core (Individual, Team, service tiers) plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "How does Render differ from Heroku?",
+        a: "Render positions explicitly as the modern Heroku replacement — bundled services with current pricing and operational reliability that Heroku lost. The product surface is similar; the positioning argument is 'we are what Heroku used to be, without the recent decline.'",
+      },
+      {
+        q: "Why bundle Postgres, Redis, and workers natively?",
+        a: "Strategic decision to be the operational simplicity competitor. Vercel pushes these to marketplace partners; Render runs them natively. For teams that value one-dashboard simplicity over best-of-breed depth in each service, the bundled approach converts.",
+      },
+      {
+        q: "Can an indie SaaS use the named-incumbent-replacement positioning?",
+        a: "Yes when there is a specific incumbent in observable decline whose audience is searching for alternatives. The positioning fails when the incumbent is stable or when the 'decline' is more imagined by the challenger than felt by the audience.",
+      },
+      {
+        q: "What is the Brunson lens on Render's funnel?",
+        a: "Common Enemy positioning (Brunson Expert Secrets) executed against a named incumbent (Heroku) rather than the broader category. Combined with bundled-services demonstration and predictable per-service pricing. The Brunson lesson: precise enemy naming beats vague category positioning when the enemy is observably failing.",
+      },
+      {
+        q: "How does Unlock SaaS think about Render's pattern?",
+        a: "Modern-incumbent-replacement is one of the highest-leverage positioning moves available when the incumbent is in observable decline. The window is finite — eventually the incumbent either recovers or fades enough that the positioning loses urgency. Indie founders should identify whether their category has a Heroku-shaped incumbent right now.",
+      },
+    ],
+    tags: ["managed-paas", "bundled-services", "modern-heroku", "founder-led"],
+    homepageUrl: "https://render.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "loom",
+    displayName: "Loom",
+    creator: "Joe Thomas, Shahed Khan, Vinay Hiremath (acquired by Atlassian in 2023)",
+    category: "Screen recording for marketing video",
+    oneLine:
+      "Loom's funnel runs on async-team-communication positioning. The product is the message — record once, share a link, save a meeting.",
+    tldr:
+      "Loom's funnel works because the product itself IS the marketing. Every Loom recording shared inside a team or with a customer demonstrates the value proposition — 'record once instead of writing a 500-word email.' The free tier seeds the visible-output flywheel; team subscriptions monetize the workflow. The lesson for indie founders: when your product replaces an obviously-painful alternative (long emails, status meetings), the demonstration IS the conversion mechanism.",
+    productSnapshot: {
+      whatTheySell:
+        "An async video communication platform for teams — screen recording with webcam overlay, instant shareable links, viewer analytics.",
+      whoFor:
+        "Distributed teams, customer success operators, sales teams, engineering teams — anyone whose communication includes async video updates or screen explanations.",
+      pricingNote:
+        "Free tier (25 videos/person, 5-min limit); Business ~$15/user/mo; Enterprise custom (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Replace-the-meeting positioning",
+      analysis:
+        "The hero leads with the meeting-replacement promise. This works because distributed teams (especially post-2020) feel the meeting tax directly — every meeting that could have been an async video is a recognizable opportunity cost. The hook taps shared pain that the buyer already articulates internally.",
+    },
+    story: {
+      pattern: "Product-is-the-marketing flywheel",
+      analysis:
+        "Story is told through every Loom recording shared internally or externally. The recipient experiences the value proposition (this video saved a 30-minute meeting) without needing to read marketing copy. The free-tier branding ensures the recipient knows it is Loom; the experience does the conversion work.",
+    },
+    offer: {
+      pattern: "Free-with-branding plus team-subscription upsell",
+      analysis:
+        "Free tier captures individual users and seeds the visible-output flywheel — every shared Loom link exposes a new recipient to the product. Business tier removes branding and adds team features (workspace, advanced sharing controls, viewer analytics). The conversion happens at team-adoption moments rather than at individual feature gates.",
+    },
+    whatsWorking: [
+      "Replace-the-meeting positioning taps the shared meeting tax that distributed teams already feel.",
+      "Product-is-the-marketing flywheel — every shared recording demonstrates the value to a new recipient without marketing copy.",
+      "Free tier with branding seeds the visible-output presence across every shared video link.",
+      "Speed-of-recording-to-share matters operationally — Loom's near-instant share link is the structural differentiator against polished alternatives (Screen Studio, Tella).",
+      "Team workspace features at Business tier capture the team-adoption upgrade moment.",
+      "Acquired by Atlassian in 2023 — keeps the platform funded and operationally stable while preserving the indie-friendly brand on the marketing surface.",
+    ],
+    whatToAdapt: [
+      "If your product replaces an obviously-painful alternative, position against the alternative directly (meetings, long emails, manual updates) rather than describing your features.",
+      "Free-tier visible-output flywheel works when your product creates artifacts that recipients encounter outside the buyer's organization.",
+      "Speed-of-action matters as a structural differentiator when competitors optimize for polish — sometimes the right move is to do less, faster.",
+    ],
+    whatToAvoid: [
+      "Do not adopt replace-the-meeting positioning if your product does not actually replace meetings reliably. Tools that promise meeting replacement and fail to deliver create more meetings (to discuss the broken async workflow).",
+      "Do not assume the free-tier flywheel works for non-shareable categories. Internal tools, dashboards, and admin panels do not seed visible output to recipients.",
+    ],
+    brunsonLens: {
+      hook: "Common Enemy positioning (Brunson Expert Secrets) — meetings as the enemy, async video as the replacement.",
+      story:
+        "Product-is-the-marketing — the demonstration IS the conversion mechanism, no separate marketing copy needed.",
+      offer:
+        "Free-with-branding flywheel plus team-subscription upsell — Brunson structural-trigger pattern aligned with team-adoption moments.",
+      valueLadderTier:
+        "Front-end lead funnel (free with branding) plus per-user team subscription core plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Why is Loom the canonical async video tool?",
+        a: "First-mover advantage in the async-team-video category plus product-is-the-marketing flywheel compounded into category-default status. Every Loom recording shared inside a team or externally introduced the recipient to the product, which compounded recognition over years.",
+      },
+      {
+        q: "Can a challenger beat Loom?",
+        a: "Not on brand recognition; the category-default advantage is too entrenched. Challengers (Tella, Screen Studio) compete on output polish for marketing-video use cases — Loom's optimization is speed-to-share for async communication, which is a different job.",
+      },
+      {
+        q: "How does the Atlassian acquisition affect Loom?",
+        a: "Operationally, integration into the broader Atlassian suite (Confluence, Jira). Strategically, Loom's standalone brand remains visible but long-term direction is set by Atlassian's roadmap. For most indie buyers in 2026 the brand still feels like Loom; for enterprise buyers the integration with Atlassian tooling is a feature.",
+      },
+      {
+        q: "What is the Brunson lens on Loom's funnel?",
+        a: "Common Enemy (meetings) plus product-is-the-marketing flywheel plus free-tier visible-output acquisition. The unusual element is the depth of the demonstration-as-marketing — Loom's marketing happens passively through every shared video, which makes paid acquisition almost unnecessary at scale.",
+      },
+      {
+        q: "How does Unlock SaaS think about Loom's pattern?",
+        a: "Product-is-the-marketing is the highest-leverage acquisition strategy when your product creates shareable artifacts. The strategy requires the artifact to be high-value enough that recipients want to use it themselves — Loom's videos clear this bar; tools whose artifacts are not standalone-useful do not seed the same flywheel.",
+      },
+    ],
+    tags: ["async-communication", "product-is-marketing", "free-tier-flywheel", "common-enemy"],
+    homepageUrl: "https://www.loom.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "gitbook",
+    displayName: "GitBook",
+    creator: "Samy Pesse and Aaron O'Mullan",
+    category: "Developer documentation",
+    oneLine:
+      "GitBook's funnel runs on the broader-knowledge-platform positioning. The marketing leans into docs-plus-internal-wikis-plus-knowledge-bases as one tool.",
+    tldr:
+      "GitBook's funnel works because the positioning is broader than dev-tool-docs-specific competitors (Mintlify). The marketing promises one knowledge platform for public docs, internal wikis, and team knowledge bases — which converts buyers who want flexibility over specialization. The lesson for indie founders: when a competitor wins the narrow positioning (Mintlify owns dev-tool aesthetic), the strategic move is to claim a broader scope rather than fight on the same axis.",
+    productSnapshot: {
+      whatTheySell:
+        "A knowledge platform that handles public documentation, internal wikis, and team knowledge bases with a richer WYSIWYG editor and Git-sync option.",
+      whoFor:
+        "Teams that want a single platform for public docs and internal knowledge, with a writer-friendly editor that non-developer contributors can use.",
+      pricingNote:
+        "Free tier; Plus ~$8/user/mo; Pro ~$15/user/mo; Enterprise custom (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Broader-scope-than-competitors positioning",
+      analysis:
+        "The hero leads with knowledge-platform breadth rather than docs-specific specialization. This works because buyers comparing GitBook to Mintlify (the docs-specialist) often need internal wikis and team knowledge alongside public docs — and GitBook serves that broader scope while Mintlify does not. The hook positions GitBook in a category Mintlify cannot enter without abandoning its docs-aesthetic identity.",
+    },
+    story: {
+      pattern: "Multi-use-case demonstration",
+      analysis:
+        "Story is told through use-case examples spanning public docs, internal wikis, customer-facing knowledge bases, and team knowledge libraries. The breadth doubles as proof — a platform claiming to handle multiple knowledge contexts must show all of them in action. The marketing site reads as comprehensive rather than focused.",
+    },
+    offer: {
+      pattern: "Per-user subscription with feature-tier upsells",
+      analysis:
+        "Free tier captures small teams; Plus adds collaboration and integrations; Pro adds advanced features and analytics; Enterprise handles procurement and security. The per-user model scales with team adoption rather than with feature consumption, which matches the knowledge-platform usage shape better than usage-metered alternatives.",
+    },
+    whatsWorking: [
+      "Broader-scope positioning escapes the docs-specialist fight where Mintlify owns the aesthetic.",
+      "WYSIWYG editor enables non-developer contributors to author content without learning Markdown or MDX.",
+      "Multi-use-case demonstration shows the platform handling public docs, internal wikis, and team knowledge in parallel.",
+      "Git-sync option for teams that want docs-as-code workflow while keeping the WYSIWYG editor for collaborators.",
+      "Per-user subscription model scales with team adoption predictably without usage-metered complexity.",
+      "Long-running platform (founded 2014) with mature feature surface that newer entrants take years to build.",
+    ],
+    whatToAdapt: [
+      "When a competitor wins narrow specialization, claim a broader scope that the competitor cannot enter without abandoning their identity.",
+      "WYSIWYG editing matters when your buyer's contributors include non-developers — the docs-as-code-only positioning loses this segment.",
+      "Multi-use-case demonstrations convert when the breadth is real; they confuse when the platform actually specializes despite the marketing claim.",
+    ],
+    whatToAvoid: [
+      "Do not claim broader scope than you can credibly serve. If your platform is functionally docs-only, the multi-use-case marketing loses trust when buyers discover the depth gap.",
+      "Do not abandon docs aesthetics entirely. Even broader-scope platforms need to look good enough that buyers do not reject them on aesthetic grounds.",
+    ],
+    brunsonLens: {
+      hook: "Broader-scope-than-competitors hook — Brunson 'New Opportunity' move that claims a category the specialist cannot enter.",
+      story:
+        "Multi-Dream-Customer story serving public-docs buyers, internal-wiki buyers, and knowledge-base buyers in parallel.",
+      offer:
+        "Per-user subscription Value Ladder with predictable upgrade tiers — Brunson 'two-step subscription' aligned with team growth.",
+      valueLadderTier:
+        "Front-end free tier plus per-user subscription core (Plus, Pro) plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "How does GitBook differ from Mintlify?",
+        a: "GitBook is broader — public docs plus internal wikis plus team knowledge bases with WYSIWYG editing. Mintlify is narrower — dev-tool-specific docs with a recognizable modern aesthetic. For pure API docs the Mintlify aesthetic wins; for mixed knowledge platforms the GitBook breadth wins.",
+      },
+      {
+        q: "Why does GitBook offer WYSIWYG editing?",
+        a: "Because the buyer base includes non-developer contributors (PMs, designers, support, leadership) who need to author content. Pure docs-as-code platforms (Mintlify, Docusaurus) lose this segment by requiring Markdown or MDX literacy.",
+      },
+      {
+        q: "Can an indie SaaS use GitBook for its public docs?",
+        a: "Yes, and many do. GitBook handles API docs adequately though not at Mintlify's aesthetic depth. For indie SaaS in non-dev-tool categories (where the Mintlify aesthetic is not a category requirement), GitBook is often the better breadth-for-the-price choice.",
+      },
+      {
+        q: "What is the Brunson lens on GitBook's funnel?",
+        a: "New Opportunity positioning that escapes the docs-specialist fight by claiming a broader knowledge-platform category. Combined with multi-use-case demonstration and per-user subscription Value Ladder. The Brunson lesson: when you cannot win the narrow positioning, claim the broader scope the specialist cannot enter.",
+      },
+      {
+        q: "How does Unlock SaaS think about GitBook's pattern?",
+        a: "Broader-scope positioning is a defensible strategy when a competitor has won the narrow specialization. The risk is positioning broader than you can credibly serve — GitBook walks this line by maintaining adequate depth in each use case it claims. Indie founders attempting this should audit their depth claim against actual buyer experience.",
+      },
+    ],
+    tags: ["knowledge-platform", "broader-scope", "wysiwyg", "team-wiki"],
+    homepageUrl: "https://www.gitbook.com/",
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
