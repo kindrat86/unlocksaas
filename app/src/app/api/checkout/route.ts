@@ -163,14 +163,15 @@ export async function POST(req: NextRequest) {
       // Brunson DCS Secret #17 §3: the bump is a SEPARATE line item, not a
       // tier of the primary product. This way Stripe surfaces the bump as
       // its own row in the receipt — the buyer sees what they bought.
-      const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-        [
-          {
-            price: process.env.STRIPE_STARTER_PRICE_ID!,
-            quantity: 1,
-          },
-          ...resolvedBumps.map((b) => ({ price: b.priceId, quantity: 1 })),
-        ];
+      // Type is inferred from the Stripe SDK call site; an explicit annotation
+      // hits a namespace-export quirk in the bundled @types/stripe build.
+      const lineItems = [
+        {
+          price: process.env.STRIPE_STARTER_PRICE_ID!,
+          quantity: 1,
+        },
+        ...resolvedBumps.map((b) => ({ price: b.priceId, quantity: 1 })),
+      ];
 
       const session = await getStripe().checkout.sessions.create({
         mode: "payment",

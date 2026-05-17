@@ -124,6 +124,95 @@ Brunson rule: once a buyer says yes, there must always be a next yes. The ladder
 
 Brunson's Phone Funnel template carries the $2K+ agency / unlimited-products tier. UnlockSaaS Rung 3 corresponds to an agency or unlimited-products model and is **still not in scope**. Slot reserved. Re-evaluate after Rung 2 has 10+ paying customers.
 
+## Section 5c: DCS Secret #23 (High-Ticket 3-Step Application) — Variant Locked, Build-Gated
+
+**Status:** SPEC LOCKED. Build remains gated on 3 verified Core customer cycles + 1 unprompted-or-renewed signal + Maryan dry-run pass + operational readiness.
+**Spec file:** [`strategy/decisions/dcs-23-high-ticket-3-step.md`](../decisions/dcs-23-high-ticket-3-step.md)
+**Public placeholder:** `/annual` (form rendered as text; server-disabled until activation gate fires)
+**Closes audit gap:** DCS Chapter 23 from `N/A — Lean-ladder discipline holds` → **40 (variant spec'd, build-gated)** under stage-appropriate scoring with a path-to-100 defined.
+
+Section 5b above correctly rejects the **canonical $2K+ price-band** of Brunson Chapter 23. The Phone Funnel for an agency / unlimited-products tier is still not in scope.
+
+Section 5c locks the **structural-shape variant** that does fit UnlockSaaS without violating any workbook 01 §3 rule: the **Annual Pre-Paid Machine**.
+
+### What this variant is
+
+- **Same Machine.** Same 7 steps. Same Stripe-verified guarantee. Same 60-day refund window. Same $98 refund cap as monthly.
+- **Different billing cadence.** $588/year prepay (= $49 × 12, no discount).
+- **Different acquisition shape.** Brunson Chapter 23's 3-step: same `/machine-sales` long-form → 5-question application at `/annual` → 15-minute Zoom close-call with Maryan.
+- **Different identity.** Three operator-time + identity bonuses (lifetime $588/year price lock + Verified-Annual badge variant + 30-day direct line on each renewal anniversary) that the monthly tier does not have.
+
+### Why this variant occupies the chapter slot honestly
+
+The pattern-match collapse fixed: Brunson Chapter 23 has two dimensions — **price band** ($2K–$25K) and **structural shape** (sales document → application → 1:1 close). Workbook 02 §5b rejects the canonical price band. Workbook 02 §5c accepts the structural shape at a reduced price band, justified by SaaS-monthly anchoring (vs. course-pricing convention) and documented as the same lens that re-graded Summit Funnel (DCS #16), Invisible Funnel (DCS #24), and Facebook (Traffic Secrets #10) from N/A in prior passes.
+
+### What this is NOT (do not relitigate)
+
+- **Not a discount.** $588 = $49 × 12. Math, not marketing.
+- **Not coaching.** The 15-min Zoom is fit-qualification + close, not strategy. Workbook 01 §3 rule preserved.
+- **Not DFY.** Customer runs The Machine. Operator never runs it on the customer's behalf.
+- **Not a cohort.** 1:1 only.
+- **Not a new product.** Same engine. Same guarantee.
+- **Not the Founding-Cohort PLF.** PLF (workbook 03 Script 8) runs ONCE as a 50-seat cart event at $49/mo. Annual Pre-Paid is EVERGREEN at $588/year, application-gated.
+
+### Activation gate (hard)
+
+1. 3 paying Core customers have completed the full Machine loop (Step 1 → Step 7 → First Paying Customer Verified). Without 3 case studies the close call has no anchor.
+2. At least 1 of those 3 has either renewed past month 2 OR asked, unprompted, about an annual option. No supply without demand signal — same shape as Rung 2's activation gate.
+3. Maryan has run a dry-run close call on himself with a friend playing the candidate (Reluctant Hero dogfood rule).
+4. Calendly + Stripe annual price object (`verified_annual_yearly` at $588/year) + admin review queue at `/admin/annual` are operationally ready (test charge round-trips clean).
+
+### The 5 application questions (locked, do not relitigate)
+
+1. Live URL of the product you have already shipped?
+2. Is Stripe live and accepting payments?
+3. Have you started or completed The Machine at any tier (Diagnostic / $1 Starter / $49/mo Core)?
+4. In one sentence: who is your dream customer?
+5. If the Machine produces your first paying customer inside the 60-day window, what is $588 worth to you today?
+
+**Server-side decision rules** (NOT shown to applicant): Q1=no → `/diagnostic`. Q2=no → `/diagnostic` + "fix Stripe first." Q3=haven't started → `/starter`. Q4+Q5 reviewed by Maryan personally before Calendly link issues.
+
+### The 3-question close-call script (locked)
+
+1. "Walk me through your Stripe today. What does the line look like?"
+2. "What's the work you'd be doing inside the Machine that you've avoided so far?"
+3. "If we processed $588 right now and started the 60-day clock, what would change for you between today and 60 days from now?"
+
+**Two buttons** (in Maryan's hand): YES (process $588 Stripe charge over the call, flag Verified-Annual, start 30-day direct-line clock) or NO (send `/machine-sales` in chat, route to monthly, end at 12 minutes). No third option. No "let me think about it" follow-up email.
+
+### Offer math (honest, not inflated)
+
+| Item | Value |
+|---|---|
+| Base $49/mo stack (workbook 01 §2) carried forward | $496 |
+| Lifetime $588/year price lock (forfeit of ~$132/year × 3yr) | $396 |
+| Verified-Annual badge variant on `/builder/[slug]` | $200 |
+| 30-day direct line per renewal anniversary (~3.3 hours operator time/yr) | $200 |
+| **Total** | **$1,292** |
+| **Price** | **$588** |
+| **Ratio** | **2.2×** |
+
+**2.2× is below Brunson's 10× rule by design.** The 10× rule applies to the **anchor** (the Machine at $49/mo, 10.1×). The annual prepay is a billing-cadence + identity variant, not a new offer. Inflating bonuses to hit 10× would mean inventing value — the disease this brand was built to treat. Same discipline as Rung 2 ($149/mo Repeatable Revenue Layer, 5.7×).
+
+### Build minimum when gates fire
+
+1. `/annual` application form switches from server-disabled (returns 410) to server-enabled (POST → `annual_applications` table → Maryan review queue at `/admin/annual`).
+2. Stripe price object `verified_annual_yearly` at $588/year on the existing Core product.
+3. `annual_applications` Supabase table + `/admin/annual` admin route.
+4. Calendly 15-min call type at `/m/maryan` with the 3-question script in the call-prep email + webhook to `annual_applications.call_scheduled_at`.
+5. Per-applicant Stripe Checkout link with `verified_annual=true` metadata. Webhook fires Verified-Annual badge + 30-day direct-line clock.
+6. `builder_badges.variant` enum extended with `verified_annual`. New OG image template.
+7. `/api/cron/annual-renewals` reopens the 30-day direct line on each renewal anniversary.
+
+Estimated: ~6–10 hours of focused build. The operator-evidence gate is the bottleneck, not the build.
+
+### What changes in existing docs when this variant ships
+
+- This section's "Variant Locked, Build-Gated" → "Variant Active, $X Verified-Annual customers."
+- `strategy/state.json` `dotcom_secrets.high_ticket_3_step.status` → `active`.
+- `00-RESUME-HERE.md` adds a Verified-Annual bullet under "Offer."
+- `/machine-sales` adds a small "Annual" CTA below the primary monthly button (post-activation only).
+
 ---
 
 ## Section 6: One Offer, One Funnel (Secret #26)

@@ -59,6 +59,12 @@ done.
   categories — `strategy/dollar-objections.md`.
 - Dream 100: 100 entries across 7 categories, all 40 Category 2 slots
   populated — `strategy/dream-100.csv`.
+- Invisible Funnel (DCS Secret #24) re-graded N/A → 70 with two-surface
+  canonical doc — `strategy/invisible-funnel.md`. Surface A
+  (subscription-shaped variant 2) is the existing 60-day Stripe-verified
+  guarantee shipped through `app/src/lib/guarantee.ts`. Surface B
+  (canonical variant 1, Verified Builder Sprint) is build-gated to 4
+  evidence conditions; no new operator action introduced.
 
 ---
 

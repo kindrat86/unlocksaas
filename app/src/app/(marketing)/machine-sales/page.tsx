@@ -72,7 +72,19 @@ export const metadata: Metadata = {
  *     Category 4 (urgency / scarcity) is DELIBERATELY rejected — the avatar
  *     is a skeptic and fake scarcity destroys trust.
  *   Block 7 — FAQ from the 6 External Belief rewrites (workbook 06 §4).
- *   Block 8 — Disqualifying line + final CTA.
+ *   Block 8 — Disqualifier (shared <DisqualifyingCopy />, 5 gates).
+ *   Block 9 — Final CTA cluster: risk-reversal restate (rule of three),
+ *     stake close (slide 36 restated), primary checkout button,
+ *     pre-checkout microcopy ("what happens when you click"), $1
+ *     fallback link, PWP <PrintPageLink />, "— Maryan" signature.
+ *   Block 10 — PS (shared <FounderPs />). Brunson sales-letter rule:
+ *     the PS is the second-most-read piece of copy after the headline.
+ *
+ * Jump-nav (after Big Domino) gives the skeptic six anchor entry points:
+ * #secrets, #stack, #guarantee, #faq, #disqualifier-heading, #checkout.
+ * PWP: `print:hidden` on transient elements + a `print:block`-only
+ * footer line naming the live URL so saved artifacts route back to a
+ * working checkout.
  *
  * Voice: Reluctant Hero, first person, scars, no guru energy. The identity
  * label ("Verified Builders") is the canonical default shipped per the

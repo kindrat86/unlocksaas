@@ -51,7 +51,7 @@ export default function ColdTrafficBridge() {
         ]}
       />
       <AbExposureBeacon />
-      <div className="max-w-xl">
+      <div className="max-w-2xl">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
           For founders who already shipped
         </p>
@@ -72,6 +72,17 @@ export default function ColdTrafficBridge() {
           — Maryan, marketer, non-engineer, built a dozen AI products that
           nobody paid for. Then I figured out why.
         </p>
+
+        {/* Brunson Secret #20: cold traffic gets the 22s cold-ad cut, not
+            the 3:45 master. Kinetic fallback plays the 110s compact until
+            NEXT_PUBLIC_VSL_COLD_AD_URL is pushed, at which point the cold
+            recording auto-mounts here (and only here — other surfaces
+            continue to render their own cuts). */}
+        <VslBlock
+          surface="bridge"
+          cut="bridge_cold_ad"
+          autoplay={false}
+        />
 
         <Card className="mb-8">
           <CardContent className="pt-6 space-y-3">
