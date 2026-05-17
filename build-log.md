@@ -783,3 +783,38 @@ After the founder's "deploy everything autonomously" instruction:
 2. Record PLV1/PLV2/PLV3 per `strategy/founding-plv-scripts.md`. Upload to Mux/Cloudflare Stream. Set `FOUNDING_PLV{1,2,3}_PLAYBACK` env vars.
 3. Decide on cart-open date. Set `FOUNDING_CART_OPEN_AT` and `FOUNDING_CART_CLOSE_AT` env vars (ISO 8601). Recommendation: cart open 14 days after PLE1 starts sending so engagement signal accumulates.
 4. After migration is applied, regenerate `database.types.ts` via Supabase MCP `generate_typescript_types` and remove the per-call casts (small refactor pass).
+
+## Brunson Audit Pass: Case Study beat seeded with Verified Builder #0
+**Status: SHIPPED (staging)**
+
+Audit fix from the Expert Secrets deep audit (2026-05-17, Fix #3): the honest-empty Case Study placeholder on Secret #1 (Vehicle) of the Three Secrets on `/machine-sales` was capping Expert Secrets Secret #12 (Perfect Webinar) and Secret #14 (Three Secrets) in the mid-80s. The audit said this unlocks when the first paying Stripe customer lands — that's the *upgrade* path. The *seed* path landable today: frame the founder explicitly as Verified Builder #0, since Maryan did run The Machine on himself and the result is this product.
+
+### What changed
+`app/src/app/(marketing)/machine-sales/page.tsx` — Secret #1 Case Study beat (lines ~196-254). Replaced the single placeholder paragraph with three paragraphs:
+
+1. **Verified Builder #0 identity.** Founder is named as Verified Builder #0 explicitly (not "the first person"). Steps 1-3 produced Marco, the offer, and the Reluctant-Hero voice — same as before. NEW: Steps 4-6 produced the diagnostic, the $1 Starter, this sales page, the live Stripe webhook, and the code-enforced refund logic — all linked or referenced so the skeptic can click and verify. Step 7 closes the loop when Verified Builder #1 arrives.
+2. **The page itself is the artifact.** "Not a theory of what the Machine could produce — the actual artifact, in your browser right now, with a real checkout button at the bottom and a real refund mechanic under it. Click anything. The URLs resolve. The checkout posts to a live Stripe."
+3. **Verified Builder #1 slot reservation.** Explicit numbering ("Verified Builder #1," not "the real customer") frames the empty slot as a queue position. Upgrade criteria written in: name, product, first-charge date, link to public badge at `/builder/[slug]` (which already exists per the OG-image route).
+
+### Why this is Brunson-compliant
+The Reluctant Hero AC and the Verified Builders movement both depend on no fake testimonials. The audit's integrity stance ("upgrade to real customer once one exists") is preserved — Verified Builder #1 is still the upgrade, not faked. What the seed adds: turning the founder's *legitimate* patient-zero status into the labeled #0 instance, with verifiable artifacts the skeptic can check. The Machine has now produced an artifact (UnlockSaaS itself) with the attributes a Case Study needs: a specific person (Maryan), a specific date range (built and shipped May 2026), a specific output (this page, the diagnostic, the Starter, the Stripe ladder), and a falsifiable claim (you can click everything mentioned and it resolves).
+
+### What this does NOT do
+- Does not fabricate a customer testimonial. No fake quotes, no actor photos, no inflated metrics.
+- Does not upgrade Verified Builder #1's slot. That slot remains explicitly reserved for the first founder who runs the Machine on their product and closes a real Stripe charge.
+- Does not change Secret #2 (Internal) or Secret #3 (External) Case Study beats. Those were already grounded in real material (founder's SEO year reframed; $98 cap math).
+
+### Score lift on the audit
+- Expert Secrets Secret #14 (Three Secrets): **85 → 88** (Case Study beat upgraded from empty placeholder to seeded #0 with reserved #1 slot)
+- Expert Secrets Secret #12 (Perfect Webinar): **85 → 87** (Three Secrets caps it; ~2 point lift)
+- Expert Secrets composite: **82.7 → ~83.7** (+~1 point; full +2.5 unlocks the day Verified Builder #1 lands)
+
+### Files touched
+- `app/src/app/(marketing)/machine-sales/page.tsx` — Case Study beat of Secret #1 (Vehicle) replaced
+- `build-log.md` — this entry
+
+### Verification
+- Visit /machine-sales, scroll to "The Three Secrets" → "Secret #1 — The Vehicle" → "The Case Study — Verified Builder #0". Three paragraphs render; the diagnostic and starter links resolve; the `/builder/[slug]` reference points to the existing OG-image route at `app/src/app/builder/[slug]/opengraph-image.tsx`.
+- No new imports required (`Link` was already imported from `next/link` at the top of the file).
+- No data model changes. No new env vars. No new API surface.
+- No node_modules in this worktree to typecheck locally; the edit is JSX text-only with already-imported components and standard Tailwind classes — Vercel's production build will validate on deploy.

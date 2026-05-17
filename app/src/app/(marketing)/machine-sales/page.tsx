@@ -193,28 +193,63 @@ export default function MachineSalesPage() {
               </p>
             </div>
 
-            {/* Case Study — HONEST: founder running it on himself.
-                The "real customer" beat is flagged, not fabricated. */}
+            {/* Case Study — Verified Builder #0 (founder as patient zero).
+                The Machine's output is this product itself. Slot reserved
+                for Verified Builder #1 (first paying customer). Honest
+                framing per workbook 06 §4 + Expert Secrets deep audit
+                2026-05-17 (Fix #3: seed Case Study with Verified Builder
+                #0 to uncap Three Secrets / Secret #14). */}
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-                The Case Study
+                The Case Study — Verified Builder #0
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed mb-3">
                 The first person to run The Machine on themselves was me,
-                on this product. Step 1 produced Marco — 36, non-engineer,
-                shipped with Lovable, flat Stripe line — the first dream
-                customer I had ever written who was specific enough to
-                argue with. Step 2 produced the offer you are reading
-                right now, including this guarantee. Step 3 produced the
-                Reluctant-Hero voice this whole page is written in. The
-                page you are on is itself proof the system produces
-                saleable output, not theory.{" "}
-                <em>
-                  The real customer story goes here once a customer has
-                  run The Machine end-to-end. I will not fake one. The day
-                  the first one lands, this paragraph upgrades and the
-                  date goes on it.
-                </em>
+                on this product. I am Verified Builder #0. Step 1
+                produced Marco — 36, non-engineer, shipped with Lovable,
+                flat Stripe line — the first dream customer I had ever
+                written who was specific enough to argue with. Step 2
+                produced the offer you are reading right now, including
+                this guarantee, with 10.1× defensible value math. Step 3
+                produced the Reluctant-Hero voice this whole page is
+                written in. Steps 4 through 6 produced the diagnostic at{" "}
+                <Link
+                  href="/diagnostic"
+                  className="underline underline-offset-4"
+                >
+                  /diagnostic
+                </Link>
+                , the $1 Starter at{" "}
+                <Link
+                  href="/starter"
+                  className="underline underline-offset-4"
+                >
+                  /starter
+                </Link>
+                , the long-form sales page you are reading right now, the
+                connected Stripe that fires on every real charge, and the
+                code-enforced refund logic underneath the guarantee
+                paragraph below. Step 7 closes the loop the day Verified
+                Builder #1 arrives.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-3">
+                The page you are on is itself the Machine&apos;s output.
+                Not a theory of what the Machine could produce — the
+                actual artifact, in your browser right now, with a real
+                checkout button at the bottom and a real refund mechanic
+                under it. Click anything. The URLs resolve. The checkout
+                posts to a live Stripe. Verification is not a screenshot
+                you have to trust me on.
+              </p>
+              <p className="text-muted-foreground leading-relaxed italic">
+                Slot reserved for Verified Builder #1. The day the first
+                founder runs The Machine on their product and closes
+                their first paying customer, this paragraph upgrades with
+                their name, their product, their first-charge date, and a
+                link to their public builder badge at{" "}
+                <code className="text-xs">/builder/[slug]</code>. I will
+                not fake one. I will not hire an actor. The next
+                paragraph here is reserved for the first real one.
               </p>
             </div>
           </article>
