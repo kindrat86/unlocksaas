@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Terms of Service. E-E-A-T trust column + commercial table-stakes.
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   title: "Terms of Service — Unlock SaaS",
   description:
     "The terms you accept when you use Unlock SaaS. Plain English. Covers the free diagnostic, the $1 Starter, the $49/mo Playbook, and the 60-day guarantee.",
-  alternates: { canonical: "/terms" },
+  alternates: pageAlternates("/terms"),
   openGraph: {
     title: "Terms of Service — Unlock SaaS",
     description: "What you agree to when you use Unlock SaaS. Plain English.",

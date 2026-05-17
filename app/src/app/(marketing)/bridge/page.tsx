@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Cold traffic bridge page.
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title: "For founders who already shipped — the flat-Stripe-line bridge",
   description:
     "You shipped a real product. The Stripe line is flat. The 90-second free diagnostic labels what is actually broken — Wrong Person, Weak Offer, or Weak Belief — and hands you the door that fixes it.",
-  alternates: { canonical: "/bridge" },
+  alternates: pageAlternates("/bridge"),
   openGraph: {
     title: "For founders who already shipped — Unlock SaaS",
     description:

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Contact page. E-E-A-T trust column + the canonical inbound channel.
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   title: "Contact — Unlock SaaS",
   description:
     "One inbox, one human, real replies. Email maryan@unlocksaas.com. Diagnostic, refund, partnership, press — all the same address.",
-  alternates: { canonical: "/contact" },
+  alternates: pageAlternates("/contact"),
   openGraph: {
     title: "Contact — Unlock SaaS",
     description: "One inbox, one human. Email maryan@unlocksaas.com.",

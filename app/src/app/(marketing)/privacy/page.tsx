@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Privacy policy. E-E-A-T trust column + table-stakes for any commercial
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy — Unlock SaaS",
   description:
     "What data Unlock SaaS collects, why, who processes it, how long it lives, and how to ask for it back. Plain English, every processor named.",
-  alternates: { canonical: "/privacy" },
+  alternates: pageAlternates("/privacy"),
   openGraph: {
     title: "Privacy Policy — Unlock SaaS",
     description:
