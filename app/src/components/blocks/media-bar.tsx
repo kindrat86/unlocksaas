@@ -11,10 +11,6 @@
  * Identity guardrail: no paid placements badged as earned. The filter in
  * `lib/media-mentions.ts` enforces this; this component trusts the filter.
  *
- * Visual treatment: ClickFunnels 1.0 light theme — white background, soft
- * purple top/bottom borders, gray-500 small caps "As seen in" label, gray-700
- * publication names with purple hover.
- *
  * This is a server component. No interactivity. No client JS shipped.
  */
 import { getEarnedMentions, shouldRenderMediaBar } from "@/lib/media-mentions";
@@ -32,13 +28,13 @@ export function MediaBar() {
   return (
     <section
       aria-label="Earned media mentions"
-      className="bg-white border-y border-purple-100 py-6 px-4 sm:px-6"
+      className="border-y border-border/40 bg-card/30 py-5 px-6"
     >
-      <div className="max-w-5xl mx-auto">
-        <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-purple-700 text-center mb-3">
+      <div className="max-w-4xl mx-auto">
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/80 text-center mb-3">
           As seen in
         </p>
-        <ul className="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 text-sm font-bold text-gray-700">
+        <ul className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
           {mentions.map((m) => (
             <li key={m.url}>
               <a
@@ -46,7 +42,7 @@ export function MediaBar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={m.context ?? `Read at ${m.publication}`}
-                className="hover:text-purple-700 transition-colors underline-offset-4 hover:underline"
+                className="hover:text-foreground transition-colors underline-offset-4 hover:underline"
               >
                 {m.publication}
               </a>

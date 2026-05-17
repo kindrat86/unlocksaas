@@ -15,21 +15,17 @@
  *
  * When real customers exist (workbook 09 §6 public proof loop), swap one
  * to three of these for first-paying-customer screenshots WITH PERMISSION.
- *
- * Visual treatment: ClickFunnels 1.0 light theme — white cards on a soft
- * purple background, a big oversized purple quote glyph behind each quote,
- * bold uppercase pain-label tag on top in orange.
  */
-import { Quote } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
-type QuoteItem = {
+type Quote = {
   text: string;
   author: string;
   source: string;
   pain: string;
 };
 
-const QUOTES: QuoteItem[] = [
+const QUOTES: Quote[] = [
   {
     pain: "Flat line after launch",
     text: "10,947 registered users over 9 years. 90 ever paid anything. Total revenue: €6,356.",
@@ -70,49 +66,36 @@ const QUOTES: QuoteItem[] = [
 
 export function HonestTestimonials() {
   return (
-    <section className="bg-purple-50/40 py-16 sm:py-20 px-4 sm:px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-10 sm:mb-12">
-          <p className="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-bold text-purple-700 mb-3">
-            The Mirror In Ten Founders
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight">
-            We are not the first to describe this.{" "}
-            <span className="bg-yellow-300 px-1.5 py-0.5 box-decoration-clone">
-              You are not alone in it.
-            </span>
-          </h2>
-          <p className="text-base text-gray-700 italic mt-5 max-w-2xl mx-auto leading-relaxed">
-            Public quotes from real founders. We have zero customers and refuse to invent any.
-            When real wins arrive, they replace these.
-          </p>
-        </div>
+    <section className="py-16 px-6 max-w-4xl mx-auto">
+      <div className="text-center mb-10">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          The Mirror In Ten Founders
+        </p>
+        <h2 className="text-2xl font-bold leading-tight">
+          We are not the first to describe this. You are not alone in it.
+        </h2>
+        <p className="text-sm text-muted-foreground italic mt-3 max-w-xl mx-auto leading-relaxed">
+          Public quotes from real founders. We have zero customers and refuse to invent any.
+          When real wins arrive, they replace these.
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {QUOTES.map((q) => (
-            <div
-              key={q.text}
-              className="relative bg-white rounded-xl border-2 border-purple-200 p-6 sm:p-7 shadow-md hover:shadow-xl hover:border-purple-400 transition-all overflow-hidden"
-            >
-              <Quote
-                className="absolute -top-2 -right-2 h-24 w-24 text-purple-100"
-                aria-hidden="true"
-              />
-              <span className="relative inline-block bg-orange-500 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {QUOTES.map((q) => (
+          <Card key={q.text}>
+            <CardContent className="pt-6">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
                 {q.pain}
-              </span>
-              <blockquote className="relative text-base sm:text-lg text-gray-900 leading-relaxed font-medium mb-5">
+              </p>
+              <blockquote className="text-sm leading-relaxed italic mb-4">
                 &ldquo;{q.text}&rdquo;
               </blockquote>
-              <p className="relative text-xs font-bold text-purple-700 uppercase tracking-wider">
-                — {q.author}
-                <span className="text-gray-500 font-medium normal-case tracking-normal ml-1">
-                  ({q.source})
-                </span>
+              <p className="text-xs text-muted-foreground">
+                — {q.author} ({q.source})
               </p>
-            </div>
-          ))}
-        </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </section>
   );

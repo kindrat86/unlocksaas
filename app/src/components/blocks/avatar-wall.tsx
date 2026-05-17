@@ -16,9 +16,6 @@
  *     to share_visibility=public, builder_slug NOT NULL, first_customer_at
  *     NOT NULL. The view definition is the security boundary.
  *
- * Visual treatment: ClickFunnels 1.0 light theme — purple-700 avatar chips
- * on white background, orange ring on hover, bold black names.
- *
  * Server component. No client JS. Caches per request via the admin client
  * (the `loadVerifiedBuilders` helper).
  */
@@ -47,60 +44,52 @@ export async function AvatarWall() {
   }
 
   return (
-    <section
-      className="bg-white py-16 sm:py-20 px-4 sm:px-6"
-      aria-label="Verified Builders"
-    >
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-10 sm:mb-12">
-          <p className="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-bold text-purple-700 mb-3">
-            Verified Builders
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight">
-            Nine founders who shipped on AI tools and{" "}
-            <span className="bg-yellow-300 px-1.5 py-0.5 box-decoration-clone">
-              got a paying customer.
-            </span>
-          </h2>
-          <p className="text-base text-gray-700 italic mt-5 max-w-xl mx-auto leading-relaxed">
-            Stripe-verified. Not self-reported. Click any avatar to see the
-            badge page.
-          </p>
-        </div>
-
-        <ul
-          role="list"
-          className="grid grid-cols-3 md:grid-cols-9 gap-4 sm:gap-5 max-w-4xl mx-auto"
-        >
-          {builders.map((b) => (
-            <li key={b.id} className="flex flex-col items-center text-center">
-              <Link
-                href={`/builder/${b.slug}`}
-                className="group flex flex-col items-center"
-                aria-label={`${b.builderName}'s Verified Builder badge`}
-              >
-                <div className="h-16 w-16 md:h-14 md:w-14 rounded-full bg-purple-700 grid place-items-center text-lg font-extrabold text-white ring-4 ring-purple-100 group-hover:ring-orange-300 group-hover:bg-purple-800 transition-all shadow-md">
-                  {initialOf(b.builderName)}
-                </div>
-                <p className="text-sm font-bold text-gray-900 mt-2 group-hover:text-purple-700 transition-colors">
-                  {b.builderName.split(/\s+/)[0]}
-                </p>
-                {b.productName ? (
-                  <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1 max-w-[80px]">
-                    {b.productName}
-                  </p>
-                ) : null}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <p className="text-sm text-gray-600 italic text-center mt-10 max-w-xl mx-auto leading-relaxed">
-          Each badge is one paying customer detected on the founder&apos;s own
-          connected Stripe account.{" "}
-          <span className="font-bold text-gray-900">The mechanic, not the marketing, is the proof.</span>
+    <section className="py-16 px-6 max-w-4xl mx-auto" aria-label="Verified Builders">
+      <div className="text-center mb-10">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          Verified Builders
+        </p>
+        <h2 className="text-2xl font-bold leading-tight">
+          Nine founders who shipped on AI tools and got a paying customer.
+        </h2>
+        <p className="text-sm text-muted-foreground italic mt-3 max-w-xl mx-auto leading-relaxed">
+          Stripe-verified. Not self-reported. Click any avatar to see the
+          badge page.
         </p>
       </div>
+
+      <ul
+        role="list"
+        className="grid grid-cols-3 md:grid-cols-9 gap-4 max-w-3xl mx-auto"
+      >
+        {builders.map((b) => (
+          <li key={b.id} className="flex flex-col items-center text-center">
+            <Link
+              href={`/builder/${b.slug}`}
+              className="group flex flex-col items-center"
+              aria-label={`${b.builderName}'s Verified Builder badge`}
+            >
+              <div className="h-14 w-14 md:h-12 md:w-12 rounded-full border border-border bg-muted/60 grid place-items-center text-base font-semibold text-foreground group-hover:bg-primary/10 group-hover:border-primary/40 transition-colors">
+                {initialOf(b.builderName)}
+              </div>
+              <p className="text-xs text-foreground mt-2 group-hover:underline underline-offset-4">
+                {b.builderName.split(/\s+/)[0]}
+              </p>
+              {b.productName ? (
+                <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1">
+                  {b.productName}
+                </p>
+              ) : null}
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <p className="text-xs text-muted-foreground italic text-center mt-8 max-w-md mx-auto">
+        Each badge is one paying customer detected on the founder&apos;s own
+        connected Stripe account. The mechanic, not the marketing, is the
+        proof.
+      </p>
     </section>
   );
 }

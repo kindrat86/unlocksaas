@@ -13,10 +13,6 @@
  * pages do not have to pass it. When the founder records and pushes the
  * URL to Vercel, every page that mounts this block flips to real video
  * with no code change.
- *
- * Visual treatment: ClickFunnels 1.0 light theme — purple gradient backdrop,
- * thick orange frame around the player ("the show is happening here"), bold
- * black headline with yellow highlight on the key phrase.
  */
 
 import type { VslSurface } from "@/lib/analytics/events";
@@ -58,58 +54,50 @@ export function VslBlock({ surface = "funnel_hub", autoplay = true }: Props) {
   const hasRecordedVsl = Boolean(VSL_CONTENT_URL && VSL_THUMBNAIL_URL);
 
   return (
-    <section className="bg-gradient-to-b from-purple-50 via-white to-white py-16 sm:py-20 px-4 sm:px-6">
-      <div className="max-w-3xl mx-auto">
-        {/* Surface B (AEO/GEO) — schema.org/VideoObject. Gated on env-driven
-            content+thumbnail presence so we never claim a video that is not
-            actually playable; matches the honest-empty-state discipline used
-            by MediaBar and the Organization.logo omission. */}
-        {hasRecordedVsl ? (
-          <VideoJsonLd
-            name="The story behind the Machine"
-            description={VSL_SCHEMA_DESCRIPTION}
-            uploadDate={VSL_UPLOAD_DATE}
-            thumbnailUrl={VSL_THUMBNAIL_URL!}
-            contentUrl={VSL_CONTENT_URL!}
-          />
-        ) : null}
+    <section className="py-16 px-6 max-w-3xl mx-auto">
+      {/* Surface B (AEO/GEO) — schema.org/VideoObject. Gated on env-driven
+          content+thumbnail presence so we never claim a video that is not
+          actually playable; matches the honest-empty-state discipline used
+          by MediaBar and the Organization.logo omission. */}
+      {hasRecordedVsl ? (
+        <VideoJsonLd
+          name="The story behind the Machine"
+          description={VSL_SCHEMA_DESCRIPTION}
+          uploadDate={VSL_UPLOAD_DATE}
+          thumbnailUrl={VSL_THUMBNAIL_URL!}
+          contentUrl={VSL_CONTENT_URL!}
+        />
+      ) : null}
 
-        <div className="text-center mb-8 sm:mb-10">
-          <p className="text-[11px] sm:text-xs uppercase tracking-[0.25em] font-bold text-purple-700 mb-3">
-            Meet the founder
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-[1.1] tracking-tight">
-            The story behind the Machine, in{" "}
-            <span className="bg-yellow-300 px-1.5 py-0.5 box-decoration-clone">
-              the founder&apos;s voice.
-            </span>
-          </h2>
-        </div>
-
-        {/* Orange frame — CF visual cue: "this is where the show is happening". */}
-        <div className="rounded-2xl bg-white p-2 shadow-2xl shadow-purple-900/20 border-4 border-orange-500">
-          <div className="rounded-xl overflow-hidden bg-gray-900">
-            <VslPlayer
-              surface={surface}
-              showHeadline={false}
-              showCta={false}
-              autoplay={autoplay}
-            />
-          </div>
-        </div>
-
-        {/* Transcript block, collapsed by default. Visible to all visitors —
-            accessibility + readers who skip video. */}
-        <details className="mt-8 group">
-          <summary className="cursor-pointer text-xs uppercase tracking-widest font-bold text-purple-700 hover:text-purple-900 transition-colors">
-            Read it instead →
-          </summary>
-          <blockquote className="mt-4 pl-5 border-l-4 border-orange-500 text-gray-700 leading-relaxed whitespace-pre-line bg-purple-50/40 py-3 pr-4 rounded-r">
-            {SIX_LINE_INTRO}
-          </blockquote>
-          <p className="text-xs text-gray-600 text-right mt-3 italic">— Maryan</p>
-        </details>
+      <div className="text-center mb-8">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          Meet the founder
+        </p>
+        <h2 className="text-2xl font-bold leading-tight">
+          The story behind the Machine, in the founder&apos;s voice.
+        </h2>
       </div>
+
+      {/* The moving surface — auto-swaps from scripted to recorded video
+          the moment NEXT_PUBLIC_VSL_URL is configured. */}
+      <VslPlayer
+        surface={surface}
+        showHeadline={false}
+        showCta={false}
+        autoplay={autoplay}
+      />
+
+      {/* Transcript block, collapsed by default. Visible to all visitors —
+          accessibility + readers who skip video. */}
+      <details className="mt-8 group">
+        <summary className="cursor-pointer text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">
+          Read it instead
+        </summary>
+        <blockquote className="mt-4 pl-5 border-l-2 border-primary/40 text-muted-foreground leading-relaxed whitespace-pre-line">
+          {SIX_LINE_INTRO}
+        </blockquote>
+        <p className="text-xs text-muted-foreground text-right mt-3 italic">— Maryan</p>
+      </details>
     </section>
   );
 }
