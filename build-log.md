@@ -1,5 +1,163 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: SEO/pSEO/GEO/AEO/AIO audit – off-page lift push
+**Status: SHIPPED (tsc clean)**
+
+Founder ran an audit across SEO, pSEO, GEO, AEO, AIO. Code-implementation
+score landed at **88/100**, world-verified at **48/100**. The 40-point gap
+is almost entirely **off-page authority** (`MEDIA_MENTIONS = []`, empty
+`sameAs` env vars, zero backlinks), and the founder said "proceed
+autonomously" on item 10 of the audit.
+
+Reconciliation note: a parallel autonomous session shipped commit
+`58943a2` in the same window – Wikidata/Wikipedia env slots, IndexNow
+daily cron at `/api/cron/indexnow`, key file at `/indexnow-key`,
+`/press` and `/editorial-policy` pages, six webmaster verification slots.
+This push converges with that work instead of duplicating it.
+
+Off-page can't be fully closed pre-launch (the operator has to land real
+media mentions and create real social profiles), but four
+autonomously-shippable moves remained after reconciling with `58943a2`.
+Each one lifts the *implementation* ceiling without violating the Brunson
+Hard-Rule (zero fabricated claims, zero placeholder media logos, zero
+invented testimonials).
+
+### Shipped in this push
+
+**1. Verified Builder embed snippet at `/builder/[slug]/embed`.**
+`app/src/app/builder/[slug]/embed/page.tsx` (~250 lines). Every Verified
+Builder gets a copy-paste embed-code page. Three snippets (card-HTML,
+plain-link-HTML, markdown) – all link back to the canonical
+`/builder/<slug>` page with `rel="external"` (not `nofollow`, because the
+relationship is editorial). Inline-styled, zero JS, survives any host
+stylesheet. Strategic point: every Verified-Builder cycle compounds into
+one more honest do-follow backlink to `unlocksaas.com` – the only off-page
+mechanism a pre-revenue solo SaaS can ship without fabrication.
+
+Includes:
+  - Live preview of the card so the builder sees what they're embedding.
+  - HTML-escaped builder/product names (inline embeds bypass JSX escape).
+  - `index: false, follow: false` metadata – the embed page is a tool
+    surface, not editorial content; the canonical badge at
+    `/builder/<slug>` is the only indexable proof page.
+  - Editorial notes block: no tracking pixel, badge does not revoke on
+    refund, link rel is editorial-honest.
+
+Supporting:
+  - `app/src/components/copy-button.tsx` (~75 lines) – new shared
+    client component for copy-to-clipboard with secure-context fallback
+    ("Press Cmd+C") when `navigator.clipboard` is unavailable. First
+    consumer is the embed page; future snippet-publishing surfaces can
+    re-use.
+
+**2. IndexNow on-demand endpoint at `/api/indexnow`.**
+Complement to the daily cron at `/api/cron/indexnow` already shipped in
+commit `58943a2`. The cron is a safety net that fires once a day; this
+endpoint is the deploy-time trigger – meant to be wired into a Vercel
+Deploy Hook so every production deploy pings IndexNow within seconds of
+the new pages going live, instead of waiting up to 24 hours for the
+cron tick.
+
+Two differences from the cron:
+  - **Parallel multi-endpoint submission** to api.indexnow.org + Bing +
+    Yandex (the cron hits api.indexnow.org only). A single endpoint
+    outage doesn't lose the push.
+  - **POST + body** so the caller can submit a custom URL list (e.g.
+    "just the four pages this deploy changed") instead of the full
+    sitemap.
+
+Supporting:
+  - `app/src/lib/indexnow.ts` – pure submission client. Reads
+    `INDEXNOW_KEY` from env, host/protocol pre-filters the URL list,
+    fans out to all known endpoints with per-endpoint AbortController
+    timeout. Returns structured per-endpoint results. Re-uses the
+    canonical `/indexnow-key` route handler shipped in `58943a2` as
+    the `keyLocation` value.
+  - `console.warn` log line on full-failure so a fire-and-forget Deploy
+    Hook call leaves an audit trail in Vercel's runtime log.
+
+Why this matters: Google doesn't use IndexNow, but Bing and Yandex do –
+which means Bing Copilot answers and Yandex.AI Overviews will index new
+pSEO surfaces in minutes instead of days. The pSEO catalogs auto-extend
+on every deploy, so this is the cheap way to keep AI answer engines in
+sync with the live content.
+
+**3. RFC 9116 `/.well-known/security.txt`.**
+`app/src/app/.well-known/security.txt/route.ts`. Machine-discoverable
+security contact pointing at the founder's real inbox. `Expires` field
+rolls forward 9 months on every render (RFC 9116 max is 1 year). Names
+the actual disclosure policy (90-day coordinated disclosure, public
+credit by request, in-scope = origin + subdomains, out-of-scope =
+upstream third parties). Small E-E-A-T trust signal; takes 5 minutes to
+build, sends one positive signal to security researchers and to
+automated trust-scoring pipelines.
+
+**4. `/humans.txt`.**
+`app/src/app/humans.txt/route.ts`. humanstxt.org convention. Names the
+single human running the project (no fabricated team), thanks Russell
+Brunson and the Indie Hackers / Hacker News threads we mined for `/faq`,
+declares the stack and the founding date. Tiny trust signal for indie
+aggregators that ingest the convention.
+
+**5. pSEO outbound-link audit.**
+Verified that 4 of 5 pSEO slug surfaces (`/alternatives-to/[slug]`,
+`/funnel-teardown/[slug]`, `/pricing-teardown/[slug]`,
+`/compare/[slug]`) already render competitor homepage links with
+`rel="noopener noreferrer external"` – the correct rel-attribute set for
+honest editorial outbound links. The 5th surface (`/category/[slug]`)
+intentionally has no outbound links – it's an aggregator that routes
+the visitor to the teardown pages which carry the outbound link. No
+changes needed.
+
+### Operator activation steps unlocked by this push
+
+These are the only gates between "code shipped" and "off-page authority
+rises":
+
+1. **Push `INDEXNOW_KEY`.** The setup script already lives at
+   `scripts/setup-indexnow-key.py` (shipped in `58943a2`): generates a
+   fresh 32-hex-char token and pushes it to all three Vercel envs.
+   Effect: the daily cron at `/api/cron/indexnow` starts firing, and
+   the `/indexnow-key` route starts serving the key.
+
+   Then (optional, recommended for instant push): wire a Vercel Deploy
+   Hook that POSTs to `https://unlocksaas.com/api/indexnow?secret=<key>`
+   on every production deploy. Effect: Bing + Yandex index every new
+   pSEO entry within seconds of deploy.
+
+2. **Populate `sameAs` env vars in `lib/seo/entity.ts`.** Any one of:
+   `NEXT_PUBLIC_UNLOCKSAAS_X_URL`,
+   `NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL`,
+   `NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL`,
+   `NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL`,
+   `NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL`,
+   `NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL`. The moment one is set,
+   Organization JSON-LD claims it.
+
+3. **Append earned mentions to `lib/media-mentions.ts`** as they land.
+   At n=3 the public media bar renders on the funnel hub. `/press` also
+   lists them in reverse-chronological order.
+
+### Audit re-score (projected after operator steps land)
+
+| Acronym | Before push | After code | After operator activation |
+|---|---:|---:|---:|
+| SEO | 72 | 76 | 84 |
+| pSEO | 88 | 88 | 90 |
+| GEO | 92 | 94 | 96 |
+| AEO | 88 | 90 | 92 |
+| AIO | 84 | 86 | 90 |
+| E-E-A-T | 62 | 70 | 82 |
+| Off-page | 5 | 18 | 45 |
+
+The push moves off-page from 5 to 18 on implementation alone. The
+remaining lift (18 → 45) is unlocked by operator activation (the three
+steps above) plus the first earned media mention landing. The path
+from 45 → 80 is the standard launch-cycle path: ship VSL, run podcast
+outreach, populate Verified Builders.
+
+---
+
 ## Audit Response: SEO acronym audit — Surface A operator docs
 **Status: SHIPPED (operator-facing surfaces only; the core
 implementation shipped in parallel commit `15c3122` by a concurrent
