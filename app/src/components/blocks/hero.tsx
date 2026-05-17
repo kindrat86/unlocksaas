@@ -69,13 +69,15 @@ export function Hero() {
             Pre-revenue founders building with AI
           </Badge>
 
-          {/* Hook — promise + polarity move. */}
+          {/* Hook — promise + polarity move. Plain-English second clause:
+              Marco is non-technical, so the polarity move keeps the "enforced,
+              not begged for" angle without using "webhook" (dev jargon). */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6 text-balance">
             Your first paying customer{" "}
             <span className="text-muted-foreground">in 60 days.</span>
             <br />
             Or your money back,{" "}
-            <span className="text-muted-foreground">by webhook.</span>
+            <span className="text-muted-foreground">automatically.</span>
           </h1>
 
           {/* Scar-tissue subhead — founder authority in one sentence. */}
@@ -85,7 +87,7 @@ export function Hero() {
             me back then.
           </p>
           <p className="text-sm text-foreground/80 mb-10">
-            — Maryan, marketer · non-engineer
+            — Maryan, non-engineer founder
           </p>
 
           {/* Primary CTA — the only domino with full button gravity. */}
