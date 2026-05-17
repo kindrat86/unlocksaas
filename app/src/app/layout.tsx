@@ -66,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(GeistSans.variable, GeistMono.variable, "dark")}>
+    <html lang="en" className={cn(GeistSans.variable, GeistMono.variable)}>
       <body className="antialiased bg-background text-foreground">
         <PostHogProvider>
           {/* PageView lives in Suspense because useSearchParams forces CSR. */}

@@ -4,14 +4,18 @@
 
 @layer base {
   :root {
+    /* Deep slate text on white — matches the funnelfixer.site palette
+       (text #0F1729, bg #FFFFFF). The whole app reads as a modern light-
+       mode SaaS surface. */
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --popover-foreground: 222 47% 11%;
+    /* Primary = indigo #4346EF, the start of the brand gradient. */
+    --primary: 239 84% 60%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
@@ -22,7 +26,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --ring: 239 84% 60%;
     --radius: 0.5rem;
   }
 
@@ -97,6 +101,37 @@
     max-width: 100%;
     height: auto;
   }
+}
+
+/* Brand-gradient utilities — funnelfixer.site palette
+ * Indigo #4346EF → Violet #9B6AF1, 135° diagonal. Used on the primary CTA,
+ * gradient text spans in headlines, and decorative icon tiles. */
+.bg-gradient-primary {
+  background-image: linear-gradient(135deg, #4346ef 0%, #9b6af1 100%);
+}
+.text-gradient-primary {
+  background-image: linear-gradient(135deg, #4346ef 0%, #9b6af1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.shadow-primary-glow {
+  box-shadow: 0 10px 40px -10px rgba(67, 70, 239, 0.45);
+}
+/* Subtle indigo-tinted hero wash, sits above the white body bg. */
+.bg-hero-wash {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(155, 106, 241, 0.10), transparent 70%),
+    linear-gradient(to bottom, #f5f5ff 0%, #ffffff 70%);
+}
+/* Faint grid behind the hero — matches the funnelfixer texture without
+ * needing an SVG asset. */
+.bg-grid-faint {
+  background-image:
+    linear-gradient(to right, rgba(67, 70, 239, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(67, 70, 239, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 /* VSL scene-entry tween used by the kinetic-typography fallback.
