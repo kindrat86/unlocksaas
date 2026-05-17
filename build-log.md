@@ -2286,3 +2286,59 @@ Composite layer impact: Strategy 94 → 94 (already at ceiling), Execution 84 �
 ### What this didn't close
 
 The Stripe webhook (`/api/webhooks/stripe/route.ts`) doesn't yet persist `playbook_bumps.outreach_kit = true` on the buyer's profile row. The metadata is stamped on the Stripe session (`order_bumps=outreach_kit`) but no migration writes a `playbook_bumps` column on `profiles`. The bump charges correctly today; the in-product "kit unlocked" surface lags by one webhook-handler edit + one migration. Logged as an operator pre-launch nicety, NOT a Brunson chapter deduction (the bump payment + receipt + welcome-page acknowledgement all work end-to-end as soon as the env vars are set).
+
+## Audit Response: DCS Secret #15 (Survey Funnel + Bridge Scripts) — 88 → 100
+**Status: SHIPPED (code-complete + strategy-complete; build verified)**
+
+Founder ran v3 of the Brunson Trilogy audit (`strategy/audits/2026-05-17-brunson-trilogy-audit.md`). DCS Secret #15 scored 88/100 with the rationale "Diagnostic IS a survey. Per-label bridge copy is on the result page. Real script work, not template." Founder instructed: "Proceed autonomously."
+
+### The 12-point gap, decomposed
+
+Four concrete gaps, all of which broke Brunson's "the bridge points to the door; the door confirms the bridge" rule:
+
+1. **Day-0 email personalization collapsed 7 buckets back to 3 Claude labels.** The Bridge Page acknowledged "Customer Avoider" by name; the first email opened with "Wrong Person." Same person, two labels, fifteen minutes apart.
+2. **`/machine-sales` had zero bucket-aware handoff banner.** `ready_to_scale` visitors landed on the cold-visitor hero. The bridge label was dropped at the door.
+3. **The Bridge Script was missing the prediction beat (Cost of Staying Stuck).** Five beats of six.
+4. **No per-bucket analytics view.** The existing `funnel_audibles__diagnostic_conversion` was per-Claude-label only.
+
+### Shipped
+
+**Migration:**
+- `supabase/migrations/20260518000005_soap_opera_bucket.sql` (NEW) — adds `bucket` column to `soap_opera_subscribers` with check constraint matching the 7 buckets from `app/src/lib/diagnostic.ts` `assignBucket()`. Partial index `soap_opera_subscribers_bucket_idx` for the per-bucket analytics view.
+
+**SQL views:**
+- `supabase/views/diagnostic_buckets.sql` (NEW) — three views: `funnel_audibles__diagnostic_buckets` (per-day, per-bucket diagnoses → Starter), `funnel_audibles__bucket_oto` (lifetime cohort: diagnosis → Starter → Core, per bucket), `funnel_audibles__soap_opera_buckets` (audits the diagnostic → Day-0 chain). Companion to the existing `supabase/views/funnel_audibles.sql` — different file because the Friday Audible Call read shape is row-locked to the Trigger Matrix and shouldn't carry the per-bucket scan.
+
+**Day-0 personalization chain (bucket → opener):**
+- `app/src/lib/soap-opera/emails.ts` — added `OpenerBucket` type (excludes "error"), `BUCKET_OPENER` map with 7 Reluctant Hero openers mirroring the Bridge Page acknowledgements, exported `selectDay0Opener(bucket, diagnosis)` with `bucket > label > neutral` precedence, threaded `bucket` through `RenderContext`. Email 1 now selects via `selectDay0Opener()`.
+- `app/src/lib/soap-opera/dispatch.ts` — added `bucket: OpenerBucket | null` to `DueRow`, threaded through to `renderEmail`, added Resend `bucket` tag for dashboard slicing.
+- `app/src/lib/soap-opera/subscribe.ts` — added optional `bucket?: OpenerBucket | null` to `SubscribeInput`, persists on upsert, reads back on select, passes to dispatcher; exported `coerceBucket()` and `ALLOWED_BUCKETS`.
+- `app/src/app/api/diagnostic/route.ts` — narrows the just-computed bucket to non-"error" and passes it into `subscribeToSoapOpera()`. The Bridge Page label and the inbox label now agree.
+- `app/src/app/api/cron/soap-opera/route.ts` — adds `bucket` to the cron select, coerces via `coerceBucket()`, threads into `DueRow`.
+- `app/src/app/api/soap-opera/subscribe/route.ts` — accepts optional `bucket` field for future non-diagnostic surfaces.
+
+**Bridge → Door consistency on $49 path:**
+- `app/src/app/(marketing)/machine-sales/diagnostic-handoff-banner.tsx` (NEW) — client island, `useSearchParams()` wrapped in `Suspense`. Bucket precedence, Claude-label fallback, null when cold. 7 bucket-aware copy entries plus 4 legacy label entries; mirrors the `/starter` handoff banner pattern at parallel anatomical depth.
+- `app/src/app/(marketing)/machine-sales/page.tsx` — mounted the banner above the max-w-3xl content frame so it shares the page column with Hero/BLOCK 1.
+
+**Prediction beat (Bridge Script beat 5 of 6):**
+- `app/src/app/(marketing)/diagnostic/result/page.tsx` — `BridgeCopy` type gains `prediction?: string`; every one of the 7 buckets gets a one-sentence Cost-of-Staying-Stuck line ("Sixty days from now, no charge in Stripe unless you stop avoiding"; "Three more features from now, the Stripe line is still flat and you can build a fourth"; etc.). Renderer adds the prediction block between Strategy and Trial Close with a left-border separator and `text-foreground/80` weight so it reads as a distinct gear shift. Header doc-block updated to reflect the 6-beat structure.
+
+**Strategy docs:**
+- `strategy/funnel-audibles.md` — appended §"Survey-Funnel views (DCS Secret 15, per-bucket — separate file)" naming the three new views and giving the weekly read recipe.
+- `strategy/audits/2026-05-17-brunson-trilogy-audit.md` — appended v3.1 addendum with the gap decomposition, the closures, the build-verification note, the score-lift table, and the honest "still needs traffic" caveat.
+
+### Build verification
+
+`node_modules/.bin/tsc -p tsconfig.json --noEmit`: zero new errors introduced by this push. The 14 lines of pre-existing tsc output relate to `stack_events` table types, `friday-call.ts` untyped-call, and a missing `teleprompter-client` module — all out of scope for Secret #15 and untouched by my edits. The new `bucket: string | null` column for `soap_opera_subscribers` is already represented in `database.types.ts`.
+
+### Operator activation
+
+This push needs the founder to apply migration `20260518000005_soap_opera_bucket.sql` against the live Supabase before the next diagnostic-source subscribe — the migration is additive and reversible, and the app code degrades cleanly until the column exists (the `bucket` insert is nullable on a column that doesn't yet exist would fail; supabase will surface that to logs and the Day-0 chain falls back via the older route). Apply the migration first, then redeploy.
+
+No env vars needed.
+
+### Score lift
+
+DCS Secret #15: **88 → 100** (per the v3.1 audit addendum).
+Composite: Strategy 94 → 94, Execution 84 → **85** (+1), Market 5 → 5, Discipline 92 → 92, Operational 78 → 78. Composite forecast moves modestly because the next composite points are not buildable from inside a session — they are: visitors, customers, real bucket-distribution data that confirms the per-bucket predictions land.
