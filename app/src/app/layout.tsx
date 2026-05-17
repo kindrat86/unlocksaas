@@ -66,7 +66,13 @@ export const metadata: Metadata = {
     title: "Unlock SaaS — Your First Paying Customer in 60 Days",
     description:
       "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
-    creator: "@maryan",
+    // `creator` / `site` intentionally omitted. The previous draft set
+    // `creator: "@maryan"` as a guess — that handle has not been verified
+    // as owned by Maryan, and Brunson Hard-Rule (honest claims) forbids
+    // shipping unverified identity in metadata. Twitter card validators
+    // accept missing `creator`; populate this once the operator owns and
+    // links a real handle via NEXT_PUBLIC_UNLOCKSAAS_X_URL in entity.ts
+    // and bidirectionally claims the site from that profile bio.
   },
 };
 
