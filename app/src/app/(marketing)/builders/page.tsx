@@ -33,6 +33,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/server";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -41,7 +42,9 @@ export const metadata: Metadata = {
   title: "Verified Builders — UnlockSaaS",
   description:
     "Founders who shipped a product and got a paying customer. Verified by Stripe, not self-reported.",
-  alternates: { canonical: "https://unlocksaas.com/builders" },
+  // Normalized to path-relative; metadataBase in src/app/layout.tsx resolves
+  // it to the absolute URL. Matches the convention every other surface uses.
+  alternates: pageAlternates("/builders"),
   openGraph: {
     title: "Verified Builders — UnlockSaaS",
     description:

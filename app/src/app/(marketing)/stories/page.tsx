@@ -8,6 +8,7 @@ import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 // Stable literal — DO NOT replace with `new Date()`. Article.datePublished
 // must be a real-world publish date the editorial commits to; a per-build
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   title: "Five Stories for the Flat Stripe Line — Unlock SaaS",
   description:
     "Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. Read free. No email required.",
-  alternates: { canonical: "/stories" },
+  alternates: pageAlternates("/stories"),
   openGraph: {
     title: "Five Stories for the Flat Stripe Line",
     description:

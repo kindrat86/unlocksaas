@@ -8,6 +8,7 @@ import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { FoundingCohortMeter } from "@/components/founding-cohort-meter";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { FoundingWaitlistForm } from "./waitlist-form";
 import { FoundingClaimButton } from "./claim-button";
 import { cartWindow, seatsClaimed, FOUNDING_COHORT_CAP } from "@/lib/founding/cohort";
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   title: "The Founding Cohort — 50 seats, lifetime $49 price lock",
   description:
     "50 Founding Verified Builders. 7-day window. Same $49/mo as the eventual evergreen price, locked for the life of your subscription. Founding-variant Verified Builder badge. The founder's email for 30 days.",
-  alternates: { canonical: "/founding" },
+  alternates: pageAlternates("/founding"),
   openGraph: {
     title: "The Founding Cohort — Unlock SaaS",
     description:

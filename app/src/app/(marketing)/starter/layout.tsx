@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Per-page metadata wrapper for the $1 Starter sales page.
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "The $1 Starter — finish your dream customer and offer this week",
   description:
     "One dollar. One week. Steps 1 and 2 of The Playbook: pin one real customer, write one real offer for them. The two pieces of work most founders quietly skip between launch and revenue.",
-  alternates: { canonical: "/starter" },
+  alternates: pageAlternates("/starter"),
   openGraph: {
     title: "The $1 Starter — Unlock SaaS",
     description:

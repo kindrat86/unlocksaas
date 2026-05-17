@@ -5,6 +5,7 @@ import {
   PersonJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 
 /**
  * About page. E-E-A-T author anchor for the whole site.
@@ -28,7 +29,11 @@ export const metadata: Metadata = {
   title: "About Maryan — Unlock SaaS",
   description:
     "I'm a marketer. I have never written a line of production code. I shipped a dozen AI products and watched them flatline in Stripe — then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
-  alternates: { canonical: "/about" },
+  // markdownAlternate emits canonical + per-page hreflang + the
+  // `text/markdown` content-type alternate pointing at /about.md (the
+  // playbook-readable mirror for retrieval pipelines that prefer markdown
+  // over JS-rendered HTML).
+  alternates: markdownAlternate("/about", "/about.md"),
   openGraph: {
     type: "profile",
     title: "About Maryan — Unlock SaaS",

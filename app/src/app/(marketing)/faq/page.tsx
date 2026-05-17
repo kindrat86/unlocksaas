@@ -7,6 +7,7 @@ import {
   FaqPageJsonLd,
 } from "@/components/seo/json-ld";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Standalone FAQ surface — Answer Engine Optimization (AEO) anchor page.
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
   title: "FAQ — Every objection answered in the founder's exact words",
   description:
     "The eight objections post-launch pre-revenue founders actually raise about Unlock SaaS — price, time, identity, DIY, signal — answered in the same language they were asked in. Sourced from real Indie Hackers and Hacker News threads.",
-  alternates: { canonical: "/faq" },
+  alternates: pageAlternates("/faq"),
   openGraph: {
     type: "article",
     title: "Unlock SaaS — FAQ",

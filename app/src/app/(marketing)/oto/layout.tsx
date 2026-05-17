@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Per-page metadata wrapper for /oto.
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   title: "One-time offer",
   description: "Post-purchase upgrade for Unlock SaaS customers.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/oto" },
+  alternates: pageAlternates("/oto"),
 };
 
 export default function OtoLayout({

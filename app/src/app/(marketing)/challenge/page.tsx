@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { ChallengeForm } from "./challenge-form";
 
 // Per-page metadata — Surface A of the Google strategy. Targets the
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   title: "The 14-Day First-Customer Sprint — free, email-only",
   description:
     "14 days. 14 actions. One per day. By Day 14 you will have done more selling than in the last six months — or proven to yourself that you will not. Free, email-only, no card, no course.",
-  alternates: { canonical: "/challenge" },
+  alternates: pageAlternates("/challenge"),
   openGraph: {
     title: "The 14-Day First-Customer Sprint — Unlock SaaS",
     description:

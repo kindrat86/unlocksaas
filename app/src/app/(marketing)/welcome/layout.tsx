@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 /**
  * Per-page metadata wrapper for /welcome.
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "Welcome",
   description: "Post-purchase landing for Unlock SaaS.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/welcome" },
+  alternates: pageAlternates("/welcome"),
 };
 
 export default function WelcomeLayout({

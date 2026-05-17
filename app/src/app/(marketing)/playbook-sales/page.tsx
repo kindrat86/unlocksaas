@@ -20,6 +20,7 @@ import {
   FaqPageJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { PLAYBOOK_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
 
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   title: "The Playbook — First Paying Customer in 60 Days or You Don't Pay",
   description:
     "A seven-step playbook for already-shipped, pre-revenue SaaS founders. $49/month. If it does not produce a verified paying customer in 60 days, you do not pay. Built by a non-engineer for non-engineer founders.",
-  alternates: { canonical: "/playbook-sales" },
+  alternates: pageAlternates("/playbook-sales"),
   openGraph: {
     type: "website",
     title: "The Playbook — First Paying Customer in 60 Days or You Don't Pay",
