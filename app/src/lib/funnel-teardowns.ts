@@ -1560,6 +1560,343 @@ const TEARDOWNS_LIST: FunnelTeardown[] = [
     homepageUrl: "https://stripe.com/",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "fathom",
+    displayName: "Fathom Analytics",
+    creator: "Jack Ellis and Paul Jarvis",
+    category: "Privacy analytics",
+    oneLine:
+      "Fathom's funnel runs on founder-led indie credibility. Jack Ellis and Paul Jarvis write the marketing, build the product, and answer the support emails — and the audience trusts them for it.",
+    tldr:
+      "Fathom Analytics's funnel is built on founder-led indie credibility. Jack Ellis and Paul Jarvis are visible across Twitter, the blog, and customer support, and the marketing leans into the small-team-shipping-quietly aesthetic that privacy-leaning buyers respond to. The lesson for indie founders: when your audience is values-aligned, founder visibility IS the brand and beats anonymous-SaaS positioning at scale.",
+    productSnapshot: {
+      whatTheySell:
+        "A privacy-focused, cookie-free web analytics SaaS positioned as the ethical alternative to Google Analytics.",
+      whoFor:
+        "Indie founders, small SaaS, and privacy-leaning teams in the EU and beyond who do not want to deal with cookie banners or GDPR overhead.",
+      pricingNote:
+        "Volume-tiered subscription starting low for hobby sites and scaling with pageviews. Hosted only (no self-host) (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Founder-led-as-trust-signal",
+      analysis:
+        "The hero leads with the same principled positioning Plausible uses (privacy, no cookies, GDPR-by-construction) but with a different texture: Fathom feels like a small focused product run by two recognizable humans. The founder-led trust signal compresses category-evaluation time because privacy-aligned buyers are buying from a person they can verify, not a faceless SaaS.",
+    },
+    story: {
+      pattern: "Quiet competence narrative",
+      analysis:
+        "The story is told across Jack and Paul's individual blogs, podcast appearances, and Twitter presences. The marketing site is calm and confident; the broader content arc reinforces 'we ship steadily, we do not chase venture money, we answer your support emails.' This narrative shape converts buyers who actively dislike VC-funded marketing aesthetics.",
+    },
+    offer: {
+      pattern: "Subscription with structural cap on free trial",
+      analysis:
+        "Free 30-day trial; paid tiers scale by pageviews after that. No self-host (unlike Plausible). The offer mechanics are conventional but the brand voice carries the conversion work — buyers trust Jack and Paul to ship what they promise without aggressive upsells.",
+    },
+    whatsWorking: [
+      "Two founders visible across Twitter, blogs, and customer support — the brand is the humans.",
+      "Quiet-competence aesthetic differentiates against louder venture-funded analytics players.",
+      "Volume-tiered pricing aligns the bill with customer success and platform cost.",
+      "Same principle stack as Plausible (privacy, GDPR-by-construction, cookie-free) — the category fight is values-aligned not values-divided.",
+      "Long-running founder content (Jack's Calm Fund work, Paul's writing) gives prospects a deep prior on the operators before they buy.",
+      "Active customer support visible publicly — buyers see Jack and Paul responding to issues on Twitter, which is its own credibility signal.",
+    ],
+    whatToAdapt: [
+      "If your audience is values-aligned, founder visibility IS the brand. Get on the marketing surface yourself rather than hiring marketers to speak for you.",
+      "Long-running personal content (Twitter, blog, podcast) compounds into a deep prior buyers can verify before purchase.",
+      "Active visible customer support is a trust signal that scales — buyers who see you respond to other customers conclude you will respond to them too.",
+    ],
+    whatToAvoid: [
+      "Do not adopt founder-led-as-trust if you cannot sustain the visibility. The aesthetic only works when founder presence is continuous; visible absence converts against you.",
+      "Do not pretend to be small if you are not. The quiet-competence narrative is fragile when buyers discover the team is larger or VC-funded than the brand implied.",
+    ],
+    brunsonLens: {
+      hook: "Attractive Character hook (Brunson Expert Secrets) — Jack and Paul ARE the marketing.",
+      story:
+        "Hero's-Journey-via-founder-content: years of writing about indie software, calm-company values, and customer-first ops build the prior buyers carry in.",
+      offer:
+        "Two-rung Value Ladder: free trial as front-end, volume-tiered subscription as core. No high-ticket back-end — the offer matches the indie aesthetic.",
+      valueLadderTier:
+        "Front-end trial plus subscription core; no continuity upsell or back-end.",
+    },
+    faqs: [
+      {
+        q: "How does Fathom differ from Plausible?",
+        a: "Same category, same principles, different texture. Plausible leads with open-source transparency and a public revenue dashboard; Fathom leads with founder visibility and quiet competence. The functional products are near-parity at standard use cases; the choice is which founder pair's aesthetic resonates.",
+      },
+      {
+        q: "Why does founder-led marketing work for Fathom specifically?",
+        a: "Because privacy-conscious buyers actively prefer buying from identifiable humans over faceless SaaS. The audience self-selects toward indie-operator brands; Fathom's founder visibility matches that preference exactly.",
+      },
+      {
+        q: "Can any indie SaaS use the founder-led approach?",
+        a: "Most can attempt it; not all can sustain it. The approach requires founders who are willing to be visible continuously across years and who can write or speak compellingly enough to compound an audience. Without those traits, founder-led marketing fizzles.",
+      },
+      {
+        q: "What is the Brunson lens on Fathom's funnel?",
+        a: "Pure Attractive Character hook (Brunson Expert Secrets) executed by two founders. The Hero's Journey unfolds across blog posts, podcast episodes, and Twitter threads rather than in one marketing campaign. Subscription-core Value Ladder with no high-ticket back-end — the offer shape matches the brand shape.",
+      },
+      {
+        q: "How does Unlock SaaS think about Fathom's pattern?",
+        a: "Founder-led visibility is the highest-trust marketing surface available, but it requires continuous presence to sustain. The indie SaaS founders who can pull it off compound disproportionately; the ones who try and fade do worse than if they had stayed anonymous.",
+      },
+    ],
+    tags: ["founder-led", "attractive-character", "indie-friendly", "privacy-analytics"],
+    homepageUrl: "https://usefathom.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "calendly",
+    displayName: "Calendly",
+    creator: "Tope Awotona",
+    category: "Scheduling",
+    oneLine:
+      "Calendly's funnel runs on category-default mindshare. The brand IS the moat — bookers expect to see a Calendly link.",
+    tldr:
+      "Calendly's funnel works because the brand is the category default. When sales teams or freelancers share a scheduling link, recipients expect to see Calendly and are mildly surprised by alternatives. The lesson for indie founders: brand-as-default is a real moat once earned, but the path to earning it is long and not directly replicable; alternatives must compete on principle or feature gap rather than brand.",
+    productSnapshot: {
+      whatTheySell:
+        "A scheduling platform for sales calls, demos, customer meetings, and recruiter coordination, with a Calendly-branded booking page recipients use.",
+      whoFor:
+        "Sales teams, recruiters, customer success managers, and any professional whose calendar coordination is high-volume.",
+      pricingNote:
+        "Free tier (1 event type, limited features); paid plans scale per user from low-double-digits per month into enterprise tiers (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Category-default trust",
+      analysis:
+        "The hero leans on Calendly's market position rather than a specific structural promise. The implicit argument is 'you already know what this does — start using it.' This works only after a brand has earned default-recognition status; before that, the same minimalist hero converts nobody.",
+    },
+    story: {
+      pattern: "Use-case carousel for cross-functional adoption",
+      analysis:
+        "The marketing site shows use cases across sales, recruiting, customer success, education, and consulting. The story is not about one buyer; it is about the brand serving every role that schedules meetings. This breadth of positioning works for a category default and fails for a challenger trying to enter the market.",
+    },
+    offer: {
+      pattern: "Free-tier-acquisition plus enterprise upsell ladder",
+      analysis:
+        "The free tier captures individual users; paid tiers scale into team and enterprise features (CRM integrations, advanced workflows, admin controls). The free-tier acquisition is structural — every Calendly link shared by a free user is also marketing for the brand to the recipient.",
+    },
+    whatsWorking: [
+      "Brand-as-default IS the moat — recipients recognize Calendly links and trust them, which suppresses switching to alternatives.",
+      "Free tier with the Calendly brand on the booking page seeds visible-customer presence across every shared link.",
+      "Cross-functional positioning broadens the addressable market beyond pure sales teams.",
+      "Mature integration ecosystem (Salesforce, HubSpot, Marketo) locks in enterprise customers who built workflows around Calendly.",
+      "Enterprise-tier features (SSO, admin, workflows) capture the high-margin segment without disturbing the free-acquisition layer.",
+    ],
+    whatToAdapt: [
+      "Visible-customer flywheel: free-tier branding on customer-shared surfaces is the most efficient acquisition channel when buyers share output publicly.",
+      "Cross-functional positioning can broaden a tool that started in one vertical, but only once category default is earned.",
+      "Mature integration ecosystem is a real moat for enterprise — but it takes years to build and is not transferable.",
+    ],
+    whatToAvoid: [
+      "Do not adopt category-default positioning if you are the challenger. The aesthetic only works once you have earned the recognition; before then, you need to lead with the differentiator that justifies switching.",
+      "Do not assume cross-functional positioning works for new entrants. Calendly earned the breadth after locking sales-team adoption first; new entrants should narrow before they broaden.",
+    ],
+    brunsonLens: {
+      hook: "Brand-default hook — works only for the category incumbent. Brunson would call this 'borrowed authority from your own brand' once that brand is earned.",
+      story:
+        "Multi-Dream-Customer story serving sales, recruiting, success, education — only sustainable for the category default.",
+      offer:
+        "Front-end free with visible branding (acquisition flywheel) plus enterprise upsell ladder (margin extraction). Textbook two-rung Value Ladder with a continuity-tier back-end.",
+      valueLadderTier:
+        "Front-end lead funnel (free with branding) plus per-seat subscription core plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Why is Calendly the category default?",
+        a: "Years of free-tier acquisition compounded into brand recognition with recipients. Every shared Calendly link reinforced the brand to a new audience; the cumulative network effect produced default recognition that newer entrants cannot easily dislodge.",
+      },
+      {
+        q: "Can a challenger beat Calendly?",
+        a: "Not on brand; the recognition gap is too large. Challengers (Cal.com, SavvyCal) compete on principle (open source) or feature gap (calendar overlay) rather than on brand. The strategy is to win the segments where Calendly's category-default advantage matters least.",
+      },
+      {
+        q: "Will the brand-default moat last forever?",
+        a: "Probably not. Newer entrants chip away at younger demographics who do not have the same Calendly-as-default mental model. The moat decays over years; the brand still wins the median professional in 2026 but the gap is narrower than it was in 2020.",
+      },
+      {
+        q: "What is the Brunson lens on Calendly's funnel?",
+        a: "Once-earned brand-default is the canonical moat Brunson describes in Expert Secrets as 'becoming the category king.' Calendly executed every move (free-tier acquisition, visible branding, cross-functional positioning, enterprise upsell) but the central asset is brand recognition that took years to compound. New entrants cannot replicate the asset; they can only outflank it.",
+      },
+      {
+        q: "How does Unlock SaaS think about Calendly's pattern?",
+        a: "Category-default brand is a real moat but not a replicable strategy. For pre-revenue indie founders, the lesson is to compete on principle or feature gap rather than on brand recognition — the gap to the default is too large to close head-on.",
+      },
+    ],
+    tags: ["category-default", "brand-as-moat", "free-tier-flywheel", "incumbent"],
+    homepageUrl: "https://calendly.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "postmark",
+    displayName: "Postmark",
+    creator: "Wildbit team (acquired by ActiveCampaign in 2022)",
+    category: "Email API",
+    oneLine:
+      "Postmark's funnel runs on deliverability obsession. For over a decade the marketing has hammered one message: your transactional email actually arrives.",
+    tldr:
+      "Postmark's funnel is built around a single structural promise: deliverability. The marketing has hammered this message for over a decade, with separate transactional and broadcast streams as the architectural proof point. The lesson for indie founders: when the structural decision (separated streams) IS the differentiator, the marketing only needs to repeat one message.",
+    productSnapshot: {
+      whatTheySell:
+        "A developer-friendly transactional email API with separate streams for transactional and broadcast sends, optimized for deliverability.",
+      whoFor:
+        "Developers and SaaS teams sending transactional email (password resets, receipts, notifications) who prioritize inbox placement above all else.",
+      pricingNote:
+        "Free 100/month; paid tiers start at ~$15/month for 10K emails; volume tiers scale into enterprise (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Single-message repetition",
+      analysis:
+        "The hero leads with deliverability and only deliverability. There is no feature carousel, no AI add-on, no creator-pivot. The implicit argument is 'we solve one problem completely; everything else is distraction.' This works because deliverability genuinely IS the dominant criterion for transactional-email buyers.",
+    },
+    story: {
+      pattern: "Architectural-decision-as-proof",
+      analysis:
+        "The story is told through the separated transactional and broadcast streams — a structural decision that protects transactional deliverability from broadcast incidents. This is not a marketing claim; it is a technical architecture choice that competitors would have to abandon their business model to copy. Architectural proof beats narrative proof.",
+    },
+    offer: {
+      pattern: "Volume-tiered with conservative free tier",
+      analysis:
+        "100 emails/month free is conservative compared to Resend's 3K; the pricing structure favors paid customers who care about deliverability enough to commit. Paid tiers scale with volume; the offer is conventional but the brand promise (deliverability) carries the conversion work.",
+    },
+    whatsWorking: [
+      "Single-message marketing for over a decade — the brand promise is so consistent that buyers know what they are buying before clicking.",
+      "Separated streams as architectural proof — competitors cannot copy this without changing their business model.",
+      "Strong founder-led marketing from Wildbit (Natalie Nagele, Chris Nagele) over the years built indie credibility.",
+      "Active engagement in the broader email community (sender-policy education, deliverability content) reinforces the category-expert position.",
+      "Acquired by ActiveCampaign in 2022 — keeps the platform funded and operationally stable while preserving the brand promise.",
+    ],
+    whatToAdapt: [
+      "If your structural decision IS the differentiator, lead with it everywhere and resist the urge to add other messaging. Architectural commitment beats marketing copy.",
+      "Single-message repetition compounds — buyers who hear the same message ten times trust it more than buyers who hear ten different messages once.",
+      "Founder-led content in your category's broader community (deliverability, security, compliance) builds expert positioning that pays back for years.",
+    ],
+    whatToAvoid: [
+      "Do not adopt single-message marketing if you have not committed to the architectural decision behind it. The strategy fails when the message and the product diverge.",
+      "Do not assume separated streams is the right architecture for your product — it is right for deliverability-first email and wrong for other email shapes.",
+    ],
+    brunsonLens: {
+      hook: "Single-promise hook (Brunson 'one-sentence pitch') executed at extreme repetition over years.",
+      story:
+        "Architectural-proof story — the product itself is the case study. Stronger than narrative when the architectural choice is verifiable.",
+      offer:
+        "Volume-tiered subscription with conservative free tier; no front-end loss leader. Brunson 'priced for the buyer who cares' shape.",
+      valueLadderTier:
+        "Two-rung Value Ladder: free trial tier plus volume-tiered subscription core.",
+    },
+    faqs: [
+      {
+        q: "Why does Postmark separate transactional and broadcast streams?",
+        a: "Because a broadcast incident (high complaint rate, spam trigger) can damage IP reputation. Separating streams means a broadcast issue does not affect your transactional emails (password resets, receipts) which are usually mission-critical. The architecture protects the most important sends from the less-controlled ones.",
+      },
+      {
+        q: "How does Postmark differ from Resend?",
+        a: "Postmark is the older, deliverability-first incumbent with a decade of single-message marketing. Resend is the modern challenger with sharper DX and React Email integration. For maximum deliverability track record, Postmark; for modern developer experience, Resend. Both are well-regarded; the choice is values-aligned.",
+      },
+      {
+        q: "Does the ActiveCampaign acquisition change Postmark?",
+        a: "Operationally, not yet. Postmark remains the deliverability-first transactional brand; ActiveCampaign keeps it funded. The risk is long-term strategic drift if ActiveCampaign decides to converge the product into its marketing platform. As of 2026, the brand promise holds.",
+      },
+      {
+        q: "What is the Brunson lens on Postmark's funnel?",
+        a: "Single-promise hook plus architectural-proof story plus conservative subscription Value Ladder. The unusual Brunson element is the depth of single-message commitment — most companies pivot messaging every year or two; Postmark hammered deliverability for over a decade and the compound trust this built is unusual.",
+      },
+      {
+        q: "How does Unlock SaaS apply this lesson?",
+        a: "Single-message marketing is the highest-trust strategy available IF the message is verifiable and IF you can sustain the commitment. Indie founders who try this and pivot after a year do worse than if they had run softer marketing throughout. Commit to the structural promise or pick a different strategy.",
+      },
+    ],
+    tags: ["deliverability", "single-message", "developer-tools", "architectural-proof"],
+    homepageUrl: "https://postmarkapp.com/",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "testimonial-to",
+    displayName: "Testimonial.to",
+    creator: "Damon Chen",
+    category: "Testimonial collection",
+    oneLine:
+      "Testimonial.to is a solo-founder indie SaaS that competes with Senja on polish. The funnel runs on the visible-customer flywheel.",
+    tldr:
+      "Testimonial.to is a solo-founder indie SaaS in the testimonial collection space, competing head-to-head with Senja. The funnel runs on the same visible-customer flywheel both companies use — every Testimonial.to widget on a customer's marketing site is implicit advertising. The lesson for indie founders: in indie-friendly categories with visible-output products, solo founders can compete credibly against funded companies if the output flywheel is built in.",
+    productSnapshot: {
+      whatTheySell:
+        "A testimonial collection and display platform for SaaS, agencies, and creators, with strong video testimonial features and polished Wall of Love widgets.",
+      whoFor:
+        "Indie SaaS, agencies, and creators who need video and text testimonials displayed cleanly on their marketing sites.",
+      pricingNote:
+        "Free tier with Testimonial.to branding; paid tiers in the low-double-digits/mo range remove branding and unlock AI features (verified 2026-05-17).",
+    },
+    hook: {
+      pattern: "Universal-pain naming, solo-operator credibility",
+      analysis:
+        "The hero names the pain (collecting and displaying testimonials) that nearly every SaaS founder has felt — same hook as Senja. The differentiator is the visible solo-founder operation: Damon Chen runs the product, writes the changelog, answers support. Solo-operator credibility appeals to indie buyers who prefer doing business with identifiable humans.",
+    },
+    story: {
+      pattern: "Demo-by-existence plus solo-founder transparency",
+      analysis:
+        "The marketing site itself uses Testimonial.to to display testimonials — same demo-by-existence pattern as Senja. Plus the solo-founder layer: Damon's Twitter, the build-in-public posts, the public revenue updates. Two trust layers compound where most competitors have one.",
+    },
+    offer: {
+      pattern: "Free-with-branding plus brand-removal upsell",
+      analysis:
+        "Identical structural pricing to Senja: free tier with attribution feeds the visible-output flywheel; paid tier removes attribution. The pricing model is conventional in the category — both companies converged on the same shape because it works.",
+    },
+    whatsWorking: [
+      "Solo-founder visibility differentiates against larger competitors — Damon is the brand and the support team.",
+      "Demo-by-existence: the marketing site uses Testimonial.to itself, so the proof is built into the buying experience.",
+      "AI-assisted video editing and highlights — feature differentiation in a near-parity category.",
+      "Active build-in-public marketing from Damon (Twitter, public metrics) compounds indie credibility over time.",
+      "Free-with-branding flywheel — every Testimonial.to widget on a customer's marketing page is implicit advertising.",
+    ],
+    whatToAdapt: [
+      "Solo-founder visibility is a real competitive advantage in indie-friendly categories. If you are solo, lean into it; do not hide behind a faux-bigger brand.",
+      "Demo-by-existence (using your own product on the marketing site) is the cheapest proof asset available — and it is unfakeable.",
+      "Build-in-public content compounds — the prospects who read your changelog posts trust you more than prospects who only see your marketing.",
+    ],
+    whatToAvoid: [
+      "Do not adopt solo-founder positioning if you are not solo. The credibility evaporates when buyers discover the team.",
+      "Do not assume demo-by-existence works if your product is not customer-facing. The flywheel requires visible customer output.",
+    ],
+    brunsonLens: {
+      hook: "Attractive Character hook executed by a single founder.",
+      story:
+        "Two-layer story: demo-by-existence (product visible on marketing site) plus build-in-public founder content. Layered storytelling compounds trust faster than single-layer stories.",
+      offer:
+        "Free-with-branding plus brand-removal upsell — Brunson structural-trigger pattern matching the broader category convention.",
+      valueLadderTier:
+        "Front-end lead funnel (free with branding) plus paid subscription core (brand removal plus AI features).",
+    },
+    faqs: [
+      {
+        q: "How does Testimonial.to differ from Senja?",
+        a: "Same category, similar feature set, similar pricing model. The differentiators are aesthetic (Testimonial.to leans slightly more polished on display widgets; Senja leans slightly more on collection workflow) and operator shape (Testimonial.to is solo-founder; Senja is small team). Functional parity is high.",
+      },
+      {
+        q: "Should I trust a solo-founder SaaS for a critical workflow?",
+        a: "Depends on the founder's track record. Damon Chen has a multi-year history of indie SaaS operations (Mailoji, then Testimonial.to) and a visible build-in-public arc. The trust depends on operator continuity; bet on founders who show up consistently and avoid solo SaaS run by founders who go silent for months.",
+      },
+      {
+        q: "Will the visible-customer flywheel work for my SaaS?",
+        a: "Only if your output is publicly visible. Testimonial widgets, form submissions, scheduling pages, video recordings — all qualify. Internal dashboards, admin tools, backend infrastructure — do not. Match the strategy to the product shape.",
+      },
+      {
+        q: "What is the Brunson lens on Testimonial.to's funnel?",
+        a: "Attractive Character (Damon) plus demo-by-existence (the marketing site uses the product) plus structural-trigger pricing (brand removal). Three Brunson levers stacked on a single product. The unusual element is the depth of solo-founder visibility — Damon's continuous public presence is the moat against funded competitors.",
+      },
+      {
+        q: "How does Unlock SaaS think about Testimonial.to's pattern?",
+        a: "Solo-founder indie SaaS that competes credibly with funded competitors is one of the most replicable patterns in the 2026 landscape. The requirements are real (founder visibility, demo-able product, output flywheel) but the bar is reachable for indie operators who commit.",
+      },
+    ],
+    tags: ["solo-founder", "visible-output", "indie-friendly", "build-in-public"],
+    homepageUrl: "https://testimonial.to/",
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
