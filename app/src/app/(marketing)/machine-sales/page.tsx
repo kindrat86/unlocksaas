@@ -93,6 +93,7 @@ export default function MachineSalesPage() {
           BreadcrumbList earns the SERP sitelink and helps Google render
           the (Home › The Machine) crumb under the page title. */}
       <MachineProductJsonLd />
+      <FaqPageJsonLd items={MACHINE_SALES_FAQS} />
       <BreadcrumbListJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
@@ -934,79 +935,21 @@ export default function MachineSalesPage() {
             Six things you might be telling yourself right now.
           </h2>
 
+          {/* MACHINE_SALES_FAQS is the single source of truth — the same
+              constant feeds the FAQPage JSON-LD rendered at the top of the
+              page. Any copy edit here MUST happen in lib/faqs.ts; the
+              schema/DOM-divergence trap (penalty under Google structured-data
+              policy + lowers AI Overview pickup) is exactly what shared data
+              prevents. */}
           <div className="space-y-6">
-            <div>
-              <p className="font-bold">
-                &ldquo;I do not have time for another framework.&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                The Machine is not a framework. It is a tool. The
-                framework lives in the engine. You answer 3 to 5
-                questions per step. Time to first paying customer can be
-                60 days or less.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold">
-                &ldquo;I have tried customer interviews and they did not
-                help.&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                You tried interviews. The Machine forces conclusions
-                FROM interviews. The bottleneck was not the asking, it
-                was the synthesizing.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold">
-                &ldquo;Outreach is not my strength.&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                It is not anyone&apos;s strength. That is why Step 5
-                generates the message, picks the target, and the tool
-                tracks the send. Strength is irrelevant to a mechanical
-                process.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold">
-                &ldquo;$49 a month is too much when I am not
-                earning.&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                $49 a month is two coffees a week to make the difference
-                between $0 and $49+ recurring forever. If The Machine
-                does not produce a paying customer, the $98 comes back.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold">
-                &ldquo;I cannot risk another product that does not
-                work.&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                The product already exists. You shipped it. The Machine
-                is the work AROUND it, not another product to build.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold">
-                &ldquo;I could build this myself in a weekend.&rdquo;
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                You could build the form. You can&apos;t build the
-                Stripe-webhook proof, the Dream 100 picker fed from the
-                locked workbook, the engine pushback, or the 60-day
-                refund logic in a weekend. And while you are building
-                the tool, you are not running the funnel — which is the
-                exact disease the Machine treats.
-              </p>
-            </div>
+            {MACHINE_SALES_FAQS.map((item) => (
+              <div key={item.q}>
+                <p className="font-bold">&ldquo;{item.q}&rdquo;</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                  {item.a}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 

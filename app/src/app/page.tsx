@@ -404,9 +404,25 @@ export default function FunnelHub() {
       </section>
 
       {/* ---------------- FOOTER ---------------- */}
+      {/* E-E-A-T trust columns surface from the footer. About/Contact/Privacy/
+          Terms are low-priority SERP pages but high structural weight: Google
+          quality raters and LLM citation pipelines both look for a real
+          about/contact/legal surface before treating an entity as credible. */}
       <footer className="py-8 px-4 sm:px-6 text-center text-xs text-muted-foreground mt-auto">
         <p>&copy; 2026 Unlock SaaS. Built by a non-engineer who shipped anyway.</p>
         <p className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <Link
+            href="/about"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Contact
+          </Link>
           <Link
             href="/builders"
             className="underline underline-offset-4 hover:text-foreground"
@@ -418,6 +434,18 @@ export default function FunnelHub() {
             className="underline underline-offset-4 hover:text-foreground"
           >
             Came from a cold ad?
+          </Link>
+          <Link
+            href="/privacy"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/terms"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Terms
           </Link>
         </p>
       </footer>

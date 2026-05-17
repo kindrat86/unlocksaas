@@ -17,6 +17,7 @@
 
 import type { VslSurface } from "@/lib/analytics/events";
 import { VslPlayer } from "@/components/vsl/vsl-player";
+import { VideoJsonLd } from "@/components/seo/json-ld";
 
 const SIX_LINE_INTRO = `I'm a marketer and an operator. I have never written a line of production code.
 For most of my life that closed a door. Then in 2026, Lovable and Claude opened it
@@ -24,6 +25,23 @@ and I shipped real AI products in weeks. The shipping part felt like magic.
 What came after did not. I would launch, open Stripe, and watch a line lie flat.
 What finally broke me was sitting with more than ten other founders and hearing
 my own story back. So I built the machine I wish someone had handed me.`;
+
+// VideoObject schema description — same source-of-truth as the visible <details>
+// transcript. AIO/GEO rule: JSON-LD claims must match the visible page content.
+// Strip whitespace runs so the schema field reads as one paragraph.
+const VSL_SCHEMA_DESCRIPTION = SIX_LINE_INTRO.replace(/\s+/g, " ").trim();
+
+// VideoObject is rendered only when both URL and thumbnail env vars are set.
+// Brunson Hard-Rule (honest claims): we do not declare a VideoObject for the
+// kinetic-typography fallback, because a kinetic-text loop is not a "video" in
+// the sense LLMs and Google's video crawler expect. Once the founder records
+// and pushes NEXT_PUBLIC_VSL_URL + NEXT_PUBLIC_VSL_THUMBNAIL_URL, the schema
+// auto-activates. Until then, no schema, no claim.
+const VSL_CONTENT_URL = process.env.NEXT_PUBLIC_VSL_URL;
+const VSL_THUMBNAIL_URL = process.env.NEXT_PUBLIC_VSL_THUMBNAIL_URL;
+// Stable manual-bump date; see app/src/app/(marketing)/parables/page.tsx for
+// the same rationale — avoid baking build timestamps into editorial claims.
+const VSL_UPLOAD_DATE = "2026-05-17";
 
 interface Props {
   /** Which page is mounting the block. Drives analytics surface attribution. */
@@ -33,8 +51,24 @@ interface Props {
 }
 
 export function VslBlock({ surface = "funnel_hub", autoplay = true }: Props) {
+  const hasRecordedVsl = Boolean(VSL_CONTENT_URL && VSL_THUMBNAIL_URL);
+
   return (
     <section className="py-16 px-6 max-w-3xl mx-auto">
+      {/* Surface B (AEO/GEO) — schema.org/VideoObject. Gated on env-driven
+          content+thumbnail presence so we never claim a video that is not
+          actually playable; matches the honest-empty-state discipline used
+          by MediaBar and the Organization.logo omission. */}
+      {hasRecordedVsl ? (
+        <VideoJsonLd
+          name="The story behind the Machine"
+          description={VSL_SCHEMA_DESCRIPTION}
+          uploadDate={VSL_UPLOAD_DATE}
+          thumbnailUrl={VSL_THUMBNAIL_URL!}
+          contentUrl={VSL_CONTENT_URL!}
+        />
+      ) : null}
+
       <div className="text-center mb-8">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           Meet the founder

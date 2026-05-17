@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { VslPlayer } from "@/components/vsl/vsl-player";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
@@ -166,6 +167,18 @@ function StarterSalesPageInner() {
 
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
+      {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
+          BreadcrumbList earns the SERP sitelink (Home › $1 Starter) and
+          helps Google attach the Starter to the canonical funnel surface.
+          The page itself is a "use client" Suspense surface because the
+          diagnostic-handoff banner reads ?bucket / ?label from the URL;
+          JSON-LD <script> still renders fine inside a client component. */}
+      <BreadcrumbListJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          { name: "$1 Starter", url: "https://unlocksaas.com/starter" },
+        ]}
+      />
       <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">
         {/* Handoff acknowledgment — only renders when ?from=diagnostic. */}
