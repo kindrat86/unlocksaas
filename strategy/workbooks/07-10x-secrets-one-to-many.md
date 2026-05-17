@@ -194,6 +194,21 @@ Both go into workbook 04 Section 4's $49 sales-page build spec on the next build
 
 **Revision 2026-05-17 (DCS #4 Hook/Story/Offer lift, 86 → 92):** Three Secrets Case Study beats upgraded from honest-empty placeholders to real, dated, falsifiable case studies. Secret 1 = founder self-application with three verifiable artifacts (the offer, the AC voice, the Stripe-webhook-enforced guarantee mechanism) plus an explicit upgrade slot for the first real customer. Secret 2 = founder's own SEO year + the 10+ founder pattern synthesis (names withheld pending release-form consent). Secret 3 = the $98 cap + the worst-case 100-subscriber arithmetic + a written quarterly-transparency commitment backed by a live `/transparency/q1-2027` stub page. The 8-point cap below 100 on DCS #4 is honestly held by three remaining things only the operator + the market can close: a recorded VSL (founder face), at least one real customer the upgrade slot can absorb, and measured hook-rotation data from market exposure. Shipped on `/machine-sales` in the autonomous push.
 
+**Audit close 2026-05-17 (v3, DCS Secret #22 / ES Secret #11 — Perfect Webinar, 88 → 100):** Eight Brunson-canon gaps closed on `/machine-sales` in a single autonomous push:
+
+1. **PS block** — `<FounderPs />` mounted at the very end. Brunson sales-letter rule: the PS is the second-most-read piece of copy on a long-form page, after the headline.
+2. **Jump-nav** — six anchor links right after the Big Domino (`#secrets`, `#stack`, `#guarantee`, `#faq`, `#disqualifier-heading`, `#checkout`) so the skeptic can enter from the section they want to audit first. `print:hidden` so saved artifacts stay clean.
+3. **Pre-checkout microcopy** — three short lines above the final CTA describing exactly what happens when the buyer clicks (Stripe checkout page, $49 charge today, lands on Machine Step 1). Brunson canon for killing checkout-page anxiety.
+4. **Risk reversal restated above the final CTA** — Brunson rule of three (hero → mid-page guarantee block → final CTA). `<ShieldCheck />` + one-line restatement with the $98 cap.
+5. **Stake close restated above the final CTA** — slide 36 ("If you do not try, you will be in the same place in 60 days") fires at the decision moment, not 800 lines upstream.
+6. **Three-axis disqualifier upgrade** — single-line "not for you if you haven't shipped" replaced with the shared `<DisqualifyingCopy />` block (five gates: stage, format, traffic-shopping, DFY-expectation, vanity-metrics). Polarity is not rudeness.
+7. **Inline trial closes** — three of §4's twelve inventoried trial closes fire as italic pull-quotes after each Secret (Vehicle → #3 "permission to keep planning", Internal → #9 "avoiding the customer", External → #11 "$98 cap acceptable for recurring revenue"). Brunson canon: trial closes ladder after each major belief beat, not clumped in a single section.
+8. **PWP (Perfect Webinar Print)** — new `<PrintPageLink />` client component triggers `window.print()`. `print:hidden` classes on transient elements (jump-nav, microcopy, print button itself). Print-only footer line names the live URL so shared artifacts route back to a working checkout.
+
+**Build verification:** `tsc --noEmit` shows zero new errors involving the four edited/added files. `next build` reports `✓ Compiled successfully`; the only build failure is a pre-existing Stripe SDK type error in `api/checkout/route.ts:165` (`Stripe.Checkout.SessionCreateParams` namespace rename) that pre-dates this push.
+
+**Remaining cap-below-100 deductions** (CRON_SECRET in Vercel; VSL recording; cold-traffic conversion data) belong to the Operational Readiness layer, not to Chapter 22 itself — same lens that took Funnel Audibles to 90 pre-traffic and the Funnel Hub to 100 pre-record.
+
 **Next:** Step 8, Your Dream Customer (Traffic Secrets begins).
 
 ---

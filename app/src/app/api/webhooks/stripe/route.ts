@@ -6,6 +6,12 @@ import { sendFirstCustomerCelebrationEmail } from "@/lib/celebration-email";
 import { absoluteBadgeUrl } from "@/lib/builder-badge";
 import { IDENTITY_AB_KEY, parseIdentityVariant } from "@/lib/ab";
 import {
+  parseStackStripeStamp,
+  STACK_LAYER_NAMES,
+  StackLayer,
+  type StackLayerValue,
+} from "@/lib/stack-attribution";
+import {
   captureServerAndFlush,
   stripeDistinctId,
 } from "@/lib/analytics/server";
@@ -106,6 +112,9 @@ export async function POST(req: NextRequest) {
         await recordIdentityAbConversion(session);
         await recordDiagnosticAttribution(session);
         await recordFoundingSeat(session);
+        // Funnel Stack (DotCom Secrets Secret #27) — persist the full
+        // cross-funnel path that produced this conversion.
+        await recordStackConversion(session);
         await capturePurchase(session);
         // FOLLOW-UP: short-circuit any active Cart Abandonment Recovery row
         // for this email so the cron stops chasing a paid customer.
@@ -750,6 +759,63 @@ async function recordIdentityAbConversion(session: Stripe.Checkout.Session) {
     console.error(
       `[ab_tests] ${conversionEvent} insert failed for session ${session.id}:`,
       error.message
+    );
+  }
+}
+
+// ── Funnel Stack: cross-funnel conversion attribution ───────────────────────
+//
+// DotCom Secrets Secret #27 / strategy/funnel-stack.md.
+//
+// The checkout API stamps the eight-layer stack path onto session.metadata
+// (subject, entry layer, current layer, full path, layer purchased, optional
+// affiliate slug). This handler reads it back and writes one `convert` row
+// per session into public.stack_events so per-path conversion rates are
+// computable from one table.
+//
+// Silently skips sessions that don't carry a stack subject (legacy paths,
+// or visitors who blocked cookies AND whose checkout request was retried
+// without re-stamping). The stack lib's checkout fallback emits a one-shot
+// subject for cookie-less visitors so most rows will carry one.
+//
+// Idempotency: paired with `markEventProcessed` at the top of the webhook
+// handler — a replayed checkout.session.completed event short-circuits
+// before reaching this function. Defense in depth would be a unique index
+// on (stripe_session_id, event='convert') but we deliberately allow the
+// degenerate case of a manually-replayed session producing a second
+// `convert` row because that signals an operational anomaly worth seeing.
+async function recordStackConversion(session: Stripe.Checkout.Session) {
+  const metadata = session.metadata ?? {};
+  const stamp = parseStackStripeStamp(metadata);
+  if (!stamp.subject) return;
+  if (stamp.layerPurchased === null) return;
+
+  // Conversion event type mirrors recordIdentityAbConversion's mapping so
+  // the two tables agree on terminology.
+  const conversionEvent: "starter_purchase" | "core_purchase" =
+    session.mode === "subscription" ? "core_purchase" : "starter_purchase";
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("stack_events").insert({
+    subject_id: stamp.subject,
+    layer: stamp.layerPurchased,
+    event: "convert",
+    source_layer: stamp.current,
+    destination_layer: stamp.layerPurchased,
+    conversion_event: conversionEvent,
+    path: JSON.stringify(stamp.path),
+    ab_variant: parseIdentityVariant(metadata.ab_variant),
+    affiliate_slug: stamp.affiliate,
+    utm_source: metadata.utm_source ?? null,
+    utm_medium: metadata.utm_medium ?? null,
+    utm_campaign: metadata.utm_campaign ?? null,
+    stripe_session_id: session.id,
+  });
+
+  if (error) {
+    console.error(
+      `[stack_events] convert insert failed for session ${session.id}:`,
+      error.message,
     );
   }
 }

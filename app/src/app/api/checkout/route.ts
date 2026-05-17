@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import {
   IDENTITY_AB_KEY,
@@ -162,7 +163,7 @@ export async function POST(req: NextRequest) {
       // Brunson DCS Secret #17 §3: the bump is a SEPARATE line item, not a
       // tier of the primary product. This way Stripe surfaces the bump as
       // its own row in the receipt — the buyer sees what they bought.
-      const lineItems: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[] =
+      const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
         [
           {
             price: process.env.STRIPE_STARTER_PRICE_ID!,

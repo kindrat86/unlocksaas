@@ -78,46 +78,55 @@ export async function sendStepDeliverableEmail(
   const title = STEP_TITLE[args.stepId];
   const blurb = STEP_BLURB[args.stepId];
   const continueUrl = `${defaultAppUrl()}/machine/step/${args.stepId}`;
-  const subject = `${greeting} — ${title} is locked.`;
+
+  // Book-Funnel framing (Brunson DCS Secret #17): each completed step is a
+  // CHAPTER of the named Playbook. The buyer's mental model shifts from
+  // "I got a deliverable" → "I got Chapter 1 of my Playbook" — which is the
+  // identity-anchor the Book Funnel chapter is built around.
+  const chapter = chapterForEngineStep(args.stepId);
+  const chapterLabel =
+    chapter.number !== null ? `Chapter ${chapter.number}` : "A new chapter";
+  const subject = `${greeting} — ${chapterLabel} of your ${PLAYBOOK.shortName} is locked.`;
 
   const text = [
     `${greeting}.`,
     ``,
-    `${title} is locked. Here is your copy, in your inbox, where the tab cannot close on it.`,
+    `${chapterLabel} of your ${PLAYBOOK.name} — "${title}" — is locked. Here is your copy, in your inbox, where the tab cannot close on it.`,
     ``,
     blurb,
     ``,
-    `--- ${title} ---`,
+    `--- ${chapterLabel}: ${title} ---`,
     ``,
     args.outputText.trim(),
     ``,
-    `--- end ---`,
+    `--- end of ${chapterLabel} ---`,
     ``,
-    `Open this step again any time: ${continueUrl}`,
+    `Open this chapter again any time: ${continueUrl}`,
     ``,
-    `Reply to this email if anything in your deliverable lands wrong. I read every reply myself.`,
+    `Reply to this email if anything in your chapter lands wrong. I read every reply myself.`,
     ``,
     `— Maryan`,
   ].join("\n");
 
-  // Render the deliverable as a <pre> block so the formatting (headings,
+  // Render the chapter as a <pre> block so the formatting (headings,
   // bullets, line breaks) survives in inbox clients that strip markdown.
   const html = `
 <div style="font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; color: #111; max-width: 640px;">
   <p>${escapeHtml(greeting)}.</p>
-  <p><strong>${escapeHtml(title)} is locked.</strong> Here is your copy, in your inbox, where the tab cannot close on it.</p>
+  <p><strong>${escapeHtml(chapterLabel)} of your ${escapeHtml(PLAYBOOK.name)} — &ldquo;${escapeHtml(title)}&rdquo; — is locked.</strong> Here is your copy, in your inbox, where the tab cannot close on it.</p>
   <p style="color: #444;">${escapeHtml(blurb)}</p>
   <hr style="border: 0; border-top: 1px solid #ddd; margin: 24px 0;">
+  <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #888; margin-bottom: 8px;">${escapeHtml(chapterLabel)}: ${escapeHtml(title)}</p>
   <pre style="white-space: pre-wrap; word-wrap: break-word; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.6; color: #111; background: #fafafa; border: 1px solid #eee; padding: 16px; border-radius: 6px;">${escapeHtml(
     args.outputText.trim()
   )}</pre>
   <hr style="border: 0; border-top: 1px solid #ddd; margin: 24px 0;">
   <p>
     <a href="${escapeHtml(continueUrl)}" style="display: inline-block; padding: 10px 16px; background: #111; color: #fff; text-decoration: none; border-radius: 6px;">
-      Open this step again
+      Open this chapter again
     </a>
   </p>
-  <p style="color: #555;">Reply to this email if anything in your deliverable lands wrong. I read every reply myself.</p>
+  <p style="color: #555;">Reply to this email if anything in your chapter lands wrong. I read every reply myself.</p>
   <p>— Maryan</p>
 </div>`.trim();
 

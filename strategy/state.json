@@ -2204,6 +2204,119 @@
     ],
     "no_fake_scarcity_rule": "Cohort cap MUST be enforced by Stripe webhook reading row count BEFORE granting founding bonus. Frontend counter MAY lag DB by a few seconds (cache TTL 30s acceptable) but cap is non-negotiable. If 51st purchase fires, founding bonus is denied silently and subscription is still honored at $49/mo evergreen."
   },
+  "invisible_funnel": {
+    "chapter": "DotCom Secrets Secret #24 (The Invisible Funnel)",
+    "v2_audit_score": "N/A (Not the model)",
+    "v3_audit_score": "70 (re-grade 2026-05-17 — same lens as Funnel Audibles 90 / Funnel Hub 100 / Facebook 88 / Google 92 / More Money Same Framework 70)",
+    "canonical_doc": "strategy/invisible-funnel.md",
+    "regrade_rationale": "v2 audit pattern-matched on Brunson's canonical variant 1 (free 4-day training, pay-after-value) and concluded UnlockSaaS's tiered ladder didn't fit. That missed two surfaces: (A) the 60-day Stripe-verified guarantee is structurally variant 2 (reversible-payment) shipped through a subscription billing surface, enforced by code, with automatic refund on outcome failure; (B) a free 4-day Verified Builder Sprint is canonical variant 1, build-gated to Phase 2. Re-grade lifts chapter from N/A-skip to honest-coverage at 70.",
+    "surface_a": {
+      "name": "Subscription-Shaped Invisible Funnel",
+      "variant": "Brunson variant 2 (reversible-payment)",
+      "status": "LIVE",
+      "mechanic": "60-day Stripe-verified guarantee on $49/mo Core. Buyer pays upfront; engine tracks in-product milestones; outcome is Stripe-verified (new charge on connected account); refund of $98 fires automatically at day 60 if milestones met AND no new customer.",
+      "psychological_contract": "Payment is reversible against a verifiable outcome. Reversal is automated. Buyer doesn't have to ask; seller doesn't have to decide; code does both. Different from generic refund-policy copy-close (ES #14 Category 1) — this is a structural property of the funnel, not a promise made in copy.",
+      "implementation_pointers": {
+        "guarantee_math": "app/src/lib/guarantee.ts",
+        "milestone_tracking": "supabase/migrations/20260517030000_milestones.sql",
+        "stripe_connect_verification": "app/src/app/api/webhooks/stripe/route.ts (connect path)",
+        "auto_refund_logic": "app/src/lib/guarantee.ts::resolveGuaranteeWindow",
+        "celebration_win_state": "app/src/app/(app)/machine/verified/page.tsx",
+        "onboarding_60d_clock": "app/src/lib/onboarding.ts"
+      },
+      "score_components": {
+        "mechanic_implementation": 90,
+        "copy_surfacing_on_machine_sales": 85,
+        "skeptic_avatar_fit": 85,
+        "brunson_canon_invisible_funnel_completeness": 60,
+        "blended": 70
+      },
+      "score_cap_reason": "Variant 2 implementation is shipped end-to-end. Canonical Brunson example is variant 1; counting variant 2 as 'complete on the chapter' without variant 1 also existing (or variant 2 having produced market data) would over-state."
+    },
+    "surface_b": {
+      "name": "Verified Builder Sprint",
+      "variant": "Brunson variant 1 (pay-after-value, canonical)",
+      "status": "SPEC_LOCKED_BUILD_GATED",
+      "format": "Free 4-day virtual cohort training, Day 4 ends with $49/mo Machine CTA",
+      "day_structure": [
+        "Day 1: 'Why your launch is flat (and why it is not the product)' + Machine Step 1 (Pin Dream Customer) + Parable 1 (Blank Offer Page)",
+        "Day 2: 'The work nobody taught you to do' + Machine Step 2 (Build Offer) + Parable 2 (Stripe Refresh)",
+        "Day 3: 'Hook, Story, Offer for one real person' + Machine Steps 3+4 (AC + Copy) + Parable 4 (Mirror in Ten Founders)",
+        "Day 4: 'Send the message you've been avoiding' + Machine Step 5 (Generate Outreach Assets) + first send + 15-min wrap + $49/mo CTA + Parable 5 (Door That Opened)"
+      ],
+      "pages_to_build_when_gates_fire": [
+        "/sprint (squeeze)",
+        "/sprint/access (confirmation + cohort start date + calendar add)",
+        "/sprint/day/[1-4] (daily session + Machine handoff + 24h window per session)",
+        "/sprint/finished (Day-4 $49/mo CTA — single primary button, no countdown, no fake scarcity)",
+        "/sprint/replay (post-sprint evergreen replay; Soap Opera continues)"
+      ],
+      "founding_bonuses": "NONE — separate from PLF founding bonuses. Surface B is evergreen and runs as recurring cohort post-PMF; Day-4 close is on the same $49/mo + 60-day guarantee stack the rest of the funnel sells.",
+      "activation_gates": [
+        "3+ verified Core customer cycles complete (Day-4 close needs case-study spine)",
+        "Founding-Cohort PLF run at least once (operational learning on cohort logistics transfers directly)",
+        "Soap Opera + Seinfeld cron drips live (CRON_SECRET pushed to Vercel) — non-converters need the 90-day nurture tail",
+        "Founder VSL recorded (Day-1 anchor session retention lifts ~10pp with founder face)"
+      ],
+      "honest_math_phase_2_launch": {
+        "cohort_size_day_1_attendees": "200-500",
+        "day_1_to_day_4_attendance_retention": "35-45%",
+        "day_4_attendees": "70-225",
+        "day_4_to_49_conversion": "3-7% (skeptic-avatar conservative)",
+        "net_new_49mo_customers_per_run": "2-16",
+        "first_year_arr_contribution_per_run": "$1,176-$9,408"
+      },
+      "honest_math_phase_3_mature": {
+        "cohort_size_day_1_attendees": "1000-2500",
+        "day_1_to_day_4_attendance_retention": "50-60%",
+        "day_4_attendees": "500-1500",
+        "day_4_to_49_conversion": "5-10%",
+        "net_new_49mo_customers_per_run": "25-150",
+        "first_year_arr_contribution_per_run": "$14,700-$88,200"
+      },
+      "conversion_math_caveat": "Brunson-published warm-cohort data runs 10-15%. UnlockSaaS models lower (3-7%) because (a) skeptic avatar harshness, (b) 60-day refund risk-shift trades headline conversion for stickier customers, (c) soft tail recovers 1-3% over the next 90 days via Soap Opera + Seinfeld.",
+      "build_estimate_once_gates_fire": "8 weeks",
+      "score_today": 40,
+      "score_components": {
+        "spec_locked_canonical_doc": 30,
+        "activation_gates_named_and_traceable": 5,
+        "honest_math_documented": 3,
+        "one_funnel_away_compliance_proven": 2,
+        "subtotal_pre_build": 40
+      }
+    },
+    "anti_patterns_named": {
+      "free_diagnostic": "Lead-squeeze (DCS #14), not Invisible — no transformative experience, no payment moment",
+      "parables_reverse_squeeze": "Reverse-squeeze (DCS #14 reverse variant) — story-value first, opt-in second, no paid moment",
+      "starter_1_dollar": "Direct-sale entry — buyer pays before the value lands (variant 0, conventional)",
+      "fourteen_day_first_customer_sprint_bonus": "Lives inside $49/mo Core — bonus, not standalone funnel",
+      "summit_free_first_month_in_all_access_pass": "Promotional bridge into Core, not Invisible — Pass itself is paid up front"
+    },
+    "score_path": {
+      "today": 70,
+      "surface_a_produces_first_refund": 78,
+      "surface_a_produces_first_verified_cycle": 82,
+      "surface_b_activation_gates_all_fire": 85,
+      "surface_b_first_cohort_runs": 92,
+      "surface_b_reaches_3pct_day_4_floor": 96,
+      "surface_b_evergreen_with_verified_roi": 100
+    },
+    "one_funnel_away_compliance": {
+      "rule": "Sprint 1 = $1 Starter Unboxing Funnel; Surface A is a structural property of the existing $49 subscription (no new funnel); Surface B is Phase 2 and build-gated",
+      "compliance_status": "PASS",
+      "post_launch_discipline_risk": "When Surface B gates fire, resist building it before Sprint 1 is producing a steady drip of verified customers. Chapter score caps at 70 until gate transition discipline is intact."
+    },
+    "composite_impact": {
+      "dcs_sub_score": "80 → ~81 (adds 70 in slot #24 vs N/A excluded from average)",
+      "strategy": "94 → 95",
+      "execution": "84 (unchanged — Surface A already coded; Surface B build-gated)",
+      "market_validation": "5 (unchanged — strategy-completeness move only)",
+      "discipline": "92 → 93 (One Funnel Away compliance named explicitly)",
+      "operational_readiness": "78 (unchanged — no new operator surface area)",
+      "composite": "73 → ~74"
+    },
+    "operator_action_items_new": "NONE — every gate in §8 is an operator action already in LAUNCH-READINESS.md (CRON_SECRET push, VSL record, 100 visitors → 3 verified customers, PLF run once)."
+  },
   "revision_history": [
     {
       "date": "2026-05-17",
@@ -2950,6 +3063,71 @@
         "broadcast_completes_at_least_once": 92,
         "evergreen_aap_converts_cold_traffic": 100
       }
+    },
+    "dcs_26_one_funnel_away": {
+      "v2_score": 80,
+      "v3_score": 92,
+      "v3_1_score": 100,
+      "date": "2026-05-17",
+      "method": "autonomous push triggered by audit-v3 quote-pin on DCS #26 — 'One Funnel Away (92): The discipline held under pressure.'",
+      "diagnosis": "The 8-point gap from 92 → 100 was the missing enforcement layer. The discipline held under pressure (Rung 2 spec'd but build-gated, Summit deferred behind proof, host podcast deferred, paid ads gated behind evidence) — but the discipline was implicit, residing in founder restraint alone. OFA at 100 requires a written guardrail with a Veto List that pre-rejects fourteen plausible next funnels before any code is written. Brunson rule: the veto IS the discipline; the build order is just the schedule.",
+      "guardrail_doc": "strategy/decisions/one-funnel-away-guardrail.md",
+      "closures": [
+        "strategy/decisions/one-funnel-away-guardrail.md SHIPPED — 9-section load-bearing artifact",
+        "Section 1 names THE One Funnel (10 surfaces in user-traversal order with workbook references)",
+        "Section 2 classifies every existing route in the codebase into 4 categories (A=One Funnel, B=alternate doors, C=supporting assets, D=time-boxed wrappers) — verdict: zero OFA violations at lock time",
+        "Section 3 establishes the OFA Vow (3 tests every new surface must pass before shipping)",
+        "Section 4 establishes the Veto List (14 named graveyards of tempting next funnels, each pre-vetoed with the earliest possible activation date)",
+        "Section 5 names the Activation Trigger for the second funnel (4 measurable conditions: ≥1 verified customer + ≥3 Core complete + ≥1 unprompted ask + founder dogfood pass)",
+        "Section 6 documents the Audible / New Funnel bright line (tweaks ≠ new funnels) so the Funnel Audibles Playbook can run weekly without breaching OFA",
+        "Section 7 establishes the OFA Vow self-check question + the Friday Audit ritual paired with the Friday Audible Call",
+        "strategy/workbooks/04-building-your-funnels.md §1.1 UPDATED — adds the OFA Guardrail subsection that summarizes the 7 locks and points to the canonical doc",
+        "build-log.md APPENDED with the audit response entry",
+        "state.json audit_response.dcs_26_one_funnel_away block (this entry) captures machine-readable status"
+      ],
+      "the_one_funnel": [
+        "/",
+        "/diagnostic",
+        "/diagnostic/result",
+        "/starter",
+        "/oto",
+        "/welcome",
+        "/machine-sales",
+        "/onboarding",
+        "/machine",
+        "/machine/verified"
+      ],
+      "alternate_doors": ["/parables", "/start", "/bridge", "/alternatives-to", "/alternatives-to/[slug]"],
+      "supporting_assets": ["/builders", "/builder/[slug]", "/repeatable", "/challenge", "/transparency/q1-2027", "/faq", "/about", "/contact", "/privacy", "/terms", "/login"],
+      "time_boxed_wrappers": ["/founding", "/founding/v1", "/founding/v2", "/founding/v3"],
+      "veto_list_size": 14,
+      "veto_list_items": [
+        "agency_dfy_tier",
+        "coaching_tier",
+        "build_for_me_service",
+        "template_marketplace",
+        "standalone_paid_community",
+        "host_podcast",
+        "self_paced_course",
+        "summit_funnel_premature",
+        "public_affiliate_program",
+        "paid_ads_beyond_brand_defense",
+        "public_api_tier",
+        "paid_integrations_premature",
+        "second_founding_cohort",
+        "vertical_specific_diagnostics"
+      ],
+      "activation_trigger_conditions": [
+        "≥1 Stripe-verified paying customer has completed the Machine (verified_conversions count ≥ 1)",
+        "≥3 paying Core customers have completed the full Machine loop (core_activated count ≥ 3 AND each has first_paying_customer_verified milestone)",
+        "≥1 unprompted 'what's next' ask landed (repeatable-interest-form submission OR direct email)",
+        "Founder self-dogfood pass complete (founder has ascended his own funnel to Rung 2)"
+      ],
+      "current_route_count": 26,
+      "ofa_violations_at_lock": 0,
+      "self_check_question": "Does this surface ship a new product line, or does it improve the conversion of the existing $1 → $49 chain?",
+      "second_funnel_named": "Summit Funnel (strategy/audits/2026-05-17-brunson-trilogy-audit.md DCS #16 re-grade)",
+      "friday_audit_ritual": "Paired with the Friday Audible Call (strategy/funnel-audibles.md §5). Same 30-minute slot. Question: 'Has any new surface shipped this week that did not appear on the last Friday review? If yes, did it pass the three OFA tests?'"
     }
   }
 }

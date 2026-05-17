@@ -33,12 +33,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics/client";
 import { Event, type VslSurface } from "@/lib/analytics/events";
-import { VSL_SCRIPT, type VslScene } from "@/lib/vsl/script";
+import { VSL_SCRIPT, type VslScene, type VslScript } from "@/lib/vsl/script";
 
 type Phase = "idle" | "playing" | "paused" | "complete";
 
 interface Props {
   surface: VslSurface;
+  /**
+   * Which script to play. Defaults to VSL_SCRIPT (the 110s kinetic-compact
+   * cut). The cut registry in `lib/vsl/cuts.ts` does NOT pass per-cut
+   * scripts here today — the kinetic fallback is one format, recorded
+   * cuts replace it surface-by-surface via env vars. Prop kept open so a
+   * future per-cut kinetic refactor can wire in without API churn.
+   */
+  script?: VslScript;
   /**
    * If true, the player auto-starts in the visible viewport.
    * Default true on hub/sales pages; pass false to require a click on
@@ -54,11 +62,12 @@ interface Props {
 
 export function ScriptedVsl({
   surface,
+  script = VSL_SCRIPT,
   autoplay = true,
   onReachedOffer,
 }: Props) {
-  const scenes = VSL_SCRIPT.scenes;
-  const totalDurationMs = VSL_SCRIPT.totalDurationMs;
+  const scenes = script.scenes;
+  const totalDurationMs = script.totalDurationMs;
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [index, setIndex] = useState(0);

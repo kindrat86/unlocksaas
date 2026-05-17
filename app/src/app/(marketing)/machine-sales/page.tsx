@@ -250,8 +250,12 @@ export default function MachineSalesPage() {
 
         <Separator className="my-12" />
 
-        {/* Building Block #20 — Founder VSL framework (six-line intro). */}
-        <VslBlock />
+        {/* Building Block #20 — Founder VSL. Long-form 3:45 cut per Brunson
+            Secret #20 chapter discipline: long-form sales pages get the full
+            master VSL, not the 110s kinetic compact. When the operator pushes
+            NEXT_PUBLIC_VSL_MASTER_URL, the master recording auto-replaces the
+            fallback. Per-cut JSON-LD VideoObject activates simultaneously. */}
+        <VslBlock surface="machine_sales" cut="full_long_form" />
 
         <Separator className="my-12" />
 

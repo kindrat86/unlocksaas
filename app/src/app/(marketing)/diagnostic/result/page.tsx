@@ -112,6 +112,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "I went embarrassingly deep into SEO so I would not have to look at the flat Stripe line. I called it strategy. It was avoidance with a respectable name. What broke me was sitting with more than ten founders and hearing my own story back, every single time.",
     strategy:
       "Machine Steps 1 and 2 are the work you have been avoiding. Pin one real person. Write one real promise. The Starter forces both this week, for one dollar.",
+    prediction:
+      "Sixty days from now, no charge in Stripe unless you stop avoiding. The flat line will not bend on its own.",
     trial_close:
       "If a tool would not let you write a line of copy until you had named a real customer, would you accept that?",
     cta: "Stop avoiding the customer — $1 Starter",
@@ -125,6 +127,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "I sat down to write the offer for this product and found nothing. No promise. No specific person. That was the moment. I had been building beautiful things for no one in particular. The product was not the problem. The order I worked in was.",
     strategy:
       "Step 2 of the Machine — Build Offer — has engine pushback that rejects features, hedging, and unnamed timeframes. The Starter walks you through it for one dollar.",
+    prediction:
+      "Three more features from now, the Stripe line is still flat and you can build a fourth. The cost is the year you spent shipping into silence.",
     trial_close: "Have you told yourself 'one more feature' more than three times?",
     cta: "Write a real offer — $1 Starter",
   },
@@ -138,6 +142,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "I have an entire year of SEO work I will never get back. I called it growth. It was respectable avoidance. The actual fix took six conversations and one rewritten offer.",
     strategy:
       "More traffic on a wrong-person page produces more flat. The Starter pins a real customer (Step 1) and rewrites your offer (Step 2). Once those are right, tactics start working.",
+    prediction:
+      "Another year of tactics from now, the line is still flat and the SEO knowledge is now actively useless — Google rewrote half of it while you were learning.",
     trial_close: "Can you afford another year of the flat line?",
     cta: "Fix the upstream — $1 Starter",
   },
@@ -151,6 +157,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "The day I shipped my first thing, I would have signed up for anything that promised customers. I needed to sit with the silence for a few weeks first. You probably do too.",
     strategy:
       "What helps you right now is the five-email Soap Opera you are already on. Read them. Notice which one of the three failure modes starts feeling like yours. Then come back.",
+    prediction:
+      "Thirty quiet days from now, the silence will have answered for you — and you will know which of the three failure modes is yours, without spending a dollar to learn.",
     trial_close: "Would you trust me more if I told you to wait?",
     cta: "Read the parables (free)",
     ctaSecondaryLabel: "I want to skip the wait — $1 Starter",
@@ -164,6 +172,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "The first hundred dollars of recurring revenue I saw made me dangerous. I thought I had figured it out. I had not. I had figured out an accident. The repeatable version came from sitting with the three buyers, asking them the same question, and writing what I heard.",
     strategy:
       "Machine Step 1 will push back on 'founders' or 'small teams' until you can name the one customer who already paid. Step 2 rewrites the offer around what they actually bought. Both in the $1 Starter.",
+    prediction:
+      "Three more random buyers from now, you still cannot say who you sell to — and the next product you ship inherits the same fog the current one carries.",
     trial_close:
       "Can you name your last paying customer in one sentence, including the specific moment they decided?",
     cta: "Find the pattern in your payers — $1 Starter",
@@ -178,6 +188,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "I spent six months trying to scale by doing more of what worked once. It did not. The pattern was real but the system was not. Building the system was a different job, and it was the next one I needed.",
     strategy:
       "The full Machine — all seven steps, plus the three bonuses, plus the 60-day guarantee — is built for founders past the first-customer gate. $49 a month. Two months capped if it does not produce a new paying customer.",
+    prediction:
+      "Six more months of doing-it-by-feel from now, you still cannot teach the next product the same way — and the leverage from the first one quietly compounds away.",
     trial_close:
       "If you had a system that turned every Steps-1-and-2 win into a repeatable acquisition loop, would you press start today?",
     cta: "See the full Machine — $49/mo",
@@ -192,6 +204,8 @@ const BRIDGE_COPY: Record<Bucket, BridgeCopy> = {
       "Half the pages I cannot read are pages that hide the offer behind a login. That is itself a signal — the visitor lands and sees nothing they can act on.",
     strategy:
       "Skip the diagnosis. The $1 Starter walks you through Steps 1 and 2 directly. You finish the work the diagnostic was going to point at.",
+    prediction:
+      "Without a diagnosis the failure mode does not change. The page that hides text from a fetch hides it from a visitor too.",
     trial_close: "Can you accept a door that opens without a label on it?",
     cta: "Start the Machine — $1 Starter",
   },
@@ -377,6 +391,18 @@ function BridgePage({ row }: { row: LeadRow }) {
 
         {/* Strategy — why THIS door for THIS bucket. */}
         <p className="text-base leading-relaxed mb-6">{copy.strategy}</p>
+
+        {/* Prediction — Brunson Bridge Script beat 5 of 6: Cost of Staying
+            Stuck. Future-paced, one sentence, names the specific bad thing
+            that happens if they do not act. Added 2026-05-17 Survey-Funnel
+            100% push. Guarded so the type can stay optional during transition
+            (every bucket above currently has a prediction; the guard is
+            belt-and-braces if a future bucket lands without one). */}
+        {copy.prediction && (
+          <p className="text-base leading-relaxed text-foreground/80 mb-6 border-l-2 border-muted-foreground/30 pl-4">
+            {copy.prediction}
+          </p>
+        )}
 
         {/* Trial close — soft yes question (workbook 07 §2). */}
         <p className="text-sm italic text-muted-foreground mb-8">

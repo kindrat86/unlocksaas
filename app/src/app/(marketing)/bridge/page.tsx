@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { VslBlock } from "@/components/blocks/vsl-block";
 
 /**
  * Cold traffic bridge page.

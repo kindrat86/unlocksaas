@@ -3,12 +3,24 @@
 /**
  * VslPlayer — the public surface used by pages.
  *
- * Resolves at render time which mode to show:
- *   - Real video, if NEXT_PUBLIC_VSL_URL is set (founder recorded it)
+ * Resolves at render time which mode to show for a given cut:
+ *   - Real video, if the cut's per-cut env var is set (founder recorded it)
  *   - Scripted kinetic-typography fallback otherwise
  *
  * Wraps both in the same chrome: pre-headline, subtitle, post-VSL CTA block.
  * Pages get one component to drop in; the mode swap is invisible to them.
+ *
+ * Cut prop drives:
+ *   - Which env var URL is read (per-cut)
+ *   - Which headline + subtitle render in the chrome
+ *   - The CTA scroll target after the video finishes
+ *
+ * Note: the kinetic fallback still uses the legacy `VSL_SCRIPT` (110s
+ * kinetic_compact). When the operator records the cut-specific version and
+ * pushes its env var, the player flips to the recorded video for THAT
+ * surface — even if other cuts remain on the kinetic fallback. This is the
+ * Brunson chapter discipline: each surface lights up the moment its own
+ * recording is ready.
  *
  * Why a client component: the children are client components (state, video
  * element, keyboard handlers). Wrapping at this layer avoids a redundant
@@ -20,11 +32,23 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { VideoVsl } from "./video-vsl";
 import { ScriptedVsl } from "./scripted-vsl";
-import { getVslPosterUrl, getVslVideoUrl, VSL_SCRIPT } from "@/lib/vsl/script";
+import { VSL_SCRIPT } from "@/lib/vsl/script";
+import {
+  getCut,
+  getCutPosterUrl,
+  getCutVideoUrl,
+  type VslCutId,
+} from "@/lib/vsl/cuts";
 import type { VslSurface } from "@/lib/analytics/events";
 
 interface Props {
   surface: VslSurface;
+  /**
+   * Which cut to render. Drives env-var URL lookup and the chrome copy.
+   * Defaults to `kinetic_compact` so existing mounts that pre-date the
+   * cut prop continue to render the 110s compact cut.
+   */
+  cut?: VslCutId;
   /** Render the pre-headline above the stage. Off on pages that already lead with a hero. */
   showHeadline?: boolean;
   /** Render the post-VSL CTA row. Off on pages where the VSL precedes their own CTA. */
@@ -35,12 +59,14 @@ interface Props {
 
 export function VslPlayer({
   surface,
+  cut = "kinetic_compact",
   showHeadline = true,
   showCta = true,
   autoplay = true,
 }: Props) {
-  const videoUrl = getVslVideoUrl();
-  const posterUrl = getVslPosterUrl();
+  const cutDef = getCut(cut);
+  const videoUrl = getCutVideoUrl(cut);
+  const posterUrl = getCutPosterUrl(cut);
   const ctaRef = useRef<HTMLDivElement>(null);
 
   // When the VSL finishes (or visitor skips), scroll to the CTA block so
@@ -51,17 +77,22 @@ export function VslPlayer({
   }, []);
 
   return (
-    <section className="w-full max-w-3xl mx-auto" aria-label="Founder VSL">
+    <section
+      className="w-full max-w-3xl mx-auto"
+      aria-label={`Founder VSL — ${cutDef.title}`}
+    >
       {showHeadline ? (
         <header className="text-center mb-6">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            110 seconds, from the founder
+            {cutDef.lengthSec < 60
+              ? `${cutDef.lengthSec} seconds, from the founder`
+              : `${Math.round(cutDef.lengthSec / 60)} minutes, from the founder`}
           </p>
           <h2 className="text-2xl md:text-3xl font-bold leading-tight mb-2">
-            {VSL_SCRIPT.title}
+            {cutDef.title}
           </h2>
           <p className="text-sm md:text-base text-muted-foreground">
-            {VSL_SCRIPT.subtitle}
+            {cutDef.subtitle}
           </p>
         </header>
       ) : null}
@@ -74,7 +105,11 @@ export function VslPlayer({
           onReachedOffer={scrollToCta}
         />
       ) : (
+        // Kinetic fallback always uses the 110s compact script — the
+        // fallback is one format; per-cut variants ship via env-driven
+        // recorded video. See lib/vsl/cuts.ts for the chapter discipline.
         <ScriptedVsl
+          script={VSL_SCRIPT}
           surface={surface}
           autoplay={autoplay}
           onReachedOffer={scrollToCta}
