@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
         mode: "subscription",
         line_items: [
           {
-            price: process.env.STRIPE_PLAYBOOK_PRICE_ID!,
+            price: process.env.STRIPE_MACHINE_PRICE_ID!,
             quantity: 1,
           },
         ],
