@@ -14,38 +14,38 @@ import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { VslBlock } from "@/components/blocks/vsl-block";
 import {
-  MachineProductJsonLd,
+  PlaybookProductJsonLd,
   FaqPageJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
-import { MACHINE_SALES_FAQS } from "@/lib/faqs";
+import { PLAYBOOK_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
 
 /**
  * Per-page metadata. Surface A of strategy/google-strategy.md — this page is
  * the product-aware decision page that the LLM-citation Product schema
- * (MachineProductJsonLd, rendered below) anchors to. Title is question-shaped
+ * (PlaybookProductJsonLd, rendered below) anchors to. Title is question-shaped
  * to grease AEO featured-snippet capture for "is unlock saas legit",
- * "unlock saas review", "what is the machine unlock saas" intent classes.
+ * "unlock saas review", "what is the playbook unlock saas" intent classes.
  *
  * `alternates.canonical` is path-relative; the metadataBase in app/layout.tsx
- * resolves it to https://unlocksaas.com/machine-sales.
+ * resolves it to https://unlocksaas.com/playbook-sales.
  */
 export const metadata: Metadata = {
-  title: "The Machine — First Paying Customer in 60 Days or You Don't Pay",
+  title: "The Playbook — First Paying Customer in 60 Days or You Don't Pay",
   description:
-    "A seven-step machine for already-shipped, pre-revenue SaaS founders. $49/month. If it does not produce a verified paying customer in 60 days, you do not pay. Built by a non-engineer for non-engineer founders.",
-  alternates: { canonical: "/machine-sales" },
+    "A seven-step playbook for already-shipped, pre-revenue SaaS founders. $49/month. If it does not produce a verified paying customer in 60 days, you do not pay. Built by a non-engineer for non-engineer founders.",
+  alternates: { canonical: "/playbook-sales" },
   openGraph: {
     type: "website",
-    title: "The Machine — First Paying Customer in 60 Days or You Don't Pay",
+    title: "The Playbook — First Paying Customer in 60 Days or You Don't Pay",
     description:
       "Seven steps. Sixty days. $49/month. A verified paying customer or your money back.",
-    url: "/machine-sales",
+    url: "/playbook-sales",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Machine — First Paying Customer in 60 Days or You Don't Pay",
+    title: "The Playbook — First Paying Customer in 60 Days or You Don't Pay",
     description:
       "Seven steps. Sixty days. $49/month. A verified paying customer or your money back.",
   },
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Long-form $49 Machine sales page.
+ * Long-form $49 Playbook sales page.
  *
  * Structure is locked by workbook 07 (10x Secrets / One-to-Many Selling):
  *   Block 1 — Big Domino (slides 1–6): Hook #7 as H1, Big Domino statement,
@@ -83,30 +83,30 @@ export const metadata: Metadata = {
  * INP) and lets the page export per-route Metadata (SEO: real title +
  * description + canonical, not the layout-template fallback).
  */
-export default function MachineSalesPage() {
+export default function PlaybookSalesPage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
-          Product schema so the $49 Machine is citable when an LLM
+          Product schema so the $49 Playbook is citable when an LLM
           answers comparator queries ("alternatives to ShipFast",
           "tool that helps me get my first SaaS customer").
           BreadcrumbList earns the SERP sitelink and helps Google render
-          the (Home › The Machine) crumb under the page title. */}
-      <MachineProductJsonLd />
-      <FaqPageJsonLd items={MACHINE_SALES_FAQS} />
+          the (Home › The Playbook) crumb under the page title. */}
+      <PlaybookProductJsonLd />
+      <FaqPageJsonLd items={PLAYBOOK_SALES_FAQS} />
       <BreadcrumbListJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
           {
-            name: "The Machine",
-            url: "https://unlocksaas.com/machine-sales",
+            name: "The Playbook",
+            url: "https://unlocksaas.com/playbook-sales",
           },
         ]}
       />
       <AbExposureBeacon />
       <PageViewTracker
-        event={Event.MachineSalesPageViewed}
-        properties={{ surface: "machine_sales" }}
+        event={Event.PlaybookSalesPageViewed}
+        properties={{ surface: "playbook_sales" }}
       />
       <div className="max-w-3xl mx-auto">
         {/* ============================================================ */}
@@ -115,7 +115,7 @@ export default function MachineSalesPage() {
         {/* ============================================================ */}
         <section className="mb-16">
           <Badge variant="secondary" className="mb-6">
-            The $49 Machine
+            The $49 Playbook
           </Badge>
 
           {/* Slide 1 — Hook. Workbook 01 §5 Hook #7, verbatim. */}
@@ -152,12 +152,12 @@ export default function MachineSalesPage() {
 
           {/* Slide 5 — The name. */}
           <p className="text-lg leading-relaxed mb-6">
-            It is called <strong>The Machine</strong>.
+            It is called <strong>The Playbook</strong>.
           </p>
 
           {/* Slide 6 — Transition into the three secrets. */}
           <p className="text-muted-foreground leading-relaxed">
-            Here are the three things you have to believe for The Machine
+            Here are the three things you have to believe for The Playbook
             to work for you.
           </p>
         </section>
@@ -184,7 +184,7 @@ export default function MachineSalesPage() {
           <article className="space-y-5">
             <Badge>Secret #1 — The Vehicle</Badge>
             <h3 className="text-2xl font-bold leading-snug">
-              Why The Machine works where every other tool failed you.
+              Why The Playbook works where every other tool failed you.
             </h3>
 
             {/* Story — Vehicle Story from workbook 06 §4 */}
@@ -193,10 +193,10 @@ export default function MachineSalesPage() {
                 The Story
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                The Machine works because it removes the option to skip.
+                The Playbook works because it removes the option to skip.
                 Every founder I talked to skipped the same three things in
                 the same order: naming one real person, writing one real
-                promise, sending one real message. The Machine refuses to
+                promise, sending one real message. The Playbook refuses to
                 let any of them happen out of order. Step 1 will not let
                 you write an offer until you have pinned a real customer.
                 Step 5 will not mark itself complete until 20 outreach
@@ -239,7 +239,7 @@ export default function MachineSalesPage() {
                 The Case Study
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                The first person to run The Machine on themselves was me,
+                The first person to run The Playbook on themselves was me,
                 on this product. Step 1 produced Marco — 36, non-engineer,
                 shipped with Lovable, flat Stripe line — the first dream
                 customer I had ever written who was specific enough to
@@ -250,7 +250,7 @@ export default function MachineSalesPage() {
                 saleable output, not theory.{" "}
                 <em>
                   The real customer story goes here once a customer has
-                  run The Machine end-to-end. I will not fake one. The day
+                  run The Playbook end-to-end. I will not fake one. The day
                   the first one lands, this paragraph upgrades and the
                   date goes on it.
                 </em>
@@ -263,7 +263,7 @@ export default function MachineSalesPage() {
             <Badge>Secret #2 — The Internal Belief</Badge>
             <h3 className="text-2xl font-bold leading-snug">
               Why the work that breaks the flat line is work you have been
-              avoiding, and how The Machine removes the avoidance option.
+              avoiding, and how The Playbook removes the avoidance option.
             </h3>
 
             {/* Story — Story 2 (Stripe Refresh) + Story 3 (SEO Escape
@@ -299,7 +299,7 @@ export default function MachineSalesPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 You do not overcome avoidance. You remove the option.
-                Machine Step 5 — outreach — happens inside the tool. You
+                Playbook Step 5 — outreach — happens inside the tool. You
                 generate the message, the tool picks the target from a
                 Dream 100 it built from your Step-1 dream customer, you
                 press send, the tool logs the public link, the tool
@@ -338,7 +338,7 @@ export default function MachineSalesPage() {
             </h3>
 
             {/* Story — guarantee mechanics from workbook 01 §2:
-                work conditions machine-verifiable, Stripe-verified result */}
+                work conditions playbook-verifiable, Stripe-verified result */}
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
                 The Story
@@ -347,9 +347,9 @@ export default function MachineSalesPage() {
                 Most guarantees in this category fail the test the moment
                 you ask them what they actually mean. They are written to
                 feel good in the buying moment. They are not engineered to
-                fire. The Machine&apos;s guarantee is different because it
+                fire. The Playbook&apos;s guarantee is different because it
                 is not a copywriting flourish. It is a contract enforced
-                by code. The work conditions are machine-verifiable: the
+                by code. The work conditions are playbook-verifiable: the
                 tool watches Steps 1 through 5 and counts your outreach
                 actions in its own logs. The result is Stripe-verified:
                 the tool watches your connected Stripe account for a new
@@ -366,7 +366,7 @@ export default function MachineSalesPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The economics of the guarantee depend on the success rate
-                of the Machine itself. If the Machine genuinely produces a
+                of the Playbook itself. If the Playbook genuinely produces a
                 first paying customer for most of the founders who finish
                 the in-product work, the refund line item is bounded and
                 the business survives. If it does not, the refunds force
@@ -383,7 +383,7 @@ export default function MachineSalesPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The math survives at the design level. The maximum remedy
-                is two months of $49 — $98 per refunding user. The Machine
+                is two months of $49 — $98 per refunding user. The Playbook
                 cannot cost the business more than $98 per refunding user.
                 At any reasonable conversion rate, and given how few
                 founders actually finish the in-product work, the business
@@ -416,11 +416,11 @@ export default function MachineSalesPage() {
             full standalone math, in the open.
           </p>
 
-          {/* Slide 16 — The Machine */}
+          {/* Slide 16 — The Playbook */}
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-2">
-                <p className="font-bold">Slide 16 — The Machine</p>
+                <p className="font-bold">Slide 16 — The Playbook</p>
                 <p className="font-semibold whitespace-nowrap">$259 / mo</p>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -524,16 +524,16 @@ export default function MachineSalesPage() {
 
           {/* Slides 23–29 — bonuses expanded. Workbook 01 §2 logic. */}
 
-          {/* Slide 23 — Machine, why it matters */}
+          {/* Slide 23 — Playbook, why it matters */}
           <Card>
             <CardContent className="pt-6">
               <p className="font-bold mb-2">
-                Slide 23 — The Machine, what it does for you
+                Slide 23 — The Playbook, what it does for you
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Most tools in this category assume you have already done
                 the upstream work — that you know the customer, that you
-                have an offer, that you know what to say. The Machine does
+                have an offer, that you know what to say. The Playbook does
                 not. It begins where the avoidance begins, and refuses to
                 let you skip any step that an avoidant founder
                 historically skips. The whole sequence ends at a real
@@ -688,7 +688,7 @@ export default function MachineSalesPage() {
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                   <span>
-                    <strong>Work conditions.</strong> Machine-verified
+                    <strong>Work conditions.</strong> Playbook-verified
                     in-product milestones only: Steps 1 and 2 complete,
                     copy generated in Step 4, outreach assets generated in
                     Step 5, at least 20 outreach actions logged in the
@@ -860,7 +860,7 @@ export default function MachineSalesPage() {
                     Slide 39 — ROI
                   </p>
                   <p className="text-sm leading-relaxed">
-                    If The Machine produces ONE recurring customer at
+                    If The Playbook produces ONE recurring customer at
                     your price, the math is permanent.
                   </p>
                 </CardContent>
@@ -935,14 +935,14 @@ export default function MachineSalesPage() {
             Six things you might be telling yourself right now.
           </h2>
 
-          {/* MACHINE_SALES_FAQS is the single source of truth — the same
+          {/* PLAYBOOK_SALES_FAQS is the single source of truth — the same
               constant feeds the FAQPage JSON-LD rendered at the top of the
               page. Any copy edit here MUST happen in lib/faqs.ts; the
               schema/DOM-divergence trap (penalty under Google structured-data
               policy + lowers AI Overview pickup) is exactly what shared data
               prevents. */}
           <div className="space-y-6">
-            {MACHINE_SALES_FAQS.map((item) => (
+            {PLAYBOOK_SALES_FAQS.map((item) => (
               <div key={item.q}>
                 <p className="font-bold">&ldquo;{item.q}&rdquo;</p>
                 <p className="text-sm text-muted-foreground leading-relaxed mt-1">
@@ -967,11 +967,11 @@ export default function MachineSalesPage() {
 
           <div className="text-center space-y-4">
             <CheckoutButton
-              priceType="machine"
-              surface="machine_sales"
+              priceType="playbook"
+              surface="playbook_sales"
               className="text-base sm:text-lg h-auto px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto whitespace-normal leading-tight"
             >
-              Start the Machine — $49/mo, 60-day guarantee
+              Start the Playbook — $49/mo, 60-day guarantee
             </CheckoutButton>
             <p className="text-xs text-muted-foreground">
               Cancel anytime. No long-term contract. The guarantee

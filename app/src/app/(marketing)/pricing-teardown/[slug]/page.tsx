@@ -473,7 +473,7 @@ export default function PricingTeardownPage({
           The Brunson lens
         </h2>
         <p className="text-sm text-muted-foreground italic mb-6 leading-relaxed">
-          Four levers the Machine applies when critiquing your own pricing
+          Four levers the Playbook applies when critiquing your own pricing
           page: how the offer stacks, where it sits on the Value Ladder, what
           psychology drives the tier choice, and what payment mechanics do
           to commitment.

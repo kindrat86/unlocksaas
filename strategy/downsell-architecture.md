@@ -9,7 +9,7 @@ This document closes the audit gap on **DotCom Secrets Secret #18 (Cart Funnel +
 ## The Problem We're Solving
 
 Today's `/oto` page (live):
-- Primary CTA: "Continue the Machine. $49/mo. 60-day guarantee."
+- Primary CTA: "Continue the Playbook. $49/mo. 60-day guarantee."
 - Secondary link: "No thanks, deliver just the Starter."
 
 The secondary path drops the buyer onto the Starter member area with Steps 1–2 unlocked and Steps 3–7 locked behind the $49 paywall. Brunson's rule: **the moment a buyer says no, the next offer should be already-loaded.** Right now there is no next offer. We collect the $1, we lose the upsell, we never re-ask.
@@ -29,9 +29,9 @@ Expected lift from a well-built downsell: **2-5% incremental conversion on OTO-r
 | Block | Content |
 |---|---|
 | Hero | "Got it. Before you go." — small, calm, NOT salesy. |
-| Sub-headline | "Most founders who skip the full Machine come back inside 30 days because Steps 1 and 2 are not the bottleneck — Step 5 is." (Internal Belief rewrite #3 from workbook 06 §4: "for an avoidant builder, more building is sophisticated procrastination.") |
+| Sub-headline | "Most founders who skip the full Playbook come back inside 30 days because Steps 1 and 2 are not the bottleneck — Step 5 is." (Internal Belief rewrite #3 from workbook 06 §4: "for an avoidant builder, more building is sophisticated procrastination.") |
 | The downsell | A **single, lower-friction** unlock: the **14-Day First-Customer Sprint bonus alone** (the $89-valued bonus from workbook 01 §2) — one-time payment, no subscription, no auto-upgrade. **Price: $19 one-time.** |
-| What $19 unlocks | The 14-day daily check-in sequence (one small tracked action per day for 14 days), delivered by email + accessible at `/sprint`. Does NOT unlock Machine Steps 3–7. Does NOT carry the 60-day guarantee. |
+| What $19 unlocks | The 14-day daily check-in sequence (one small tracked action per day for 14 days), delivered by email + accessible at `/sprint`. Does NOT unlock Playbook Steps 3–7. Does NOT carry the 60-day guarantee. |
 | Why $19 | 10x value math: $89 stated, $19 charged = 4.7x ratio. Acceptable for a tripwire bonus (the 10x discipline lives on the core stack; the bonus is permitted to be 3–5x). |
 | Primary button | "Add the 14-Day Sprint — $19" |
 | Secondary link | "No thanks, take me to my Starter dashboard." |
@@ -42,14 +42,14 @@ Rules: one decision. Two buttons. No third option. (Same rule as the upstream OT
 
 **Trigger:** Downsell refusal (user clicks "No thanks" on `/oto/downsell`).
 
-**Route:** `/oto/downsell-2` — OR `/machine` (Starter dashboard) with a one-time inline banner. Choose ONE of those two; do not double-pop modals.
+**Route:** `/oto/downsell-2` — OR `/playbook` (Starter dashboard) with a one-time inline banner. Choose ONE of those two; do not double-pop modals.
 
-**Recommendation:** inline banner on `/machine`, not a third page. Three sequential pages of "are you sure" reads as desperate. The banner shows once per session, then never again.
+**Recommendation:** inline banner on `/playbook`, not a third page. Three sequential pages of "are you sure" reads as desperate. The banner shows once per session, then never again.
 
 | Block | Content |
 |---|---|
-| Banner copy | "When you finish Steps 1 and 2, the door to the full Machine stays open here. The 60-day guarantee clock starts the day you upgrade, not today." |
-| Single CTA | "See the upgrade door" → links to `/machine-sales` (the long-form $49 page). |
+| Banner copy | "When you finish Steps 1 and 2, the door to the full Playbook stays open here. The 60-day guarantee clock starts the day you upgrade, not today." |
+| Single CTA | "See the upgrade door" → links to `/playbook-sales` (the long-form $49 page). |
 | Dismiss | × — dismisses for the session, cookies the dismissal for 30 days. |
 
 ---
@@ -89,7 +89,7 @@ Reuses the existing dispatch infrastructure (`app/src/lib/soap-opera/dispatch.ts
 - 14 emails over 14 days, one per day.
 - Subject pattern: `Day N of 14 — [single specific action]`.
 - Each email body: 80–150 words. ONE action. ONE proof-of-completion request (reply with the link / screenshot / Stripe row).
-- Day 14 email: "You finished. Here is the door to the full Machine if you want it." — links to `/machine-sales`.
+- Day 14 email: "You finished. Here is the door to the full Playbook if you want it." — links to `/playbook-sales`.
 
 ### Analytics events (add to `app/src/lib/analytics/events.ts`)
 
@@ -98,11 +98,11 @@ Reuses the existing dispatch infrastructure (`app/src/lib/soap-opera/dispatch.ts
 - `Event.OtoDownsellRefused`
 - `Event.SprintEmailSent`
 - `Event.SprintEmailReplied`
-- `Event.SprintToMachineUpgrade`
+- `Event.SprintToPlaybookUpgrade`
 
 ### Funnel attribution
 
-The downsell session inherits `attribution_from`, `diagnostic_label`, `diagnostic_lead_id` from the OTO refusal handoff (set via querystring or session storage). The webhook handler writes those into `verified_conversions` so the funnel-metrics dashboard can compute `diagnostic → starter → downsell → machine` conversion separately from the direct `diagnostic → starter → machine` path.
+The downsell session inherits `attribution_from`, `diagnostic_label`, `diagnostic_lead_id` from the OTO refusal handoff (set via querystring or session storage). The webhook handler writes those into `verified_conversions` so the funnel-metrics dashboard can compute `diagnostic → starter → downsell → playbook` conversion separately from the direct `diagnostic → starter → playbook` path.
 
 ---
 
@@ -110,7 +110,7 @@ The downsell session inherits `attribution_from`, `diagnostic_label`, `diagnosti
 
 **Sprint 3.5** — after the long-form $49 sales page ships, before the first paid traffic activates. Sequence:
 
-1. Sprint 3: ship `/machine-sales` (in-flight).
+1. Sprint 3: ship `/playbook-sales` (in-flight).
 2. Sprint 3.5: ship `/oto/downsell` per this spec.
 3. Sprint 4: ship the 14-day Sprint email cadence + `/sprint` dashboard.
 4. Sprint 5: instrument the upgrade-from-Sprint conversion path.
@@ -122,9 +122,9 @@ Reason for sequencing: the downsell must point at a real upgrade door. The upgra
 ## Acceptance Tests
 
 1. A $1 buyer who clicks OTO "No thanks" lands on `/oto/downsell` with the right per-label diagnostic handoff (if they came from the diagnostic).
-2. A $19 downsell buyer is **not** charged $49 anywhere unless they explicitly subscribe via `/machine-sales` later.
+2. A $19 downsell buyer is **not** charged $49 anywhere unless they explicitly subscribe via `/playbook-sales` later.
 3. A $19 downsell buyer who upgrades to $49 within 60 days gets the $19 credited to their first $49 invoice (manual via Stripe Dashboard or coupon — defer the code automation to Sprint 6).
-4. The downsell refuser sees the `/machine` dashboard inline banner exactly once per session, dismissable, cookied for 30 days.
+4. The downsell refuser sees the `/playbook` dashboard inline banner exactly once per session, dismissable, cookied for 30 days.
 5. No part of the downsell or sprint emails uses the words "limited time," "ending soon," "spots left," or any synonym. Workbook 07 §3 Category 4 enforcement is non-negotiable.
 
 ---

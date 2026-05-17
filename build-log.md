@@ -93,7 +93,7 @@ Diagnosed the 25-point gap as three concrete absences:
 
 - **`strategy/workbooks/09-fill-your-funnel.md`** (NEW §3.5) — Owned-Traffic Policy reference. Workbook-side pointer to the canonical doc, with 7-rule summary of what the policy locks. Lives between §3 (Fill Your Funnel Framework) and §4 (Fill Your Funnel Organically).
 
-- **`strategy/state.json`** (NEW `traffic_secrets.traffic_you_own` block + prepended `revision_history` entry) — machine-readable record of every commitment. Block contents: canonical_doc, before/after audit scores, audit_gap_diagnosis, owned_assets_inventory (7 owned + 2 rented for contrast), capture_surface_diversification (8 surfaces), portability_proof, second_owned_discovery_surface, esp_migration_plan, cross_channel_re_engagement_matrix_documented, value_per_asset_documented, test_results_at_launch (7/7 pass), files_shipped, next_review_trigger, score_impact.
+- **`strategy/state.json`** (NEW `traffic_secrets.traffic_you_own` block + prepended `revision_history` entry) — playbook-readable record of every commitment. Block contents: canonical_doc, before/after audit scores, audit_gap_diagnosis, owned_assets_inventory (7 owned + 2 rented for contrast), capture_surface_diversification (8 surfaces), portability_proof, second_owned_discovery_surface, esp_migration_plan, cross_channel_re_engagement_matrix_documented, value_per_asset_documented, test_results_at_launch (7/7 pass), files_shipped, next_review_trigger, score_impact.
 
 ### Brunson rule audit
 
@@ -137,37 +137,37 @@ Next.js 14 App Router + TypeScript + Tailwind CSS 3 scaffolded in `app/`. Depend
 ## Sprint 1, Step 2: Funnel Hub Homepage
 **Status: SHIPPED (staging)**
 
-Live at `/` (root). Contains: hero with enemy sentence + one-line bio, three CTAs (Free Diagnostic, $1 Starter, $49 Machine), half manifesto ("We Are Verified Builders"), founder six-line intro with video placeholder, social links (X, Indie Hackers, r/SaaS). All copy sourced from workbook 01 Section 6 and workbook 05 Section 7.
+Live at `/` (root). Contains: hero with enemy sentence + one-line bio, three CTAs (Free Diagnostic, $1 Starter, $49 Playbook), half manifesto ("We Are Verified Builders"), founder six-line intro with video placeholder, social links (X, Indie Hackers, r/SaaS). All copy sourced from workbook 01 Section 6 and workbook 05 Section 7.
 
 ## Sprint 1, Step 3: $1 Starter Sales Page
 **Status: SHIPPED (staging)**
 
-Live at `/starter`. Contains: Star Story Solution structure from workbook 03 Script 3, AC three-line about opener as sub-headline, two Machine steps described with checkmarks, guarantee teaser, polarity AGAINST line (#3 "validate your idea"), and Stripe checkout CTA. Reluctant Hero voice throughout.
+Live at `/starter`. Contains: Star Story Solution structure from workbook 03 Script 3, AC three-line about opener as sub-headline, two Playbook steps described with checkmarks, guarantee teaser, polarity AGAINST line (#3 "validate your idea"), and Stripe checkout CTA. Reluctant Hero voice throughout.
 
 ## Sprint 1, Step 4: Stripe $1 Checkout
 **Status: SHIPPED (staging, needs test-mode Stripe keys)**
 
-API route at `/api/checkout` handles both `starter` (one-time payment) and `machine` (subscription) modes. Success redirect sends to OTO page. Blocked on: operator must create Stripe products and add price IDs to `.env.local`.
+API route at `/api/checkout` handles both `starter` (one-time payment) and `playbook` (subscription) modes. Success redirect sends to OTO page. Blocked on: operator must create Stripe products and add price IDs to `.env.local`.
 
 ## Sprint 1, Step 5: OTO Page
 **Status: SHIPPED (staging)**
 
-Live at `/oto`. Two buttons, one decision per workbook 03 Script 4. Primary: "Continue the Machine. $49/mo. 60-day guarantee." Secondary: "No thanks, deliver just the Starter." No third option.
+Live at `/oto`. Two buttons, one decision per workbook 03 Script 4. Primary: "Continue the Playbook. $49/mo. 60-day guarantee." Secondary: "No thanks, deliver just the Starter." No third option.
 
 ## Sprint 1, Step 6: Member Area Shell
 **Status: SHIPPED (staging)**
 
-Live at `/machine`. Sidebar shows all 7 Machine steps (1-2 unlocked, 3-7 locked with lock icon). Milestone badges displayed (Dream Customer Pinned, Offer Locked, AC Defined, Copy Generated, Outreach Assets Generated, 20 Outreach Actions Logged, First Paying Customer Verified). Welcome message in Reluctant Hero voice.
+Live at `/playbook`. Sidebar shows all 7 Playbook steps (1-2 unlocked, 3-7 locked with lock icon). Milestone badges displayed (Dream Customer Pinned, Offer Locked, AC Defined, Copy Generated, Outreach Assets Generated, 20 Outreach Actions Logged, First Paying Customer Verified). Welcome message in Reluctant Hero voice.
 
-## Sprint 1, Step 7: Machine Step 1 (Dream Customer)
+## Sprint 1, Step 7: Playbook Step 1 (Dream Customer)
 **Status: SHIPPED (staging, needs Anthropic API key for pushback)**
 
-Live at `/machine/step/1`. Guided conversation with 5 questions from workbook 04 Section 2. Engine validates each answer via Claude API — pushes back on vague answers ("'Founders' is a category, not a person"), accepts specific answers. Uses Internal Belief rewrite #4 from workbook 06 Section 4. On completion: assembles one-paragraph dream customer profile + congregation list.
+Live at `/playbook/step/1`. Guided conversation with 5 questions from workbook 04 Section 2. Engine validates each answer via Claude API — pushes back on vague answers ("'Founders' is a category, not a person"), accepts specific answers. Uses Internal Belief rewrite #4 from workbook 06 Section 4. On completion: assembles one-paragraph dream customer profile + congregation list.
 
-## Sprint 1, Step 8: Machine Step 2 (Offer)
+## Sprint 1, Step 8: Playbook Step 2 (Offer)
 **Status: SHIPPED (staging, needs Anthropic API key)**
 
-Live at `/machine/step/2`. Four questions from workbook 04 Section 2. Engine validates: rejects feature-lists, missing timeframes, hedging. On completion: assembles offer headline + stack outline + guarantee + 10x check. After Step 2, surfaces OTO upsell to full Machine.
+Live at `/playbook/step/2`. Four questions from workbook 04 Section 2. Engine validates: rejects feature-lists, missing timeframes, hedging. On completion: assembles offer headline + stack outline + guarantee + 10x check. After Step 2, surfaces OTO upsell to full Playbook.
 
 ## Sprint 1, Step 9: End-to-End Smoke Test
 **Status: BLOCKED**
@@ -176,7 +176,7 @@ Blocked on: operator must add real Stripe test-mode keys and Anthropic API key t
 
 ## Blockers for Live Staging
 
-1. Create Stripe products: "$1 Starter" (one-time, $1) and "The Machine" (subscription, $49/mo). Add price IDs to env.
+1. Create Stripe products: "$1 Starter" (one-time, $1) and "The Playbook" (subscription, $49/mo). Add price IDs to env.
 2. Add Anthropic API key to env.
 3. Deploy to Vercel and point staging subdomain.
 
@@ -188,17 +188,17 @@ Resumed Sprint 1 on 2026-05-16 (session 2). Verified `cd` into project root. Rea
 ## Sprint 1, Resume Pass: GitHub Repo Created and Pushed
 **Status: SHIPPED**
 
-Authenticated `gh` was `kindrat86`, not `sipi` (user confirmed namespace switch to `kindrat86/unlocksaas`). Staged `app/` (33 files) and `build-log.md`, committed as "Sprint 1: Next.js scaffold + funnel hub, $1 Starter, OTO, Machine shell," then ran `gh repo create kindrat86/unlocksaas --private --source=. --remote=origin --push`. Repo is live at https://github.com/kindrat86/unlocksaas with three commits: strategy lockdown, .gitignore, Sprint 1 scaffold. Remote `origin` set, `main` tracking `origin/main`.
+Authenticated `gh` was `kindrat86`, not `sipi` (user confirmed namespace switch to `kindrat86/unlocksaas`). Staged `app/` (33 files) and `build-log.md`, committed as "Sprint 1: Next.js scaffold + funnel hub, $1 Starter, OTO, Playbook shell," then ran `gh repo create kindrat86/unlocksaas --private --source=. --remote=origin --push`. Repo is live at https://github.com/kindrat86/unlocksaas with three commits: strategy lockdown, .gitignore, Sprint 1 scaffold. Remote `origin` set, `main` tracking `origin/main`.
 
 ## Sprint 1, Resume Pass: `next build` Verified Clean
 **Status: SHIPPED**
 
-Ran `npx next build` from `app/`. Initial run: 11 routes generated, 0 errors, 0 warnings. After hardening (below) the second run produced 13 routes, still 0 errors. Static pages: `/`, `/machine`, `/oto`, `/starter`, `/diagnostic`, `/machine-sales`. Server-rendered: `/api/checkout`, `/api/engine`, `/api/webhooks/stripe`, `/machine/step/[id]`. First Load JS shared baseline 87.3 kB — within healthy range.
+Ran `npx next build` from `app/`. Initial run: 11 routes generated, 0 errors, 0 warnings. After hardening (below) the second run produced 13 routes, still 0 errors. Static pages: `/`, `/playbook`, `/oto`, `/starter`, `/diagnostic`, `/playbook-sales`. Server-rendered: `/api/checkout`, `/api/engine`, `/api/webhooks/stripe`, `/playbook/step/[id]`. First Load JS shared baseline 87.3 kB — within healthy range.
 
 ## Sprint 1, Resume Pass: Dead Homepage CTAs Replaced With Placeholders
 **Status: SHIPPED**
 
-Found two homepage CTAs (`/diagnostic`, `/machine-sales`) wired to routes that did not exist — would have 404'd on the funnel hub. Built minimal placeholder pages at `app/src/app/(marketing)/diagnostic/page.tsx` and `app/src/app/(marketing)/machine-sales/page.tsx`. Each page is honest about the sprint timing (Sprint 2, Sprint 3), explains in Reluctant Hero voice why this door is closed and which door is open, and routes the visitor to `/starter` (the one funnel that is live). No fake "coming soon" copy. The real Free Diagnostic and $49 sales page will replace these in their respective sprints.
+Found two homepage CTAs (`/diagnostic`, `/playbook-sales`) wired to routes that did not exist — would have 404'd on the funnel hub. Built minimal placeholder pages at `app/src/app/(marketing)/diagnostic/page.tsx` and `app/src/app/(marketing)/playbook-sales/page.tsx`. Each page is honest about the sprint timing (Sprint 2, Sprint 3), explains in Reluctant Hero voice why this door is closed and which door is open, and routes the visitor to `/starter` (the one funnel that is live). No fake "coming soon" copy. The real Free Diagnostic and $49 sales page will replace these in their respective sprints.
 
 ## Sprint 1, Resume Pass: Engine Model Bumped to Sonnet 4.6
 **Status: SHIPPED**
@@ -258,7 +258,7 @@ End-to-end Soap Opera Sequence wired up against the existing `soap_opera_subscri
 - `CRON_SECRET` — required for Vercel cron auth. Generate with `openssl rand -hex 32`.
 - `UNSUBSCRIBE_SECRET` — required to decouple unsubscribe-link signing from service-role-key rotation.
 
-**Build verification:** `npx next build` ✓ Compiled successfully — the Soap Opera files all pass webpack compilation. The build halts on subsequent type-checking against pre-existing files (`(app)/machine/verified/actions.ts` uses `profiles` which is missing from the stale generated `database.types.ts`) — those are unrelated to this delivery and need a `supabase gen types` regen pass.
+**Build verification:** `npx next build` ✓ Compiled successfully — the Soap Opera files all pass webpack compilation. The build halts on subsequent type-checking against pre-existing files (`(app)/playbook/verified/actions.ts` uses `profiles` which is missing from the stale generated `database.types.ts`) — those are unrelated to this delivery and need a `supabase gen types` regen pass.
 
 **Brunson rule compliance:** story first, offer at the bottom on every email (workbook 04 §5 hard rule). Voice is Reluctant Hero across all 5 (story scaffolds from workbook 01 §6 Beat 3: Blank Offer Page, Stripe Refresh, Mirror in Ten Founders, Door That Opened). Hook #8 used verbatim in Email 5. No countdown timers, no fake scarcity, no role-address sender.
 
@@ -300,7 +300,7 @@ Closed the loop from the Free Diagnostic squeeze through the labeled diagnosis t
 
 **Out of scope (intentional discipline):**
 - Day-0 Soap Opera Email 1 send from the diagnostic API. The concurrent `/api/soap-opera/subscribe` endpoint owns Day 0; the diagnostic API currently writes the subscriber row directly but does not call subscribe. Wiring is the next coherent unit and is what closes the "I email the diagnosis" promise on the squeeze copy.
-- $49 Machine sales page (Sprint 3).
+- $49 Playbook sales page (Sprint 3).
 - A/B test on the handoff CTA wording (currently uses Claude's `nextStep` with workbook line as fallback).
 
 **Open consistency item:** the squeeze form copy "I email the diagnosis. No spam." is aspirational until the diagnostic API calls `/api/soap-opera/subscribe` to fire Email 1. Either wire the subscribe call into `/api/diagnostic` next, or trim the form copy. Recommend the former — Email 1 IS the Day-0 entry to the Soap Opera Sequence, so the two ships compound.
@@ -335,7 +335,7 @@ order by variant;
 ```
 Convergence rule of thumb: need at least ~200 exposures per variant before calling a winner. With pre-revenue traffic this will take weeks — that's fine; Hard Rule #10 says whichever wins ships, no timeline.
 
-**Build verification:** `npx tsc --noEmit` reports zero errors in any of the six A/B files. The 59 remaining type errors across `(app)/machine/{layout,page}.tsx`, `verified/actions.ts`, `seinfeld/*`, `conversions/route.ts`, and the legacy `handleConnectChargeSucceeded` in the same webhook file are pre-existing — they reference a `profiles` table that hasn't been added to the generated `database.types.ts` yet. Need a `supabase gen types` regen, unrelated to this delivery.
+**Build verification:** `npx tsc --noEmit` reports zero errors in any of the six A/B files. The 59 remaining type errors across `(app)/playbook/{layout,page}.tsx`, `verified/actions.ts`, `seinfeld/*`, `conversions/route.ts`, and the legacy `handleConnectChargeSucceeded` in the same webhook file are pre-existing — they reference a `profiles` table that hasn't been added to the generated `database.types.ts` yet. Need a `supabase gen types` regen, unrelated to this delivery.
 
 **Blockers for live data:**
 1. Vercel BLOCKED deploy state must clear before any visitor traffic reaches the new manifesto + beacons.
@@ -386,7 +386,7 @@ RLS enabled on all three: signed-in users read their own profile (`profiles_self
 
 `database.types.ts` extended with `profiles`, `billing_events`, `billing_payments` Row/Insert/Update + FK metadata so `.from(...)` calls type-check against the typed `Database`.
 
-Also added `app/src/lib/celebration-email.ts` (stub from this pass; concurrent session enriched it with HTML body, builder/product/amount formatting, `/machine/verified` CTA fallback). Sends from `maryan@unlocksaas.com` via Resend; called by the Connect-event branch in the webhook when the first paying customer is detected on the user's *connected* Stripe account.
+Also added `app/src/lib/celebration-email.ts` (stub from this pass; concurrent session enriched it with HTML body, builder/product/amount formatting, `/playbook/verified` CTA fallback). Sends from `maryan@unlocksaas.com` via Resend; called by the Connect-event branch in the webhook when the first paying customer is detected on the user's *connected* Stripe account.
 
 **Concurrent edits noted (preserved, not reverted):** the webhook file `app/src/app/api/webhooks/stripe/route.ts` was rewritten by a parallel session during this pass. The end-state focuses on the **Connect-event branch** (`handleConnectChargeSucceeded`) plus analytics capture and A/B attribution. The **platform-event branches** (`checkout.session.completed` / `customer.subscription.*` / `invoice.*` / `charge.refunded` against *our* Stripe account) currently log + emit analytics but still carry `// TODO:` placeholders for the profile-upsert / tier-transition / billing_payments-write paths drafted in this pass. The schema + types are in place to drop those handlers back in — the work is queued, not lost.
 
@@ -401,7 +401,7 @@ Implemented the indefinite Mon/Wed/Fri Seinfeld nurture per workbook 08 §6. Soa
 
 **What landed:**
 - Migration `supabase/migrations/20260517020000_seinfeld.sql` — `seinfeld_subscribers` table with rotation state (`current_index`, `sends_count`), status enum, FK to `soap_opera_subscribers` for graduate provenance, RLS enabled with no policies (service-role only). The generated `app/src/lib/database.types.ts` already includes the matching type entry (auto-regenerated when the migration landed).
-- Content pools in `app/src/lib/seinfeld/content.ts` — three pools (5 stories, 5 behind-the-build, 5 industry observations). All five stories from workbook 01 §6 Beat 3 reframed for Seinfeld era ("I keep coming back to this..."); behind-the-build notes cover Machine Step 5 design, 60-day clock, Dream 100 picker, engine pushback, Stripe-only proof; industry observations cover the build-no-longer-the-moat thesis, traffic-vs-copy diagnosis, comments-vs-charges, courses-as-avoidance, non-engineer-decade.
+- Content pools in `app/src/lib/seinfeld/content.ts` — three pools (5 stories, 5 behind-the-build, 5 industry observations). All five stories from workbook 01 §6 Beat 3 reframed for Seinfeld era ("I keep coming back to this..."); behind-the-build notes cover Playbook Step 5 design, 60-day clock, Dream 100 picker, engine pushback, Stripe-only proof; industry observations cover the build-no-longer-the-moat thesis, traffic-vs-copy diagnosis, comments-vs-charges, courses-as-avoidance, non-engineer-decade.
 - `app/src/lib/seinfeld/schedule.ts` — Mon/Wed/Fri UTC cadence helpers + `nextSendAt()` for /subscribe responses.
 - `app/src/lib/seinfeld/emails.ts` — renderer mirrors the Soap Opera HTML shell, signs every email "— Maryan", alternates the PS link between `/diagnostic` (even sends) and `/starter` (odd sends).
 - `app/src/lib/seinfeld/dispatch.ts` — send-and-advance per row: picks today's pool, indexes by `current_index % pool.length`, tags Resend send with `sequence: 'seinfeld'`, `kind`, `content_id`, `ps_target`, increments both counters, persists `last_error` on failure for cron retry.
@@ -426,19 +426,19 @@ Implemented the indefinite Mon/Wed/Fri Seinfeld nurture per workbook 08 §6. Soa
 ## Sprint 3, Step 1: Core Onboarding Flow (Stripe Connect + Starter Carryover + 60-Day Clock)
 **Status: SHIPPED (code) — operator action required before live**
 
-Built the post-checkout onboarding view at `/onboarding` so a fresh $49/mo customer lands somewhere coherent instead of a half-empty `/machine` shell. Three cards, one page, two minutes of setup before Step 3.
+Built the post-checkout onboarding view at `/onboarding` so a fresh $49/mo customer lands somewhere coherent instead of a half-empty `/playbook` shell. Three cards, one page, two minutes of setup before Step 3.
 
 **Files shipped:**
 - `app/src/lib/onboarding.ts` — status assembler. `getOnboardingStatus({ userId, email })` returns `{ profile, project, stripeConnection, starterCarryover, clock }` in one async pass. Lazily creates the `projects` row on first visit so the page never 500s on a fresh user. Profile lookup falls back from `user_id` to `email` for the race where Stripe webhook fires before the auth.users → profiles trigger has linked the user. Pure `computeClockState()` derives `pending | running | expired` from `profiles.core_started_at` + `guarantee_expires_at`.
-- `app/src/app/(app)/onboarding/layout.tsx` — auth-gated minimal shell. No Machine sidebar — onboarding is pre-machine and the sidebar adds noise.
+- `app/src/app/(app)/onboarding/layout.tsx` — auth-gated minimal shell. No Playbook sidebar — onboarding is pre-playbook and the sidebar adds noise.
 - `app/src/app/(app)/onboarding/page.tsx` — three cards:
   1. **Your 60-day clock** — reads `profiles.guarantee_expires_at` (set by the Stripe webhook on the first `invoice.payment_succeeded` with `billing_reason='subscription_create'`). Headline copy switches based on `clock.status`. Reluctant-Hero voice throughout.
   2. **Carry over from your $1 Starter** — reads `project_state.dream_customer` + `project_state.offer`. If the user paid $1 first and answered Steps 1+2, surfaces the saved summaries inside a muted card. If they came straight in at Core (no Starter), routes them to Step 1 with a no-fluff line.
   3. **Connect your Stripe** — kicks off the Stripe Connect OAuth flow (read-only scope). If already connected, shows the connected `acct_*` id, connection date, and the explainer that we listen for `charge.succeeded` on their account.
 - `app/src/app/api/stripe-connect/start/route.ts` — POST (and GET for local-debug convenience) that mints a signed `state` token (HMAC-SHA256 over `{ uid, exp, nonce }`, base64 payload + hex sig, 10-minute window) and 303-redirects the browser to `https://connect.stripe.com/oauth/authorize` with `client_id`, `scope=read_only`, `state`, and `redirect_uri`. Pre-fills `stripe_user[email]` from the authed user. Falls back to `SUPABASE_SERVICE_ROLE_KEY` for the HMAC if `STRIPE_CONNECT_STATE_SECRET` is unset (logged once).
 - `app/src/app/api/stripe-connect/callback/route.ts` — GET handler for Stripe's OAuth return. Verifies (a) the user is still authenticated, (b) the state HMAC validates with `timingSafeEqual`, (c) the state's `uid` matches the auth user (prevents cross-user session-hijack), (d) the `exp` window is still open. Exchanges `code` via `stripe.oauth.token({ grant_type: "authorization_code" })`, upserts the resulting `stripe_user_id` into `public.stripe_connections` (PK on `project_id`, with `disconnected_at: null` on reconnect), and 303-redirects back to `/onboarding?connect=ok`. Every named failure path lands on `/onboarding?error=<reason>` with a specific code.
-- `app/src/app/api/checkout/route.ts` — Core success URL changed from `/machine?session_id=…` to `/onboarding?session_id=…`. The session_id is preserved so onboarding can show a "processing" banner while the webhook catches up (usually <2s but can race on slow links).
-- `app/src/app/(app)/machine/layout.tsx` — derives `unlockedSteps` from `profiles.tier`. `core` → all 7 steps; `starter` → Steps 1+2 (matches BUILD-PROMPT Hard Rule #6: "The $1 Starter delivers Machine Steps 1 and 2 only"); `none` → bounce to `/starter` so users never see a locked-out sidebar with no path forward.
+- `app/src/app/api/checkout/route.ts` — Core success URL changed from `/playbook?session_id=…` to `/onboarding?session_id=…`. The session_id is preserved so onboarding can show a "processing" banner while the webhook catches up (usually <2s but can race on slow links).
+- `app/src/app/(app)/playbook/layout.tsx` — derives `unlockedSteps` from `profiles.tier`. `core` → all 7 steps; `starter` → Steps 1+2 (matches BUILD-PROMPT Hard Rule #6: "The $1 Starter delivers Playbook Steps 1 and 2 only"); `none` → bounce to `/starter` so users never see a locked-out sidebar with no path forward.
 - `.env.example` — added `STRIPE_CONNECT_CLIENT_ID` block (with full Stripe Dashboard setup notes and the two redirect URIs for prod + local dev) and `STRIPE_CONNECT_STATE_SECRET` (with the openssl rand command).
 
 **Webhook state:** the existing `api/webhooks/stripe/route.ts` (shipped in a prior session) already sets `profiles.tier='core'`, `core_started_at`, and `guarantee_expires_at = paid_at + 60 days` on the first `invoice.payment_succeeded`. Onboarding reads these — no webhook changes needed for the clock to work end-to-end.
@@ -455,7 +455,7 @@ Built the post-checkout onboarding view at `/onboarding` so a fresh $49/mo custo
 **Scope deliberately deferred:**
 - Stripe Connect webhook for `charge.succeeded` on connected accounts → owns the "verified_conversions" auto-write (Sprint 3, Step 7).
 - A "disconnect Stripe" button on the onboarding card — write `disconnected_at` on `stripe_connections` and clear access. Defer until first user asks.
-- Re-show the onboarding page from inside `/machine` when a Core user has skipped Connect — a single "Finish setup →" banner at the top of the machine dashboard.
+- Re-show the onboarding page from inside `/playbook` when a Core user has skipped Connect — a single "Finish setup →" banner at the top of the playbook dashboard.
 
 ## Sprint 1, Resume Pass: PostHog Analytics Wired End-to-End
 **Status: SHIPPED (code) — operator must provision PostHog project + push env keys**
@@ -465,7 +465,7 @@ Built the post-checkout onboarding view at `/onboarding` so a fresh $49/mo custo
 **Packages installed:** `posthog-js@1.373.5` (browser) + `posthog-node@5.34.2` (server).
 
 **Files added:**
-- `app/src/lib/analytics/events.ts` — single source of truth for event names + property shapes. Three layers: top-of-funnel (click events), mid-funnel (Machine step progress + milestones), conversion (Stripe webhook).
+- `app/src/lib/analytics/events.ts` — single source of truth for event names + property shapes. Three layers: top-of-funnel (click events), mid-funnel (Playbook step progress + milestones), conversion (Stripe webhook).
 - `app/src/lib/analytics/client.ts` — browser wrapper around `posthog-js` with `track()`, `identify()`, `resetIdentity()`. Silently no-ops when env keys absent.
 - `app/src/lib/analytics/server.ts` — Node wrapper. `captureServer()` fire-and-forget; `captureServerAndFlush()` awaits the flush — used for the Stripe webhook so the function does not freeze before the event ships.
 - `app/src/components/analytics/posthog-provider.tsx` — root `<PostHogProvider>`. Initializes once via `useEffect`.
@@ -476,14 +476,14 @@ Built the post-checkout onboarding view at `/onboarding` so a fresh $49/mo custo
 
 **Files instrumented:**
 - `app/src/app/layout.tsx` — `<PostHogProvider>` wraps the tree; `<PostHogPageView>` lives in `<Suspense>`.
-- `app/src/app/(app)/machine/layout.tsx` — `<IdentifyUser userId={user.id} email={user.email} />` ties distinct_id to Supabase user id after the auth gate.
-- `app/src/components/checkout-button.tsx` — `track(StarterCheckoutClicked | OtoUpgradeClicked | MachineSalesCheckoutClicked)` before redirect. Added a `surface` prop so the same component fires the right event from each surface.
+- `app/src/app/(app)/playbook/layout.tsx` — `<IdentifyUser userId={user.id} email={user.email} />` ties distinct_id to Supabase user id after the auth gate.
+- `app/src/components/checkout-button.tsx` — `track(StarterCheckoutClicked | OtoUpgradeClicked | PlaybookSalesCheckoutClicked)` before redirect. Added a `surface` prop so the same component fires the right event from each surface.
 - `app/src/app/(marketing)/starter/page.tsx` — `StarterPageViewed` on mount, `StarterCheckoutClicked` on CTA. Forwards `attribution` props into event properties.
 - `app/src/app/(marketing)/oto/page.tsx` — `OtoPageViewed`, `OtoUpgradeClicked`, `OtoDeclined`.
 - `app/src/app/(marketing)/diagnostic/diagnostic-form.tsx` — `DiagnosticFormSubmitted` with email *domain only* (not the address — that's PII; domain is enough to segment by ICP).
-- `app/src/app/(app)/machine/step/[id]/page.tsx` — `MachineStepStarted`, `MachineStepAnswerSubmitted`, `MachineEnginePushback` (most diagnostic signal — tells us which step is doing real work), `MachineStepCompleted`, `MilestoneEarned`.
+- `app/src/app/(app)/playbook/step/[id]/page.tsx` — `PlaybookStepStarted`, `PlaybookStepAnswerSubmitted`, `PlaybookEnginePushback` (most diagnostic signal — tells us which step is doing real work), `PlaybookStepCompleted`, `MilestoneEarned`.
 - `app/src/app/api/checkout/route.ts` — server-side `CheckoutSessionCreated` mirror. Wrapped in try/catch with explicit error capture + 502 response so failures are observable (addressed the route-handler observability note).
-- `app/src/app/api/webhooks/stripe/route.ts` — the conversion source-of-truth. Captures `StarterPurchased`, `MachineSubscribed`, `InvoicePaymentSucceeded`, `InvoicePaymentFailed`, `SubscriptionCanceled`, `ChargeRefunded`. **`FirstCustomerVerified`** fires from the Connect `charge.succeeded` handler when the user's `verified_conversions` count hits exactly 1 — the single event `brunson-funnel-metrics` cares about most. Fired BEFORE the celebration email so a Resend outage does not lose the metric.
+- `app/src/app/api/webhooks/stripe/route.ts` — the conversion source-of-truth. Captures `StarterPurchased`, `PlaybookSubscribed`, `InvoicePaymentSucceeded`, `InvoicePaymentFailed`, `SubscriptionCanceled`, `ChargeRefunded`. **`FirstCustomerVerified`** fires from the Connect `charge.succeeded` handler when the user's `verified_conversions` count hits exactly 1 — the single event `brunson-funnel-metrics` cares about most. Fired BEFORE the celebration email so a Resend outage does not lose the metric.
 
 **Privacy/governance choices baked in:**
 - `autocapture: false` — no DOM-event firehose; only events on the typed list ship.
@@ -504,7 +504,7 @@ Built the post-checkout onboarding view at `/onboarding` so a fresh $49/mo custo
    ```
    Repeat for preview + development envs.
 5. After first events arrive, set up a Funnel in PostHog with this sequence to feed `brunson-funnel-metrics`:
-   `funnel_hub_viewed` → `starter_page_viewed` → `starter_checkout_clicked` → `starter_purchased` → `oto_page_viewed` → `oto_upgrade_clicked` → `machine_subscribed` → `machine_step_started` (step_id=1) → `machine_step_completed` (step_id=7) → `first_customer_verified`.
+   `funnel_hub_viewed` → `starter_page_viewed` → `starter_checkout_clicked` → `starter_purchased` → `oto_page_viewed` → `oto_upgrade_clicked` → `playbook_subscribed` → `playbook_step_started` (step_id=1) → `playbook_step_completed` (step_id=7) → `first_customer_verified`.
 
 ## Sprint 3, Step 15: First-Paying-Customer-Verified Celebration + Verified Builder Badge
 **Status: SHIPPED (code) / BLOCKED on migration apply**
@@ -519,15 +519,15 @@ Built the end-to-end celebration flow that fires the moment a verified conversio
 
 3. **`app/src/app/api/webhooks/stripe/route.ts`** — added `event.account`-branch + `handleConnectChargeSucceeded()`. Reads `stripe_connections` → `projects.user_id` → `profiles`, inserts `verified_conversions` idempotently (unique on `stripe_charge_id`), and on the first insert per profile fires `Event.FirstCustomerVerified` to PostHog (`captureServerAndFlush`) + sends the celebration email. No-op until users connect via Sprint 3 Step 7 Stripe Connect onboarding.
 
-4. **`app/src/lib/celebration-email.ts`** — upgraded from stub; sends from `maryan@unlocksaas.com` with Reluctant Hero subject ("$NAME — your line moved.") and body. Text + HTML. CTA → `/machine/verified`.
+4. **`app/src/lib/celebration-email.ts`** — upgraded from stub; sends from `maryan@unlocksaas.com` with Reluctant Hero subject ("$NAME — your line moved.") and body. Text + HTML. CTA → `/playbook/verified`.
 
-5. **`/machine/verified` page + ShareButtons + server actions** — server component reads `verified_conversions` for the signed-in profile. Two states: NO_CONVERSION_YET (honest empty state + dev/staging-only "simulate verified customer" form) and VERIFIED (Stripe-confirmed amount/customer/date/charge-id, inline share-settings form for display name + product + visibility, full share controls when public). `updateShareSettings` server action allocates a slug on first public flip; `simulateFirstCustomer` is guarded by `NODE_ENV !== 'production'`.
+5. **`/playbook/verified` page + ShareButtons + server actions** — server component reads `verified_conversions` for the signed-in profile. Two states: NO_CONVERSION_YET (honest empty state + dev/staging-only "simulate verified customer" form) and VERIFIED (Stripe-confirmed amount/customer/date/charge-id, inline share-settings form for display name + product + visibility, full share controls when public). `updateShareSettings` server action allocates a slug on first public flip; `simulateFirstCustomer` is guarded by `NODE_ENV !== 'production'`.
 
 6. **`/builder/[slug]` public badge page** — server component, no auth, 404 when private. Renders the Verified Builder card (Reluctant Hero copy + manifesto excerpt + quiet UnlockSaaS attribution). Sets canonical + OG metadata.
 
 7. **`/builder/[slug]/opengraph-image.tsx`** — dynamic 1200×630 OG card via `next/og` `ImageResponse`. Picked up automatically by Next 14 metadata. Dark theme matching the app, big headline, product line, "Verified by Stripe · DATE" footer.
 
-8. **Machine sidebar + dashboard wiring** — `app/(app)/machine/layout.tsx` now counts `verified_conversions` for the profile; on hit, the "First Paying Customer Verified" milestone badge in the sidebar goes from `outline opacity-40` to `default` and becomes a Link to `/machine/verified`. `app/(app)/machine/page.tsx` shows a celebration banner above the Step 1 CTA when verified.
+8. **Playbook sidebar + dashboard wiring** — `app/(app)/playbook/layout.tsx` now counts `verified_conversions` for the profile; on hit, the "First Paying Customer Verified" milestone badge in the sidebar goes from `outline opacity-40` to `default` and becomes a Link to `/playbook/verified`. `app/(app)/playbook/page.tsx` shows a celebration banner above the Step 1 CTA when verified.
 
 **Behavior parity guard:** every new DB read is wrapped in a try/catch that falls back to "not verified" so the layout still renders if the migration hasn't been applied yet in a given env. The badge page and OG image both no-op cleanly on missing rows.
 
@@ -545,7 +545,7 @@ Built the end-to-end celebration flow that fires the moment a verified conversio
 1. `supabase db push` (or apply the migration via dashboard) so `builder_slug` + view exist in prod.
 2. Re-generate `database.types.ts` from the live schema to clear the `as never` casts.
 3. Add Stripe Connect webhook subscription for `charge.succeeded` events on connected accounts (the existing UnlockSaaS-side endpoint at `we_1TXqTQCwGoUDklReXjsqFUML` needs `connected_account_id` enabled, or register a separate Connect endpoint).
-4. In non-prod, visit `/machine/verified` while signed in to test the simulate-flow end-to-end (records a fake conversion → fires celebration email → renders share UI → opt in public → view `/builder/<slug>` + OG image).
+4. In non-prod, visit `/playbook/verified` while signed in to test the simulate-flow end-to-end (records a fake conversion → fires celebration email → renders share UI → opt in public → view `/builder/<slug>` + OG image).
 
 ## Strategy Triage: Open-Items Pass (Verified Builders + dream-100.csv + dollar-objections.md)
 **Status: SHIPPED (strategy docs reconciled with build reality)**
@@ -562,16 +562,16 @@ Ran a triage pass against the three remaining founder-open pre-launch items in `
 
 **`state.json` validates clean.** Two `revision_history` entries now document this session's strategy reconciliation pass.
 
-## Sprint 3: Machine Steps 3-7 (AC, Copy, Outreach, Do Outreach, Convert & Verify)
+## Sprint 3: Playbook Steps 3-7 (AC, Copy, Outreach, Do Outreach, Convert & Verify)
 **Status: SHIPPED**
 
-The five remaining Machine steps are now end-to-end live. Steps 3-5 extend the existing Q&A engine pattern; Steps 6-7 are dedicated UIs because they are not conversations.
+The five remaining Playbook steps are now end-to-end live. Steps 3-5 extend the existing Q&A engine pattern; Steps 6-7 are dedicated UIs because they are not conversations.
 
-**Step 3 — Attractive Character (`/machine/step/3`):** five questions (workbook 01 §6 engine spec): origin scene, hardest stretch, story moment, owned flaw, polarity. Engine validation rejects LinkedIn-bio polish, "perfectionist"-style fake flaws, and bland polarity. On completion it assembles Identity Type + three-line bio + named story + two flaws + FOR/AGAINST lists + disqualifying line.
+**Step 3 — Attractive Character (`/playbook/step/3`):** five questions (workbook 01 §6 engine spec): origin scene, hardest stretch, story moment, owned flaw, polarity. Engine validation rejects LinkedIn-bio polish, "perfectionist"-style fake flaws, and bland polarity. On completion it assembles Identity Type + three-line bio + named story + two flaws + FOR/AGAINST lists + disqualifying line.
 
-**Step 4 — Write Copy (`/machine/step/4`):** three questions, with Step 1+2+3 outputs piped to the engine as context (`needsPriorOutputs: ['1','2','3']`). Engine assembles five curiosity-based headlines, Star-Story-Solution sales-page draft, OTO upsell block, disqualifying copy block (workbook 03 Engine Implications).
+**Step 4 — Write Copy (`/playbook/step/4`):** three questions, with Step 1+2+3 outputs piped to the engine as context (`needsPriorOutputs: ['1','2','3']`). Engine assembles five curiosity-based headlines, Star-Story-Solution sales-page draft, OTO upsell block, disqualifying copy block (workbook 03 Engine Implications).
 
-**Step 5 — Outreach Assets (`/machine/step/5`):** three questions (niche keywords, Dream 100 categories to draw from, tone notes). The engine has the full Dream 100 categories list (workbook 08) embedded in its assemble prompt and picks 20 specific targets weighted to the user's selection, then produces v1/v2 messages, three reply scripts, and a cold-email template. Story first, offer last. Per workbook 04 §6.
+**Step 5 — Outreach Assets (`/playbook/step/5`):** three questions (niche keywords, Dream 100 categories to draw from, tone notes). The engine has the full Dream 100 categories list (workbook 08) embedded in its assemble prompt and picks 20 specific targets weighted to the user's selection, then produces v1/v2 messages, three reply scripts, and a cold-email template. Story first, offer last. Per workbook 04 §6.
 
 **Step 6 — Do Outreach (`outreach-log.tsx` already in place):** action log with channel + target + message + optional public URL, "X of 20 logged" counter. When count hits 20, fires `twenty_outreach_actions_logged` milestone via `/api/milestones/outreach-twenty`. Sprint 4 server-backed path now also exists: `/api/outreach` (GET list + POST log with server-side count check + idempotent milestone fire) and `/api/outreach/verify-link` (server fetches the posted URL with `AbortController` 8 s timeout, blocks file:// + internal hostnames + non-http(s) protocols, then stamps `verified_live`).
 
@@ -582,14 +582,14 @@ The five remaining Machine steps are now end-to-end live. Steps 3-5 extend the e
 - `STEP_TO_MILESTONE` map fires the corresponding milestone (`dream_customer_pinned`, `offer_locked`, `ac_defined`, `copy_generated`, `outreach_assets_generated`) on the user's profile via `markMilestone()` from `@/lib/guarantee` — the unique index makes it idempotent.
 - Whole handler wrapped in try/catch with structured logging (`stepId`, `questionIndex`, duration). Failure to mark a milestone is non-fatal — the user already saw their assembled output.
 
-**Step page reshaped (`app/(app)/machine/step/[id]/page.tsx`):**
+**Step page reshaped (`app/(app)/playbook/step/[id]/page.tsx`):**
 - `STEP_CONFIG` covers steps 1-5; the page short-circuits to `<OutreachLog />` for step 6 and `<ConversionVerifier />` for step 7 before any Q&A hooks run (Rules of Hooks compliance).
 - `needsPriorOutputs` field on step config tells the client to prepend "PRIOR STEP N OUTPUT" preambles to `previousAnswers` from localStorage so the engine can ground Step 4 and Step 5 assembly in the user's actual Dream Customer + Offer + AC.
-- Analytics (`MachineStepStarted`, `MachineStepAnswerSubmitted`, `MachineEnginePushback`, `MachineStepCompleted`, `MilestoneEarned`) fires across all five steps.
+- Analytics (`PlaybookStepStarted`, `PlaybookStepAnswerSubmitted`, `PlaybookEnginePushback`, `PlaybookStepCompleted`, `MilestoneEarned`) fires across all five steps.
 
 **Pre-existing build errors fixed in passing:** `cron/soap-opera/route.ts` had `current_day` vs `emails_sent` field-name drift between the live DB and `DueRow` type. Same migration-vs-types drift hit `webhooks/stripe/route.ts` on `diagnostic_leads.converted_to_starter_at`. Fixed with the canonical `Record<string, unknown>` + `as never` cast pattern already used elsewhere in this codebase, with `TODO: regen database.types.ts` comments.
 
-**Verified:** `npx next build` clean. 22 routes total (up from 18). `/machine/step/[id]` First Load JS is 177 kB, accounting for the OutreachLog + ConversionVerifier branches it can render. New API routes: `/api/outreach`, `/api/outreach/verify-link`.
+**Verified:** `npx next build` clean. 22 routes total (up from 18). `/playbook/step/[id]` First Load JS is 177 kB, accounting for the OutreachLog + ConversionVerifier branches it can render. New API routes: `/api/outreach`, `/api/outreach/verify-link`.
 
 **What's still TODO for Sprint 4:**
 1. Wire `outreach-log.tsx` to `/api/outreach` (server-backed) instead of localStorage, so the action log survives device changes and is the authoritative source for the 20-count milestone (the API endpoint is already server-side authoritative; just swap the component's data source).
@@ -636,7 +636,7 @@ Ran a chapter-by-chapter audit of the project against all three Secrets Trilogy 
 
 1. **`strategy/dream-100.csv` rows 31-40 filled.** Replaced `[Founder fill #N]` placeholders with 10 specific entries (name + URL + work-in plan + buy-in plan + notes), selected for Marco-avatar overlap. Tier-A (vibe-coder / AI builder / non-engineer-friendly): **Anthony Castrio** (Indie Worldwide), **Damon Chen** (Testimonial.to), **Hassan El Mghari / Nutlope** (Restorephotos, RoomGPT), **Tibo Louis-Lucas** (Tweet Hunter), **Mubashar Iqbal / Mubs**. Tier-B (bootstrapper authority): **Rob Walling** (Microconf / TinySeed), **Sahil Lavingia** (Gumroad), **Pat Walls** (Starter Story), **Justin Jackson** (Transistor.fm), **Joel Gascoigne** (Buffer).
 
-2. **Workbook 08 §3 podcast warm-up plan added.** Five Tier-1 pre-launch warm-up targets, each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions: **Software Social** (2–3 wk), **Build Your SaaS** (3–4 wk), **The Bootstrapped Founder** (4–6 wk), **Startup Ideas with Greg Isenberg** (3–4 wk), **Microconf On Air** (6–8 wk). Pitch readiness gate enforced: do not pitch until the first verified-customer cycle inside The Machine closes — pitch is the case study, not the framework.
+2. **Workbook 08 §3 podcast warm-up plan added.** Five Tier-1 pre-launch warm-up targets, each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions: **Software Social** (2–3 wk), **Build Your SaaS** (3–4 wk), **The Bootstrapped Founder** (4–6 wk), **Startup Ideas with Greg Isenberg** (3–4 wk), **Microconf On Air** (6–8 wk). Pitch readiness gate enforced: do not pitch until the first verified-customer cycle inside The Playbook closes — pitch is the case study, not the framework.
 
 3. **`strategy/state.json` reconciled.** `traffic_secrets.dream_100.categories.influencers` upgraded from 10 names + `"founder-fills 10 more"` placeholder to 20 specific names. `traffic_secrets.dream_100.status`, `progress.skill_08_status` both upgraded to v2. `progress.founder_open_items_pre_launch` rewritten: removed influencer-fill item, added the two warm-up rep items as ongoing operator work. Appended a `revision_history` entry. Validated as JSON post-edit.
 
@@ -644,7 +644,7 @@ Ran a chapter-by-chapter audit of the project against all three Secrets Trilogy 
 
 ### Audit findings worth flagging
 
-- The audit's #1 and #5 highest-leverage code fixes — **ship `/diagnostic/page.tsx` to render the real squeeze form** and **ship the Sprint 3 long-form $49 Machine sales page** — were already in place when I read the codebase for this pass. A parallel build session shipped both. `/diagnostic` now renders Hook + AC bio + DiagnosticForm + the three-label educational block + polarity AGAINST disqualifier. `/machine-sales` now renders the full Perfect Webinar Lite: Big Domino → Three Secrets (Vehicle / Internal / External with Story-Strategy-Case Study) → Stack with value math → 60-day guarantee block → Trial Closes + 6 Mini Closes (Risk Reversal / Logic / Emotion identity / Future pacing / Stake) → FAQ from `strategy/dollar-objections.md` → disqualifier → final CTA wired through `CoreCheckoutButton`. Identity label is A/B-pulled from `getIdentityLabels(variant)` so "Verified Builder" vs "Paid Builder" renders correctly per cohort. **Audit recompute: those two fixes alone move the composite from 63 → ~75 once exposures land.**
+- The audit's #1 and #5 highest-leverage code fixes — **ship `/diagnostic/page.tsx` to render the real squeeze form** and **ship the Sprint 3 long-form $49 Playbook sales page** — were already in place when I read the codebase for this pass. A parallel build session shipped both. `/diagnostic` now renders Hook + AC bio + DiagnosticForm + the three-label educational block + polarity AGAINST disqualifier. `/playbook-sales` now renders the full Perfect Webinar Lite: Big Domino → Three Secrets (Vehicle / Internal / External with Story-Strategy-Case Study) → Stack with value math → 60-day guarantee block → Trial Closes + 6 Mini Closes (Risk Reversal / Logic / Emotion identity / Future pacing / Stake) → FAQ from `strategy/dollar-objections.md` → disqualifier → final CTA wired through `CoreCheckoutButton`. Identity label is A/B-pulled from `getIdentityLabels(variant)` so "Verified Builder" vs "Paid Builder" renders correctly per cohort. **Audit recompute: those two fixes alone move the composite from 63 → ~75 once exposures land.**
 
 - Audit fixes that **still require Maryan personally** (not autonomously executable from this session):
   1. Record the six-line founder-intro video and replace the placeholder on `/`.
@@ -667,7 +667,7 @@ Ran a chapter-by-chapter audit of the project against all three Secrets Trilogy 
 
 **2. UNSUBSCRIBE_SECRET pushed via new `scripts/setup-unsubscribe-secret.py`.** Created a dedicated setup script per the locked one-script-per-secret convention (memory file `project_unlocksaas_infra.md`). Mirrors the cron script architecture exactly: `secrets.token_hex(32)` + piped stdin + `--sensitive` flag (skipped on development per the documented server-side rejection) + preview empty-branch positional + 0600 local write. `tokens.ts` now signs with a dedicated key — the `SUPABASE_SERVICE_ROLE_KEY` fallback is still in place as a belt-and-suspenders for missing-env edge cases, but the production path resolves to `UNSUBSCRIBE_SECRET` first. Rotating service-role no longer invalidates every issued unsubscribe link.
 
-**3. Production redeploy required to activate the env values.** Vercel functions read env at deploy time, not at runtime. The previously-live `dpl_HMq6H5G48ftM3LkmZysJQ6ZVvSMw` had `CRON_SECRET=undefined` baked in — which silently short-circuits the auth check in `/api/cron/soap-opera` (line 30-34 of `route.ts`: `if (expected && provided !== \`Bearer ${expected}\`) { return 401 }` — when `expected` is undefined, ANY caller passes). First `vercel --prod` attempt failed on a pre-existing ESLint error: `Button` import in `app/src/app/(marketing)/machine-sales/page.tsx` was dead (concurrent agent expanded the file to the full $49 sales page and replaced `<Button>` with `<CoreCheckoutButton>` but left the import). Verified the lint failure was the only dead import via a one-pass `grep -c` against every imported symbol — all others used. Removed `import { Button }`. Re-deployed: `dpl_FZDkNeufcwiHU7MnhQVp8kdFWPHo` READY, aliased to unlocksaas.com + www.
+**3. Production redeploy required to activate the env values.** Vercel functions read env at deploy time, not at runtime. The previously-live `dpl_HMq6H5G48ftM3LkmZysJQ6ZVvSMw` had `CRON_SECRET=undefined` baked in — which silently short-circuits the auth check in `/api/cron/soap-opera` (line 30-34 of `route.ts`: `if (expected && provided !== \`Bearer ${expected}\`) { return 401 }` — when `expected` is undefined, ANY caller passes). First `vercel --prod` attempt failed on a pre-existing ESLint error: `Button` import in `app/src/app/(marketing)/playbook-sales/page.tsx` was dead (concurrent agent expanded the file to the full $49 sales page and replaced `<Button>` with `<CoreCheckoutButton>` but left the import). Verified the lint failure was the only dead import via a one-pass `grep -c` against every imported symbol — all others used. Removed `import { Button }`. Re-deployed: `dpl_FZDkNeufcwiHU7MnhQVp8kdFWPHo` READY, aliased to unlocksaas.com + www.
 
 **4. Three-way smoke test of cron auth.** Live curl against `https://unlocksaas.com/api/cron/soap-opera`:
 - No `Authorization` header → `HTTP 401` ✓
@@ -681,7 +681,7 @@ The `processed:0` is the correct response for an empty subscribers table — the
 **Files touched this pass:**
 - `scripts/setup-cron-secret.py` (one-line fix for preview empty-branch positional)
 - `scripts/setup-unsubscribe-secret.py` (new file, mode 0755)
-- `app/src/app/(marketing)/machine-sales/page.tsx` (removed dead `Button` import — three lines down to two)
+- `app/src/app/(marketing)/playbook-sales/page.tsx` (removed dead `Button` import — three lines down to two)
 - `.env.development.local` (CRON_SECRET + UNSUBSCRIBE_SECRET, gitignored, mode 0600)
 - Vercel envs (CRON_SECRET, UNSUBSCRIBE_SECRET — all three envs, Encrypted, --sensitive on prod+preview)
 - Production deployment: `dpl_FZDkNeufcwiHU7MnhQVp8kdFWPHo` READY, aliased
@@ -694,9 +694,9 @@ The `processed:0` is the correct response for an empty subscribers table — the
 
 **1. /diagnostic squeeze page now renders the form (audit fix #1 — the highest-leverage broken thing).** The audit flagged that `app/src/app/(marketing)/diagnostic/page.tsx` was still the Sprint 2 placeholder, while the form (`diagnostic-form.tsx`), the API (`/api/diagnostic`), the result page (`/diagnostic/result`), and the attribution loop into Stripe + diagnostic_leads were all fully wired and waiting. Front door of the entire funnel was locked behind a `Sprint 2` apology page. Rewrote `page.tsx` to render the actual squeeze: Hook #3 pain-mirror headline ("Your product is not broken. It was built for no one in particular."), the two-field DiagnosticForm in a primary-bordered card, the AC three-line about opener, the three-label explainer (Wrong Person / Weak Offer / Weak Belief), the polarity AGAINST line as disqualifier, and an honest trust-line about email collection + STOP-to-unsubscribe. Mounts `<AbExposureBeacon />` so direct-link traffic counts. Source comments cite workbook 02 §2, 04 §3, 01 §5 Hook #3, 01 §6 Beat 2, 01 §6 Beat 5. **Audit impact:** DCS Secret 11 (The Best Bait) climbs from 60 → 90; DCS Secret 14 (Lead Squeeze) 45 → 85; the front-door blocker on the entire funnel composite is gone.
 
-**2. /machine-sales long-form $49 sales page (audit fix #5 — Sprint 3 unblock, concurrent author).** A concurrent session shipped the full Perfect Webinar Lite — Big Domino slides 1-6, Three Secrets 7-15 with Story/Strategy/Case Study tabled out, Stack 16-30 with $496 → $49 → 10.1× math, 6 mini-closes in 4 categories (urgency rejected per workbook 07 §3), 6-question FAQ sourced verbatim from `strategy/dollar-objections.md`, disqualifying section, founder bio, final CTA wired to `CoreCheckoutButton` which forwards diagnostic attribution to Stripe. SSR-reads the A/B identity variant cookie so the "Verified Builder / Paid Builder" label matches the rest of the funnel. Concurrent author also fixed the dead `Button` import that was blocking the production deploy (see prior pass). **Audit impact:** Expert Secret 11 (Perfect Webinar overall) 40 → 85; Expert Secret 12 (Big Domino) 88 → 95; Expert Secret 13 (Three Secrets) 85 → 92; Expert Secret 14 (Stack/Closes) 80 → 90; DCS Secret 22 (Webinar Funnel) 65 → 88.
+**2. /playbook-sales long-form $49 sales page (audit fix #5 — Sprint 3 unblock, concurrent author).** A concurrent session shipped the full Perfect Webinar Lite — Big Domino slides 1-6, Three Secrets 7-15 with Story/Strategy/Case Study tabled out, Stack 16-30 with $496 → $49 → 10.1× math, 6 mini-closes in 4 categories (urgency rejected per workbook 07 §3), 6-question FAQ sourced verbatim from `strategy/dollar-objections.md`, disqualifying section, founder bio, final CTA wired to `CoreCheckoutButton` which forwards diagnostic attribution to Stripe. SSR-reads the A/B identity variant cookie so the "Verified Builder / Paid Builder" label matches the rest of the funnel. Concurrent author also fixed the dead `Button` import that was blocking the production deploy (see prior pass). **Audit impact:** Expert Secret 11 (Perfect Webinar overall) 40 → 85; Expert Secret 12 (Big Domino) 88 → 95; Expert Secret 13 (Three Secrets) 85 → 92; Expert Secret 14 (Stack/Closes) 80 → 90; DCS Secret 22 (Webinar Funnel) 65 → 88.
 
-**3. Rung 2 spec LOCKED + /repeatable public placeholder (audit fix on workbook 02).** The audit deducted Workbook 02 / DCS Secret 2 (Value Ladder) at 88 because Rung 2 was "noted, not built" — leaving any future first-customer Core user with nowhere to ascend. Authored `strategy/decisions/rung-2-repeatable-revenue.md`: full spec for "The Repeatable Revenue Layer" at $149/mo target price, 90-day refund window for Product 2, value math $846/$149 = 5.7× (below 10× standard, defended in rationale because audience is post-validation), build minimum (sales page, in-product "New Product" button with carry-over from Step 1, Stripe price `repeatable_monthly`, Verified Builder badge migration), hard activation gates (3 verified Core cycles + 1 unprompted ask + founder dogfood pass). Shipped `/repeatable/page.tsx` as a public placeholder that honestly publishes the spec, lists what-it-is-not, lists the activation gates, and routes back to `/machine-sales`. No fake countdown, no waitlist gate — same "honesty as polarity" discipline used during the diagnostic + machine-sales pre-Sprint windows. Updated `strategy/workbooks/02-funnels-value-ladder.md` §5 to rewrite the "deferred Rung 3" framing to lock Rung 2 spec + reframe Rung 3 as still-deferred. Updated `strategy/state.json` `dotcom_secrets.value_ladder.tiers` — split `rung_2_future` into `rung_2_repeatable` (locked spec) and `rung_3_agency` (still deferred). **Audit impact:** DCS Secret 2 (Value Ladder) 88 → 94 strategic; hits 100 only when build gate fires and the page goes live with a paying Rung 2 customer.
+**3. Rung 2 spec LOCKED + /repeatable public placeholder (audit fix on workbook 02).** The audit deducted Workbook 02 / DCS Secret 2 (Value Ladder) at 88 because Rung 2 was "noted, not built" — leaving any future first-customer Core user with nowhere to ascend. Authored `strategy/decisions/rung-2-repeatable-revenue.md`: full spec for "The Repeatable Revenue Layer" at $149/mo target price, 90-day refund window for Product 2, value math $846/$149 = 5.7× (below 10× standard, defended in rationale because audience is post-validation), build minimum (sales page, in-product "New Product" button with carry-over from Step 1, Stripe price `repeatable_monthly`, Verified Builder badge migration), hard activation gates (3 verified Core cycles + 1 unprompted ask + founder dogfood pass). Shipped `/repeatable/page.tsx` as a public placeholder that honestly publishes the spec, lists what-it-is-not, lists the activation gates, and routes back to `/playbook-sales`. No fake countdown, no waitlist gate — same "honesty as polarity" discipline used during the diagnostic + playbook-sales pre-Sprint windows. Updated `strategy/workbooks/02-funnels-value-ladder.md` §5 to rewrite the "deferred Rung 3" framing to lock Rung 2 spec + reframe Rung 3 as still-deferred. Updated `strategy/state.json` `dotcom_secrets.value_ladder.tiers` — split `rung_2_future` into `rung_2_repeatable` (locked spec) and `rung_3_agency` (still deferred). **Audit impact:** DCS Secret 2 (Value Ladder) 88 → 94 strategic; hits 100 only when build gate fires and the page goes live with a paying Rung 2 customer.
 
 **4. Funnel hacks shipped (audit fix on DCS Secret 5/8 + Expert Secret 20).** The audit deducted DCS #5/#8 (Reverse-Engineer a Funnel) at 35-40 and Expert Secret 20 (Funnel Hacker's Cookbook) at 35 because UnlockSaaS was built from first principles without modeling competitors. A concurrent session shipped `strategy/funnel-hacks.md` — four teardowns (Marc Lou / ShipFast, Pieter Levels / Nomads.com, Arvid Kahl / Bootstrapped Founder, Marc Köhlbrugge / WIP), each with Hook / Story / Offer / Guarantee / AC / Polarity / Social Proof / Pricing / OTO sections, STEAL and REJECT calls per competitor, and a 7-pattern swipe synthesis mapped to specific workbook sections. State.json `funnel_hacks` populated with the four competitor records + `funnel_hacks_synthesis` with the 7 workbook-mapped swipe targets. A parallel research agent produced three supplementary steals — pain-time stack with literal hours, "I walked the walk. Now I share the map." identity line, specific-dollar + time-compressed testimonials format — captured in state.json under `funnel_hacks_synthesis.supplementary_steals_from_agent_pass`. **Audit impact:** DCS #5 + #8 (35-40) → 80; Expert Secret 20 → 75.
 
@@ -715,8 +715,8 @@ The `processed:0` is the correct response for an empty subscribers table — the
 
 **Files touched this pass:**
 - `app/src/app/(marketing)/diagnostic/page.tsx` (squeeze rewritten to render DiagnosticForm — was Sprint 2 placeholder)
-- `app/src/app/(marketing)/machine-sales/page.tsx` (full Perfect Webinar Lite — concurrent author)
-- `app/src/app/(marketing)/machine-sales/checkout-button.tsx` (CoreCheckoutButton with attribution forwarding — concurrent author)
+- `app/src/app/(marketing)/playbook-sales/page.tsx` (full Perfect Webinar Lite — concurrent author)
+- `app/src/app/(marketing)/playbook-sales/checkout-button.tsx` (CoreCheckoutButton with attribution forwarding — concurrent author)
 - `app/src/app/(marketing)/repeatable/page.tsx` (new — Rung 2 public placeholder)
 - `strategy/decisions/rung-2-repeatable-revenue.md` (new — full Rung 2 spec)
 - `strategy/funnel-hacks.md` (new — 4 competitor teardowns + 7-pattern synthesis — concurrent author)
@@ -726,7 +726,7 @@ The `processed:0` is the correct response for an empty subscribers table — the
 - `strategy/dream-100.csv` (rows 31-40 filled with 10 Category 2 influencers — concurrent author)
 - `build-log.md` (this entry)
 
-**Not touched (deliberately):** existing locked workbook decisions — the AC, the offer stack, the value ladder rungs 0/0.5/1, the manifesto, the Verified Builders identity A/B, the 60-day guarantee mechanic, the 7-step Machine. Per `project_unlocksaas_strategy.md` memory note: defer to locked decisions unless entering Revision Mode. This pass entered Revision Mode only for Rung 2 (spec lock, not re-litigation) and updated existing workbooks/state to reflect what shipped.
+**Not touched (deliberately):** existing locked workbook decisions — the AC, the offer stack, the value ladder rungs 0/0.5/1, the manifesto, the Verified Builders identity A/B, the 60-day guarantee mechanic, the 7-step Playbook. Per `project_unlocksaas_strategy.md` memory note: defer to locked decisions unless entering Revision Mode. This pass entered Revision Mode only for Rung 2 (spec lock, not re-litigation) and updated existing workbooks/state to reflect what shipped.
 
 ## Brunson Results-in-Advance Hardening — Engine Pushback + Keepable Deliverable
 **Status: SHIPPED (code-complete; live DB already has milestones table; runtime requires the standing ANTHROPIC_API_KEY + RESEND_API_KEY in Vercel env, both already pushed per project_unlocksaas_vercel.md)**
@@ -747,10 +747,10 @@ Two real defects under that score: (a) engine had soft-fail paths that silently 
 **Files modified:**
 - `app/src/app/api/engine/route.ts` —
   - Pre-flight gate: if `ANTHROPIC_API_KEY` is missing, return 503 with a Reluctant Hero operator-facing message before invoking the SDK. Previously the lazy-init throw surfaced as a generic 500 with no operator signal.
-  - **JSON-parse default flipped from ACCEPT to REJECT.** The old fallback was `{ accepted: true, message: "Good. Next." }` if Claude's validator response failed to parse — which turned the entire engine into a vague-answer rubber stamp on any model burp, the exact failure mode the Machine exists to prevent. New behaviour: default REJECT with a Reluctant Hero pushback line ("I could not read that as a specific answer. Try again — name the person, the moment, the number. The vaguer the answer, the harder the engine pushes back.") and an operator log with the raw preview for debugging. Also defends against malformed-shape responses (`typeof parsed.accepted !== "boolean"`).
+  - **JSON-parse default flipped from ACCEPT to REJECT.** The old fallback was `{ accepted: true, message: "Good. Next." }` if Claude's validator response failed to parse — which turned the entire engine into a vague-answer rubber stamp on any model burp, the exact failure mode the Playbook exists to prevent. New behaviour: default REJECT with a Reluctant Hero pushback line ("I could not read that as a specific answer. Try again — name the person, the moment, the number. The vaguer the answer, the harder the engine pushes back.") and an operator log with the raw preview for debugging. Also defends against malformed-shape responses (`typeof parsed.accepted !== "boolean"`).
   - Empty-assembly guard: if Claude's assembly response comes back with an empty body, return 502 instead of firing the milestone + email on a degenerate deliverable. Brunson rule: never email a blank "deliverable."
   - Replaced `fireMilestoneForStep` with `deliverStepResult`. Single best-effort orchestration of three side-effects on a successful assembly: milestone fire (60-day guarantee gate), `persistStepOutput` (project_state), `sendStepDeliverableEmail` (inbox copy). Returns `{ milestone_fired, persisted, emailed }` which is echoed back to the client in the response under `delivery` so the UI can show the "Just emailed" notice. Anonymous engine usage (no signed-in user yet) still works — all three side-effects no-op gracefully and the user sees the in-browser output as before.
-- `app/src/app/(app)/machine/step/[id]/page.tsx` —
+- `app/src/app/(app)/playbook/step/[id]/page.tsx` —
   - Server-side hydration on mount: fetches `/api/engine/output?stepId=...` and, if a deliverable exists, jumps straight to the completion view with the saved output. Falls back to localStorage when the server has no record (anonymous + pre-Starter flows). A user closing the tab mid-flow and returning later now sees their locked Dream Customer / Offer, not a blank Q&A start.
   - Completion screen affordances: "Email me a copy" button → POST `/api/engine/resend` (idle / sending / sent / error states); "Download as text" button → constructs a self-contained `.txt` blob (title + date + deliverable + Reluctant Hero footer signed `— Maryan`) and triggers a browser download. Both visible on every completion screen — fresh assembly AND hydrated return-visit.
   - Brief contextual notes under the buttons: "I just emailed this to you. Reluctant Hero rule: the inbox copy outlives the tab." (fresh assembly) vs. "Loaded from your last session. Re-run the questions any time — the new deliverable overwrites this one." (hydration).
@@ -763,7 +763,7 @@ Two real defects under that score: (a) engine had soft-fail paths that silently 
 
 **Verification:**
 - `npx tsc --noEmit` ✓ zero errors across the modified surface.
-- `npx next build` ✓ all new code compiles cleanly. (Pre-existing lint warnings in `(marketing)/machine-sales/page.tsx` are unused-import drift from concurrent Sprint 3 work — out of scope.)
+- `npx next build` ✓ all new code compiles cleanly. (Pre-existing lint warnings in `(marketing)/playbook-sales/page.tsx` are unused-import drift from concurrent Sprint 3 work — out of scope.)
 - Live DB already has `milestones` table per the generated `database.types.ts` shape — no migration-apply required on the live env, only repo parity.
 
 **Net effect on the Russell audit score for Results-in-Advance (was 62/100):**
@@ -845,7 +845,7 @@ Reversed the skip. PLF runs ONCE at product birth as the founding-cohort launch.
 
 ### Strategic deliverables (workbook + state.json)
 - `strategy/workbooks/03-funnel-scripts.md` — replaced Script 8 "Skipped" section with a full Founding-Cohort PLF spec (50-seat cap, 7-day window, three real founding bonuses with defensible math, 3-PLV structure, 5-email pre-launch sequence + cart-close).
-- `strategy/founding-plv-scripts.md` (new) — full Reluctant Hero scripts for PLV1 (5-7 min: "The Door That Opened"), PLV2 (8-10 min: "How the Machine Actually Works"), PLV3 (10-12 min: "What It Looks Like on the Inside"). Founder face on camera, screen recordings of the live product where called for. Mux / Cloudflare Stream hosting recommended (NOT YouTube — autoplays competitors).
+- `strategy/founding-plv-scripts.md` (new) — full Reluctant Hero scripts for PLV1 (5-7 min: "The Door That Opened"), PLV2 (8-10 min: "How the Playbook Actually Works"), PLV3 (10-12 min: "What It Looks Like on the Inside"). Founder face on camera, screen recordings of the live product where called for. Mux / Cloudflare Stream hosting recommended (NOT YouTube — autoplays competitors).
 - `strategy/state.json` — added `dotcom_secrets.product_launch_funnel` block (cap, window, price-lock math, bonus inventory, infrastructure pointers, founder action items, no-fake-scarcity rule). Added revision_history entry. Updated `skill_03_status`.
 
 ### Code deliverables
@@ -858,7 +858,7 @@ Reversed the skip. PLF runs ONCE at product birth as the founding-cohort launch.
 - `app/src/app/(marketing)/founding/page.tsx` — server-rendered landing page. Three states (`pre_launch` shows waitlist form; `open` shows claim-button with live seat number; `closed` shows door-closed fallback that points to `/starter`). Embeds cohort meter, three PLV placeholder blocks, base stack + founding bonuses, $1,416 / $49 = 28.9x math, AGAINST polarity line.
 - `app/src/components/founding-cohort-meter.tsx` — server component reading current claimed count from DB, rendering progress bar + label. No fake live counter — refresh to update (Brunson rule: no fake scarcity).
 - `app/src/app/(marketing)/founding/waitlist-form.tsx` — client component. POSTs to `/api/founding/waitlist`, renders success message with "check your inbox" prompt.
-- `app/src/app/(marketing)/founding/claim-button.tsx` — client component. POSTs to `/api/checkout` with `priceType=machine` + `attribution.from=founding`. Renders next available seat number on the button.
+- `app/src/app/(marketing)/founding/claim-button.tsx` — client component. POSTs to `/api/checkout` with `priceType=playbook` + `attribution.from=founding`. Renders next available seat number on the button.
 - `app/src/app/api/webhooks/stripe/route.ts` — extended `checkout.session.completed` branch with `recordFoundingSeat(session)`. Three gates: cart window open + cap not reached + attribution.from === 'founding'. On grant: insert founding_cohort row with seat_number = currentMax + 1 (unique index = race protection), stamp `founding_waitlist.converted_to_founding_at` if email is on the waitlist, set `direct_line_expires_at` to 30 days out. On race past cap (23505 unique violation): subscription still completes at $49 evergreen, no bonuses, log warning. Brunson rule: never punish the buyer for the seller's race condition.
 - `app/src/app/api/unsubscribe/route.ts` — extended to clear `founding_waitlist.status = 'unsubscribed'` alongside soap_opera + seinfeld in one click.
 - `app/vercel.json` — added `/api/cron/founding` at `0 16 * * *` UTC.
@@ -1089,7 +1089,7 @@ Both shipped.
   - Email 1 (Day 0, inline on enrolment): `"The $1/$49 door is still open"`. 80–100 words. Reluctant Hero voice. PS line invites a reply to the real inbox.
   - Email 2 (Day 2): `"Five-time clickers"`. Story selector: `wrong_person` / `weak_offer` / `weak_belief` get tailored 60-word stories; null falls back to the universal "five-time clickers" story.
   - Email 3 (Day 7): `"Last note from me, and a question"`. Soft close with three exits: resume checkout, free diagnostic, or `yes`-reply to Seinfeld.
-  - Price-anchored branching (`starter` vs `machine`) — same arc, different price reference. Resume link routes to `/starter` or `/machine-sales` (NOT Stripe's expired session URL which would 404 by Day 2).
+  - Price-anchored branching (`starter` vs `playbook`) — same arc, different price reference. Resume link routes to `/starter` or `/playbook-sales` (NOT Stripe's expired session URL which would 404 by Day 2).
   - **NO fake urgency** per workbook 07 §3 Category 4 rejection. No countdown timers. No "your cart expires." The Brunson identity guardrail holds.
 - **`app/src/lib/cart-recovery/dispatch.ts` (NEW)** — `sendNextCartRecoveryAndAdvance` mirrors `lib/soap-opera/dispatch.ts`. Pre-send re-reads `status` so the recovery short-circuit (`status='recovered'`) catches any successful checkout that landed between cron select and send.
 - **`app/src/lib/cart-recovery/subscribe.ts` (NEW)** — two handlers called by the Stripe webhook:
@@ -1099,7 +1099,7 @@ Both shipped.
 
 ### Code — webhook + unsubscribe + cron config + events
 - **`app/src/app/api/webhooks/stripe/route.ts`** — added `checkout.session.expired` case calling `recordCartAbandonment`. Inside the existing `checkout.session.completed` branch, added `maybeShortCircuitRecovery` call after `capturePurchase` so a paying customer stops getting recovery emails the moment they pay.
-- **`app/src/app/api/checkout/route.ts`** — `price_type` ("starter" | "machine") now stamped onto Stripe session metadata. Previously only on the PostHog event; the webhook handler needs it to branch copy.
+- **`app/src/app/api/checkout/route.ts`** — `price_type` ("starter" | "playbook") now stamped onto Stripe session metadata. Previously only on the PostHog event; the webhook handler needs it to branch copy.
 - **`app/src/app/api/unsubscribe/route.ts`** — `cart_abandonment_subscribers` added to the multi-table UPDATE so one HMAC click clears the new list too. Failures non-fatal (table may not yet exist in environments where migration 20260518000004 hasn't applied).
 - **`app/vercel.json`** — `/api/cron/cart-recovery` entry at `0 17 * * *` UTC. Staggered after soap-opera (14:00), seinfeld (15:00), founding (16:00).
 - **`app/src/lib/analytics/events.ts`** — added `CheckoutSessionExpired`, `CartRecoveryEnrolled`, `CartRecoveryEmailSent`, `CartRecoveryRecovered`, `CartRecoveryCompleted`. Also added `IgBioLinkViewed` (pre-existing sibling-session reference that wasn't declared — one-line cleanup since events.ts was in scope).
@@ -1154,7 +1154,7 @@ Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Sec
   - **Phase 0 (NOW):** Facebook OFF. Three reasons each independently sufficient (avatar density 1/10 of X; pre-PMF + $49/mo + skeptic = 10%-of-MRR cap at $0; Marco-verbatim FB-ads-don't-work quote at `strategy/dollar-objections.md:100`). Passive listening only in 3 Marco-adjacent FB groups (IH FB / Vibe Coding / Bootstrapped Founders).
   - **Phase 1 — Pixel + Audiences (3 verified customer cycles):** Meta Pixel via `<MetaPixel/>` component env-gated by `NEXT_PUBLIC_META_PIXEL_ID`. Conversions API server-side from Stripe webhook with SHA-256-hashed PII (privacy + iOS 14.5+ ATT resilience). Business Manager + Page + domain verification. Three custom audiences seeded (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows. **ZERO ads** — data collection only.
   - **Phase 2 — Retargeting + Lookalike-from-Buyers (50 paying customers):** 4 retargeting audiences + 2 lookalike-1% from buyer + diagnostic-completer seeds. Two creative families: Family A (60s native-feed video from VSL Beat 1+2 → /stories Reverse Squeeze) and Family B (1080×1080 Verified Builder badge → /builder/[slug] with written re-permission per ad). Budget cap = $208/mo (10% of $2,080 MRR). Kill criteria: CPL > $5, ROAS < 1.5 after $250, weekly CAC > 60% LTV.
-  - **Phase 3 — Cold Prospecting (100 paying customers + 4 CAC/retention gates):** Gates = 100+ customers AND 30-day retention ≥ 65% AND 90-day retention ≥ 50% AND Phase-2 30d CAC < $30. Lookalike 1-3% + interest (Lovable/Cursor/Claude users, indie hacker/MicroConf pages) + behavior (FB Page engagement 90d). Two cold-allowed families: Family C (90s talking-head Story #1 or #3 → /stories — cold NEVER hits /starter or /machine-sales directly) and Family D (link-click → /bridge → /diagnostic). Budget = 10% MRR + $50/d test 14d. Kill if cold CAC > $50/wk or cohort 30-day retention < 50%.
+  - **Phase 3 — Cold Prospecting (100 paying customers + 4 CAC/retention gates):** Gates = 100+ customers AND 30-day retention ≥ 65% AND 90-day retention ≥ 50% AND Phase-2 30d CAC < $30. Lookalike 1-3% + interest (Lovable/Cursor/Claude users, indie hacker/MicroConf pages) + behavior (FB Page engagement 90d). Two cold-allowed families: Family C (90s talking-head Story #1 or #3 → /stories — cold NEVER hits /starter or /playbook-sales directly) and Family D (link-click → /bridge → /diagnostic). Budget = 10% MRR + $50/d test 14d. Kill if cold CAC > $50/wk or cohort 30-day retention < 50%.
   - **Phase 4 — Conversation Domination Amplification (200 customers OR Phase-3 ROAS ≥ 2.0 for 60d):** Boost X threads > 50 likes as 60-90s FB video + boost IH long-forms > 30 upvotes as FB carousel + 2x/wk Page posts on JK5 rotation. Goal: Marco encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim).
 
 - `strategy/state.json` — added `traffic_secrets.facebook_channel` block with all 4 phases (audiences, ad creative families, budgets, kill criteria, code pre-stage paths per phase, env vars per phase), Brunson Hard-Rule reconciliation matrix (10 rules), canonical-doc pointer, next-review trigger. Prepended a `revision_history` entry as element [0] documenting scope/change/rationale/files-touched/follow-ups/no-launch-change/audit-delta.
@@ -1198,7 +1198,7 @@ Same pattern as the prior autonomous push entries (DCS Secret #21 PLF, DCS Secre
 
 ### Strategic deliverables
 
-- `strategy/google-strategy.md` (NEW, 380 lines) — three-surface plan (Organic Search, AEO/GEO, Paid Search), keyword universe mapped to existing landing pages, RPL/max-CPC math (target $1.40 max CPC at 6mo retention), campaign structure at activation, negative-keyword seed list (19 entries), ad copy templates in Reluctant Hero voice, landing-page mapping rule (never cold to /machine-sales), kill-switch protocol ($5 CPL or QS<6 after 7 days), Phase-2 content roadmap (/founders/[slug], /case-studies/[slug], /glossary/[term]) each gated on verified customer milestones, full Brunson Hard-Rule reconciliation table including a new AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) that vetoes generic high-volume keyword targeting at the spec level.
+- `strategy/google-strategy.md` (NEW, 380 lines) — three-surface plan (Organic Search, AEO/GEO, Paid Search), keyword universe mapped to existing landing pages, RPL/max-CPC math (target $1.40 max CPC at 6mo retention), campaign structure at activation, negative-keyword seed list (19 entries), ad copy templates in Reluctant Hero voice, landing-page mapping rule (never cold to /playbook-sales), kill-switch protocol ($5 CPL or QS<6 after 7 days), Phase-2 content roadmap (/founders/[slug], /case-studies/[slug], /glossary/[term]) each gated on verified customer milestones, full Brunson Hard-Rule reconciliation table including a new AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) that vetoes generic high-volume keyword targeting at the spec level.
 
 - `strategy/state.json` — added `traffic_secrets.google` block (canonical_doc, three surfaces, brand_defense_ad spec, search_console action, phase_2_content_roadmap_gated, brunson_hard_rule_reconciliation including the new ac_flaw guardrail). Added revision_history entry as the most recent. Updated `progress.skill_09_status` with cross-reference.
 
@@ -1208,19 +1208,19 @@ Same pattern as the prior autonomous push entries (DCS Secret #21 PLF, DCS Secre
 
 ### Code deliverables (Surface A + B ship at launch)
 
-- `app/src/app/sitemap.ts` (NEW) — Next.js 16 file-based-metadata sitemap. Declares 9 canonical public-marketing URLs: `/`, `/diagnostic`, `/stories`, `/starter`, `/machine-sales`, `/founding`, `/bridge`, `/challenge`, `/repeatable`. Excludes private surfaces (member area, diagnostic result, builder OG pages, login, oto, welcome, onboarding, api, auth — all confirmed non-indexable via per-page `robots: { index: false }` metadata or `disallow` in robots.ts). `lastModified` set to build time; `priority` reflects funnel depth.
+- `app/src/app/sitemap.ts` (NEW) — Next.js 16 file-based-metadata sitemap. Declares 9 canonical public-marketing URLs: `/`, `/diagnostic`, `/stories`, `/starter`, `/playbook-sales`, `/founding`, `/bridge`, `/challenge`, `/repeatable`. Excludes private surfaces (member area, diagnostic result, builder OG pages, login, oto, welcome, onboarding, api, auth — all confirmed non-indexable via per-page `robots: { index: false }` metadata or `disallow` in robots.ts). `lastModified` set to build time; `priority` reflects funnel depth.
 
-- `app/src/app/robots.ts` (NEW) — Next.js 16 file-based-metadata robots. Allow `/`; disallow `/machine/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`, `/oto`, `/welcome`, `/onboarding`. Sitemap reference points to `https://unlocksaas.com/sitemap.xml`. Host: `https://unlocksaas.com`.
+- `app/src/app/robots.ts` (NEW) — Next.js 16 file-based-metadata robots. Allow `/`; disallow `/playbook/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`, `/oto`, `/welcome`, `/onboarding`. Sitemap reference points to `https://unlocksaas.com/sitemap.xml`. Host: `https://unlocksaas.com`.
 
 - `app/src/app/layout.tsx` (UPDATED) — added `metadataBase: new URL("https://unlocksaas.com")` so canonical URLs and OG image URLs resolve correctly. Added title template, applicationName, authors, creator, publisher, alternates.canonical, robots, openGraph (type/siteName/title/description/url/locale), twitter (card/title/description/creator). Per-page metadata exports inherit unless they override.
 
-- `app/src/components/seo/json-ld.tsx` (NEW) — three exported components rendering `<script type="application/ld+json">` blocks: `OrganizationJsonLd` (Organization + WebSite for `/`), `DiagnosticJsonLd` (Service + HowTo for `/diagnostic`), `MachineProductJsonLd` (Product for `/machine-sales`). All structured-data objects hoisted to module scope and pre-serialized to JSON strings — per Vercel react-best-practices `server-hoist-static-io` and `rendering-hoist-jsx`, no per-request allocation, no per-render serialization. `aggregateRating` intentionally omitted from the Product block per Brunson honest-claims rule until verified customers with public ratings exist.
+- `app/src/components/seo/json-ld.tsx` (NEW) — three exported components rendering `<script type="application/ld+json">` blocks: `OrganizationJsonLd` (Organization + WebSite for `/`), `DiagnosticJsonLd` (Service + HowTo for `/diagnostic`), `PlaybookProductJsonLd` (Product for `/playbook-sales`). All structured-data objects hoisted to module scope and pre-serialized to JSON strings — per Vercel react-best-practices `server-hoist-static-io` and `rendering-hoist-jsx`, no per-request allocation, no per-render serialization. `aggregateRating` intentionally omitted from the Product block per Brunson honest-claims rule until verified customers with public ratings exist.
 
 - `app/src/app/page.tsx` (UPDATED) — mounts `OrganizationJsonLd` above `AbExposureBeacon` so LLM crawlers see the entity anchor on first paint.
 
 - `app/src/app/(marketing)/diagnostic/page.tsx` (UPDATED) — mounts `DiagnosticJsonLd` above `AbExposureBeacon`. The HowTo block is the format LLMs paraphrase when summarizing a process; this is the canonical answer surface for "free SaaS diagnostic" / "how to diagnose a stuck product" long-tail.
 
-- `app/src/app/(marketing)/machine-sales/page.tsx` (UPDATED) — mounts `MachineProductJsonLd` above `AbExposureBeacon`. Product schema makes the $49 Machine citable for comparator queries.
+- `app/src/app/(marketing)/playbook-sales/page.tsx` (UPDATED) — mounts `PlaybookProductJsonLd` above `AbExposureBeacon`. Product schema makes the $49 Playbook citable for comparator queries.
 
 ### What does NOT ship at launch (gated per Brunson rules)
 

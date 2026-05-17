@@ -20,7 +20,7 @@ type StackItem = {
 
 const STACK: StackItem[] = [
   {
-    name: "The Machine (7-step system)",
+    name: "The Playbook (7-step system)",
     description:
       "Engine-led conversation. Pushes back on vague answers. Produces a real dream customer, offer, outreach, and a Stripe-verified customer.",
     value: "$259 / mo",
@@ -96,7 +96,7 @@ export function PricingBreakdown() {
           </div>
 
           <p className="text-xs text-muted-foreground italic mt-6 leading-relaxed">
-            Cap on your downside: $98 (two monthly payments). If the Machine does not
+            Cap on your downside: $98 (two monthly payments). If the Playbook does not
             produce a verified Stripe charge in 60 days AND you completed the in-product
             milestones, you get the $98 back. The remedy is enforced by code, not by promise.
           </p>

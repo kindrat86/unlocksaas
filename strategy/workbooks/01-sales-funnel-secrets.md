@@ -125,7 +125,7 @@ Re-mine the 10+ founder conversations for the exact words people used when they 
 
 **Marco gets his first paying customer**, proven by his own Stripe, within 60 days.
 
-## The Core Product: "The Machine"
+## The Core Product: "The Playbook"
 
 A six-step guided system. A doing-environment, not a course.
 
@@ -140,7 +140,7 @@ A six-step guided system. A doing-environment, not a course.
 
 | Item | Value |
 |---|---|
-| Core: The Machine (6-step system) | $259 / mo |
+| Core: The Playbook (6-step system) | $259 / mo |
 | Bonus 1: 14-Day First-Customer Sprint | $89 |
 | Bonus 2: The Outreach Room (AI-moderated peer community) | $79 / mo |
 | Bonus 3: The Outreach Script Kit | $69 |
@@ -164,11 +164,11 @@ Step 5, doing the outreach, is where a customer-avoidant founder stalls. Three w
 > Do the work the tool tracks. If 60 days pass and your Stripe shows no new paying customer, you get both months back, in full.
 
 - **Timeframe:** 60 days.
-- **Work condition:** machine-verified in-product milestones only. Marco cannot lie to a log.
+- **Work condition:** playbook-verified in-product milestones only. Marco cannot lie to a log.
 - **Remedy:** full refund of the two monthly payments ($98) made inside the window.
 - **Judged:** at the 60-day mark.
 
-The guarantee is a forcing function. The product's economics ride on the machine's real success rate.
+The guarantee is a forcing function. The product's economics ride on the playbook's real success rate.
 
 ## The Honest-Value Rule
 
@@ -194,7 +194,7 @@ A value ladder is not a price list. It is the customer's transformation, rung by
 |---|---|---|---|---|
 | 0 | Free diagnostic tool | Free | He sees WHY he is stuck (clarity) | Yes |
 | 1 | The $1 Starter | $1 one-time | His WHO and WHAT are finished: a built dream customer and offer | Yes |
-| 2 | The Machine + Guarantee | $49 / mo | His first paying customer (proof) | Yes |
+| 2 | The Playbook + Guarantee | $49 / mo | His first paying customer (proof) | Yes |
 | 3 | Repeatable-revenue tier | later | A repeatable engine, not a fluke | No, noted only |
 
 ## What Each Rung Owns
@@ -237,9 +237,9 @@ The moment it truly broke open, I can tell you exactly where I sat. I opened a b
 
 The problem was never the product. I had been building beautiful things for no one in particular, then acting surprised when no one paid.
 
-So I stopped fixing products and started fixing the order. I built the machine I wish someone had handed me. Not a course, not advice. Software that refuses to let you skip the work that actually gets you paid: name one real person, make one real promise, sell it before it feels ready. Seven steps, and it verifies every one, down to a real charge landing in Stripe. The first time I ran it on myself, I finally had something years of building had never given me. An offer I could say out loud. One sentence, for one real person.
+So I stopped fixing products and started fixing the order. I built the playbook I wish someone had handed me. Not a course, not advice. Software that refuses to let you skip the work that actually gets you paid: name one real person, make one real promise, sell it before it feels ready. Seven steps, and it verifies every one, down to a real charge landing in Stripe. The first time I ran it on myself, I finally had something years of building had never given me. An offer I could say out loud. One sentence, for one real person.
 
-So here is where you come in. You already did the hard part. You built something real, and that is more than most people ever attempt. The only thing between that product and your first paying customer is the work you were taught to skip, and a machine that will not let you skip it. You run the machine. Sixty days. If you do the work it verifies and still have no customer, you do not pay. The risk is mine. All you have to do is stop hiding and start.
+So here is where you come in. You already did the hard part. You built something real, and that is more than most people ever attempt. The only thing between that product and your first paying customer is the work you were taught to skip, and a playbook that will not let you skip it. You run the playbook. Sixty days. If you do the work it verifies and still have no customer, you do not pay. The risk is mine. All you have to do is stop hiding and start.
 
 ## Story Structure Breakdown
 
@@ -247,15 +247,15 @@ So here is where you come in. You already did the hard part. You built something
 
 **Turning Point.** Talking to more than ten other founders, I kept hearing my own story back: the same flat line, the same shelf of half-built products. Then I sat down to write this product's offer and found nothing there, no promise, no person. The sentence landed: the praise I had been collecting was never payment, and the problem was never the product.
 
-**Framework and Solution.** I stopped fixing products and started fixing the order, the uncomfortable work founders skip. I built software that refuses to let you skip it: seven steps from dream customer to a verified charge in Stripe. That machine is the offer in this workbook.
+**Framework and Solution.** I stopped fixing products and started fixing the order, the uncomfortable work founders skip. I built software that refuses to let you skip it: seven steps from dream customer to a verified charge in Stripe. That playbook is the offer in this workbook.
 
 **Result.** The honest result so far is not revenue, it is clarity. Running the process on myself produced the first offer I could ever say out loud in one sentence. Every founder I walked through the same lens recognized themselves in it.
 
-**Invitation.** You already built something real. The only thing left is the work you were taught to skip, and a machine that will not let you skip it. Run the machine, get your first paying customer in sixty days, verified, or you do not pay.
+**Invitation.** You already built something real. The only thing left is the work you were taught to skip, and a playbook that will not let you skip it. Run the playbook, get your first paying customer in sixty days, verified, or you do not pay.
 
 ## Notes and Revisions
 
-> The Result beat is deliberately honest: no fabricated revenue numbers, because the avatar would see through them. The day a real paying customer comes through the machine, that becomes the Result, and the story gets dramatically stronger.
+> The Result beat is deliberately honest: no fabricated revenue numbers, because the avatar would see through them. The day a real paying customer comes through the playbook, that becomes the Result, and the story gets dramatically stronger.
 
 _Space for your revisions._
 
@@ -308,7 +308,7 @@ _Space for your revisions._
 
 **Status: COMPLETE. All five beats locked. This closes Step 1.**
 
-The Attractive Character is the voice that sells. It also becomes Step 3 of the in-product Machine, the engine that builds Marco's own AC for him.
+The Attractive Character is the voice that sells. It also becomes Step 3 of the in-product Playbook, the engine that builds Marco's own AC for him.
 
 Five beats: Identity Type, Backstory, Parables, Character Flaws, and Polarity.
 
@@ -341,7 +341,7 @@ Four parts. Not "I am an expert." "I had the disease. I diagnosed it. I built th
 1. Shipped real products with Lovable and Claude, as a non-engineer.
 2. Hit the flat-Stripe wall personally.
 3. Sat with more than ten other founders and confirmed the pattern.
-4. Built the machine that walked you out.
+4. Built the playbook that walked you out.
 
 ### The one-line bio
 
@@ -351,13 +351,13 @@ Used in: social bios, email signature, podcast guest blurb, footer "about."
 
 ### The three-line about opener
 
-> I'm a marketer. I have never written a line of production code. In 2026, Lovable and Claude opened the door and I shipped real AI products in weeks, watched them flatline in Stripe, and ran from the truth into SEO tactics for almost a year. What broke me out was sitting with more than ten other founders telling my own story back to me. So I built the machine I wish someone had handed me.
+> I'm a marketer. I have never written a line of production code. In 2026, Lovable and Claude opened the door and I shipped real AI products in weeks, watched them flatline in Stripe, and ran from the truth into SEO tactics for almost a year. What broke me out was sitting with more than ten other founders telling my own story back to me. So I built the playbook I wish someone had handed me.
 
 Used in: about page, landing-page sub-headline, first 30 seconds of any sales video.
 
 ### The six-line intro
 
-> I'm a marketer and an operator. I have never written a line of production code. For most of my life that closed a door. Then in 2026, Lovable and Claude opened it and I shipped real AI products in weeks. The shipping part felt like magic. What came after did not. I would launch, open Stripe, and watch a line lie flat. I told myself it was the product. I told myself it was the funnel. I went embarrassingly deep into SEO and optimization, and the truth is that was just a respectable way of not looking at the flat line. What finally broke me was talking to more than ten other founders and hearing my own story back, every single time. So I sat down to write the offer for this product, and I found nothing there. No promise, no specific person. That was the moment. I had been building beautiful things for no one in particular. I stopped fixing products and started fixing the order, the work I had been taught to skip. The machine in this workbook is what I built. I run it on myself first. Now I am putting it in front of you.
+> I'm a marketer and an operator. I have never written a line of production code. For most of my life that closed a door. Then in 2026, Lovable and Claude opened it and I shipped real AI products in weeks. The shipping part felt like magic. What came after did not. I would launch, open Stripe, and watch a line lie flat. I told myself it was the product. I told myself it was the funnel. I went embarrassingly deep into SEO and optimization, and the truth is that was just a respectable way of not looking at the flat line. What finally broke me was talking to more than ten other founders and hearing my own story back, every single time. So I sat down to write the offer for this product, and I found nothing there. No promise, no specific person. That was the moment. I had been building beautiful things for no one in particular. I stopped fixing products and started fixing the order, the work I had been taught to skip. The playbook in this workbook is what I built. I run it on myself first. Now I am putting it in front of you.
 
 Used in: webinar open, long-form video intro, opening of a sales letter.
 
@@ -373,7 +373,7 @@ Five named, reusable short stories. Each carries one lesson. Each retains the Re
 
 **Lesson:** If you cannot write your offer in one sentence, to one real person, you have not earned the right to build the product.
 
-**Used in:** opener for "why your launch went flat" content, intro to the Machine demo, email two of any cold sequence.
+**Used in:** opener for "why your launch went flat" content, intro to the Playbook demo, email two of any cold sequence.
 
 ### Parable 2: The Stripe Refresh
 
@@ -415,7 +415,7 @@ Four flaws. All real. All mirror something Marco does.
 
 ### Flaw 1: The Avoider
 
-> I dress up productive work as progress. When the real work is uncomfortable, I find a productive-looking thing to do instead. I did a year of SEO when I should have been writing an offer. I still catch myself doing it. I built the machine partly so it would catch me when I do.
+> I dress up productive work as progress. When the real work is uncomfortable, I find a productive-looking thing to do instead. I did a year of SEO when I should have been writing an offer. I still catch myself doing it. I built the playbook partly so it would catch me when I do.
 
 **The spine.** This is the whole brand. The product treats avoidance. Confessing it gives you the right to sell the cure.
 
@@ -437,7 +437,7 @@ Four flaws. All real. All mirror something Marco does.
 
 ### Flaw 4: Plans Before Shipping
 
-> I will plan a launch ten ways before I send a single message. Given the choice between thinking about doing it and doing it, my default is thinking about doing it. The machine has a step five for outreach because if it did not, I would still be planning my outreach.
+> I will plan a launch ten ways before I send a single message. Given the choice between thinking about doing it and doing it, my default is thinking about doing it. The playbook has a step five for outreach because if it did not, I would still be planning my outreach.
 
 **Confess the flaw, then the product is the solution to your own confessed flaw.** That structure converts.
 
@@ -478,7 +478,7 @@ The lines you draw in public are what tell Marco "this voice is for me." A neutr
 
 ---
 
-## Engine Implications: Machine Step 3 Spec
+## Engine Implications: Playbook Step 3 Spec
 
 The framework lives in the engine. Marco answers human questions. He never sees a "build your AC" form.
 

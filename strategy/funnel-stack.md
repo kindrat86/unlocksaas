@@ -10,7 +10,7 @@
 
 ## Why this document exists
 
-The launch ladder is intentionally LEAN (workbook 02 §"discipline_note"): Free Diagnostic → $1 Starter → $49 Machine. Three rungs. One funnel. **That stays.** This document is NOT a re-litigation of the lean ladder. It does not introduce a new launch-day funnel and does not move any locked decision.
+The launch ladder is intentionally LEAN (workbook 02 §"discipline_note"): Free Diagnostic → $1 Starter → $49 Playbook. Three rungs. One funnel. **That stays.** This document is NOT a re-litigation of the lean ladder. It does not introduce a new launch-day funnel and does not move any locked decision.
 
 What this document adds is the cross-cutting **stack architecture**: how the launch funnel becomes one layer of a larger, evidence-gated stack as the business crosses milestone triggers. Each subsequent layer is fully specified here so that:
 
@@ -91,7 +91,7 @@ LAYER 0  ATTENTION (cold)                     active: launch
 | Role | Convert the buyer to a subscriber; gate to Layer 5 |
 | Funnel | OTO at `/oto` → $49/mo subscription |
 | Source | Layer 2 only (OTO is gated to Starter buyers via Stripe session metadata) |
-| Entry copy | Two buttons: "Continue the Machine. $49/mo. 60-day guarantee." / "No thanks, deliver just the Starter." Single decision. |
+| Entry copy | Two buttons: "Continue the Playbook. $49/mo. 60-day guarantee." / "No thanks, deliver just the Starter." Single decision. |
 | Bridge IN | Stripe redirect from Layer 2 success |
 | Bridge OUT | Accept → Stripe subscription checkout → Layer 5 on webhook success |
 | Bridge OUT (alt) | Decline → receipt + Starter delivery only. NO downsell at launch (lean ladder). |
@@ -104,10 +104,10 @@ LAYER 0  ATTENTION (cold)                     active: launch
 | Field | Value |
 |---|---|
 | Role | Convert cold/product-aware traffic directly to $49 without going through Layer 2 |
-| Funnel | $49 Machine sales page at `/machine-sales` (Perfect-Webinar-Lite long form) |
+| Funnel | $49 Playbook sales page at `/playbook-sales` (Perfect-Webinar-Lite long form) |
 | Source | Layer 0 (cold ad / SEO post / podcast spot), funnel hub `/`, retargeting from any Layer 1/2/3 exit |
 | Entry copy | Big Domino → Three Secrets (Story-Strategy-Case-Study) → Stack slides 16–30 → Closes 31–43 (workbook 07) |
-| Bridge IN | Direct link from cold ad bridges, retargeting pixel, `/machine-sales` |
+| Bridge IN | Direct link from cold ad bridges, retargeting pixel, `/playbook-sales` |
 | Bridge OUT | Stripe Checkout (subscription mode, no intermediate Starter charge) → Layer 5 on webhook |
 | Activation trigger | **Sprint 3.** Currently a placeholder. Script is fully written in workbook 07. |
 | Attribution stamp | `entry_layer=4`, `utm_source`, `ab_key=identity_label`, `ab_variant`, `ab_subject` |
@@ -118,8 +118,8 @@ LAYER 0  ATTENTION (cold)                     active: launch
 
 | Field | Value |
 |---|---|
-| Role | Deliver the 7-step Machine; verify the guarantee; gate to Layer 6 on First-Paying-Customer-Verified |
-| Funnel | `/machine` member area (Steps 1–7) + onboarding |
+| Role | Deliver the 7-step Playbook; verify the guarantee; gate to Layer 6 on First-Paying-Customer-Verified |
+| Funnel | `/playbook` member area (Steps 1–7) + onboarding |
 | Source | Layer 3 (OTO accept) or Layer 4 (direct $49 purchase) |
 | Entry | Onboarding sets Stripe-Connect intent → Step 1 dream-customer engine begins |
 | Bridge OUT (success) | First-Paying-Customer-Verified milestone → Layer 6 invitation + badge generation |
@@ -132,9 +132,9 @@ LAYER 0  ATTENTION (cold)                     active: launch
 
 | Field | Value |
 |---|---|
-| Role | Sell the Verified Builder their NEXT thing: rerun the Machine on product #2, or upgrade to the Verified Builders community tier |
+| Role | Sell the Verified Builder their NEXT thing: rerun the Playbook on product #2, or upgrade to the Verified Builders community tier |
 | Funnel | Two parallel options, picked by the verified builder: |
-| Option A | "Run the Machine again on product #2." 50% repeat-customer discount on month 1 = $24.50/mo recurring. Verified Builders only. |
+| Option A | "Run the Playbook again on product #2." 50% repeat-customer discount on month 1 = $24.50/mo recurring. Verified Builders only. |
 | Option B | "Join the Verified Builders inner room." Async community of founders who hit the milestone. Proposed $79/mo (matches the Outreach Room bonus value math from workbook 01 §2). |
 | Source | Layer 5 First-Paying-Customer-Verified webhook event |
 | Bridge IN | Post-milestone email + in-product modal + badge-share trigger |
@@ -276,7 +276,7 @@ What flips on, when, and who flips it.
 | 1 | Launch day | Engineering | Ship `/diagnostic/page.tsx` (replace placeholder with form) |
 | 2 | Launch day (SHIPPED) | — | None |
 | 3 | Launch day (SHIPPED) | — | None |
-| 4 | Sprint 3 | Engineering | Ship long-form `/machine-sales` per workbook 07 |
+| 4 | Sprint 3 | Engineering | Ship long-form `/playbook-sales` per workbook 07 |
 | 5 | Launch day (SHIPPED) | — | Anthropic API key in prod env |
 | 6 | 3 verified customer cycles | Maryan | Provision Layer 6 Stripe products (ascension $24.50/mo + community $79/mo); ship invitation email |
 | 7 | 50 paying customers | Maryan | Affiliate center build (workbook 10 §3) |
@@ -308,7 +308,7 @@ What does NOT ship at launch:
 - **Workbook 07** (10x One-to-Many) — Big Domino + Three Secrets + Stack + Closes script for Layer 4
 - **Workbook 09** (Fill Your Funnel) — channels feeding Layer 0; launch-minimum cadence
 - **Workbook 10** (Growth Hacking) — Funnel Hub (entry to Layer 1), Affiliate Army (Layer 7), Butterfly Marketing (Layer 8 inspiration)
-- **`strategy/state.json`** — `traffic_secrets.growth_hacking.funnel_stack` is the machine-readable mirror of this doc
+- **`strategy/state.json`** — `traffic_secrets.growth_hacking.funnel_stack` is the playbook-readable mirror of this doc
 - **`app/src/lib/stack-attribution.ts`** — code surface for cross-funnel attribution
 - **`app/src/lib/ab.ts`** — pattern this lib follows (sticky cookies + variant types + subject IDs)
 

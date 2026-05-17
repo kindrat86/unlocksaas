@@ -20,7 +20,7 @@ The Perfect Webinar was built for live presentations. For Unlock SaaS, it collap
 
 > Your first paying customer is reachable in 60 days through software, not through more building and not through more traffic.
 
-That single belief, if it lands, makes every other belief in his system reorganize. The Machine becomes plausible. The guarantee becomes credible. The $49 becomes obviously underpriced. If it does NOT land, no amount of stack or scarcity moves him.
+That single belief, if it lands, makes every other belief in his system reorganize. The Playbook becomes plausible. The guarantee becomes credible. The $49 becomes obviously underpriced. If it does NOT land, no amount of stack or scarcity moves him.
 
 ### Big Domino slides (1 to 6)
 
@@ -32,8 +32,8 @@ Top of the $49 sales page.
 | 2. Big Domino statement | Direct: "Here is the one belief that, if you accept it, changes everything else: ___" |
 | 3. Why this is hard to believe | Acknowledge Marco's history (a year of failed tactics) |
 | 4. The setup for proof | "There is one method nobody told you about. It is mechanical, it is verified, and it has a name." |
-| 5. The name | "It is called The Machine." |
-| 6. Transition | "Here are the three things you have to believe for The Machine to work for you." |
+| 5. The name | "It is called The Playbook." |
+| 6. Transition | "Here are the three things you have to believe for The Playbook to work for you." |
 
 ---
 
@@ -43,7 +43,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 
 ### Secret 1: Vehicle (the WHAT)
 
-> "Why The Machine works where every other tool failed you."
+> "Why The Playbook works where every other tool failed you."
 
 | Part | Content |
 |---|---|
@@ -53,7 +53,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 
 ### Secret 2: Internal (the WHO inside Marco)
 
-> "Why the work that breaks the flat line is work you have been avoiding, and how The Machine removes the avoidance option."
+> "Why the work that breaks the flat line is work you have been avoiding, and how The Playbook removes the avoidance option."
 
 | Part | Content |
 |---|---|
@@ -67,8 +67,8 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 
 | Part | Content |
 |---|---|
-| Story | The guarantee mechanics from workbook 01 Section 2: work conditions are machine-verifiable, result is Stripe-verified |
-| Strategy | Economics: success rate of the Machine determines profitability; refunds are enforced by code |
+| Story | The guarantee mechanics from workbook 01 Section 2: work conditions are playbook-verifiable, result is Stripe-verified |
+| Strategy | Economics: success rate of the Playbook determines profitability; refunds are enforced by code |
 | Case Study | Two-payment cap on remedy ($98) means the business model survives at any reasonable conversion rate |
 
 Slides 7 to 15 cover these in three blocks of three slides each.
@@ -83,7 +83,7 @@ Each item from workbook 01 Section 2's offer stack gets its own slide. Slide str
 
 | Slide | Item | Value |
 |---|---|---|
-| 16 | The Machine (7-step system) | $259 / mo |
+| 16 | The Playbook (7-step system) | $259 / mo |
 | 17 | Bonus 1: 14-Day First-Customer Sprint | $89 |
 | 18 | Bonus 2: The Outreach Room (community) | $79 / mo |
 | 19 | Bonus 3: The Outreach Script Kit | $69 |
@@ -117,7 +117,7 @@ Each item from workbook 01 Section 2's offer stack gets its own slide. Slide str
 |---|---|
 | Math | "$49 a month is two coffees a week. The first paying customer at your current product price covers it for a year." |
 | Comparison | "A course costs $497, no guarantee, no doing-environment, no Stripe integration. $49 a month with a 60-day guarantee is a 10x better offer." |
-| ROI | "If The Machine produces ONE recurring customer at your price, the math is permanent." |
+| ROI | "If The Playbook produces ONE recurring customer at your price, the math is permanent." |
 
 **Category 3: Emotion (Slides 40 to 42)**
 
@@ -148,7 +148,7 @@ Locked decision: no artificial scarcity. The avatar is a skeptic and fake scarci
 9. "Do you suspect you have been avoiding the customer?"
 10. "If you knew exactly which 20 people to message tomorrow, would you message them?"
 11. "Would a $98 cap on a 60-day risk be acceptable for the chance of recurring revenue?"
-12. "If you ran The Machine on yourself today, what is the worst that happens in 60 days?"
+12. "If you ran The Playbook on yourself today, what is the worst that happens in 60 days?"
 
 The engine rotates these as in-product nudges when Marco hesitates.
 

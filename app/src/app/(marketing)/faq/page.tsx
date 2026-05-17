@@ -15,7 +15,7 @@ import { FAQ_ENTRIES } from "@/lib/faq-data";
  *   1. **Indexable canonical answer URL.** Google's FAQ Rich Result + LLM
  *      paraphrase pipelines both prefer a single high-density Q&A page over
  *      Q&A scattered across sales pages. The same Q&A also renders inside
- *      `<FaqAccordion />` on `/` and `/machine-sales` — schema and visible
+ *      `<FaqAccordion />` on `/` and `/playbook-sales` — schema and visible
  *      text stay byte-identical because both sites import FAQ_ENTRIES from
  *      `src/lib/faq-data.ts`. Drift would break Rich Result eligibility.
  *
@@ -172,7 +172,7 @@ export default function FaqPage() {
               href="/starter"
               className="inline-flex items-center justify-center rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors px-6 py-3 text-base font-medium"
             >
-              Start the Machine for $1
+              Start the Playbook for $1
             </Link>
           </div>
         </section>

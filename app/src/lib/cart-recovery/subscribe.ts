@@ -42,8 +42,8 @@ export async function recordCartAbandonment(
   // metadata — the cheaper door is the safer fallback (lower chase cost).
   const rawPriceType = session.metadata?.price_type ?? session.metadata?.priceType;
   let priceType: CartPriceType = "starter";
-  if (rawPriceType === "machine") {
-    priceType = "machine";
+  if (rawPriceType === "playbook") {
+    priceType = "playbook";
   } else if (rawPriceType === "starter") {
     priceType = "starter";
   } else {

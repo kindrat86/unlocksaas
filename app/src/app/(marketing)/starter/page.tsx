@@ -33,7 +33,7 @@ const DIAGNOSTIC_HANDOFF: Record<string, { title: string; body: string }> = {
   // -- Bucket-aware (Brunson Survey Funnel + Bridge Scripts) ----------------
   customer_avoider: {
     title: "Customer Avoider. The bridge said it; the door confirms it.",
-    body: "The $1 below is Machine Steps 1 and 2: pin one real customer, write one real offer for them. The two pieces of work you have been avoiding, finished this week.",
+    body: "The $1 below is Playbook Steps 1 and 2: pin one real customer, write one real offer for them. The two pieces of work you have been avoiding, finished this week.",
   },
   stuck_builder: {
     title: "Stuck Builder. The bridge said it; the door confirms it.",
@@ -49,29 +49,29 @@ const DIAGNOSTIC_HANDOFF: Record<string, { title: string; body: string }> = {
   },
   premature: {
     title: "You said skip the wait. Eyes open.",
-    body: "Most founders less than 30 days post-launch benefit more from sitting with the silence than running the Machine. If you have made up your mind, the $1 below still does the same work. Just know I told you.",
+    body: "Most founders less than 30 days post-launch benefit more from sitting with the silence than running the Playbook. If you have made up your mind, the $1 below still does the same work. Just know I told you.",
   },
   ready_to_scale: {
     title: "You took the downgrade door. That is allowed.",
-    body: "The $1 below is Steps 1 and 2 — the part of the Machine you may already have done. Run it anyway as a sanity check, then the $49 upgrade is on the next page.",
+    body: "The $1 below is Steps 1 and 2 — the part of the Playbook you may already have done. Run it anyway as a sanity check, then the $49 upgrade is on the next page.",
   },
 
   // -- Legacy label fallback (rows from before the survey shipped) ----------
   wrong_person: {
     title: "Wrong Person. Got it. Here is the door.",
-    body: "Steps 1 and 2 of the Machine are exactly the work that pins a real person and writes a real offer for them. That is what the $1 below buys.",
+    body: "Steps 1 and 2 of the Playbook are exactly the work that pins a real person and writes a real offer for them. That is what the $1 below buys.",
   },
   weak_offer: {
     title: "Weak Offer. Got it. Here is the door.",
-    body: "Step 2 of the Machine is offer construction with engine pushback on every hedge. Step 1 is the dream customer it is for. That is what the $1 below buys.",
+    body: "Step 2 of the Playbook is offer construction with engine pushback on every hedge. Step 1 is the dream customer it is for. That is what the $1 below buys.",
   },
   weak_belief: {
     title: "Weak Belief. Got it. Here is the door — for the upstream part.",
-    body: "Belief gets fully rebuilt in Step 4 (behind the full Machine). The work that has to come first is a real WHO and a real WHAT — Steps 1 and 2. That is what the $1 below buys.",
+    body: "Belief gets fully rebuilt in Step 4 (behind the full Playbook). The work that has to come first is a real WHO and a real WHAT — Steps 1 and 2. That is what the $1 below buys.",
   },
   error: {
     title: "I could not finish the read. The door is still open.",
-    body: "We skip the diagnosis. The $1 below puts you in front of the same engine the diagnosis was going to point at: Steps 1 and 2 of the Machine.",
+    body: "We skip the diagnosis. The $1 below puts you in front of the same engine the diagnosis was going to point at: Steps 1 and 2 of the Playbook.",
   },
   missing: {
     title: "Skipped the diagnostic. Good — here is the door.",
@@ -199,7 +199,7 @@ function StarterSalesPageInner() {
           products in weeks, watched them flatline in Stripe, and ran from the
           truth into SEO tactics for almost a year. What broke me out was sitting
           with more than ten other founders telling my own story back to me. So I
-          built the machine I wish someone had handed me.
+          built the playbook I wish someone had handed me.
         </p>
 
         {/* Founder VSL — the in-110-seconds version for cold scrollers who
@@ -236,7 +236,7 @@ function StarterSalesPageInner() {
               used the product you already shipped, and they paid you.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              That is the destination of this machine. One verified paying
+              That is the destination of this playbook. One verified paying
               customer in your own Stripe within sixty days, or you do not
               pay. The $1 below buys you the first two steps of the road to
               it, yours to keep either way.
@@ -290,10 +290,10 @@ function StarterSalesPageInner() {
             </p>
             <p className="text-muted-foreground leading-relaxed">
               <span className="font-semibold text-foreground">The achievement.</span>{" "}
-              So I built a machine that refuses to let me skip the work. It
+              So I built a playbook that refuses to let me skip the work. It
               names the customer for me. It writes the offer with me. It picks
               the outreach targets and tracks every send. It only counts a win
-              when Stripe says so. The Machine is what you are buying the first
+              when Stripe says so. The Playbook is what you are buying the first
               two steps of below.
             </p>
           </div>
@@ -303,10 +303,10 @@ function StarterSalesPageInner() {
               doing its job beats three paragraphs of "AI-powered" copy. */}
           <div>
             <h2 className="text-xl font-bold mb-3">
-              What $1 Gets You: The Machine, Steps 1 and 2
+              What $1 Gets You: The Playbook, Steps 1 and 2
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              The Machine is a seven-step engine. The $1 buys the first two
+              The Playbook is a seven-step engine. The $1 buys the first two
               steps, complete, yours to keep. A real dream customer, named and
               specific, not a vibe. A real offer, written, with a guaranteed
               result you can defend to a skeptic. The work is done with you,
@@ -382,7 +382,7 @@ function StarterSalesPageInner() {
             <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside leading-relaxed">
               <li>Stripe charges your card $1. One time. Not a subscription.</li>
               <li>
-                You land inside the Machine, logged in, with Steps 1 and 2
+                You land inside the Playbook, logged in, with Steps 1 and 2
                 unlocked.
               </li>
               <li>
@@ -390,7 +390,7 @@ function StarterSalesPageInner() {
               </li>
               <li>
                 On the next page you will see a one-time door to the full
-                Machine at $49/mo with the 60-day guarantee. You can take it
+                Playbook at $49/mo with the 60-day guarantee. You can take it
                 or skip it. The $1 work is yours either way.
               </li>
             </ol>
@@ -401,7 +401,7 @@ function StarterSalesPageInner() {
         <Card className="mb-8 border-primary/20">
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground leading-relaxed">
-              The full Machine carries a 60-day guarantee: your first paying
+              The full Playbook carries a 60-day guarantee: your first paying
               customer verified by Stripe, or both months back. The $1 Starter
               is not on the guarantee because nothing $1 should be. The $1
               delivers a real finished WHO and WHAT, yours to keep, no
@@ -426,7 +426,7 @@ function StarterSalesPageInner() {
               <p className="font-semibold">Is the $1 a trial that auto-upgrades?</p>
               <p className="text-sm text-muted-foreground leading-relaxed mt-1">
                 No. The $1 is a one-time charge. After you pay you see an
-                upgrade door to the $49 Machine — clicking it is one decision,
+                upgrade door to the $49 Playbook — clicking it is one decision,
                 clicking past it is another. The Starter you bought is yours
                 either way.
               </p>
@@ -467,7 +467,7 @@ function StarterSalesPageInner() {
         {/* CTA */}
         <div className="text-center">
           <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-            Start the Machine for $1
+            Start the Playbook for $1
           </Button>
           <p className="text-xs text-muted-foreground mt-3">
             One-time payment. No subscription. No auto-upgrade.

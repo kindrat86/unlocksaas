@@ -37,7 +37,7 @@ export default function RepeatablePlaceholderPage() {
           <p className="text-base text-muted-foreground leading-relaxed">
             This is the layer of the value ladder that sits above $49/mo Core.
             It is spec&apos;d, not shipped. The build is gated on three
-            paying Core customers completing the full Machine loop. Until
+            paying Core customers completing the full Playbook loop. Until
             then this page is a public commitment — not a waitlist, not a
             countdown.
           </p>
@@ -48,19 +48,19 @@ export default function RepeatablePlaceholderPage() {
         <section className="mb-10 space-y-4">
           <h2 className="text-xl font-bold">What it is</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Once the Machine gets you to your first paying customer on
+            Once the Playbook gets you to your first paying customer on
             Product 1, the most expensive thing you can do is start Product
             2 from zero. Re-define the dream customer. Re-write the
             offer. Re-build the outreach list. Re-discover which Dream 100
             targets actually convert. That is a week of avoidance dressed
-            up as productive work — the exact disease the Machine treats.
+            up as productive work — the exact disease the Playbook treats.
           </p>
           <p className="text-muted-foreground leading-relaxed">
             The Repeatable Revenue Layer carries the assets you earned on
             Product 1 forward into Product 2, automatically: dream
             customer pre-fill, Attractive Character lock, outreach
             template clone, Dream 100 with warmth flags, Stripe pattern
-            library. Same Machine, same guarantee mechanic, with a
+            library. Same Playbook, same guarantee mechanic, with a
             90-day window for Product 2&apos;s first paying customer.
           </p>
         </section>
@@ -86,7 +86,7 @@ export default function RepeatablePlaceholderPage() {
           </p>
           <ol className="list-decimal pl-6 space-y-2 text-sm text-muted-foreground leading-relaxed">
             <li>
-              Three paying Core customers have completed the full Machine
+              Three paying Core customers have completed the full Playbook
               loop (Step 1 → Step 7 → First Paying Customer Verified).
               Carry-over assumptions are unvalidated below three.
             </li>
@@ -122,7 +122,7 @@ export default function RepeatablePlaceholderPage() {
               Rung 2 is the door that opens AFTER you walk through Rung 1.
             </p>
             <Button asChild size="lg" className="text-base px-8">
-              <Link href="/machine-sales">Start at the $49 Core Machine</Link>
+              <Link href="/playbook-sales">Start at the $49 Core Playbook</Link>
             </Button>
             <p className="text-xs text-muted-foreground">
               Or take the{" "}

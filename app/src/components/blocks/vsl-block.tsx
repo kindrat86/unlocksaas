@@ -8,7 +8,7 @@
  * VideoObject (there is no video to claim).
  *
  * Props are kept as accept-and-ignore so the existing call sites
- * (`src/app/page.tsx`, `src/app/(marketing)/machine-sales/page.tsx`) keep
+ * (`src/app/page.tsx`, `src/app/(marketing)/playbook-sales/page.tsx`) keep
  * compiling. They were never passing values anyway.
  */
 
@@ -17,7 +17,7 @@ For most of my life that closed a door. Then in 2026, Lovable and Claude opened 
 and I shipped real AI products in weeks. The shipping part felt like magic.
 What came after did not. I would launch, open Stripe, and watch a line lie flat.
 What finally broke me was sitting with more than ten other founders and hearing
-my own story back. So I built the machine I wish someone had handed me.`;
+my own story back. So I built the playbook I wish someone had handed me.`;
 
 interface Props {
   /** Retained for call-site compatibility; ignored in the text-only variant. */
@@ -34,7 +34,7 @@ export function VslBlock(_props: Props = {}) {
           Meet the founder
         </p>
         <h2 className="text-2xl font-bold leading-tight">
-          The story behind the Machine, in the founder&apos;s voice.
+          The story behind the Playbook, in the founder&apos;s voice.
         </h2>
       </div>
 

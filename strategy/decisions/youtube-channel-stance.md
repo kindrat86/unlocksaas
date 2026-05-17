@@ -38,7 +38,7 @@ It is the same pattern as `strategy/decisions/seven-phases-coverage.md`, which l
 **Why active and gated:**
 
 - **Asymmetric leverage of guesting vs. hosting (~10x at this stage).** A guest spot on Indy Dev Dan reaches 80K+ subscribers who already trust the host — that trust transfers to the guest on first introduction. A host channel reaches 0 subscribers on day 1 and bleeds founder hours into growing an audience from cold. The marginal hour of founder time gets ~10x more relevant impressions through guesting than through hosting at this stage.
-- **The gating rule is identical to podcast-outreach.md.** First verified-customer cycle must close inside The Machine before any cold-outbound pitch goes. Reason: hosts filter pitches on whether the central claim is real. "First customer in 60 days" without a single verified customer reads as marketing fiction; with one verified Stripe screenshot, it reads as a fresh case study.
+- **The gating rule is identical to podcast-outreach.md.** First verified-customer cycle must close inside The Playbook before any cold-outbound pitch goes. Reason: hosts filter pitches on whether the central claim is real. "First customer in 60 days" without a single verified customer reads as marketing fiction; with one verified Stripe screenshot, it reads as a fresh case study.
 - **Reactive guesting is allowed pre-first-customer.** If a host DMs first, or publishes a guest-queue-open call, the warm-up gate does not apply. Workbook 09 §1 draws this line for podcasting; the YouTube kit applies it identically.
 
 ---
@@ -55,14 +55,14 @@ Workbook 10 §3 Phase 3 trigger fires: **50+ paying customers active.** Reason: 
 
 The channel needs at least 3 tutorial topics that satisfy three sub-conditions:
 1. **Search-volume evidence.** The topic has documented monthly search demand on YouTube (verified via YouTube search suggest + ahrefs/similar).
-2. **Direct path back to The Machine.** Each tutorial naturally hands off to a specific funnel layer — diagnostic, starter, or core. Not abstract "thought leadership." Concrete demos that surface a UnlockSaaS-specific tool decision.
+2. **Direct path back to The Playbook.** Each tutorial naturally hands off to a specific funnel layer — diagnostic, starter, or core. Not abstract "thought leadership." Concrete demos that surface a UnlockSaaS-specific tool decision.
 3. **Founder voice-on-camera viable.** The topic is something Maryan can speak to on camera without external research — first-hand operator stories, not aggregated industry takes.
 
-Workbook 09 §6 row already names the launch shape: "One channel-trailer video + 3 tutorial videos on running The Machine, after one customer case study exists." This condition extends that — 3 tutorials with the three sub-conditions above, not 3 generic tutorials.
+Workbook 09 §6 row already names the launch shape: "One channel-trailer video + 3 tutorial videos on running The Playbook, after one customer case study exists." This condition extends that — 3 tutorials with the three sub-conditions above, not 3 generic tutorials.
 
 ### Condition 3 — Founder bandwidth without Sprint compromise
 
-Maryan can dedicate 4–6 hours per week to YouTube production without compromising the Sprint 1–4 maintenance load + Step 5 outreach loop he runs inside the Machine. If hosting compromises operator hours that should be running the funnel, the channel is premature regardless of customer count.
+Maryan can dedicate 4–6 hours per week to YouTube production without compromising the Sprint 1–4 maintenance load + Step 5 outreach loop he runs inside the Playbook. If hosting compromises operator hours that should be running the funnel, the channel is premature regardless of customer count.
 
 ### Condition 4 — Structured case-study cohort exists OR Phase-2 organic momentum is already pulling traffic to UnlockSaaS via YouTube search
 
@@ -122,6 +122,6 @@ The remaining ceiling-risk (zero warm-up reps logged) carries 0 deduction today 
 - `strategy/workbooks/08-your-dream-customer.md` §3 (podcast warm-up plan; same gating logic applies)
 - `strategy/podcast-outreach.md` — sibling kit; same gating rule, different medium
 - `strategy/decisions/seven-phases-coverage.md` — pattern this doc follows (lean-stance auditing)
-- `strategy/state.json` `traffic_secrets.youtube` — machine-readable mirror
+- `strategy/state.json` `traffic_secrets.youtube` — playbook-readable mirror
 - `strategy/dream-100.csv` rows 86–93 — the original YouTube channel list
 - `strategy/dream-100-influencers-fill.md` entry 36 (Riley Brown) — promoted from influencer track to YouTube cohort

@@ -120,12 +120,12 @@ const VslPostCta = forwardRef<HTMLDivElement, { surface: VslSurface }>(
         )}
         {surface === "starter" ? null : (
           <Button asChild size="lg" variant="secondary">
-            <Link href="/starter">Start the Machine for $1</Link>
+            <Link href="/starter">Start the Playbook for $1</Link>
           </Button>
         )}
-        {surface === "machine_sales" ? null : (
+        {surface === "playbook_sales" ? null : (
           <Button asChild size="lg">
-            <Link href="/machine-sales">The Full Machine — $49/mo</Link>
+            <Link href="/playbook-sales">The Full Playbook — $49/mo</Link>
           </Button>
         )}
       </div>

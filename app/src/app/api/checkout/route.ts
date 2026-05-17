@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   // Price type stamped in Stripe metadata so the Cart Abandonment Recovery
   // cadence can branch its copy on `checkout.session.expired` events. See
   // app/src/lib/cart-recovery/subscribe.ts.
-  if (priceType === "starter" || priceType === "machine") {
+  if (priceType === "starter" || priceType === "playbook") {
     abMetadata.price_type = priceType;
   }
 
@@ -98,17 +98,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ url: session.url });
     }
 
-    if (priceType === "machine") {
+    if (priceType === "playbook") {
       const session = await getStripe().checkout.sessions.create({
         mode: "subscription",
         line_items: [
           {
-            price: process.env.STRIPE_MACHINE_PRICE_ID!,
+            price: process.env.STRIPE_PLAYBOOK_PRICE_ID!,
             quantity: 1,
           },
         ],
         // Core lands in /onboarding (clock, Starter carryover, Stripe Connect).
-        // The user advances to /machine from there. session_id is preserved so
+        // The user advances to /playbook from there. session_id is preserved so
         // /onboarding can show a "processing" banner while the webhook catches up.
         success_url: `${appUrl}/onboarding?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${appUrl}/oto`,
@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
       });
 
       captureServer(distinctId, Event.CheckoutSessionCreated, {
-        price_type: "machine",
+        price_type: "playbook",
         stripe_session_id: session.id,
         ...abMetadata,
       });

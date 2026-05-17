@@ -84,7 +84,7 @@ This is not for you if you haven't shipped anything yet. Go ship first. Come bac
 
 If you've shipped, here's what I'll put in writing.
 
-Run the machine I built. Do the work it tracks. If sixty days pass and your Stripe shows no new paying customer, you get both months back. In full. Ninety-eight dollars.
+Run the playbook I built. Do the work it tracks. If sixty days pass and your Stripe shows no new paying customer, you get both months back. In full. Ninety-eight dollars.
 
 The risk is mine.
 
@@ -113,7 +113,7 @@ These are not montage filler. Each one is anchored to a specific beat. The B-rol
 | **3** | **Screenshot pan: Lovable interface, then Claude interface, then a vibe-coded product preview.** 2 seconds each, smooth pan. | Beat 1, over "Lovable and Claude opened it." | Grounds the AI-builder identity. Marco sees his own tool stack on screen. |
 | **4** | **Notebook page with offer scribbles.** Real handwriting. Crossed-out lines, arrows, then one circled sentence. | Beat 3, over "found nothing on the page." | Shows the blank-offer-page parable visually, without him narrating it explicitly. |
 | **5** | **Wide shot of an empty room, slow zoom, single chair.** | Beat 3, over the "walk around the room" line. | Visualizes the moment of self-recognition without showing the founder doing it on camera (which would feel staged). |
-| **6** | **The Machine interface — Step 5 outreach screen with a "verified" checkmark animating in.** 2-3 seconds, clean. | Beat 4, over "a tool that refuses to let you skip it." | Shows the product mechanically delivering on what the script claims. Concrete proof. |
+| **6** | **The Playbook interface — Step 5 outreach screen with a "verified" checkmark animating in.** 2-3 seconds, clean. | Beat 4, over "a tool that refuses to let you skip it." | Shows the product mechanically delivering on what the script claims. Concrete proof. |
 | **7** | **Stripe dashboard, but this time with one new charge appearing.** 2-3 second push-in on the new line. | Beat 5, over "Stripe shows no new paying customer." | The promise made literal. Last B-roll image the viewer carries away. |
 
 **B-roll rule:** never cut to B-roll on a confession beat. The confession needs the face. B-roll exists for the mechanical / product / proof beats. Keep the painful moments (Beats 1, 3, 5 disqualifier) on the founder's face uncut.

@@ -77,7 +77,7 @@ want to record the 12-minute PLV3 cold.
 |---|---|---|---|
 | 1 | **VSL** | 3–5 min | `strategy/founder-vsl-script.md` |
 | 2 | **PLV1 — "The Door That Opened"** | 5–7 min | `founding-plv-scripts.md` § PLV1 |
-| 3 | **PLV2 — "How the Machine Actually Works"** | 8–10 min | `founding-plv-scripts.md` § PLV2 |
+| 3 | **PLV2 — "How the Playbook Actually Works"** | 8–10 min | `founding-plv-scripts.md` § PLV2 |
 | 4 | **PLV3 — "What It Looks Like on the Inside"** | 10–12 min | `founding-plv-scripts.md` § PLV3 |
 
 ### Rules per take
@@ -99,7 +99,7 @@ want to record the 12-minute PLV3 cold.
 
 ### PLV2 screen-recording inserts
 
-PLV2 calls for screen recordings of `/machine/step/1` and `/machine/step/2`.
+PLV2 calls for screen recordings of `/playbook/step/1` and `/playbook/step/2`.
 Two options:
 
 - **Option A — record them separately, splice later.** Open
@@ -191,7 +191,7 @@ A/B and cohort state exactly as a new visitor would):
 | URL | What you expect to see |
 |---|---|
 | https://unlocksaas.com/ | The "Meet the founder" block now shows the real VSL (not the kinetic typography fallback). |
-| https://unlocksaas.com/machine-sales | Same VSL embedded above the Three Secrets block. |
+| https://unlocksaas.com/playbook-sales | Same VSL embedded above the Three Secrets block. |
 | https://unlocksaas.com/founding | Three real video players (PLV1, PLV2, PLV3) replacing the "Video upload pending" placeholders. |
 | https://unlocksaas.com/founding (mobile) | All four videos play with audio on a real phone. The lavalier mic test happens here, not on your laptop. |
 
@@ -218,7 +218,7 @@ If any video does NOT appear:
    - Recorded same-shirt-same-light shoot per OPERATOR-SHOOT-DAY.md
    - Uploaded 4 MP4s to Mux via scripts/upload-shoot.py
    - NEXT_PUBLIC_VSL_URL + FOUNDING_PLV{1,2,3}_PLAYBACK pushed to all 3 Vercel envs
-   - Verified live on /, /machine-sales, /founding (desktop + mobile)
+   - Verified live on /, /playbook-sales, /founding (desktop + mobile)
    - Brunson audit score lift: DCS Secret 20 (VSL) 40 → ~90, ES Secret 11
      (Perfect Webinar) 88 → ~92, DCS Secret 21 (PLF) 92 → ~96. Composite
      78 → forecast ~84.
@@ -230,7 +230,7 @@ If any video does NOT appear:
 
 - **The 45-second VSL cut for `/` and the 90-second cut for SOS Email 1.**
   These are derivative edits of the same VSL source. Defer the edits.
-  The full VSL on `/` and `/machine-sales` is the launch bar. The short
+  The full VSL on `/` and `/playbook-sales` is the launch bar. The short
   cuts are post-launch optimizations that you can produce in iMovie in 15
   minutes once cold-traffic data shows where the long VSL is dropping
   off.

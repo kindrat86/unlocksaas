@@ -38,11 +38,11 @@ But nobody moved the OTHER bottleneck. The work that turns a shipped product int
 
 That work hasn't moved an inch. And now it sits, fully exposed, in front of every non-engineer who just shipped something with Lovable or Claude.
 
-I built a tool that does that work. With you, not for you. It is called The Machine. There are seven steps. Every one of them is verified inside the software so you cannot fake your way through. The promise is your first paying customer in 60 days. Verified by your own Stripe. Or you do not pay.
+I built a tool that does that work. With you, not for you. It is called The Playbook. There are seven steps. Every one of them is verified inside the software so you cannot fake your way through. The promise is your first paying customer in 60 days. Verified by your own Stripe. Or you do not pay.
 
 I am opening it to 50 founders on [DATE]. Not 50 ever. Just 50 in the founding cohort. After that the door is still open, but the founding bonuses are not.
 
-In the next video I will show you HOW the Machine works. The seven steps, the engine, the one step where every other tool quits and what mine does instead.
+In the next video I will show you HOW the Playbook works. The seven steps, the engine, the one step where every other tool quits and what mine does instead.
 
 That video drops Wednesday.
 
@@ -52,17 +52,17 @@ See you then.
 
 ---
 
-## PLV2 — "How the Machine Actually Works" (8–10 minutes)
+## PLV2 — "How the Playbook Actually Works" (8–10 minutes)
 
 Transformation / Education. Teach a piece of the framework. Show the product. Build real understanding, not hype.
 
 **[On camera open, 30 seconds.]**
 
-Welcome back. Today I show you the Machine, and the one step where every other tool quits.
+Welcome back. Today I show you the Playbook, and the one step where every other tool quits.
 
-**[Cut to screen recording of the live product `/machine/step/1`.]**
+**[Cut to screen recording of the live product `/playbook/step/1`.]**
 
-The Machine has seven steps. They go in order. You do not get to step 4 until you have finished step 3. The engine refuses to advance. That is not a UX choice. That is the entire mechanism.
+The Playbook has seven steps. They go in order. You do not get to step 4 until you have finished step 3. The engine refuses to advance. That is not a UX choice. That is the entire mechanism.
 
 **Step 1: Pin Your Dream Customer.** The engine asks you who you are building for. If you type "founders," it pushes back. "Founders is a category, not a person." It will not take vague answers. I'll show you it doing this to me, live.
 
@@ -84,7 +84,7 @@ That pushback is the entire value of step 1. You cannot reason your way past the
 
 Step 5 is the one. Step 5 is where you stop reading and start sending. Step 5 is the step you have been avoiding for six months.
 
-Every funnel coach has a video about outreach. They all teach the framework. None of them stand next to you while you actually do it. The Machine does. The engine writes the message. It picks the target from your Dream 100. You post the message yourself, in the real platform, and you paste the link back into the tool. The tool fetches the link and verifies you did the thing. You cannot get to step 6 without it.
+Every funnel coach has a video about outreach. They all teach the framework. None of them stand next to you while you actually do it. The Playbook does. The engine writes the message. It picks the target from your Dream 100. You post the message yourself, in the real platform, and you paste the link back into the tool. The tool fetches the link and verifies you did the thing. You cannot get to step 6 without it.
 
 That is the framework-into-the-engine principle. The framework is in the software, not on you. Marco — that's the avatar — Marco does not have to remember a framework. Marco answers human questions and the engine does the framework lifting.
 
@@ -92,7 +92,7 @@ That is the framework-into-the-engine principle. The framework is in the softwar
 
 **Step 7: Verify.** Stripe webhook fires. The engine sees a new charge land on YOUR account. The badge unlocks. The verification is mechanical. There is no self-reporting. There is no "feels like." There is a paying customer or there is not.
 
-That is the Machine.
+That is the Playbook.
 
 In the next video I will show you what it looks like to actually own this thing. The Verified Builder identity. The manifesto. The guarantee mechanic with the actual refund button on the screen. And I will tell you when the door opens.
 
@@ -120,7 +120,7 @@ We were told the answer was more building. Then more traffic. Then a better cour
 
 We stopped pretending the problem was the product. The problem was the work nobody taught us to do: name one real person, make one real promise, sell it before it felt ready.
 
-We run The Machine. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one. We measure progress in Stripe charges, not in encouragement.
+We run The Playbook. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one. We measure progress in Stripe charges, not in encouragement.
 
 We do not collect praise. We collect customers.
 
@@ -130,15 +130,15 @@ We are Verified Builders.
 
 If that paragraph lands for you the same way it landed for me when I wrote it, then you are who I am opening the door for.
 
-**[Cut to screen recording of `/machine/verified` page with a mock first-customer event.]**
+**[Cut to screen recording of `/playbook/verified` page with a mock first-customer event.]**
 
-This is what it looks like when the badge fires. Stripe sees a charge land on your account. The Machine sees the Stripe webhook. Your milestone unlocks. The badge is yours. You can share it. You can put it on your homepage. It is not a vanity sticker. It means a specific thing: in 60 days, you went from a flat Stripe line to a real, verified, paying customer.
+This is what it looks like when the badge fires. Stripe sees a charge land on your account. The Playbook sees the Stripe webhook. Your milestone unlocks. The badge is yours. You can share it. You can put it on your homepage. It is not a vanity sticker. It means a specific thing: in 60 days, you went from a flat Stripe line to a real, verified, paying customer.
 
 If you do NOT get there in 60 days, you click this button.
 
 **[Hover over an actual "Request refund under guarantee" button on screen.]**
 
-You enter your reason. The Machine checks two things. Did you complete the in-product milestones — dream customer pinned, offer locked, AC defined, copy generated, outreach sent — yes or no. And did Stripe see a new paying customer on your account in the 60 days — yes or no. If you did the work and you do not have a customer, the refund is automatic. Both months back. Capped at 98 dollars. That is not me being generous. That is me committing the business to its own promise.
+You enter your reason. The Playbook checks two things. Did you complete the in-product milestones — dream customer pinned, offer locked, AC defined, copy generated, outreach sent — yes or no. And did Stripe see a new paying customer on your account in the 60 days — yes or no. If you did the work and you do not have a customer, the refund is automatic. Both months back. Capped at 98 dollars. That is not me being generous. That is me committing the business to its own promise.
 
 **[Voice tightens. This is the close.]**
 

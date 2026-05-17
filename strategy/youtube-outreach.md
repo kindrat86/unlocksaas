@@ -8,7 +8,7 @@
 
 **Signature on all emails:** `— Maryan, maryan@unlocksaas.com` (per Attractive Character sender identity, locked).
 
-**Pitch gate (Brunson rule):** Every guest pitch is gated behind **first verified-customer cycle** closing inside The Machine. Same gate as podcast-outreach.md §3. Reason: an AI-builder show host cannot risk a guest whose central claim ("first customer in 60 days") has never produced a customer. Warm-up reps below this gate are allowed and encouraged — they pay forward to the moment the pitch lands.
+**Pitch gate (Brunson rule):** Every guest pitch is gated behind **first verified-customer cycle** closing inside The Playbook. Same gate as podcast-outreach.md §3. Reason: an AI-builder show host cannot risk a guest whose central claim ("first customer in 60 days") has never produced a customer. Warm-up reps below this gate are allowed and encouraged — they pay forward to the moment the pitch lands.
 
 **Reactive permission (workbook 09 §1):** Inbound invitations may be accepted at launch with no warm-up requirement, even pre-first-customer. The "do not pitch" rule does not block "yes please" replies to a host who reaches out first.
 
@@ -21,14 +21,14 @@ Default instinct: pitch the biggest channel first. Wrong move for YouTube specif
 YouTube has a structural quirk that's different from podcasts: hosts get pitched 10–50x more often, and 90% of pitches fail to clear a 5-second skim because they violate one of three patterns the host learns to filter:
 
 1. **Pitching to a channel that doesn't run guest-format content.** Marc Lou's channel is tutorials, not interviews — pitching a guest spot is a category error. The right play there is a **collab cameo** or a **case-study feature** built around a tool he's testing, not a sit-down interview.
-2. **No visual angle.** YouTube is a visual medium. Podcasts ride on the host's voice; YouTube rides on screen-recorded action. "I'll talk about my flat Stripe line" is a podcast pitch; "I'll show you my Stripe dashboard on screen and walk through what the Machine does to it" is a YouTube pitch.
+2. **No visual angle.** YouTube is a visual medium. Podcasts ride on the host's voice; YouTube rides on screen-recorded action. "I'll talk about my flat Stripe line" is a podcast pitch; "I'll show you my Stripe dashboard on screen and walk through what the Playbook does to it" is a YouTube pitch.
 3. **No demonstrated proof on the channel side.** Hosts check whether you've engaged with their work before pitching. Three substantive comments on three different videos beats any cover letter.
 
 The ranking below weights these three filters more than subscriber count.
 
 **Ranking order:** Riley Brown → Indy Dev Dan → Build Your SaaS → Indie Hackers YouTube → Marc Lou → Justin Welsh → Greg Isenberg.
 
-Riley Brown is #1 because his audience IS Marco — non-engineers shipping with AI tools. The vibe-coding category he defined is the exact intersection UnlockSaaS sits in. Visual angle is built-in: screen-record the Machine pushing back on him while he tries to define his dream customer for a vibe-coded product.
+Riley Brown is #1 because his audience IS Marco — non-engineers shipping with AI tools. The vibe-coding category he defined is the exact intersection UnlockSaaS sits in. Visual angle is built-in: screen-record the Playbook pushing back on him while he tries to define his dream customer for a vibe-coded product.
 
 Greg Isenberg is #7 not because he's bad — because he's the longest warm-up distance and his guest bar is high. He'll be a Month 3 pitch, not Week 1.
 
@@ -45,7 +45,7 @@ Greg Isenberg is #7 not because he's bad — because he's the longest warm-up di
 | **Format** | Tutorials, build-with-me, AI-tool reactions, occasional founder interviews |
 | **Why Marco watches** | Riley has never written a line of production code and ships monetized apps using Cursor / Claude / Lovable. YapThread is reportedly at $12K/mo. He is the **literal Marco avatar with a YouTube channel.** His audience is non-engineers monetizing AI-shipped products — the exact intersection UnlockSaaS sits in. |
 | **What Riley gets** | (a) A fresh case study at the under-served stage between "shipped" and "first customer" — most of his case-study content is later-stage. (b) A visual demo of an AI-tool category he hasn't covered yet (the "what happens AFTER you ship with Lovable" toolchain). (c) A guest who can run the demo on his own real product, on camera, with stakes (Stripe live). |
-| **Visual angle** | Screen-record Maryan walking Riley through The Machine using one of Riley's own shipped products as the input. Engine pushback on "Step 1: who is your dream customer for YapThread?" → live answer revision → Step 2 offer write → real-time iteration. 12-minute episode max. |
+| **Visual angle** | Screen-record Maryan walking Riley through The Playbook using one of Riley's own shipped products as the input. Engine pushback on "Step 1: who is your dream customer for YapThread?" → live answer revision → Step 2 offer write → real-time iteration. 12-minute episode max. |
 
 ### Pre-pitch warm-up sequence (Mon–Wed of pitch week)
 
@@ -65,9 +65,9 @@ I've been watching the channel for the last 8 weeks. The reason I'm writing now 
 
 I'm a marketer, never written a line of production code. In 2026 I shipped a dozen real AI products with Lovable and Claude. Stripe lay flat for 14 months. I went embarrassingly deep into SEO before admitting what was actually broken: it wasn't the building anymore — that's now solved by your toolchain. It was the work AFTER the build, which nobody moved when AI moved the build itself.
 
-I built a tool that does that work, called The Machine. Seven steps, in-product engine pushback that won't let you skip Step 5 (the one every other tool quits on). 60-day "first paying customer or refund" guarantee, enforced in code.
+I built a tool that does that work, called The Playbook. Seven steps, in-product engine pushback that won't let you skip Step 5 (the one every other tool quits on). 60-day "first paying customer or refund" guarantee, enforced in code.
 
-**Concrete episode idea:** *"What happens after you ship a vibe-coded app and Stripe stays flat — live demo on YapThread."* 12 minutes. I screen-share my product, you run YapThread through the first three steps of the Machine on camera, the engine pushes back on your offer, we revise live, and we end with the specific outreach action your offer would generate.
+**Concrete episode idea:** *"What happens after you ship a vibe-coded app and Stripe stays flat — live demo on YapThread."* 12 minutes. I screen-share my product, you run YapThread through the first three steps of the Playbook on camera, the engine pushes back on your offer, we revise live, and we end with the specific outreach action your offer would generate.
 
 If you'd rather do a reaction-format on the engine pushback specifically (no guest, just you reacting to my screen-recording), I'll send the recording. Either format works. The story IS the demo — there's no course pitch.
 
@@ -81,7 +81,7 @@ Riley,
 
 Following up on the pitch from two weeks ago. No expectation.
 
-If a guest spot is too much overhead right now, here's a lower-friction option: I recorded a 90-second clip of the Machine pushing back on a vibe-coder's offer ("just say 'people' and see what happens"). You can react to it cold, no prep, no scheduling. If the reaction sparks, we talk about a longer format. If it doesn't, no harm done.
+If a guest spot is too much overhead right now, here's a lower-friction option: I recorded a 90-second clip of the Playbook pushing back on a vibe-coder's offer ("just say 'people' and see what happens"). You can react to it cold, no prep, no scheduling. If the reaction sparks, we talk about a longer format. If it doesn't, no harm done.
 
 Link: [paste 90-second clip URL once recorded]
 
@@ -106,12 +106,12 @@ Link: [paste 90-second clip URL once recorded]
 | **Format** | Long-form tutorials, live coding, occasional case studies. Audience is technical-leaning AI builders. |
 | **Why Marco watches** | Dan is the most consistent voice publishing on Claude / Claude Code specifically. Marco's non-engineer cousins (the technical-leaning AI-builders) live on this channel. They are NOT Marco — they're one rung up the technical ladder — but they're the influencer cohort that legitimizes UnlockSaaS to the rest of the AI-builder community. |
 | **What Dan gets** | A non-engineer case study using Claude Code in production. His audience is heavily technical; a Maryan-shaped guest breaks the "Claude Code is for engineers" frame in a way his audience benefits from seeing. Bonus: UnlockSaaS itself is built with Claude Code — meta-angle on the toolchain. |
-| **Visual angle** | Walk through the Anthropic API call structure inside the Machine's engine (`app/src/lib/engine/`) on screen. Show Claude doing the pushback in real time. 20-minute episode. Technical-leaning, NOT founder-story format — adjust voice up one notch toward "operator showing the build" and down one notch from "Reluctant Hero confession." |
+| **Visual angle** | Walk through the Anthropic API call structure inside the Playbook's engine (`app/src/lib/engine/`) on screen. Show Claude doing the pushback in real time. 20-minute episode. Technical-leaning, NOT founder-story format — adjust voice up one notch toward "operator showing the build" and down one notch from "Reluctant Hero confession." |
 
 ### Pre-pitch warm-up sequence
 
 1. **Mon:** Subscribe. Watch his 3 most-recent Claude Code videos.
-2. **Tue:** Comment on the most recent video with a specific Claude-API observation from the Machine's codebase (no link, just the technical detail).
+2. **Tue:** Comment on the most recent video with a specific Claude-API observation from the Playbook's codebase (no link, just the technical detail).
 3. **Wed:** Engage in Anthropic Discord / X if Dan is active; cite one of his videos in an X post about Claude Code production patterns.
 
 ### Pitch email / DM
@@ -122,7 +122,7 @@ Dan,
 
 I've been watching the channel since [specific recent video]. The reason I'm writing now is your audience is heavily technical, and I think a 20-minute episode from the other end of the toolchain might be useful for them.
 
-I'm a marketer. I have never written a line of production code. I built UnlockSaaS — a 7-step marketing-execution Machine for non-engineer founders — entirely in Claude Code. The engine that drives every step is Claude pushing back on the user's answers until the answers are usable. The pushback prompt design, the streaming output handling, the cost optimization — all of it is the kind of detail your audience likes.
+I'm a marketer. I have never written a line of production code. I built UnlockSaaS — a 7-step marketing-execution Playbook for non-engineer founders — entirely in Claude Code. The engine that drives every step is Claude pushing back on the user's answers until the answers are usable. The pushback prompt design, the streaming output handling, the cost optimization — all of it is the kind of detail your audience likes.
 
 **Concrete episode idea:** *"What a marketing tool built end-to-end in Claude Code looks like under the hood — non-engineer perspective on a production AI app."* 20 minutes. Screen recording of the engine in action. Real prompt examples. Real cost numbers. Real engineering decisions (with the honest "I asked Claude how to do this" parts kept in).
 
@@ -147,7 +147,7 @@ Happy to send the case study by itself if you want to use it without a guest app
 ### Reactive cues
 
 - Dan posts "comment what you're building with Claude Code" → reply with UnlockSaaS one-liner + link.
-- Dan asks for production case studies → DM the full Machine breakdown.
+- Dan asks for production case studies → DM the full Playbook breakdown.
 - Dan covers Claude prompt-engineering for tools → reply with a specific engine pushback prompt example.
 
 ---
@@ -175,7 +175,7 @@ Same as podcast-outreach.md #4 (Build Your SaaS). Light additional rep: comment 
 
 See podcast-outreach.md #4. Add the following paragraph after the "Concrete episode idea":
 
-> If you record both audio and video for the show: I can prep a 3-minute screen-recording B-roll showing the Machine's engine pushback on a real (anonymized) founder's offer, suitable for cutting in around minute 18–22. Saves you the post-production decision.
+> If you record both audio and video for the show: I can prep a 3-minute screen-recording B-roll showing the Playbook's engine pushback on a real (anonymized) founder's offer, suitable for cutting in around minute 18–22. Saves you the post-production decision.
 
 ### Follow-up + reactive cues
 
@@ -194,7 +194,7 @@ Identical to the podcast track in `podcast-outreach.md` §4.
 | **Format** | Founder interviews. Strongest formats are post-success retrospectives + occasional "in the middle of it" episodes. |
 | **Why Marco watches** | The canonical indie founder channel. Marco came up reading IH posts; he watches the YouTube interviews when he wants a longer-form version of the IH narrative arc. |
 | **What Channing/Courtland get** | A pre-revenue guest with self-aware naming of the avoidance loop, plus a new contemporary AI-tooling angle (non-engineer + Lovable/Claude + flat Stripe). IH undercovers the AI-builder cohort at the pre-first-customer stage. |
-| **Visual angle** | Standard IH interview format. Visual demo opportunity: 5-minute screen-recorded segment where Channing or Courtland runs *their own* (or a friend's) post-launch product through the Machine's diagnostic. Real reaction, real pushback, real script revision. |
+| **Visual angle** | Standard IH interview format. Visual demo opportunity: 5-minute screen-recorded segment where Channing or Courtland runs *their own* (or a friend's) post-launch product through the Playbook's diagnostic. Real reaction, real pushback, real script revision. |
 
 **Note:** Indie Hackers Podcast is in podcast-outreach.md #3 (Courtland). The YouTube channel is run differently (Channing-led), with a more case-study-format bent. **Send a separate pitch to Channing for the YouTube channel, NOT the same email forwarded.** Reuse of an unmodified podcast pitch on the YouTube channel reads as low-effort.
 
@@ -214,7 +214,7 @@ I'm a long-time IH community member. The reason I'm writing now is I think there
 
 Most of the interviews on the channel come from founders who hit MRR and look back at what worked. Marco — your archetypical IH reader — is on the other end of that arc. He shipped with AI tools, watched Stripe stay flat for a year, and is still inside the avoidance loop. I'm that founder, with enough self-awareness to name the loop accurately but not enough success yet to wrap it in a redemption arc.
 
-**Concrete episode idea:** *"Inside the AI-builder avoidance loop — a non-engineer founder interview from the middle, not the end."* 30 minutes. Honest interview. Optional 5-minute screen-recorded segment where you (or Courtland) walk a real product through the Machine's diagnostic on camera. I have a Stripe screenshot ready for the cold open (flat line, twelve months of zeroes) — your audience hasn't seen one of those in a while.
+**Concrete episode idea:** *"Inside the AI-builder avoidance loop — a non-engineer founder interview from the middle, not the end."* 30 minutes. Honest interview. Optional 5-minute screen-recorded segment where you (or Courtland) walk a real product through the Playbook's diagnostic on camera. I have a Stripe screenshot ready for the cold open (flat line, twelve months of zeroes) — your audience hasn't seen one of those in a while.
 
 If the format you prefer is the build-in-public case study, I can do that variant too — show the codebase, show the offer scripts, show the engine's prompt design. Whichever the channel needs.
 
@@ -262,7 +262,7 @@ Hey Marc,
 
 Big fan, ShipFast customer since [date]. I'm not going to pitch a guest spot — your channel is solo-tutorial format and I respect that.
 
-What I'd like to offer instead: I've built a 7-step marketing-execution Machine for non-engineer founders, and the Step 1 output is a fully-developed dream-customer dossier (10 Russell-canonical questions, day-in-the-life, before/after, verbatim quote bank, identity statement). It's exactly the kind of artifact your audience asks you about in comments — "how do I find my customer?" "what does a real dream-customer profile look like?"
+What I'd like to offer instead: I've built a 7-step marketing-execution Playbook for non-engineer founders, and the Step 1 output is a fully-developed dream-customer dossier (10 Russell-canonical questions, day-in-the-life, before/after, verbatim quote bank, identity statement). It's exactly the kind of artifact your audience asks you about in comments — "how do I find my customer?" "what does a real dream-customer profile look like?"
 
 I'd like to send you the full Marco dossier (the avatar UnlockSaaS itself targets) as raw material for a solo tutorial if you ever want to record one on dream-customer profiles. You record, you frame, you keep all the credit. UnlockSaaS gets a single description-line credit if you choose to include it; if not, no problem.
 
@@ -310,7 +310,7 @@ I've been a newsletter subscriber for ~6 months. The reason I'm writing is your 
 
 The cohort: non-engineer solopreneurs who shipped real products in 2026 using Lovable / Claude / Cursor. AI removed the building constraint for them. What it didn't remove — and what your OS framework predicts — is the work after the build: writing the offer, finding the customer, sending the message. That work is exactly where this cohort gets stuck, and it's exactly what your framework prescribes.
 
-**Concrete angle:** *"Solopreneur OS for the AI-builder generation — what changes when the build is no longer the bottleneck."* I'm a marketer (not an engineer) who's been the case study for this exact pattern for 14 months. Built a tool around it (The Machine). Have 10 founder conversations on file with verbatim quotes.
+**Concrete angle:** *"Solopreneur OS for the AI-builder generation — what changes when the build is no longer the bottleneck."* I'm a marketer (not an engineer) who's been the case study for this exact pattern for 14 months. Built a tool around it (The Playbook). Have 10 founder conversations on file with verbatim quotes.
 
 Two formats I can offer:
 1. Guest spot on the YouTube channel (20 min, your usual interview-light shape, optional 3-min screen-recorded demo as B-roll).
@@ -416,10 +416,10 @@ YouTube guests differentiate themselves with prepared B-roll. Every guest pitch 
 
 | Asset | Source file / surface | Length | When to record |
 |---|---|---|---|
-| Engine pushback demo | `/machine/step/[id]` running live on a real Marco-avatar input | 60–90 sec | Pre-pitch (week 1) |
-| Stripe-line cold open | Screen recording of a flat 12-month Stripe dashboard (Maryan's own pre-Machine) | 15 sec | Pre-pitch (week 1) |
+| Engine pushback demo | `/playbook/step/[id]` running live on a real Marco-avatar input | 60–90 sec | Pre-pitch (week 1) |
+| Stripe-line cold open | Screen recording of a flat 12-month Stripe dashboard (Maryan's own pre-Playbook) | 15 sec | Pre-pitch (week 1) |
 | Diagnostic walkthrough | `/diagnostic` form submit + labelled result + handoff to `/starter` | 90 sec | Pre-pitch (week 1) |
-| Verified-customer celebration | `/machine/verified` page firing for the first cohort customer | 30 sec | After first verified-customer cycle |
+| Verified-customer celebration | `/playbook/verified` page firing for the first cohort customer | 30 sec | After first verified-customer cycle |
 | Founding-cohort meter | `/founding` cohort meter with real-time DB-backed count | 15 sec | Post-cart-open |
 
 Record once, reuse for every channel pitch. Host them on Mux (same infrastructure as PLVs and VSL — see `scripts/setup-mux-credentials.py`).
@@ -449,7 +449,7 @@ The reason this kit names only the guest path: the asymmetric leverage of guesti
 
 **Operator unlock path:**
 1. Week 1 — Tier A warm-up reps (Riley Brown + Indy Dev Dan): 6 reps, ~3 hours total founder time.
-2. First verified-customer cycle closes inside the Machine → unlock pitches for #3–#7.
+2. First verified-customer cycle closes inside the Playbook → unlock pitches for #3–#7.
 3. Tier A pitches send Thu of Week 2 post-milestone → +0 audit points (kit was already at ceiling); first booked guest spot is the real proof point and lifts adjacent audit chapters (Traffic Secret #2, Expert Secret #2 expert positioning).
 
 **Cross-references:**
@@ -458,4 +458,4 @@ The reason this kit names only the guest path: the asymmetric leverage of guesti
 - `strategy/dream-100-influencers-fill.md` — Riley Brown (entry 36) and Pat Walls (entry 38) are the AI-builder-cohort YouTube candidates; Riley's pitch shape lives here, Pat's via Starter Story stays on the influencer track.
 - `strategy/decisions/youtube-channel-stance.md` — host-deferral decision doc; conditions for flipping N/A → active host.
 - `strategy/workbooks/09-fill-your-funnel.md` — §1 (channel deferral), §6 (Phase 2 platform-specific playbook); both reference this kit.
-- `strategy/state.json` — `traffic_secrets.youtube` block mirrors this kit's structure machine-readably.
+- `strategy/state.json` — `traffic_secrets.youtube` block mirrors this kit's structure playbook-readably.

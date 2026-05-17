@@ -1,7 +1,7 @@
 "use server";
 
 /**
- * Server actions for /machine/verified.
+ * Server actions for /playbook/verified.
  *
  * Two surfaces here:
  *
@@ -36,7 +36,7 @@ async function requireProfile(): Promise<{
 }> {
   const sb = createClient();
   const { data: userData, error: userErr } = await sb.auth.getUser();
-  if (userErr || !userData.user) redirect("/login?next=/machine/verified");
+  if (userErr || !userData.user) redirect("/login?next=/playbook/verified");
 
   // Several columns (builder_slug, builder_name, product_name, product_url,
   // share_visibility) live in profiles in the live DB but are not yet in the
@@ -132,7 +132,7 @@ export async function updateShareSettings(formData: FormData) {
 
   if (error) throw new Error(`updateShareSettings: ${error.message}`);
 
-  revalidatePath("/machine/verified");
+  revalidatePath("/playbook/verified");
   if (slug) revalidatePath(`/builder/${slug}`);
 }
 
@@ -196,6 +196,6 @@ export async function simulateFirstCustomer(formData: FormData) {
     }
   }
 
-  revalidatePath("/machine/verified");
-  revalidatePath("/machine");
+  revalidatePath("/playbook/verified");
+  revalidatePath("/playbook");
 }

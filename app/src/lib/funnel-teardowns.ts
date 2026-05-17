@@ -13,7 +13,7 @@
  *   Post-launch pre-revenue non-engineer SaaS founders are already
  *   funnel-hacking indie SaaS they admire. They search the funnel pattern,
  *   not a competitor name. We meet them there and reframe the analysis
- *   through Brunson Hook-Story-Offer — which is exactly what the Machine
+ *   through Brunson Hook-Story-Offer — which is exactly what the Playbook
  *   does on the founder's own page.
  *
  * Brunson Hard-Rule reconciliation (strategy/google-strategy.md §AC-flaw):
@@ -46,7 +46,7 @@ export interface TeardownFaq {
 }
 
 /**
- * Brunson lens — how each teardown maps to the framework the Machine
+ * Brunson lens — how each teardown maps to the framework the Playbook
  * runs on the reader's own product. Keeping the same vocabulary across
  * every teardown is what turns this surface into a teaching system, not
  * a clip show.

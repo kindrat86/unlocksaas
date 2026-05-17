@@ -43,7 +43,7 @@ export interface PricingFaq {
 }
 
 /**
- * Brunson pricing-lens — the same four levers the Machine applies when
+ * Brunson pricing-lens — the same four levers the Playbook applies when
  * critiquing the reader's own pricing page. Vocabulary stays consistent
  * across every teardown so the surface reads as one teaching system.
  */

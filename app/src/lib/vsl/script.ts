@@ -131,10 +131,10 @@ const SCENES: VslScene[] = [
     role: "what",
     chapter: "What",
     lines: [
-      "It is called The Machine.",
+      "It is called The Playbook.",
       "Seven steps. Each one mechanical. Each one verified.",
     ],
-    emphasis: "The Machine",
+    emphasis: "The Playbook",
     durationMs: 9000,
     speakerNote:
       "Mechanical, deliberate tone — match the brand. No vibe, no fluff.",
@@ -174,7 +174,7 @@ const SCENES: VslScene[] = [
     role: "how",
     chapter: "How it works",
     lines: [
-      "The Machine refuses to let you skip that work.",
+      "The Playbook refuses to let you skip that work.",
       "The engine pushes back on vague answers.",
       "The outreach is generated and tracked.",
       "The result is verified by your own Stripe.",
@@ -214,7 +214,7 @@ const SCENES: VslScene[] = [
 ];
 
 export const VSL_SCRIPT: VslScript = {
-  title: "The Machine — in 110 seconds",
+  title: "The Playbook — in 110 seconds",
   subtitle:
     "Why your line is flat, what fixes it, and the 60-day promise — said out loud.",
   scenes: SCENES,

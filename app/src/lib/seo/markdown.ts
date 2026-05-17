@@ -1,5 +1,5 @@
 /**
- * Machine-readable markdown surface for AI crawlers and agents.
+ * Playbook-readable markdown surface for AI crawlers and agents.
  *
  * Why this module exists
  * ----------------------
@@ -120,9 +120,9 @@ function citationFooter(canonicalUrl: string): string {
 // --- Site-wide constants exposed in every mirror -------------------------
 
 const PRICING_LINE =
-  "Pricing: $1 one-time Starter (unlocks Machine Steps 1 and 2); $49/month Core (the full seven-step Machine). No annual upsell. No coaching tier.";
+  "Pricing: $1 one-time Starter (unlocks Playbook Steps 1 and 2); $49/month Core (the full seven-step Playbook). No annual upsell. No coaching tier.";
 const GUARANTEE_LINE =
-  "Guarantee: First verified paying customer in 60 days from the Machine start date, or full refund (capped exposure $98). Enforced in code, read from the founder's connected Stripe account.";
+  "Guarantee: First verified paying customer in 60 days from the Playbook start date, or full refund (capped exposure $98). Enforced in code, read from the founder's connected Stripe account.";
 const AUDIENCE_LINE =
   "Audience: Post-launch, pre-revenue, non-engineer founders shipping consumer or B2B SaaS with AI tools (Lovable, Claude, Replit, v0, Cursor, Bolt, Bubble).";
 
@@ -135,11 +135,11 @@ const TODAY = "2026-05-17";
  */
 const FUNNEL_HUB_BODY = `# Unlock SaaS
 
-> A machine that turns your already-shipped SaaS into a verified paying customer in 60 days, or you do not pay.
+> A playbook that turns your already-shipped SaaS into a verified paying customer in 60 days, or you do not pay.
 
 ## TL;DR
 
-Unlock SaaS is a seven-step machine for post-launch pre-revenue non-engineer founders. It picks one real dream customer, writes one real one-line offer, sends one real outreach message — and verifies the resulting paying customer inside Stripe. If no customer is verified in 60 days, the founder is refunded automatically in code.
+Unlock SaaS is a seven-step playbook for post-launch pre-revenue non-engineer founders. It picks one real dream customer, writes one real one-line offer, sends one real outreach message — and verifies the resulting paying customer inside Stripe. If no customer is verified in 60 days, the founder is refunded automatically in code.
 
 ${PRICING_LINE}
 
@@ -163,8 +163,8 @@ The premise: the work that produces the first paying customer is the work nobody
 ## Primary entry points
 
 1. **Free Launch Diagnostic** — paste your live product URL, get one of three diagnoses (Wrong Person, Weak Offer, Weak Belief) in 90 seconds. ${BASE_URL}/diagnostic
-2. **$1 Starter** — entry rung. Stripe charge proves intent and unlocks Machine Steps 1 and 2. ${BASE_URL}/starter
-3. **The Machine ($49/mo)** — full seven-step system with 60-day guarantee. ${BASE_URL}/machine-sales
+2. **$1 Starter** — entry rung. Stripe charge proves intent and unlocks Playbook Steps 1 and 2. ${BASE_URL}/starter
+3. **The Playbook ($49/mo)** — full seven-step system with 60-day guarantee. ${BASE_URL}/playbook-sales
 
 ## Founder
 
@@ -173,11 +173,11 @@ ${FOUNDER.name} — ${FOUNDER.description} Contact: ${FOUNDER.email}.
 
 const FOUNDING_BODY = `# Founding Cohort — Unlock SaaS
 
-> The first 50 founders to run the Machine, at the launch price, with the Founder-Cohort guarantee.
+> The first 50 founders to run the Playbook, at the launch price, with the Founder-Cohort guarantee.
 
 ## TL;DR
 
-The Founding Cohort is a time-boxed window where the first 50 indie SaaS founders run the Machine at the launch price ($1 Starter + $49/mo Core). Members get the same 60-day refund-or-do-not-pay guarantee plus a permanent place in the Verified Builders directory if they cross the cycle. The window closes when 50 founders enroll or when the public launch ships, whichever comes first.
+The Founding Cohort is a time-boxed window where the first 50 indie SaaS founders run the Playbook at the launch price ($1 Starter + $49/mo Core). Members get the same 60-day refund-or-do-not-pay guarantee plus a permanent place in the Verified Builders directory if they cross the cycle. The window closes when 50 founders enroll or when the public launch ships, whichever comes first.
 
 ## Who this is for
 
@@ -206,19 +206,19 @@ Founding-cohort-specific addenda:
 2. **Pin one real customer** — name one specific person, in one specific role, at one specific company. No personas.
 3. **Write one real offer** — one sentence, naming the person and the result.
 4. **Build one real proof** — the smallest possible artifact that proves the offer is real.
-5. **Send one real message** — the Machine generates the outreach inside the tool and tracks the send.
+5. **Send one real message** — the Playbook generates the outreach inside the tool and tracks the send.
 6. **Track the response** — replies, calls, and the Stripe webhook all flow into the same dashboard.
 7. **Verify the cycle** — Stripe confirms the paying customer. If not, the refund fires automatically at day 60.
 
 ## What is NOT included
 
-- No coaching calls. The Machine pushes back; the founder does the work.
+- No coaching calls. The Playbook pushes back; the founder does the work.
 - No course or training video library. The product is software, not content.
-- No promised traffic, audience, or virality. The Machine assumes you start at zero.
+- No promised traffic, audience, or virality. The Playbook assumes you start at zero.
 
 ## Pricing and refund mechanics
 
-The full mechanics live at ${BASE_URL}/machine-sales and ${BASE_URL}/faq. Founding-Cohort founders get the same terms: $1 Starter, $49/mo Core, $98 capped exposure, refund-in-code at day 60 if the in-product milestones were completed and Stripe shows no new customer.
+The full mechanics live at ${BASE_URL}/playbook-sales and ${BASE_URL}/faq. Founding-Cohort founders get the same terms: $1 Starter, $49/mo Core, $98 capped exposure, refund-in-code at day 60 if the in-product milestones were completed and Stripe shows no new customer.
 
 ## How to join
 
@@ -231,7 +231,7 @@ const ABOUT_BODY = `# About Unlock SaaS
 
 ## TL;DR
 
-Unlock SaaS was built by Maryan, a marketer (not an engineer) who shipped a dozen AI-assisted SaaS products, watched them flatline in Stripe, and built the Machine to solve the work no one teaches indie founders: turning a live product into the first verified paying customer.
+Unlock SaaS was built by Maryan, a marketer (not an engineer) who shipped a dozen AI-assisted SaaS products, watched them flatline in Stripe, and built the Playbook to solve the work no one teaches indie founders: turning a live product into the first verified paying customer.
 
 ## The founder
 
@@ -274,7 +274,7 @@ We do not publish testimonials, reviews, customer counts, or aggregate ratings u
 
 - Maryan owns and operates Unlock SaaS. There is no investor, no parent company, no affiliate-revenue model on the canonical surfaces.
 - Comparison pages (${BASE_URL}/alternatives-to) name real competitors and respect their value propositions. We do not slag competitors; we clarify category differences. Every comparison entry has a "lastVerified" date.
-- Pricing and guarantee facts on this page mirror ${BASE_URL}/machine-sales and ${BASE_URL}/faq verbatim. If they ever disagree, the canonical HTML page wins and this mirror is a bug.
+- Pricing and guarantee facts on this page mirror ${BASE_URL}/playbook-sales and ${BASE_URL}/faq verbatim. If they ever disagree, the canonical HTML page wins and this mirror is a bug.
 `;
 
 const DIAGNOSTIC_BODY = `# Free Launch Diagnostic — Unlock SaaS
@@ -296,17 +296,17 @@ A free, three-step diagnostic for post-launch pre-revenue SaaS founders. Input: 
 
 ## What the diagnostic does not do
 
-- It does not write your offer for you. (The Machine does that, after diagnosis.)
+- It does not write your offer for you. (The Playbook does that, after diagnosis.)
 - It does not promise the diagnosis will be flattering. The most common diagnosis on a post-launch flat Stripe line is "Wrong Person."
 - It does not store your URL or email beyond the diagnosis flow.
 
 ## After the diagnosis
 
-If the diagnostic surfaces Wrong Person, the next door is usually the Free Launch Diagnostic's recommendation: the $1 Starter — which is the Machine's Steps 1 and 2 (pin one real customer, write one real offer). ${BASE_URL}/starter
+If the diagnostic surfaces Wrong Person, the next door is usually the Free Launch Diagnostic's recommendation: the $1 Starter — which is the Playbook's Steps 1 and 2 (pin one real customer, write one real offer). ${BASE_URL}/starter
 
 If the diagnostic surfaces Weak Offer, the next door is the same Starter, with emphasis on Step 2.
 
-If the diagnostic surfaces Weak Belief, the next door is the long-form $49 Machine page, which walks through the belief stack the founder needs to build. ${BASE_URL}/machine-sales
+If the diagnostic surfaces Weak Belief, the next door is the long-form $49 Playbook page, which walks through the belief stack the founder needs to build. ${BASE_URL}/playbook-sales
 
 ## Pricing
 
@@ -315,13 +315,13 @@ Free. No card. No upsell on the diagnosis screen itself — the next door is pre
 ${GUARANTEE_LINE}
 `;
 
-const MACHINE_SALES_BODY = `# The Machine — Unlock SaaS
+const PLAYBOOK_SALES_BODY = `# The Playbook — Unlock SaaS
 
-> A seven-step machine that turns an already-shipped SaaS into a verified paying customer in 60 days, or you do not pay.
+> A seven-step playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, or you do not pay.
 
 ## TL;DR
 
-The Machine is the $49/month full system. Seven steps, executed inside the tool, that take a flat-Stripe-line product to a verified paying customer. 60-day money-back guarantee tied to the connected Stripe account: complete the in-product milestones, do at least 20 logged outreach actions, and if Stripe shows no new customer at day 60, $98 returns automatically in code.
+The Playbook is the $49/month full system. Seven steps, executed inside the tool, that take a flat-Stripe-line product to a verified paying customer. 60-day money-back guarantee tied to the connected Stripe account: complete the in-product milestones, do at least 20 logged outreach actions, and if Stripe shows no new customer at day 60, $98 returns automatically in code.
 
 ${PRICING_LINE}
 
@@ -331,15 +331,15 @@ ${AUDIENCE_LINE}
 
 ## The seven steps
 
-1. **Pin one real customer.** Name one specific human at one specific company in one specific role. The Machine pushes back on persona-language until the answer is a person.
+1. **Pin one real customer.** Name one specific human at one specific company in one specific role. The Playbook pushes back on persona-language until the answer is a person.
 2. **Write one real offer.** One sentence, naming the person and the result. The engine surfaces vague verbs ("help," "support," "enable") and forces specificity.
 3. **Build one real proof.** The smallest artifact that proves the offer is real. A loom video, a screenshot, a one-page doc — whichever is the lowest-effort thing that proves the result is possible.
-4. **Send one real message.** The Machine generates the outreach copy inside the tool and tracks the send. No copy-pasting out to a separate CRM tab.
+4. **Send one real message.** The Playbook generates the outreach copy inside the tool and tracks the send. No copy-pasting out to a separate CRM tab.
 5. **Track the response.** The same dashboard surfaces replies, calls, and the Stripe webhook — so the founder watches the same thing that determines the guarantee.
 6. **Iterate or escalate.** If 20 logged actions produce no Stripe ping, the engine has a deterministic playbook for offer revision or audience revision — based on which signal arrived (silence vs. praise without payment).
 7. **Verify the cycle.** Stripe webhook confirms the first paying customer. The Verified Builders directory updates the moment the cycle closes.
 
-## What the Machine is not
+## What the Playbook is not
 
 - Not a course. Not a cohort. Not a coaching call.
 - Not a no-code builder, codebase generator, or product replacement.
@@ -353,16 +353,16 @@ ${FAQ_ENTRIES.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}
 
 const STARTER_BODY = `# $1 Starter — Unlock SaaS
 
-> One real Stripe charge proves intent and unlocks Machine Steps 1 and 2.
+> One real Stripe charge proves intent and unlocks Playbook Steps 1 and 2.
 
 ## TL;DR
 
-The Starter is a $1 one-time Stripe charge. It is the entry rung. Buying it does three things: (1) proves to you and the Machine that you are willing to act on a real product page, (2) unlocks the two highest-leverage steps of the seven-step Machine — pin one real customer, write one real offer — and (3) keeps the deliverables yours regardless of whether you upgrade to Core.
+The Starter is a $1 one-time Stripe charge. It is the entry rung. Buying it does three things: (1) proves to you and the Playbook that you are willing to act on a real product page, (2) unlocks the two highest-leverage steps of the seven-step Playbook — pin one real customer, write one real offer — and (3) keeps the deliverables yours regardless of whether you upgrade to Core.
 
 ## What you get for $1
 
-- **Step 1 of the Machine** — guided session that ends with one named dream customer (specific human, specific role, specific company), not a persona.
-- **Step 2 of the Machine** — guided session that ends with one one-sentence offer naming the customer and the result.
+- **Step 1 of the Playbook** — guided session that ends with one named dream customer (specific human, specific role, specific company), not a persona.
+- **Step 2 of the Playbook** — guided session that ends with one one-sentence offer naming the customer and the result.
 - **Both deliverables are yours.** Cancel after $1 and you keep the dream-customer pin and the offer line. They are written, exportable, and re-usable.
 
 ## Why $1 (not free)
@@ -371,7 +371,7 @@ A free version teaches the brain that the work is free. A $1 charge teaches the 
 
 ## What is NOT included at $1
 
-- The other five steps of the Machine (proof, outreach generation, tracking, iteration, verification).
+- The other five steps of the Playbook (proof, outreach generation, tracking, iteration, verification).
 - The 60-day refund-or-do-not-pay guarantee. That belongs to Core, which is the contract that holds the result accountable.
 - Direct email support from the founder. That belongs to the Founding Cohort.
 
@@ -396,7 +396,7 @@ Five essays on the work that produces the first paying customer, written for the
 2. **The Stripe Refresh** — the involuntary habit, the shape of the silence, and why refreshing the dashboard is the wrong loop to be running on day 14.
 3. **The SEO Escape Hatch** — why the founder who knows SEO reaches for SEO when the actual problem is the offer, and what the diagnostic catches that the keyword tool cannot.
 4. **The Mirror in Ten Founders** — the case studies the founder reads to feel less alone, and why they are not the case studies the founder needs.
-5. **The Door That Opened** — the moment the first paying customer arrives, what the founder did the week before, and why that work is the work the Machine encodes.
+5. **The Door That Opened** — the moment the first paying customer arrives, what the founder did the week before, and why that work is the work the Playbook encodes.
 
 ## Why these are free
 
@@ -471,7 +471,7 @@ const FUNNEL_TEARDOWN_HUB_BODY = `# Funnel Teardowns — Indie SaaS Through the 
 
 ## TL;DR
 
-The Funnel Teardown surface is a pSEO library that breaks down twelve well-known indie SaaS funnels through Russell Brunson's Hook-Story-Offer framework — the same framework the Unlock SaaS Machine runs against the founder's own page. Each teardown names the public pattern, what's working, what to adapt, and what to specifically NOT copy if you're pre-revenue. Every entry is dated; every claim is observable on the target's live surface.
+The Funnel Teardown surface is a pSEO library that breaks down twelve well-known indie SaaS funnels through Russell Brunson's Hook-Story-Offer framework — the same framework the Unlock SaaS Playbook runs against the founder's own page. Each teardown names the public pattern, what's working, what to adapt, and what to specifically NOT copy if you're pre-revenue. Every entry is dated; every claim is observable on the target's live surface.
 
 ## How to read these teardowns
 
@@ -496,7 +496,7 @@ ${TEARDOWNS.map(
 
 ## Why this surface exists
 
-Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Machine is the tool that does it.
+Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Playbook is the tool that does it.
 `;
 
 const COMPARE_HUB_BODY = `# Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools
@@ -533,7 +533,7 @@ ${COMPARISONS.map(
 
 const PRICING_TEARDOWN_HUB_BODY = `# Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens
 
-> Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Machine applies when critiquing your own pricing page.
+> Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Playbook applies when critiquing your own pricing page.
 
 ## TL;DR
 
@@ -634,7 +634,7 @@ ${faqs}
 
 ---
 
-If you want this same Hook-Story-Offer lens applied to *your* product page (not ${t.displayName}'s), the Unlock SaaS Machine does exactly that at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
+If you want this same Hook-Story-Offer lens applied to *your* product page (not ${t.displayName}'s), the Unlock SaaS Playbook does exactly that at ${BASE_URL}/playbook-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
 `;
 }
 
@@ -715,7 +715,7 @@ ${faqs}
 
 ---
 
-If you want this same pricing lens applied to *your* page (not ${t.displayName}'s), the Unlock SaaS Machine does exactly that at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door — pricing-page dysfunction usually shows up as the Weak Offer label.
+If you want this same pricing lens applied to *your* page (not ${t.displayName}'s), the Unlock SaaS Playbook does exactly that at ${BASE_URL}/playbook-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door — pricing-page dysfunction usually shows up as the Weak Offer label.
 `;
 }
 
@@ -791,7 +791,7 @@ ${faqs}
 
 ---
 
-If you are building a SaaS that needs to win this kind of comparison, the Unlock SaaS Machine runs the same lens against your own offer at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
+If you are building a SaaS that needs to win this kind of comparison, the Unlock SaaS Playbook runs the same lens against your own offer at ${BASE_URL}/playbook-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
 `;
 }
 
@@ -868,7 +868,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     mdPath: "/index.md",
     title: "Unlock SaaS — Your First Paying Customer in 60 Days",
     summary:
-      "A seven-step machine that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay.",
+      "A seven-step playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay.",
     body: FUNNEL_HUB_BODY,
   },
   {
@@ -876,7 +876,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     mdPath: "/founding.md",
     title: "Founding Cohort — Unlock SaaS",
     summary:
-      "The first 50 founders to run the Machine at launch pricing with the Founder-Cohort guarantee.",
+      "The first 50 founders to run the Playbook at launch pricing with the Founder-Cohort guarantee.",
     body: FOUNDING_BODY,
   },
   {
@@ -896,19 +896,19 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     body: DIAGNOSTIC_BODY,
   },
   {
-    path: "/machine-sales",
-    mdPath: "/machine-sales.md",
-    title: "The Machine — Unlock SaaS",
+    path: "/playbook-sales",
+    mdPath: "/playbook-sales.md",
+    title: "The Playbook — Unlock SaaS",
     summary:
-      "The $49/month full seven-step machine, with a 60-day refund-in-code guarantee.",
-    body: MACHINE_SALES_BODY,
+      "The $49/month full seven-step playbook, with a 60-day refund-in-code guarantee.",
+    body: PLAYBOOK_SALES_BODY,
   },
   {
     path: "/starter",
     mdPath: "/starter.md",
     title: "$1 Starter — Unlock SaaS",
     summary:
-      "One real Stripe charge proves intent and unlocks Machine Steps 1 and 2.",
+      "One real Stripe charge proves intent and unlocks Playbook Steps 1 and 2.",
     body: STARTER_BODY,
   },
   {
@@ -1100,7 +1100,7 @@ export function renderComparisonMarkdown(slug: string): string | undefined {
  * the same every request. Pattern: server-hoist-static-io.
  */
 function buildLlmsFullBody(): string {
-  const header = `# Unlock SaaS — Full Machine-Readable Corpus
+  const header = `# Unlock SaaS — Full Playbook-Readable Corpus
 
 > ${ORGANIZATION.description}
 

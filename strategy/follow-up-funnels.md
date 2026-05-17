@@ -53,7 +53,7 @@ Each cadence has exactly one entry trigger. No ambiguity.
 | `POST /api/seinfeld/subscribe` | Seinfeld | Explicit opt-in; not auto-cross-enrolled from any cadence |
 | `POST /api/founding/waitlist` | Founding Pre-Launch | A/B identity variant stamped from cookie |
 | `POST /api/challenge/subscribe` | Challenge | Acquired via direct page; also future entry point: $19 downsell purchase |
-| Stripe `checkout.session.expired` (any priceType) | Cart Abandonment Recovery | Email + `priceType` stamped from session; resume link routes to `/starter` or `/machine-sales` |
+| Stripe `checkout.session.expired` (any priceType) | Cart Abandonment Recovery | Email + `priceType` stamped from session; resume link routes to `/starter` or `/playbook-sales` |
 | Stripe `customer.subscription.deleted` (future) | Win-Back | Deferred — first cancellation will be the canary |
 
 **Rule:** no cadence enrols subscribers from another cadence automatically except via the explicit Seinfeld subscribe form (offered as an opt-in CTA in the final email of Soap Opera, Challenge Day 14, and Cart Recovery Email 3). Brunson rule: the visitor opts into each relationship explicitly. No silent cross-enrolment.
@@ -102,7 +102,7 @@ A person can legitimately be on multiple lists. Examples:
 | Soap Opera | `emails_sent = 5` | `status='complete'`. NOT auto-cross-enrolled. Email 5 includes optional CTA to Seinfeld. |
 | Seinfeld | None (ongoing) | Continues weekly until unsubscribe |
 | Founding Pre-Launch | `emails_sent = 6` OR cart-close OR cap reached | `status='complete'`. Cohort claim moves them off the waitlist. |
-| Challenge | `emails_sent = 14` | `status='complete'`. Email 14 includes optional CTA to Seinfeld + upgrade to $49 Machine. |
+| Challenge | `emails_sent = 14` | `status='complete'`. Email 14 includes optional CTA to Seinfeld + upgrade to $49 Playbook. |
 | Cart Recovery | `emails_sent = 3` OR successful checkout in the meantime | `status='complete'` on either condition. Email 3 includes optional CTA to Seinfeld + diagnostic. |
 | Win-Back (deferred) | `emails_sent = 3` | `status='complete'`. Quarterly re-ask if no response. |
 
@@ -114,7 +114,7 @@ A person can legitimately be on multiple lists. Examples:
 
 Three cadences were considered and rejected at this stage:
 
-1. **OTO refusal "Door Stays Open" sequence.** Rejected as a SEPARATE cadence because the Soap Opera Sequence already covers OTO refusal — every $1 Starter buyer who declines the OTO goes into Soap Opera Day 1 via the existing `recordDiagnosticAttribution()` flow. A second OTO-specific cadence would duplicate content. The OTO refusal copy lives instead as an inline banner on `/machine` (per `strategy/downsell-architecture.md` second-downsell rule).
+1. **OTO refusal "Door Stays Open" sequence.** Rejected as a SEPARATE cadence because the Soap Opera Sequence already covers OTO refusal — every $1 Starter buyer who declines the OTO goes into Soap Opera Day 1 via the existing `recordDiagnosticAttribution()` flow. A second OTO-specific cadence would duplicate content. The OTO refusal copy lives instead as an inline banner on `/playbook` (per `strategy/downsell-architecture.md` second-downsell rule).
 
 2. **Behavioural-trigger "opened-but-not-clicked" branches.** Rejected pre-PMF because Resend's open-tracking is noisy on Gmail (proxied opens inflate the metric by 30–60%). The branching would fire on phantom signals. Revisit when MAU is high enough that absolute send-volume justifies aggressive segmentation (~ 5,000 active rows).
 

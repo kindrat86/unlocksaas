@@ -1,5 +1,5 @@
 /**
- * /machine/verified — the First Paying Customer Verified celebration page.
+ * /playbook/verified — the First Paying Customer Verified celebration page.
  *
  * States rendered:
  *
@@ -15,7 +15,7 @@
  *      badge preview, and surface the share controls. The user can flip
  *      visibility public + edit display name / product details inline.
  *
- *  Auth: enforced by the machine layout. Profile row guaranteed to exist
+ *  Auth: enforced by the playbook layout. Profile row guaranteed to exist
  *  via the link_profile_on_user_create trigger.
  */
 import Link from "next/link";
@@ -77,7 +77,7 @@ function formatDate(iso: string): string {
 export default async function VerifiedCelebrationPage() {
   const sb = createClient();
   const { data: userData } = await sb.auth.getUser();
-  if (!userData?.user) redirect("/login?next=/machine/verified");
+  if (!userData?.user) redirect("/login?next=/playbook/verified");
 
   const { data: profileData } = await sb
     .from("profiles")
@@ -87,7 +87,7 @@ export default async function VerifiedCelebrationPage() {
     .eq("user_id", userData.user.id)
     .maybeSingle();
 
-  if (!profileData) redirect("/machine");
+  if (!profileData) redirect("/playbook");
 
   const profile = profileData as ProfileBadgeFields;
 
@@ -131,7 +131,7 @@ export default async function VerifiedCelebrationPage() {
             <>
               No verified conversion yet. This page wakes up the moment your
               connected Stripe account records its first charge. The work you
-              did inside the Machine is what gets you here — finish the steps,
+              did inside the Playbook is what gets you here — finish the steps,
               run the outreach, ship the proof.
             </>
           )}
@@ -343,7 +343,7 @@ export default async function VerifiedCelebrationPage() {
 
       <div>
         <Button asChild variant="ghost">
-          <Link href="/machine">← Back to the Machine</Link>
+          <Link href="/playbook">← Back to the Playbook</Link>
         </Button>
       </div>
     </div>

@@ -19,7 +19,7 @@ export async function sendMagicLink(
   formData: FormData
 ): Promise<LoginState> {
   const emailRaw = formData.get("email");
-  const next = (formData.get("next") as string) || "/machine";
+  const next = (formData.get("next") as string) || "/playbook";
 
   if (typeof emailRaw !== "string" || emailRaw.trim() === "") {
     return { ok: false, message: "Enter an email address." };

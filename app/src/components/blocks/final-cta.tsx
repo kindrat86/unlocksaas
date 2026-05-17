@@ -9,8 +9,8 @@
  * Architecture (mirrors the hero CTA, intentionally — repetition is the
  * point):
  *   - Primary: free diagnostic (Reluctant Hero opt-in, $0)
- *   - Secondary: Start the Machine for $1 (the Starter rung)
- *   - Tertiary: full Machine $49/mo (the buyer who is already ready)
+ *   - Secondary: Start the Playbook for $1 (the Starter rung)
+ *   - Tertiary: full Playbook $49/mo (the buyer who is already ready)
  *
  * Visual treatment: restrained shadcn — same Button defaults the rest of
  * the app uses.
@@ -31,7 +31,7 @@ export function FinalCta() {
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed mb-8">
           Pick the door that matches where you are right now. The diagnostic is
-          free, the Starter is $1, the Machine is $49/mo with a 60-day refund
+          free, the Starter is $1, the Playbook is $49/mo with a 60-day refund
           enforced by code. Three doors. Same destination.
         </p>
 
@@ -46,10 +46,10 @@ export function FinalCta() {
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button asChild variant="outline" size="lg">
-            <Link href="/starter">Start the Machine for $1</Link>
+            <Link href="/starter">Start the Playbook for $1</Link>
           </Button>
           <Button asChild variant="ghost" size="lg">
-            <Link href="/machine-sales">The Full Machine — $49/mo</Link>
+            <Link href="/playbook-sales">The Full Playbook — $49/mo</Link>
           </Button>
         </div>
       </div>

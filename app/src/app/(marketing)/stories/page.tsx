@@ -90,7 +90,7 @@ export default function StoriesReverseSqueezePage() {
             Five stories
           </p>
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-            What I tell other founders before I show them the Machine.
+            What I tell other founders before I show them the Playbook.
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed mb-4">
             These are the five stories I keep coming back to in DMs, in calls,
@@ -309,7 +309,7 @@ export default function StoriesReverseSqueezePage() {
               work that nobody is doing.
             </p>
             <p>
-              The Machine is what I built to do that work on myself. It is
+              The Playbook is what I built to do that work on myself. It is
               the tool I wish someone had handed me on day one of my flat
               line. I run it on me first. Then I let other people use it.
             </p>
@@ -368,7 +368,7 @@ export default function StoriesReverseSqueezePage() {
               href="/starter"
               className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors px-6 py-3 text-base font-medium"
             >
-              Start the Machine for $1
+              Start the Playbook for $1
             </Link>
             <Link
               href="/diagnostic"

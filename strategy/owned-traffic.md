@@ -33,7 +33,7 @@ If any one of those three fails, the asset is not owned. It is rented. The polic
 | 3 | Founding waitlist (`founding_waitlist`) | Email | ✅ via export script | ✅ Resend SMTP | ✅ Kit/Loops/Postmark | **Owned** |
 | 4 | Challenge subscribers (`challenge_subscribers`) | Email | ✅ via export script | ✅ Resend SMTP | ✅ Kit/Loops/Postmark | **Owned** |
 | 5 | Verified Builder directory (`profiles` + `verified_conversions`) | Public proof index | ✅ Supabase dump | ✅ public URLs | ✅ static export | **Owned** |
-| 6 | Member area (`/machine` + `profiles`) | Logged-in audience | ✅ Supabase dump | ✅ email | ✅ schema-portable | **Owned** |
+| 6 | Member area (`/playbook` + `profiles`) | Logged-in audience | ✅ Supabase dump | ✅ email | ✅ schema-portable | **Owned** |
 | 7 | Stripe customer list (`billing_payments`) | Buyer relationships | ✅ Stripe export | ✅ email | ✅ portable | **Owned** |
 | 8 | A/B identity cookie (`usaas_ab_*`) | Browser-resident subject | ❌ stateless | ❌ no reach | ❌ device-specific | Not owned |
 | 9 | X followers (`@maryan` if used) | Social audience | ⚠️ partial export | ❌ algorithmic | ❌ platform-locked | Rented |
@@ -57,7 +57,7 @@ Brunson's other rule: every funnel surface should ask for the opt-in. If a visit
 | `/parables` (end-content) | Inline opt-in card #2 | Soap Opera (`source=reverse_squeeze_parables_end_content`) | Warm-after-reading |
 | `/founding` | Waitlist form | Founding pre-launch sequence | Warm-to-hot |
 | `/challenge` | Challenge subscribe form | Challenge daily sequence | Warm |
-| `/machine-sales` | Stripe checkout (buyer = list-member) | Soap Opera + Seinfeld + member area | Hot |
+| `/playbook-sales` | Stripe checkout (buyer = list-member) | Soap Opera + Seinfeld + member area | Hot |
 | `/starter` | Stripe checkout (buyer = list-member) | Soap Opera + member area | Hot |
 
 **Total active capture surfaces: 8.** Six surfaces ask for an email; two surfaces ask for a card. Each surface routes to the right list for its temperature — no all-one-list anti-pattern.

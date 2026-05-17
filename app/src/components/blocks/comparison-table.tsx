@@ -1,12 +1,12 @@
 /**
  * Comparison Table — Brunson Building Block #17.
  *
- * Positions the Machine against the four things Marco has ALREADY tried that
+ * Positions the Playbook against the four things Marco has ALREADY tried that
  * did not produce a paying customer. Workbook 01 §6 Beat 5 polarity AGAINST
  * list maps directly: SEO/AEO/GEO, courses, "validate your idea" advice,
  * funnel tooling that quietly assumes you can code.
  *
- * Visual rule: Machine column is the ONLY one with the green check on the
+ * Visual rule: Playbook column is the ONLY one with the green check on the
  * row that matters (produces a verified customer). Every other column gets
  * red X marks. The skeptic counts the X's.
  */
@@ -15,7 +15,7 @@ import { Check, X } from "lucide-react";
 
 type ComparisonRow = {
   capability: string;
-  machine: boolean;
+  playbook: boolean;
   course: boolean;
   seo: boolean;
   coach: boolean;
@@ -25,7 +25,7 @@ type ComparisonRow = {
 const ROWS: ComparisonRow[] = [
   {
     capability: "Tells you what to do",
-    machine: true,
+    playbook: true,
     course: true,
     seo: false,
     coach: true,
@@ -33,7 +33,7 @@ const ROWS: ComparisonRow[] = [
   },
   {
     capability: "Pushes back when your answer is vague",
-    machine: true,
+    playbook: true,
     course: false,
     seo: false,
     coach: true,
@@ -41,7 +41,7 @@ const ROWS: ComparisonRow[] = [
   },
   {
     capability: "Sends the outreach for you (inside the tool)",
-    machine: true,
+    playbook: true,
     course: false,
     seo: false,
     coach: false,
@@ -49,7 +49,7 @@ const ROWS: ComparisonRow[] = [
   },
   {
     capability: "Verifies your first paying customer via Stripe webhook",
-    machine: true,
+    playbook: true,
     course: false,
     seo: false,
     coach: false,
@@ -57,7 +57,7 @@ const ROWS: ComparisonRow[] = [
   },
   {
     capability: "Refunds you in code if the result does not happen",
-    machine: true,
+    playbook: true,
     course: false,
     seo: false,
     coach: false,
@@ -65,7 +65,7 @@ const ROWS: ComparisonRow[] = [
   },
   {
     capability: "Stops you from skipping the work that gets paid",
-    machine: true,
+    playbook: true,
     course: false,
     seo: false,
     coach: false,
@@ -73,7 +73,7 @@ const ROWS: ComparisonRow[] = [
   },
   {
     capability: "Costs less than $98 to find out if it works",
-    machine: true,
+    playbook: true,
     course: false,
     seo: false,
     coach: false,
@@ -116,7 +116,7 @@ export function ComparisonTable() {
                   Capability
                 </th>
                 <th className="py-3 px-2 font-semibold text-xs uppercase tracking-widest text-foreground">
-                  Machine
+                  Playbook
                 </th>
                 <th className="py-3 px-2 font-semibold text-xs uppercase tracking-widest text-muted-foreground">
                   Course
@@ -137,7 +137,7 @@ export function ComparisonTable() {
                 <tr key={row.capability} className="border-b border-border/40 last:border-b-0">
                   <td className="py-3 pr-4 leading-snug">{row.capability}</td>
                   <td className="py-3 px-2 text-center">
-                    <YesNo value={row.machine} label={row.capability} />
+                    <YesNo value={row.playbook} label={row.capability} />
                   </td>
                   <td className="py-3 px-2 text-center">
                     <YesNo value={row.course} label={row.capability} />
@@ -159,8 +159,8 @@ export function ComparisonTable() {
       </Card>
 
       <p className="text-xs text-muted-foreground italic text-center mt-6 leading-relaxed">
-        You can build the Machine yourself in three weekends. While you do, you are not
-        running the funnel. That is the disease the Machine treats.
+        You can build the Playbook yourself in three weekends. While you do, you are not
+        running the funnel. That is the disease the Playbook treats.
       </p>
     </section>
   );

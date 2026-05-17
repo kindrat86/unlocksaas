@@ -28,7 +28,7 @@ import type { MetadataRoute } from "next";
  * 2026-05-17.
  *
  * Disallow list for `*` mirrors the previous version and continues to block:
- *  - /machine/*            — authenticated member area; per-user data
+ *  - /playbook/*            — authenticated member area; per-user data
  *  - /api/*                — server routes, never indexable
  *  - /auth/*               — login / callback flow
  *  - /diagnostic/result    — per-lead diagnosis (already index:false)
@@ -44,7 +44,7 @@ export default function robots(): MetadataRoute.Robots {
 
   // Private surfaces re-used across rule groups.
   const PRIVATE_DISALLOW = [
-    "/machine/",
+    "/playbook/",
     "/api/",
     "/auth/",
     "/diagnostic/result",

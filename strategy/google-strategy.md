@@ -31,7 +31,7 @@ SURFACE A — ORGANIC SEARCH (long-tail + brand)
   /                  (brand)
   /diagnostic        (problem-aware pain mirror)
   /parables          (cold reverse-squeeze long-form)
-  /machine-sales     (product-aware comparator + decision)
+  /playbook-sales     (product-aware comparator + decision)
   /starter           (solution-aware front-end purchase)
 
 SURFACE B — AEO / GEO (citation by AI answer engines)
@@ -64,10 +64,10 @@ Four query classes, each mapped to the landing page that already converts the vi
 
 | Class | Example queries | Landing page | Page already exists? | Why this query lands here |
 |---|---|---|---|---|
-| **Brand** | `unlocksaas`, `unlocksaas.com`, `unlock saas`, `the machine unlocksaas`, `verified builders unlocksaas` | `/` | ✓ | Brand defense; rank #1 on own name from launch day; pre-empts any future imposter or comparison-site arbitrage. |
+| **Brand** | `unlocksaas`, `unlocksaas.com`, `unlock saas`, `the playbook unlocksaas`, `verified builders unlocksaas` | `/` | ✓ | Brand defense; rank #1 on own name from launch day; pre-empts any future imposter or comparison-site arbitrage. |
 | **Pain-mirror long-tail** | `my saas has no customers`, `shipped product nobody buys`, `flat stripe line indie hacker`, `lovable app no users`, `built a saas with claude no revenue`, `non-engineer founder no customers`, `vibe coded app no buyers` | `/diagnostic` | ✓ | Hook #3 (pain mirror) is already the H1. SEO meta title/description aligned. The form is the conversion event. |
 | **Problem-aware cold** | `how to get first saas customer`, `pre-revenue saas what to do`, `indie hacker post launch advice`, `first paying customer 60 days`, `do customer research after launch` | `/parables` | ✓ | Reverse squeeze — value first, opt-in at the bottom. Five parables read like Marco's own story. Long-form, indexable, no email gate at the top. |
-| **Product-aware comparator** | `shipfast alternative`, `course vs tool for indie hackers`, `marc lou alternative no code`, `pieter levels playbook tool`, `arvid kahl tool` | `/machine-sales` | ✓ | Comparison table block already lives here. Long-form decision page. The Big Domino does the heavy lifting once they arrive. |
+| **Product-aware comparator** | `shipfast alternative`, `course vs tool for indie hackers`, `marc lou alternative no code`, `pieter levels playbook tool`, `arvid kahl tool` | `/playbook-sales` | ✓ | Comparison table block already lives here. Long-form decision page. The Big Domino does the heavy lifting once they arrive. |
 
 Two query classes that look tempting and are explicitly **NOT** targets:
 
@@ -81,16 +81,16 @@ Every page in the table above must satisfy all six items below at launch. The st
 1. **Unique `<title>`** — under 60 chars, includes the brand at the end (` — Unlock SaaS`), leads with the user benefit, not the feature.
 2. **Unique `<meta name="description">`** — under 160 chars, says what the page IS and what the visitor will get, in Reluctant-Hero voice.
 3. **Canonical URL** — `metadataBase` set in [app/src/app/layout.tsx](../app/src/app/layout.tsx) to `https://unlocksaas.com` (production). Per-page canonical auto-derived; no per-page override needed unless A/B query strings start fragmenting URLs.
-4. **One `<h1>`, multiple `<h2>`s** — semantic structure. `/diagnostic`, `/parables`, `/machine-sales`, `/starter`, `/` already satisfy this.
-5. **OpenGraph + Twitter Card** — set globally in `layout.tsx`; per-page override on `/machine-sales` and `/diagnostic` (already shipped via `export const metadata`).
+4. **One `<h1>`, multiple `<h2>`s** — semantic structure. `/diagnostic`, `/parables`, `/playbook-sales`, `/starter`, `/` already satisfy this.
+5. **OpenGraph + Twitter Card** — set globally in `layout.tsx`; per-page override on `/playbook-sales` and `/diagnostic` (already shipped via `export const metadata`).
 6. **Indexability** — `robots: { index: true, follow: true }` on every public marketing page. Already shipped on `/repeatable` ([app/src/app/(marketing)/repeatable/page.tsx](../app/src/app/(marketing)/repeatable/page.tsx) line 19). Inverted on `/diagnostic/result` (already `index: false`) and `/builder/[slug]` (also `index: false` per [app/src/app/builder/[slug]/page.tsx](../app/src/app/builder/[slug]/page.tsx) line 32) — both correctly excluded as they expose user data.
 
 ### A.4 — Sitemap and robots
 
 Two new file-based-metadata routes ship at launch alongside this doc:
 
-- `app/src/app/sitemap.ts` — declares the canonical public-marketing URL set: `/`, `/diagnostic`, `/parables`, `/starter`, `/machine-sales`, `/founding`, `/bridge`, `/repeatable`, `/challenge`, `/oto`, `/welcome`. Excludes private surfaces (`/machine/*`, `/diagnostic/result`, `/builder/[slug]`, `/login`, `/auth/*`, all `/api/*`).
-- `app/src/app/robots.ts` — `User-agent: *` allow `/`; disallow `/machine/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`. `Sitemap: https://unlocksaas.com/sitemap.xml`.
+- `app/src/app/sitemap.ts` — declares the canonical public-marketing URL set: `/`, `/diagnostic`, `/parables`, `/starter`, `/playbook-sales`, `/founding`, `/bridge`, `/repeatable`, `/challenge`, `/oto`, `/welcome`. Excludes private surfaces (`/playbook/*`, `/diagnostic/result`, `/builder/[slug]`, `/login`, `/auth/*`, all `/api/*`).
+- `app/src/app/robots.ts` — `User-agent: *` allow `/`; disallow `/playbook/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`. `Sitemap: https://unlocksaas.com/sitemap.xml`.
 
 The sitemap excludes `/founding` from rotation only AFTER cart-close (when the page either 404s or redirects to `/starter` per [strategy/founding-plv-scripts.md](./founding-plv-scripts.md) production notes). The cron job that flips that state should also remove `/founding` from the sitemap response — implementation detail, deferred until cart-open is scheduled.
 
@@ -135,9 +135,9 @@ Two additional JSON-LD blocks ship on `/diagnostic`:
 3. **`Service`** — `name` (Free Launch Diagnostic), `description`, `provider` (Organization), `serviceType` (Pre-launch SaaS diagnostic), `audience` (post-launch pre-revenue non-engineer founders), `offers` (`Offer` with `price=0`).
 4. **`HowTo`** — three steps: (1) Paste the URL, (2) Get the labeled diagnosis, (3) Get the door that fixes it. This is the format LLMs cite when summarizing a process.
 
-One JSON-LD block on `/machine-sales`:
+One JSON-LD block on `/playbook-sales`:
 
-5. **`Product`** — `name` (The Machine), `description`, `brand` (Unlock SaaS), `offers` (`Offer` with `price=49`, `priceCurrency=USD`, `priceValidUntil`, `availability=InStock`), `aggregateRating` (omitted until verified customers exist with public ratings).
+5. **`Product`** — `name` (The Playbook), `description`, `brand` (Unlock SaaS), `offers` (`Offer` with `price=49`, `priceCurrency=USD`, `priceValidUntil`, `availability=InStock`), `aggregateRating` (omitted until verified customers exist with public ratings).
 
 All five render as `<script type="application/ld+json">` blocks in their respective server components. Zero client-side rendering — the entire purpose of JSON-LD is to be there on first paint for crawlers.
 
@@ -157,7 +157,7 @@ The launch cadence IS the AEO acquisition strategy. We do not add new work for A
 
 ### B.4 — The canonical answer test
 
-Before any AEO content ships, it passes this test: *if Marco asks Claude "what should I do if I shipped a SaaS and have no customers," is the answer he gets a paraphrase of `/diagnostic`, `/parables`, or `/machine-sales`?*
+Before any AEO content ships, it passes this test: *if Marco asks Claude "what should I do if I shipped a SaaS and have no customers," is the answer he gets a paraphrase of `/diagnostic`, `/parables`, or `/playbook-sales`?*
 
 Today: no, because those pages are too new to be in the training corpus. After 12 weeks of off-platform citations: probably yes for the long-tail. After 24 weeks with verified customers seeded into the comparator queries: highly likely. The test gives us a measurable target: by Week 24, three of the five Surface-A query classes should return a UnlockSaaS-paraphrased answer from at least one major LLM. **Measurement method:** monthly manual check, four prompts per LLM, screenshot logged in `strategy/audits/aeo-tracking.md` (file created Phase 2).
 
@@ -208,7 +208,7 @@ Total starting daily budget: **$125/day = $3,750/mo**. That ceiling matches work
 
 #### C.2.3 — Landing-page mapping
 
-**Never cold to `/machine-sales`.** Brunson rule, no exceptions. Every paid click lands on `/bridge` or `/diagnostic`.
+**Never cold to `/playbook-sales`.** Brunson rule, no exceptions. Every paid click lands on `/bridge` or `/diagnostic`.
 
 | Query class | Landing page | Why |
 |---|---|---|
@@ -236,10 +236,10 @@ This is launch-day negatives. Add to as we observe wasted spend.
 Three ads per campaign, single offer per ad, written in the same voice as the homepage hero.
 
 **Brand:**
-- H1: `Unlock SaaS — The Machine`
+- H1: `Unlock SaaS — The Playbook`
 - H2: `Your first paying customer in 60 days. Verified by Stripe. Or you don't pay.`
 - D1: `Built by a non-engineer who shipped a dozen products before figuring out why none of them sold.`
-- D2: `Run the 7-step Machine and verify in your own Stripe. — Maryan`
+- D2: `Run the 7-step Playbook and verify in your own Stripe. — Maryan`
 - URL: `https://unlocksaas.com/`
 
 **Pain-mirror long-tail (one example for `my saas has no customers`):**
@@ -302,11 +302,11 @@ Every previously locked decision survives this Google strategy intact. Checked o
 ### Ships at launch
 
 1. **[app/src/app/sitemap.ts](../app/src/app/sitemap.ts)** — canonical public-marketing URL set, declared file-based per Next.js 16 metadata convention.
-2. **[app/src/app/robots.ts](../app/src/app/robots.ts)** — allow `/`, disallow `/machine/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`; references the sitemap.
+2. **[app/src/app/robots.ts](../app/src/app/robots.ts)** — allow `/`, disallow `/playbook/`, `/api/`, `/auth/`, `/diagnostic/result`, `/builder/`, `/login`; references the sitemap.
 3. **`metadataBase` set on [app/src/app/layout.tsx](../app/src/app/layout.tsx)** — `https://unlocksaas.com` (production) so canonical and OG URLs resolve correctly.
 4. **JSON-LD on `/` (`Organization` + `WebSite`)** — embedded as a `<script type="application/ld+json">` block inside the server component. Crawler-visible on first paint.
 5. **JSON-LD on `/diagnostic` (`Service` + `HowTo`)** — same pattern.
-6. **JSON-LD on `/machine-sales` (`Product`)** — same pattern.
+6. **JSON-LD on `/playbook-sales` (`Product`)** — same pattern.
 7. **Brand-defense Google Ads campaign** — $5/day, exact-match, operator action item.
 8. **Google Search Console verification** — operator action item, DNS-TXT method.
 
@@ -366,7 +366,7 @@ The doc gives the project the same level of "fully specced, gated, pre-staged" t
 - **[strategy/funnel-audibles.md](./funnel-audibles.md)** — Row 1 (`funnel_hub_viewed`) gains the `google_organic` / `google_paid` source split once Search Console + paid campaigns are live.
 - **[strategy/dream-100-outreach.md](./dream-100-outreach.md)** — the off-platform signal loop that feeds AEO.
 - **[strategy/podcast-outreach.md](./podcast-outreach.md)** — show notes are AEO citation density; podcast spots feed Surface B.
-- **`strategy/state.json`** — `traffic_secrets.google` is the machine-readable mirror of this doc.
+- **`strategy/state.json`** — `traffic_secrets.google` is the playbook-readable mirror of this doc.
 
 ---
 
@@ -377,7 +377,7 @@ The doc gives the project the same level of "fully specced, gated, pre-staged" t
 | Locked at | 2026-05-17 |
 | Locked by | Brunson Architect (autonomous, per founder instruction "proceed autonomously to get 100%") |
 | Author of record | Maryan (founder, who reviews) |
-| Files shipped this pass | `strategy/google-strategy.md` (this doc), `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, `app/src/app/layout.tsx` (metadataBase + OG), `app/src/components/seo/json-ld.tsx`, JSON-LD blocks on `/`, `/diagnostic`, `/machine-sales`, `strategy/state.json` (`traffic_secrets.google` block), `strategy/workbooks/09-fill-your-funnel.md` (§5/§6 cross-reference), `00-RESUME-HERE.md`, `build-log.md` |
+| Files shipped this pass | `strategy/google-strategy.md` (this doc), `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, `app/src/app/layout.tsx` (metadataBase + OG), `app/src/components/seo/json-ld.tsx`, JSON-LD blocks on `/`, `/diagnostic`, `/playbook-sales`, `strategy/state.json` (`traffic_secrets.google` block), `strategy/workbooks/09-fill-your-funnel.md` (§5/§6 cross-reference), `00-RESUME-HERE.md`, `build-log.md` |
 | Next review trigger | First $5/day brand-defense ad click in production (sanity check the attribution wiring), or the workbook-09 §5 evidence gates firing — whichever comes first. |
 | Score against my audit | Traffic Secrets Secret #11 lifted from **N/A → 100** (strategy-completeness sense). Operator unlocks for paid surface follow the locked evidence gates; nothing in this doc bypasses them. |
 

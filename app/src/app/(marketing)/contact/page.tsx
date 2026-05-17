@@ -113,9 +113,9 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold">If you bought and want to cancel
             or refund</h2>
           <p>
-            You can cancel a Machine subscription from the Stripe customer
+            You can cancel a Playbook subscription from the Stripe customer
             portal linked inside the product, or by emailing the address
-            above. The 60-day money-back guarantee on the Machine and a
+            above. The 60-day money-back guarantee on the Playbook and a
             standard refund on the $1 Starter are both honored by replying to
             any purchase email or writing fresh.
           </p>

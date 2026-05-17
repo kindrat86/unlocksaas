@@ -18,7 +18,7 @@ This is the bridge from "the Dream 100 list is locked" to "I can start moving to
 4. **Mention your own work only when asked.** If the host or influencer DMs back and asks "what do you build?", the six-line intro from workbook 01 §6 Beat 2 goes here. Not before.
 5. **Sender identity is locked.** From `maryan@unlocksaas.com`, friendly From name "Maryan from UnlockSaaS," signed "— Maryan." Never role addresses.
 6. **Pitch gates (do not pitch until each is true):**
-   - Podcast guesting: first verified-customer cycle has closed inside The Machine.
+   - Podcast guesting: first verified-customer cycle has closed inside The Playbook.
    - Integration partner: ≥3 verified-customer cycles closed.
    - Affiliate onboarding: ≥50 paying customers active.
 7. **Log every touch.** Use the table in §5 — if it's not logged, the warm-up degrades to "I mentioned them once."
@@ -303,7 +303,7 @@ Per workbook 08 §3, podcast pitches without a customer story get the slow no. T
 >
 > I'm Maryan. Background you can verify in 60 seconds at unlocksaas.com: marketer, non-engineer, never written a line of production code. In 2026 I shipped a dozen AI products with Lovable and Claude. Stripe stayed flat for almost a year. I went embarrassingly deep into SEO so I wouldn't have to look at it.
 >
-> What finally broke me was sitting with more than ten other founders and hearing my own story back, every single time. I sat down to write the offer for the next thing and found nothing. No promise. No specific person. So I stopped fixing products and built the machine I wish someone had handed me — a 7-step doing-environment with a 60-day-or-refund guarantee enforced by code. [Customer name] is the first founder to complete it; their Stripe verified a new paying customer on [date], and I have the screenshots and their permission to share.
+> What finally broke me was sitting with more than ten other founders and hearing my own story back, every single time. I sat down to write the offer for the next thing and found nothing. No promise. No specific person. So I stopped fixing products and built the playbook I wish someone had handed me — a 7-step doing-environment with a 60-day-or-refund guarantee enforced by code. [Customer name] is the first founder to complete it; their Stripe verified a new paying customer on [date], and I have the screenshots and their permission to share.
 >
 > I think there's an [Show name]-shaped episode here on [angle tuned per host — see below]. I can promise three things on the recording: the parable is honest (no fabricated numbers), the framework is one Marco can use that night, and the close is a question to your audience, not a CTA.
 >
@@ -315,7 +315,7 @@ Per workbook 08 §3, podcast pitches without a customer story get the slow no. T
 ### 5 Tier-1 angles (one per host, plug into the [angle] slot above)
 
 1. **Software Social** (Colleen Schnettler + Michele Hansen) — "How a non-engineer used a 60-day-or-refund guarantee to mechanically remove his own avoidance" (matches their tactical operator-conversation format)
-2. **Build Your SaaS** (Justin Jackson + Jon Buda) — "The 10-founder mirror: why post-launch pre-revenue is a category failure pattern, and what the Machine does about it" (matches Justin's structural-thinking frame)
+2. **Build Your SaaS** (Justin Jackson + Jon Buda) — "The 10-founder mirror: why post-launch pre-revenue is a category failure pattern, and what the Playbook does about it" (matches Justin's structural-thinking frame)
 3. **The Bootstrapped Founder** (Arvid Kahl) — "Embedded-entrepreneur thinking applied to non-engineers who shipped before they had an audience" (anchors to Arvid's own canon)
 4. **Startup Ideas with Greg Isenberg** — "The 60-day-or-refund mechanic — why no other tool in this category will offer it, and what that says about the category" (matches Greg's contrarian-thesis frame)
 5. **Microconf On Air** (Rob Walling) — "The Verified Builders identity — TinySeed-style evidence-based selection applied to the micro-SaaS guarantee mechanic" (anchors to TinySeed canon)
@@ -336,7 +336,7 @@ Per workbook 10 §2, integration outreach without case-study evidence reads as "
 >
 > Maryan from UnlockSaaS. Quick frame: I built a dozen products in Lovable in 2026, watched all of them flatline in Stripe, and ran a year of denial-coded SEO before I figured out the real bottleneck was upstream of the build. I'm now the founder of a tool specifically for the Lovable-shipped, pre-revenue founder — a 7-step doing-environment with a 60-day-or-refund guarantee.
 >
-> Three Lovable founders have completed the Machine cycle and verified first paying customers. Their Stripe screenshots and their permissions are attached. I think there's a clean co-marketing shape:
+> Three Lovable founders have completed the Playbook cycle and verified first paying customers. Their Stripe screenshots and their permissions are attached. I think there's a clean co-marketing shape:
 >
 > 1. Free Diagnostic specifically for shipped-Lovable apps (reads the live URL, labels the failure mode, points at the door).
 > 2. Featured slot in your "after you ship" docs or post-launch checklist email.
@@ -353,7 +353,7 @@ Per workbook 10 §2, integration outreach without case-study evidence reads as "
 >
 > Hey [Atlas content team / partnerships],
 >
-> Maryan from UnlockSaaS. We've built a 7-step machine that takes post-launch pre-revenue founders to first paying customer with a 60-day-or-refund guarantee — and the verification step IS a Stripe check. The product literally cannot fire its guarantee remedy without reading from Stripe.
+> Maryan from UnlockSaaS. We've built a 7-step playbook that takes post-launch pre-revenue founders to first paying customer with a 60-day-or-refund guarantee — and the verification step IS a Stripe check. The product literally cannot fire its guarantee remedy without reading from Stripe.
 >
 > What I'd like to propose: a co-authored content piece for Atlas's post-launch checklist on "what to do the week after you ship and Stripe stays flat." Atlas readers get the Free Diagnostic embedded. We get the docs traffic. Stripe gets a piece of content that uses Stripe as the source of truth for what counts as a real customer (vs. the soft signals founders chase).
 >
@@ -373,7 +373,7 @@ Per workbook 10 §2, integration outreach without case-study evidence reads as "
 > 1. **Co-branded Free Diagnostic** — IH-skinned squeeze that reads a shipped product page and labels Wrong Person / Weak Offer / Weak Belief. Lives at `indiehackers.com/diagnostic` or a sub-path. Lead capture stays on IH; emails flow into IH's existing nurture; warm leads route to our $1 Starter.
 > 2. **IH member discount on the $1 Starter.** Already a dollar; the discount is signal, not economics — IH members get a code that names them as IH at checkout, and we ship a Verified Builder badge that's IH-co-branded.
 >
-> Three IH members have already completed the full Machine cycle and verified first paying customers. Case studies attached.
+> Three IH members have already completed the full Playbook cycle and verified first paying customers. Case studies attached.
 >
 > Worth a call?
 >
@@ -401,9 +401,9 @@ Per workbook 10 §2, integration outreach without case-study evidence reads as "
 >
 > Hey [Kit partnerships],
 >
-> Maryan from UnlockSaaS. Quick frame: our ICP is the Kit creator who graduated from "I have a list" to "I shipped a product" and discovered the list doesn't automatically translate to the product's first customer. We've built a 7-step machine specifically for that gap.
+> Maryan from UnlockSaaS. Quick frame: our ICP is the Kit creator who graduated from "I have a list" to "I shipped a product" and discovered the list doesn't automatically translate to the product's first customer. We've built a 7-step playbook specifically for that gap.
 >
-> Three creator-founders running their lists on Kit have completed the Machine cycle and verified first paying customers. Case studies attached. Proposal:
+> Three creator-founders running their lists on Kit have completed the Playbook cycle and verified first paying customers. Case studies attached. Proposal:
 >
 > 1. **Kit Creator Marketplace listing** for UnlockSaaS at "post-launch revenue activation."
 > 2. **Co-marketing piece** for Kit's blog/podcast on "what happens after creators launch a product and the list doesn't convert."
@@ -448,11 +448,11 @@ This is the document that goes on `unlocksaas.com/affiliates` when the gate open
 
 ### Why affiliates for UnlockSaaS
 
-The Machine produces a verifiable result (first paying customer in 60 days, Stripe-confirmed). That makes it the rare SaaS that an affiliate can promote without lying about outcomes — every milestone is publicly verifiable. The Verified Builder badge IS the social proof; affiliates inherit it on every referred sign-up.
+The Playbook produces a verifiable result (first paying customer in 60 days, Stripe-confirmed). That makes it the rare SaaS that an affiliate can promote without lying about outcomes — every milestone is publicly verifiable. The Verified Builder badge IS the social proof; affiliates inherit it on every referred sign-up.
 
 ### Who we accept (in priority order)
 
-1. **Customer-affiliates.** Founders who completed The Machine and verified their first paying customer. Strongest story; deepest credibility with the next Marco.
+1. **Customer-affiliates.** Founders who completed The Playbook and verified their first paying customer. Strongest story; deepest credibility with the next Marco.
 2. **Influencer / publisher affiliates.** Category 2 Dream 100 entries whose audience matches Marco's shape (non-engineer, post-launch pre-revenue, builds in public).
 3. **Coach / community-owner affiliates.** Founder communities (Indie Worldwide, ShipFast, MegaMaker, Microconf Connect) whose members are pre-revenue and recommend tools.
 

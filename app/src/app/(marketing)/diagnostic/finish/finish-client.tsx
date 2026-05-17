@@ -217,14 +217,14 @@ function AlreadyUsedShell({ existingId }: { existingId: string }) {
         </Button>
         <Button asChild size="lg" className="w-full text-base py-6">
           <Link href={`/starter?from=diagnostic_repeat&lead=${existingId}`}>
-            Start the Machine — $1 Starter
+            Start the Playbook — $1 Starter
           </Link>
         </Button>
         <Button asChild variant="ghost" size="lg" className="w-full text-sm">
           <Link
-            href={`/machine-sales?from=diagnostic_repeat&lead=${existingId}`}
+            href={`/playbook-sales?from=diagnostic_repeat&lead=${existingId}`}
           >
-            Or skip ahead to The Machine — $49/mo
+            Or skip ahead to The Playbook — $49/mo
           </Link>
         </Button>
       </CardContent>

@@ -2,10 +2,10 @@
  * Stack Slide — Brunson Building Block #14 + Expert Secrets §3 Stack/Closes.
  *
  * The deliverable inventory. Every item that ships when a Marco-avatar founder
- * upgrades from $0 (diagnostic) to $49/mo (full Machine). The Stack does three
+ * upgrades from $0 (diagnostic) to $49/mo (full Playbook). The Stack does three
  * jobs in one block:
  *
- *   1. **Inventory** — turns "the Machine" into a list a skeptic can audit.
+ *   1. **Inventory** — turns "the Playbook" into a list a skeptic can audit.
  *   2. **Anchoring** — each line names what it would cost as a separate
  *      product (course, hire, custom build), totaling a number that makes
  *      $49/mo look obvious by comparison.
@@ -33,38 +33,38 @@ type StackItem = {
 
 const STACK: StackItem[] = [
   {
-    title: "The 7-step Machine engine",
-    value: "Comstory to $997 cohort",
+    title: "The 7-step Playbook engine",
+    value: "Comparable to $997 cohort",
     body: "Step-by-step workflow from named dream customer to first verified Stripe charge. No frameworks left on a notepad — every answer is structured input to the next step.",
   },
   {
     title: "Dream 100 picker (pre-loaded)",
-    value: "Comstory to $3,000 consultant",
+    value: "Comparable to $3,000 consultant",
     body: "Pulls from the locked Brunson Dream 100 workbook. You don't start with a blank canvas — you start with a list of 100 named congregations where your customer actually lives.",
   },
   {
     title: "Offer builder with engine pushback",
-    value: "Comstory to $497 copywriting course",
+    value: "Comparable to $497 copywriting course",
     body: "The engine refuses to accept vague promises. If your offer fails the specificity test, it tells you which beat is broken and rewrites the prompt.",
   },
   {
     title: "Outreach happens inside the tool",
-    value: "Comstory to $79/mo CRM",
+    value: "Comparable to $79/mo CRM",
     body: "Step 5 generates the message, picks the target, and logs the send. Outreach stops being optional. The tool tracks 20 actions before Day 60.",
   },
   {
     title: "Stripe-webhook verified badge",
-    value: "Free with the Machine — sold by no one else",
+    value: "Free with the Playbook — sold by no one else",
     body: "When your first paying customer charge fires, the code reads your connected Stripe and lights up the Verified Builder badge. The mechanic IS the proof.",
   },
   {
     title: "Public builder profile page",
-    value: "Comstory to $29/mo portfolio host",
+    value: "Comparable to $29/mo portfolio host",
     body: "A live /builder/[slug] page that shows your product, your first-customer date, and your badge. Marketing surface you don't have to build.",
   },
   {
     title: "Soap Opera + Seinfeld email sequences",
-    value: "Comstory to $297 email course",
+    value: "Comparable to $297 email course",
     body: "Five days of letters, then weekly Tuesday Seinfeld emails. Already written. Each one signed from Maryan.",
   },
   {
@@ -83,7 +83,7 @@ export function StackSlide() {
           Here&apos;s what&apos;s inside
         </Badge>
         <h2 className="text-2xl sm:text-3xl font-bold leading-tight">
-          Everything you get when you join The Machine.
+          Everything you get when you join The Playbook.
         </h2>
         <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto leading-relaxed">
           Eight deliverables. One $49 monthly price. Refunded in full if it
@@ -131,7 +131,7 @@ export function StackSlide() {
             $4,900+
           </p>
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-            All eight, inside The Machine
+            All eight, inside The Playbook
           </p>
           <p className="text-4xl sm:text-5xl font-bold tracking-tight">
             $49
@@ -146,7 +146,7 @@ export function StackSlide() {
 
           <div className="mt-7 flex flex-col items-center gap-3">
             <Button asChild size="lg">
-              <Link href="/machine-sales">Start The Machine — $49/mo</Link>
+              <Link href="/playbook-sales">Start The Playbook — $49/mo</Link>
             </Button>
             <p className="text-xs text-muted-foreground">
               60-day guarantee · Stripe-verified · Cancel anytime

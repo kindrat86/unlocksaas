@@ -7,7 +7,7 @@
  * marketing for a skeptic.
  *
  * No fabricated screenshots. The dashboards described are Marco's OWN Stripe
- * dashboard — past state vs future state. The Machine is the road between them.
+ * dashboard — past state vs future state. The Playbook is the road between them.
  */
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingDown, TrendingUp } from "lucide-react";
@@ -62,7 +62,7 @@ export function BeforeAfter() {
               <li>An offer with a guaranteed result. Defensible 10x math.</li>
               <li>20 logged outreach actions. Each one tracked, not imagined.</li>
               <li>Stripe webhook fires. The badge lights up. You exhale.</li>
-              <li>The Machine: still running. The next 9 customers come faster.</li>
+              <li>The Playbook: still running. The next 9 customers come faster.</li>
             </ul>
           </CardContent>
         </Card>

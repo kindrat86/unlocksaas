@@ -6,7 +6,7 @@ import { CheckCircle2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function MachineDashboard() {
+export default async function PlaybookDashboard() {
   // The layout already enforces auth + tier gating. Here we only need the
   // First Paying Customer Verified flag to decide whether to render the
   // celebration banner above the Step 1 CTA.
@@ -26,7 +26,7 @@ export default async function MachineDashboard() {
         // profile_id (guarantee.sql) in the live DB, but the generated types
         // only know about project_id. Cast the column name to `never` until
         // the type-graph is regenerated. Matches the same pattern in
-        // machine/layout.tsx. TODO: reconcile dual schema + regen types.
+        // playbook/layout.tsx. TODO: reconcile dual schema + regen types.
         const { count } = await supabase
           .from("verified_conversions")
           .select("id", { count: "exact", head: true })
@@ -57,7 +57,7 @@ export default async function MachineDashboard() {
                   you are — claim it whenever.
                 </p>
                 <Button asChild size="sm">
-                  <Link href="/machine/verified">
+                  <Link href="/playbook/verified">
                     Open your Verified Builder badge
                   </Link>
                 </Button>
@@ -86,7 +86,7 @@ export default async function MachineDashboard() {
             have one real person, named and specific. Not a category. A person.
           </p>
           <Button asChild>
-            <Link href="/machine/step/1">Begin</Link>
+            <Link href="/playbook/step/1">Begin</Link>
           </Button>
         </CardContent>
       </Card>

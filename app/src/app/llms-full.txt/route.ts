@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { LLMS_FULL_BODY } from "@/lib/seo/markdown";
 
 /**
- * /llms-full.txt — full machine-readable corpus.
+ * /llms-full.txt — full playbook-readable corpus.
  *
  * Companion to /llms.txt (which is the curated index). This route returns
  * every public marketing surface concatenated into one markdown file, with

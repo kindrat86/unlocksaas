@@ -55,14 +55,14 @@ export default async function FoundingPage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/SEO) — BreadcrumbList. The Founding Cohort is a
-          time-bound subpage of the Machine sales path, so the trail reads
-          Home → The Machine → Founding Cohort. Three-deep mirrors the way
-          a cold reader actually arrives here (homepage → /machine-sales →
+          time-bound subpage of the Playbook sales path, so the trail reads
+          Home → The Playbook → Founding Cohort. Three-deep mirrors the way
+          a cold reader actually arrives here (homepage → /playbook-sales →
           /founding once cart opens). */}
       <BreadcrumbJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
-          { name: "The Machine", url: "https://unlocksaas.com/machine-sales" },
+          { name: "The Playbook", url: "https://unlocksaas.com/playbook-sales" },
           { name: "Founding Cohort", url: "https://unlocksaas.com/founding" },
         ]}
       />
@@ -75,7 +75,7 @@ export default async function FoundingPage() {
           50 Founding Verified Builders. 7-day window. Lifetime price lock.
         </h1>
         <p className="text-muted-foreground leading-relaxed mb-8">
-          I am opening The Machine to the first 50 founders ever. Same $49 a
+          I am opening The Playbook to the first 50 founders ever. Same $49 a
           month as the eventual evergreen price. The bonus is that your $49 is
           locked for the life of your subscription, you get a Founding variant
           of the Verified Builder badge, and you get my email address for
@@ -100,7 +100,7 @@ export default async function FoundingPage() {
           />
           <PlvBlock
             number={2}
-            title="How the Machine Actually Works"
+            title="How the Playbook Actually Works"
             length="8 to 10 minutes"
             envVar="FOUNDING_PLV2_PLAYBACK"
             note="The seven steps. The engine pushback. The one step where every other tool quits and what mine does instead."
@@ -122,7 +122,7 @@ export default async function FoundingPage() {
 
           <Card className="mb-6">
             <CardContent className="pt-6 space-y-3">
-              <StackLine name="The Machine — 7-step system" value="$259/mo" />
+              <StackLine name="The Playbook — 7-step system" value="$259/mo" />
               <StackLine name="Bonus: 14-Day First-Customer Sprint" value="$89" />
               <StackLine name="Bonus: The Outreach Room" value="$79/mo" />
               <StackLine name="Bonus: The Outreach Script Kit" value="$69" />
@@ -168,7 +168,7 @@ export default async function FoundingPage() {
               Your first paying customer verified by your own Stripe within 60
               days, or both months back. Refund capped at $98 — the two monthly
               payments inside the guarantee window. The work conditions are
-              machine-verifiable in-product actions only. No self-reporting.
+              playbook-verifiable in-product actions only. No self-reporting.
               No &ldquo;feels like.&rdquo; Either Stripe saw a new charge or it
               did not.
             </p>
@@ -200,7 +200,7 @@ export default async function FoundingPage() {
                     : "The founding window has closed."}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  The Machine itself is still $49 a month and still carries
+                  The Playbook itself is still $49 a month and still carries
                   the 60-day Stripe-verified guarantee. The price lock, the
                   Founding badge, and the 30-day direct line are gone. There
                   will not be a second founding cohort.
@@ -209,7 +209,7 @@ export default async function FoundingPage() {
                   href="/starter"
                   className="text-base font-semibold underline underline-offset-4"
                 >
-                  Start the Machine for $1 →
+                  Start the Playbook for $1 →
                 </Link>
               </CardContent>
             </Card>

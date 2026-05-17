@@ -27,7 +27,7 @@ import {
 export const metadata: Metadata = {
   title: "About Maryan — Unlock SaaS",
   description:
-    "I'm a marketer. I have never written a line of production code. I shipped a dozen AI products and watched them flatline in Stripe — then built the Machine to fix the work nobody taught indie SaaS founders to do.",
+    "I'm a marketer. I have never written a line of production code. I shipped a dozen AI products and watched them flatline in Stripe — then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "profile",
@@ -131,14 +131,14 @@ export default function AboutPage() {
         <section className="mb-10 prose-like space-y-4 text-base leading-relaxed">
           <h2 className="text-2xl font-bold">What I&rsquo;m building</h2>
           <p>
-            <strong>Unlock SaaS</strong> is a machine that turns an
+            <strong>Unlock SaaS</strong> is a playbook that turns an
             already-shipped SaaS into a verified paying customer in sixty days.
             It refuses to let you skip the work that actually gets you paid:
             name one real person, write one real promise, send one real
             message, watch Stripe.
           </p>
           <p>
-            If the machine does not produce a verified paying customer in sixty
+            If the playbook does not produce a verified paying customer in sixty
             days, you do not pay. The guarantee is wired into the product, not
             into a PDF.
           </p>
@@ -188,10 +188,10 @@ export default function AboutPage() {
             </Link>{" "}
             ·{" "}
             <Link
-              href="/machine-sales"
+              href="/playbook-sales"
               className="underline underline-offset-4 hover:text-foreground"
             >
-              The Machine
+              The Playbook
             </Link>{" "}
             ·{" "}
             <Link

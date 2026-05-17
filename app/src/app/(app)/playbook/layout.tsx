@@ -25,7 +25,7 @@ const steps = [
   { id: 7, name: "Convert & Verify", icon: CheckCircle2, milestone: "First Paying Customer Verified" },
 ];
 
-export default async function MachineLayout({
+export default async function PlaybookLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -35,14 +35,14 @@ export default async function MachineLayout({
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
-    redirect("/login?next=/machine");
+    redirect("/login?next=/playbook");
   }
 
   // Tier-driven step gating. Sourced from public.profiles, which the Stripe
   // webhook writes on checkout.session.completed + invoice.payment_succeeded.
   //   - core    → all 7 steps unlocked
   //   - starter → Steps 1+2 only (BUILD-PROMPT Hard Rule #6:
-  //               "The $1 Starter delivers Machine Steps 1 and 2 only.")
+  //               "The $1 Starter delivers Playbook Steps 1 and 2 only.")
   //   - none    → user landed here without buying. Send to /starter so they
   //               don't see a locked-out sidebar with no path forward.
   const profile = await getProfileByUserId(supabase, data.user.id);
@@ -85,14 +85,14 @@ export default async function MachineLayout({
           step page. */}
       <div className="lg:hidden sticky top-0 z-30 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
         <div className="px-4 py-3">
-          <h2 className="text-sm font-bold">The Machine</h2>
+          <h2 className="text-sm font-bold">The Playbook</h2>
           <p className="text-[11px] text-muted-foreground">
             7 steps to your first paying customer
           </p>
         </div>
         <nav
           className="flex gap-2 overflow-x-auto px-4 pb-3 -mb-px scroll-pl-4 snap-x snap-mandatory"
-          aria-label="Machine steps"
+          aria-label="Playbook steps"
         >
           {steps.map((step) => {
             const isUnlocked = unlockedSteps.includes(step.id);
@@ -102,7 +102,7 @@ export default async function MachineLayout({
             return isUnlocked ? (
               <Link
                 key={step.id}
-                href={`/machine/step/${step.id}`}
+                href={`/playbook/step/${step.id}`}
                 className={`${className} border-border hover:bg-accent`}
               >
                 <Icon className="h-3.5 w-3.5 shrink-0" />
@@ -129,7 +129,7 @@ export default async function MachineLayout({
       {/* Desktop sidebar — hidden below lg, where the top bar takes over. */}
       <aside className="hidden lg:flex w-72 shrink-0 border-r bg-card p-6 flex-col">
         <div className="mb-6">
-          <h2 className="text-lg font-bold">The Machine</h2>
+          <h2 className="text-lg font-bold">The Playbook</h2>
           <p className="text-xs text-muted-foreground mt-1">
             7 steps to your first paying customer
           </p>
@@ -144,7 +144,7 @@ export default async function MachineLayout({
               <div key={step.id}>
                 {isUnlocked ? (
                   <Link
-                    href={`/machine/step/${step.id}`}
+                    href={`/playbook/step/${step.id}`}
                     className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent transition-colors"
                   >
                     <Icon className="h-4 w-4 shrink-0" />
@@ -172,7 +172,7 @@ export default async function MachineLayout({
             {steps.map((step) => {
               const earned = step.id === 7 && firstCustomerVerified;
               return earned ? (
-                <Link key={step.id} href="/machine/verified">
+                <Link key={step.id} href="/playbook/verified">
                   <Badge
                     variant="default"
                     className="text-[10px] cursor-pointer"

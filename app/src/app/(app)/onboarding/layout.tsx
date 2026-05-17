@@ -4,9 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 /**
  * Auth-gated container for the post-checkout onboarding flow.
  *
- * Distinct from /machine/layout.tsx because the onboarding view should NOT
+ * Distinct from /playbook/layout.tsx because the onboarding view should NOT
  * show the 7-step sidebar — the user is configuring access before stepping
- * into the Machine, and the sidebar adds noise.
+ * into the Playbook, and the sidebar adds noise.
  */
 export default async function OnboardingLayout({
   children,

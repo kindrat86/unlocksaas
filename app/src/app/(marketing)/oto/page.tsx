@@ -15,13 +15,13 @@ export default function OTOPage() {
 
   async function handleUpgrade() {
     track(Event.OtoUpgradeClicked, {
-      price_type: "machine",
+      price_type: "playbook",
       surface: "oto",
     });
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ priceType: "machine" }),
+      body: JSON.stringify({ priceType: "playbook" }),
     });
     const { url } = await res.json();
     if (url) window.location.href = url;
@@ -44,12 +44,12 @@ export default function OTOPage() {
           You just paid $1 to finish your dream customer and your offer. Good.
           That is two of the seven steps. The actual paying customer comes from
           the next five, and you only get those plus the 60-day guarantee on the
-          full Machine.
+          full Playbook.
         </p>
 
         <p className="text-muted-foreground leading-relaxed mb-8">
           Your $1 applies. The 60-day clock starts the moment you click. If the
-          Machine does not produce a verified paying customer in your Stripe in
+          Playbook does not produce a verified paying customer in your Stripe in
           60 days, you get the two monthly payments back. That is in writing.
         </p>
 
@@ -57,7 +57,7 @@ export default function OTOPage() {
 
         {/* Primary button */}
         <Button size="lg" className="w-full text-lg py-6 mb-4" onClick={handleUpgrade}>
-          Continue the Machine. $49/mo. 60-day guarantee.
+          Continue the Playbook. $49/mo. 60-day guarantee.
         </Button>
 
         {/* Secondary link — Profit Maximizer Return Path */}
@@ -71,7 +71,7 @@ export default function OTOPage() {
 
         {/* Reassurance: the no-vote does not get punished. Workbook 04 §4 Return Path. */}
         <p className="text-xs text-muted-foreground mt-8 leading-relaxed">
-          Either button is honest. If you skip the Machine for now, the
+          Either button is honest. If you skip the Playbook for now, the
           Starter is yours to keep, the door at $49 stays open, and the
           five-email sequence walking you through the work keeps arriving.
           The clock only starts when you click the top button.

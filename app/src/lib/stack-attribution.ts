@@ -29,9 +29,9 @@ import { cookies } from "next/headers";
  *   0 ATTENTION    cold traffic, top of stack (X / IH / Reddit / podcast)
  *   1 DIAGNOSIS    Free Diagnostic squeeze
  *   2 STARTER      $1 Starter ANCHOR FUNNEL
- *   3 CORE         OTO → $49 Machine subscription
+ *   3 CORE         OTO → $49 Playbook subscription
  *   4 LONG_FORM    Cold-traffic direct $49 sales page (Sprint 3)
- *   5 IN_PRODUCT   /machine member area
+ *   5 IN_PRODUCT   /playbook member area
  *   6 ASCENSION    Verified Builder rerun / community (Phase 2)
  *   7 AFFILIATE    Affiliate Army (Phase 3)
  *   8 EXIT_INTENT  Bail recovery lateral (Phase 2)

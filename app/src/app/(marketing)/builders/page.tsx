@@ -132,7 +132,7 @@ export default async function BuildersDirectoryPage() {
             <p className="text-base text-muted-foreground leading-relaxed">
               The first one will land here. The badge is what fires when a
               connected Stripe account sees its first paying customer through
-              the Machine. It is not a self-report. It is not a screenshot.
+              the Playbook. It is not a self-report. It is not a screenshot.
               It is a row in our database that says someone, somewhere,
               finished the work — and a verified charge says so.
             </p>
@@ -210,7 +210,7 @@ export default async function BuildersDirectoryPage() {
         {/* ── Footer: quiet attribution + one CTA ─────────────────────── */}
         <footer className="mt-16 border-t pt-8 space-y-4 text-sm text-muted-foreground">
           <p className="leading-relaxed">
-            The directory is part of UnlockSaaS — the Machine that helped these
+            The directory is part of UnlockSaaS — the Playbook that helped these
             founders get to a paying customer in 60 days, verified by Stripe or
             refunded. If you shipped a product and have not made the line move
             yet, the door starts at the{" "}
@@ -227,7 +227,7 @@ export default async function BuildersDirectoryPage() {
             <code className="text-foreground">share_visibility</code> to public
             on their dashboard. Refunds do not revoke a badge; the customer was
             real. If you want yours removed, flip it back to private inside the
-            Machine.
+            Playbook.
           </p>
         </footer>
       </div>

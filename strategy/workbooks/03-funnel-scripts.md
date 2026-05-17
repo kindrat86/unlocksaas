@@ -19,7 +19,7 @@ Twelve headline drafts already locked in workbook 01, Section 5. The launch pick
 |---|---|
 | Free Diagnostic (squeeze) | Hook #3: "You shipped it. They said they loved it. So why is Stripe still flat?" |
 | $1 Starter (sales page) | "Finish your dream customer and your offer this week. For one dollar." |
-| $49 Machine (sales page) | Hook #7: "How to get your first real paying customer in 60 days, even if your launch already flopped." |
+| $49 Playbook (sales page) | Hook #7: "How to get your first real paying customer in 60 days, even if your launch already flopped." |
 | Cold ad (top of funnel) | Hook #10: "Your product was built for no one in particular. That is the whole problem." |
 | Retargeting | Hook #8: "Your first paying customer, guaranteed in writing, or you do not pay." |
 
@@ -47,7 +47,7 @@ The Brunson Star Story Solution is the engine of any unboxing-funnel sales page.
 
 ### The Star (the result)
 
-> "In sixty days, with the same product you already shipped, you can have your first paying customer. Verified by your own Stripe. Or you do not pay. That is the destination of this machine. You are buying the first $1 of the road to it."
+> "In sixty days, with the same product you already shipped, you can have your first paying customer. Verified by your own Stripe. Or you do not pay. That is the destination of this playbook. You are buying the first $1 of the road to it."
 
 ### The Story (Epiphany Bridge condensed for $1 page)
 
@@ -57,9 +57,9 @@ The Brunson Star Story Solution is the engine of any unboxing-funnel sales page.
 
 ### The Solution (offer plus stack plus guarantee teaser)
 
-> "Here is what one dollar gets you. You finish two things this week. A real dream customer, named and specific, not a vibe. A real offer, written, with a guaranteed result you can defend to a skeptic. That is Machine Steps 1 and 2, complete, yours to keep. The full Machine, the one that ends in a verified paying customer in your Stripe in 60 days, is the $49/mo upgrade you will see on the next page. You can take it or skip it. The dollar finishes your WHO and your WHAT either way."
+> "Here is what one dollar gets you. You finish two things this week. A real dream customer, named and specific, not a vibe. A real offer, written, with a guaranteed result you can defend to a skeptic. That is Playbook Steps 1 and 2, complete, yours to keep. The full Playbook, the one that ends in a verified paying customer in your Stripe in 60 days, is the $49/mo upgrade you will see on the next page. You can take it or skip it. The dollar finishes your WHO and your WHAT either way."
 
-**CTA:** "Start the Machine for $1."
+**CTA:** "Start the Playbook for $1."
 
 ---
 
@@ -67,11 +67,11 @@ The Brunson Star Story Solution is the engine of any unboxing-funnel sales page.
 
 Brunson's One-Time Offer rules: one decision, two buttons, no third option, no "maybe later." Frame as continuation, not a separate purchase.
 
-> "You just paid $1 to finish your dream customer and your offer. Good. That is two of the seven steps. The actual paying customer comes from the next five, and you only get those plus the 60-day guarantee on the full Machine."
+> "You just paid $1 to finish your dream customer and your offer. Good. That is two of the seven steps. The actual paying customer comes from the next five, and you only get those plus the 60-day guarantee on the full Playbook."
 >
-> "Your $1 applies. The 60-day clock starts the moment you click. If the Machine does not produce a verified paying customer in your Stripe in 60 days, you get the two monthly payments back. That is in writing."
+> "Your $1 applies. The 60-day clock starts the moment you click. If the Playbook does not produce a verified paying customer in your Stripe in 60 days, you get the two monthly payments back. That is in writing."
 >
-> **[BUTTON: Continue the Machine. $49/mo. 60-day guarantee.]**
+> **[BUTTON: Continue the Playbook. $49/mo. 60-day guarantee.]**
 >
 > **[Small link below: No thanks, deliver just the Starter.]**
 
@@ -85,7 +85,7 @@ The Perfect Webinar is built for live one-to-many. For a self-serve SaaS sales p
 |---|---|---|
 | Introduction + Big Domino | Hook + enemy sentence + 30-second founder video | Workbook 01, Section 6 Beat 5 |
 | Secret 1: One Thing | "Why your launch is flat (and why it is not the product)" | Parable 1 + Parable 3 |
-| Secret 2: New Vehicle | "Why this is the Machine and not another course" | Section 6 Beat 5 polarity AGAINST #5 |
+| Secret 2: New Vehicle | "Why this is the Playbook and not another course" | Section 6 Beat 5 polarity AGAINST #5 |
 | Secret 3: New Belief | "Why a guarantee is even possible" | Workbook 01, Section 2 (guarantee mechanics) |
 | The Stack | Offer stack table $496 / $49 / 10.1x | Workbook 01, Section 2 |
 | Closes block | 3 trial closes, 4 mini closes, CTA | This file, Script 6 below |
@@ -94,14 +94,14 @@ The Perfect Webinar is built for live one-to-many. For a self-serve SaaS sales p
 
 ---
 
-## Script 6: The Four-Question Close (Onboarding + Mid-Machine Friction)
+## Script 6: The Four-Question Close (Onboarding + Mid-Playbook Friction)
 
-Used in the welcome email after $1 OR $49 checkout, and re-used inside the Machine at Step 5 when Marco hesitates on outreach.
+Used in the welcome email after $1 OR $49 checkout, and re-used inside the Playbook at Step 5 when Marco hesitates on outreach.
 
 1. "On a scale of 1 to 10, how stuck do you feel right now?"
 2. "What have you already tried that did not work?"
 3. "If you had a verified first paying customer in 60 days, what would change for you?"
-4. "What is stopping you from doing the work the Machine tracks today?"
+4. "What is stopping you from doing the work the Playbook tracks today?"
 
 Engine reuse: answers 2 and 4 become friction-busting input. If the user says "I am scared to send the message," the engine routes them to the Outreach Room bonus.
 
@@ -137,7 +137,7 @@ Three convergences make the founding cohort the right place for a Brunson Produc
 | Video | Brunson label | UnlockSaaS content | Length |
 |---|---|---|---|
 | PLV1 | Wow & How / Opportunity | "The Door That Opened" — Parable 5 expanded. Reluctant Hero opens with his flat-Stripe-line scar, names the new category (non-engineers who shipped with AI tools), declares the opportunity (first paying customer in 60 days, verified by code). Ends with: "I'll show you HOW next." | 5–7 min |
-| PLV2 | Transformation / Education | The Machine, deconstructed in 7 steps with the Vehicle Story from workbook 06 Section 4. Each step shown as a screen recording of the actual engine prompting Marco for a specific answer. Climax: "Step 5 is where every other tool quits. Watch what mine does instead." | 8–10 min |
+| PLV2 | Transformation / Education | The Playbook, deconstructed in 7 steps with the Vehicle Story from workbook 06 Section 4. Each step shown as a screen recording of the actual engine prompting Marco for a specific answer. Climax: "Step 5 is where every other tool quits. Watch what mine does instead." | 8–10 min |
 | PLV3 | Ownership Experience / Big Reveal | What it looks like to be a Verified Builder. Manifesto read aloud. Live demo of the Stripe-verified guarantee mechanic (real screen, real refund button, real $98 cap math). End frame: "On [date] at 9am, 50 founding seats open. They will close in 7 days or when full. The price is $49 a month, locked for the life of your subscription. I'll see you on the other side of the door." | 10–12 min |
 
 Each video drops as its own page (`/founding/v1`, `/founding/v2`, `/founding/v3`) and is gated by a single waitlist signup. Replays remain available through cart-close.
@@ -150,7 +150,7 @@ This is the Jeff Walker engagement→anticipation→conversion shape, retold in 
 |---|---|---|---|---|
 | PLE1 | D-14 | Engagement | "Before I open the door, I have one question." | Ask one question (the flat-line story). Reply-to friendly. No sale. No video. Engagement signal only. |
 | PLE2 | D-10 | Anticipation (PLV1 drop) | "The Door That Opened." | Link to PLV1. One CTA: watch the video. PS: "PLV2 drops Wednesday." |
-| PLE3 | D-7 | Anticipation (PLV2 drop) | "How the Machine actually works (and where every other tool quits)." | Link to PLV2. Invite questions by reply. PS: "PLV3 drops Sunday — that's when I show you the door itself." |
+| PLE3 | D-7 | Anticipation (PLV2 drop) | "How the Playbook actually works (and where every other tool quits)." | Link to PLV2. Invite questions by reply. PS: "PLV3 drops Sunday — that's when I show you the door itself." |
 | PLE4 | D-3 | Anticipation (PLV3 drop) | "What it looks like on the inside." | Link to PLV3. First mention of the 50-seat cap and the 7-day window. PS: "Cart opens Wednesday 9am. Lifetime price lock for founding members." |
 | PLE5 | D-0 | Cart-open | "The 50 Founding Verified Builder seats are open." | Direct sales email. Stack restated. Founding bonuses listed. CTA: claim a seat. PS: seats remaining counter is live on the page. |
 | PLE6 | D+7 OR cap | Cart-close | (Variant A: "12 of 50 claimed — 6 hours left." Variant B: "50 of 50 claimed.") | Last-call OR closure-acknowledgement. Either way: door closes for the founding bonuses. Product remains $49/mo evergreen. |
@@ -180,7 +180,7 @@ Single page. Same Reluctant Hero voice. Components, top to bottom:
 
 ### Engine implications
 
-- The engine never asks Marco about the PLF. The PLF is a one-time event run by Maryan; it is NOT a Machine step. Do not let the engine "help users run their own PLF" — that's a Phase 4 product feature, not part of the core 7-step machine.
+- The engine never asks Marco about the PLF. The PLF is a one-time event run by Maryan; it is NOT a Playbook step. Do not let the engine "help users run their own PLF" — that's a Phase 4 product feature, not part of the core 7-step playbook.
 - The Soap Opera Sequence continues running for non-founding traffic during the launch window. The PLF sequence routes via a separate `founding_waitlist` table that is mutually exclusive with `soap_opera_subscribers` (anyone on the waitlist gets the PLF sequence; anyone who comes in from the diagnostic during the launch window still gets the Soap Opera unless they opt into the waitlist).
 
 ### Implementation status
@@ -199,7 +199,7 @@ The same way Marco's AC is engine-assembled, his scripts are engine-assembled.
 | Script | Engine question to Marco | Engine output |
 |---|---|---|
 | Curiosity-Based Headline | "What is the one sentence about your product that someone in your audience would stop scrolling for?" | 5 headline variants in his voice |
-| Who-What-Why-How | Already produced by Machine Steps 1 (Dream Customer) and 2 (Offer) | Auto-filled |
+| Who-What-Why-How | Already produced by Playbook Steps 1 (Dream Customer) and 2 (Offer) | Auto-filled |
 | Star Story Solution | Pulls Star from Step 2 guarantee, Story from Step 3 AC backstory, Solution from Step 2 stack | Auto-assembled |
 | OTO | One question: "What is the small piece I sell first?" | Engine writes the one-decision-two-buttons block |
 | Perfect Webinar Lite | Engine assembles from prior steps; Marco confirms or edits | Long-form sales page |
@@ -214,7 +214,7 @@ The same way Marco's AC is engine-assembled, his scripts are engine-assembled.
 **Step 3 COMPLETE.**
 
 - Five launch-critical scripts written: Curiosity Headlines, Who-What-Why-How, Star Story Solution, OTO, Perfect Webinar Lite.
-- Four-Question Close written and slotted into onboarding + Machine Step 5.
+- Four-Question Close written and slotted into onboarding + Playbook Step 5.
 - One script (Setter/Closer) skipped with documented reason — self-serve at launch, no sales team.
 - **Script 8 (Product Launch Sequence) REVISED 2026-05-17:** moved from skipped to a one-time Founding-Cohort PLF. Full PLV1/PLV2/PLV3 spec, 5-email pre-launch sequence + cart-close, 50-seat cap with real (not fake) scarcity, three defensible founding bonuses, launch page `/founding` scaffolded.
 - Engine extraction spec laid in: same pattern as AC, framework lives in the engine.

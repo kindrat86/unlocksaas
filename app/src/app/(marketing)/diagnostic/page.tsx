@@ -114,8 +114,8 @@ export default async function DiagnosticSqueezePage({
             products in weeks, watched them flatline in Stripe, and ran from the
             truth into SEO tactics for almost a year. What broke me out was
             sitting with more than ten other founders telling my own story back
-            to me. So I built the machine I wish someone had handed me. The
-            diagnostic below is the first thing that machine does.
+            to me. So I built the playbook I wish someone had handed me. The
+            diagnostic below is the first thing that playbook does.
           </p>
         </section>
 

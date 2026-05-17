@@ -5,13 +5,13 @@
  * fabricated reviews on every other tool he tried. So this block carries
  * PUBLIC QUOTES from real Indie Hackers / Hacker News threads (sourced in
  * strategy/dollar-objections.md) where founders described the SAME PAIN
- * the Machine fixes — not testimonials about the product itself (we have
+ * the Playbook fixes — not testimonials about the product itself (we have
  * zero customers; we will not fabricate any).
  *
  * The job of this block: turn public pain into recognition. Marco reads
  * the quotes, says "that is me," and the gap between him and the buyer is
  * closed. The CTA is implicit: "you are not alone in the flat-line — the
- * Machine is the way out."
+ * Playbook is the way out."
  *
  * When real customers exist (workbook 09 §6 public proof loop), swap one
  * to three of these for first-paying-customer screenshots WITH PERMISSION.

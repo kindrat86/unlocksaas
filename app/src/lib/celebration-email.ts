@@ -5,13 +5,13 @@
  * (the Reluctant Hero AC — one human to one human, no role addresses).
  *
  * Called from the Stripe webhook's Connect-event branch and from the
- * /machine/verified server action (manual mark). Same template both paths.
+ * /playbook/verified server action (manual mark). Same template both paths.
  *
  * Per workbook 10 §5 (butterfly play #2) + Hard Rule #10 (Verified Builders
  * identity ships from day one):
  *   - Reluctant Hero voice (workbook 01 §6 samples; no exclamation marks).
  *   - Stripe-verified language ("the line moved"), not generic congratulations.
- *   - CTA → /machine/verified to claim the public badge (no pressure).
+ *   - CTA → /playbook/verified to claim the public badge (no pressure).
  *
  * Returns true if the email was sent, false on failure (caller can log).
  */
@@ -23,7 +23,7 @@ export interface CelebrationEmailArgs {
   productName?: string | null;
   amountCents?: number | null;
   currency?: string | null;
-  /** Override CTA. Defaults to <app>/machine/verified. */
+  /** Override CTA. Defaults to <app>/playbook/verified. */
   ctaUrl?: string;
   /** Idempotency key — caller's responsibility to ensure uniqueness per user. */
   idempotencyKey?: string;
@@ -39,11 +39,11 @@ function formatAmount(cents: number, currency: string): string {
 
 function defaultCtaUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "");
-  if (explicit) return `${explicit}/machine/verified`;
+  if (explicit) return `${explicit}/playbook/verified`;
   if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}/machine/verified`;
+    return `https://${process.env.VERCEL_URL}/playbook/verified`;
   }
-  return "http://localhost:3000/machine/verified";
+  return "http://localhost:3000/playbook/verified";
 }
 
 function escapeHtml(s: string): string {

@@ -19,7 +19,7 @@
  *   - Helpers for marking milestones, recording conversions, and issuing refunds
  *
  * Hard Rule #4 from BUILD-PROMPT-CLAUDE-CODE.md:
- *   "The 60-day guarantee is machine-verifiable. Refund logic is automated."
+ *   "The 60-day guarantee is playbook-verifiable. Refund logic is automated."
  *
  * Pure functions take a `now` argument so tests can pin the clock.
  */
@@ -55,7 +55,7 @@ export const REFUND_REQUIRED_MILESTONES: readonly MilestoneKey[] = [
   MILESTONE_KEYS.TWENTY_OUTREACH_ACTIONS_LOGGED,
 ] as const;
 
-/** Map each milestone key to the Machine step that produces it (for UI). */
+/** Map each milestone key to the Playbook step that produces it (for UI). */
 export const MILESTONE_STEP_INDEX: Record<MilestoneKey, number> = {
   [MILESTONE_KEYS.DREAM_CUSTOMER_PINNED]: 1,
   [MILESTONE_KEYS.OFFER_LOCKED]: 2,
@@ -243,7 +243,7 @@ export function evaluateGuarantee(
       firstCustomerVerified,
       refund: {
         eligible: false,
-        reasons: ["No active Machine subscription."],
+        reasons: ["No active Playbook subscription."],
         maxRefundCents: 0,
         refundedAtCents,
       },
@@ -445,7 +445,7 @@ export async function loadGuaranteeState(
  * Returns true if a new row was inserted, false if it already existed.
  *
  * Called from:
- *   - the engine route when a Machine step completes
+ *   - the engine route when a Playbook step completes
  *   - the webhook when outreach_actions row count crosses 20
  *   - operator manually via admin tool
  */

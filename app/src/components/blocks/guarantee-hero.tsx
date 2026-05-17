@@ -25,7 +25,7 @@ import { Badge } from "@/components/ui/badge";
 const REFUND_CONDITIONS = [
   {
     icon: FileCheck,
-    title: "You complete Steps 1–5 inside the Machine",
+    title: "You complete Steps 1–5 inside the Playbook",
     body: "Dream customer, offer, proof, story, outreach — not theoretical. The engine timestamps each one as you finish.",
   },
   {

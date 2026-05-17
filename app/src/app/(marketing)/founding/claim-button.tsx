@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 /**
- * Cart-open claim button. POSTs to /api/checkout with priceType=machine and
+ * Cart-open claim button. POSTs to /api/checkout with priceType=playbook and
  * attribution.from=founding so the Stripe webhook can stamp the founding
  * seat on subscription.created.
  */
@@ -23,7 +23,7 @@ export function FoundingClaimButton(props: { claimedAtRender: number }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          priceType: "machine",
+          priceType: "playbook",
           attribution: {
             from: "founding",
             label: "founding_cohort",

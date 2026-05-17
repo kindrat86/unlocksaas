@@ -18,7 +18,7 @@ Already locked. Workbook 01 Section 1 Q1. Marco, 36, non-engineer, post-launch p
 
 ## Section 2: Secret #2, The Dream 100
 
-Launch-critical asset. Workbook 04 Section 6 (Machine Step 5 outreach) consumes this list. Earlier seed list (3 to 4 communities) was a sketch. The Dream 100 is the real list.
+Launch-critical asset. Workbook 04 Section 6 (Playbook Step 5 outreach) consumes this list. Earlier seed list (3 to 4 communities) was a sketch. The Dream 100 is the real list.
 
 ### What it is
 
@@ -46,7 +46,7 @@ Launch-critical asset. Workbook 04 Section 6 (Machine Step 5 outreach) consumes 
 16. Lenny's Newsletter community
 17. r/nocode
 18. r/buildinpublic
-19. r/learnmachinelearning
+19. r/learnplaybooklearning
 20. Discord servers around Claude / Anthropic / Lovable / Cursor
 
 **Category 2: Influencers / individuals (target 20, LOCKED 2026-05-17)**
@@ -153,7 +153,7 @@ The audit flagged "zero podcasts confirmed as warmed up." Warming a podcast is a
 
 | # | Podcast | Host | Contact path | Pitch angle (Reluctant Hero opener) | Lead time | Warm-up actions (pre-pitch) |
 |---|---|---|---|---|---|---|
-| 1 | Software Social | Colleen Schnettler + Michele Hansen | X DM (@cschnettler / @mjwhansen) or `softwaresocial.dev/contact` | "Non-engineer who shipped a dozen AI products with Lovable and Claude and ran headfirst into the flat-Stripe wall — built the machine that walked himself out, now putting it in front of other founders." | 2–3 weeks (smaller indie pod, faster cycle) | Reply to last 3 episodes on X with one specific insight each; cite Colleen's Hammerstone journey in one IH post |
+| 1 | Software Social | Colleen Schnettler + Michele Hansen | X DM (@cschnettler / @mjwhansen) or `softwaresocial.dev/contact` | "Non-engineer who shipped a dozen AI products with Lovable and Claude and ran headfirst into the flat-Stripe wall — built the playbook that walked himself out, now putting it in front of other founders." | 2–3 weeks (smaller indie pod, faster cycle) | Reply to last 3 episodes on X with one specific insight each; cite Colleen's Hammerstone journey in one IH post |
 | 2 | Build Your SaaS | Justin Jackson + Jon Buda | X DM (@mijustin) + Transistor.fm contact | "Six-line intro from workbook 01 §6 Beat 2 used verbatim; episode angle: how a non-engineer used a 60-day-or-refund guarantee to force himself to stop building and start selling." | 3–4 weeks | Subscribe + reply to 3 episodes on X with substantive insight; engage on Justin's MegaMaker Slack |
 | 3 | The Bootstrapped Founder | Arvid Kahl | X DM (@arvidkahl) + arvidkahl.com/podcast/ guest pitch | "10-founder mirror conversations and what they revealed about why post-launch founders skip the customer step — anchored to Arvid's own 'building an audience first' thesis." | 4–6 weeks | Reply to Arvid's newsletter every week for 4 weeks; cite Zero to Sold in one IH post; engage with at least 5 of his X threads |
 | 4 | Startup Ideas with Greg Isenberg | Greg Isenberg | Open guest application (most weeks pinned in his X bio) + X DM (@gregisenberg) | "The 60-day-or-refund SaaS guarantee mechanic — why no other tool in this category will offer it, mapped to Greg's community-led growth thesis." | 3–4 weeks | Reply to 3 of Greg's threads with specific case-study angles; cite his Late Checkout framework in posts |
@@ -165,16 +165,16 @@ The audit flagged "zero podcasts confirmed as warmed up." Warming a podcast is a
 - Mention your own work only when the host directly asks what you do.
 - Track every interaction in a simple spreadsheet (date, podcast, host, action). Without this the warm-up degrades into "I mentioned them once."
 
-**Pitch readiness gate:** do NOT send the pitch until the first verified-customer cycle closes inside The Machine. Pitch = "here is the case study" not "here is the framework." A framework pitch from a founder with no customers gets the slow no.
+**Pitch readiness gate:** do NOT send the pitch until the first verified-customer cycle closes inside The Playbook. Pitch = "here is the case study" not "here is the framework." A framework pitch from a founder with no customers gets the slow no.
 
 ### Where the Dream 100 lives
 
 - `unlock-saas/dream-100.csv` (founder builds from the seed above; columns: name, category, URL, follow status, work-in plan, buy-in plan, notes)
-- Mirrored into state.json under `traffic_secrets.dream_100` as structured array (engine reads to seed Machine Step 5)
+- Mirrored into state.json under `traffic_secrets.dream_100` as structured array (engine reads to seed Playbook Step 5)
 
 ### Engine logic
 
-The Machine's Step 5 (outreach) pulls from the user's own Dream 100. For Unlock SaaS itself, the founder's Dream 100 above seeds Marco's list (heavy overlap). For other users (different niche), the engine asks the same six-category prompt and builds with them.
+The Playbook's Step 5 (outreach) pulls from the user's own Dream 100. For Unlock SaaS itself, the founder's Dream 100 above seeds Marco's list (heavy overlap). For other users (different niche), the engine asks the same six-category prompt and builds with them.
 
 ---
 
@@ -282,7 +282,7 @@ Under `traffic_secrets.dream_100`:
 
 - The 100-entry list above as structured array.
 - Category 2 individuals (entries 31 to 40) LOCKED 2026-05-17: Anthony Castrio, Damon Chen, Hassan El Mghari (Nutlope), Tibo Louis-Lucas, Mubashar Iqbal (Mubs), Rob Walling, Sahil Lavingia, Pat Walls, Justin Jackson, Joel Gascoigne. All carry `not_following` status — operator begins warm-up reps next.
-- Engine reads this to seed Machine Step 5 outreach. The 20-action minimum for the guarantee is drawn FROM this list (engine picks top 20 most-relevant entries given Marco's niche).
+- Engine reads this to seed Playbook Step 5 outreach. The 20-action minimum for the guarantee is drawn FROM this list (engine picks top 20 most-relevant entries given Marco's niche).
 
 ## Status
 

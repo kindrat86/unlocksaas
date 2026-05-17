@@ -132,7 +132,7 @@ export default function AlternativesHub() {
           different products.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Unlock SaaS is the machine that produces a Stripe-verified first
+          Unlock SaaS is the playbook that produces a Stripe-verified first
           paying customer for a SaaS you already shipped, in 60 days, or you do
           not pay. Below are the tools founders in that exact spot already
           evaluate. Each comparison names the real category difference instead
@@ -185,7 +185,7 @@ export default function AlternativesHub() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               The 90-second diagnostic answers that. Paste the URL of the
               product you already shipped. The diagnostic labels what is broken
-              and tells you whether the Machine is the right fix — or whether
+              and tells you whether the Playbook is the right fix — or whether
               you need to ship a different thing first.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -230,7 +230,7 @@ export default function AlternativesHub() {
               Pricing teardowns →
             </Link>{" "}
             Tier structure, anchor mechanics, upgrade triggers, and Brunson
-            Stack lens — the same four levers the Machine applies to your
+            Stack lens — the same four levers the Playbook applies to your
             own pricing page.
           </p>
           <p>

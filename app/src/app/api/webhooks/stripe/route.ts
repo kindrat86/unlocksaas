@@ -204,7 +204,7 @@ export async function POST(req: NextRequest) {
 //      lands in invoice.payment_succeeded (which is also when the 60-day
 //      clock starts, because that's when money actually moves).
 //   3. Send a magic link via inviteOrSignIn() so the user can sign into
-//      /machine without ever choosing a password (Reluctant Hero: no friction).
+//      /playbook without ever choosing a password (Reluctant Hero: no friction).
 async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
   const email =
     session.customer_details?.email ??
@@ -261,10 +261,10 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   }
 
   // Land the user where the Stripe success_url already pointed them:
-  //   Starter (mode=payment)      → /oto → /machine (auth-gated)
+  //   Starter (mode=payment)      → /oto → /playbook (auth-gated)
   //   Core    (mode=subscription) → /onboarding (auth-gated)
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://unlocksaas.com";
-  const next = isCore ? "/onboarding" : "/machine";
+  const next = isCore ? "/onboarding" : "/playbook";
   const redirectTo = `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`;
   await inviteOrSignIn({ email, redirectTo });
 }
@@ -276,7 +276,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
 //   - billing_reason='subscription_cycle'  → monthly renewal
 //
 // Per Hard Rule #4 of strategy/BUILD-PROMPT-CLAUDE-CODE.md: the guarantee is
-// machine-verifiable. profile.guarantee_expires_at is the single source of
+// playbook-verifiable. profile.guarantee_expires_at is the single source of
 // truth for refund eligibility windows (lib/guarantee.ts reads it).
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
   const customerId =
@@ -477,7 +477,7 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
 //
 // On checkout.session.completed we fire ONE of:
 //   - StarterPurchased (mode === "payment")
-//   - MachineSubscribed (mode === "subscription")
+//   - PlaybookSubscribed (mode === "subscription")
 // Plus the always-fires CheckoutCompleted analog is implicit in the named one.
 // We use captureServerAndFlush because the function may freeze right after.
 async function capturePurchase(session: Stripe.Checkout.Session) {
@@ -505,11 +505,11 @@ async function capturePurchase(session: Stripe.Checkout.Session) {
   const distinctId = stripeDistinctId(customerId, supabaseUserId);
   const isSubscription = session.mode === "subscription";
   const eventName = isSubscription
-    ? Event.MachineSubscribed
+    ? Event.PlaybookSubscribed
     : Event.StarterPurchased;
 
   await captureServerAndFlush(distinctId, eventName, {
-    price_type: isSubscription ? "machine" : "starter",
+    price_type: isSubscription ? "playbook" : "starter",
     stripe_customer_id: customerId,
     stripe_session_id: session.id,
     amount_cents: session.amount_total ?? null,
@@ -544,7 +544,7 @@ async function captureInvoiceEvent(
 // Fires when the USER's connected Stripe account records a charge. This is the
 // only signal that counts for the 60-day guarantee promise (Hard Rule #3:
 // Stripe is the only proof). The user must have connected their Stripe account
-// via Machine Step 7 onboarding (Sprint 3) — until that ships, this handler
+// via Playbook Step 7 onboarding (Sprint 3) — until that ships, this handler
 // is a no-op because no `stripe_connections` rows exist yet. The celebration
 // page provides a manual fallback for the operator in non-prod environments.
 async function handleConnectChargeSucceeded(

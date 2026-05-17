@@ -44,7 +44,7 @@ const ENTRIES: TimelineEntry[] = [
   },
   {
     year: "Now",
-    external: "Built the Machine. Running it on myself first.",
+    external: "Built the Playbook. Running it on myself first.",
     internal: "If it doesn't work for me, it doesn't ship.",
   },
 ];
@@ -57,7 +57,7 @@ export function FounderTimeline() {
           The Path
         </p>
         <h2 className="text-2xl font-bold leading-tight">
-          From flat Stripe line to the Machine that broke me out of it.
+          From flat Stripe line to the Playbook that broke me out of it.
         </h2>
       </div>
 

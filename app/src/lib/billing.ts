@@ -180,7 +180,7 @@ export async function getProfileByCustomerId(
 // ── Magic-link invite ────────────────────────────────────────────────────────
 
 /**
- * Send a magic-link to the just-paid email so the user can sign in to /machine
+ * Send a magic-link to the just-paid email so the user can sign in to /playbook
  * without having to remember a password.
  *
  * Strategy:

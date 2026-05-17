@@ -20,19 +20,19 @@ A movement needs a NAMED, REPEATABLE process. The framework is the artifact of t
 
 ### The named framework
 
-**The Machine.** 7 steps. Capital M. Pin Dream Customer, Build Offer, Define Attractive Character, Write Copy, Generate Outreach Assets, Do Outreach (tracked), Convert and Verify (Stripe).
+**The Playbook.** 7 steps. Capital M. Pin Dream Customer, Build Offer, Define Attractive Character, Write Copy, Generate Outreach Assets, Do Outreach (tracked), Convert and Verify (Stripe).
 
-Why this name: it is mechanical, repeatable, anti-vibes. Marco distrusts "wisdom" and trusts mechanisms. "The Machine" signals: this is not a course, not a framework you nod at. It is something you RUN.
+Why this name: it is mechanical, repeatable, anti-vibes. Marco distrusts "wisdom" and trusts mechanisms. "The Playbook" signals: this is not a course, not a framework you nod at. It is something you RUN.
 
 ### What members do with the framework
 
 1. Learn it (by running it on themselves inside the product).
-2. Do it (Machine Steps 1 to 7 is the doing environment).
-3. Teach it (post-launch, when a member's first paying customer arrives via The Machine, they tell their tribe. Word-of-mouth becomes the engine.).
+2. Do it (Playbook Steps 1 to 7 is the doing environment).
+3. Teach it (post-launch, when a member's first paying customer arrives via The Playbook, they tell their tribe. Word-of-mouth becomes the engine.).
 
 ### Framework-into-the-engine (the design law, restated)
 
-The framework lives in the engine, not on the user. Marco does not "learn" The Machine. He completes it. Teaching happens after the Stripe charge lands, when the win is the testimony.
+The framework lives in the engine, not on the user. Marco does not "learn" The Playbook. He completes it. Teaching happens after the Stripe charge lands, when the win is the testimony.
 
 ---
 
@@ -62,7 +62,7 @@ What works: a NEW OPPORTUNITY. A different category entirely.
 
 | Old opportunity (what Marco rejects) | New opportunity (what Unlock SaaS sells) |
 |---|---|
-| Learn more marketing | Run a Machine that does the marketing FOR you |
+| Learn more marketing | Run a Playbook that does the marketing FOR you |
 | Validate your idea (before building) | Verify a paying customer (after building) |
 | Build more product | Build less. Sell what you already shipped. |
 | Get more traffic | Generate one paying customer with a list of 20 |
@@ -70,7 +70,7 @@ What works: a NEW OPPORTUNITY. A different category entirely.
 
 ### The pitch sentence
 
-> "I am not offering you better marketing. I am offering you a machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay."
+> "I am not offering you better marketing. I am offering you a playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay."
 
 That is a new opportunity. Marco has not tried this category. His defenses are not pre-built.
 
@@ -78,13 +78,13 @@ That is a new opportunity. Marco has not tried this category. His defenses are n
 
 ## Section 5: Secret #5, More Money, Same Framework
 
-Once The Machine produces a first paying customer for product 1, the founder runs it again on product 2. And product 3. Inputs change, the framework does not.
+Once The Playbook produces a first paying customer for product 1, the founder runs it again on product 2. And product 3. Inputs change, the framework does not.
 
 This is the future Rung 3 of the value ladder (the repeatable-revenue tier).
 
-> "Your first paying customer for product 1 was the proof. Your tenth is the plateau. Product 2 is the next funnel away. Same Machine. Different inputs."
+> "Your first paying customer for product 1 was the proof. Your tenth is the plateau. Product 2 is the next funnel away. Same Playbook. Different inputs."
 
-Locked: Rung 3 noted, not built at launch. Movement-side framing: The Machine becomes the user's permanent operating system.
+Locked: Rung 3 noted, not built at launch. Movement-side framing: The Playbook becomes the user's permanent operating system.
 
 ---
 
@@ -105,7 +105,7 @@ This is the line that goes on the about page, the conference t-shirt, the laptop
 | Component | Locked content |
 |---|---|
 | Voice | Reluctant Hero (workbook 01 Section 6) |
-| Framework | The Machine, 7 steps |
+| Framework | The Playbook, 7 steps |
 | Niche | Post-launch pre-revenue non-engineer founders |
 | New opportunity | First paying customer in 60 days, verified, or you do not pay |
 | Common enemy | "An industry that profits from teaching them to keep building when the only thing left is to sell" (workbook 01 Section 6 Beat 5) |
@@ -122,7 +122,7 @@ This is the line that goes on the about page, the conference t-shirt, the laptop
 >
 > We stopped pretending the problem was the product. The problem was the work nobody taught us to do: name one real person, make one real promise, sell it before it felt ready.
 >
-> We run The Machine. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one.
+> We run The Playbook. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one.
 >
 > We measure progress in Stripe charges, not in encouragement.
 >
@@ -135,9 +135,9 @@ This is the line that goes on the about page, the conference t-shirt, the laptop
 ## Section 8: Implementation Notes
 
 - **Manifesto goes on the about page** at full length, on the homepage above the FAQ at half length.
-- **Milestone badges live inside the Machine**, visible in the sidebar. Each badge unlocks the next step's hidden context.
+- **Milestone badges live inside the Playbook**, visible in the sidebar. Each badge unlocks the next step's hidden context.
 - **"Verified Builders" is the canonical SSR identity and manifesto identity** (decided 2026-05-17). Rationale: "Verified" is the only word in the product's vocabulary that maps directly to the Stripe-verified guarantee mechanic and the milestone-badge taxonomy ("First Paying Customer Verified"). It carries the product's epistemic stance — no self-reporting, no praise-as-proof. "Paid Builders" is ambiguous (reads as both "builders who paid" and "builders who got paid") and lacks the verification anchor. The 50/50 A/B against "Paid Builders" specified in this section was SHIPPED to production by the build pass (cookies + middleware + exposure beacons + Stripe metadata attribution; see `build-log.md` entry "Founder Open Item: Verified Builders vs Paid Builders A/B Test"). SSR before middleware-write defaults to `verified_builder` so the original manifesto copy renders for any visitor whose cookie hasn't been set yet (no FOUC). **Convergence rule:** ~200 exposures per variant before calling a winner; primary metric is purchase-conversion rate (starter or core) per Hard Rule #10. Whichever wins becomes the new canonical identity; the loser is retired from the manifesto, milestone-badge UI, and copy.
-- **The future-based cause** appears in the email signature of every customer-facing email auto-sent by the Machine.
+- **The future-based cause** appears in the email signature of every customer-facing email auto-sent by the Playbook.
 - **The future Rung 3 (repeatable-revenue tier)** is gated behind one verified Stripe customer. Cannot be sold to a non-Verified Builder. Self-policing of credibility.
 
 ## Status

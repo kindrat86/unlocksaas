@@ -17,7 +17,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Unlock SaaS",
     short_name: "UnlockSaaS",
     description:
-      "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0b",

@@ -24,7 +24,7 @@ This file is that note. It is the authoritative read on how each of the seven ph
 | 2 | Subscribe / Squeeze | `/diagnostic` (Hook #3 / Q3 master hook + two-field form + AC bio + AGAINST disqualifier) | Live | Two fields max. Email + product URL. One CTA. One disclaimer. Workbook 04 §3. The diagnosis itself doubles as Phase-3 activation copy. |
 | 3 | Activate | `/diagnostic/result?id=<uuid>` (label-specific framing) + SOS Email 1 (Day 0) | Live | Activation happens twice: once on the result page (immediate, in-browser), once in the inbox (Day 0 Soap Opera email). Both keyed by `diagnostic_leads.label`. Workbook 04 §3 Page 2 + workbook 04 §5 Email 1. |
 | 4 | Ascend (front-end paid) | `/starter` (Star/Story/Solution + AC bio + Stripe one-time $1) | Live | One front-end offer at one price point. The $1 Starter is the lean-ladder buyer-identifier (workbook 02 §3). |
-| 5 | **Profit Maximizer** | `/oto` (upgrade to $49 Machine) + `/welcome` Return Path landing on decline | **Live + intentionally lean** | See dedicated section below. |
+| 5 | **Profit Maximizer** | `/oto` (upgrade to $49 Playbook) + `/welcome` Return Path landing on decline | **Live + intentionally lean** | See dedicated section below. |
 | 6 | Return Path / Follow-up | Soap Opera (Resend, Days 1–4) → Seinfeld (Resend, ongoing) | Live (code) / pending CRON_SECRET (cadence) | The SOS is the Return Path mechanism for everyone in the funnel — diagnostic openers, OTO decliners, lapsed Starter buyers. Workbook 04 §5 + workbook 09 §4. |
 | 7 | **Backend / Ascension** | Not built; documented activation gate | **Intentionally deferred** | See dedicated section below. |
 
@@ -36,9 +36,9 @@ A common Brunson reflex on Phase 5 is to stack a $19 or $27 downsell after the O
 
 ### What is on the page
 
-- **`/oto`** offers one upgrade (`$49/mo Machine + 60-day guarantee`) and one decline link. Two buttons. No third option. Workbook 04 §2 hard rule.
+- **`/oto`** offers one upgrade (`$49/mo Playbook + 60-day guarantee`) and one decline link. Two buttons. No third option. Workbook 04 §2 hard rule.
 - **`/welcome?path=starter_only`** lands the decline. It does not pitch a smaller product. It confirms the no-vote ("Good. That is exactly the call the page told you was honest."), surfaces what is already in the member area, and queues the Soap Opera Sequence as the follow-up mechanism. Code comment on `/welcome/page.tsx`: `Avoids a $19 downsell — locked lean ladder discipline (workbook 02 §3).`
-- **`/welcome?path=core_activated`** lands the upgrade success. It confirms the 60-day clock and routes to `/machine`. It does not cross-sell.
+- **`/welcome?path=core_activated`** lands the upgrade success. It confirms the 60-day clock and routes to `/playbook`. It does not cross-sell.
 
 ### Why no downsell, no cross-sell, no order bump
 
@@ -48,15 +48,15 @@ A common Brunson reflex on Phase 5 is to stack a $19 or $27 downsell after the O
 
 3. **One-funnel-away discipline (DCS Secret #26).** Sprint 1 ships ONE funnel: the $1 Starter Unboxing Funnel with the OTO. Sprint 2 ships the diagnostic + the SOS. Sprint 3 ships the long-form $49 sales page. A downsell at any phase is a fourth funnel and violates the locked build order.
 
-4. **Soap Opera is the lossless Return Path.** Every decline — diagnostic-only opt-in, $1 buyer who skipped OTO, $49 subscriber who churned — feeds into the same SOS. The five emails are the maximizer. Email 5 is the offer for the full Machine. The downsell logic that would normally sit on a thank-you page is instead distributed across Days 1–5 in the inbox, where the parable-first architecture earns the right to ask.
+4. **Soap Opera is the lossless Return Path.** Every decline — diagnostic-only opt-in, $1 buyer who skipped OTO, $49 subscriber who churned — feeds into the same SOS. The five emails are the maximizer. Email 5 is the offer for the full Playbook. The downsell logic that would normally sit on a thank-you page is instead distributed across Days 1–5 in the inbox, where the parable-first architecture earns the right to ask.
 
 ### What would have to change before a downsell becomes correct
 
 A downsell, cross-sell, or order bump becomes a correct addition to Phase 5 only when **all four** of the following hold:
 
-1. Phase 2 trigger from workbook 10 has fired: **3 verified customer cycles** (3 founders who completed all 7 Machine steps and had a paying customer detected in their Stripe).
+1. Phase 2 trigger from workbook 10 has fired: **3 verified customer cycles** (3 founders who completed all 7 Playbook steps and had a paying customer detected in their Stripe).
 2. SOS Email 5 conversion rate is measured and the gap between SOS-only and SOS-plus-downsell is testable.
-3. The downsell product is something Marco would call "useful before he gets a customer," not a fragment of the Machine (fragments insult a skeptic).
+3. The downsell product is something Marco would call "useful before he gets a customer," not a fragment of the Playbook (fragments insult a skeptic).
 4. The downsell price point clears Stripe per-charge fees with a comfortable margin (≥ $9 one-time).
 
 Until those four hold, the Profit Maximizer phase is **deliberately the Return Path**, not a new offer.
@@ -79,14 +79,14 @@ Nothing. The backend has no live surface and no roadmap page teasing it. The clo
 
 3. **Rung 2 is explicitly not coaching/DFY.** The founder ruled out high-touch delivery (workbook 02 §3, `rung_2_future.note`). The remaining Backend candidates are software for the founder doing it again on product 2+ — and that audience does not exist until product 1 has produced multiple customers. The Backend audience is downstream of Rung 1's success.
 
-4. **The 60-day guarantee makes Backend math worse pre-PMF.** Every Rung 1 customer comes with a $98 cap on remedy. Until the Machine's success rate is measured against a real cohort, building a Backend product is committing capital and attention to an outcome whose unit economics are not yet known.
+4. **The 60-day guarantee makes Backend math worse pre-PMF.** Every Rung 1 customer comes with a $98 cap on remedy. Until the Playbook's success rate is measured against a real cohort, building a Backend product is committing capital and attention to an outcome whose unit economics are not yet known.
 
 ### What would have to change before Backend becomes correct
 
 The Backend phase opens when:
 
-1. Workbook 10's **Phase 3 trigger** fires: **50 paying customers** on the $49 Machine.
-2. The Machine's verified-customer success rate is measured against the 60-day guarantee at scale (n ≥ 50).
+1. Workbook 10's **Phase 3 trigger** fires: **50 paying customers** on the $49 Playbook.
+2. The Playbook's verified-customer success rate is measured against the 60-day guarantee at scale (n ≥ 50).
 3. At least 5 Phase-1 customers have asked, unprompted, for "what's next after my first customer."
 4. The founder has bandwidth to build a Rung 2 product without compromising the Sprint-1-through-3 maintenance load.
 

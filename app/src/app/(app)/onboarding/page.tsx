@@ -37,8 +37,8 @@ export default async function OnboardingPage({
 
   // If the user has no Core tier at all, kindly redirect them back to the
   // sales flow rather than leave them looking at a half-empty onboarding.
-  // Starter-only users land on /machine directly — the OTO page's secondary
-  // CTA goes to /machine, not here.
+  // Starter-only users land on /playbook directly — the OTO page's secondary
+  // CTA goes to /playbook, not here.
   if (status.profile?.tier === "none" || status.profile === null) {
     // Brief grace period: the user may have JUST checked out and the webhook
     // hasn't fired yet. If session_id is present, show a "processing" state
@@ -52,7 +52,7 @@ export default async function OnboardingPage({
     <div className="space-y-8">
       <header>
         <h1 className="text-3xl font-bold leading-tight">
-          Welcome to the Machine.
+          Welcome to the Playbook.
         </h1>
         <p className="text-muted-foreground mt-2 leading-relaxed">
           Three small setup pieces before Step 3. Two minutes. Then the work
@@ -77,7 +77,7 @@ export default async function OnboardingPage({
       {searchParams.error ? (
         <FlashBanner
           tone="error"
-          message={`Stripe Connect error: ${searchParams.error}. Try again or skip for now — you can connect from inside the Machine.`}
+          message={`Stripe Connect error: ${searchParams.error}. Try again or skip for now — you can connect from inside the Playbook.`}
         />
       ) : null}
 
@@ -96,10 +96,10 @@ export default async function OnboardingPage({
 
       <div className="flex items-center justify-between">
         <p className="text-xs text-muted-foreground">
-          You can return to onboarding from any step in the Machine.
+          You can return to onboarding from any step in the Playbook.
         </p>
         <Button asChild>
-          <Link href="/machine">Enter the Machine →</Link>
+          <Link href="/playbook">Enter the Playbook →</Link>
         </Button>
       </div>
     </div>
@@ -154,7 +154,7 @@ function ClockCard({ status }: { status: OnboardingStatus }) {
           </p>
         ) : null}
         <p className="text-sm text-muted-foreground">
-          If the Machine does not produce a verified paying customer in your
+          If the Playbook does not produce a verified paying customer in your
           Stripe by the 60-day mark, the two monthly payments come back to you.
           That is in writing.
         </p>
@@ -185,7 +185,7 @@ function CarryoverCard({ status }: { status: OnboardingStatus }) {
               inside Steps 1 and 2.
             </p>
             <Button asChild variant="outline" size="sm">
-              <Link href="/machine/step/1">Start at Step 1 →</Link>
+              <Link href="/playbook/step/1">Start at Step 1 →</Link>
             </Button>
           </>
         ) : !hasAny ? (
@@ -193,10 +193,10 @@ function CarryoverCard({ status }: { status: OnboardingStatus }) {
             <p className="text-sm text-muted-foreground">
               You purchased the Starter but did not finish Steps 1 or 2. They
               are still waiting for you — and they unlock the rest of the
-              Machine.
+              Playbook.
             </p>
             <Button asChild variant="outline" size="sm">
-              <Link href="/machine/step/1">Finish Step 1 →</Link>
+              <Link href="/playbook/step/1">Finish Step 1 →</Link>
             </Button>
           </>
         ) : (
@@ -280,7 +280,7 @@ function ConnectCard({ status }: { status: OnboardingStatus }) {
         ) : (
           <>
             <p className="text-sm text-muted-foreground">
-              Stripe is the only proof. Connect your Stripe so the Machine can
+              Stripe is the only proof. Connect your Stripe so the Playbook can
               detect your first paying customer the second it happens — and
               the guarantee math runs itself.
             </p>
@@ -289,7 +289,7 @@ function ConnectCard({ status }: { status: OnboardingStatus }) {
                 <Button type="submit">Connect Stripe →</Button>
               </form>
               <p className="text-xs text-muted-foreground">
-                Optional — you can connect later from inside the Machine.
+                Optional — you can connect later from inside the Playbook.
               </p>
             </div>
             <p className="text-xs text-muted-foreground">

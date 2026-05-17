@@ -27,7 +27,7 @@ unlocksaas/
 ├── 00-RESUME-HERE.md                 (strategic resume for AI sessions)
 ├── projects.json                     (project registry, can stay or be cleaned)
 ├── strategy/                         (all Brunson workbook assets, locked)
-│   ├── state.json                    (machine-readable: every locked decision)
+│   ├── state.json                    (playbook-readable: every locked decision)
 │   ├── BUILD-PROMPT-CLAUDE-CODE.md   (the prompt you paste into Claude Code)
 │   └── workbooks/
 │       ├── 01-sales-funnel-secrets.md
@@ -45,7 +45,7 @@ unlocksaas/
 
 ## The premise, in one paragraph
 
-Founders who shipped a real product with Lovable and Claude have a flat Stripe line. They are stuck, not broke. They have been told the answer is more traffic, more features, or a better course. None of those produce the first paying customer. The work that does is the work nobody taught them: name one real person, write one real promise, send one real message. Unlock SaaS is the machine that runs that work and verifies every step in Stripe. The promise: first paying customer in 60 days, or you do not pay.
+Founders who shipped a real product with Lovable and Claude have a flat Stripe line. They are stuck, not broke. They have been told the answer is more traffic, more features, or a better course. None of those produce the first paying customer. The work that does is the work nobody taught them: name one real person, write one real promise, send one real message. Unlock SaaS is the playbook that runs that work and verifies every step in Stripe. The promise: first paying customer in 60 days, or you do not pay.
 
 ## Tech stack
 

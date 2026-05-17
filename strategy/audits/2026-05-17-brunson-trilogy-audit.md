@@ -186,7 +186,7 @@ Not listing 30 things. Brunson rule: **one funnel away**.
 
 4. **Fill the 10 empty Dream 100 influencer slots AND send the first 5 work-your-way-in DMs.** Not pitches. One question per DM, per workbook 09 Section 1. Outreach has 4–6 week lead time before it converts to any kind of co-marketing. ~3 hours.
 
-5. **Ship Sprint 3: the $49 Machine sales page long-form.** Big Domino slides 1–6, Three Secrets 7–15, Stack 16–30, Closes 31–43. Entire script is written in workbook 07. Page rendering a placeholder. Until this exists, you have a $1 product with no destination — every Starter buyer hits the OTO with no long-form belief work and your OTO take-rate will be 5%, not 20%. ~1 sprint.
+5. **Ship Sprint 3: the $49 Playbook sales page long-form.** Big Domino slides 1–6, Three Secrets 7–15, Stack 16–30, Closes 31–43. Entire script is written in workbook 07. Page rendering a placeholder. Until this exists, you have a $1 product with no destination — every Starter buyer hits the OTO with no long-form belief work and your OTO take-rate will be 5%, not 20%. ~1 sprint.
 
 ---
 
@@ -250,14 +250,14 @@ Pricing: **$97 one-time.** Not $47 (too cheap for 20 speakers), not $297 (too ex
 | Searchable transcripts | $40 |
 | The Resource Pack (PDF of every speaker's first-customer playbook) | $97 |
 | Two bonus speaker interviews ("vault sessions") | $80 |
-| One free month of UnlockSaaS Machine ($49 credit) | $49 |
+| One free month of UnlockSaaS Playbook ($49 credit) | $49 |
 | **Total value** | **$466** |
 | **All-Access Pass price** | **$97** |
 | Ratio | 4.8x |
 
-The $49 Machine credit is the bridge — lowers perceived price of upgrading to the recurring core from $49 to "free for a month." OTO-for-the-summit-funnel.
+The $49 Playbook credit is the bridge — lowers perceived price of upgrading to the recurring core from $49 to "free for a month." OTO-for-the-summit-funnel.
 
-4.8x ratio is below the 10x rule — correct for an event funnel. Brunson rule: 10x applies to the *anchor product* (the Machine), not to event passes. Summit passes price on scarcity-of-event, not on stack math.
+4.8x ratio is below the 10x rule — correct for an event funnel. Brunson rule: 10x applies to the *anchor product* (the Playbook), not to event passes. Summit passes price on scarcity-of-event, not on stack math.
 
 ### Affiliate tracking
 
@@ -269,8 +269,8 @@ Each speaker gets unique `?speaker=slug` parameter dropping a 90-day cookie. All
 Summit opt-in (free, 5,000–15,000 emails)
   ↓
 All-Access Pass ($97 one-time, 3–8% conversion → 150–1,200 buyers)
-  ↓ (one free month of Machine baked into the Pass)
-$49 Machine (10–25% redemption from All-Access)
+  ↓ (one free month of Playbook baked into the Pass)
+$49 Playbook (10–25% redemption from All-Access)
   ↓
 Verified Builder cohort
 ```
@@ -282,7 +282,7 @@ Summit opt-in
   ↓
 5-email Soap Opera (Email 1 references the summit they just attended)
   ↓
-$1 Starter → OTO → $49 Machine
+$1 Starter → OTO → $49 Playbook
 ```
 
 Either path lands them in the same place. The summit is not a replacement for the existing funnel — it is a 5,000-to-15,000-person *injection* into the top of it.
@@ -330,7 +330,7 @@ Real order:
 
 1. Ship the 5 fixes from the main audit (front door, env vars, founder video, Dream 100 fill, Sprint 3).
 2. Drive the first 100 cold visitors.
-3. Get 3 verified customers through the Machine.
+3. Get 3 verified customers through the Playbook.
 4. *Then* start pitching speakers, with first-customer wins opening the pitch.
 
 Secret #16 is not N/A. It is *the highest-leverage Phase-2 play in the entire Traffic Secrets stack* for UnlockSaaS specifically — and the only reason it didn't already make the Five Fixes list is sequencing. Build the proof first, then build the summit.

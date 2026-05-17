@@ -19,7 +19,7 @@ The current launch ladder is intentionally lean: Free Diagnostic → $1 Starter 
 
 ## The new opportunity Rung 2 sells
 
-> *"The Machine got you one paying customer. The Repeatable Revenue Layer turns that one customer into a system you can run again on Product 2, without re-discovering everything from scratch."*
+> *"The Playbook got you one paying customer. The Repeatable Revenue Layer turns that one customer into a system you can run again on Product 2, without re-discovering everything from scratch."*
 
 This is NOT "more building" (the disease). It is **carry-over and pattern compression**:
 
@@ -40,7 +40,7 @@ This is NOT "more building" (the disease). It is **carry-over and pattern compre
 
 Rung 2 ships only when ALL of these are true:
 
-1. **3 paying Core customers have completed the full Machine loop** (Step 1 → Step 7 → First Paying Customer Verified). Below 3, the carry-over assumptions are unvalidated.
+1. **3 paying Core customers have completed the full Playbook loop** (Step 1 → Step 7 → First Paying Customer Verified). Below 3, the carry-over assumptions are unvalidated.
 2. **At least 1 Core customer has explicitly asked, unprompted, for a "next layer."** No supply without demand signal.
 3. **Founder has personally run Product 2 through the imagined Rung 2 carry-over flow on himself** — dogfooding rule (workbook 01 §6 Beat 4).
 
@@ -50,8 +50,8 @@ Activation date target: **Phase 2** (per workbook 10 §13 — trigger = 3 verifi
 
 Sprint shape, smallest possible v1:
 
-1. **`/repeatable` sales page.** Long-form, same Perfect Webinar structure as `/machine-sales`, but the Big Domino is reframed: *"The work that got you one paying customer is the work that will get you ten — without re-doing the upstream work each time."*
-2. **In-product "New Product" button** on `/machine` for Core users with a Verified Builder badge. Clicking it:
+1. **`/repeatable` sales page.** Long-form, same Perfect Webinar structure as `/playbook-sales`, but the Big Domino is reframed: *"The work that got you one paying customer is the work that will get you ten — without re-doing the upstream work each time."*
+2. **In-product "New Product" button** on `/playbook` for Core users with a Verified Builder badge. Clicking it:
    - Pre-fills Step 1 with Product 1's dream customer (editable).
    - Locks Step 3 (AC) — no re-defining.
    - Forks Step 4 (copy) from Product 1's tone.
@@ -82,7 +82,7 @@ Note: 5.7× is below the 10× standard from Brunson. Acceptable here because the
 
 ## The pre-launch placeholder page
 
-Until activation, `/repeatable` exists as a public placeholder. It does NOT show "coming soon." It explains the spec honestly and routes the visitor back to `/machine-sales`. This is the same discipline used on `/diagnostic` and `/machine-sales` during their pre-Sprint windows: no fake doors, no fake countdowns. The placeholder is itself a piece of Brunson polarity — Maryan publishes the spec for the next layer **before** building it, which signals (a) the ladder is real, (b) the operator does not invent demand, (c) honest math is the brand.
+Until activation, `/repeatable` exists as a public placeholder. It does NOT show "coming soon." It explains the spec honestly and routes the visitor back to `/playbook-sales`. This is the same discipline used on `/diagnostic` and `/playbook-sales` during their pre-Sprint windows: no fake doors, no fake countdowns. The placeholder is itself a piece of Brunson polarity — Maryan publishes the spec for the next layer **before** building it, which signals (a) the ladder is real, (b) the operator does not invent demand, (c) honest math is the brand.
 
 ## Audit-impact targets
 

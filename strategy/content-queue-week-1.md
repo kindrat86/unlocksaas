@@ -15,7 +15,7 @@
 > unlocksaas.com/diagnostic
 
 ### Indie Hackers profile bio
-> Marketer, non-engineer, built a dozen AI products nobody paid for. Then I figured out why. Now I run the machine I wish someone had handed me — first paying customer in 60 days or you don't pay. unlocksaas.com/diagnostic
+> Marketer, non-engineer, built a dozen AI products nobody paid for. Then I figured out why. Now I run the playbook I wish someone had handed me — first paying customer in 60 days or you don't pay. unlocksaas.com/diagnostic
 
 ### Reddit profile (1-liner)
 > Marketer, non-engineer. Shipped a dozen AI products. Stripe stayed flat. Now I write about why.
@@ -415,7 +415,7 @@ The whole point of running weeks is compounding. Nothing dies after seven days. 
 | **Day 5 Reddit post** (Stripe Refresh loop) | IH long-form in Week 3 (expand the 4-part loop into a full anatomy with reader self-diagnosis questions) | Onboarding email Day 2 — "the loop you're about to break" |
 | **Day 6 short posts on writing the offer** | X thread in Week 3 ("Write your offer in one sentence: a 6-step micro-process") | Free-tier in-product: the diagnostic itself uses these prompts as Q3-Q6 |
 | **Day 7 polarity short** ("courses sell teaching when the cure is doing") | Foundational positioning piece in Week 4 — an Indie Hackers manifesto post ("Why I built a tool, not a course") | About page block on the funnel hub |
-| **All Day 1-7 comment templates** | Mined for the highest-engagement ones; the top 3 patterns become the comment-style for Week 2 (the others get retired) | Engine input — the Machine's Step 5 outreach generates messages in this exact tone |
+| **All Day 1-7 comment templates** | Mined for the highest-engagement ones; the top 3 patterns become the comment-style for Week 2 (the others get retired) | Engine input — the Playbook's Step 5 outreach generates messages in this exact tone |
 
 **Compounding rule:** every parable should appear in 3+ surfaces by end of Week 4. If a parable only ran once, it didn't compound — re-run it in a new format.
 

@@ -5,7 +5,7 @@
  *
  *   PLE1 (D-14): Engagement — ask one question, no sale, no video.
  *   PLE2 (D-10): Anticipation — PLV1 ("The Door That Opened") drops.
- *   PLE3 (D-7):  Anticipation — PLV2 ("How the Machine Actually Works") drops.
+ *   PLE3 (D-7):  Anticipation — PLV2 ("How the Playbook Actually Works") drops.
  *   PLE4 (D-3):  Anticipation — PLV3 ("What It Looks Like on the Inside") drops.
  *   PLE5 (D-0):  Cart-open — the 50 seats are open.
  *   PLE6 (D+7 OR cap): Cart-close — last call or closure.
@@ -98,7 +98,7 @@ function renderPLE2(ctx: FoundingEmailContext): RenderedEmail {
     `<a href="${plv1}" style="color:#0f172a;font-weight:600">The Door That Opened &mdash; watch PLV1.</a>`,
     "It is the story I owe you before I show you the product. Why I built this. What I think the actual bottleneck is now that AI has moved the building part. Who I think this is for and who it is not for.",
     "If you want to know whether you are in the right room, this is the video that answers that question.",
-    "PLV2 drops Wednesday. That one shows you the Machine itself, step by step.",
+    "PLV2 drops Wednesday. That one shows you the Playbook itself, step by step.",
     "&mdash; Maryan",
     "<em style=\"color:#6b7280\">PS: Did you reply to my last email? I read all the answers and reply when there is something useful to say. If something in the video stops you, hit reply.</em>",
   ];
@@ -117,8 +117,8 @@ function renderPLE3(ctx: FoundingEmailContext): RenderedEmail {
   const unsub = buildUnsubscribeUrl(ctx.email, ctx.baseUrl);
   const plv2 = `${ctx.baseUrl}/founding/v2`;
   const paragraphs = [
-    "Today I show you the Machine.",
-    `<a href="${plv2}" style="color:#0f172a;font-weight:600">How the Machine Actually Works &mdash; watch PLV2.</a>`,
+    "Today I show you the Playbook.",
+    `<a href="${plv2}" style="color:#0f172a;font-weight:600">How the Playbook Actually Works &mdash; watch PLV2.</a>`,
     "Seven steps. In order. The engine refuses to advance until you finish each one. That is not a UX choice. That is the entire mechanism.",
     "The video walks through every step with screen recordings of the real product. I spend most of the time on step 5 because that is where every other tool quits and where mine does something nobody else does.",
     "Watch it. If you have a question while you are watching, hit reply.",
@@ -126,7 +126,7 @@ function renderPLE3(ctx: FoundingEmailContext): RenderedEmail {
     "&mdash; Maryan",
   ];
   return {
-    subject: "How the Machine actually works (and where every other tool quits).",
+    subject: "How the Playbook actually works (and where every other tool quits).",
     text: paraToText(paragraphs),
     html: htmlShell(paragraphs, unsub),
   };
@@ -168,7 +168,7 @@ function renderPLE5(ctx: FoundingEmailContext): RenderedEmail {
   const paragraphs = [
     `The door is open. ${claimed} of 50 seats claimed, ${remaining} remaining.`,
     `<a href="${founding}" style="color:#0f172a;font-weight:600">Claim a Founding Verified Builder seat for $49/mo.</a>`,
-    "Here is what comes in the door with you. The Machine &mdash; seven steps, engine pushback, framework into the engine. The 60-day guarantee &mdash; Stripe-verified first paying customer or you do not pay, capped at $98. The Outreach Room. The 14-Day First-Customer Sprint. The Script Kit.",
+    "Here is what comes in the door with you. The Playbook &mdash; seven steps, engine pushback, framework into the engine. The 60-day guarantee &mdash; Stripe-verified first paying customer or you do not pay, capped at $98. The Outreach Room. The 14-Day First-Customer Sprint. The Script Kit.",
     "And the three things that only happen during this 7-day window. Your $49 a month, locked for life. The Founding badge variant. My email for 30 days.",
     "$496 of work, tools, and community for $49 a month. Plus a $720 lifetime price-lock if you are in the founding 50. With a written 60-day guarantee.",
     "Cart closes in 7 days or when seats are gone, whichever comes first.",
@@ -198,8 +198,8 @@ function renderPLE6(ctx: FoundingEmailContext): RenderedEmail {
     const paragraphs = [
       "50 of 50 claimed.",
       "The founding cohort is full. The door is now closed for the lifetime price lock, the founding badge variant, and the 30-day direct line.",
-      "The Machine itself is still $49 a month and still carries the 60-day Stripe-verified guarantee. If you were waiting for a sign, that is the sign &mdash; product without the founding bonuses, same promise.",
-      `<a href="${starter}" style="color:#0f172a;font-weight:600">Start the Machine for $1.</a>`,
+      "The Playbook itself is still $49 a month and still carries the 60-day Stripe-verified guarantee. If you were waiting for a sign, that is the sign &mdash; product without the founding bonuses, same promise.",
+      `<a href="${starter}" style="color:#0f172a;font-weight:600">Start the Playbook for $1.</a>`,
       "Two steps for a dollar. Same engine. Yours to keep.",
       "If you want to know who got in, I will send a one-time email when the Founding 50 page goes live. That is the only thing left to do on this list.",
       "&mdash; Maryan",
@@ -216,7 +216,7 @@ function renderPLE6(ctx: FoundingEmailContext): RenderedEmail {
     `${remaining} of 50 left. The door closes in less than 24 hours.`,
     `<a href="${founding}" style="color:#0f172a;font-weight:600">Claim a Founding seat.</a>`,
     "After the close, the product stays at $49 a month evergreen, but the price lock, the Founding badge, and my 30-day direct line are gone for good. No second cohort.",
-    "If you are reading this and you have been thinking about it for three videos and five emails, that thinking is the thing the Machine treats. The door is right there.",
+    "If you are reading this and you have been thinking about it for three videos and five emails, that thinking is the thing the Playbook treats. The door is right there.",
     "&mdash; Maryan",
   ];
   return {

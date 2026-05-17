@@ -8,7 +8,7 @@
  *
  * For Unlock SaaS the big domino is:
  *
- *   "A code-enforced 60-day machine can produce your first paying Stripe
+ *   "A code-enforced 60-day playbook can produce your first paying Stripe
  *    charge in 60 days."
  *
  * If Marco (the avatar) accepts that, $49/mo capped at $98 with a webhook
@@ -44,8 +44,8 @@ export function BigDomino() {
           The one thing this page has to prove
         </p>
         <p className="text-xl sm:text-2xl md:text-3xl font-semibold leading-snug tracking-tight text-balance">
-          If a machine{" "}
-          <span className="text-muted-foreground">— refunded in code —</span>{" "}
+          If a playbook{" "}
+          <span className="text-muted-foreground">– refunded in code –</span>{" "}
           can produce your first paying Stripe charge in 60 days, every other
           question stops mattering.
         </p>

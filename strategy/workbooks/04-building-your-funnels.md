@@ -15,7 +15,7 @@ This step is the build spec. Page by page, for each of the three launch funnels,
 
 The first funnel to ship is the **$1 Starter Unboxing Funnel**. The other two wait.
 
-The reasons are locked in workbook 02, Section 6. Repeated here so the build crew (you, your machine, or Claude Code) cannot miss them:
+The reasons are locked in workbook 02, Section 6. Repeated here so the build crew (you, your playbook, or Claude Code) cannot miss them:
 
 1. The $1 Starter is the cheapest, fastest test of the actual offer copy.
 2. It identifies real buyers, the smallest possible Marco-Meter.
@@ -29,7 +29,7 @@ The reasons are locked in workbook 02, Section 6. Repeated here so the build cre
 |---|---|---|
 | 1 | $1 Starter Unboxing Funnel | Test the offer cheaply, generate buyers |
 | 2 | Free Diagnostic Lead Funnel | Feed emails into the $1 funnel |
-| 3 | $49 Machine Presentation Funnel | Convert the $1 buyers and direct cold-warm traffic |
+| 3 | $49 Playbook Presentation Funnel | Convert the $1 buyers and direct cold-warm traffic |
 
 Do not parallelize.
 
@@ -44,10 +44,10 @@ Do not parallelize.
 | Hero hook | Workbook 03, Script 1 ("$1 Starter" row) |
 | Sub-headline | Workbook 01, Section 6 three-line about opener |
 | Star Story Solution body | Workbook 03, Script 3 |
-| Offer stack table (Starter scope) | Locked: $1 buys Machine Steps 1+2 |
-| Guarantee teaser | "Full Machine carries a 60-day guarantee. The Starter delivers a real finished WHO and WHAT, yours to keep, no recurring charge." |
+| Offer stack table (Starter scope) | Locked: $1 buys Playbook Steps 1+2 |
+| Guarantee teaser | "Full Playbook carries a 60-day guarantee. The Starter delivers a real finished WHO and WHAT, yours to keep, no recurring charge." |
 | Polarity AGAINST line | Workbook 01, Section 6 Beat 5, AGAINST #3 ("Validate your idea advice") |
-| CTA button | "Start the Machine for $1" |
+| CTA button | "Start the Playbook for $1" |
 
 ### Page 2: Order form
 
@@ -59,7 +59,7 @@ Stripe one-time checkout. Email + payment only. No upsells on this page.
 |---|---|
 | Headline | "You are two of seven steps in. Want the rest plus the 60-day guarantee?" |
 | Body | Workbook 03, Script 4 |
-| Primary button | "Continue the Machine. $49/mo. 60-day guarantee." |
+| Primary button | "Continue the Playbook. $49/mo. 60-day guarantee." |
 | Secondary link | "No thanks, deliver just the Starter." |
 
 Rules: one decision. Two buttons. No third option.
@@ -70,9 +70,9 @@ Rules: one decision. Two buttons. No third option.
 |---|---|
 | Welcome | Three sentences in Reluctant Hero voice. AC Beat 1 of workbook 01, Section 6. |
 | Immediate action | "Start Step 1: Pin your Dream Customer." Big button. |
-| Sidebar | All 7 Machine steps visible. Steps 1+2 unlocked. Steps 3-7 locked unless OTO converted. |
+| Sidebar | All 7 Playbook steps visible. Steps 1+2 unlocked. Steps 3-7 locked unless OTO converted. |
 
-### Engine logic for the in-product Machine (Steps 1 and 2 only on $1 tier)
+### Engine logic for the in-product Playbook (Steps 1 and 2 only on $1 tier)
 
 **Step 1: Pin Dream Customer.**
 
@@ -101,7 +101,7 @@ The engine assembles: offer headline + stack outline + guarantee + 10x defensibi
 
 **Output:** Marco's irresistible offer in one paragraph plus a stack table.
 
-After Step 2 completes on the $1 tier, the engine surfaces: "You are done with the Starter. Your WHO and WHAT are finished. If you want the rest of the Machine, here is the $49 link."
+After Step 2 completes on the $1 tier, the engine surfaces: "You are done with the Starter. Your WHO and WHAT are finished. If you want the rest of the Playbook, here is the $49 link."
 
 ---
 
@@ -201,7 +201,7 @@ Shipped 2026-05-17 to close out DCS Chapter 14 (Lead Squeeze + Reverse Squeeze) 
 
 ---
 
-## Section 4: $49 Machine Presentation Funnel — Build Spec
+## Section 4: $49 Playbook Presentation Funnel — Build Spec
 
 Build third.
 
@@ -211,7 +211,7 @@ Use the Perfect Webinar Lite structure (workbook 03, Script 5).
 
 | Block | Content source |
 |---|---|
-| Hero hook | Workbook 03, Script 1 ("$49 Machine" row) |
+| Hero hook | Workbook 03, Script 1 ("$49 Playbook" row) |
 | Founder video (optional) | Workbook 01, Section 6, the six-line intro spoken on camera, no production. Reluctant Hero voice beats polish. |
 | Big Domino | Workbook 01, Section 6 Beat 5 enemy sentence |
 | Three Secrets | Three short blocks per Script 5 mapping table |
@@ -219,7 +219,7 @@ Use the Perfect Webinar Lite structure (workbook 03, Script 5).
 | Closes block | 3 trial closes + 4 mini closes, drawn from the Section 6 Beat 5 polarity FOR list (each FOR becomes a soft yes-question) |
 | Disqualifying copy | "This is not for you if you have not shipped anything yet. Go ship first. Come back when your Stripe is flat." |
 | FAQ | Five objections (open item: re-mine the 10+ founder conversations) |
-| Two CTAs | "Start the Machine" (primary) + "Try the $1 Starter first" (secondary) |
+| Two CTAs | "Start the Playbook" (primary) + "Try the $1 Starter first" (secondary) |
 
 ### Page 2: Checkout
 
@@ -232,9 +232,9 @@ Stripe subscription. Guarantee block restated above the button.
 | 1 | Connect Stripe (the guarantee verifier) |
 | 2 | Import dream customer + offer from $1 Starter, or fresh start |
 | 3 | Set 60-day clock (visible countdown in app header) |
-| 4 | Land on Machine Step 3 (or Step 1 if fresh) |
+| 4 | Land on Playbook Step 3 (or Step 1 if fresh) |
 
-### Pages 4 through 10: The Machine
+### Pages 4 through 10: The Playbook
 
 One page per step. Same engine pattern as Steps 1 and 2: human questions in, engine-assembled framework out, never a form.
 
@@ -282,13 +282,13 @@ Used in the Free Diagnostic funnel and as a default nurture for any cold inbound
 
 **Subject:** "Your first paying customer, in writing, or you do not pay."
 **Body:** Workbook 01, Section 5, Hook #8 expanded. State the 60-day guarantee plainly. Stack table.
-**PS:** "Start at $1 here. Upgrade to the full Machine on the next page. The clock starts when you click."
+**PS:** "Start at $1 here. Upgrade to the full Playbook on the next page. The clock starts when you click."
 
 **Brunson Soap Opera rule (do not violate):** story first, offer at the bottom. Never lead with the pitch.
 
 ---
 
-## Section 6: Outreach Engine — Machine Steps 5 and 6 Build Spec
+## Section 6: Outreach Engine — Playbook Steps 5 and 6 Build Spec
 
 This is the load-bearing pair of in-product steps. Failure here = guarantee refunds. Built right, it is the new opportunity.
 
@@ -313,7 +313,7 @@ Two channels:
 
 Why the manual loop on public platforms: auto-posting violates platform ToS and gets accounts banned. The guarantee needs TRACK, not SEND. Generating + verifying-the-link clears the bar without the ban risk.
 
-**Counter built into the dashboard:** "You have logged X / 20 outreach actions. Stripe shows Y new paying customers. The Machine fires the celebration when Y becomes 1."
+**Counter built into the dashboard:** "You have logged X / 20 outreach actions. Stripe shows Y new paying customers. The Playbook fires the celebration when Y becomes 1."
 
 ---
 
@@ -323,7 +323,7 @@ Stripe webhook listens for the first new charge on Marco's connected Stripe acco
 
 When detected:
 
-1. The Machine fires a celebration screen (Reluctant Hero voice: "There it is. The flat line just moved.").
+1. The Playbook fires a celebration screen (Reluctant Hero voice: "There it is. The flat line just moved.").
 2. State changes to "First paying customer verified."
 3. The 60-day guarantee window auto-closes for refund purposes (he won, no remedy due).
 4. Email triggers asking for a one-sentence testimonial. This testimonial replaces the honest Result beat in Section 4's Epiphany Bridge.
@@ -336,7 +336,7 @@ If 60 days pass without a Stripe-verified new customer AND the tracked outreach 
 
 Run this before flipping each funnel live.
 
-| Check | $1 Starter | Free Diagnostic | $49 Machine |
+| Check | $1 Starter | Free Diagnostic | $49 Playbook |
 |---|---|---|---|
 | 1. Hook earns 3 seconds (tested on 5 cold readers) | [ ] | [ ] | [ ] |
 | 2. AC voice present every page | [ ] | [ ] | [ ] |
@@ -367,7 +367,7 @@ The audit worksheet above is a one-time pre-launch sanity check. The live, ongoi
 **SQL views** (`supabase/views/funnel_audibles.sql`):
 - `funnel_audibles__diagnostic_conversion` — per-day, per-label diagnoses → Starter conversion.
 - `funnel_audibles__starter_to_core` — weekly cohort OTO take-rate.
-- `funnel_audibles__machine_progression` — milestone-by-milestone depth funnel among Core subs.
+- `funnel_audibles__playbook_progression` — milestone-by-milestone depth funnel among Core subs.
 - `funnel_audibles__outreach_velocity` — days to 20 verified actions per Core sub. **The existential view.**
 - `funnel_audibles__guarantee_pressure` — Core subs approaching day-60 grouped by state.
 - `funnel_audibles__ab_identity_results` — Verified vs Paid Builders A/B.
@@ -399,7 +399,7 @@ Suggested targets to hack post-launch: Lovable's own funnel (most directly model
 
 - Build specs locked for all three funnels.
 - Soap Opera 5-email sequence drafted in full.
-- Machine Step 5 + 6 (the outreach engine, the load-bearing piece) specced including the send-vs-track resolution.
+- Playbook Step 5 + 6 (the outreach engine, the load-bearing piece) specced including the send-vs-track resolution.
 - Step 7 Stripe verification logic specced.
 - Funnel Audit checklist ready to run pre-launch.
 - Funnel Hacking slot reserved with target list.

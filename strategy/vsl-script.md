@@ -3,7 +3,7 @@
 **Source:** DotCom Secrets Chapter 20 ("VSL Funnels") + Expert Secrets Chapter 9 (Epiphany Bridge Script)
 **Structure:** Who / What / Why / How (Brunson's VSL skeleton)
 **Length target:** 4–5 minutes spoken, ~600 words
-**Use:** Hero of `/machine-sales`; also feeds the founder six-line video on `/` and Email 1 of the Soap Opera as audio.
+**Use:** Hero of `/playbook-sales`; also feeds the founder six-line video on `/` and Email 1 of the Soap Opera as audio.
 **Voice:** Reluctant Hero, signed "— Maryan." Same first-person voice as the workbook 01 §6 Beat 2 three-line bio.
 
 ---
@@ -22,7 +22,7 @@
 
 > "I would launch, open Stripe, and watch a line lie flat. I told myself it was the product, then the funnel, then the traffic. I went embarrassingly deep into SEO. The truth is that was just a respectable way of not looking at the line."
 
-> "What broke me was sitting with more than ten other founders and hearing my own story back, every single time. So I built the machine I wish someone had handed me. I run it on myself first. Now I'm putting it in front of you."
+> "What broke me was sitting with more than ten other founders and hearing my own story back, every single time. So I built the playbook I wish someone had handed me. I run it on myself first. Now I'm putting it in front of you."
 
 ---
 
@@ -36,15 +36,15 @@
 
 ## WHY (90s) — the three secrets, compressed
 
-> "There are three things you have to believe for The Machine to work. Why this tool works where every other one didn't. Why the work that produces a paying customer is work you've been avoiding. And why a 60-day guarantee on software is even possible."
+> "There are three things you have to believe for The Playbook to work. Why this tool works where every other one didn't. Why the work that produces a paying customer is work you've been avoiding. And why a 60-day guarantee on software is even possible."
 
 (beat)
 
-> "On the first one — every funnel builder, AI copywriter, SEO suite I have ever bought assumed I had already done the upstream work. None of them refused to let me skip it. The Machine refuses. Step 1 is locked until you have one real person named, not a category. Step 2 is locked until you have a real promise written, not a feature list."
+> "On the first one — every funnel builder, AI copywriter, SEO suite I have ever bought assumed I had already done the upstream work. None of them refused to let me skip it. The Playbook refuses. Step 1 is locked until you have one real person named, not a category. Step 2 is locked until you have a real promise written, not a feature list."
 
 (beat)
 
-> "On the second one — the work that breaks the flat line is outreach. Outreach is uncomfortable. Productive avoidance — SEO, more features, another course — is comfortable. You don't overcome avoidance with willpower; you remove the option. Outreach inside The Machine is tracked, the message is generated, the target is picked from a Dream 100 the tool built for you. You press send. The tool watches."
+> "On the second one — the work that breaks the flat line is outreach. Outreach is uncomfortable. Productive avoidance — SEO, more features, another course — is comfortable. You don't overcome avoidance with willpower; you remove the option. Outreach inside The Playbook is tracked, the message is generated, the target is picked from a Dream 100 the tool built for you. You press send. The tool watches."
 
 (beat)
 
@@ -56,9 +56,9 @@
 
 > "Here is what you can do today. The first door is a free diagnostic. It reads your live product page and labels what is actually broken — Wrong Person, Weak Offer, or Weak Belief — in plain English. No card, no upsell, the read-out lands in your inbox."
 
-> "The second door is one dollar. The $1 Starter finishes Machine Steps 1 and 2. A real dream customer, named, with the engine pushing back on vague answers. A real offer, written, with the 10x value math holding up to a skeptic. Yours to keep. Not a trial. Not auto-converting. One dollar, one week, two finished deliverables."
+> "The second door is one dollar. The $1 Starter finishes Playbook Steps 1 and 2. A real dream customer, named, with the engine pushing back on vague answers. A real offer, written, with the 10x value math holding up to a skeptic. Yours to keep. Not a trial. Not auto-converting. One dollar, one week, two finished deliverables."
 
-> "The third door is forty-nine a month. The full Machine. Steps 3 through 7. The Outreach Room. The 14-Day First-Customer Sprint. The 60-day Stripe-verified guarantee in writing. Two-payment cap on the remedy."
+> "The third door is forty-nine a month. The full Playbook. Steps 3 through 7. The Outreach Room. The 14-Day First-Customer Sprint. The 60-day Stripe-verified guarantee in writing. Two-payment cap on the remedy."
 
 ---
 
@@ -66,7 +66,7 @@
 
 > "I'm not going to put a countdown timer on this page. The avatar is a skeptic, and fake scarcity destroys trust faster than it sells. The only urgency here is the math you already know — another year of the flat line is more expensive than $98 capped over 60 days."
 
-> "Pick the door that matches what you need right now. The free diagnostic is below this video. The $1 Starter is one click further. The full Machine is at the bottom of the page. I'll be on the other side of every one of them."
+> "Pick the door that matches what you need right now. The free diagnostic is below this video. The $1 Starter is one click further. The full Playbook is at the bottom of the page. I'll be on the other side of every one of them."
 
 > "— Maryan."
 
@@ -77,7 +77,7 @@
 - **No music bed.** Skeptic-avatar rule: music reads as guru-marketing.
 - **No B-roll for cuts.** Single take, plain background, founder visible the whole time. Reluctant Hero rule: the founder IS the proof, not the production.
 - **Captions:** burned-in for accessibility + autoplay-muted scrolling. Same voice cadence in captions as in the audio.
-- **CTA overlay at 4:30** — three buttons appear with the three doors. Click takes them to /diagnostic, /starter, /machine-sales respectively.
+- **CTA overlay at 4:30** — three buttons appear with the three doors. Click takes them to /diagnostic, /starter, /playbook-sales respectively.
 - **Cut version for / homepage:** WHO section only (45s standalone). Saves recording effort; uses the same take.
 - **Cut version for Email 1 Soap Opera:** WHAT + WHY first secret only (90s audio attachment).
 

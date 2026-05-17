@@ -14,7 +14,7 @@ unlocksaas/                          (project root)
 ├── 00-RESUME-HERE.md                 (this file: strategic resume for AI sessions)
 ├── projects.json                     (project registry)
 ├── strategy/                         (all Brunson assets, locked)
-│   ├── state.json                    (machine-readable record of every locked decision)
+│   ├── state.json                    (playbook-readable record of every locked decision)
 │   ├── BUILD-PROMPT-CLAUDE-CODE.md   (the prompt to paste into Claude Code)
 │   └── workbooks/
 │       ├── 01-sales-funnel-secrets.md
@@ -41,8 +41,8 @@ Open this folder in Claude Code. Paste the prompt block from `strategy/BUILD-PRO
 ## The locked decisions, in brief
 
 - **Dream customer:** Marco, 36, non-engineer, post-launch pre-revenue, flat Stripe line. Core false belief: "the problem is the product." Marco is the founder himself.
-- **Offer:** Marco gets his first paying customer, verified by Stripe, within 60 days, or full refund. Price $49/mo. Core product is **The Machine**, a 7-step system.
-- **Value ladder:** free diagnostic, then $1 one-time Starter (Machine Steps 1+2), then $49/mo core (Machine Steps 3-7 + guarantee).
+- **Offer:** Marco gets his first paying customer, verified by Stripe, within 60 days, or full refund. Price $49/mo. Core product is **The Playbook**, a 7-step system.
+- **Value ladder:** free diagnostic, then $1 one-time Starter (Playbook Steps 1+2), then $49/mo core (Playbook Steps 3-7 + guarantee).
 - **Attractive Character:** Reluctant Hero. Three backstory lengths. Five named stories. Four flaws. Polarity with enemy sentence.
 - **Movement:** Manifesto locked. Identity: **Verified Builders** (canonical / SSR default, LOCKED 2026-05-17). 50/50 A/B against "Paid Builders" is LIVE in production code (cookies + beacons + Stripe-metadata attribution shipped; awaiting Vercel deploy for first exposures). Future-based cause: "founders who build real things with AI deserve to get paid for them."
 - **Belief work:** Full Epiphany Bridge (7 elements). Four Core Stories: Vehicle, 4 Internal rewrites with kinda-like bridges, 5 External rewrites, 3 chain breakers.
@@ -52,7 +52,7 @@ Open this folder in Claude Code. Paste the prompt block from `strategy/BUILD-PRO
 - **Growth map:** Three phases, evidence-based not time-based. Phase 2 trigger: 3 verified customer cycles. Phase 3 trigger: 50 paying customers.
 - **Design principle:** framework into the engine, not onto the user.
 - **Funnel hacks:** v2 LOCKED 2026-05-17 — 7 competitors hacked + 1 anti-hack. Full breakdown in `strategy/funnel-hacks.md`; structured array in `state.json` `funnel_hacks` (8 entries) + `funnel_hacks_synthesis` (v1 + v2 patterns); 17-row action matrix maps every finding to a specific file with P0/P1/P2 priority. Closes DCS Secret #5 + #8 + ES Secret #20 (Funnel Hacker's Cookbook).
-- **Google strategy:** LOCKED 2026-05-17 — three-surface plan in `strategy/google-strategy.md`. Surface A (Organic Search) + Surface B (AEO/GEO) SHIPPED at launch via `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, `metadataBase` on the root layout, and schema.org JSON-LD on `/` (Organization + WebSite), `/diagnostic` (Service + HowTo), `/machine-sales` (Product). Surface C (Paid Search) DEFERRED behind workbook 09 §5 gates (≥30% diagnostic conversion + ≥5% Starter conversion + ≥3 verified customer cycles). One launch-day exception: brand-defense exact-match $5/day campaign on `unlocksaas`. Closes Traffic Secrets Secret #11 (Google) from N/A → 100. AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) vetoes generic high-volume keyword targeting at the spec level.
+- **Google strategy:** LOCKED 2026-05-17 — three-surface plan in `strategy/google-strategy.md`. Surface A (Organic Search) + Surface B (AEO/GEO) SHIPPED at launch via `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, `metadataBase` on the root layout, and schema.org JSON-LD on `/` (Organization + WebSite), `/diagnostic` (Service + HowTo), `/playbook-sales` (Product). Surface C (Paid Search) DEFERRED behind workbook 09 §5 gates (≥30% diagnostic conversion + ≥5% Starter conversion + ≥3 verified customer cycles). One launch-day exception: brand-defense exact-match $5/day campaign on `unlocksaas`. Closes Traffic Secrets Secret #11 (Google) from N/A → 100. AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) vetoes generic high-volume keyword targeting at the spec level.
 
 ## Founder open items before launch
 

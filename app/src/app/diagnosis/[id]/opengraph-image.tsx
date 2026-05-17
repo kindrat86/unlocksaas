@@ -142,7 +142,7 @@ export default async function OgImage({ params }: Props) {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
             <span style={{ color: "#fafafa", fontSize: "22px" }}>
-              Reluctant Hero. Non-engineer. Built the machine he wishes
+              Reluctant Hero. Non-engineer. Built the playbook he wishes
               someone had handed him.
             </span>
             <span style={{ fontSize: "20px" }}>

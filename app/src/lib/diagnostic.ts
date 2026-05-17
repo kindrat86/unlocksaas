@@ -78,7 +78,7 @@ export type Bucket =
   // Tried marketing tactics (SEO, ads), still flat. The SEO Escape Hatch
   // story lands hardest here.
   | "tactic_shopper"
-  // Shipped <30 days ago, low revenue: upstream of where the Machine helps.
+  // Shipped <30 days ago, low revenue: upstream of where the Playbook helps.
   // Sent to free content, NOT to the $1 Starter. Different destination.
   | "premature"
   // Has some traction, still flat. Marco's exact profile minus the bad
@@ -86,7 +86,7 @@ export type Bucket =
   // story.
   | "traction_but_stuck"
   // Revenue + already doing customer conversations. Past the bridge.
-  // Skip the $1 Starter; go straight to the $49 Machine sales page.
+  // Skip the $1 Starter; go straight to the $49 Playbook sales page.
   | "ready_to_scale"
   // Fall-through for "error" label or unclassifiable rows.
   | "error";
@@ -125,7 +125,7 @@ export function assignBucket(
     return "ready_to_scale";
   }
 
-  // 2. Premature: shipped <30 days ago AND no real revenue. The Machine is
+  // 2. Premature: shipped <30 days ago AND no real revenue. The Playbook is
   //    upstream of where they are. Sending them to the $1 Starter risks
   //    burning a high-intent lead on work they haven't earned yet.
   if (
@@ -175,13 +175,13 @@ export function assignBucket(
  *
  *  - "free_content" → no $1 ask yet; let the Soap Opera Sequence warm them up
  *  - "starter"      → $1 Starter (the default for Marco-shaped leads)
- *  - "machine"      → $49 Machine sales page directly (skip the $1)
+ *  - "playbook"      → $49 Playbook sales page directly (skip the $1)
  */
 export function bucketDestination(
   bucket: Bucket,
-): "free_content" | "starter" | "machine" {
+): "free_content" | "starter" | "playbook" {
   if (bucket === "premature") return "free_content";
-  if (bucket === "ready_to_scale") return "machine";
+  if (bucket === "ready_to_scale") return "playbook";
   return "starter";
 }
 

@@ -23,19 +23,19 @@ export type HomepageFaq = {
 };
 
 /**
- * Verbatim copies of the six FAQs rendered in Block 7 of `/machine-sales`
+ * Verbatim copies of the six FAQs rendered in Block 7 of `/playbook-sales`
  * (workbook 06 §4). Pulled out so FaqPageJsonLd can mirror them without
  * the answer text drifting between schema and visible HTML. Edit here and
  * in the page together.
  */
-export const MACHINE_SALES_FAQS: readonly HomepageFaq[] = [
+export const PLAYBOOK_SALES_FAQS: readonly HomepageFaq[] = [
   {
     q: "I do not have time for another framework.",
-    a: "The Machine is not a framework. It is a tool. The framework lives in the engine. You answer 3 to 5 questions per step. Time to first paying customer can be 60 days or less.",
+    a: "The Playbook is not a framework. It is a tool. The framework lives in the engine. You answer 3 to 5 questions per step. Time to first paying customer can be 60 days or less.",
   },
   {
     q: "I have tried customer interviews and they did not help.",
-    a: "You tried interviews. The Machine forces conclusions FROM interviews. The bottleneck was not the asking, it was the synthesizing.",
+    a: "You tried interviews. The Playbook forces conclusions FROM interviews. The bottleneck was not the asking, it was the synthesizing.",
   },
   {
     q: "Outreach is not my strength.",
@@ -43,15 +43,15 @@ export const MACHINE_SALES_FAQS: readonly HomepageFaq[] = [
   },
   {
     q: "$49 a month is too much when I am not earning.",
-    a: "$49 a month is two coffees a week to make the difference between $0 and $49+ recurring forever. If The Machine does not produce a paying customer, the $98 comes back.",
+    a: "$49 a month is two coffees a week to make the difference between $0 and $49+ recurring forever. If The Playbook does not produce a paying customer, the $98 comes back.",
   },
   {
     q: "I cannot risk another product that does not work.",
-    a: "The product already exists. You shipped it. The Machine is the work AROUND it, not another product to build.",
+    a: "The product already exists. You shipped it. The Playbook is the work AROUND it, not another product to build.",
   },
   {
     q: "I could build this myself in a weekend.",
-    a: "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, or the 60-day refund logic in a weekend. And while you are building the tool, you are not running the funnel — which is the exact disease the Machine treats.",
+    a: "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, or the 60-day refund logic in a weekend. And while you are building the tool, you are not running the funnel — which is the exact disease the Playbook treats.",
   },
 ] as const;
 
@@ -70,11 +70,11 @@ export const HOMEPAGE_FAQS: readonly HomepageFaq[] = [
   },
   {
     q: "Customers are MY problem, not the tool's job.",
-    a: "Every other tool quietly agreed with you. The Machine does not. Outreach happens inside the tool, tracked. The job cannot be outsourced; it can be removed-from-your-willpower. That is the design.",
+    a: "Every other tool quietly agreed with you. The Playbook does not. Outreach happens inside the tool, tracked. The job cannot be outsourced; it can be removed-from-your-willpower. That is the design.",
   },
   {
     q: "I could build this myself in a weekend.",
-    a: "You could build the form. Not the Stripe-webhook proof, the Dream 100 picker fed from a locked workbook, the engine pushback, or the 60-day refund logic. And while you build the tool, you are not running the funnel — which is the exact disease the Machine treats.",
+    a: "You could build the form. Not the Stripe-webhook proof, the Dream 100 picker fed from a locked workbook, the engine pushback, or the 60-day refund logic. And while you build the tool, you are not running the funnel — which is the exact disease the Playbook treats.",
   },
   {
     q: "What if I do the work and still get no paying customer?",

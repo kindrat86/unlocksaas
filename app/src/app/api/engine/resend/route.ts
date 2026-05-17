@@ -11,7 +11,7 @@
  * their inbox copy of "Your Dream Customer" or "Your Offer" at any time
  * from any device. The original send happens automatically on assembly;
  * this route exists for the founder who deleted the email by accident or
- * is opening the Machine on a new laptop.
+ * is opening the Playbook on a new laptop.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, createClient } from "@/lib/supabase/server";

@@ -10,18 +10,18 @@ interface CheckoutButtonProps {
   children: React.ReactNode;
   className?: string;
   /**
-   * Which surface fired this click. Defaults to a generic "machine_sales"
+   * Which surface fired this click. Defaults to a generic "playbook_sales"
    * because that's where the shared button is used most; override on the
    * starter or OTO pages.
    */
-  surface?: "starter" | "machine_sales" | "oto";
+  surface?: "starter" | "playbook_sales" | "oto";
 }
 
 export function CheckoutButton({
   priceType,
   children,
   className,
-  surface = "machine_sales",
+  surface = "playbook_sales",
 }: CheckoutButtonProps) {
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +35,7 @@ export function CheckoutButton({
         ? Event.StarterCheckoutClicked
         : surface === "oto"
           ? Event.OtoUpgradeClicked
-          : Event.MachineSalesCheckoutClicked;
+          : Event.PlaybookSalesCheckoutClicked;
     track(eventName, { price_type: priceType, surface });
 
     try {

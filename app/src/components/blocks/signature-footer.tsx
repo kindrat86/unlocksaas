@@ -26,7 +26,7 @@ export function SignatureFooter() {
             flat Stripe line for almost a year.
           </p>
           <p>
-            The Machine is what I wish someone had handed me back then. If you
+            The Playbook is what I wish someone had handed me back then. If you
             take it for a spin, reply to any email and you&apos;ll get me, not
             a support queue.
           </p>

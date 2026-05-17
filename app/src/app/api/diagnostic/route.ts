@@ -183,7 +183,7 @@ export async function POST(req: NextRequest) {
         headline: "I could not finish the read.",
         explanation: err.message,
         evidence: `kind=${err.kind}`,
-        nextStep: "Start the Machine for $1",
+        nextStep: "Start the Playbook for $1",
       };
     } else {
       const message =
@@ -195,7 +195,7 @@ export async function POST(req: NextRequest) {
         explanation:
           "The engine choked in a way I have not seen before. The lead is captured. Try again in a minute, or email me at maryan@unlocksaas.com.",
         evidence: `unexpected: ${message}`,
-        nextStep: "Start the Machine for $1",
+        nextStep: "Start the Playbook for $1",
       };
     }
   }

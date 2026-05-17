@@ -57,7 +57,7 @@ const ORGANIZATION_JSON = JSON.stringify({
   url: BASE,
   logo: `${BASE}/icon.svg`,
   description:
-    "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+    "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
   // Locale anchor. Mirrors the en-US signal shipped in the WebSite block and
   // the layout-level hreflang alternates. LLMs that build entity cards from
   // JSON-LD read `inLanguage` to decide which language audience this
@@ -150,17 +150,17 @@ const DIAGNOSTIC_HOWTO_JSON = JSON.stringify({
 // and Google indexes both. The SoftwareApplication facet lets LLMs answer
 // "what SaaS tool helps me get my first paying customer" with the entity name,
 // while Product keeps the priced offer Rich Result eligible.
-const MACHINE_PRODUCT_JSON = JSON.stringify({
+const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": ["Product", "SoftwareApplication"],
-  name: "The Machine — Unlock SaaS",
+  name: "The Playbook — Unlock SaaS",
   description:
-    "A seven-step machine that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay. Built by a non-engineer for non-engineer founders shipping with AI tools.",
+    "A seven-step playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay. Built by a non-engineer for non-engineer founders shipping with AI tools.",
   brand: {
     "@type": "Brand",
     name: "Unlock SaaS",
   },
-  url: `${BASE}/machine-sales`,
+  url: `${BASE}/playbook-sales`,
   inLanguage: "en-US",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
@@ -174,7 +174,7 @@ const MACHINE_PRODUCT_JSON = JSON.stringify({
     price: "49",
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
-    url: `${BASE}/machine-sales`,
+    url: `${BASE}/playbook-sales`,
     seller: {
       "@type": "Organization",
       name: "Unlock SaaS",
@@ -203,7 +203,7 @@ const PERSON_JSON = JSON.stringify({
   // future bylined content. Mirrors Organization.inLanguage.
   knowsLanguage: ["en-US"],
   description:
-    "Marketer and non-engineer. Built a dozen AI products with Lovable and Claude, watched them flatline in Stripe, then built the Machine to fix the work nobody taught indie SaaS founders to do.",
+    "Marketer and non-engineer. Built a dozen AI products with Lovable and Claude, watched them flatline in Stripe, then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
   knowsAbout: [
     "Customer development",
     "Sales funnel design",
@@ -380,14 +380,14 @@ export function DiagnosticJsonLd() {
 }
 
 /**
- * Product schema. Render on `/machine-sales`.
+ * Product schema. Render on `/playbook-sales`.
  *
  * aggregateRating is intentionally omitted until verified customers with
  * public ratings exist. Brunson Hard-Rule (honest claims): no fabricated
  * review counts in structured data, ever.
  */
-export function MachineProductJsonLd() {
-  return <JsonLdScript json={MACHINE_PRODUCT_JSON} />;
+export function PlaybookProductJsonLd() {
+  return <JsonLdScript json={PLAYBOOK_PRODUCT_JSON} />;
 }
 
 /**

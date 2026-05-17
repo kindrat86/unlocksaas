@@ -25,13 +25,13 @@ done.
   AC opener, attribution forwarding.
 - `/oto` — One-decision OTO with Return Path reassurance.
 - `/welcome` — Profit Maximizer / Return Path (handles core_activated +
-  starter_only paths, auto-redirect to /machine).
-- `/machine-sales` — Sprint 3 long-form $49 Machine sales page. Big Domino,
+  starter_only paths, auto-redirect to /playbook).
+- `/playbook-sales` — Sprint 3 long-form $49 Playbook sales page. Big Domino,
   Three Secrets (Story-Strategy-Case Study each), Stack with 10x math,
   Closes (risk reversal, logic, identity, future pacing, stake), FAQ from
   dollar-objections.md, disqualifying copy, signed — Maryan.
 - `/bridge` — Cold traffic bridge page for solo ads + sponsored content.
-- `/machine` + `/machine/step/[id]` — Member area + Steps 1-2 wired with
+- `/playbook` + `/playbook/step/[id]` — Member area + Steps 1-2 wired with
   engine pushback.
 - `/builder/[slug]` — Public Verified Builder badge OG-image route.
 
@@ -110,7 +110,7 @@ done.
 
    - VSL (3–5 min) — script at `strategy/founder-vsl-script.md`
    - PLV1 "The Door That Opened" (5–7 min) — `strategy/founding-plv-scripts.md`
-   - PLV2 "How the Machine Actually Works" (8–10 min) — same file
+   - PLV2 "How the Playbook Actually Works" (8–10 min) — same file
    - PLV3 "What It Looks Like on the Inside" (10–12 min) — same file
 
    **Pre-staged 2026-05-17 (this push):** the entire Mux upload pipeline +

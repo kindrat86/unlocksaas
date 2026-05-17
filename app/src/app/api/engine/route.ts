@@ -15,7 +15,7 @@ import {
 import { sendStepDeliverableEmail } from "@/lib/deliverable-email";
 
 /**
- * Engine routes for The Machine, Steps 1-5.
+ * Engine routes for The Playbook, Steps 1-5.
  *
  * Steps 6 (outreach log) and 7 (Stripe verifier) do NOT use this endpoint —
  * Step 6 logs to /api/outreach and verifies via /api/outreach/verify-link;
@@ -69,7 +69,7 @@ const DREAM_100_CATEGORIES = {
     "Lenny's community",
     "r/nocode",
     "r/buildinpublic",
-    "r/learnmachinelearning",
+    "r/learnplaybooklearning",
     "Discord servers around Claude/Anthropic/Lovable/Cursor",
   ],
   influencers: [
@@ -158,7 +158,7 @@ const DREAM_100_CATEGORIES = {
 
 const STEP_PROMPTS: Record<string, { validate: string; assemble: string }> = {
   "1": {
-    validate: `You are the engine inside "The Machine," a product for post-launch pre-revenue founders.
+    validate: `You are the engine inside "The Playbook," a product for post-launch pre-revenue founders.
 ${RELUCTANT_HERO_VOICE}
 
 The user is answering questions to pin their dream customer. Your job is to VALIDATE their answer.
@@ -179,14 +179,14 @@ ACCEPT (accepted: true) if the answer is specific: a real name, a real situation
 When accepting, acknowledge briefly in Reluctant Hero voice and say "Good. Next."
 
 Respond in JSON: { "accepted": boolean, "message": "your response" }`,
-    assemble: `You are the engine inside "The Machine." The user has answered all five dream-customer questions.
+    assemble: `You are the engine inside "The Playbook." The user has answered all five dream-customer questions.
 Assemble their answers into a one-paragraph dream customer profile in their voice.
 Also list 3-5 congregations where this person hangs out.
 Format: a paragraph, then a bullet list of congregations.
 Voice: direct, specific, no filler. Use the user's own words where possible.`,
   },
   "2": {
-    validate: `You are the engine inside "The Machine," a product for post-launch pre-revenue founders.
+    validate: `You are the engine inside "The Playbook," a product for post-launch pre-revenue founders.
 ${RELUCTANT_HERO_VOICE}
 
 The user is building their offer. Your job is to VALIDATE their answer.
@@ -207,7 +207,7 @@ ACCEPT (accepted: true) if: specific result, clear timeframe, real remedy, defen
 When accepting, acknowledge briefly in Reluctant Hero voice.
 
 Respond in JSON: { "accepted": boolean, "message": "your response" }`,
-    assemble: `You are the engine inside "The Machine." The user has answered all four offer questions.
+    assemble: `You are the engine inside "The Playbook." The user has answered all four offer questions.
 Assemble their answers into:
 1. An offer headline (one sentence: who gets what result in what timeframe)
 2. A stack outline (core offer + 2-3 bonuses with value estimates)
@@ -217,7 +217,7 @@ Assemble their answers into:
 Voice: direct, confident, uses the user's own words. No marketing fluff.`,
   },
   "3": {
-    validate: `You are the engine inside "The Machine," a product for post-launch pre-revenue founders.
+    validate: `You are the engine inside "The Playbook," a product for post-launch pre-revenue founders.
 ${RELUCTANT_HERO_VOICE}
 
 The user is building their Attractive Character (workbook 01 §6). Your job is to VALIDATE their answer.
@@ -242,7 +242,7 @@ ACCEPT (accepted: true) if: a specific scene, a real owned flaw, a genuine polar
 When accepting, acknowledge briefly in Reluctant Hero voice.
 
 Respond in JSON: { "accepted": boolean, "message": "your response" }`,
-    assemble: `You are the engine inside "The Machine." The user has answered all five Attractive Character questions.
+    assemble: `You are the engine inside "The Playbook." The user has answered all five Attractive Character questions.
 
 Assemble their answers into:
 1. **Identity Type** — one of: Reluctant Hero / Leader / Adventurer / Reporter. Pick based on their origin and flaws. Justify in one sentence.
@@ -255,7 +255,7 @@ Assemble their answers into:
 Format as markdown with bold headers. Use the user's own words wherever they were specific.`,
   },
   "4": {
-    validate: `You are the engine inside "The Machine," a product for post-launch pre-revenue founders.
+    validate: `You are the engine inside "The Playbook," a product for post-launch pre-revenue founders.
 ${RELUCTANT_HERO_VOICE}
 
 The user is generating their launch copy (workbook 03 Engine Implications). Your job is to VALIDATE their answer.
@@ -273,7 +273,7 @@ When rejecting, push back:
 ACCEPT (accepted: true) if specific, voiced, and concrete.
 
 Respond in JSON: { "accepted": boolean, "message": "your response" }`,
-    assemble: `You are the engine inside "The Machine." The user has answered all three copy questions.
+    assemble: `You are the engine inside "The Playbook." The user has answered all three copy questions.
 You also have access to their prior Step 1 (Dream Customer), Step 2 (Offer), and Step 3 (AC) outputs in the previousAnswers context, labeled "PRIOR STEP N OUTPUT".
 
 Assemble these copy assets:
@@ -285,7 +285,7 @@ Assemble these copy assets:
 Format as markdown with bold headers. Reluctant Hero voice throughout.`,
   },
   "5": {
-    validate: `You are the engine inside "The Machine," a product for post-launch pre-revenue founders.
+    validate: `You are the engine inside "The Playbook," a product for post-launch pre-revenue founders.
 ${RELUCTANT_HERO_VOICE}
 
 The user is generating their outreach assets and target list (workbook 04 §6 + workbook 08 Dream 100). Your job is to VALIDATE their answer.
@@ -305,7 +305,7 @@ When rejecting, push back:
 ACCEPT (accepted: true) if specific, on-voice, and on-strategy.
 
 Respond in JSON: { "accepted": boolean, "message": "your response" }`,
-    assemble: `You are the engine inside "The Machine." The user has answered all three outreach questions.
+    assemble: `You are the engine inside "The Playbook." The user has answered all three outreach questions.
 You also have their Step 1 (Dream Customer), Step 2 (Offer), and Step 3 (AC) outputs in the previousAnswers context, labeled "PRIOR STEP N OUTPUT".
 
 The Dream 100 categories are:
@@ -393,7 +393,7 @@ Validate this answer. Respond ONLY with JSON.`,
     // Brunson Reluctant-Hero default: when the engine cannot read its own
     // validator output, REJECT, do not accept. Accepting on parse failure
     // turns the engine into a vague-answer rubber stamp — the exact failure
-    // mode the Machine exists to prevent. Reject with a pushback that names
+    // mode the Playbook exists to prevent. Reject with a pushback that names
     // the gap so the user re-submits sharper, not louder.
     let parsed: { accepted: boolean; message: string };
     try {

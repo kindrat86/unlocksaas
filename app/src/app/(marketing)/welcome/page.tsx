@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
  *
  * Lands here when the visitor:
  *   - declines the $49 OTO (?path=starter_only), OR
- *   - successfully buys the $49 Machine (?path=core_activated)
+ *   - successfully buys the $49 Playbook (?path=core_activated)
  *
  * Workbook 04 §4 (Return Path). Avoids a $19 downsell — locked lean
  * ladder discipline (workbook 02 §3). Captures the no-vote with a
@@ -35,7 +35,7 @@ function WelcomeInner() {
   // dead-end page. 12s = comfortable read time without trapping them.
   useEffect(() => {
     const t = window.setTimeout(() => {
-      router.push("/machine");
+      router.push("/playbook");
     }, 12_000);
     return () => window.clearTimeout(t);
   }, [router]);
@@ -57,7 +57,7 @@ function WelcomeInner() {
             not in my inbox. — Maryan
           </p>
           <Button asChild size="lg" className="w-full text-lg py-6">
-            <Link href="/machine">Go to the Machine</Link>
+            <Link href="/playbook">Go to the Playbook</Link>
           </Button>
           <p className="text-xs text-muted-foreground mt-4">
             Auto-redirecting in 12 seconds.
@@ -79,7 +79,7 @@ function WelcomeInner() {
           the page told you was honest.
         </h1>
         <p className="text-muted-foreground leading-relaxed mb-6">
-          Machine Steps 1 and 2 are in your member area. They are yours to
+          Playbook Steps 1 and 2 are in your member area. They are yours to
           keep. Finish them this week, see if a real WHO and a real WHAT
           changes anything in your Stripe line. If they do, you will not
           need me to sell you the rest.
@@ -90,14 +90,14 @@ function WelcomeInner() {
             <p className="text-sm font-semibold mb-2">What happens next</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>— One short email a day for five days, walking you through the work without selling at you.</li>
-              <li>— Email 5 is the offer for the full Machine, in case you want it back.</li>
+              <li>— Email 5 is the offer for the full Playbook, in case you want it back.</li>
               <li>— Reply STOP at any time. No drip-forever traps.</li>
             </ul>
           </CardContent>
         </Card>
 
         <Button asChild size="lg" className="w-full text-lg py-6">
-          <Link href="/machine">Open the Starter</Link>
+          <Link href="/playbook">Open the Starter</Link>
         </Button>
         <p className="text-xs text-muted-foreground mt-4">
           Auto-redirecting in 12 seconds. — Maryan

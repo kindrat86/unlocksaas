@@ -251,7 +251,7 @@ export default function FunnelHub() {
               </tr>
               <tr className="border-t border-border bg-primary/5">
                 <td className="p-3 font-semibold text-foreground">
-                  The Machine
+                  The Playbook
                 </td>
                 <td className="p-3 font-semibold text-foreground">$49/mo</td>
                 <td className="p-3 font-semibold text-foreground">

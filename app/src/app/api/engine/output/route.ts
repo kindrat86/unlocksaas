@@ -2,7 +2,7 @@
  * GET /api/engine/output?stepId=1
  *
  * Returns the saved deliverable for the signed-in user's project at the given
- * Machine step. Used by the step page on mount so that a user who closes the
+ * Playbook step. Used by the step page on mount so that a user who closes the
  * tab after completing Step 1 (Dream Customer) returns to a hydrated completion
  * view — not a blank "start over" screen.
  *

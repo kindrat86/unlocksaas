@@ -40,11 +40,11 @@ Every step of the UnlockSaaS funnel, with the canonical event from `events.ts`, 
 | 6 | Starter click → Stripe success | `starter_purchased` | 60–80% (Stripe friction) | 70% | < 50% (=payment UX broken) |
 | 7 | Starter → OTO viewed | `oto_page_viewed` | 95%+ (auto-redirect) | 99% | < 90% (=success URL drift) |
 | 8 | OTO viewed → upgrade clicked | `oto_upgrade_clicked` | 15–30% (Brunson canon) | 22% | < 10% |
-| 9 | OTO upgrade → Machine subscribed | `machine_subscribed` | 80%+ | 85% | < 65% |
-| 10 | Member area → Step 1 started | `machine_step_started` (step_id=1) | 90%+ | 95% | < 75% |
-| 11 | Step 1 → completed | `machine_step_completed` (step_id=1) | 60–80% (form abandonment) | 75% | < 50% |
+| 9 | OTO upgrade → Playbook subscribed | `playbook_subscribed` | 80%+ | 85% | < 65% |
+| 10 | Member area → Step 1 started | `playbook_step_started` (step_id=1) | 90%+ | 95% | < 75% |
+| 11 | Step 1 → completed | `playbook_step_completed` (step_id=1) | 60–80% (form abandonment) | 75% | < 50% |
 | 12 | Step 2 completed → OTO re-surfaced | `oto_page_viewed` (re-entry) | 50%+ | 60% | < 30% |
-| 13 | Step 3 → Step 7 completion (full Machine) | `machine_step_completed` (step_id=7) | 30–50% | 40% | < 20% |
+| 13 | Step 3 → Step 7 completion (full Playbook) | `playbook_step_completed` (step_id=7) | 30–50% | 40% | < 20% |
 | 14 | Step 5 → 20 outreach actions logged | `milestone_earned` (outreach_twenty) | n/a (UnlockSaaS-specific) | 60% of Core subs | **< 40% = guarantee economy breaks** |
 | 15 | 20 actions → First Customer Verified | `first_customer_verified` | n/a | 35% of those who hit 20 | < 15% |
 | 16 | Day 60 → Verified OR Refund | `first_customer_verified` ∪ refund | n/a | Verified > refund 2:1 | Refund > verified |
@@ -134,7 +134,7 @@ For each step, the top three leak hypotheses, the audible options ranked by leve
 - If still < 15% after 30 more, fire **A**.
 - Hold **C** until row 16 (verified > refund) is met.
 
-### Step 11 — Machine Step 1 completion (target 75%, red-line 50%)
+### Step 11 — Playbook Step 1 completion (target 75%, red-line 50%)
 
 **Leak hypotheses:**
 1. First question is too abstract; visitor stalls.
@@ -173,7 +173,7 @@ This is the existential row. Every audible here is high-leverage.
 ### Step 19 — Month 2 invoice paid (target 85%, red-line 65%)
 
 **Leak hypotheses:**
-1. Founder finished the Machine but didn't hit a verified customer; charges them month 2 anyway with no win to anchor the renewal.
+1. Founder finished the Playbook but didn't hit a verified customer; charges them month 2 anyway with no win to anchor the renewal.
 2. The 60-day clock makes month 2 feel like "the dread month" — money out before guarantee evaluation.
 3. Cancellation UX in Customer Portal is too easy; no save-flow.
 
@@ -200,7 +200,7 @@ The complete decision table. One number per row. Read top-down weekly.
 | 6 | Starter checkout success | 20 attempts | < 50% | Investigate Stripe + payment UX (escalation, not audible) |
 | 8 | OTO take-rate | 30 OTOs | < 10% | Step 8 / B |
 | 11 | Step 1 completion | 20 Step-1-starters | < 50% | Step 11 / A or B by pushback count |
-| 13 | Full Machine completion | 10 Core-subs aged 30+ days | < 20% | Investigate step-specific dropoff before audible |
+| 13 | Full Playbook completion | 10 Core-subs aged 30+ days | < 20% | Investigate step-specific dropoff before audible |
 | **14** | **20-outreach-action rate** | **10 Core-subs aged 14+ days** | **< 40%** | **Step 14 / A+B (both)** |
 | 16 | Verified > refund ratio | 5 Core-subs aged 60+ days | inverted | Revision Mode (offer/avatar/price) |
 | 17 | Soap Opera Day 0 → 5 | 30 SOS starters | < 55% | Investigate per-day open rate; audible the lowest-open email subject |
@@ -256,9 +256,9 @@ Source: `app/src/lib/analytics/events.ts`. Build these as PostHog Insights:
 1. **Acquisition funnel** — `funnel_hub_viewed` → `diagnostic_page_viewed` → `diagnostic_form_submitted` → `diagnostic_result_viewed`. Grouped by referrer host.
 2. **Squeeze conversion** — single number: `diagnostic_form_submitted` / `diagnostic_page_viewed`. Trendline by week.
 3. **Starter funnel** — `starter_page_viewed` → `starter_checkout_clicked` → `starter_purchased`. Grouped by `attribution_from` property.
-4. **OTO funnel** — `oto_page_viewed` → `oto_upgrade_clicked` → `machine_subscribed`. Single take-rate number.
-5. **Machine progression** — `machine_step_completed` cohort by `step_id`. Read as a funnel: how many start Step 1 → how many finish Step 7.
-6. **Engine pushback density** — `machine_engine_pushback` count per user per step. If > 4, the question is poorly worded and an audible is the rewrite.
+4. **OTO funnel** — `oto_page_viewed` → `oto_upgrade_clicked` → `playbook_subscribed`. Single take-rate number.
+5. **Playbook progression** — `playbook_step_completed` cohort by `step_id`. Read as a funnel: how many start Step 1 → how many finish Step 7.
+6. **Engine pushback density** — `playbook_engine_pushback` count per user per step. If > 4, the question is poorly worded and an audible is the rewrite.
 7. **VSL completion** — `vsl_played` → `vsl_completed` per surface. Activates once the founder video ships.
 8. **Identity A/B** — `ab_tests` table; the `infrastructure.read_query` in `state.json` is the canonical query.
 
@@ -307,7 +307,7 @@ These are the alternates that can be swapped in inside 10 minutes when the trigg
 
 **Alt B (guarantee-forward, Hook #8):** *"First paying customer in 60 days. Verified by your own Stripe. Or you don't pay."*
 
-**Alt C (contrarian, Hook #10):** *"The work that gets you paid is the work nobody taught you. We built the machine that runs it."*
+**Alt C (contrarian, Hook #10):** *"The work that gets you paid is the work nobody taught you. We built the playbook that runs it."*
 
 ### Sub-hook alternates — Funnel Hub
 **Current:** *"Marketer, non-engineer, built a dozen AI products that nobody paid for. Then I figured out why."*
@@ -327,7 +327,7 @@ These are the alternates that can be swapped in inside 10 minutes when the trigg
 | wrong_person | "Fix this for $1" | "Pin your real customer for $1." |
 | weak_offer | "Fix this for $1" | "Write your real offer for $1." |
 | weak_belief | "Fix this for $1" | "Start where the problem actually is — $1." |
-| error | "Fix this for $1" | "Skip the diagnosis. Start the Machine for $1." |
+| error | "Fix this for $1" | "Skip the diagnosis. Start the Playbook for $1." |
 
 ### $1 Starter headline (`/starter`)
 
@@ -339,11 +339,11 @@ These are the alternates that can be swapped in inside 10 minutes when the trigg
 
 ### OTO primary button (`/oto`)
 
-**Current:** *"Continue the Machine. $49/mo. 60-day guarantee."*
+**Current:** *"Continue the Playbook. $49/mo. 60-day guarantee."*
 
 **Alt A:** *"Get my first paying customer in 60 days — $49/mo, or full refund."*
 
-**Alt B:** *"Run the full Machine — $49, guaranteed."*
+**Alt B:** *"Run the full Playbook — $49, guaranteed."*
 
 ### OTO Big Domino expansion block (pre-staged for Step 8 / audible A)
 Drop this above the existing OTO buttons when OTO take-rate drops below 10%.
@@ -358,7 +358,7 @@ If you believe that, the $49 is obvious.
 If you don't believe it, $1 was the right amount to spend today.
 
 Here is why I believe it: I had the disease, I diagnosed it, I built
-the cure, and the cure is mechanical. Steps 3-7 of the Machine remove
+the cure, and the cure is mechanical. Steps 3-7 of the Playbook remove
 the option to skip the work that gets you paid. The 60-day guarantee
 is enforced in code, not in good faith. If the milestones complete and
 Stripe shows no new charge, you get both months back.
@@ -377,7 +377,7 @@ That's the bet. Take it or leave it. There is no third option.
 | 4 | mirror in ten founders | "I heard my own story back, ten times" | "The conversation that broke me out" |
 | 5 | Hook #8 + Stack offer | "60 days. First customer. Or full refund." | "Here is what $49 buys you" |
 
-### Engine pushback alternates (Machine Step 1)
+### Engine pushback alternates (Playbook Step 1)
 
 **Current (combative):** *"That's a category, not a person."*
 
@@ -395,7 +395,7 @@ Subject: Your guarantee is real. Refund inbound.
 
 Hi {first_name},
 
-It's day 60. You completed the work-condition milestones inside the Machine.
+It's day 60. You completed the work-condition milestones inside the Playbook.
 Stripe shows no new paying customer.
 
 Per the guarantee: both months back. $98 has been refunded to the card on file —

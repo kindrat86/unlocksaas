@@ -92,7 +92,7 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
     });
     // Persist last_error so the operator can see why the row is stuck.
     // `as never` matches the dual-schema reconciliation pattern used in
-    // machine/page.tsx — the migration shipped (20260518000001) but the
+    // playbook/page.tsx — the migration shipped (20260518000001) but the
     // generated database.types.ts has not been regenerated yet.
     await supabase
       .from("challenge_subscribers" as never)

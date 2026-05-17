@@ -89,13 +89,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       alternates: hreflang(`${base}/starter`),
     },
-    // Long-form $49 Machine sales page. Product-aware decision page.
+    // Long-form $49 Playbook sales page. Product-aware decision page.
     {
-      url: `${base}/machine-sales`,
+      url: `${base}/playbook-sales`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
-      alternates: hreflang(`${base}/machine-sales`),
+      alternates: hreflang(`${base}/playbook-sales`),
     },
     // Founding-Cohort PLF landing — state-dependent; while waitlist is open or
     // cart is open, this is a high-priority page. After cart-close it 404s or

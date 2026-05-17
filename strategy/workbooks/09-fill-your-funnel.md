@@ -71,8 +71,8 @@ Brunson teaches: every platform you publish on, you publish in 5 categories. Rot
 
 | Category | Topic | Voice anchor |
 |---|---|---|
-| 1. Personal | The build, behind the scenes, the founder running The Machine on himself | Reluctant Hero confession |
-| 2. Process | The 7-step Machine, deconstructed one step at a time | Mechanical, no fluff |
+| 1. Personal | The build, behind the scenes, the founder running The Playbook on himself | Reluctant Hero confession |
+| 2. Process | The 7-step Playbook, deconstructed one step at a time | Mechanical, no fluff |
 | 3. Pattern | What the founder sees in the 10+ conversations and the cohort | Reporter / observer |
 | 4. Polarity | AGAINST lines from workbook 01 Section 6 Beat 5 | Sharp, opinionated |
 | 5. Proof | Real wins when they exist: first paying customers, Stripe screenshots | Honest, no fabrication |
@@ -98,7 +98,7 @@ Free Diagnostic squeeze
    ↓
 $1 Starter checkout
    ↓ (OTO)
-$49 Machine subscription
+$49 Playbook subscription
    ↓
 First paying customer in 60 days (Stripe webhook)
 ```
@@ -144,7 +144,7 @@ The full architecture lives at [`strategy/follow-up-funnels.md`](../follow-up-fu
 7. **One-click unsubscribe** — single HMAC token clears every list in one click. RFC 8058 compliant.
 8. **Staggered cron schedule** — 14:00 / 15:00 / 16:00 / 17:00 / 18:00 UTC, one per cadence. Reduces co-send risk to zero pre-launch.
 
-**Cart Abandonment Recovery — the new fifth cadence:** trigger = Stripe `checkout.session.expired` on any priceType. 3 emails over 7 days (Day 0 inline, Day 2, Day 7). Resume link routes to `/starter` or `/machine-sales` (NOT the expired Stripe session URL). Short-circuits to `status='recovered'` the moment a fresh `checkout.session.completed` fires for the same email — Brunson rule: stop chasing the second they buy.
+**Cart Abandonment Recovery — the new fifth cadence:** trigger = Stripe `checkout.session.expired` on any priceType. 3 emails over 7 days (Day 0 inline, Day 2, Day 7). Resume link routes to `/starter` or `/playbook-sales` (NOT the expired Stripe session URL). Short-circuits to `status='recovered'` the moment a fresh `checkout.session.completed` fires for the same email — Brunson rule: stop chasing the second they buy.
 
 **Audit close:** Traffic Secrets Secret #6 lifted from 88 → 100 by closing the two concrete gaps (no meta-architecture doc; no cart recovery cadence). Expert Secrets Secret #17 lifts in parallel to ~95, capped until first email lands in a real inbox.
 
@@ -160,7 +160,7 @@ Cycle the 12 hooks from workbook 01 Section 5. Track which earn the most engagem
 
 ### Public proof loop
 
-Every time the Machine fires "First Paying Customer Verified" for any user (with permission), the founder posts a screenshot (anonymized as needed), with the parable of that founder's journey, with credit. Public proof compounds social capital.
+Every time the Playbook fires "First Paying Customer Verified" for any user (with permission), the founder posts a screenshot (anonymized as needed), with the parable of that founder's journey, with credit. Public proof compounds social capital.
 
 ---
 
@@ -169,7 +169,7 @@ Every time the Machine fires "First Paying Customer Verified" for any user (with
 DEFERRED. Activates when:
 - Free Diagnostic converts 30%+ from organic.
 - $1 Starter converts 5%+ from cold-warm.
-- 3+ customers have completed a first-paying-customer cycle (success rate of the Machine known).
+- 3+ customers have completed a first-paying-customer cycle (success rate of the Playbook known).
 
 **Cross-reference:** The full Google-specific paid-search playbook (campaign structure, RPL/max-CPC math, negative-keyword seed list, ad copy in Reluctant Hero voice, kill-switch protocol) lives in [strategy/google-strategy.md](../google-strategy.md) §C. The launch-day brand-defense $5/day exact-match campaign on `unlocksaas` is the **only** Google Ads spend permitted before the three gates above all fire — it is a Brunson-rule-clean arbitrage defense, not a growth bet.
 
@@ -197,7 +197,7 @@ For Unlock SaaS, the four chapters reduce to:
 |---|---|---|
 | Instagram | Likely never (Marco does not live here) | Skip indefinitely unless data proves otherwise |
 | Facebook | Evidence-gated four-phase activation (Phase 1 pixel + Conversions API at 3 verified; Phase 2 retargeting + lookalike-from-buyers at 50 customers; Phase 3 cold prospecting at 100 + 4 CAC/retention gates; Phase 4 Conversation Domination amplification at 200) | Phase 1 first test = install Meta Pixel + Conversions API via Stripe webhook server-side, seed three custom audiences (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows, ZERO ads. Full spec at `strategy/facebook-channel.md` with ad creative families, kill criteria, and code pre-stage. |
-| Google (search) | Phase 2 paid + organic + AEO/GEO | See [strategy/google-strategy.md](../google-strategy.md). Surface A (organic) + Surface B (AEO/GEO) ship at launch via `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, and schema.org JSON-LD on `/`, `/diagnostic`, `/machine-sales`. Surface C (paid) deferred per §5 gates. |
+| Google (search) | Phase 2 paid + organic + AEO/GEO | See [strategy/google-strategy.md](../google-strategy.md). Surface A (organic) + Surface B (AEO/GEO) ship at launch via `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, and schema.org JSON-LD on `/`, `/diagnostic`, `/playbook-sales`. Surface C (paid) deferred per §5 gates. |
 | YouTube | Phase 2 long-tail SEO (host) + active guesting at launch (kit at `strategy/youtube-outreach.md`) | Host: trigger conditions in `strategy/decisions/youtube-channel-stance.md` Part 1 (4 conditions, all required). Guest: Tier A pitches (Riley Brown + Indy Dev Dan) send Thu post-first-customer; Tier B-D follow per kit §A 4-week cadence. |
 
 Each gets a deep dive in Brunson's full Traffic Secrets. For Unlock SaaS the launch focus does not include them — except Google's organic + AEO surfaces, which are zero-marginal-cost pre-staging and ship at launch per [strategy/google-strategy.md](../google-strategy.md).
@@ -212,7 +212,7 @@ Each gets a deep dive in Brunson's full Traffic Secrets. For Unlock SaaS the lau
 
 | Layer | Surface |
 |---|---|
-| 0 — Sound bites | Five rotating JK5-keyed phrases in copy on `/`, `/diagnostic`, `/machine-sales`. Meta-canon: "We measure progress in Stripe charges, not in encouragement." |
+| 0 — Sound bites | Five rotating JK5-keyed phrases in copy on `/`, `/diagnostic`, `/playbook-sales`. Meta-canon: "We measure progress in Stripe charges, not in encouragement." |
 | 1 — Weekly anchor | Indie Hackers long-form, parable-led, one per week (Week 1 = `strategy/content-queue-week-1.md`) |
 | 2 — Atomic fragments | 7–12 derivatives per anchor (X thread + shorts + Reddit drop + comment templates + newsletter snippet) |
 | 3 — Channel deployment | X + Indie Hackers + r/SaaS + r/microsaas + owned newsletter |

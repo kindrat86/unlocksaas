@@ -2,7 +2,7 @@
  * GET  /api/outreach        list the signed-in user's logged outreach actions
  * POST /api/outreach        log a new outreach action
  *
- * The 20-action threshold for Hard Rule #4 (machine-verifiable 60-day
+ * The 20-action threshold for Hard Rule #4 (playbook-verifiable 60-day
  * guarantee) is enforced here: when the user's logged count crosses 20, we
  * fire the TWENTY_OUTREACH_ACTIONS_LOGGED milestone on their profile via the
  * guarantee module.

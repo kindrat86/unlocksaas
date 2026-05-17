@@ -8,7 +8,7 @@
  *
  * The events fall into three layers:
  *   1. Top-of-funnel (anonymous browser) — pageviews + CTA clicks.
- *   2. Mid-funnel (authenticated app) — Machine step progress + milestones.
+ *   2. Mid-funnel (authenticated app) — Playbook step progress + milestones.
  *   3. Conversion (server-side, Stripe webhook) — the ones that count.
  *
  * Reluctant Hero design rule: only Stripe events are "conversions". Anything
@@ -55,24 +55,24 @@ export const Event = {
   StoriesOptInSubmitted: "stories_opt_in_submitted",
   StarterPageViewed: "starter_page_viewed",
   StarterCheckoutClicked: "starter_checkout_clicked",
-  MachineSalesPageViewed: "machine_sales_page_viewed",
-  MachineSalesCheckoutClicked: "machine_sales_checkout_clicked",
+  PlaybookSalesPageViewed: "playbook_sales_page_viewed",
+  PlaybookSalesCheckoutClicked: "playbook_sales_checkout_clicked",
   OtoPageViewed: "oto_page_viewed",
   OtoUpgradeClicked: "oto_upgrade_clicked",
   OtoDeclined: "oto_declined",
 
   // Mid-funnel (authenticated, client-side)
-  MachineStepStarted: "machine_step_started",
-  MachineStepAnswerSubmitted: "machine_step_answer_submitted",
-  MachineEnginePushback: "machine_engine_pushback",
-  MachineStepCompleted: "machine_step_completed",
+  PlaybookStepStarted: "playbook_step_started",
+  PlaybookStepAnswerSubmitted: "playbook_step_answer_submitted",
+  PlaybookEnginePushback: "playbook_engine_pushback",
+  PlaybookStepCompleted: "playbook_step_completed",
   MilestoneEarned: "milestone_earned",
 
   // Conversion (server-side, Stripe webhook is source of truth)
   CheckoutSessionCreated: "checkout_session_created",
   CheckoutSessionExpired: "checkout_session_expired",
   StarterPurchased: "starter_purchased",
-  MachineSubscribed: "machine_subscribed",
+  PlaybookSubscribed: "playbook_subscribed",
   InvoicePaymentSucceeded: "invoice_payment_succeeded",
   InvoicePaymentFailed: "invoice_payment_failed",
   SubscriptionCanceled: "subscription_canceled",
@@ -104,15 +104,15 @@ export type EventName = (typeof Event)[keyof typeof Event];
 // useful if we send the same names every time.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type CtaSurface = "diagnostic" | "starter" | "machine_sales";
-export type PriceType = "starter" | "machine";
+export type CtaSurface = "diagnostic" | "starter" | "playbook_sales";
+export type PriceType = "starter" | "playbook";
 
-export interface MachineStepProps {
+export interface PlaybookStepProps {
   step_id: string; // "1".."7"
   step_name: string; // "Pin Your Dream Customer"
 }
 
-export interface PushbackProps extends MachineStepProps {
+export interface PushbackProps extends PlaybookStepProps {
   question_index: number;
 }
 
@@ -163,7 +163,7 @@ export interface DiagnosticShareProps {
   surface?: "result_page" | "email" | "deep_link";
 }
 
-export type VslSurface = "funnel_hub" | "starter" | "machine_sales";
+export type VslSurface = "funnel_hub" | "starter" | "playbook_sales";
 export type VslMode = "video" | "scripted";
 
 export interface VslEventProps {

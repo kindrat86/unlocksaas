@@ -241,11 +241,11 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
                 Unlock SaaS
               </p>
               <p className="text-sm font-semibold mb-3">
-                Machine that produces a Stripe-verified first paying customer in
+                Playbook that produces a Stripe-verified first paying customer in
                 60 days, or you do not pay
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                $1 Starter, $49/month Machine.
+                $1 Starter, $49/month Playbook.
               </p>
             </CardContent>
           </Card>

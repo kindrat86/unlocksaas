@@ -15,7 +15,7 @@
  * This file replaces that with the full JK5 set:
  *
  *   1. PERSONAL  — Reluctant Hero confession; founder's lived experience
- *   2. PROCESS   — The Machine deconstructed; mechanical, no fluff
+ *   2. PROCESS   — The Playbook deconstructed; mechanical, no fluff
  *   3. PATTERN   — Cohort observations from the 10+ founder conversations
  *   4. POLARITY  — AGAINST lines from workbook 01 §6 Beat 5; sharp, opinionated
  *   5. PROOF     — Real wins when they exist; honest, never fabricated
@@ -125,7 +125,7 @@ export const PERSONAL: SeinfeldItem[] = [
       "I stared at the blank doc for forty minutes and produced nothing.",
       "What I noticed afterwards was the relief I felt when I closed it and went back to building. The blank doc had asked me a question I did not want to answer. Building did not ask me anything.",
       "That is the shape of the problem. It is not laziness. It is that the actual work is uncomfortable in a specific way, and almost any other founder task offers an honourable-looking escape from it.",
-      "If you have a blank offer doc somewhere on your machine right now, you are not behind. You are normal. The question is whether you open it tomorrow morning before you open the editor.",
+      "If you have a blank offer doc somewhere on your playbook right now, you are not behind. You are normal. The question is whether you open it tomorrow morning before you open the editor.",
     ],
   ),
   item(
@@ -181,17 +181,17 @@ export const PERSONAL: SeinfeldItem[] = [
 ];
 
 // ── PROCESS (JK5 category 2) ───────────────────────────────────────────────
-// The Machine deconstructed one step at a time. Mechanical voice, no fluff.
+// The Playbook deconstructed one step at a time. Mechanical voice, no fluff.
 export const PROCESS: SeinfeldItem[] = [
   item(
-    "process-machine-step5-outreach-engine",
+    "process-playbook-step5-outreach-engine",
     "process",
-    "The hardest step in the Machine, and why.",
+    "The hardest step in the Playbook, and why.",
     [
       "Quick update on the build.",
-      "Step 5 of the Machine is the outreach engine — the thing that takes your locked dream-customer profile and produces a real 20-target list, with a message tailored to each, drawn from the Dream 100.",
+      "Step 5 of the Playbook is the outreach engine — the thing that takes your locked dream-customer profile and produces a real 20-target list, with a message tailored to each, drawn from the Dream 100.",
       "It is the hardest step. Not because the code is hard. Because the temptation to make it auto-post to social platforms is enormous, and that is the wrong design.",
-      "Auto-posting violates platform ToS. It gets accounts banned. And — this matters more — it removes the founder from the moment that builds the muscle. The whole point of the Machine is to walk you through the work you have been avoiding, not to do it for you.",
+      "Auto-posting violates platform ToS. It gets accounts banned. And — this matters more — it removes the founder from the moment that builds the muscle. The whole point of the Playbook is to walk you through the work you have been avoiding, not to do it for you.",
       "So Step 5 generates the asset, hands it to you, and verifies the public link after you post it from your own account. The verification is what the guarantee counts. The posting is what builds the founder.",
       "It took three rewrites to land on that division of labour. The first two designs did too much for the user. They felt like magic and trained no muscle. This one is uncomfortable in the right way.",
     ],
@@ -201,7 +201,7 @@ export const PROCESS: SeinfeldItem[] = [
     "process",
     "Why the 60-day clock is visible in the app header.",
     [
-      "Design note on the Machine.",
+      "Design note on the Playbook.",
       "The 60-day guarantee clock is visible in the app header from the moment you start. Not hidden in a settings page. Not buried in the receipt. In the header.",
       "I argued with myself for a week about this. The conventional wisdom is to hide the clock — visible countdowns supposedly stress people out, hurt retention, and so on.",
       "I decided the opposite. The clock is a feature of the offer, not a side effect of it. If I am promising you a verified first paying customer in 60 days or your money back, you should see the time you have left every time you open the app. That visibility is the offer working as intended.",
@@ -214,8 +214,8 @@ export const PROCESS: SeinfeldItem[] = [
     "process",
     "What the engine actually does with your Dream 100.",
     [
-      "Behind-the-scenes on how Machine Step 5 picks your 20 outreach targets.",
-      "Every user, when they hit Step 5, has a Dream 100 — either the one the Machine generates by walking them through the six-category prompt, or, for users in my niche, a starter list I seed.",
+      "Behind-the-scenes on how Playbook Step 5 picks your 20 outreach targets.",
+      "Every user, when they hit Step 5, has a Dream 100 — either the one the Playbook generates by walking them through the six-category prompt, or, for users in my niche, a starter list I seed.",
       "The engine then reads their dream-customer profile from Step 1 and picks the 20 entries most likely to contain that exact person. Not the 20 biggest accounts. The 20 most-overlapped congregations.",
       "Concretely: for a founder selling to designers, the engine ranks designer-heavy communities and individual designers above generic 'startup' newsletters, even if the newsletter has 10x the audience. The picker optimises for density of the dream customer, not raw reach.",
       "I tested this against my own use case last week. The 20 it picked for me were tighter than the 20 I would have picked myself. That was the moment I trusted the framework into the engine pattern — it had genuinely seen something I had missed.",
@@ -226,9 +226,9 @@ export const PROCESS: SeinfeldItem[] = [
     "process",
     "Why the engine pushes back on vague answers.",
     [
-      "Most onboarding flows reward the user for finishing the form quickly. The Machine does the opposite. When you give a vague answer in Step 1 or Step 2, it pushes back.",
+      "Most onboarding flows reward the user for finishing the form quickly. The Playbook does the opposite. When you give a vague answer in Step 1 or Step 2, it pushes back.",
       "Example: ask 'who is your dream customer' and someone types 'founders.' The engine does not move on. It says something like 'Founders is a category, not a person. Try again with a name and a situation.'",
-      "I built it this way because the entire problem the Machine is designed to solve is that the user has been avoiding the precise version of these answers for months. A frictionless form lets them avoid it for one more session, wrapped in the feeling of progress.",
+      "I built it this way because the entire problem the Playbook is designed to solve is that the user has been avoiding the precise version of these answers for months. A frictionless form lets them avoid it for one more session, wrapped in the feeling of progress.",
       "The pushback is the product. It is doing the uncomfortable work of refusing to let you escape into category-level answers. That refusal is what produces the locked dream-customer profile that everything downstream depends on.",
       "Some users find this annoying for the first ten seconds. Almost all of them thank me for it by the end of Step 1. It is the closest thing to a co-founder reading over your shoulder that I have figured out how to ship.",
     ],
@@ -239,10 +239,10 @@ export const PROCESS: SeinfeldItem[] = [
     "The metric that exists in the app, and the ones that do not.",
     [
       "Architectural decision worth flagging.",
-      "The Machine tracks exactly one outcome metric: did Stripe see a new customer charge on your account that postdates your onboarding date. That is it.",
+      "The Playbook tracks exactly one outcome metric: did Stripe see a new customer charge on your account that postdates your onboarding date. That is it.",
       "Not signups. Not 'this is awesome' comments. Not waitlist sizes. Not vanity dashboards.",
       "I deliberately did not build an in-app metric panel because the whole avoidance pattern this product treats includes inflating soft metrics into proof. I would have built the very thing that makes the avoidance worse.",
-      "What you see in the Machine instead: how many outreach actions you have logged (a behavioural counter, not an outcome) and whether Stripe has fired yes-or-no for first revenue. The 60-day clock turns green on a yes, runs out on a no, and that is the only verdict the app issues.",
+      "What you see in the Playbook instead: how many outreach actions you have logged (a behavioural counter, not an outcome) and whether Stripe has fired yes-or-no for first revenue. The 60-day clock turns green on a yes, runs out on a no, and that is the only verdict the app issues.",
       "It is a strange product in that sense. Most SaaS dashboards are designed to make you feel productive. This one is designed to make you face whether you got paid.",
     ],
   ),
@@ -417,11 +417,11 @@ export const PROOF: SeinfeldItem[] = [
     "I would rather have an empty proof section than a fake one.",
     [
       "If you read these emails for any length of time, you will eventually see a different kind of email from me. The subject line will be a screenshot.",
-      "It will say something like 'X just verified their first paying customer through the Machine.' It will name the founder (with their permission) and the date Stripe fired the charge.",
+      "It will say something like 'X just verified their first paying customer through the Playbook.' It will name the founder (with their permission) and the date Stripe fired the charge.",
       "Until that exists, this category of email looks different. I will not invent it. I will not run testimonials I do not have. I will not write 'one of my users' in a way that implies more users than I have.",
       "That is a deliberate choice. The founder I am writing to has been burned by inflated proof before. He spots it from three sentences away. The only proof that works on him is proof he can verify.",
       "So instead, this email is the proof of the proof rule. When real wins land, you will see them, attributed, with the founder named. When they have not landed yet, you will see me say so. The empty section is itself a feature.",
-      "If you want to be one of the screenshots — that is what the Machine is for.",
+      "If you want to be one of the screenshots — that is what the Playbook is for.",
     ],
   ),
   item(
@@ -443,10 +443,10 @@ export const PROOF: SeinfeldItem[] = [
     "What a Verified Builder badge actually verifies.",
     [
       "Worth explaining the mechanic so the proof, when it lands, is legible.",
-      "When a Machine user verifies their first paying customer — meaning Stripe shows a charge to a real human, not the user themselves — the app emits a public badge. It lives at a unique URL with the user's slug. It can be shared on X, embedded on their site, posted in their bio.",
+      "When a Playbook user verifies their first paying customer — meaning Stripe shows a charge to a real human, not the user themselves — the app emits a public badge. It lives at a unique URL with the user's slug. It can be shared on X, embedded on their site, posted in their bio.",
       "The badge is auto-generated as an Open Graph image, so when they paste it into a tweet, the preview unfolds with their name, the product they sell, the date of the first verified charge, and a link back to a public page that explains the criteria.",
-      "What the badge verifies: a Stripe-confirmed customer charge on the user's own account, dated after their Machine onboarding, attributable to a user who completed the in-app outreach milestones the guarantee depends on.",
-      "What it does not verify: revenue volume, customer satisfaction, product-market fit. The badge is binary. You got the first customer, or you did not. The Machine refuses to grade anything in between, because the entire diagnosis was that 'in between' is where founders get stuck for years.",
+      "What the badge verifies: a Stripe-confirmed customer charge on the user's own account, dated after their Playbook onboarding, attributable to a user who completed the in-app outreach milestones the guarantee depends on.",
+      "What it does not verify: revenue volume, customer satisfaction, product-market fit. The badge is binary. You got the first customer, or you did not. The Playbook refuses to grade anything in between, because the entire diagnosis was that 'in between' is where founders get stuck for years.",
       "When the first badge lands, the proof email here will link to it. The link will be live. You will be able to click it and see the verification page yourself.",
     ],
   ),
@@ -456,7 +456,7 @@ export const PROOF: SeinfeldItem[] = [
     "The metric I check on Monday morning.",
     [
       "Process note that doubles as a proof commitment.",
-      "Every Monday, I open three numbers. The number of verified first-paying-customer events in the Machine database. The number of $49 active subscriptions in Stripe. The number of refunds in the 60-day window.",
+      "Every Monday, I open three numbers. The number of verified first-paying-customer events in the Playbook database. The number of $49 active subscriptions in Stripe. The number of refunds in the 60-day window.",
       "That is the entire dashboard. I refuse to add a fourth number. The temptation to add 'signups' or 'diagnostic completions' or 'page views' is real every week, and every week I resist it, because the moment I let myself feel productive about those numbers is the moment my own avoidance disease reactivates.",
       "I am telling you this now, in writing, partly so you know what to expect and partly so I have committed publicly to the discipline. If you ever see me publish a milestone post that celebrates a number outside those three, you have permission to remind me of this email.",
       "When the first number — verified first-paying-customer events — moves above zero, the proof emails here change shape. Until then, the empty section is itself the proof. Of the discipline, if nothing else.",

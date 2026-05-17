@@ -2,7 +2,7 @@
  * Step-deliverable email.
  *
  * Brunson rule (DotCom Secrets, Secret #12 + Frank Kern's Results-in-Advance):
- * when a user finishes a Machine step inside the $1 Starter, they MUST receive
+ * when a user finishes a Playbook step inside the $1 Starter, they MUST receive
  * the assembled deliverable in their inbox. The inbox copy is the part they
  * truly "keep" — the browser can crash, cookies can clear, the tab can close.
  * The email cannot.
@@ -72,7 +72,7 @@ export async function sendStepDeliverableEmail(
     "Builder";
   const title = STEP_TITLE[args.stepId];
   const blurb = STEP_BLURB[args.stepId];
-  const continueUrl = `${defaultAppUrl()}/machine/step/${args.stepId}`;
+  const continueUrl = `${defaultAppUrl()}/playbook/step/${args.stepId}`;
   const subject = `${greeting} — ${title} is locked.`;
 
   const text = [

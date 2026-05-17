@@ -3,7 +3,7 @@
 /**
  * Identifies the current Supabase user with PostHog.
  *
- * Mounted inside the authenticated `/machine` layout so it only fires when
+ * Mounted inside the authenticated `/playbook` layout so it only fires when
  * we know who the user is. On sign-out, the sign-out route handler reloads
  * the page — the next pageview won't have this component, so the previous
  * identity stops attaching to new events.

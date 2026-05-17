@@ -137,7 +137,7 @@ export default function PricingTeardownHub() {
         <p className="text-lg text-muted-foreground leading-relaxed">
           Tier structure, anchor mechanics, upgrade triggers, and payment
           model — read through the Brunson Stack and Value Ladder lens. The
-          same four levers the Machine applies when critiquing your own
+          same four levers the Playbook applies when critiquing your own
           pricing page, applied to the indie SaaS pages founders are already
           studying.
         </p>
@@ -234,7 +234,7 @@ export default function PricingTeardownHub() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               The diagnostic labels what is broken on your offer: Wrong
               Person, Weak Offer, or Weak Belief. Pricing-page dysfunction
-              usually shows up as Weak Offer — and the Machine names the
+              usually shows up as Weak Offer — and the Playbook names the
               specific fix.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">

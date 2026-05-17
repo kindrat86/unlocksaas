@@ -25,7 +25,7 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 
 - **Source:** ShipFast (25+ testimonials with Stripe screenshots from $170 to $3,000 MRR).
 - **Workbook section:** Workbook 04 §3 (Front-End Lead Funnel proof block) + Workbook 06 §3 (Vehicle Stories).
-- **File path:** `app/src/app/(marketing)/machine-sales/page.tsx` (post-Sprint-3) — proof block above the FAQ. Also `app/src/app/(marketing)/starter/page.tsx` once the first 5 verified customers exist.
+- **File path:** `app/src/app/(marketing)/playbook-sales/page.tsx` (post-Sprint-3) — proof block above the FAQ. Also `app/src/app/(marketing)/starter/page.tsx` once the first 5 verified customers exist.
 - **Ship gate:** **First Paying Customer Verified event fires.** The "First Paying Customer Verified" milestone (workbook 05 §7) is the literal unlock for testimonial #1. The badge IS the testimonial format.
 - **Acceptance test:** Each testimonial = screenshot + named customer + product URL + one-line journey parable. Zero stock photos. Zero anonymized "verified founder" placeholder testimonials — Marco's skepticism filter will catch them.
 - **Identity guardrail:** Use the `app/src/lib/builder-badge.ts` Verified Builder badge as the testimonial frame — the badge mechanic IS the proof mechanic. Don't reinvent.
@@ -50,7 +50,7 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 - **Acceptance test:** Reads like one human wrote it for one reader. No corporate "we" / "team." No emoji. Signature visible above the © line.
 - **Identity guardrail:** This IS the Reluctant Hero moment in the footer — the place where the AC voice gets the last word. Don't out-source to a copywriter. Maryan writes it himself.
 - **Suggested copy (drop-in):**
-  > I'm Maryan. I built this because I was Marco — a non-engineer who shipped products nobody paid for, and refused to look at the flat Stripe line for almost a year. The Machine is what I wish someone had handed me. If you take it for a spin, reply to any email and you'll get me, not a support queue. — Maryan
+  > I'm Maryan. I built this because I was Marco — a non-engineer who shipped products nobody paid for, and refused to look at the flat Stripe line for almost a year. The Playbook is what I wish someone had handed me. If you take it for a spin, reply to any email and you'll get me, not a support queue. — Maryan
 
 ### Swipe 5 — Free diagnostic as the front door feeding the $49 core
 
@@ -65,7 +65,7 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 
 - **Source:** WIP (3,702 members + 9 real maker avatars on homepage including Pieter Levels).
 - **Workbook section:** Workbook 04 §3 (Pricing Page mechanics) + Workbook 07 Stack Slides (proof stack).
-- **File path:** `app/src/components/blocks/avatar-wall.tsx` (server component) + `app/src/lib/builder-badge.ts::loadVerifiedBuilders` (data) + `app/src/app/page.tsx` (mount point between HonestTestimonials and FAQ). The same component can be reused on `/machine-sales` post-Sprint-3.
+- **File path:** `app/src/components/blocks/avatar-wall.tsx` (server component) + `app/src/lib/builder-badge.ts::loadVerifiedBuilders` (data) + `app/src/app/page.tsx` (mount point between HonestTestimonials and FAQ). The same component can be reused on `/playbook-sales` post-Sprint-3.
 - **Ship gate:** **9 verified customers AND each opted into public visibility** (workbook 10 public-proof loop). 9 is the WIP-grid number; that's what reads "this is a real, populated thing" without crossing into "look how many we have."
 - **Status (2026-05-17, post-audit-v2.1):** **PRE-STAGED.** Component shipped, mounted, evidence-gated, wrapped in Suspense so the DB read does not block the rest of the page. Reads from the `builder_badges` view which already filters to `share_visibility=public` + `builder_slug NOT NULL` + `first_customer_at NOT NULL`. Renders 9-grid only when `loadVerifiedBuilders()` returns ≥ 9 rows; otherwise returns null and `HonestTestimonials` continues to carry the proof layer.
 - **Acceptance test:** Each avatar = initial + first name + product name + link to `/builder/<slug>`. Click an avatar → goes to that builder's `/builder/[slug]` page. No photos at MVP — initials only (avoids photo-permission gating; opt-in remains binary via `share_visibility`). Photos can be added in a follow-up pass once 9 customers land.
@@ -85,7 +85,7 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 
 | Workbook section | Add this | Source swipe |
 |---|---|---|
-| 01 §5 Hooks | Add Hook #13 from the avatar-wall pattern: "9 founders just like you ran the Machine. Here are their first customer screenshots." | Swipe 6 |
+| 01 §5 Hooks | Add Hook #13 from the avatar-wall pattern: "9 founders just like you ran the Playbook. Here are their first customer screenshots." | Swipe 6 |
 | 04 §2 Funnel Hub spec | Add "Live counter row" + "As seen in row" + "Founder signature footer" as three new blocks under existing components. Mark each with ship gate. | Swipes 1, 3, 4 |
 | 04 §3 Front-End Lead Funnel | Add "Proof block" between hero and CTA — type = revenue screenshots once first customer verified. | Swipe 2 |
 | 05 §7 Identity / Movement | Add "founding cohort" terminology as the optional Phase 2 retire-by-count mechanic. Note explicitly that it is NOT artificial scarcity. | Swipe 7 |

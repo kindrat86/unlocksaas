@@ -7,8 +7,8 @@ import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
  * Terms of Service. E-E-A-T trust column + commercial table-stakes.
  *
  * Scope: describes the actual product surface as of 2026-05-17 — the free
- * diagnostic, the $1 Starter, the $49/mo Core ("Machine"), and the 60-day
- * money-back guarantee gated to the Machine. Pricing and product names are
+ * diagnostic, the $1 Starter, the $49/mo Core ("Playbook"), and the 60-day
+ * money-back guarantee gated to the Playbook. Pricing and product names are
  * sourced from strategy/state.json (Stripe prices locked); update when
  * those change.
  *
@@ -23,7 +23,7 @@ import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "Terms of Service — Unlock SaaS",
   description:
-    "The terms you accept when you use Unlock SaaS. Plain English. Covers the free diagnostic, the $1 Starter, the $49/mo Machine, and the 60-day guarantee.",
+    "The terms you accept when you use Unlock SaaS. Plain English. Covers the free diagnostic, the $1 Starter, the $49/mo Playbook, and the 60-day guarantee.",
   alternates: { canonical: "/terms" },
   openGraph: {
     title: "Terms of Service — Unlock SaaS",
@@ -103,7 +103,7 @@ export default function TermsPage() {
               focused first artifact for your stuck launch. Non-recurring.
             </li>
             <li>
-              <strong>The Machine</strong> — a $49/month subscription that runs
+              <strong>The Playbook</strong> — a $49/month subscription that runs
               a seven-step process to produce your first verified paying
               customer. Billed monthly until you cancel.
             </li>
@@ -113,13 +113,13 @@ export default function TermsPage() {
         <section className="mb-8 space-y-3 text-base leading-relaxed">
           <h2 className="text-2xl font-bold">The 60-day guarantee</h2>
           <p>
-            The Machine subscription comes with a 60-day money-back guarantee.
+            The Playbook subscription comes with a 60-day money-back guarantee.
             The deal:
           </p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
-              You complete the steps the Machine asks you to complete. The
-              Machine tracks step completion automatically.
+              You complete the steps the Playbook asks you to complete. The
+              Playbook tracks step completion automatically.
             </li>
             <li>
               If, by the end of day 60, no paying customer has cleared in
@@ -199,7 +199,7 @@ export default function TermsPage() {
           <h2 className="text-2xl font-bold">No guarantees outside the
             guarantee</h2>
           <p>
-            We promise the 60-day refund on the Machine if no customer
+            We promise the 60-day refund on the Playbook if no customer
             materializes despite real participation. We do not promise specific
             revenue numbers, traffic numbers, conversion rates, or business
             outcomes beyond that. Software is provided &ldquo;as is.&rdquo;

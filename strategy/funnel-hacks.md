@@ -198,7 +198,7 @@ Three more direct-peer funnels and one anti-hack, hacked to close out Brunson Se
 
 **What I Would Reject:**
 - **One-time pricing for the core.** Our subscription is load-bearing for the guarantee economics. The $1 Starter already covers the "one-time entry point" itch.
-- **Vanity monetization** (custom domains, leaderboards). Marco's pain is revenue, not vanity. The Verified Builder badge must always tie to a Stripe-verified result, never to "I bought The Machine."
+- **Vanity monetization** (custom domains, leaderboards). Marco's pain is revenue, not vanity. The Verified Builder badge must always tie to a Stripe-verified result, never to "I bought The Playbook."
 
 ---
 
@@ -232,7 +232,7 @@ Three more direct-peer funnels and one anti-hack, hacked to close out Brunson Se
 **What I Would Reject:**
 - **Coming-Soon product status.** Justin can do this because his 175k newsletter forgives the delay. We have 0 subscribers — every promised product must ship within the sprint or get cut.
 - **Media logos for credibility.** We have none. Don't fake it. Replace with "Verified Builders shipped from" once we have customer logos.
-- **Worldview-only positioning.** Justin sells the philosophy; he doesn't enforce the result. Our differentiation is that the Machine doesn't let Marco out without the result OR the refund. Reinforce that on every CTA.
+- **Worldview-only positioning.** Justin sells the philosophy; he doesn't enforce the result. Our differentiation is that the Playbook doesn't let Marco out without the result OR the refund. Reinforce that on every CTA.
 
 ---
 
@@ -311,7 +311,7 @@ Eight patterns now operationalized — five from v1 plus three new from v2.
 | 4 | Founder-signature in footer | Pieter Levels (Nomads), Arvid Kahl | **Add immediately** — current footer says "Built by a non-engineer who shipped anyway." Strengthen to "I'm Maryan. I built this because I was Marco. I put two years into it." |
 | 5 | Free / low-cost front door | Arvid (free NL), IndiePage (free tier) | Free Diagnostic IS this. Blocked on `/diagnostic/page.tsx` placeholder. |
 | 6 | Avatar wall of real users | WIP, IndiePage, Small Bets | Already shipped at `/builder/[slug]/opengraph-image.tsx`. Add `/builders` index when N ≥ 20. |
-| 7 | Strike-through anchor pricing | ShipFast | Adopt on `/machine-sales` Stack: "$496 stack → $49/mo." Workbook 07 §3 already specs. |
+| 7 | Strike-through anchor pricing | ShipFast | Adopt on `/playbook-sales` Stack: "$496 stack → $49/mo." Workbook 07 §3 already specs. |
 | 8 | NO fake scarcity / NO countdown | Small Bets validates our workbook 07 rejection | Discipline confirmed. Maintain across all surfaces. |
 
 ### Three additional patterns from v2
@@ -331,18 +331,18 @@ This is the operationalization. Every row is a specific change to a specific fil
 | # | Surface | Change | Source pattern | Priority | Est |
 |---|---|---|---|---|---|
 | 1 | `/diagnostic/page.tsx` | Replace Sprint 2 placeholder with actual diagnostic form (form already exists at `diagnostic-form.tsx`) | v2 Hacks 6, 7 (lead magnet must actually open) | **P0** | 2h |
-| 2 | `/machine-sales/page.tsx` | Ship Sprint 3 long-form per workbook 07: Big Domino slides 1–6, Three Secrets 7–15, Stack with itemized values 16–30, 16 closes 31–43, FAQ from workbook 06 external rewrites + dollar-objections.md | v1 Hack 1 (ShipFast stack), v2 Hack 7 (Small Bets pricing + guarantee), v2 cross-cutting #7 (strike-through anchor) | **P0** | 1 sprint |
+| 2 | `/playbook-sales/page.tsx` | Ship Sprint 3 long-form per workbook 07: Big Domino slides 1–6, Three Secrets 7–15, Stack with itemized values 16–30, 16 closes 31–43, FAQ from workbook 06 external rewrites + dollar-objections.md | v1 Hack 1 (ShipFast stack), v2 Hack 7 (Small Bets pricing + guarantee), v2 cross-cutting #7 (strike-through anchor) | **P0** | 1 sprint |
 | 3 | `app/src/app/page.tsx` footer | Replace "Built by a non-engineer who shipped anyway" with Pieter-style handwritten signature: "I'm Maryan. I built this because I was Marco. I put two years into it." | v2 cross-cutting #4 | **P1** | 5 min |
 | 4 | `/diagnostic/diagnostic-form.tsx` | Add "I never sell your data" trust line below email field, plus what-happens-next ("5-day sequence + weekly Friday note. Unsubscribe wipes you in 1 click.") | v2 Hack 6 (Justin Welsh) + cross-cutting #10 | **P1** | 5 min |
 | 5 | `app/src/app/page.tsx` (funnel hub) | Add italicized polarity AGAINST line under hero sentence (e.g. "This is not another marketing course.") | v1 cross-cutting + v2 Hack 7 visible-NO pattern | **P1** | 5 min |
 | 6 | `app/src/app/page.tsx` (funnel hub) | Wire `customer_count` from Supabase view; render "Joined by N Verified Builders" only when N ≥ 25 | v2 cross-cutting #1 | **P1** | 2h |
 | 7 | New page `/builders` | Index page rendering the Verified Builder OG cards in a grid once N ≥ 20 | v2 Hack 5 (IndiePage) + cross-cutting #6 | **P2** | 4h |
-| 8 | `/machine-sales/page.tsx` Stack section | Itemize partner discounts (Resend $X, Supabase $X, Anthropic credits $X, Vercel credits $X) — negotiate $200–$500 of partner credits as Verified Builder welcome | v1 Hack 1 (ShipFast $1,210 stack) | **P1** | 2h partner outreach + 1h copy |
+| 8 | `/playbook-sales/page.tsx` Stack section | Itemize partner discounts (Resend $X, Supabase $X, Anthropic credits $X, Vercel credits $X) — negotiate $200–$500 of partner credits as Verified Builder welcome | v1 Hack 1 (ShipFast $1,210 stack) | **P1** | 2h partner outreach + 1h copy |
 | 9 | `lib/seinfeld/*` | Activate Friday weekly. Topic queue = JK5 categories (workbook 09 §2). First issue: Parable 1 (Blank Offer Page) | v1 Hack 3 (Arvid free weekly does 97% of the work) | **P1** | Needs CRON_SECRET first |
 | 10 | `/diagnostic/result/page.tsx` | Add "Save your diagnosis to a /builder/[slug] page, free" button — turns diagnostic into viral lead magnet | v2 Hack 5 (IndiePage free-tier viral loop) | **P2** | 4h |
-| 11 | `/machine-sales` new FAQ section | 8 FAQ entries derived from workbook 06 External Belief Rewrites + dollar-objections.md categories. Each entry = objection in their words + rewrite in ours | v1 Hack 1 (ShipFast FAQ depth, 12+ questions) | **P1** | 3h |
-| 12 | `app/src/app/page.tsx` (funnel hub) | Add ShipFast/Lovable handoff line below hero: "You already shipped with Lovable or Cursor. The flat Stripe line is the next problem. That's what The Machine solves." | v1 Hack 1 (positioning as sequel, not competitor) | **P2** | 10 min |
-| 13 | All marketing pages (`/`, `/diagnostic`, `/machine-sales`) | Add 1 italic polarity AGAINST sentence under each hero | v1 + v2 cross-cutting visible-NO pattern | **P1** | 30 min total |
+| 11 | `/playbook-sales` new FAQ section | 8 FAQ entries derived from workbook 06 External Belief Rewrites + dollar-objections.md categories. Each entry = objection in their words + rewrite in ours | v1 Hack 1 (ShipFast FAQ depth, 12+ questions) | **P1** | 3h |
+| 12 | `app/src/app/page.tsx` (funnel hub) | Add ShipFast/Lovable handoff line below hero: "You already shipped with Lovable or Cursor. The flat Stripe line is the next problem. That's what The Playbook solves." | v1 Hack 1 (positioning as sequel, not competitor) | **P2** | 10 min |
+| 13 | All marketing pages (`/`, `/diagnostic`, `/playbook-sales`) | Add 1 italic polarity AGAINST sentence under each hero | v1 + v2 cross-cutting visible-NO pattern | **P1** | 30 min total |
 | 14 | New PDF lead magnet | "10 Founders, 10 Flat Stripe Lines: What Killed Them and What Worked" — 6-page PDF derived from Maryan's 10+ conversation set + dollar-objections.md categories. Offered on `/diagnostic` as alternative path. | v2 Hack 6 (Justin Welsh "110 ideas") | **P2** | 1 day |
 | 15 | Testimonial capture flow | After each Verified Customer event, trigger an email asking for a 2-sentence quote. Pre-fill with dollar math template: "$49 to get my first $X customer was the easiest math I've ever done." | v2 Hack 7 (Small Bets testimonial wall) + cross-cutting #11 | **P2** | 4h |
 | 16 | `strategy/state.json` | Update `funnel_hacks: []` with 7 structured entries | bookkeeping | **P0** | covered in this pass |

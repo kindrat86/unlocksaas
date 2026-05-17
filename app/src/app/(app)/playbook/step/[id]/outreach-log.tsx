@@ -199,7 +199,7 @@ export function OutreachLog() {
               </p>
             )}
             <Button asChild>
-              <Link href="/machine/step/7">
+              <Link href="/playbook/step/7">
                 Continue to Step 7: Verify Your First Customer
               </Link>
             </Button>

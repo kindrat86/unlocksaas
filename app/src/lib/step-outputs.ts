@@ -4,13 +4,13 @@
  * Frank Kern's Results-in-Advance rule (DotCom Secrets Secret #12):
  * the prospect must walk away with a real, useful, complete result they can
  * KEEP after they pay. For the $1 Starter that means: when a user finishes
- * Machine Step 1 (Dream Customer) and Step 2 (Offer), the assembled output
+ * Playbook Step 1 (Dream Customer) and Step 2 (Offer), the assembled output
  * must survive session loss. It must be retrievable from any device. It must
  * land in their inbox. Otherwise it's "results-in-browser-until-cookies-clear"
  * — which is not results-in-advance, it's a teaser.
  *
  * This module is the persistence layer. The engine route at /api/engine writes
- * here on each completed step; the step page at /machine/step/[id] reads here
+ * here on each completed step; the step page at /playbook/step/[id] reads here
  * on mount; the onboarding page at /onboarding reads here to surface the
  * Starter carry-over.
  *
@@ -150,7 +150,7 @@ export async function loadStepOutputs(
 
 /**
  * Load a single step's output. Lighter than loadStepOutputs when the caller
- * only needs one column (e.g. the step page on /machine/step/1).
+ * only needs one column (e.g. the step page on /playbook/step/1).
  */
 export async function loadStepOutput(
   client: SupabaseClient,

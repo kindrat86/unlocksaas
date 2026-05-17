@@ -570,20 +570,20 @@ function AlreadyUsedPanel({ data }: { data: AlreadyUsed }) {
         <Link
           href={`/starter?from=diagnostic_repeat&lead=${data.existingId}`}
         >
-          Start the Machine — $1 Starter
+          Start the Playbook — $1 Starter
         </Link>
       </Button>
 
       <Button asChild variant="ghost" size="lg" className="w-full text-sm">
         <Link
-          href={`/machine-sales?from=diagnostic_repeat&lead=${data.existingId}`}
+          href={`/playbook-sales?from=diagnostic_repeat&lead=${data.existingId}`}
         >
-          Or skip ahead to The Machine — $49/mo
+          Or skip ahead to The Playbook — $49/mo
         </Link>
       </Button>
 
       <p className="text-xs text-muted-foreground text-center">
-        $1 one-time. The full $49/mo Machine is the optional upgrade on the
+        $1 one-time. The full $49/mo Playbook is the optional upgrade on the
         next page. 60-day first-paying-customer guarantee on Core.
       </p>
     </div>

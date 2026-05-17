@@ -27,7 +27,7 @@ When the $1 Starter is live. Build alongside launch (small static page).
 - Hero: enemy sentence + one-line bio (workbook 01 Section 6 Beat 2)
 - Free Diagnostic CTA (primary)
 - $1 Starter CTA (secondary)
-- $49 Machine CTA (tertiary, below the fold)
+- $49 Playbook CTA (tertiary, below the fold)
 - Manifesto (workbook 05 Section 7)
 - Founder's six-line intro video
 - Podcast appearances list (grows over time)
@@ -89,7 +89,7 @@ The highest-leverage Phase 2 play. Five candidates:
 
 ### Who becomes an affiliate
 
-1. Customers who completed The Machine and got their first paying customer. They have the story.
+1. Customers who completed The Playbook and got their first paying customer. They have the story.
 2. Influencers in Category 2 of the Dream 100 (workbook 08). They have the audience.
 3. Bootstrapped-founder coaches / community owners who want a tool they can recommend without losing their own business model.
 
@@ -126,7 +126,7 @@ When activated:
 | Problem-aware | Knows there is a problem | Founder with flat Stripe; blames product | "Your launch is flat. Here is what is actually causing it." (curiosity hook) |
 | Solution-aware | Knows there are solutions | Has tried tactics; still flat | "You tried more traffic. Here is the work nobody told you to do." (contrarian hook) |
 | Product-aware | Knows Unlock SaaS exists | Read the Free Diagnostic | "60 days. Verified by your own Stripe. Or you pay nothing." (offer hook) |
-| Most-aware | Buys related products | Pays for IH Pro, etc. | "You are one funnel away. Run The Machine." (direct hook) |
+| Most-aware | Buys related products | Pays for IH Pro, etc. | "You are one funnel away. Run The Playbook." (direct hook) |
 
 ### Cold-Traffic Avatar
 
@@ -162,7 +162,7 @@ NEVER cold to $49. Always cold to free to $1 to $49.
 
 ### Butterfly Marketing (small viral loops)
 
-Three plays inside The Machine:
+Three plays inside The Playbook:
 
 | Play | What it does | Trigger |
 |---|---|---|
@@ -172,7 +172,7 @@ Three plays inside The Machine:
 
 ### Other tactical growth hacks (deferred but noted)
 
-- SEO programmatic pages ("first paying customer for [niche]" template, generated from Machine outputs)
+- SEO programmatic pages ("first paying customer for [niche]" template, generated from Playbook outputs)
 - Free Diagnostic widget for partner SaaS to embed
 - Public weekly metrics dashboard (founder's own progress, build-in-public maxed out)
 - Quarterly virtual cohort of new $49 customers (community-led growth)
@@ -230,7 +230,7 @@ Under `traffic_secrets.growth_hacking`:
 Three updates to `BUILD-PROMPT-CLAUDE-CODE.md`:
 
 1. **The $49 sales page must consume workbook 07** (Big Domino, Three Secrets with Story-Strategy-Case Study, full Stack and Closes inventory). Not just workbook 03 Script 5's Lite version.
-2. **Machine Step 5 must consume workbook 08** (the real Dream 100). Engine selects 20 target outreach actions FROM the Dream 100.
+2. **Playbook Step 5 must consume workbook 08** (the real Dream 100). Engine selects 20 target outreach actions FROM the Dream 100.
 3. **The Funnel Hub (homepage) is built alongside launch**, not deferred. Small, central, the home of the brand.
 
 ### Movement and manifesto

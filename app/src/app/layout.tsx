@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: "%s — Unlock SaaS",
   },
   description:
-    "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+    "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
   applicationName: "Unlock SaaS",
   authors: [{ name: "Maryan", url: "https://unlocksaas.com/about" }],
   creator: "Maryan",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "Unlock SaaS",
     title: "Unlock SaaS — Your First Paying Customer in 60 Days",
     description:
-      "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
     url: "/",
     locale: "en_US",
   },
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Unlock SaaS — Your First Paying Customer in 60 Days",
     description:
-      "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
     creator: "@maryan",
   },
 };

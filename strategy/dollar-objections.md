@@ -34,10 +34,10 @@ The most direct dollar objection. Pure friction with recurring billing, independ
 
 **$49 FAQ entry:**
 > **Q: Why a subscription instead of a one-time payment?**
-> A: Because the 60-day guarantee needs a billing cycle to live on, and because the Machine isn't a manual you read once — it's a workspace where outreach gets sent and a Stripe webhook listens for your first customer. If you finish in 30 days, cancel in 30 days. You'll still own everything you built inside.
+> A: Because the 60-day guarantee needs a billing cycle to live on, and because the Playbook isn't a manual you read once — it's a workspace where outreach gets sent and a Stripe webhook listens for your first customer. If you finish in 30 days, cancel in 30 days. You'll still own everything you built inside.
 
 **Disqualifying copy (sales page Section 5):**
-> **This is not for you if** you're already exhausted by subscriptions and want a one-time payment that you can ignore for six months. The $1 Starter is one-time. Take that, finish your WHO and your WHAT, and walk away with a complete small win. The Machine subscription is for the founder who wants the guarantee clock and the doing-environment, not the e-book.
+> **This is not for you if** you're already exhausted by subscriptions and want a one-time payment that you can ignore for six months. The $1 Starter is one-time. Take that, finish your WHO and your WHAT, and walk away with a complete small win. The Playbook subscription is for the founder who wants the guarantee clock and the doing-environment, not the e-book.
 
 ---
 
@@ -58,7 +58,7 @@ Pre-revenue founders run on fumes. This is the cleanest "afford" objection — n
 
 **$49 FAQ entry:**
 > **Q: I can't afford $49/mo. I'm pre-revenue.**
-> A: That's the exact reason the 60-day guarantee exists. The cap on your downside is $98 — two months — and if the Machine doesn't produce a verified Stripe charge in that window AND you completed the in-product milestones, you get the $98 back. The founders I built this for are spending more than $98/mo on tools they're not using. This is the tool that has to pay for itself or refund itself.
+> A: That's the exact reason the 60-day guarantee exists. The cap on your downside is $98 — two months — and if the Playbook doesn't produce a verified Stripe charge in that window AND you completed the in-product milestones, you get the $98 back. The founders I built this for are spending more than $98/mo on tools they're not using. This is the tool that has to pay for itself or refund itself.
 
 **Disqualifying copy:**
 > **This is not for you if** $98 over 60 days is genuinely the difference between rent and no-rent. The free Diagnostic stays free forever. Use that, then come back when the math works.
@@ -78,11 +78,11 @@ Marco's skepticism toward coaches, courses, templates, and "frameworks." This is
 | IH: 3 years to $5k MRR + burnout | (author) | *"I didn't use any fancy AI tools."* |
 | IH: 3 years to $5k MRR + burnout | (author) | *"I wasted 1 full year building products nobody wanted because I was afraid to actually ask people what they needed."* |
 
-**Brunson classification:** External Belief #1 ("I do not have time for another framework") + Internal Belief #3 ("praise is not payment"). The existing rewrite ("The Machine is not a framework. It is a tool. The framework lives in the engine.") is exactly right — but until now had no verbatim quote behind it.
+**Brunson classification:** External Belief #1 ("I do not have time for another framework") + Internal Belief #3 ("praise is not payment"). The existing rewrite ("The Playbook is not a framework. It is a tool. The framework lives in the engine.") is exactly right — but until now had no verbatim quote behind it.
 
 **$49 FAQ entry:**
 > **Q: How is this different from every other course / coach / template I've already wasted money on?**
-> A: A course makes you smarter. A coach makes you accountable. Neither does the work. The Machine is a workspace — outreach gets sent inside it, Stripe pings it when your first customer pays. The thing it produces is a verified charge in your account, not a finished worksheet. If you finish the 7 steps and no charge lands, the guarantee fires. No course offers that because no course can.
+> A: A course makes you smarter. A coach makes you accountable. Neither does the work. The Playbook is a workspace — outreach gets sent inside it, Stripe pings it when your first customer pays. The thing it produces is a verified charge in your account, not a finished worksheet. If you finish the 7 steps and no charge lands, the guarantee fires. No course offers that because no course can.
 
 **Disqualifying copy:**
 > **This is not for you if** you've been burned by frameworks-on-PDFs and you assume this is one more. Look at the product before you buy: the framework is *inside* the engine, you answer 3–5 questions per step, and the engine assembles. If that's still too close to "another course" for you, keep your money.
@@ -109,10 +109,10 @@ The founder who already tried the obvious solutions, got nothing, and is now ske
 
 **$49 FAQ entry:**
 > **Q: I've already tried [interviews / ads / Indie Hackers / cold email] and nothing converted. What makes this different?**
-> A: Be honest about what "tried" means. Most founders who say it tried two interviews, gave up, and concluded the market was wrong. The Machine forces 20 logged outreach actions before the guarantee fires — that's the floor. If you completed 20 and still no Stripe charge, the offer was wrong, and the refund tells you that for free. Most never get to 20, which is why most don't know what's broken.
+> A: Be honest about what "tried" means. Most founders who say it tried two interviews, gave up, and concluded the market was wrong. The Playbook forces 20 logged outreach actions before the guarantee fires — that's the floor. If you completed 20 and still no Stripe charge, the offer was wrong, and the refund tells you that for free. Most never get to 20, which is why most don't know what's broken.
 
 **Disqualifying copy:**
-> **This is not for you if** you've already concluded the problem is the market. The Machine assumes the problem is the order — wrong person, wrong promise, wrong outreach — and that you can fix it in 60 days. If you believe the market is dead, no tool helps.
+> **This is not for you if** you've already concluded the problem is the market. The Playbook assumes the problem is the order — wrong person, wrong promise, wrong outreach — and that you can fix it in 60 days. If you believe the market is dead, no tool helps.
 
 ---
 
@@ -132,10 +132,10 @@ The technical/semi-technical founder who reflexively reaches for "I'll write a s
 
 **$49 FAQ entry:**
 > **Q: Couldn't I build this myself?**
-> A: Yes. Probably in 3 weekends. While you're building, you're not running the funnel — which is the exact disease the Machine treats. If you build the tool instead of using one, you're a founder who's chosen to ship one more product nobody pays for. That's not a tool decision. That's a story you keep telling yourself.
+> A: Yes. Probably in 3 weekends. While you're building, you're not running the funnel — which is the exact disease the Playbook treats. If you build the tool instead of using one, you're a founder who's chosen to ship one more product nobody pays for. That's not a tool decision. That's a story you keep telling yourself.
 
 **Disqualifying copy:**
-> **This is not for you if** what you actually want is permission to build another tool. The Machine is for finishing the funnel you already have, not for adding tool #4 to the graveyard.
+> **This is not for you if** what you actually want is permission to build another tool. The Playbook is for finishing the funnel you already have, not for adding tool #4 to the graveyard.
 
 ---
 
@@ -174,7 +174,7 @@ Already in state.json line 101: *"Praise without payment. Across 10+ conversatio
 
 **Brunson classification:** Internal Belief #3 chain breaker in state.json (`"Praise -> false signal: rewrite signal ('praise is not payment, only Stripe is')"`). The verbatim quotes give us the line we hand back to the founder in the engine.
 
-**Engine pushback line (Machine Step 1, when the user names their dream customer):**
+**Engine pushback line (Playbook Step 1, when the user names their dream customer):**
 > *"Before you call them validated, check Stripe. The people who upvote your milestones aren't always the people who pay for your product."* — credit nimesh on Indie Hackers.
 
 This turns a public quote into a piece of in-product pushback. Builds credibility AND breaks the praise-as-validation chain in one move.
@@ -190,8 +190,8 @@ This turns a public quote into a piece of in-product pushback. Builds credibilit
 | Free Diagnostic Soap Opera Email #3 (PS line — workbook 04 Section 5) | 4, 7 |
 | $1 Starter sales page (workbook 03 Script 3, second-objection paragraph) | 1, 2 |
 | Onboarding Four-Question Close (External Belief seeds — workbook 06 Section 6) | All 7 (engine uses user's stated objection to pick the rewrite) |
-| Engine pushback in Machine Step 1 | 7 (verbatim nimesh quote) |
-| Engine pushback in Machine Step 5 (outreach hesitation) | 4 (jackfranklyn's "zero cold emails sent" mirror) |
+| Engine pushback in Playbook Step 1 | 7 (verbatim nimesh quote) |
+| Engine pushback in Playbook Step 5 (outreach hesitation) | 4 (jackfranklyn's "zero cold emails sent" mirror) |
 
 ---
 
@@ -202,7 +202,7 @@ Workbook 06 had 5 External Belief rewrites synthesized from Maryan's interpretat
 1. **Verbatim language** behind every existing category (was abstract → now sourced quotes).
 2. **One new External Belief (#6)** — "I could build this myself" — not in the original 5. Add to workbook 06 Section 4 and state.json on next revision pass.
 3. **One new sales-page section** — Category 6 (price-scales-badly) — becomes a trust FAQ, no disqualifier.
-4. **One new engine-pushback line** sourced from a real Indie Hacker (nimesh) — useable as soon as Machine Step 1 ships.
+4. **One new engine-pushback line** sourced from a real Indie Hacker (nimesh) — useable as soon as Playbook Step 1 ships.
 
 ---
 
@@ -250,7 +250,7 @@ Second pass after the round 1 source set was reviewed. New threads surfaced via 
 | R2-12 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | Daniil Khanin | *"The product works. What's broken is everything around it — how I sell, who I sell to, what I sell."* | 4 — "Not the Tool's Job" |
 | R2-13 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | clawback | *"A lot of founders think they have a product problem when they really have a market-motion problem."* | 4 — "Not the Tool's Job" |
 | R2-14 | [IH: 9 years, 90 paid, €6,356](https://www.indiehackers.com/post/10-947-signups-90-paid-6-356-nine-years-of-building-a-product-nobody-buys-b60e773954) | plugiva | *"Tools used a few times a year almost fight against recurring pricing, no matter how valuable."* | 1 — Subscription Fatigue |
-| R2-15 | [Medium: I'm Tired of Indie Hackers](https://medium.com/@jovan.cicmil.dev/im-tired-of-indie-hackers-ac5c0ca1bde7) | Jovan Cicmil | *"The indie hacker ecosystem has become a machine for shipping micro-apps, scraping together landing pages, and bragging about revenue that never materializes."* | 3 — Burned by Gurus |
+| R2-15 | [Medium: I'm Tired of Indie Hackers](https://medium.com/@jovan.cicmil.dev/im-tired-of-indie-hackers-ac5c0ca1bde7) | Jovan Cicmil | *"The indie hacker ecosystem has become a playbook for shipping micro-apps, scraping together landing pages, and bragging about revenue that never materializes."* | 3 — Burned by Gurus |
 | R2-16 | [Medium: I'm Tired of Indie Hackers](https://medium.com/@jovan.cicmil.dev/im-tired-of-indie-hackers-ac5c0ca1bde7) | Jovan Cicmil | *"Just ship as many half-baked ideas as possible, and generate some of that sweet Twitter engagement."* | 3 — Burned by Gurus |
 | R2-17 | [Medium: Indie Hackers Distribution Paradox 2026](https://medium.com/@Travel4Fun4U/the-indie-hackers-distribution-paradox-2026-edition-why-your-product-is-perfect-and-nobody-d47c9070523a) | r/indiehackers (cited) | *"I have a great product with 37 users. I'm exhausted. I feel like I'm shouting into the void."* | 7 — Praise-Without-Payment |
 | R2-18 | [IH: Most SaaS products fail for the same boring reason](https://www.indiehackers.com/post/most-saas-products-fail-for-the-same-boring-reason-8c3b1cd51b) | Astra Wysocka | *"The product doesn't actually replace anything. It exists next to the user's workflow instead of inside it."* | **8 — Built Beside, Not Inside (NEW)** |
@@ -261,9 +261,9 @@ Second pass after the round 1 source set was reviewed. New threads surfaced via 
 
 ### New Category Surfaced
 
-**Category 8 — "Built Beside, Not Inside" (workflow-replacement objection):** Founders who shipped a tool that adds a step rather than removing one. Marco's exact pattern: he built an AI tool, but it sits *next to* the founder's existing workflow (Notion, Stripe, Indie Hackers feed) instead of replacing a step in it. UnlockSaaS itself faces this objection — the Machine must be the *one* place the founder does the post-launch work, not "another tab open."
+**Category 8 — "Built Beside, Not Inside" (workflow-replacement objection):** Founders who shipped a tool that adds a step rather than removing one. Marco's exact pattern: he built an AI tool, but it sits *next to* the founder's existing workflow (Notion, Stripe, Indie Hackers feed) instead of replacing a step in it. UnlockSaaS itself faces this objection — the Playbook must be the *one* place the founder does the post-launch work, not "another tab open."
 
-**Brunson classification:** New External Belief #7 — "Even good tools fail because they sit beside my real work." Engine rewrite: *"The Machine isn't a place you visit. It's the place outreach is sent from and the place Stripe pings when your first customer pays. If those two events don't live inside it, kill the tool. Both do."*
+**Brunson classification:** New External Belief #7 — "Even good tools fail because they sit beside my real work." Engine rewrite: *"The Playbook isn't a place you visit. It's the place outreach is sent from and the place Stripe pings when your first customer pays. If those two events don't live inside it, kill the tool. Both do."*
 
 ---
 
@@ -272,25 +272,25 @@ Second pass after the round 1 source set was reviewed. New threads surfaced via 
 Six rebuttals, one per External Belief (the original 5 + the round-1 "build it myself" + new "built beside"). 60–100 words each. Voice: Reluctant Hero. Acknowledge in their own language first, then reframe.
 
 **Q1 — "I do not have time for another framework."**
-> I get it. You've already read the books, watched the YouTube breakdowns, joined two Slack groups. None of it shipped a customer. The Machine isn't a framework — the framework is buried *inside* the engine. You answer 3–5 questions per step, the engine assembles the work, you take the action it tells you to take. By Step 7 either Stripe pings with your first sale or the guarantee fires and you get $98 back. You don't read this. You finish it.
+> I get it. You've already read the books, watched the YouTube breakdowns, joined two Slack groups. None of it shipped a customer. The Playbook isn't a framework — the framework is buried *inside* the engine. You answer 3–5 questions per step, the engine assembles the work, you take the action it tells you to take. By Step 7 either Stripe pings with your first sale or the guarantee fires and you get $98 back. You don't read this. You finish it.
 
 **Q2 — "I have tried customer interviews and they did not help."**
-> Most founders who say this did two interviews, got polite feedback, and concluded the market was wrong. Be honest about what "tried" means. The Machine forces 20 logged outreach actions before the guarantee can fire — that's the floor. If you complete 20 and no Stripe charge lands, the offer was wrong, and the refund tells you that for free. Most founders never get to 20. That's why most still don't know what's actually broken.
+> Most founders who say this did two interviews, got polite feedback, and concluded the market was wrong. Be honest about what "tried" means. The Playbook forces 20 logged outreach actions before the guarantee can fire — that's the floor. If you complete 20 and no Stripe charge lands, the offer was wrong, and the refund tells you that for free. Most founders never get to 20. That's why most still don't know what's actually broken.
 
 **Q3 — "Praise without payment means my market is dead."**
-> A founder on Indie Hackers just posted: 10,947 signups, 90 paid, nine years. He wrote *"I'm bad at selling. Nine years of proof."* That's not a dead market. That's a missing motion. The Machine assumes the people clapping on your launch post are not the people who pay — and forces you to go find the ones who do, with logged outreach the engine tracks. If 20 of the right conversations still produce no charge, the guarantee fires.
+> A founder on Indie Hackers just posted: 10,947 signups, 90 paid, nine years. He wrote *"I'm bad at selling. Nine years of proof."* That's not a dead market. That's a missing motion. The Playbook assumes the people clapping on your launch post are not the people who pay — and forces you to go find the ones who do, with logged outreach the engine tracks. If 20 of the right conversations still produce no charge, the guarantee fires.
 
 **Q4 — "$49/mo is too much pre-revenue."**
-> Two coffees a week. And the cap on your downside is $98, not $49. If the Machine doesn't produce a verified Stripe charge in 60 days AND you completed the in-product milestones, you get the $98 back. Most founders I built this for spend more than $98/mo on tools they don't open. This is the one tool with a contract: it pays for itself in your Stripe dashboard or it pays itself back into your bank.
+> Two coffees a week. And the cap on your downside is $98, not $49. If the Playbook doesn't produce a verified Stripe charge in 60 days AND you completed the in-product milestones, you get the $98 back. Most founders I built this for spend more than $98/mo on tools they don't open. This is the one tool with a contract: it pays for itself in your Stripe dashboard or it pays itself back into your bank.
 
 **Q5 — "I can already see the path. I just need to execute."**
-> Then execute. Open Stripe right now. If you charged a new customer in the last 14 days, close this tab. If you didn't, the path you can see is the path you've been seeing for six months — and you're still here reading FAQs. The Machine doesn't sell you a new plan. It runs the plan you already wrote down and never finished. The proof it works is the Stripe charge it produces, not the dashboard it shows.
+> Then execute. Open Stripe right now. If you charged a new customer in the last 14 days, close this tab. If you didn't, the path you can see is the path you've been seeing for six months — and you're still here reading FAQs. The Playbook doesn't sell you a new plan. It runs the plan you already wrote down and never finished. The proof it works is the Stripe charge it produces, not the dashboard it shows.
 
 **Q6 — "Couldn't I build this myself?"**
-> Yes. Probably in three weekends. While you're building, you're not running the funnel — which is the exact disease the Machine treats. The Stripe-webhook proof, the Dream 100 picker fed from your locked workbook, the engine pushback that mirrors your own avoidance back at you, the 60-day refund logic — you'd ship those in a month. And during that month, zero outreach. You'd be a founder who chose to ship one more tool nobody pays for. That's not a tool decision. That's a story.
+> Yes. Probably in three weekends. While you're building, you're not running the funnel — which is the exact disease the Playbook treats. The Stripe-webhook proof, the Dream 100 picker fed from your locked workbook, the engine pushback that mirrors your own avoidance back at you, the 60-day refund logic — you'd ship those in a month. And during that month, zero outreach. You'd be a founder who chose to ship one more tool nobody pays for. That's not a tool decision. That's a story.
 
 **Q7 — "Even if it works, it'll just sit beside my real workflow."**
-> Fair. Most tools do. That's why outreach is *sent* from inside the Machine, not copy-pasted out to another tab — and why the Stripe webhook fires inside the Machine when your first customer pays. Those are the two events that matter on the post-launch stretch. If both live somewhere else, kill the tool. Both live here. The Machine isn't a tab you open. It's the room you do the work in for 60 days. If you finish, the guarantee never fires.
+> Fair. Most tools do. That's why outreach is *sent* from inside the Playbook, not copy-pasted out to another tab — and why the Stripe webhook fires inside the Playbook when your first customer pays. Those are the two events that matter on the post-launch stretch. If both live somewhere else, kill the tool. Both live here. The Playbook isn't a tab you open. It's the room you do the work in for 60 days. If you finish, the guarantee never fires.
 
 ---
 
@@ -298,12 +298,12 @@ Six rebuttals, one per External Belief (the original 5 + the round-1 "build it m
 
 Each ≤25 words. Voice: workbook 01 §6 Beat 5 — polarity AGAINST the buyer's avoidance pattern. Same Reluctant Hero who built the thing tells you out loud who he won't sell to.
 
-1. *"This is not for you if you've shipped less than one real thing. The Machine repairs funnels. It doesn't build first products."*
+1. *"This is not for you if you've shipped less than one real thing. The Playbook repairs funnels. It doesn't build first products."*
 2. *"This is not for you if you want a coach who tells you you're doing great. The engine pushes back. That's the point."*
-3. *"This is not for you if you've already concluded the market is wrong. The Machine assumes the order is wrong. If you've decided otherwise, no tool helps."*
+3. *"This is not for you if you've already concluded the market is wrong. The Playbook assumes the order is wrong. If you've decided otherwise, no tool helps."*
 4. *"This is not for you if $98 over 60 days is the difference between rent and no-rent. The free Diagnostic stays free. Use that."*
-5. *"This is not for you if what you actually want is permission to ship product #4. The Machine finishes the funnel under product #3."*
-6. *"This is not for you if you need another tab open beside your work. The Machine IS the work for 60 days, or it isn't bought."*
+5. *"This is not for you if what you actually want is permission to ship product #4. The Playbook finishes the funnel under product #3."*
+6. *"This is not for you if you need another tab open beside your work. The Playbook IS the work for 60 days, or it isn't bought."*
 
 ---
 

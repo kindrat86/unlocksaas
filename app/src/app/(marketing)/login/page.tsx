@@ -16,10 +16,10 @@ export default async function LoginPage({
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
   if (data.user) {
-    redirect(searchParams.next || "/machine");
+    redirect(searchParams.next || "/playbook");
   }
 
-  const next = searchParams.next || "/machine";
+  const next = searchParams.next || "/playbook";
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
@@ -28,7 +28,7 @@ export default async function LoginPage({
           <h1 className="text-2xl font-bold mb-2">Sign in.</h1>
           <p className="text-sm text-muted-foreground leading-relaxed">
             One email, one link, no password to forget. You will be back in the
-            Machine in under a minute.
+            Playbook in under a minute.
           </p>
         </div>
         <LoginForm next={next} />

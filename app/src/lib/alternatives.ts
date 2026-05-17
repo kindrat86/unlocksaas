@@ -134,7 +134,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     oneLine:
       "ShipFast gives you a codebase. Unlock SaaS gives you a customer. Different products, different rungs.",
     pricingNote:
-      "ShipFast is approximately $299 one-time (verified 2026-05-17). Unlock SaaS is $1 for the Starter and $49/month for the Machine.",
+      "ShipFast is approximately $299 one-time (verified 2026-05-17). Unlock SaaS is $1 for the Starter and $49/month for the Playbook.",
     whatItIs: [
       "A production-ready Next.js + Stripe + Supabase boilerplate",
       "Pre-wired auth, payments, and transactional email",
@@ -154,7 +154,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     faqs: [
       {
         q: "Is Unlock SaaS a ShipFast alternative?",
-        a: "Not in the usual sense. ShipFast sells you a codebase. Unlock SaaS sells you a machine that gets you the first paying customer for whatever product you already shipped — often the product you shipped on ShipFast. They sit on different rungs of the same staircase.",
+        a: "Not in the usual sense. ShipFast sells you a codebase. Unlock SaaS sells you a playbook that gets you the first paying customer for whatever product you already shipped — often the product you shipped on ShipFast. They sit on different rungs of the same staircase.",
       },
       {
         q: "Should I buy ShipFast or Unlock SaaS first?",
@@ -166,7 +166,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       },
       {
         q: "Does Unlock SaaS give me a codebase like ShipFast does?",
-        a: "No. Unlock SaaS is the marketing-and-sales machine that wraps around your existing product. It does not generate application code.",
+        a: "No. Unlock SaaS is the marketing-and-sales playbook that wraps around your existing product. It does not generate application code.",
       },
       {
         q: "What does Unlock SaaS do that ShipFast does not?",
@@ -194,7 +194,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     oneLine:
       "Lovable builds the product. Unlock SaaS finds the customer for the product Lovable built. Sequential, not interchangeable.",
     pricingNote:
-      "Lovable has a free tier and paid subscription tiers. Unlock SaaS is $1 Starter + $49/month Machine.",
+      "Lovable has a free tier and paid subscription tiers. Unlock SaaS is $1 Starter + $49/month Playbook.",
     whatItIs: [
       "An AI tool that generates a working web application from prompts",
       "A way for non-engineers to ship a real product in days",
@@ -210,7 +210,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     whoNotForIt:
       "Founders who already shipped on Lovable and have not found a single paying customer.",
     honestVerdict:
-      "Lovable solved the building problem. The customer problem is the next problem, and Lovable was never claiming to solve it. Unlock SaaS is built specifically for the Lovable-shaped founder: someone who shipped a real product with AI and is now staring at a flat Stripe line. The Machine treats the customer-acquisition disease, not the building disease.",
+      "Lovable solved the building problem. The customer problem is the next problem, and Lovable was never claiming to solve it. Unlock SaaS is built specifically for the Lovable-shaped founder: someone who shipped a real product with AI and is now staring at a flat Stripe line. The Playbook treats the customer-acquisition disease, not the building disease.",
     faqs: [
       {
         q: "Is Unlock SaaS a Lovable alternative?",
@@ -222,11 +222,11 @@ const ALTERNATIVES_LIST: Alternative[] = [
       },
       {
         q: "Do I have to switch off Lovable to use Unlock SaaS?",
-        a: "No. Keep Lovable for product changes. Unlock SaaS wraps around your live product and runs the marketing-and-sales machine that Lovable does not.",
+        a: "No. Keep Lovable for product changes. Unlock SaaS wraps around your live product and runs the marketing-and-sales playbook that Lovable does not.",
       },
       {
         q: "What if the diagnostic says my product itself is wrong-shaped, not my offer?",
-        a: "Then the diagnostic says so, plainly. One of three labels — Wrong Person, Weak Offer, Weak Belief — names what is actually broken. The Machine does not pretend the product is fine when it is not.",
+        a: "Then the diagnostic says so, plainly. One of three labels — Wrong Person, Weak Offer, Weak Belief — names what is actually broken. The Playbook does not pretend the product is fine when it is not.",
       },
     ],
     capabilities: {
@@ -250,7 +250,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     oneLine:
       "Same lineage, different products. OFA is a 30-day information course. Unlock SaaS is software that runs the same frameworks against your already-shipped SaaS, with a refund tied to your Stripe ledger.",
     pricingNote:
-      "OFA is approximately $100 one-time (verified 2026-05-17). Unlock SaaS is $1 Starter + $49/month Machine.",
+      "OFA is approximately $100 one-time (verified 2026-05-17). Unlock SaaS is $1 Starter + $49/month Playbook.",
     whatItIs: [
       "A 30-day Russell Brunson challenge with daily videos and assignments",
       "An ideological cousin: same Dream Customer, Hook-Story-Offer, Value Ladder backbone",
@@ -266,7 +266,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     whoNotForIt:
       "Non-engineer SaaS founders who already shipped a product and need the framework applied to their specific stuck Stripe line, in code, with a refund-in-code if nothing changes.",
     honestVerdict:
-      "Unlock SaaS is built on Brunson's frameworks. If you have the time to do OFA from scratch, you will learn things the Machine encodes. Unlock SaaS exists for the founder who already shipped a SaaS, does not want to take a 30-day course on info-product funnels, and wants the framework executed against their specific product with a refund-in-code if it does not produce a customer.",
+      "Unlock SaaS is built on Brunson's frameworks. If you have the time to do OFA from scratch, you will learn things the Playbook encodes. Unlock SaaS exists for the founder who already shipped a SaaS, does not want to take a 30-day course on info-product funnels, and wants the framework executed against their specific product with a refund-in-code if it does not produce a customer.",
     faqs: [
       {
         q: "Is Unlock SaaS the same as the One Funnel Away Challenge?",
@@ -274,15 +274,15 @@ const ALTERNATIVES_LIST: Alternative[] = [
       },
       {
         q: "Do I need to know Russell Brunson's work to use Unlock SaaS?",
-        a: "No. The Machine encodes Dream Customer, Hook-Story-Offer, the Value Ladder, the 23 Building Blocks, and the Soap Opera and Seinfeld email sequences. You do not need to have read DotCom Secrets first.",
+        a: "No. The Playbook encodes Dream Customer, Hook-Story-Offer, the Value Ladder, the 23 Building Blocks, and the Soap Opera and Seinfeld email sequences. You do not need to have read DotCom Secrets first.",
       },
       {
         q: "Why is Unlock SaaS a $49/month subscription while OFA is roughly $100 one-time?",
-        a: "Different scope. OFA teaches; Unlock SaaS executes. The $49 includes the Machine running daily against your specific product page, the diagnostic, the outreach loop, the email sequences, and the 60-day refund-or-do-not-pay guarantee.",
+        a: "Different scope. OFA teaches; Unlock SaaS executes. The $49 includes the Playbook running daily against your specific product page, the diagnostic, the outreach loop, the email sequences, and the 60-day refund-or-do-not-pay guarantee.",
       },
       {
         q: "Does Unlock SaaS use ClickFunnels?",
-        a: "No. Unlock SaaS is its own stack. You can keep using ClickFunnels for delivery if you want — the Machine wraps around your existing product page, whatever it is.",
+        a: "No. Unlock SaaS is its own stack. You can keep using ClickFunnels for delivery if you want — the Playbook wraps around your existing product page, whatever it is.",
       },
     ],
     capabilities: {
@@ -304,16 +304,16 @@ const ALTERNATIVES_LIST: Alternative[] = [
     creator: "Pat Walls",
     category: "Indie-founder case studies and community",
     oneLine:
-      "Starter Story is a library of founder case studies you read. Unlock SaaS is a machine you run against your own product. Different shapes.",
+      "Starter Story is a library of founder case studies you read. Unlock SaaS is a playbook you run against your own product. Different shapes.",
     pricingNote:
-      "Starter Story has a paid subscription for premium content. Unlock SaaS is $1 Starter + $49/month Machine.",
+      "Starter Story has a paid subscription for premium content. Unlock SaaS is $1 Starter + $49/month Playbook.",
     whatItIs: [
       "Thousands of case studies of indie SaaS and ecommerce founders",
       "A community of indie founders sharing tactics and stories",
       "Ambient inspiration for what is possible at small scale",
     ],
     whatItIsNot: [
-      "Software that runs a specific machine against your specific product",
+      "Software that runs a specific playbook against your specific product",
       "A diagnostic of your live page",
       "A refund tied to your Stripe ledger",
     ],
@@ -330,7 +330,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       },
       {
         q: "Can I use both?",
-        a: "Yes. Read Starter Story for ambient inspiration about what is possible. Run Unlock SaaS for the actual machine that gets you the first customer.",
+        a: "Yes. Read Starter Story for ambient inspiration about what is possible. Run Unlock SaaS for the actual playbook that gets you the first customer.",
       },
       {
         q: "Does Unlock SaaS have case studies?",

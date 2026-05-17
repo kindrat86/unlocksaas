@@ -205,7 +205,7 @@ function day4(ctx: RenderContext): RenderedEmail {
       "Reply with that sentence.",
       "The Brunson rule that breaks most attempts at Day 4: if you cannot refund it, you cannot promise it. If you cannot specify the timeframe, you have not earned the promise yet. If the remedy is 'we'll work harder', the promise is empty.",
     ],
-    ps: "The Machine — the full $49 product — carries one guarantee: your first paying customer in 60 days, verified by Stripe, or you do not pay. That sentence took me three months to earn the right to say. Today's draft will not be your final version. It is the version you start from.",
+    ps: "The Playbook — the full $49 product — carries one guarantee: your first paying customer in 60 days, verified by Stripe, or you do not pay. That sentence took me three months to earn the right to say. Today's draft will not be your final version. It is the version you start from.",
     ctx,
   });
 }
@@ -371,10 +371,10 @@ function day14(ctx: RenderContext): RenderedEmail {
       "That is more selling than most founders I talk to have done in the last six months. Read that sentence again. It is true.",
       "Open Stripe. Look at it for the first time in eleven days. If you did the work, the line has moved or is about to move. If it has not moved yet, the messages you sent in Days 9, 11, 12 are still in inboxes — and the conversation you booked for Day 13 has not happened yet. The math is not in.",
       "Here is the door you have earned the right to open.",
-      "Everything you did in your head and in this inbox needs to live inside the product, where the next time you sit down to sell, you cannot skip it. That is what the Machine is for. Seven steps. The 14-Day Sprint baked in as the accelerator inside Step 6 — except this time, the engine generates the messages, the targets, and the tracking; you press send.",
+      "Everything you did in your head and in this inbox needs to live inside the product, where the next time you sit down to sell, you cannot skip it. That is what the Playbook is for. Seven steps. The 14-Day Sprint baked in as the accelerator inside Step 6 — except this time, the engine generates the messages, the targets, and the tracking; you press send.",
       "Your first paying customer, verified by Stripe, within 60 days. Or full refund. In writing.",
-      "What you get inside the Machine (the full $49):",
-      "— Seven Machine steps. Steps 1 and 2 finish the WHO and WHAT on paper. Step 3 writes the voice. Step 4 generates the copy. Steps 5 and 6 generate the 20-target outreach and track every send. Step 7 listens for the first Stripe charge that closes your guarantee.",
+      "What you get inside the Playbook (the full $49):",
+      "— Seven Playbook steps. Steps 1 and 2 finish the WHO and WHAT on paper. Step 3 writes the voice. Step 4 generates the copy. Steps 5 and 6 generate the 20-target outreach and track every send. Step 7 listens for the first Stripe charge that closes your guarantee.",
       "— The 14-Day Sprint baked in as the accelerator inside Step 6 (the same scaffold you just ran, with the engine attached).",
       "— The Outreach Room — other non-engineers who shipped, the mirror that worked for me.",
       "— A 60-day clock, visible in the app header from the moment you start. No surprises.",

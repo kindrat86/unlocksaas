@@ -56,14 +56,14 @@ Build order is not the same as ladder order. The $1 Starter ships first because 
 
 ## Section 3: $1 Starter Unboxing Funnel (Rung 1)
 
-**Purpose:** Email to first-time buyer. Marco does Machine Steps 1 and 2 (dream customer + offer) and walks out with a real finished WHO and WHAT.
+**Purpose:** Email to first-time buyer. Marco does Playbook Steps 1 and 2 (dream customer + offer) and walks out with a real finished WHO and WHAT.
 
 ### Pages
 
 1. **Sales page.** Hook + Star Story Solution + offer + 10x value framing + $1 CTA.
 2. **Order form.** Stripe one-time checkout. Single page.
-3. **OTO.** One question, two buttons: upgrade to $49/mo Machine plus the 60-day guarantee, or continue with just the Starter.
-4. **Confirmation plus member area.** Direct entry to Machine Step 1.
+3. **OTO.** One question, two buttons: upgrade to $49/mo Playbook plus the 60-day guarantee, or continue with just the Starter.
+4. **Confirmation plus member area.** Direct entry to Playbook Step 1.
 
 ### Hook / Story / Offer
 
@@ -73,11 +73,11 @@ Build order is not the same as ladder order. The $1 Starter ships first because 
 
 ### Design rule
 
-The Starter delivers Machine Steps 1 and 2 only. It does NOT give away Steps 3 to 7. Restraint is the design discipline. A fragment of a result insults a skeptic. A complete small result earns the next dollar.
+The Starter delivers Playbook Steps 1 and 2 only. It does NOT give away Steps 3 to 7. Restraint is the design discipline. A fragment of a result insults a skeptic. A complete small result earns the next dollar.
 
 ---
 
-## Section 4: $49/mo Machine Presentation Funnel (Rung 2)
+## Section 4: $49/mo Playbook Presentation Funnel (Rung 2)
 
 **Purpose:** Recurring revenue. The funnel that actually earns. Receives ascending $1 buyers AND cold-to-warm direct traffic.
 
@@ -86,7 +86,7 @@ The Starter delivers Machine Steps 1 and 2 only. It does NOT give away Steps 3 t
 1. **Sales page.** Full Perfect Webinar Lite structure (workbook 03, Script 5).
 2. **Checkout.** Stripe subscription. Guarantee restated above the button.
 3. **Onboarding.** Connect Stripe (this is what the guarantee verifies), import from $1 Starter if applicable, start the 60-day clock.
-4. **The Machine itself.** Seven in-product steps. One page per step.
+4. **The Playbook itself.** Seven in-product steps. One page per step.
 5. **Customer area.** Outreach Room (community bonus), 14-Day Sprint tracker, account, Stripe-detected paying-customer celebration.
 
 ### Hook / Story / Offer
@@ -110,9 +110,9 @@ Updated 2026-05-17 under "improve everything autonomously" pass. The original fr
 **Rung 2 is the Repeatable Revenue Layer.** Self-serve. Sits above $49/mo Core. NOT coaching, NOT DFY (workbook 01 §3 design rule preserved). It is what the Core customer ascends into the day they earn the Verified Builder badge and start Product 2 — and the asset carry-over (dream customer, AC, outreach playbook, Stripe pattern library) saves them a week per product launch.
 
 **Price (locked target):** $149/mo.
-**Activation gate:** 3 paying Core customers complete the full Machine loop + 1 unprompted "what's next" ask + founder self-dogfood pass.
+**Activation gate:** 3 paying Core customers complete the full Playbook loop + 1 unprompted "what's next" ask + founder self-dogfood pass.
 **Spec file:** `strategy/decisions/rung-2-repeatable-revenue.md` — full offer math, build minimum, what-it-is-not, target ratio ~5.7×, refund mechanic with 90-day window.
-**Public placeholder:** `/repeatable` — explains the spec, routes to `/machine-sales`, no fake countdown, no waitlist gate. Same honesty-as-polarity discipline used on `/diagnostic` and `/machine-sales` during their pre-Sprint windows.
+**Public placeholder:** `/repeatable` — explains the spec, routes to `/playbook-sales`, no fake countdown, no waitlist gate. Same honesty-as-polarity discipline used on `/diagnostic` and `/playbook-sales` during their pre-Sprint windows.
 
 ### Why ship the spec pre-build
 
@@ -141,7 +141,7 @@ Five reasons:
 
 1. $1 Starter Unboxing Funnel (full end-to-end, Stripe live, OTO live).
 2. Free Diagnostic Lead Funnel (squeeze + result page + 5-email Soap Opera).
-3. $49 Machine Presentation Funnel (full sales page + onboarding + 7 Machine steps).
+3. $49 Playbook Presentation Funnel (full sales page + onboarding + 7 Playbook steps).
 
 Do not parallelize. Ship the $1 funnel end-to-end before touching the next.
 

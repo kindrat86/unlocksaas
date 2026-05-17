@@ -140,7 +140,7 @@ export default function FunnelTeardownHub() {
           SaaS they admire. We do the work explicitly: pattern-level teardowns
           of the hook, story, and offer running on each surface, with what to
           adapt and what to skip for your own page. Same Brunson framework the
-          Machine runs on your live product, applied to the products you study.
+          Playbook runs on your live product, applied to the products you study.
         </p>
       </header>
 

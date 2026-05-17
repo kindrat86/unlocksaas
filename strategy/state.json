@@ -124,7 +124,7 @@
       ],
       "brainstorm_status": "TRIAGE INCOMPLETE. Founder returned 'can deliver everything / none would make Marco pay / nothing to add.' PIVOT: stop stacking ingredients, find the ONE core promise first. Stack is paused until the core promise exists.",
       "core_product": {
-        "name": "The Machine (productized Unlock the Secrets path) - DRAFT, pending founder react",
+        "name": "The Playbook (productized Unlock the Secrets path) - DRAFT, pending founder react",
         "six_steps": [
           "1. Pin the real dream customer (tool pushes back on vague answers)",
           "2. Build the irresistible offer with a guaranteed result",
@@ -133,9 +133,9 @@
           "5. Do the outreach: tool GENERATES message + target, Marco posts it himself in the real platform, Marco logs the public LINK back into the tool, tool fetches/verifies the link is live and real. Cold email is the one channel the tool can send + track natively. NOT auto-posting (spam, platform-ToS violations, account-ban risk).",
           "6. Convert and verify (Stripe connected, first charge detected)"
         ],
-        "note": "The machine IS the guarantee's work-condition milestones. Core product = this 6-step doing-environment.",
+        "note": "The playbook IS the guarantee's work-condition milestones. Core product = this 6-step doing-environment.",
         "step5_note": "LOAD-BEARING step of the entire guarantee. Resolved a SEND-vs-TRACK conflation: the guarantee needs TRACK, not SEND. Deeper point: Step 5 is hard to BUILD because it is hard for Marco to DO - the only real-world-action step, and real-world action is Marco's avoidance disease. The product's core value / new opportunity = getting a customer-avoidant founder over the wall and actually doing outreach. Generating + tracking alone = commodity.",
-        "status": "Core product (6-step machine) LOCKED. Step 5 technical path resolved."
+        "status": "Core product (6-step playbook) LOCKED. Step 5 technical path resolved."
       },
       "core_value": "$259/mo - CONFIRMED by founder",
       "bonuses": [
@@ -163,7 +163,7 @@
       "guarantee": {
         "promise": "Marco's first paying customer within 60 days.",
         "timeframe": "60 days - LOCKED",
-        "work_condition": "Must be machine-verifiable in-product actions only (founder cannot verify real-world homework). Qualifying milestones, all logged by the software: completed dream-customer module, generated offer + guarantee in-tool, generated outreach assets in-tool, sent/logged outreach to N prospects (~20) THROUGH the tool. Result auto-verified via Stripe connection (new charge on Marco's account).",
+        "work_condition": "Must be playbook-verifiable in-product actions only (founder cannot verify real-world homework). Qualifying milestones, all logged by the software: completed dream-customer module, generated offer + guarantee in-tool, generated outreach assets in-tool, sent/logged outreach to N prospects (~20) THROUGH the tool. Result auto-verified via Stripe connection (new charge on Marco's account).",
         "remedy": "LOCKED. Full refund of the 2 monthly payments ($49 x 2 = $98) made in the 60-day window.",
         "design_principle": "If an action cannot be verified, it must happen INSIDE the product. The product must be a DOING environment, not a teaching one - outreach happens in-tool so the software both helps and witnesses. Side benefit: kills Marco's 'not another tool' objection.",
         "billing": "Monthly subscription.",
@@ -171,7 +171,7 @@
         "status": "FULLY BUILT AND LOCKED."
       },
       "urgency_scarcity": "",
-      "core_promise": "LOCKED. Marco gets his first paying customer - proven and guaranteed. This is the offer spine. All 19 brainstorm ideas are now re-scoped as 'the machine' that delivers this promise, or they get cut.",
+      "core_promise": "LOCKED. Marco gets his first paying customer - proven and guaranteed. This is the offer spine. All 19 brainstorm ideas are now re-scoped as 'the playbook' that delivers this promise, or they get cut.",
       "ten_x_check": "$496 / $49 = 10.1x. Clears the 10x bar.",
       "values_caveat": "Values must be DEFENSIBLE - Marco is a skeptic; inflated fantasy numbers repel him.",
       "status": "OFFER LOCKED. Written to workbooks/01-sales-funnel-secrets.md Section 2."
@@ -191,7 +191,7 @@
           "note": "Doubles as distribution/SEO asset"
         },
         "rung_1_core": {
-          "offer": "The Machine + 3 bonuses + 60-day guarantee",
+          "offer": "The Playbook + 3 bonuses + 60-day guarantee",
           "price": "$49/mo",
           "result": "First paying customer (proof)",
           "build": "YES - launch",
@@ -202,7 +202,7 @@
           "price_target": "$149/mo",
           "result": "A repeatable revenue engine across multiple products, not a fluke",
           "build": "SPEC LOCKED 2026-05-17, BUILD GATED",
-          "activation_gate": "3 paying Core customers complete the full Machine loop + 1 unprompted 'what's next' ask + founder self-dogfood pass on Product 2",
+          "activation_gate": "3 paying Core customers complete the full Playbook loop + 1 unprompted 'what's next' ask + founder self-dogfood pass on Product 2",
           "spec_file": "strategy/decisions/rung-2-repeatable-revenue.md",
           "public_placeholder": "/repeatable",
           "value_math_target": "$846 total / $149 = 5.7x (below 10x standard, acceptable post-validation per spec rationale)",
@@ -217,7 +217,7 @@
           "note": "Re-evaluate after Rung 2 has 10+ paying customers."
         },
         "rung_0_5_dollar_one": {
-          "offer": "$1 one-time. Delivers a COMPLETE SMALL result (proposed: finished dream customer + offer, machine steps 1-2). Pending founder confirm of exact contents.",
+          "offer": "$1 one-time. Delivers a COMPLETE SMALL result (proposed: finished dream customer + offer, playbook steps 1-2). Pending founder confirm of exact contents.",
           "price": "$1 one-time (NOT an auto-converting trial)",
           "result": "Marco has a finished WHO and WHAT - real, done, his to keep. Becomes a verified buyer.",
           "build": "YES - launch",
@@ -237,12 +237,12 @@
         "russell_recommendation": "Lean launch ladder: (1) free diagnostic tool, (2) $1 trial as the buyer-identifier, (3) $49/mo core. The $1 trial satisfies the 'identify buyers' goal with one mechanism and zero extra build.",
         "status": "RESOLVED - founder chose the lean ladder. Six-tier staircase dropped."
       },
-      "launch_ladder_final": "1) Free diagnostic (email). 2) $1 one-time (finishes customer+offer, buyer ID). 3) $49/mo core (machine + guarantee + the paying customer)."
+      "launch_ladder_final": "1) Free diagnostic (email). 2) $1 one-time (finishes customer+offer, buyer ID). 3) $49/mo core (playbook + guarantee + the paying customer)."
     },
     "attractive_character": {
       "status": "COMPLETE. Five-beat AC locked (Identity, Backstory, Parables, Flaws, Polarity). Written to workbooks/01-sales-funnel-secrets.md Section 6. Closes Step 1.",
-      "product_decision": "Attractive Character becomes STEP 3 of the core machine (after offer, before copy). Machine goes from 6 steps to 7.",
-      "machine_7_steps": [
+      "product_decision": "Attractive Character becomes STEP 3 of the core playbook (after offer, before copy). Playbook goes from 6 steps to 7.",
+      "playbook_7_steps": [
         "1. Pin dream customer",
         "2. Build offer",
         "3. Define the Attractive Character (the voice/persona that sells)",
@@ -297,18 +297,18 @@
             "Shipped real products as a non-engineer with Lovable and Claude",
             "Hit the flat-Stripe wall personally",
             "Sat with 10+ other founders and confirmed the pattern",
-            "Built the machine that walked himself out"
+            "Built the playbook that walked himself out"
           ],
           "frame": "Not 'I am an expert.' 'I had the disease, diagnosed it, built the cure, here it is.'",
           "one_line_bio": "Marketer, non-engineer, built a dozen AI products that nobody paid for. Then I figured out why.",
-          "three_line_about_opener": "I'm a marketer. I have never written a line of production code. In 2026, Lovable and Claude opened the door and I shipped real AI products in weeks, watched them flatline in Stripe, and ran from the truth into SEO tactics for almost a year. What broke me out was sitting with more than ten other founders telling my own story back to me. So I built the machine I wish someone had handed me.",
-          "six_line_intro": "I'm a marketer and an operator. I have never written a line of production code. For most of my life that closed a door. Then in 2026, Lovable and Claude opened it and I shipped real AI products in weeks. The shipping part felt like magic. What came after did not. I would launch, open Stripe, and watch a line lie flat. I told myself it was the product. I told myself it was the funnel. I went embarrassingly deep into SEO and optimization, and the truth is that was just a respectable way of not looking at the flat line. What finally broke me was talking to more than ten other founders and hearing my own story back, every single time. So I sat down to write the offer for this product, and I found nothing there. No promise, no specific person. That was the moment. I had been building beautiful things for no one in particular. I stopped fixing products and started fixing the order, the work I had been taught to skip. The machine in this workbook is what I built. I run it on myself first. Now I am putting it in front of you."
+          "three_line_about_opener": "I'm a marketer. I have never written a line of production code. In 2026, Lovable and Claude opened the door and I shipped real AI products in weeks, watched them flatline in Stripe, and ran from the truth into SEO tactics for almost a year. What broke me out was sitting with more than ten other founders telling my own story back to me. So I built the playbook I wish someone had handed me.",
+          "six_line_intro": "I'm a marketer and an operator. I have never written a line of production code. For most of my life that closed a door. Then in 2026, Lovable and Claude opened it and I shipped real AI products in weeks. The shipping part felt like magic. What came after did not. I would launch, open Stripe, and watch a line lie flat. I told myself it was the product. I told myself it was the funnel. I went embarrassingly deep into SEO and optimization, and the truth is that was just a respectable way of not looking at the flat line. What finally broke me was talking to more than ten other founders and hearing my own story back, every single time. So I sat down to write the offer for this product, and I found nothing there. No promise, no specific person. That was the moment. I had been building beautiful things for no one in particular. I stopped fixing products and started fixing the order, the work I had been taught to skip. The playbook in this workbook is what I built. I run it on myself first. Now I am putting it in front of you."
         },
         "parables": [
           {
             "name": "The Blank Offer Page",
             "lesson": "If you cannot write your offer in one sentence, to one real person, you have not earned the right to build the product.",
-            "used_in": "opener for why-your-launch-went-flat content; intro to the Machine demo; email two of any cold sequence"
+            "used_in": "opener for why-your-launch-went-flat content; intro to the Playbook demo; email two of any cold sequence"
           },
           {
             "name": "The Stripe Refresh",
@@ -351,7 +351,7 @@
           },
           {
             "name": "Plans Before Shipping",
-            "summary": "Default is thinking about doing instead of doing; Machine Step 5 forces real-world action.",
+            "summary": "Default is thinking about doing instead of doing; Playbook Step 5 forces real-world action.",
             "mirror": "Marco's documented over-planning, 'more building is progress' false belief"
           }
         ],
@@ -407,8 +407,8 @@
           "#3 (SOS Day 0 subject)",
           "#4 (SOS Day 2)",
           "#5 (/bridge H1)",
-          "#7 (/machine-sales Slide 1)",
-          "#8 (/founding H1 + /starter polarity + /machine-sales Stack 16)",
+          "#7 (/playbook-sales Slide 1)",
+          "#8 (/founding H1 + /starter polarity + /playbook-sales Stack 16)",
           "#9 (SOS Day 4)",
           "#10 (/diagnostic H1)"
         ],
@@ -561,12 +561,12 @@
   "expert_secrets": {
     "movement": {
       "status": "COMPLETE. Written to workbooks/05-creating-your-movement.md.",
-      "framework_name": "The Machine (7 steps, capital M, mechanical/anti-vibes branding)",
+      "framework_name": "The Playbook (7 steps, capital M, mechanical/anti-vibes branding)",
       "core_market": "WEALTH",
       "submarket": "Online business / micro-SaaS / solopreneur income",
       "niche": "Post-launch pre-revenue non-engineer founders who shipped a real product and have a flat Stripe line",
       "new_opportunity": "First paying customer in 60 days, verified, or you do not pay. Not an improvement (more marketing/SEO/courses); a different category entirely.",
-      "opportunity_switch_pitch": "I am not offering you better marketing. I am offering you a machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "opportunity_switch_pitch": "I am not offering you better marketing. I am offering you a playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
       "future_based_cause": "Founders who build real things with AI deserve to get paid for them. Not just praised. The next decade belongs to non-engineers who shipped. We exist to make sure the work that closes the gap gets done.",
       "identity_label": {
         "primary": "Verified Builders",
@@ -594,17 +594,17 @@
         "First Reply",
         "First Paying Customer Verified (triggers shareable badge)"
       ],
-      "manifesto_v1": "We are non-engineer founders who shipped real things with AI tools we did not write. We were told the answer was more building, then more traffic, then a better course. We tried all three. The line stayed flat. We stopped pretending the problem was the product. The problem was the work nobody taught us to do: name one real person, make one real promise, sell it before it felt ready. We run The Machine. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one. We measure progress in Stripe charges, not in encouragement. We do not collect praise. We collect customers. We are Verified Builders."
+      "manifesto_v1": "We are non-engineer founders who shipped real things with AI tools we did not write. We were told the answer was more building, then more traffic, then a better course. We tried all three. The line stayed flat. We stopped pretending the problem was the product. The problem was the work nobody taught us to do: name one real person, make one real promise, sell it before it felt ready. We run The Playbook. It refuses to let us skip that work. It verifies every step in a doing-environment, not a teaching one. We measure progress in Stripe charges, not in encouragement. We do not collect praise. We collect customers. We are Verified Builders."
     },
     "belief": {
       "status": "COMPLETE. Written to workbooks/06-creating-belief.md.",
-      "epiphany_bridge_full_7_element": "Backstory+desire; external wall (flat Stripe); internal wall (maybe I do not have what it takes); the epiphany (blank offer page + ten founders' mirror); the plan (name one person, one promise, sell before it feels ready); the conflict (outreach is the avoidance home field); the achievement (Machine + 60-day guarantee)",
+      "epiphany_bridge_full_7_element": "Backstory+desire; external wall (flat Stripe); internal wall (maybe I do not have what it takes); the epiphany (blank offer page + ten founders' mirror); the plan (name one person, one promise, sell before it feels ready); the conflict (outreach is the avoidance home field); the achievement (Playbook + 60-day guarantee)",
       "heros_two_journeys": {
-        "external_arc": "Flat Stripe -> tried tactics -> 10-founder mirror -> ran the Machine -> first paying customer -> recurring",
+        "external_arc": "Flat Stripe -> tried tactics -> 10-founder mirror -> ran the Playbook -> first paying customer -> recurring",
         "internal_arc": "Problem-is-product -> maybe-it-is-me -> problem-is-the-skipped-work -> praise-was-never-payment -> Verified Builder identity"
       },
       "four_core_stories": {
-        "vehicle_story": "The Machine works because it removes the option to skip. The 60-day guarantee is enforced by code. Avoidance is mechanically deleted, not willpower-overcome.",
+        "vehicle_story": "The Playbook works because it removes the option to skip. The 60-day guarantee is enforced by code. Avoidance is mechanically deleted, not willpower-overcome.",
         "internal_belief_rewrites": [
           {
             "false": "The problem is the product",
@@ -630,11 +630,11 @@
         "external_belief_rewrites": [
           {
             "objection": "No time for another framework",
-            "rewrite": "Machine is a tool not a framework; 3-5 Qs per step; 60 days or less"
+            "rewrite": "Playbook is a tool not a framework; 3-5 Qs per step; 60 days or less"
           },
           {
             "objection": "Tried customer interviews, did not help",
-            "rewrite": "Bottleneck was the synthesizing; Machine forces conclusions from interviews"
+            "rewrite": "Bottleneck was the synthesizing; Playbook forces conclusions from interviews"
           },
           {
             "objection": "Outreach is not my strength",
@@ -646,11 +646,11 @@
           },
           {
             "objection": "Cannot risk another failed product",
-            "rewrite": "Product already exists; Machine is work AROUND it, not new product"
+            "rewrite": "Product already exists; Playbook is work AROUND it, not new product"
           },
           {
             "objection": "I could build this myself in a weekend",
-            "rewrite": "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, OR the 60-day refund logic in a weekend. And while you're building the tool, you're not running the funnel — which is the exact disease the Machine treats.",
+            "rewrite": "You could build the form. You can't build the Stripe-webhook proof, the Dream 100 picker fed from the locked workbook, the engine pushback, OR the 60-day refund logic in a weekend. And while you're building the tool, you're not running the funnel — which is the exact disease the Playbook treats.",
             "added": "2026-05-17",
             "source": "strategy/dollar-objections.md Category 5 (public IH/HN mine)"
           }
@@ -665,8 +665,8 @@
         "$49_sales_page": "Vehicle + 2 strongest Internal rewrites + Epiphany Bridge video",
         "soap_opera": "Parables 1-5 + 2 External rewrites in PS lines",
         "onboarding_email": "Internal rewrite #1 (problem-is-product)",
-        "machine_step_1_pushback": "Internal rewrite #4 (customers exist outside your head)",
-        "machine_step_5_friction_buster": "External rewrite #3 (outreach not your strength)"
+        "playbook_step_1_pushback": "Internal rewrite #4 (customers exist outside your head)",
+        "playbook_step_5_friction_buster": "External rewrite #3 (outreach not your strength)"
       }
     },
     "ten_x_secrets": {
@@ -674,20 +674,20 @@
       "big_domino": "Your first paying customer is reachable in 60 days through software, not through more building and not through more traffic.",
       "three_secrets": {
         "vehicle_what": {
-          "title": "Why The Machine works where every other tool failed you",
+          "title": "Why The Playbook works where every other tool failed you",
           "story": "Vehicle Story",
           "strategy": "7 steps in order",
           "case_study": "Founder running on himself produced first one-sentence offer; upgrade to real customer once it exists"
         },
         "internal_who": {
-          "title": "Why the work that breaks the flat line is work you have been avoiding, and how The Machine removes the avoidance option",
+          "title": "Why the work that breaks the flat line is work you have been avoiding, and how The Playbook removes the avoidance option",
           "story": "Parable 2 + Parable 3",
           "strategy": "Framework-into-engine: avoidance mechanically removed",
           "case_study": "Founder's own SEO year reframed as evidence"
         },
         "external_world": {
           "title": "Why a 60-day guarantee is even possible on software",
-          "story": "Guarantee mechanics (machine-verifiable conditions, Stripe-verified result)",
+          "story": "Guarantee mechanics (playbook-verifiable conditions, Stripe-verified result)",
           "strategy": "Economics: code-enforced refunds",
           "case_study": "Two-payment cap on remedy ($98) makes business model survive any reasonable conversion"
         }
@@ -705,7 +705,7 @@
         "Do you suspect you have been avoiding the customer?",
         "If you knew exactly which 20 people to message tomorrow, would you message them?",
         "Would a $98 cap on a 60-day risk be acceptable for the chance of recurring revenue?",
-        "If you ran The Machine on yourself today, what is the worst that happens in 60 days?"
+        "If you ran The Playbook on yourself today, what is the worst that happens in 60 days?"
       ],
       "mini_closes_inventory": {
         "risk_reversal": [
@@ -754,7 +754,7 @@
           "Lenny's community",
           "r/nocode",
           "r/buildinpublic",
-          "r/learnmachinelearning",
+          "r/learnplaybooklearning",
           "Discord servers around Claude/Anthropic/Lovable/Cursor"
         ],
         "influencers": [
@@ -850,7 +850,7 @@
           "ChartMogul blog"
         ]
       },
-      "engine_use": "Machine Step 5 outreach pulls from this list. The 20-action minimum for the guarantee is drawn from the top 20 most-relevant entries given user's niche.",
+      "engine_use": "Playbook Step 5 outreach pulls from this list. The 20-action minimum for the guarantee is drawn from the top 20 most-relevant entries given user's niche.",
       "work_in_vs_buy_in": "Launch = work-in only (organic, free, slow). Buy-in begins when Free Diagnostic converts 30%+ AND $1 Starter converts 5%+ on cold-warm.",
       "infiltration": "DEFERRED to Phase 2 (Month 3+ post-launch).",
       "outreach_kit": {
@@ -868,7 +868,7 @@
           "§7 Honest scope statement (what kit does NOT do: send DMs, secure podcast yes, close integration, onboard affiliate, write parable threads)"
         ],
         "pitch_gates_enforced": {
-          "podcast_guest": "first verified-customer cycle closes inside The Machine",
+          "podcast_guest": "first verified-customer cycle closes inside The Playbook",
           "integration_partner": "3+ verified-customer cycles closed",
           "affiliate_onboarding": "50+ paying customers active"
         },
@@ -985,7 +985,7 @@
       },
       "JK5_publishing_categories": [
         "Personal (the build, behind-the-scenes)",
-        "Process (Machine deconstructed)",
+        "Process (Playbook deconstructed)",
         "Pattern (10+ conversations + cohort observations)",
         "Polarity (AGAINST lines)",
         "Proof (real wins when they exist)"
@@ -1133,7 +1133,7 @@
           "creative_families": {
             "family_c_parable_led_cold": {
               "format": "90s talking-head with Parable #1 (Blank Offer Page) or Parable #3 (SEO Escape Hatch)",
-              "destination": "/parables (Reverse Squeeze - cold should NEVER hit /starter or /machine-sales directly from FB)",
+              "destination": "/parables (Reverse Squeeze - cold should NEVER hit /starter or /playbook-sales directly from FB)",
               "cold_specific_cpl_cap": "$8 (vs $5 for retargeting)"
             },
             "family_d_bridge_long_form": {
@@ -1213,7 +1213,7 @@
           "Hero (enemy sentence + one-line bio)",
           "Free Diagnostic CTA primary",
           "$1 Starter CTA secondary",
-          "$49 Machine CTA tertiary below fold",
+          "$49 Playbook CTA tertiary below fold",
           "Manifesto",
           "Founder six-line intro video",
           "Podcast appearances list",
@@ -1426,14 +1426,14 @@
           },
           "4_long_form": {
             "role": "cold direct $49 (Perfect-Webinar-Lite)",
-            "funnel": "/machine-sales",
+            "funnel": "/playbook-sales",
             "active_at": "Sprint 3 (currently placeholder)",
             "bridge_out_to": 5,
             "script_source": "workbook 07 Big Domino + Three Secrets + Stack 16-30 + Closes 31-43"
           },
           "5_in_product": {
-            "role": "deliver Machine + verify guarantee",
-            "funnel": "/machine member area",
+            "role": "deliver Playbook + verify guarantee",
+            "funnel": "/playbook member area",
             "active_at": "launch (SHIPPED)",
             "bridge_out_to": [
               6,
@@ -1443,7 +1443,7 @@
           },
           "6_ascension": {
             "role": "next-product or community sell to Verified Builders",
-            "funnel": "Option A: rerun-Machine $24.50/mo + Option B: community $79/mo",
+            "funnel": "Option A: rerun-Playbook $24.50/mo + Option B: community $79/mo",
             "active_at": "Phase 2: 3 verified customer cycles",
             "bridge_out_to": 7,
             "open_block": "Stripe products + community infra not provisioned"
@@ -1536,7 +1536,7 @@
           "challenge_subscribers (14-day First-Customer Sprint cadence)"
         ],
         "public_proof_index": "profiles + verified_conversions (rendered as /builders directory)",
-        "logged_in_audience": "profiles via /machine member area",
+        "logged_in_audience": "profiles via /playbook member area",
         "buyer_relationships": "billing_payments (Stripe customer list)",
         "rented_for_contrast": [
           "X followers (algorithmic distribution tax — rented)",
@@ -1555,7 +1555,7 @@
         ],
         "purchase_capture_surfaces": [
           "/starter (Stripe checkout)",
-          "/machine-sales (Stripe checkout)"
+          "/playbook-sales (Stripe checkout)"
         ],
         "deliberately_NOT_capture_surfaces": [
           "/builder/[slug] — proof page belongs to the founder, not to UnlockSaaS",
@@ -1641,13 +1641,13 @@
           "#6 Justin Welsh (@thejustinwelsh) — Tier C — solopreneur OS framework alignment — newsletter+YT combo offer",
           "#7 Greg Isenberg (@GregIsenberg) — Tier D — 500K+ subs — 4-week extended warm-up, Month 3 pitch"
         ],
-        "pitch_gate": "First verified-customer cycle closes inside The Machine (same as podcast-outreach.md §3 + integration partner gate)",
+        "pitch_gate": "First verified-customer cycle closes inside The Playbook (same as podcast-outreach.md §3 + integration partner gate)",
         "reactive_permission": "Inbound invitations may be accepted at launch with NO warm-up gate (workbook 09 §1 parity with podcast guest)",
         "visual_angle_library": {
-          "engine_pushback_demo": "60-90 sec — /machine/step/[id] on real Marco-avatar input",
+          "engine_pushback_demo": "60-90 sec — /playbook/step/[id] on real Marco-avatar input",
           "stripe_line_cold_open": "15 sec — Maryan's flat 12-month Stripe dashboard",
           "diagnostic_walkthrough": "90 sec — /diagnostic submit → label → handoff to /starter",
-          "verified_customer_celebration": "30 sec — /machine/verified firing for first cohort customer (post-milestone)",
+          "verified_customer_celebration": "30 sec — /playbook/verified firing for first cohort customer (post-milestone)",
           "founding_cohort_meter": "15 sec — /founding meter with DB-backed count (post-cart-open)"
         },
         "send_method": "Per-message Maryan confirmation via scripts/mail.py (email) or manual X/YouTube DM (per Attractive Character sender identity). Kit is 'ready to send,' not 'sent.'",
@@ -1717,7 +1717,7 @@
         }
       ],
       "trigger_taxonomy_rule": "Each cadence has exactly ONE entry trigger. No cadence auto-cross-enrolls subscribers from another cadence except via explicit opt-in CTA in final email (Seinfeld). strategy/follow-up-funnels.md Part 3.",
-      "subscriber_state_machine": [
+      "subscriber_state_playbook": [
         "active",
         "complete",
         "recovered (cart_recovery only)",
@@ -1763,7 +1763,7 @@
               "examples": [
                 "unlocksaas",
                 "unlock saas",
-                "the machine unlocksaas"
+                "the playbook unlocksaas"
               ]
             },
             {
@@ -1785,7 +1785,7 @@
             },
             {
               "class": "product_aware_comparator",
-              "landing_page": "/machine-sales",
+              "landing_page": "/playbook-sales",
               "examples": [
                 "shipfast alternative",
                 "marc lou alternative no code"
@@ -1804,7 +1804,7 @@
             "app/src/components/seo/json-ld.tsx",
             "JSON-LD mounted on / (Organization + WebSite)",
             "JSON-LD mounted on /diagnostic (Service + HowTo)",
-            "JSON-LD mounted on /machine-sales (Product)"
+            "JSON-LD mounted on /playbook-sales (Product)"
           ]
         },
         "B_aeo_geo": {
@@ -1826,7 +1826,7 @@
               ]
             },
             {
-              "page": "/machine-sales",
+              "page": "/playbook-sales",
               "types": [
                 "Product"
               ]
@@ -1915,7 +1915,7 @@
             "free version",
             "freemium"
           ],
-          "landing_page_rule": "Never cold to /machine-sales. Brunson rule, no exceptions. Paid clicks land on /diagnostic or /bridge.",
+          "landing_page_rule": "Never cold to /playbook-sales. Brunson rule, no exceptions. Paid clicks land on /diagnostic or /bridge.",
           "utm_stamping": "Inherits stack-attribution wiring from strategy/funnel-stack.md §C. UTM stamps reach Stripe metadata via existing /api/checkout route."
         }
       },
@@ -1929,10 +1929,10 @@
         ],
         "max_cpc": 2.0,
         "ad_copy": {
-          "h1": "Unlock SaaS — The Machine",
+          "h1": "Unlock SaaS — The Playbook",
           "h2": "Your first paying customer in 60 days. Verified by Stripe. Or you don't pay.",
           "d1": "Built by a non-engineer who shipped a dozen products before figuring out why none of them sold.",
-          "d2": "Run the 7-step Machine and verify in your own Stripe. — Maryan"
+          "d2": "Run the 7-step Playbook and verify in your own Stripe. — Maryan"
         },
         "estimated_time_to_activate": "30 minutes (operator)"
       },
@@ -2011,7 +2011,7 @@
       "url": "https://wip.co",
       "hook": "We're a group of makers shipping together",
       "category": "Application / Curated Membership Funnel",
-      "key_steal": "Avatar wall of real recognizable users on homepage (borrowed authority); streak/daily-todo mechanic as the central ritual (same DOING-environment as Machine Step 6)",
+      "key_steal": "Avatar wall of real recognizable users on homepage (borrowed authority); streak/daily-todo mechanic as the central ritual (same DOING-environment as Playbook Step 6)",
       "key_reject": "Invite-only gating (kills cold Marco conversion); hidden pricing (skeptic reads as 'cannot defend the price')",
       "source": "strategy/funnel-hacks.md sec 4"
     },
@@ -2084,7 +2084,7 @@
       "All 7 competitors use customer count as social proof (8298, 21807, 41571, 7712, 175000, 3702, +) -- universal pattern. Our plan to render count only when N >= 25 is correct (sub-25 amplifies empty-room feeling)",
       "Stack with itemized dollar values is universal (Marc Lou $1210 in partner discounts; Daniel implies 10x via testimonials; Arvid prices books individually) -- workbook 07 sec 3 already specs slides 16-30 correctly"
     ],
-    "v2_action_matrix_summary": "17 specific change items mapped to specific files with P0/P1/P2 priorities and estimates -- see 'Funnel hack -> UnlockSaaS action matrix' table in strategy/funnel-hacks.md v2 section. Top P0 items: ship /diagnostic real form, ship /machine-sales long-form, update state.json funnel_hacks (this entry).",
+    "v2_action_matrix_summary": "17 specific change items mapped to specific files with P0/P1/P2 priorities and estimates -- see 'Funnel hack -> UnlockSaaS action matrix' table in strategy/funnel-hacks.md v2 section. Top P0 items: ship /diagnostic real form, ship /playbook-sales long-form, update state.json funnel_hacks (this entry).",
     "v2_scope_out_honest": [
       "No paid-funnel hacks (did not buy through) -- ~$1500 to buy all 7; recommend ShipFast $199 first",
       "No email-sequence hacks (did not subscribe to each welcome flow)",
@@ -2130,7 +2130,7 @@
       },
       "plv2": {
         "label": "Transformation / Education",
-        "title": "How the Machine Actually Works",
+        "title": "How the Playbook Actually Works",
         "length_target_minutes": "8-10",
         "script_at": "strategy/founding-plv-scripts.md"
       },
@@ -2155,7 +2155,7 @@
       "ple3": {
         "day": -7,
         "role": "Anticipation (PLV2)",
-        "subject_working": "How the Machine actually works (and where every other tool quits)."
+        "subject_working": "How the Playbook actually works (and where every other tool quits)."
       },
       "ple4": {
         "day": -3,
@@ -2275,7 +2275,7 @@
       "follow_ups": [
         "Operator: record VSL per strategy/founder-vsl-script.md, upload to Mux or Cloudflare Stream, push NEXT_PUBLIC_VSL_URL to Vercel envs. Player auto-swaps from kinetic fallback to real video on next render.",
         "Operator: when an earned mention lands (Indie Hackers feature, podcast guest spot, X retweet from Dream 100), append a MediaMention row to lib/media-mentions.ts with publication + direct URL + ISO publishedAt + one-sentence context. Vercel auto-deploys; bar lights up on the third entry.",
-        "Operator/customer: 9 public verified builders is the wall-activation threshold. After first verified customer cycle, encourage the builder to flip share_visibility=public via /machine/verified. Wall lights up at builder #9.",
+        "Operator/customer: 9 public verified builders is the wall-activation threshold. After first verified customer cycle, encourage the builder to flip share_visibility=public via /playbook/verified. Wall lights up at builder #9.",
         "Post-Sprint-4 follow-up: optional photo upgrade on the avatar wall once 9 customers consent in writing. Initials-only MVP is correct for the share_visibility binary."
       ],
       "no_launch_change": "Funnel Hub URL, build_at, and components array unchanged. Lean-ladder discipline unchanged. Launch-minimum channels unchanged (workbook 09 §1). One Funnel Away preserved (the trust columns are additions to the anchor funnel surface, not a new funnel).",
@@ -2303,8 +2303,8 @@
     {
       "date": "2026-05-17",
       "scope": "Traffic Secrets Secret #6 (Follow-Up Funnels) score push from 88 to 100",
-      "change": "User instruction: 'Proceed autonomously to get 100%' on v2 audit row 'Follow-Up Funnels 75 88 Four cadences live. Same lift as ES #17.' Identified the 12-point gap as TWO concrete absences: (1) no canonical META-ARCHITECTURE doc orchestrating the four existing cadences (Soap Opera + Seinfeld + Founding + Challenge) — trigger taxonomy, subscriber state machine, overlap rules, termination rules, and unsubscribe semantics existed only as implementation knowledge inside each cadence's dispatcher; (2) the FIFTH cadence in Brunson's follow-up taxonomy — Cart Abandonment Recovery — was entirely missing (no enrolment path, no recovery short-circuit, no cron). Shipped both. STRATEGY: strategy/follow-up-funnels.md as the canonical 10-part architecture doc with cadence inventory (5 live + 2 deferred), trigger taxonomy, state machine, overlap priority order, termination rules, deferred-cadence rationale, unsubscribe semantics (one HMAC token clears all lists), staggered UTC cron schedule, audit reconciliation matrix mapping every Brunson criterion to its location. CODE: (a) supabase/migrations/20260518000004_cart_abandonment.sql — cart_abandonment_subscribers table mirroring soap_opera_subscribers conventions, unique index on stripe_session_id for idempotency, RLS service-role-only (no public POST endpoint — enrolment is webhook-exclusive); (b) app/src/lib/cart-recovery/emails.ts — 3-email sequence (Day 0 'door still open', Day 2 'five-time clickers' with optional diagnostic-label-tilted parable, Day 7 'last note from me' with Seinfeld opt-in and diagnostic fallback), price-anchored branching ($1 starter / $49 machine), Reluctant Hero voice signed — Maryan, NO fake urgency per workbook 07 §3 Category 4 rejection; (c) app/src/lib/cart-recovery/dispatch.ts — sendNextCartRecoveryAndAdvance mirrors lib/soap-opera/dispatch.ts pattern, includes pre-send re-read of status for recovery short-circuit (stop chasing after fresh checkout.session.completed); (d) app/src/lib/cart-recovery/subscribe.ts — recordCartAbandonment(session) called by Stripe webhook on checkout.session.expired (idempotent upsert + inline Email 1 send) AND maybeShortCircuitRecovery(email) called on checkout.session.completed (flips active recovery rows to status='recovered'); (e) app/src/app/api/cron/cart-recovery/route.ts — daily 17:00 UTC, same bearer-auth pattern as the other crons, 500-row fan-out cap; (f) app/src/app/api/webhooks/stripe/route.ts — added checkout.session.expired case + maybeShortCircuitRecovery call inside checkout.session.completed branch; (g) app/src/app/api/checkout/route.ts — added price_type to Stripe session metadata so the expired-session handler can branch copy; (h) app/src/app/api/unsubscribe/route.ts — added cart_abandonment_subscribers to the multi-table UPDATE so one click clears the new list too; (i) app/vercel.json — cart-recovery cron entry at 0 17 * * *; (j) app/src/lib/analytics/events.ts — CheckoutSessionExpired, CartRecoveryEnrolled, CartRecoveryEmailSent, CartRecoveryRecovered, CartRecoveryCompleted events added to taxonomy. CLEANUP: added IgBioLinkViewed event (referenced by sibling-session ig-bio-link-tracker.tsx but missing from taxonomy — pre-existing TS error; one-line add to clear the build red).",
-      "rationale": "Russell-canonical Follow-Up Funnels in Traffic Secrets Chapter 6 is not 'have several email lists.' It is the SYSTEM that decides who gets what when, with explicit rules for overlap, termination, and reversibility. The four-cadence implementation existed but the meta-architecture lived only in implementation knowledge inside each dispatcher — a future audit (or a future contributor) would reasonably re-litigate the architecture from scratch. The architecture doc plus the Cart Abandonment Recovery cadence (the only known missing branch in the five-cadence Brunson taxonomy) closes the chapter. Cart Recovery design choices reconciled against locked rules: NO fake urgency (workbook 07 §3 Category 4 rejection enforced — no countdown timers, no 'cart expires in X minutes'); resume link routes to /starter or /machine-sales (NOT Stripe's expired session URL which would 404 by Day 2); diagnostic label optionally tilts Email 2's parable (re-uses workbook 06 §4 belief rewrites); price_type branches the copy (starter abandoners and machine abandoners are in different headspaces but the arc is identical); recovery short-circuit stops the chase the moment they buy something else.",
+      "change": "User instruction: 'Proceed autonomously to get 100%' on v2 audit row 'Follow-Up Funnels 75 88 Four cadences live. Same lift as ES #17.' Identified the 12-point gap as TWO concrete absences: (1) no canonical META-ARCHITECTURE doc orchestrating the four existing cadences (Soap Opera + Seinfeld + Founding + Challenge) — trigger taxonomy, subscriber state machine, overlap rules, termination rules, and unsubscribe semantics existed only as implementation knowledge inside each cadence's dispatcher; (2) the FIFTH cadence in Brunson's follow-up taxonomy — Cart Abandonment Recovery — was entirely missing (no enrolment path, no recovery short-circuit, no cron). Shipped both. STRATEGY: strategy/follow-up-funnels.md as the canonical 10-part architecture doc with cadence inventory (5 live + 2 deferred), trigger taxonomy, state machine, overlap priority order, termination rules, deferred-cadence rationale, unsubscribe semantics (one HMAC token clears all lists), staggered UTC cron schedule, audit reconciliation matrix mapping every Brunson criterion to its location. CODE: (a) supabase/migrations/20260518000004_cart_abandonment.sql — cart_abandonment_subscribers table mirroring soap_opera_subscribers conventions, unique index on stripe_session_id for idempotency, RLS service-role-only (no public POST endpoint — enrolment is webhook-exclusive); (b) app/src/lib/cart-recovery/emails.ts — 3-email sequence (Day 0 'door still open', Day 2 'five-time clickers' with optional diagnostic-label-tilted parable, Day 7 'last note from me' with Seinfeld opt-in and diagnostic fallback), price-anchored branching ($1 starter / $49 playbook), Reluctant Hero voice signed — Maryan, NO fake urgency per workbook 07 §3 Category 4 rejection; (c) app/src/lib/cart-recovery/dispatch.ts — sendNextCartRecoveryAndAdvance mirrors lib/soap-opera/dispatch.ts pattern, includes pre-send re-read of status for recovery short-circuit (stop chasing after fresh checkout.session.completed); (d) app/src/lib/cart-recovery/subscribe.ts — recordCartAbandonment(session) called by Stripe webhook on checkout.session.expired (idempotent upsert + inline Email 1 send) AND maybeShortCircuitRecovery(email) called on checkout.session.completed (flips active recovery rows to status='recovered'); (e) app/src/app/api/cron/cart-recovery/route.ts — daily 17:00 UTC, same bearer-auth pattern as the other crons, 500-row fan-out cap; (f) app/src/app/api/webhooks/stripe/route.ts — added checkout.session.expired case + maybeShortCircuitRecovery call inside checkout.session.completed branch; (g) app/src/app/api/checkout/route.ts — added price_type to Stripe session metadata so the expired-session handler can branch copy; (h) app/src/app/api/unsubscribe/route.ts — added cart_abandonment_subscribers to the multi-table UPDATE so one click clears the new list too; (i) app/vercel.json — cart-recovery cron entry at 0 17 * * *; (j) app/src/lib/analytics/events.ts — CheckoutSessionExpired, CartRecoveryEnrolled, CartRecoveryEmailSent, CartRecoveryRecovered, CartRecoveryCompleted events added to taxonomy. CLEANUP: added IgBioLinkViewed event (referenced by sibling-session ig-bio-link-tracker.tsx but missing from taxonomy — pre-existing TS error; one-line add to clear the build red).",
+      "rationale": "Russell-canonical Follow-Up Funnels in Traffic Secrets Chapter 6 is not 'have several email lists.' It is the SYSTEM that decides who gets what when, with explicit rules for overlap, termination, and reversibility. The four-cadence implementation existed but the meta-architecture lived only in implementation knowledge inside each dispatcher — a future audit (or a future contributor) would reasonably re-litigate the architecture from scratch. The architecture doc plus the Cart Abandonment Recovery cadence (the only known missing branch in the five-cadence Brunson taxonomy) closes the chapter. Cart Recovery design choices reconciled against locked rules: NO fake urgency (workbook 07 §3 Category 4 rejection enforced — no countdown timers, no 'cart expires in X minutes'); resume link routes to /starter or /playbook-sales (NOT Stripe's expired session URL which would 404 by Day 2); diagnostic label optionally tilts Email 2's parable (re-uses workbook 06 §4 belief rewrites); price_type branches the copy (starter abandoners and playbook abandoners are in different headspaces but the arc is identical); recovery short-circuit stops the chase the moment they buy something else.",
       "files_touched": [
         "strategy/follow-up-funnels.md (NEW — canonical 10-part architecture doc, 5 live cadences + 2 deferred, trigger taxonomy, state machine, overlap rules, termination rules, unsubscribe semantics, staggered cron schedule, audit reconciliation)",
         "supabase/migrations/20260518000004_cart_abandonment.sql (NEW — cart_abandonment_subscribers table with idempotent stripe_session_id unique index + RLS service-role-only)",
@@ -2398,14 +2398,14 @@
       "follow_ups": [
         "When the private re-mine completes, update dossier §1.6 + §4.1 + §5 with verbatim quotes (replacing the directionally-accurate language).",
         "When the first cold-visitor 'this is me' DM arrives, append it to dossier §7 Validation evidence as the avatar's birth certificate and re-confirm the score is durable, not just constructed.",
-        "Audit copy on /, /diagnostic, /machine-sales, /parables, /founding against dossier §8 surface-usage table — for each row, confirm the copy echoes the referenced dossier section. Any mismatch is a sub-100 finding the next audit will catch."
+        "Audit copy on /, /diagnostic, /playbook-sales, /parables, /founding against dossier §8 surface-usage table — for each row, confirm the copy echoes the referenced dossier section. Any mismatch is a sub-100 finding the next audit will catch."
       ]
     },
     {
       "date": "2026-05-17",
       "scope": "Traffic Secrets Secret #11 (Google) — lifted from N/A to 100",
       "title": "Google strategy locked — Traffic Secrets Secret #11 (Google) lifted from N/A → 100",
-      "change": "Authored strategy/google-strategy.md (three-surface plan: Organic Search, AEO/GEO, Paid Search). Shipped Surface A + B at launch: app/src/app/sitemap.ts (9-URL canonical marketing set), app/src/app/robots.ts (allow public marketing; disallow /machine /api /auth /login /oto /welcome /onboarding /diagnostic/result /builder), app/src/components/seo/json-ld.tsx (Organization + WebSite + Service + HowTo + Product schemas, all hoisted to module-scope JSON strings per Vercel react-best-practices server-hoist-static-io), JSON-LD mounts on /, /diagnostic, /machine-sales, metadataBase + canonical + openGraph + twitter card globals in app/src/app/layout.tsx. Surface C (paid Google Ads) deferred with locked spec — campaign structure, RPL/max-CPC math (target $1.40 max CPC at 6mo retention), negative-keyword seed list (19 entries), ad copy templates in Reluctant Hero voice, landing-page mapping rule (never cold to /machine-sales), kill-switch (>$5 CPL or QS<6 after 7 days). One launch-day exception: brand-defense exact-match $5/day campaign on 'unlocksaas'. Activation gates inherited from workbook 09 §5 (>=30% diagnostic conversion + >=5% Starter conversion + >=3 verified customer cycles). All Brunson Hard-Rules reconciled, including a new AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) that vetoes generic high-volume keyword targeting.",
+      "change": "Authored strategy/google-strategy.md (three-surface plan: Organic Search, AEO/GEO, Paid Search). Shipped Surface A + B at launch: app/src/app/sitemap.ts (9-URL canonical marketing set), app/src/app/robots.ts (allow public marketing; disallow /playbook /api /auth /login /oto /welcome /onboarding /diagnostic/result /builder), app/src/components/seo/json-ld.tsx (Organization + WebSite + Service + HowTo + Product schemas, all hoisted to module-scope JSON strings per Vercel react-best-practices server-hoist-static-io), JSON-LD mounts on /, /diagnostic, /playbook-sales, metadataBase + canonical + openGraph + twitter card globals in app/src/app/layout.tsx. Surface C (paid Google Ads) deferred with locked spec — campaign structure, RPL/max-CPC math (target $1.40 max CPC at 6mo retention), negative-keyword seed list (19 entries), ad copy templates in Reluctant Hero voice, landing-page mapping rule (never cold to /playbook-sales), kill-switch (>$5 CPL or QS<6 after 7 days). One launch-day exception: brand-defense exact-match $5/day campaign on 'unlocksaas'. Activation gates inherited from workbook 09 §5 (>=30% diagnostic conversion + >=5% Starter conversion + >=3 verified customer cycles). All Brunson Hard-Rules reconciled, including a new AC-flaw guardrail (workbook 01 §6 Beat 4 SEO-as-avoidance) that vetoes generic high-volume keyword targeting.",
       "rationale": "Audit gap: Secret #11 was N/A in both v1 and v2 audits — correctly skipped on Hard-Rule grounds (cold $49/mo conversion burns money pre-PMF) but not pre-staged. Every other Phase-2 channel in the project (Affiliate Army, Summit, Funnel Stack, Funnel Audibles) has a fully-specced pre-staged playbook waiting for its evidence gate; Google was the last unmapped surface. The brand-coherence guardrail is the most important new rule: the founder's documented AC flaw is SEO-as-avoidance (workbook 01 §6 Beat 4; cited in the manifesto, parables, VSL, and PLV1 scripts). Any future SEO move that resembles the avoidance pattern is now rejected at the spec level, not at the implementation level.",
       "files": [
         "strategy/google-strategy.md (new, comprehensive)",
@@ -2415,7 +2415,7 @@
         "app/src/app/layout.tsx (metadataBase + canonical + OG + Twitter card)",
         "app/src/app/page.tsx (OrganizationJsonLd mount)",
         "app/src/app/(marketing)/diagnostic/page.tsx (DiagnosticJsonLd mount)",
-        "app/src/app/(marketing)/machine-sales/page.tsx (MachineProductJsonLd mount)",
+        "app/src/app/(marketing)/playbook-sales/page.tsx (PlaybookProductJsonLd mount)",
         "strategy/state.json (this entry + traffic_secrets.google block)",
         "strategy/workbooks/09-fill-your-funnel.md (§5/§6 cross-reference to google-strategy.md)",
         "00-RESUME-HERE.md (locked decisions + operator items)",
@@ -2447,7 +2447,7 @@
         "Middleware extension: write usaas_stack_subject + usaas_stack_entry + usaas_stack_current cookies on first request, alongside the existing A/B cookies. Sprint 3 dependency or sooner.",
         "Stripe metadata join in /api/checkout/route.ts: spread stackStripeStamp() output into checkout session metadata alongside existing A/B + diagnostic stamps. Sprint 3 dependency or sooner.",
         "public.stack_events migration: ship when Layer 4 long-form page ships (Sprint 3). No bridge-out events to log until then.",
-        "Layer 6 Stripe products: provision $24.50/mo (rerun-Machine) and $79/mo (community) AFTER 3 verified customer cycles.",
+        "Layer 6 Stripe products: provision $24.50/mo (rerun-Playbook) and $79/mo (community) AFTER 3 verified customer cycles.",
         "Layer 7 affiliate dashboard: build AFTER 50 paying customers per workbook 10 §3 trigger.",
         "Layer 8 exit-intent: build AFTER Phase 2 trigger + 100 captured exits (requires badge gallery from Layer 6 outputs)."
       ]
@@ -2481,7 +2481,7 @@
     {
       "date": "2026-05-17",
       "scope": "Brunson Results-in-Advance hardening — DotCom Secrets Secret 12 + 18 (the $1 Starter's keepable-small-win contract)",
-      "change": "Closed both halves of Russell's audit deduction on Secret #12 (was 62/100). DEFECT A: engine had soft-fail paths that silently ACCEPTED on JSON-parse failure (rubber-stamping vague answers), and ANTHROPIC_API_KEY missing surfaced as a generic 500 with no operator signal. DEFECT B: assembled deliverable lived only in the request response + localStorage, so a closed tab erased the user's 'yours to keep' small win — failing Frank Kern's Results-in-Advance test. FIXES: (1) Engine route now refuses to run without ANTHROPIC_API_KEY (503 + Reluctant Hero operator-facing copy) before invoking the SDK. (2) JSON-parse default flipped from ACCEPT to REJECT with a Reluctant Hero pushback line ('name the person, the moment, the number'); also defends malformed-shape responses (typeof accepted !== boolean) + empty-assembly bodies (502 instead of firing milestone + email on a blank deliverable). (3) New lib/step-outputs.ts persists assembled output to the existing project_state.<step-column> jsonb as { assembled_at, output_text } — idempotent upsert keyed on project_id PK. (4) New lib/deliverable-email.ts emails the deliverable from maryan@unlocksaas.com on assembly, Reluctant Hero voice, signed '— Maryan', Resend-tagged kind=step_deliverable + step_id for analytics. (5) Engine route's old fireMilestoneForStep replaced with deliverStepResult — runs milestone fire + persist + email as best-effort parallel side-effects and echoes { milestone_fired, persisted, emailed } back to the client under 'delivery'. (6) New GET /api/engine/output?stepId= hydrates the step page on mount from project_state (admin-client read after auth gate, 200 with output:null on anonymous). (7) New POST /api/engine/resend re-sends the canonical project_state-stored deliverable to the user's inbox — reads from DB not from any client-cached output so the email always reflects the locked version. (8) Step page at /machine/step/[id] now hydrates from server on mount → falls back to localStorage → falls back to fresh Q&A; renders an 'Email me a copy' button (calls /api/engine/resend with idle/sending/sent/error states) + 'Download as text' button (browser-side blob with title + date + deliverable + Reluctant Hero footer); shows contextual notes 'I just emailed this to you' (fresh assembly) vs 'Loaded from your last session' (hydration). (9) Committed supabase/migrations/20260517030000_milestones.sql capturing the milestones table that was created out-of-band on the live DB 2026-05-17 but never migration-committed — restores repo↔DB parity so supabase db reset works.",
+      "change": "Closed both halves of Russell's audit deduction on Secret #12 (was 62/100). DEFECT A: engine had soft-fail paths that silently ACCEPTED on JSON-parse failure (rubber-stamping vague answers), and ANTHROPIC_API_KEY missing surfaced as a generic 500 with no operator signal. DEFECT B: assembled deliverable lived only in the request response + localStorage, so a closed tab erased the user's 'yours to keep' small win — failing Frank Kern's Results-in-Advance test. FIXES: (1) Engine route now refuses to run without ANTHROPIC_API_KEY (503 + Reluctant Hero operator-facing copy) before invoking the SDK. (2) JSON-parse default flipped from ACCEPT to REJECT with a Reluctant Hero pushback line ('name the person, the moment, the number'); also defends malformed-shape responses (typeof accepted !== boolean) + empty-assembly bodies (502 instead of firing milestone + email on a blank deliverable). (3) New lib/step-outputs.ts persists assembled output to the existing project_state.<step-column> jsonb as { assembled_at, output_text } — idempotent upsert keyed on project_id PK. (4) New lib/deliverable-email.ts emails the deliverable from maryan@unlocksaas.com on assembly, Reluctant Hero voice, signed '— Maryan', Resend-tagged kind=step_deliverable + step_id for analytics. (5) Engine route's old fireMilestoneForStep replaced with deliverStepResult — runs milestone fire + persist + email as best-effort parallel side-effects and echoes { milestone_fired, persisted, emailed } back to the client under 'delivery'. (6) New GET /api/engine/output?stepId= hydrates the step page on mount from project_state (admin-client read after auth gate, 200 with output:null on anonymous). (7) New POST /api/engine/resend re-sends the canonical project_state-stored deliverable to the user's inbox — reads from DB not from any client-cached output so the email always reflects the locked version. (8) Step page at /playbook/step/[id] now hydrates from server on mount → falls back to localStorage → falls back to fresh Q&A; renders an 'Email me a copy' button (calls /api/engine/resend with idle/sending/sent/error states) + 'Download as text' button (browser-side blob with title + date + deliverable + Reluctant Hero footer); shows contextual notes 'I just emailed this to you' (fresh assembly) vs 'Loaded from your last session' (hydration). (9) Committed supabase/migrations/20260517030000_milestones.sql capturing the milestones table that was created out-of-band on the live DB 2026-05-17 but never migration-committed — restores repo↔DB parity so supabase db reset works.",
       "rationale": "Russell's Secrets-Trilogy audit graded Secret #12 (Results-in-Advance) at 62 with the deduction reasoning: 'the engine pushback that makes this defensible requires Anthropic API key + the user actually completing both steps — neither has happened in market.' The first half is an engineering defect (engine soft-fails were accept-by-default, and a missing key gave no operator signal) — fixed. The 'keepable result' half is also an engineering defect (browser-only state) — fixed by adding three-tier persistence (response → project_state → inbox → localStorage as fast-path). The 'neither has happened in market' sub-clause is unblockable from inside a build session because it needs real users completing the flow; that lives in Russell's separate top-5 fix #1 (wire /diagnostic and ship CRON_SECRET to actually drive traffic). Zero new tables, zero new env vars, zero new dependencies — re-used project_state's existing jsonb columns and the already-pushed ANTHROPIC_API_KEY + RESEND_API_KEY. Brunson rule compliance: hardness (engine cannot accept-by-default on any code path), keepability (three persistence tiers with DB as canonical source for resend), voice (every new surface signed '— Maryan' from maryan@unlocksaas.com, no role addresses, no fake urgency).",
       "files_touched": [
         "supabase/migrations/20260517030000_milestones.sql (NEW — captures live table for repo parity)",
@@ -2490,7 +2490,7 @@
         "app/src/app/api/engine/output/route.ts (NEW — GET hydrator for return-visit completion view)",
         "app/src/app/api/engine/resend/route.ts (NEW — POST 'Email me a copy' trigger reading from project_state)",
         "app/src/app/api/engine/route.ts (pre-flight key gate; REJECT-by-default JSON-parse; empty-assembly guard; deliverStepResult orchestrator)",
-        "app/src/app/(app)/machine/step/[id]/page.tsx (server hydration + Email/Download buttons + delivery notices + emailedOnAssembly/hydratedFromServer state)",
+        "app/src/app/(app)/playbook/step/[id]/page.tsx (server hydration + Email/Download buttons + delivery notices + emailedOnAssembly/hydratedFromServer state)",
         "build-log.md",
         "strategy/state.json"
       ],
@@ -2529,12 +2529,12 @@
     {
       "date": "2026-05-17",
       "scope": "Improve-everything-autonomously pass (Russell audit response)",
-      "change": "Triggered by user instruction 'Improve everything autonomously in order to get 100%' following the Russell audit (composite score 63/100). Shipped: (1) /diagnostic squeeze page now renders the DiagnosticForm (was Sprint 2 placeholder, blocking the entire front door of the funnel) -- this is the highest-leverage fix in the audit's top-5; (2) /machine-sales long-form Perfect Webinar Lite shipped -- Big Domino slides 1-6, Three Secrets 7-15 with Story/Strategy/Case Study, Stack 16-30 with value math, 4 mini-close categories (urgency rejected per workbook 07 sec 3), 6-question FAQ sourced from strategy/dollar-objections.md, disqualifying section, final CTA (note: concurrent author shipped this in parallel); (3) Rung 2 spec LOCKED -- strategy/decisions/rung-2-repeatable-revenue.md authored with $149/mo target price, 5.7x value ratio, 90-day refund window for Product 2, activation gated on 3 verified Core customer cycles + 1 unprompted ask + founder dogfood; (4) /repeatable public placeholder page live -- no fake countdown, no waitlist, publishes spec while build remains gated; (5) workbook 02 sec 5 rewritten to lock Rung 2 instead of 'noted, not built'; (6) state.json value_ladder.tiers split into rung_2_repeatable (locked spec) and rung_3_agency (still deferred); (7) discipline_note updated; (8) funnel_hacks populated with 4 competitor teardowns (Marc Lou, Pieter Levels, Arvid Kahl, Marc Kohlbrugge) + funnel_hacks_synthesis with 7 workbook-mapped swipe targets + 3 supplementary agent-pass steals -- closes DCS sec 5/8 and Expert Secrets sec 20 gaps from the audit; (9) strategy/funnel-hacks.md shipped as full teardown source (concurrent author) plus strategy/dream-100-expansion.md with 5 additional Category 2 influencers (Simon Hoiberg, Riley Brown, Danny Postma, Jakob Greenfeld, John Rush) + 5 additional podcasts (Startups For the Rest of Us, Solo Founders, Indie Bites, Behind the Craft, Product Journey) -- preserves dream-100.csv as canonical 100-row file; (10) revision history entry recorded.",
+      "change": "Triggered by user instruction 'Improve everything autonomously in order to get 100%' following the Russell audit (composite score 63/100). Shipped: (1) /diagnostic squeeze page now renders the DiagnosticForm (was Sprint 2 placeholder, blocking the entire front door of the funnel) -- this is the highest-leverage fix in the audit's top-5; (2) /playbook-sales long-form Perfect Webinar Lite shipped -- Big Domino slides 1-6, Three Secrets 7-15 with Story/Strategy/Case Study, Stack 16-30 with value math, 4 mini-close categories (urgency rejected per workbook 07 sec 3), 6-question FAQ sourced from strategy/dollar-objections.md, disqualifying section, final CTA (note: concurrent author shipped this in parallel); (3) Rung 2 spec LOCKED -- strategy/decisions/rung-2-repeatable-revenue.md authored with $149/mo target price, 5.7x value ratio, 90-day refund window for Product 2, activation gated on 3 verified Core customer cycles + 1 unprompted ask + founder dogfood; (4) /repeatable public placeholder page live -- no fake countdown, no waitlist, publishes spec while build remains gated; (5) workbook 02 sec 5 rewritten to lock Rung 2 instead of 'noted, not built'; (6) state.json value_ladder.tiers split into rung_2_repeatable (locked spec) and rung_3_agency (still deferred); (7) discipline_note updated; (8) funnel_hacks populated with 4 competitor teardowns (Marc Lou, Pieter Levels, Arvid Kahl, Marc Kohlbrugge) + funnel_hacks_synthesis with 7 workbook-mapped swipe targets + 3 supplementary agent-pass steals -- closes DCS sec 5/8 and Expert Secrets sec 20 gaps from the audit; (9) strategy/funnel-hacks.md shipped as full teardown source (concurrent author) plus strategy/dream-100-expansion.md with 5 additional Category 2 influencers (Simon Hoiberg, Riley Brown, Danny Postma, Jakob Greenfeld, John Rush) + 5 additional podcasts (Startups For the Rest of Us, Solo Founders, Indie Bites, Behind the Craft, Product Journey) -- preserves dream-100.csv as canonical 100-row file; (10) revision history entry recorded.",
       "rationale": "Russell audit scored composite 63/100. Strategy was 91 but execution lagged at 62 and market validation at 5. The audit's top-5 fixes list named the diagnostic placeholder as the #1 broken thing (highest-leverage front-door fix) and the $49 long-form sales page as the Sprint 3 unblocker. Rung 2 spec lock was the single highest workbook-02 audit improvement available. Funnel hacks and Dream 100 fills addressed the lowest-scoring chapters in DCS sec 5 and Traffic Secrets sec 2. Operator-blocked items (CRON_SECRET push, PostHog key, founder video recording, real DM outreach) remain pending the operator; everything that could be done autonomously without operator-only secrets has been done.",
       "files_touched": [
         "app/src/app/(marketing)/diagnostic/page.tsx (squeeze page now renders form)",
-        "app/src/app/(marketing)/machine-sales/page.tsx (long-form Perfect Webinar Lite -- concurrent author)",
-        "app/src/app/(marketing)/machine-sales/checkout-button.tsx (CoreCheckoutButton with attribution forwarding -- concurrent author)",
+        "app/src/app/(marketing)/playbook-sales/page.tsx (long-form Perfect Webinar Lite -- concurrent author)",
+        "app/src/app/(marketing)/playbook-sales/checkout-button.tsx (CoreCheckoutButton with attribution forwarding -- concurrent author)",
         "app/src/app/(marketing)/repeatable/page.tsx (Rung 2 placeholder)",
         "strategy/decisions/rung-2-repeatable-revenue.md (full spec)",
         "strategy/funnel-hacks.md (4 competitor teardowns + 7-pattern synthesis -- concurrent author)",
@@ -2549,7 +2549,7 @@
       },
       "follow_ups": [
         "Operator: push CRON_SECRET, UNSUBSCRIBE_SECRET, NEXT_PUBLIC_POSTHOG_KEY to Vercel (production/preview/development)",
-        "Operator: record six-line founder intro video and replace placeholder on / and /machine-sales",
+        "Operator: record six-line founder intro video and replace placeholder on / and /playbook-sales",
         "Operator: re-mine private 10-conversation set (Slack/Gmail/Granola)",
         "Operator: send first 5 work-your-way-in DMs to Anthony Castrio / Damon Chen / Tibo Louis-Lucas / Hassan El Mghari / Riley Brown (highest-priority pre-launch)",
         "When 3 verified Core customer cycles complete: trigger Rung 2 build per strategy/decisions/rung-2-repeatable-revenue.md sec 'The minimum Rung 2 build'",
@@ -2607,7 +2607,7 @@
     {
       "date": "2026-05-17",
       "scope": "Brunson audit follow-up — Dream 100 Category 2 LOCKED + podcast warm-up plan",
-      "change": "Closed the Q2 weakness flagged in the chapter-by-chapter audit ('Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up'). (1) Filled rows 31-40 of strategy/dream-100.csv with 10 specific influencer names selected for Marco-avatar overlap: Anthony Castrio (Indie Worldwide), Damon Chen (Testimonial.to), Hassan El Mghari/Nutlope, Tibo Louis-Lucas (Tweet Hunter), Mubashar Iqbal/Mubs, Rob Walling (Microconf/TinySeed), Sahil Lavingia (Gumroad), Pat Walls (Starter Story), Justin Jackson (Transistor.fm), Joel Gascoigne (Buffer). Mixed 5 vibe-coder / AI-builder ICP entries (31-35) with 5 bootstrapper-authority entries (36-40). (2) Added §3 podcast warm-up plan to workbook 08 with 5 Tier-1 pre-launch targets — Software Social (Schnettler/Hansen), Build Your SaaS (Jackson/Buda), The Bootstrapped Founder (Kahl), Startup Ideas (Isenberg), Microconf On Air (Walling) — each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions. Enforced pitch readiness gate (do not pitch until first verified-customer cycle closes — pitch is the case study, not the framework). (3) Verified that the parallel build agent already shipped the diagnostic squeeze page (replaced Sprint 2 placeholder) and the $49 Machine long-form sales page (replaced Sprint 3 placeholder) — the audit's #1 and #5 highest-leverage code fixes are now live in the worktree. (4) Updated traffic_secrets.dream_100.status, traffic_secrets.dream_100.categories.influencers, progress.skill_08_status, progress.founder_open_items_pre_launch (removed influencer-fill open item; added warm-up reps as new ongoing items).",
+      "change": "Closed the Q2 weakness flagged in the chapter-by-chapter audit ('Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up'). (1) Filled rows 31-40 of strategy/dream-100.csv with 10 specific influencer names selected for Marco-avatar overlap: Anthony Castrio (Indie Worldwide), Damon Chen (Testimonial.to), Hassan El Mghari/Nutlope, Tibo Louis-Lucas (Tweet Hunter), Mubashar Iqbal/Mubs, Rob Walling (Microconf/TinySeed), Sahil Lavingia (Gumroad), Pat Walls (Starter Story), Justin Jackson (Transistor.fm), Joel Gascoigne (Buffer). Mixed 5 vibe-coder / AI-builder ICP entries (31-35) with 5 bootstrapper-authority entries (36-40). (2) Added §3 podcast warm-up plan to workbook 08 with 5 Tier-1 pre-launch targets — Software Social (Schnettler/Hansen), Build Your SaaS (Jackson/Buda), The Bootstrapped Founder (Kahl), Startup Ideas (Isenberg), Microconf On Air (Walling) — each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions. Enforced pitch readiness gate (do not pitch until first verified-customer cycle closes — pitch is the case study, not the framework). (3) Verified that the parallel build agent already shipped the diagnostic squeeze page (replaced Sprint 2 placeholder) and the $49 Playbook long-form sales page (replaced Sprint 3 placeholder) — the audit's #1 and #5 highest-leverage code fixes are now live in the worktree. (4) Updated traffic_secrets.dream_100.status, traffic_secrets.dream_100.categories.influencers, progress.skill_08_status, progress.founder_open_items_pre_launch (removed influencer-fill open item; added warm-up reps as new ongoing items).",
       "rationale": "Audit (acting as Russell Brunson, full Secrets Trilogy chapter-by-chapter) scored the project 63/100 — strategy 91, execution 62, market validation 5. Secret Formula Q1-Q4 was scored 92, dragged by Q2's 10 empty influencer slots and zero warmed podcasts. Ran under 'proceed autonomously' instruction. Influencer names chosen by mapping Marco's locked avatar (non-engineer / AI builder / post-launch pre-revenue / flat Stripe / Lovable+Claude shipper) against publicly-visible audience density, weighted for reachability via X DM (workbook 09 §1 primary channel). Podcast warm-ups chosen for lead-time fit (smaller indie pods first, premium pods last) and host alignment with Reluctant Hero voice — Brunson-style 'work your way in' before any pitch.",
       "files_touched": [
         "strategy/dream-100.csv",
@@ -2618,18 +2618,18 @@
       "follow_ups": [
         "Founder begins daily warm-up reps on the 10 new Category 2 influencer entries (no pitches, just relationship build). Track in spreadsheet.",
         "Founder begins podcast warm-up reps on the 5 Tier-1 podcasts (reply to recent episodes, cite host frameworks in IH posts).",
-        "First pitch fires only after first verified-customer cycle inside The Machine closes — pitch = case study, not framework."
+        "First pitch fires only after first verified-customer cycle inside The Playbook closes — pitch = case study, not framework."
       ]
     },
     {
       "date": "2026-05-17",
       "scope": "Brunson audit 100% autonomous push — every chapter-by-chapter gap closed except market validation",
-      "change": "Following the Brunson chapter-by-chapter audit that scored 63/100, ran a full autonomous push to close every audit gap closable without traffic. (1) FUNNEL HUB rebuilt at app/src/app/page.tsx: founder timeline (5 dated rows 2025-summer through 2026-May), comparison table (5 rows vs doing-nothing / course / consultant / generic tool / The Machine), FAQ accordion (6 entries mined from dollar-objections.md), real wired newsletter signup component (replaces text-only block; POSTs to /api/soap-opera/subscribe), honest 'as seen in' note (no fake logos), cold-traffic footer link to /bridge. (2) SPRINT 3 LONG-FORM /machine-sales SHIPPED: Big Domino prose (slides 1-6), Three Secrets fully scripted with Story-Strategy-Case-Study each (Vehicle / Internal / External per workbook 07 §2), Stack with 10x value math ($496 -> $49 -> 10.1x), Stripe-verified guarantee block, 6 Closes (Risk Reversal / Math / Comparison / Identity / Future Pacing / Stake — urgency/scarcity REJECTED with explicit reason), FAQ from dollar-objections.md, disqualifying copy, signed — Maryan. (3) /welcome PROFIT MAXIMIZER / Return Path: handles both core_activated and starter_only paths via ?path= param, 12s auto-redirect to /machine, reassures the no-vote that Starter + Soap Opera both still alive. (4) /bridge cold-traffic page: Hook #3 + AC bio + reassurance bullets + single CTA to /diagnostic?from=bridge, per workbook 10 §4 awareness-level mapping. (5) VSL SCRIPT locked at strategy/vsl-script.md: Who/What/Why/How structure per DCS Ch 20, ~600 words ~4-5 min spoken, three production cuts from a single take (full / WHO 45s / WHAT+WHY 90s), no music no B-roll. (6) LAUNCH-READINESS.md at repo root: pre-launch checklist with operator Tier 1 (CRON_SECRET + UNSUBSCRIBE_SECRET freshly generated, PostHog + Sentry env vars), Tier 2 (VSL recording, private dollar-objection re-mine), Tier 3 (post launch X thread, IH+Reddit+HN submissions, first 5 Dream 100 DMs). Audit-to-100 score forecast table.",
+      "change": "Following the Brunson chapter-by-chapter audit that scored 63/100, ran a full autonomous push to close every audit gap closable without traffic. (1) FUNNEL HUB rebuilt at app/src/app/page.tsx: founder timeline (5 dated rows 2025-summer through 2026-May), comparison table (5 rows vs doing-nothing / course / consultant / generic tool / The Playbook), FAQ accordion (6 entries mined from dollar-objections.md), real wired newsletter signup component (replaces text-only block; POSTs to /api/soap-opera/subscribe), honest 'as seen in' note (no fake logos), cold-traffic footer link to /bridge. (2) SPRINT 3 LONG-FORM /playbook-sales SHIPPED: Big Domino prose (slides 1-6), Three Secrets fully scripted with Story-Strategy-Case-Study each (Vehicle / Internal / External per workbook 07 §2), Stack with 10x value math ($496 -> $49 -> 10.1x), Stripe-verified guarantee block, 6 Closes (Risk Reversal / Math / Comparison / Identity / Future Pacing / Stake — urgency/scarcity REJECTED with explicit reason), FAQ from dollar-objections.md, disqualifying copy, signed — Maryan. (3) /welcome PROFIT MAXIMIZER / Return Path: handles both core_activated and starter_only paths via ?path= param, 12s auto-redirect to /playbook, reassures the no-vote that Starter + Soap Opera both still alive. (4) /bridge cold-traffic page: Hook #3 + AC bio + reassurance bullets + single CTA to /diagnostic?from=bridge, per workbook 10 §4 awareness-level mapping. (5) VSL SCRIPT locked at strategy/vsl-script.md: Who/What/Why/How structure per DCS Ch 20, ~600 words ~4-5 min spoken, three production cuts from a single take (full / WHO 45s / WHAT+WHY 90s), no music no B-roll. (6) LAUNCH-READINESS.md at repo root: pre-launch checklist with operator Tier 1 (CRON_SECRET + UNSUBSCRIBE_SECRET freshly generated, PostHog + Sentry env vars), Tier 2 (VSL recording, private dollar-objection re-mine), Tier 3 (post launch X thread, IH+Reddit+HN submissions, first 5 Dream 100 DMs). Audit-to-100 score forecast table.",
       "rationale": "User instruction: 'Proceed autonomously to get 100%'. Pushed every gap a session can close without traffic. Composite forecast 63 -> 84 post-push -> 89 post-100-visitors -> 95 post-first-customer. Discipline preserved: no fake testimonials, no fake scarcity, no $19 downsell (would violate locked lean ladder), no new SKU, all surfaces Reluctant Hero voice, all polarity AGAINST lines intact, no role-address senders. The remaining 16 points to 100 are gated on operator action and irreducibly on real customer cycles — there is no autonomous path to 100 from inside one session.",
       "files_touched": [
         "app/src/app/page.tsx",
-        "app/src/app/(marketing)/machine-sales/page.tsx",
-        "app/src/app/(marketing)/machine-sales/checkout-button.tsx",
+        "app/src/app/(marketing)/playbook-sales/page.tsx",
+        "app/src/app/(marketing)/playbook-sales/checkout-button.tsx",
         "app/src/app/(marketing)/oto/page.tsx",
         "app/src/app/(marketing)/welcome/page.tsx",
         "app/src/app/(marketing)/bridge/page.tsx",
@@ -2675,7 +2675,7 @@
       "follow_ups": [
         "Operator: push CRON_SECRET + UNSUBSCRIBE_SECRET (values in LAUNCH-READINESS.md) to Vercel (all 3 envs).",
         "Operator: create PostHog + Sentry projects, push 5 env vars.",
-        "Operator: record the VSL (single take, three cuts) and embed on / + /machine-sales + Email 1.",
+        "Operator: record the VSL (single take, three cuts) and embed on / + /playbook-sales + Email 1.",
         "Operator: post launch X thread + IH /show + r/microsaas + Show HN + first 5 Dream 100 DMs.",
         "Audit re-score at 100 visitors and again at first verified customer."
       ]
@@ -2733,15 +2733,15 @@
     "secret_formula": "COMPLETE - Q1-Q4 locked. Workbook page written to workbooks/01-sales-funnel-secrets.md.",
     "current_exercise": "Unlock the Secrets workbook (Steps 1-10, ALL 10 chapters) COMPLETE. Next phase: BUILD via BUILD-PROMPT-CLAUDE-CODE.md.",
     "attractive_character_completion": "AC exercise ran 2026-05-16 in five beats (Identity Type, Backstory, Parables, Character Flaws, Polarity), each locked sequentially with founder confirmation. Reluctant Hero identity locked with founder's stated anchor reason: honesty makes it sustainable. Final beat (Polarity) accepted under 'proceed autonomously' instruction.",
-    "steps_2_3_4_completion": "Steps 2 (Funnels in the Value Ladder), 3 (Funnel Scripts), and 4 (Building Your Funnels) completed 2026-05-16 under 'proceed autonomously with every chapter' instruction. Foundation from Step 1 was strong enough to map funnel types, write launch-critical scripts, and produce page-by-page build specs without further founder Q+A. Build order locked: $1 Starter first, then Free Diagnostic, then $49 Machine. Outreach Step 5 send-vs-track resolution carried forward. Funnel Hacking slot reserved but deferred. Expert Secrets and Traffic Secrets (Skills 5-10) deliberately not run pre-build: Brunson's own sequence is ship-funnel first, then build movement, then drive traffic.",
+    "steps_2_3_4_completion": "Steps 2 (Funnels in the Value Ladder), 3 (Funnel Scripts), and 4 (Building Your Funnels) completed 2026-05-16 under 'proceed autonomously with every chapter' instruction. Foundation from Step 1 was strong enough to map funnel types, write launch-critical scripts, and produce page-by-page build specs without further founder Q+A. Build order locked: $1 Starter first, then Free Diagnostic, then $49 Playbook. Outreach Step 5 send-vs-track resolution carried forward. Funnel Hacking slot reserved but deferred. Expert Secrets and Traffic Secrets (Skills 5-10) deliberately not run pre-build: Brunson's own sequence is ship-funnel first, then build movement, then drive traffic.",
     "offer_diagnostic": "Founder (who IS Marco) could not name a single thing Marco would pay for, and could add nothing from the 10 conversations. This mirrors Marco's own documented disease (avoids the customer, reasons toward answers). Re-engagement move: ask founder to answer AS Marco - what promise would make him pay tonight. That sentence becomes the offer spine.",
-    "delivery_model": "Founder states community moderation and audits will be run by AI agents (consistent with Sipi/OpenClaw/Mac Mini infrastructure). Accepted as founder's call. NOTE: AI handles LABOR, not the guaranteed RESULT - the guarantee rests on whether the machine reliably produces a paying customer.",
+    "delivery_model": "Founder states community moderation and audits will be run by AI agents (consistent with Sipi/OpenClaw/Mac Mini infrastructure). Accepted as founder's call. NOTE: AI handles LABOR, not the guaranteed RESULT - the guarantee rests on whether the playbook reliably produces a paying customer.",
     "guarantee_risk_flag": "A guaranteed RESULT on a self-serve $39 tool is risky - founder does not control whether the user does the work. Needs an airtight work-requirement OR the guarantee lives on a higher-touch tier of the value ladder.",
     "product_design_implication": "Guarantee mechanics force the product spec: outreach/work happens inside the tool (trackable), Stripe integration verifies the result. Teaching-only = dead bait for Marco; doing-environment = new opportunity.",
-    "economics_flag": "The guarantee makes the offer a BET on the machine's success rate. Profitability rides on the % of users who do the verified work and get a paying customer. High success rate = rocket; low = slow bankruptcy via refunds + serving costs.",
+    "economics_flag": "The guarantee makes the offer a BET on the playbook's success rate. Profitability rides on the % of users who do the verified work and get a paying customer. High success rate = rocket; low = slow bankruptcy via refunds + serving costs.",
     "bonus_selection_lens": "Bonuses must be Step 5 accelerators - friction-killers, momentum, accountability. Anything that makes a scared founder press send.",
     "value_ladder_note": "Founder asked about lower tiers. CORRECTION logged: it is ascension, not 'lower ladders' - free/lower tiers are on-ramps that funnel UP to the $49 core. Sequencing: lock the $49 core offer (destination) FIRST, then map rungs. Value Ladder is the next workbook exercise.",
-    "creating_your_offer": "COMPLETE - core promise, machine, stack ($496/10.1x), guarantee all locked.",
+    "creating_your_offer": "COMPLETE - core promise, playbook, stack ($496/10.1x), guarantee all locked.",
     "sequence_reorder": "Deliberate reorder: strict skill order is Offer -> Story Selling -> Hooks -> Value Ladder. Doing Value Ladder NOW (founder momentum + ladder is structural). Story Selling + Hooks circle back after the ladder.",
     "value_ladder_correction": "Founder proposed an info-product ladder (free -> $1 -> $9 -> $49). Corrected: SaaS ladder is LEAN - free on-ramp then $49 core. '$1' only valid as a $1 trial. The 60-day guarantee already does the tripwire's de-risking job. On-ramp form pending founder choice."
   },
@@ -2758,7 +2758,7 @@
     "skill_02_status": "COMPLETE. Funnel-type-per-rung mapped, build order locked ($1 Starter first).",
     "skill_03_status": "COMPLETE. Launch-critical scripts written. Setter/Closer skipped with reason. Script 8 (Product Launch Sequence) REVISED 2026-05-17 from skipped to one-time Founding-Cohort PLF — full spec in workbook 03 + state.json product_launch_funnel block + strategy/founding-plv-scripts.md.",
     "skill_04_status": "COMPLETE. Page-by-page build specs, Soap Opera sequence, outreach engine spec, Funnel Audit checklist.",
-    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (canonical / SSR default, LOCKED 2026-05-17; 50/50 A/B against Paid Builders LIVE in production code, awaiting Vercel deploy to start collecting exposures), framework named (The Machine).",
+    "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (canonical / SSR default, LOCKED 2026-05-17; 50/50 A/B against Paid Builders LIVE in production code, awaiting Vercel deploy to start collecting exposures), framework named (The Playbook).",
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
     "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
     "skill_08_status": "COMPLETE v4 (Secret #1 dossier shipped 2026-05-17). Canonical Russell-canonical avatar dossier at strategy/dream-customer-avatar.md — 10 Traffic Secrets Chapter 1 questions, day-in-the-life by hour, avatar-level congregation map distinct from Dream 100 gates, before/after paragraphs, Marco-voice identity statement, 12-quote verbatim language bank with distribution map to copy surfaces, surface-by-surface usage table, validation evidence. Closes Traffic Secrets Secret #1 from 96 → 100. Dream 100 list across 7 categories — all 100 rows now have specific names + URLs + work-in plans. CSV at strategy/dream-100.csv. Podcast warm-up plan in workbook 08 §3: 5 pre-launch targets (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) with documented contact path, pitch angle, lead time, pre-pitch warm-up actions. Pitch readiness gate: do not send the pitch until first verified-customer cycle closes — pitch is the case study, not the framework. Deployable outreach kit at strategy/dream-100-outreach.md: §0 master rules, §1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1), §2 20 per-influencer dossiers in 4 ICP-overlap tiers (each with handle, recent canon, warm-up reps, ready-to-send DM template), §3 5 Tier-1 podcast pitch templates with per-host angles, §4 5 integration partner pitches (Lovable, Stripe, IH, Bootstrapped Founder, Kit), §5 tracking table schema with controlled vocabulary, §6 affiliate army one-pager (deferred to 50+ customers per workbook 10 §3), §7 honest scope of what kit does NOT do. Sender identity locked to maryan@unlocksaas.com per email-identity memory; sending requires per-message Maryan confirmation via scripts/mail.py or manual X DM.",
@@ -2768,7 +2768,7 @@
     "next_action": "BUILD. See unlock-saas/BUILD-PROMPT-CLAUDE-CODE.md (updated to consume workbooks 05-10).",
     "deferred_at_launch_now_specced": {
       "expert_secrets": "Skills 5-7 specced and ready to consume in copy. Movement live from day one; Beliefs power engine pushback; 10x Secrets powers $49 sales page long-form.",
-      "traffic_secrets": "Skills 8-10 specced. Dream 100 seeds Machine Step 5 targets. Fill Funnel sets launch channels. Growth Hacking maps Phase 2/3 triggers."
+      "traffic_secrets": "Skills 8-10 specced. Dream 100 seeds Playbook Step 5 targets. Fill Funnel sets launch channels. Growth Hacking maps Phase 2/3 triggers."
     },
     "founder_open_items_pre_launch": [
       "Re-mine private 10-conversation set via authenticated MCP (Slack/Gmail/Granola) — public-source mine already captured in strategy/dollar-objections.md; private mine refines niche-specific dollar-objection language for $49 FAQ + disqualifier copy",

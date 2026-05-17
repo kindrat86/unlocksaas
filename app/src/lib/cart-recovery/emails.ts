@@ -21,7 +21,7 @@
 
 import { buildUnsubscribeUrl } from "../soap-opera/tokens";
 
-export type CartPriceType = "starter" | "machine";
+export type CartPriceType = "starter" | "playbook";
 export type DiagnosticLabel = "wrong_person" | "weak_offer" | "weak_belief";
 
 export const CART_RECOVERY_SEQUENCE_LENGTH = 3;
@@ -55,18 +55,18 @@ interface RenderedEmail {
 
 const PRICE_HEADLINE: Record<CartPriceType, string> = {
   starter: "the $1 door",
-  machine: "the $49 door",
+  playbook: "the $49 door",
 };
 
 const PRICE_SHORT_REF: Record<CartPriceType, string> = {
   starter: "the $1 Starter",
-  machine: "the full Machine at $49/mo",
+  playbook: "the full Playbook at $49/mo",
 };
 
 function resumePath(priceType: CartPriceType): string {
   // Stripe's expired session URL would 404 by D2. Route to the surface page
   // which renders a fresh checkout button on every visit.
-  return priceType === "starter" ? "/starter" : "/machine-sales";
+  return priceType === "starter" ? "/starter" : "/playbook-sales";
 }
 
 // ── diagnostic-label tilt for Email 2 (optional) ─────────────────────────────

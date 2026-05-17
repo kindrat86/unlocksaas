@@ -31,9 +31,9 @@ export const metadata: Metadata = {
  * 14-Day First-Customer Sprint Challenge — opt-in landing page.
  *
  * Strategy: DotCom Secrets Secret #19 (Challenge Funnel), front-end version.
- * The same 14-day scaffold also lives inside the $49 Machine as the Step 6
+ * The same 14-day scaffold also lives inside the $49 Playbook as the Step 6
  * accelerator bonus. Front-end Challenge = free, email-only. Back-end Sprint
- * (inside $49) = engine-wired, Stripe-verified, baked into Machine Step 6.
+ * (inside $49) = engine-wired, Stripe-verified, baked into Playbook Step 6.
  *
  * Voice rule: Reluctant Hero throughout. Workbook 01 §6 Beat 1 + Beat 3
  * story references. No fake scarcity. No countdown timers. The only CTA is
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
  *
  * Position in the value ladder (per workbook 02 + workbook 04 §10):
  *   Funnel hub → Challenge (free, 14-day process) → $1 Starter (Day 14 ramp)
- *                                                → OTO → $49 Machine
+ *                                                → OTO → $49 Playbook
  */
 export default function ChallengePage() {
   return (

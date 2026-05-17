@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-static";
 
 // Effective date is module-level so the build embeds a stable string; bump
-// when a substantive change ships. Format is ISO for machine-readability.
+// when a substantive change ships. Format is ISO for playbook-readability.
 const EFFECTIVE_DATE = "2026-05-17";
 
 const TRAIL = [

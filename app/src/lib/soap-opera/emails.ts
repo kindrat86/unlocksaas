@@ -55,7 +55,7 @@ const PS_LINE_DEFAULT = (baseUrl: string) =>
   `If you want to finish your WHO and WHAT for $1, the door is here: ${baseUrl}/starter`;
 
 const PS_LINE_FINAL = (baseUrl: string) =>
-  `Start at $1 here: ${baseUrl}/starter — upgrade to the full Machine on the next page. The clock starts when you click.`;
+  `Start at $1 here: ${baseUrl}/starter — upgrade to the full Playbook on the next page. The clock starts when you click.`;
 
 // ── shared HTML helpers ─────────────────────────────────────────────────────
 function htmlShell(bodyHtml: string, footerHtml: string): string {
@@ -165,7 +165,7 @@ function email3(ctx: RenderContext): RenderedEmail {
       "Halfway through call six I had to mute, get up, and walk around the room. A small cold voice said: that is you. He is describing you.",
       "You will not see your own pattern until you hear it in someone else's mouth. That is the part I keep coming back to. I had read every framework. I had taken the courses. None of it landed until I sat across from a person who was me, eighteen months ahead, telling my own story back to me.",
       "If you are building in isolation and your Stripe is flat, the missing input is not another tactic. It is ten founders, in real conversations, where you stop performing.",
-      "Inside the $1 Starter, after you finish Steps 1 and 2, the Machine points you at the Outreach Room — a real list of real founders, picked for you, the ones who will mirror you back.",
+      "Inside the $1 Starter, after you finish Steps 1 and 2, the Playbook points you at the Outreach Room — a real list of real founders, picked for you, the ones who will mirror you back.",
     ],
     ps: PS_LINE_DEFAULT(ctx.baseUrl),
     ctx,
@@ -184,7 +184,7 @@ function email4(ctx: RenderContext): RenderedEmail {
       "What changed: building is solved. A non-engineer with a clear head can ship something real in a weekend. The bottleneck moved.",
       "What did not change: selling. The work of naming one person, writing one promise, sending the message. That work was always the bottleneck. It is just exposed now, because the build is no longer there to hide behind.",
       "Every funnel guru on the internet quietly assumes you can code. Most marketing tools assume it too. If you are a non-engineer who already shipped, you are in the strangest position: the hardest part is done, and the entire industry that teaches the rest of it speaks a language that excludes you.",
-      "The Machine is the one I wish someone had handed me when I was on that side of the door.",
+      "The Playbook is the one I wish someone had handed me when I was on that side of the door.",
     ],
     ps: PS_LINE_DEFAULT(ctx.baseUrl),
     ctx,
@@ -200,10 +200,10 @@ function email5(ctx: RenderContext): RenderedEmail {
       "Your first paying customer, verified by Stripe, within 60 days. Or full refund. In writing.",
       "Not your first signup. Not your first 'this is awesome' comment. A charge in Stripe. That is the only proof I will count, and it is the only proof you should count either.",
       "What you get for $49 a month:",
-      "— The Machine. Seven steps. Step 1 pins your dream customer to one named person. Step 2 builds the offer. Step 3 writes the voice. Step 4 writes the copy. Step 5 generates a real 20-target outreach list from a Dream 100 curated for your niche. Step 6 tracks every send. Step 7 listens for the first Stripe charge that closes your guarantee.",
+      "— The Playbook. Seven steps. Step 1 pins your dream customer to one named person. Step 2 builds the offer. Step 3 writes the voice. Step 4 writes the copy. Step 5 generates a real 20-target outreach list from a Dream 100 curated for your niche. Step 6 tracks every send. Step 7 listens for the first Stripe charge that closes your guarantee.",
       "— The Verified Builders community. Other non-engineers who shipped. The mirror that worked for me.",
       "— The 60-day clock, visible in the app header from the moment you start. No surprises. No fine print.",
-      "The guarantee mechanics: you do the work the Machine asks of you — pin the customer, lock the offer, send the 20 outreach messages it generates. If no Stripe charge arrives in 60 days, you ask, I refund. No call. No survey. No retention email.",
+      "The guarantee mechanics: you do the work the Playbook asks of you — pin the customer, lock the offer, send the 20 outreach messages it generates. If no Stripe charge arrives in 60 days, you ask, I refund. No call. No survey. No retention email.",
       "If you have not shipped anything yet, this is not for you. Go ship first. Come back when your Stripe is flat.",
       "If you have shipped, and the line is flat, and you have been refreshing it for months — this is the door I built for the version of me from last year.",
     ],

@@ -17,7 +17,7 @@
  *   3. Scar-tissue subhead — the founder's authority anchor in one sentence.
  *      Marco trusts founders who have failed publicly, not coaches who haven't.
  *   4. Offer stack — ONE primary CTA (free diagnostic = lead funnel), TWO
- *      subordinated CTAs ($1 starter + $49 machine). Brunson rule: the
+ *      subordinated CTAs ($1 starter + $49 playbook). Brunson rule: the
  *      visitor must know which door is the obvious next step.
  *   5. Reverse-squeeze bridge — "or read the five stories first" gives the
  *      hard-skeptic an exit ramp into content instead of bouncing.
@@ -83,7 +83,7 @@ export function Hero() {
           {/* Scar-tissue subhead — founder authority in one sentence. */}
           <p className="text-base sm:text-lg text-muted-foreground mb-2 max-w-2xl mx-auto leading-relaxed">
             I shipped 12 AI products and nobody paid for any of them. Then I
-            figured out why — and built the machine I wish someone had handed
+            figured out why — and built the playbook I wish someone had handed
             me back then.
           </p>
           <p className="text-sm text-foreground/80 mb-10">
@@ -110,10 +110,10 @@ export function Hero() {
               other but visually lighter than the primary CTA above. */}
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center max-w-md mx-auto">
             <Button asChild variant="outline" size="default" className="flex-1">
-              <Link href="/starter">Start The Machine for $1</Link>
+              <Link href="/starter">Start The Playbook for $1</Link>
             </Button>
             <Button asChild variant="ghost" size="default" className="flex-1">
-              <Link href="/machine-sales">The Full Machine — $49/mo</Link>
+              <Link href="/playbook-sales">The Full Playbook — $49/mo</Link>
             </Button>
           </div>
 

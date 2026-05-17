@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 
 /**
- * /llms.txt — machine-readable index for LLM crawlers (Anthropic,
+ * /llms.txt — playbook-readable index for LLM crawlers (Anthropic,
  * Perplexity, OpenAI, Google) and any agent following the llmstxt.org
  * convention.
  *
  * Surface B (AEO/GEO) of strategy/google-strategy.md §B.2: gives an
  * LLM a deterministic, canonical paraphrase target. Without this file,
  * an LLM has to choose between the funnel hub, the diagnostic, and
- * machine-sales as the "primary" surface — and it picks differently
+ * playbook-sales as the "primary" surface — and it picks differently
  * across queries. With this file, every model anchors on the same
  * description of what UnlockSaaS is and which surfaces matter.
  *
- * This is the CURATED INDEX. The full machine-readable corpus lives at
+ * This is the CURATED INDEX. The full playbook-readable corpus lives at
  * /llms-full.txt (concatenated markdown of every surface). Per-page
  * markdown mirrors live at <page>.md (e.g. /founding.md, /faq.md). The
  * "Markdown mirrors" section below tells agents the convention.
@@ -30,17 +30,17 @@ const BASE = "https://unlocksaas.com";
 
 const BODY = `# Unlock SaaS
 
-> A machine for post-launch pre-revenue founders. Turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay.
+> A playbook for post-launch pre-revenue founders. Turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay.
 
 Unlock SaaS is a guided seven-step system that names one real person, writes one real promise, and sends one real message — and verifies every step inside Stripe. Built by Maryan, a non-engineer, for non-engineer founders who shipped a product with AI tools (Lovable, Claude, Replit, v0, Cursor) and now have a flat Stripe line. The premise: the work that produces the first paying customer is the work nobody taught them, not more traffic or more features.
 
 ## Core surfaces
 
-- [Funnel hub](${BASE}/): The premise, the founder bio, and the three primary calls to action — free diagnostic, $1 Starter, $49/mo Machine.
+- [Funnel hub](${BASE}/): The premise, the founder bio, and the three primary calls to action — free diagnostic, $1 Starter, $49/mo Playbook.
 - [Free Launch Diagnostic](${BASE}/diagnostic): Paste a live product URL. In about ninety seconds, the system labels what is actually broken with one of three diagnoses — Wrong Person, Weak Offer, or Weak Belief — and hands the founder the specific next step.
 - [Five Stories for the Flat Stripe Line](${BASE}/stories): Long-form, free-to-read essays on the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. No email required.
-- [The $1 Starter funnel](${BASE}/starter): The entry rung. A real Stripe charge proves intent and unlocks Machine Steps 1 and 2 — pin one real customer, write one real offer.
-- [The Machine ($49/month)](${BASE}/machine-sales): The full seven-step system. 60-day money-back guarantee tied to the first verified Stripe payment.
+- [The $1 Starter funnel](${BASE}/starter): The entry rung. A real Stripe charge proves intent and unlocks Playbook Steps 1 and 2 — pin one real customer, write one real offer.
+- [The Playbook ($49/month)](${BASE}/playbook-sales): The full seven-step system. 60-day money-back guarantee tied to the first verified Stripe payment.
 - [Verified Builders](${BASE}/builders): Founders whose first paying customer was verified inside Stripe, not self-reported. Directory grows only when Stripe confirms the cycle.
 - [Repeatable Revenue (Rung 2 spec)](${BASE}/repeatable): Published specification for the next product. Build is gated on three Core customer cycles completing.
 
@@ -63,7 +63,7 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 
 ## Programmatic SEO surfaces — indie SaaS pricing teardowns
 
-- [Pricing teardown hub](${BASE}/pricing-teardown): Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Machine applies to your own pricing page. Approximate prices with dated lastVerified.
+- [Pricing teardown hub](${BASE}/pricing-teardown): Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Playbook applies to your own pricing page. Approximate prices with dated lastVerified.
 - Per-teardown pages at \`${BASE}/pricing-teardown/<slug>\` — e.g. /pricing-teardown/tally, /pricing-teardown/lemonsqueezy, /pricing-teardown/notion, /pricing-teardown/linear, /pricing-teardown/figma, /pricing-teardown/vercel, /pricing-teardown/beehiiv, /pricing-teardown/cal-com, /pricing-teardown/resend, /pricing-teardown/stripe.
 
 ## Programmatic SEO surfaces — head-to-head comparisons
@@ -81,7 +81,7 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/founding.md](${BASE}/founding.md)
   - [/about.md](${BASE}/about.md)
   - [/diagnostic.md](${BASE}/diagnostic.md)
-  - [/machine-sales.md](${BASE}/machine-sales.md)
+  - [/playbook-sales.md](${BASE}/playbook-sales.md)
   - [/starter.md](${BASE}/starter.md)
   - [/stories.md](${BASE}/stories.md)
   - [/faq.md](${BASE}/faq.md)
@@ -99,8 +99,8 @@ When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE
 ## Key facts
 
 - Founder: Maryan, contactable at maryan@unlocksaas.com.
-- Pricing: $1 one-time Starter; $49/month Core ("The Machine"). No annual upsell. No coaching tier at launch.
-- Guarantee: First paying customer in 60 days from the Machine start date, or full refund.
+- Pricing: $1 one-time Starter; $49/month Core ("The Playbook"). No annual upsell. No coaching tier at launch.
+- Guarantee: First paying customer in 60 days from the Playbook start date, or full refund.
 - Target audience: Post-launch, pre-revenue, non-engineer founders shipping consumer or B2B SaaS with AI-assisted code-generation tools.
 - Stack the audience uses: Lovable, Claude (Anthropic), Replit, v0, Cursor, Bolt, Bubble — anything that lets a non-engineer ship a working product.
 

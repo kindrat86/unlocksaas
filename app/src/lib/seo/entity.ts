@@ -47,7 +47,7 @@ export const ID = {
   organization: `${BASE_URL}/#organization`,
   person: `${BASE_URL}/#founder`,
   website: `${BASE_URL}/#website`,
-  product: `${BASE_URL}/#product-machine`,
+  product: `${BASE_URL}/#product-playbook`,
   diagnosticService: `${BASE_URL}/#service-diagnostic`,
   diagnosticHowTo: `${BASE_URL}/#howto-diagnostic`,
 } as const;
@@ -174,7 +174,7 @@ export const ORGANIZATION = {
   slogan: "Your first paying customer in 60 days, or you do not pay.",
   foundingDate: "2026-05-17",
   description:
-    "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+    "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
   // Schema.org expects ISO 3166 region codes or named places. SaaS sold
   // worldwide; "Worldwide" is the accepted convention for digital-only.
   areaServed: "Worldwide",
@@ -200,7 +200,7 @@ export const FOUNDER = {
   email: "maryan@unlocksaas.com",
   url: BASE_URL,
   description:
-    "Solo founder of Unlock SaaS. Marketer by trade, not engineer; builds the product with Claude Code. Built the machine he uses for his own launch.",
+    "Solo founder of Unlock SaaS. Marketer by trade, not engineer; builds the product with Claude Code. Built the playbook he uses for his own launch.",
 } as const;
 
 // ---------------------------------------------------------------------------

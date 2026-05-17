@@ -1,5 +1,5 @@
 /**
- * Guarantee tracker UI block. Server-rendered inside the Machine dashboard.
+ * Guarantee tracker UI block. Server-rendered inside the Playbook dashboard.
  *
  * Renders one of several states based on GuaranteeEvaluation.phase:
  *   - no_subscription        → nothing (caller hides)
@@ -199,7 +199,7 @@ function MilestoneList({ evaluation }: { evaluation: GuaranteeEvaluation }) {
             </div>
             {!m.achieved && (
               <Link
-                href={`/machine/step/${m.stepIndex}`}
+                href={`/playbook/step/${m.stepIndex}`}
                 className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
               >
                 Step {m.stepIndex} →
@@ -223,7 +223,7 @@ function Footer({ evaluation }: { evaluation: GuaranteeEvaluation }) {
         />
         <p className="text-xs text-muted-foreground">
           One click refunds you. No emails, no friction. The promise was
-          machine-verifiable from day one.
+          playbook-verifiable from day one.
         </p>
       </div>
     );
@@ -244,7 +244,7 @@ function Footer({ evaluation }: { evaluation: GuaranteeEvaluation }) {
     return (
       <p className="text-xs text-muted-foreground pt-2 border-t">
         The verdict is rendered automatically at the 60-day mark. Until then,
-        the work in the Machine is what counts. Stripe is the only proof.
+        the work in the Playbook is what counts. Stripe is the only proof.
       </p>
     );
   }

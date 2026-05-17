@@ -18,7 +18,7 @@
 |---|---|---|---|
 | Mon | X (thread) | Personal | "I went a year without looking at Stripe" |
 | Tue | Indie Hackers (long-form) | Pattern | "The praise-without-payment trap I heard in 10 founder calls" |
-| Wed | X (thread) | Process | "What Step 5 of The Machine actually looks like" |
+| Wed | X (thread) | Process | "What Step 5 of The Playbook actually looks like" |
 | Wed | DM batch | — | 5 Dream 100 outreaches (no pitch, one question each) |
 | Thu | X (thread) | Polarity | "SEO is the most expensive form of avoidance I have ever paid for" |
 | Fri | Indie Hackers (long-form) | Proof | "Building the funnel that diagnoses my own failure (work in public)" |
@@ -304,7 +304,7 @@ Question for the comments: what&apos;s your respectable hiding place been? I wan
 
 ## IH Post #3 — Process (week 2)
 
-**Title:** What Step 5 of any founder-machine actually looks like (and why every tool quietly skips it)
+**Title:** What Step 5 of any founder-playbook actually looks like (and why every tool quietly skips it)
 
 **Body (~600 words):**
 

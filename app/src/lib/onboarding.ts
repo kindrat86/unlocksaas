@@ -10,7 +10,7 @@
  *
  *   2. Carry over from the $1 Starter — if project_state.dream_customer or
  *      project_state.offer are populated, surface them. Otherwise link to
- *      Machine Step 1.
+ *      Playbook Step 1.
  *
  *   3. Connect your Stripe — the user's OWN Stripe account, used by
  *      verified_conversions to detect their first paying customer. This
@@ -100,7 +100,7 @@ export async function getOrCreateProject(
   }
 
   // Otherwise insert. The unique index on user_id catches races.
-  const defaultName = userEmail ? `${userEmail.split("@")[0]}'s Machine` : "My Machine";
+  const defaultName = userEmail ? `${userEmail.split("@")[0]}'s Playbook` : "My Playbook";
   const { data: created, error } = await admin
     .from("projects")
     .insert({ user_id: userId, name: defaultName })
@@ -166,7 +166,7 @@ export async function getProfileByEmail(
 
 /**
  * Read project_state for the given project and summarize what (if anything)
- * was filled in during the $1 Starter (Machine Steps 1 + 2).
+ * was filled in during the $1 Starter (Playbook Steps 1 + 2).
  *
  * The shape of dream_customer/offer is the assembled output from the engine
  * route (see /api/engine/route.ts). We don't try to validate the shape —

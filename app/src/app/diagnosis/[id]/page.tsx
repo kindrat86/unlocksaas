@@ -201,7 +201,7 @@ export default async function PublicDiagnosisPage({
           <Link href="/" className="underline underline-offset-4 hover:text-foreground">
             Maryan at Unlock SaaS
           </Link>
-          . Reluctant Hero. Non-engineer. Built the machine he wishes someone
+          . Reluctant Hero. Non-engineer. Built the playbook he wishes someone
           had handed him. No card, no spam, one short note a day for five days
           after you run yours.
         </p>
