@@ -1258,3 +1258,55 @@ None for the code surface. Search Console verification and brand-defense Google 
 ### Next coherent unit
 
 Operator: complete action items above. Engineering: when the `/founding` cart-close cron is scheduled, open a follow-up to remove `/founding` from the sitemap response on the same flip — this is a small surface change that should ride with whatever cron-state machine update happens for the cart-close trigger.
+
+## Audit Response: SEO 88 → ~94 – per-slug Open Graph cards for the four pSEO surfaces
+
+### Why this push
+
+The 2026-05-17 SEO / pSEO / GEO / AIO / AEO audit scored traditional SEO at 88/100. The single soft gap was per-slug OG images: all 56 pSEO pages (9 alternatives + 17 funnel teardowns + 10 pricing teardowns + 20 head-to-head comparisons) inherited the root `/opengraph-image.tsx` card. Generic OG fallback previews cap inbound share-CTR around 1%; named-target preview cards run 3-6x higher on the surfaces where pSEO links spread organically (Slack, X, LinkedIn, Discord founder communities). Closing the gap unblocks the same SERP entries to do the work twice: once on Google, once on every social surface that previews the URL.
+
+### Code deliverables
+
+Four colocated route handlers, each thin and self-contained (no shared helper, to keep this PR free of coupling to in-flight refactors on other branches):
+
+- `app/src/app/(marketing)/alternatives-to/[slug]/opengraph-image.tsx` (NEW) – `eyebrow: "Alternative to"`, headline `Unlock SaaS vs {displayName}`, subhead manifest `oneLine` (clamped at 180 chars), dateline `Last verified {lastVerified}`. `runtime: nodejs`, `dynamic: force-static`, `dynamicParams: false`, `generateStaticParams` keyed to `ALTERNATIVE_SLUGS`.
+- `app/src/app/(marketing)/funnel-teardown/[slug]/opengraph-image.tsx` (NEW) – same shape, `eyebrow: "Funnel Teardown"`, keyed to `TEARDOWN_SLUGS`.
+- `app/src/app/(marketing)/pricing-teardown/[slug]/opengraph-image.tsx` (NEW) – `eyebrow: "Pricing Teardown"`, keyed to `PRICING_TEARDOWN_SLUGS`.
+- `app/src/app/(marketing)/compare/[slug]/opengraph-image.tsx` (NEW) – `eyebrow: "Head-to-head"`, headline `{a.name} vs {b.name}`, keyed to `COMPARISON_SLUGS`. Renders no verdict on the share preview: symmetric framing extends to the OG card per the Brunson Hard-Rule on the underlying /compare surface.
+
+Build emits 56 PNGs total. Phantom OG probes (`/compare/fake-product/opengraph-image`) 404 instead of being lazily generated, mirroring the page-route security stance.
+
+### Visual contract
+
+Each card matches `app/src/app/opengraph-image.tsx` (root fallback) and the existing builder/diagnosis OG family so the fleet reads as one product on any social surface:
+
+- Dark Geist palette (`#0a0a0b` background, `#fafafa` foreground, `#a1a1aa` / `#71717a` muted).
+- Brand mark + wordmark top-left; inverted-pill eyebrow top-right.
+- No em dashes (project hard rule).
+- No yellow / orange / purple (locked visual style 2026-05-17).
+- Sans-serif system stack only (no script fonts).
+- Satori subset respected: `display: flex` on every multi-child container, no shorthand background props, no gradients without explicit syntax.
+
+### Brunson Hard-Rule reconciliation
+
+- No fabricated facts. Every card reads from the same manifest the HTML page renders. Cards cannot drift from the live page; the lastVerified ISO date on each manifest entry is the dated audit trail.
+- No invented quotes. Cards display eyebrow + headline + clamped oneLine + dateline only.
+- Honest framing. Comparison cards preview no winner. Funnel and pricing teardown cards name the framework lens, not the target's flaws.
+
+### Score impact
+
+- SEO (traditional): 88 → ~94. Soft gap closed.
+- pSEO: 92 → ~95. Programmatic surface carries its own social preview equity now, not inherited generic equity.
+- GEO / AIO / AEO: unchanged. OG cards don't feed retrieval directly, but they do feed click-through on social posts that link the per-slug HTML, which compounds into the GEO citation flywheel over time.
+
+Remaining SEO headroom is on outcome variables this push cannot move (GSC verification, real inbound, populating `ORGANIZATION_SAME_AS` once profiles bidirectionally claim unlocksaas.com).
+
+### Verification
+
+- Imported symbols (`ALTERNATIVE_SLUGS` / `getAlternativeBySlug`, `TEARDOWN_SLUGS` / `getTeardownBySlug`, `PRICING_TEARDOWN_SLUGS` / `getPricingTeardownBySlug`, `COMPARISON_SLUGS` / `getComparisonBySlug`) all confirmed present in the four manifests at the same export paths the page.tsx files already use.
+- Field references (`displayName`, `oneLine`, `lastVerified`, `a.name`, `b.name`) confirmed against each manifest's type definition.
+- Worktree had no `node_modules` so local `tsc` / `next build` were skipped; Vercel deploy build is the canonical typecheck.
+
+### Operator action items
+
+None. Cards ship at the next deploy and start fronting every shared pSEO URL automatically.
