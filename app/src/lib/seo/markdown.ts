@@ -32,7 +32,12 @@
  *   - app/funnel-teardown/[slug]/md/route.ts           (per-pSEO mirrors, batch 2)
  */
 
-import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
+import {
+  BASE_URL,
+  FOUNDER,
+  ORGANIZATION,
+  ALTERNATE_NAMES,
+} from "@/lib/seo/entity";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
 import {
   ALTERNATIVES,
@@ -435,6 +440,135 @@ By hearing your own pattern in someone else's mouth. Ten conversations with othe
 Because tools like Lovable and Claude opened the door to shipping real software for non-engineers in weeks — the building is now magic. The hard part is what comes after: naming one specific person, writing one real promise, selling it before it feels ready. That is the work nobody built a tool for, because engineers were always too busy building to notice that selling was unsolved. The bottleneck has moved. Building is solved. Selling has not been, and now it sits exposed. ([Story 5](${BASE_URL}/stories#story-5))
 
 Read on ${BASE_URL}/stories.
+`;
+
+const PRESS_BODY = `# Press and Media Kit – Unlock SaaS
+
+> Brand facts, founder bio, descriptions in three lengths, and contact for journalists, podcasters, and newsletter writers covering Unlock SaaS.
+
+## TL;DR
+
+Public press kit. Every claim is independently verifiable on the live site, in Stripe, in DNS, or in the strategy folder. No embargoes, no exclusivity asks, no review-before-publication. Copy any block verbatim for editorial use.
+
+## Fast facts
+
+- **Name**: ${ORGANIZATION.name}
+- **Alternate spellings**: ${ALTERNATE_NAMES.join(", ")}
+- **Founder**: ${FOUNDER.name} (${FOUNDER.jobTitle})
+- **Founded**: ${ORGANIZATION.foundingDate}
+- **Area served**: ${ORGANIZATION.areaServed}
+- **Slogan**: ${ORGANIZATION.slogan}
+- **Press contact**: ${FOUNDER.email}
+- **Web**: ${BASE_URL}
+
+## Descriptions
+
+### 50 words (tweet, capsule, sidebar)
+
+Unlock SaaS is a guided seven-step playbook that turns an already-shipped product into a verified paying customer in 60 days, or the founder does not pay. Built by a non-engineer marketer for non-engineer founders shipping with AI tools.
+
+### 100 words (podcast intro, newsletter blurb)
+
+Unlock SaaS is a guided seven-step playbook for post-launch pre-revenue founders. It names one real customer, writes one real promise, sends one real message, and verifies every step inside Stripe. Built by Maryan, a marketer (not an engineer), for non-engineer founders who shipped with Lovable, Claude, Cursor, v0, or Bolt and are now staring at a flat Stripe line. Sixty-day money-back guarantee tied to the first verified Stripe payment – refund automatic if no paying customer arrives.
+
+### 200 words (feature lede, profile opener)
+
+Unlock SaaS is a guided seven-step playbook for post-launch pre-revenue founders who shipped a product with AI tools and have no paying customers. It refuses to let the founder skip the work that actually gets them paid: pin one real person, write one real promise, send one real message, and verify every step inside Stripe. The free Launch Diagnostic labels what is broken on the live page with one of three diagnoses – Wrong Person, Weak Offer, or Weak Belief – and hands the founder the specific next step. The $1 Starter unlocks Playbook Steps 1 and 2. The full $49-per-month Playbook covers the entire seven-step system. If no verified paying customer arrives in sixty days, the subscription is refunded automatically – the guarantee is wired into the product, not into a PDF. Built by Maryan, a marketer (not an engineer), who shipped a dozen AI-assisted products, watched them flatline in Stripe, and built the playbook he wished someone had handed him.
+
+## Founder bio
+
+${FOUNDER.name} – ${FOUNDER.description}
+
+Long-form bio in the founder's own voice: ${BASE_URL}/about
+
+## Topical expertise (interview prep)
+
+Subjects the founder can speak to without notes:
+- Post-launch pre-revenue SaaS founder activation – the work non-engineer founders skip.
+- Russell Brunson sales funnel design (DotCom, Expert, Traffic Secrets) applied to micro-SaaS.
+- Honest competitor comparison editorial standards (the "Brunson Hard-Rule" for fabrication-free marketing claims).
+- Stripe-verified founder validation – why self-reported customer counts are worth nothing.
+- Money-back guarantee mechanics for digital products – guarantees wired into the product, not the PDF.
+- Non-engineer founder workflows with AI tools (Lovable, v0, Bolt.new, Cursor, Claude Code, Replit).
+- Soap Opera Sequence and Seinfeld daily email marketing for indie SaaS.
+- Dream 100 outreach strategy adapted for one-founder distribution.
+- Programmatic SEO for indie SaaS that respects the Brunson Hard-Rule.
+
+## Brand assets and link targets
+
+- Logo / favicon (PNG): ${BASE_URL}/icon
+- Default Open Graph card: ${BASE_URL}/opengraph-image
+- Canonical funnel hub: ${BASE_URL}/
+- Founder bio (long form): ${BASE_URL}/about
+- Free Launch Diagnostic: ${BASE_URL}/diagnostic
+- Long-form stories: ${BASE_URL}/stories
+
+## Editorial policy and coverage rules
+
+No embargoes, no exclusivity asks, no "please send me the piece before publication." If you can verify the claim, you can publish it.
+
+We do not publish customer testimonials, screenshots, or aggregate ratings until they correspond to a verified paying customer cycle in Stripe. Comparison pages name real competitors and respect their value propositions. Every entry has a lastVerified date in the footer.
+
+## Recent coverage
+
+Nowhere yet. The founder is pre-launch. When real coverage lands it appears on the funnel hub's media bar and is also listed on this page in reverse-chronological order. No fake logos, no "as seen in" placeholders – the empty state is the honest state.
+
+## Reach the founder
+
+Email ${FOUNDER.email}. One inbox, one human, real replies. Time zone: EU. Typical response window: within one business day.
+`;
+
+// Editorial policy markdown mirror — same source-of-truth principle as
+// /press: every claim is something the operator already does in practice,
+// not aspirational standards we have not shipped. Wired into the surface
+// registry below so /editorial-policy.md serves alongside the HTML page.
+const EDITORIAL_POLICY_BODY = `# Editorial Policy — Unlock SaaS
+
+> How Unlock SaaS sources, dates, signs, and corrects every public claim.
+
+## TL;DR
+
+One person writes this site, by name. Every comparison, teardown, and parable is sourced from a live read of the named entity on the dated lastVerified shown on the page. No affiliate links. No paid placements. No sponsored content. Corrections are logged in reverse-chronological order at the bottom of this page. Empty log is honest, not an absence of policy.
+
+## Who writes this site
+
+One person: ${FOUNDER.name}, founder of ${ORGANIZATION.name}. No anonymous editorial board, no contractor pool, no ghost-written posts. Every parable, every funnel teardown, every pricing teardown, every comparison, every category roundup is the work of the named human in the footer. If a future contributor publishes here, they will be bylined on the piece, named on this page, and added to the Person schema graph.
+
+## How claims get sourced
+
+- **Funnel teardowns, pricing teardowns, and comparisons** are written from a live read of the competitor's public page on the dated \`lastVerified\` shown at the bottom of every detail page. No second-hand summaries, no LLM-paraphrased reviews, no quoted competitor copy.
+- **FAQ entries** are verbatim objections sourced from real Indie Hackers and Hacker News threads. Thread links are retained in the project repository for audit and not surfaced publicly to avoid driving traffic to individual users who did not consent to being quoted.
+- **Parables and stories** are the founder's own experience. Third-party products or people referenced are on the public record.
+- **Statistics and dollar figures** appear only when they are about Unlock SaaS itself and verifiable inside our own Stripe account. No third-party statistics from a report we did not read end-to-end.
+
+## Datelines
+
+Every article carries a hard \`datePublished\` in schema and a human-readable footer date. The published date does not move forward silently. Material changes are logged in the corrections section and the \`dateModified\` field updates separately. Programmatic SEO surfaces carry a separate \`lastVerified\` ISO date declaring when the live competitor surface was last read.
+
+## Disclosures
+
+- **Affiliate links**: none. No comparison, teardown, or parable contains a paid affiliate link to any competitor named.
+- **Paid placements**: none. No competitor has paid to be included in or excluded from any teardown, comparison, or category roundup.
+- **Sponsored content**: none. If this ever changes, sponsored pieces will be labeled in the first line of the article and excluded from the schema.org/Article graph.
+- **Ownership and funding**: ${ORGANIZATION.name} is fully owned and self-funded by ${FOUNDER.name}. No outside investors. No grants. Revenue comes from product sales (currently \$1 Starter and \$49/month Playbook).
+- **Customer relationships**: the operator has not been compensated by any competitor named on this site. Future customer overlaps will be disclosed on the relevant page.
+
+## Corrections workflow
+
+1. Email ${FOUNDER.email} with the URL, the claim, and the correction.
+2. The operator confirms or rejects within 7 days.
+3. Confirmed corrections are logged below and the page is updated.
+4. Rejected corrections receive a reply explaining why.
+
+## Corrections log
+
+Reverse-chronological. Empty does not mean nothing has ever been wrong; it means nothing has been reported and confirmed yet.
+
+_No corrections logged yet._
+
+## Sign
+
+Signed ${FOUNDER.name}, founder, ${ORGANIZATION.name}. Editorial policy published 2026-05-17. Last reviewed 2026-05-17.
 `;
 
 const FAQ_BODY = `# Frequently Asked Questions — Unlock SaaS
@@ -982,6 +1116,22 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     summary:
       "Built by a non-engineer founder for non-engineer founders shipping with AI tools.",
     body: ABOUT_BODY,
+  },
+  {
+    path: "/press",
+    mdPath: "/press.md",
+    title: "Press and Media Kit – Unlock SaaS",
+    summary:
+      "Brand facts, founder bio, descriptions in three lengths, and contact for media coverage.",
+    body: PRESS_BODY,
+  },
+  {
+    path: "/editorial-policy",
+    mdPath: "/editorial-policy.md",
+    title: "Editorial Policy — Unlock SaaS",
+    summary:
+      "How Unlock SaaS sources, dates, signs, and corrects every public claim.",
+    body: EDITORIAL_POLICY_BODY,
   },
   {
     path: "/diagnostic",

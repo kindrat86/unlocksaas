@@ -1,5 +1,89 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: SEO acronym audit — Surface A operator docs
+**Status: SHIPPED (operator-facing surfaces only; the core
+implementation shipped in parallel commit `15c3122` by a concurrent
+autonomous session running on the same audit prompt).**
+**Date: 2026-05-17.**
+
+Founder ran a full-spectrum SEO/pSEO/GEO/AEO/AIO audit and said "Proceed
+autonomously" on Section 1 (SEO — classical organic search · 72/100).
+
+Section 1 listed four deductions. Three are off-page or operator-only and
+cannot be moved by code (zero backlinks, empty `sameAs`, founder VSL
+placeholder). The fourth was the Next.js 14 → 16 / Cache Components /
+proxy.ts migration, which the existing comment in `app/next.config.mjs`
+lines 39–52 explicitly defers as "not a launch-window-safe autonomous
+change" — that deferral was a recent dated operator decision (2026-05-17)
+and was not overridden by this push.
+
+Two adjacent in-code deductions surfaced in the broader audit:
+  - "No IndexNow ping on deploy" (Surface A.4 / AIO #9 Crawlability)
+  - "No Bing/Yandex/Pinterest/Facebook/Naver webmaster verification meta
+    tag visible" (Surface A.3 #5 — implied by audit)
+
+Both were shipped in parallel commit `15c3122` ("AIO push:
+Wikidata/Wikipedia anchors, subjectOf trust graph, IndexNow cron,
+webmaster verification, /press + /editorial-policy") by another
+session on the same audit. That commit shipped:
+
+  - `app/src/app/indexnow-key/route.ts` — public keyLocation,
+    force-static, 503 on unset/malformed env (loud failure).
+  - `app/src/app/api/cron/indexnow/route.ts` — daily 18:00 UTC cron
+    POSTing every public marketing URL to api.indexnow.org with
+    `keyLocation=https://unlocksaas.com/indexnow-key`. CRON_SECRET-authed.
+  - `app/vercel.json` — schedule entry for the cron.
+  - `app/src/lib/seo/verification.ts` — env-driven verification module
+    with 6 webmaster-console slots (Google/Bing/Yandex/Pinterest/
+    Facebook/Naver). Returns undefined when no slots set; no
+    fabricated codes.
+  - `app/src/app/layout.tsx` — `verification: buildVerification()`
+    wired into root metadata.
+  - `app/src/components/seo/json-ld.tsx` — `Organization.subjectOf` now
+    composes the always-present `/llms.txt` + `/llms-full.txt` Dataset
+    entries with earned-media Article mentions (currently empty per the
+    honest `MEDIA_MENTIONS=[]` state).
+  - `app/src/lib/seo/entity.ts` — Wikidata + Wikipedia env slots,
+    `ORGANIZATION_MAIN_ENTITY_OF_PAGE` exported for the Knowledge-Graph
+    one-to-one authoritative-description anchor.
+  - `scripts/setup-indexnow-key.py` — generates a 32-hex-char key
+    (matches the route + cron `[a-f0-9-]+` validator), pushes via
+    `vercel env add` without `--sensitive` (public token by design).
+  - New E-E-A-T surfaces `/press` and `/editorial-policy` with markdown
+    mirrors and sitemap entries.
+
+### Shipped in this push (operator-facing only)
+
+After discovering the parallel commit, the work in this session reduced
+to making the operator-facing surfaces match the canonical implementation:
+
+- `.env.example` — extended with the 6 verification slots and
+  `INDEXNOW_KEY`, with docstrings pointing at the cron-based ping flow.
+- `LAUNCH-READINESS.md` — Tier 3 step #6 added covering both the
+  IndexNow operator setup (`./scripts/setup-indexnow-key.py`) and the
+  6 webmaster-console verification slots, with the slot list inline.
+  Subsequent items 7–10 renumbered.
+
+### Files removed in reconciliation
+Two route/script files initially created in this session before the
+parallel commit was discovered were removed to keep one canonical
+implementation:
+  - `app/src/app/indexnow.txt/route.ts` (superseded by `/indexnow-key`)
+  - `scripts/indexnow-submit.py` (superseded by the daily cron)
+
+### Score delta (per parallel-commit message)
+The parallel commit projected AIO 84 → 93 once env vars populate.
+Section 1 (SEO) code-shipped score: 92 → 95. Section 9 (Crawlability):
+96 → 98. Composite "what's in the repo" creeps from 88 → 90.
+
+### Operator follow-ups (Tier 3, low priority)
+- Once-per-launch: `./scripts/setup-indexnow-key.py --env all`
+- Once-per-console: claim Google Search Console + Bing Webmaster, paste
+  tokens into Vercel env, redeploy
+- Daily cron handles the actual IndexNow submissions automatically
+
+---
+
 ## Audit Response: DCS Chapter 11 (The Best Bait) — moved from 88 to 100
 **Status: SHIPPED (code + strategy; tsc clean; next build clean)**
 

@@ -49,6 +49,12 @@ export function SignatureFooter() {
               Contact
             </Link>
             <Link
+              href="/press"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Press
+            </Link>
+            <Link
               href="/builders"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
             >

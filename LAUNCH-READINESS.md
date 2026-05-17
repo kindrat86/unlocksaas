@@ -141,17 +141,56 @@ done.
 
 ### Tier 3 — first 100 visitors
 
-6. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
+6. **Generate + push `INDEXNOW_KEY` and claim webmaster consoles.**
+   Two parts, both cheap, both unlock AI-Overview citation parity on the
+   non-Google engines. Roughly 30 minutes total.
+
+   Part A — IndexNow (Bing + Yandex + Naver + Seznam push-notification).
+   Once-off setup; the daily cron at `/api/cron/indexnow` (18:00 UTC,
+   wired in `app/vercel.json`) does the actual submissions automatically.
+
+   ```bash
+   ./scripts/setup-indexnow-key.py --env all
+   # After the next production deploy, https://unlocksaas.com/indexnow-key
+   # serves the key, and the daily cron starts pinging api.indexnow.org
+   # with every public marketing URL. Requires CRON_SECRET (Tier 1 #1).
+   ```
+
+   Part B — claim ownership on each webmaster console you intend to use.
+   Each console emits a short verification token; paste each into the
+   matching Vercel env var. None are sensitive (they're meant to be
+   served in HTML). Skip a console if you don't plan to use it.
+
+   ```bash
+   # The slot list (paste real values from each console, then redeploy):
+   #   Google Search Console        NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+   #   Bing Webmaster Tools         NEXT_PUBLIC_BING_SITE_VERIFICATION
+   #   Yandex Webmaster             NEXT_PUBLIC_YANDEX_VERIFICATION
+   #   Pinterest                    NEXT_PUBLIC_PINTEREST_SITE_VERIFICATION
+   #   Facebook (Meta Business)     NEXT_PUBLIC_FACEBOOK_DOMAIN_VERIFICATION
+   #   Naver Webmaster              NEXT_PUBLIC_NAVER_SITE_VERIFICATION
+   #
+   # For each token the console hands you:
+   vercel env add NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION production preview
+   # then redeploy.
+   ```
+
+   Until these are set, every console falls back to slower DNS
+   verification (delays AI Overview eligibility on Google, Bing Copilot
+   citation metrics, etc.). With them, verification completes on the
+   next deploy.
+
+7. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
    Page). Drop link to /diagnostic at the end. Tag two of the Dream 100.
 
-7. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
+8. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
    Show HN.** Reluctant Hero voice on all four. Workbook 09 §1 cadence
    rules apply.
 
-8. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
+9. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
    Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
 
-9. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
+10. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
    after the first verified-customer cycle. Subscribe + watch 5 most-recent
    videos + 3 substantive timestamped comments each on Riley Brown
    ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
