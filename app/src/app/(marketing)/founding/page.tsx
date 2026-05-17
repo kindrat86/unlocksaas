@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { FoundingCohortMeter } from "@/components/founding-cohort-meter";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { FoundingWaitlistForm } from "./waitlist-form";
 import { FoundingClaimButton } from "./claim-button";
 import { cartWindow, seatsClaimed, FOUNDING_COHORT_CAP } from "@/lib/founding/cohort";
@@ -53,6 +54,18 @@ export default async function FoundingPage() {
 
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
+      {/* Surface B (AEO/SEO) — BreadcrumbList. The Founding Cohort is a
+          time-bound subpage of the Machine sales path, so the trail reads
+          Home → The Machine → Founding Cohort. Three-deep mirrors the way
+          a cold reader actually arrives here (homepage → /machine-sales →
+          /founding once cart opens). */}
+      <BreadcrumbJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          { name: "The Machine", url: "https://unlocksaas.com/machine-sales" },
+          { name: "Founding Cohort", url: "https://unlocksaas.com/founding" },
+        ]}
+      />
       <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">
         <Badge variant="secondary" className="mb-4">
