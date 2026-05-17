@@ -76,8 +76,9 @@ const STACK: StackItem[] = [
 
 export function StackSlide() {
   return (
-    <section className="py-16 px-6 max-w-3xl mx-auto">
-      <div className="text-center mb-10">
+    <section className="bg-muted/60 border-y border-border">
+      <div className="py-16 px-6 max-w-3xl mx-auto">
+        <div className="text-center mb-10">
         <Badge variant="secondary" className="mb-4">
           Here&apos;s what&apos;s inside
         </Badge>
@@ -153,6 +154,7 @@ export function StackSlide() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </section>
   );
 }

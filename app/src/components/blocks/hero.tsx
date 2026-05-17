@@ -44,7 +44,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 pointer-events-none"
         style={{
           backgroundImage:
-            "radial-gradient(ellipse 70% 55% at 50% 0%, hsl(var(--primary) / 0.07), transparent 65%)",
+            "radial-gradient(ellipse 70% 55% at 50% 0%, hsl(var(--primary) / 0.12), transparent 65%)",
         }}
       />
       {/* Hairline that softens the seam between hero and the proof bar below.

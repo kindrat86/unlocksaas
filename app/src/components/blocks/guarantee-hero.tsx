@@ -47,8 +47,9 @@ const REFUND_CONDITIONS = [
 
 export function GuaranteeHero() {
   return (
-    <section className="py-16 px-6 max-w-3xl mx-auto">
-      <div className="text-center mb-10">
+    <section className="bg-accent/40 border-y border-border">
+      <div className="py-16 px-6 max-w-3xl mx-auto">
+        <div className="text-center mb-10">
         <div className="flex justify-center mb-5">
           <div className="h-14 w-14 rounded-full bg-primary/10 grid place-items-center text-primary">
             <ShieldCheck className="h-7 w-7" strokeWidth={2} aria-hidden="true" />
@@ -100,6 +101,7 @@ export function GuaranteeHero() {
         exposure, two coffees a week, refunded by webhook if the line stays
         flat.
       </p>
+      </div>
     </section>
   );
 }
