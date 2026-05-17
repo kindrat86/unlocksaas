@@ -107,6 +107,19 @@ export default function CompareHub() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: COLLECTION_JSON }}
       />
+      {/* AIO uplift: Dataset schema. Comparisons treated as a dated catalog
+          of head-to-head SaaS evaluations. */}
+      <HubDatasetJsonLd
+        name="Indie SaaS Head-to-Head Comparisons Catalog"
+        description="Symmetric dimension-by-dimension comparisons of indie SaaS tools. Each entry names who each side is best for, scores six to nine dimensions, gives an honest take, and names the indie-founder pick."
+        hubPath="/compare"
+        mdPath="/compare.md"
+        lastVerified={COMPARE_LATEST_VERIFIED}
+        entries={COMPARISONS.map((c) => ({
+          slug: c.slug,
+          displayName: `${c.a.name} vs ${c.b.name}`,
+        }))}
+      />
 
       {/* Breadcrumb */}
       <nav
