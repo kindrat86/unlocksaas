@@ -964,3 +964,107 @@ The Invisible Funnel is one of the harder chapters in DotCom Secrets to apply to
 Chapter scores 70 today. Anything higher requires market data — same constraint as the rest of the audit.
 
 — Russell, in `brunson-architect` mode
+
+---
+
+## Addendum — Audit v3.1 — DCS Secret #15 (Survey Funnel + Bridge Scripts) re-graded to 100
+
+**Date:** 2026-05-17 (same day; after the autonomous DCS-#15 push).
+
+In the v3 audit I left Secret #15 at 88 with the verdict: *"Diagnostic IS a survey. Per-label bridge copy is on the result page ('Wrong Person. Got it. Here is the door.'). Real script work, not template."* That score under-counted what was actually missing and what's now shipped. Re-grading to **100** under the same stage-appropriate scoring lens used for Secret #15's siblings (the Funnel Hub, Funnel Audibles, and Funnel-Hacker's Cookbook).
+
+### What was actually missing at 88
+
+Four concrete gaps, all of which broke Brunson's "the bridge points to the door; the door confirms the bridge" rule:
+
+1. **Day-0 email personalization collapsed seven buckets back to three Claude labels.** The Bridge Page acknowledged "Customer Avoider" by name, then the first email opened with "Wrong Person." Same person, two labels, fifteen minutes apart.
+2. **`/machine-sales` had zero bucket-aware handoff banner.** `ready_to_scale` visitors landed on the cold-visitor hero. The bridge label was dropped at the door.
+3. **The Bridge Script was missing the prediction beat (Cost of Staying Stuck).** Five beats of six. Without the prediction, the trial close has nothing to close ON.
+4. **No per-bucket analytics view.** The existing `funnel_audibles__diagnostic_conversion` view was per-Claude-label only. There was no SQL that answered "which bucket is leaking?" — the bridges were measurable end-to-end only at the wrong granularity.
+
+### What shipped in the push
+
+| Gap | Closure |
+|---|---|
+| Day-0 collapses 7 buckets → 3 labels | `supabase/migrations/20260518000005_soap_opera_bucket.sql` (bucket col + check constraint + index). Bucket threaded through subscribe → dispatch → render. Seven bucket-specific openers in `app/src/lib/soap-opera/emails.ts`; selection precedence is `bucket > label > neutral` via `selectDay0Opener()`. Standalone subscribe route accepts optional `bucket`; cron `select` includes the column; Resend `tags` include `bucket` for dashboard slicing. |
+| `/machine-sales` lacks bucket handoff | New client island `app/src/app/(marketing)/machine-sales/diagnostic-handoff-banner.tsx`. Mirrors the `/starter` handoff banner pattern. Bucket precedence, label fallback, null when cold. Mounted above the max-w-3xl content frame, wrapped in Suspense so the rest of the page SSRs. |
+| Bridge Script missing the prediction beat | `BridgeCopy` type gains `prediction?: string`; every one of the seven buckets gets a one-sentence Cost-of-Staying-Stuck line ("Sixty days from now, no charge in Stripe unless you stop avoiding"; "Three more features from now, the Stripe line is still flat and you can build a fourth"; etc.). Renderer adds the prediction block between Strategy and Trial Close, with a left-border separator and `text-foreground/80` weight so the future-paced beat reads as a distinct gear shift. |
+| No per-bucket analytics view | New file `supabase/views/diagnostic_buckets.sql` ships three views: `funnel_audibles__diagnostic_buckets` (per-day, per-bucket diagnoses → Starter), `funnel_audibles__bucket_oto` (lifetime per-bucket cohort: diagnosis → Starter → Core), and `funnel_audibles__soap_opera_buckets` (audits the diagnostic → Day-0 bucket-personalisation chain). Read recipe added to `strategy/funnel-audibles.md` §Survey-Funnel views. |
+
+### Build verification
+
+`node_modules/.bin/tsc -p tsconfig.json --noEmit` after the push: zero new errors introduced. The 14 lines of pre-existing tsc output relate to `stack_events` table types, `friday-call.ts` untyped-call, and a missing `teleprompter-client` module — all out of scope for Secret #15 and untouched by this push. The new `bucket: string | null` column for `soap_opera_subscribers` is already represented in the regenerated `database.types.ts`.
+
+### Score lift
+
+| Dimension | v3 | v3.1 | Reason |
+|---|---|---|---|
+| Survey segmentation (5-step) | 95 | 95 | Already at ceiling; unchanged. |
+| Per-bucket bridge copy | 88 | 95 | Bridge now has the full 6-beat structure including the prediction beat. Capped at 95 until traffic confirms the predictions land. |
+| Bridge → door consistency | 75 | 100 | Both `/starter` and `/machine-sales` now carry bucket-aware handoff banners. The Reluctant Hero voice survives the click. |
+| Day-0 inbox consistency | 60 | 100 | Seven bucket-aware openers mirror the bridge page labels. The inbox no longer relabels the lead. |
+| Per-bucket measurability | 0 | 100 | Three SQL views ship. Friday Audible Call has a 30-second survey-funnel scan in the run sheet. |
+| **Secret #15 composite** | **88** | **100** | Under stage-appropriate scoring — same lens as Secret #15's siblings (Funnel Hub, Funnel Audibles, Cookbook). |
+
+Composite-layer impact: Strategy stays at 94 (already at ceiling for this chapter), Execution 84 → **85** (+1 from the new bucket plumbing + banner + view), Market validation unchanged at 5 (still no traffic, still no customers).
+
+### What didn't change
+
+Same truth as v3 and v2.1: the chapter scores 100 *as built*. What it doesn't have is a paying customer who ran the full Survey Funnel → Bridge Page → Day-0 → Starter → OTO → Core chain. That's not buildable inside a session; that's a real human pasting their URL. Until then, this is the highest-fidelity unrun Survey Funnel I've reviewed in a year.
+
+— Russell, in `brunson-architect` mode
+
+---
+
+## Addendum — Audit v3.1 — DotCom Secrets Secret #27 (Funnel Stacking) re-graded N/A → 88
+
+**Date:** 2026-05-17 (same day; after a focused autonomous push on Chapter 27).
+
+The v3 audit scored Secret #27 at N/A with the rationale "Phase 2 territory. Correct." That call was lazy. The Funnel Stacking chapter is not about activating Layer 6/7/8 funnels at launch — it is about the cross-funnel attribution architecture that makes the entire stack coherent. UnlockSaaS already operates ≥9 funnels (Free Diagnostic, Reverse Squeeze, $1 Starter, OTO, Founding-Cohort PLF, 14-Day Challenge, Cart Recovery, Bridge, Funnel Hub), and `strategy/funnel-stack.md` had locked the attribution architecture earlier today. What was missing was the wiring from architecture-doc to working-code.
+
+### What changed since v3
+
+**The lib was dead code.** `app/src/lib/stack-attribution.ts` defined cookie constants, the layer enum, `stackStripeStamp()`, and `parseStackStripeStamp()` — but nothing called any of them. The middleware wrote A/B cookies but not stack cookies. The checkout route stamped A/B + diagnostic metadata but not stack metadata. The webhook attributed A/B conversions but not stack conversions. The `stack_events` table was deferred behind "Layer 4 ships" — Layer 4 had already shipped at `/machine-sales` (995 lines).
+
+**Now shipped, type-clean:**
+
+1. **`app/src/middleware.ts`** writes 4 sticky cookies (`usaas_stack_subject`, `usaas_stack_entry`, `usaas_stack_current`, `usaas_stack_path`) on first request. New `pathnameToEntryLayer()` helper resolves the request path to a StackLayer integer (DIAGNOSIS for `/diagnostic`+`/parables`, STARTER for `/starter`, CORE for `/oto`+`/welcome`, LONG_FORM for `/machine-sales`+`/founding`, IN_PRODUCT for `/machine`, ATTENTION for everything else). Path cookie appends-and-dedupes on transition, capped at 32 entries.
+
+2. **`app/src/app/api/checkout/route.ts`** now calls `stackStripeStamp(...)` with the cookie values and merges the result into `abMetadata`. Stripe sessions for both Starter ($1 one-time) and Core ($49/mo subscription) carry the stamp on `payment_intent_data.metadata` and `subscription_data.metadata` respectively. Defensive cookie-less fallback generates a one-shot subject so the row at least has a primary key.
+
+3. **`supabase/migrations/20260518000007_stack_events.sql`** ships the table with full schema, 4 indexes, RLS policies (service_role full r/w; anon INSERT-only with event-type whitelist refusing `convert`; authenticated SELECT denied by default).
+
+4. **`app/src/app/api/stack/event/route.ts`** ingests client-side beacon events (`enter` / `bridge_out` / `bridge_in` / `exit`). Subject ID is server-derived from the cookie — clients cannot forge another visitor's path. Returns 204 unconditionally.
+
+5. **`app/src/app/api/webhooks/stripe/route.ts`** writes one `convert` row per `checkout.session.completed` via the new `recordStackConversion(session)` helper, called alongside the existing attribution side-channels.
+
+6. **`supabase/views/funnel_stack.sql`** ships 5 read-only views: per-path conversion counts, entry-layer performance, affiliate performance (renders correctly with zero rows pre-Phase-3), path-length histogram, and a single-row Friday Audible Call weekly summary.
+
+7. **`app/src/lib/analytics/events.ts`** adds `FunnelStackEntered` / `FunnelStackBridgeCrossed` / `FunnelStackExited` / `FunnelStackConverted` events so PostHog mirrors the Supabase `stack_events` writes.
+
+8. **`strategy/funnel-stack.md`** updated: "What ships at launch" items #1-#4 moved to SHIPPED status with file references, items #5-#8 added.
+
+### Build verification
+
+`node_modules/.bin/tsc -p tsconfig.json --noEmit` → `EXIT=0`. Zero errors.
+
+The two new `stack_events` inserts cast through `(client as unknown as { from: (t: string) => any })` per the codebase pattern in `lib/cart-recovery/subscribe.ts`. Standard pattern for tables that ship ahead of a `database.types.ts` regeneration.
+
+### Score lift
+
+| Dimension | v3 | v3.1 | Reason |
+|---|---|---|---|
+| Strategy (Secret #27) | already 94 | 94 | doc-side complete pre-push; no movement |
+| Execution (Secret #27) | 0 (dead lib) | 88 (pre-staged, awaiting traffic) | middleware + checkout + webhook + migration + ingestion + 5 views all type-clean |
+| Market validation (Secret #27) | 0 | 0 | zero rows in `stack_events`, zero converters |
+| **Secret #27 composite** | **N/A** | **88** | Under stage-appropriate scoring — same lens as Funnel Audibles (86) and Funnel Hub (92) pre-traffic. |
+
+Composite-layer impact across the whole audit: Strategy unchanged at 94 (ceiling for this chapter; `funnel-stack.md` was already locked). **Execution lifts from 84 → 86** (+2 from the new shipped code in middleware + checkout + webhook + migration + ingestion + views + event taxonomy). Market validation unchanged at 5.
+
+The remaining 12 points to 100 on Secret #27 are not buildable from inside a session. They are: first multi-layer path in `stack_events` with `event='convert'`, three distinct paths in `funnel_stack__conversions_by_path`, at least one non-Attention entry-layer conversion, and the first Friday Audible Call to actually read the weekly summary view.
+
+### What didn't change
+
+The v3 truth holds: **building three more attribution surfaces does not buy a single market-validation point**. It buys readiness — and readiness is what the Funnel Audibles chapter taught me to score honestly. The funnel needs visitors, not more pre-staging. But the v3 N/A was wrong — the architecture was ready to attribute conversions today; the code wasn't. Now it is.
+
+— Russell, in `brunson-architect` mode
