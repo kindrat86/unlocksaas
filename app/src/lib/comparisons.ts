@@ -3030,6 +3030,622 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["video", "screen-recording", "cross-manifest", "different-product-shapes"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "linear-vs-shortcut",
+    a: { name: "Linear", teardownSlug: "linear", url: "https://linear.app/" },
+    b: { name: "Shortcut", url: "https://www.shortcut.com/" },
+    category: "Project management for software teams",
+    oneLine:
+      "Linear and Shortcut are both opinionated issue trackers for software teams. Linear leans speed-first; Shortcut leans story-and-epic structure.",
+    tldr:
+      "Linear and Shortcut compete head-to-head for software engineering teams that left Jira. Linear is the speed-first opinionated default with keyboard-driven UX; Shortcut (formerly Clubhouse) is the story-and-epic-first option with stronger native planning hierarchy. For pure dev velocity, Linear; for product-development teams that plan in epics and stories, Shortcut.",
+    bestFor: {
+      a: "Software teams that prize speed and want issue tracking to disappear most of the time.",
+      b: "Product-development teams that organize work into epics and milestones and need that structure first-class.",
+    },
+    pickAIf: [
+      "Your daily workflow is keyboard-driven and you measure tools on speed.",
+      "You value Linear's opinionated defaults that minimize configuration.",
+      "Your team is small enough that planning hierarchy is overkill.",
+    ],
+    pickBIf: [
+      "You plan work in epics, stories, and milestones as the dominant structure.",
+      "Your team includes meaningful product-management discipline alongside engineering.",
+      "You need integrated docs (Shortcut Write) sitting alongside the issue tracker.",
+    ],
+    dimensions: [
+      {
+        name: "Speed and UX",
+        a: "Among the fastest web apps in the category; keyboard-first.",
+        b: "Fast and polished; less aggressively keyboard-driven than Linear.",
+        winner: "A",
+      },
+      {
+        name: "Workflow structure",
+        a: "Issues, cycles, projects. Opinionated and minimal.",
+        b: "Stories, epics, milestones, iterations. Richer hierarchy.",
+        winner: "different",
+        note: "Different mental models; both well-implemented.",
+      },
+      {
+        name: "Pricing",
+        a: "Free tier (250 issues); Basic ~$8-10/user/mo; Business ~$14/user/mo (verified 2026-05-17).",
+        b: "Free tier up to 10 users; Team ~$8.50/user/mo; Business ~$12/user/mo (verified 2026-05-17).",
+        winner: "tie",
+      },
+      {
+        name: "Integrated documentation",
+        a: "External; pair Linear with Notion or other docs platforms.",
+        b: "Shortcut Write — native docs platform inside the same product.",
+        winner: "B",
+      },
+      {
+        name: "GitHub integration",
+        a: "Tight; automatic PR linking, branch creation, status sync.",
+        b: "Tight; comparable feature set, slightly less aggressive defaults.",
+        winner: "tie",
+      },
+      {
+        name: "Brand momentum",
+        a: "Strong; winning new engineering team mindshare in 2026.",
+        b: "Stable; established but smaller mindshare than Linear in the new-team segment.",
+        winner: "A",
+      },
+      {
+        name: "Roadmap and timeline views",
+        a: "Project roadmaps available; opinionated.",
+        b: "Stronger native roadmap and iteration planning tooling.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Linear and Shortcut both serve software engineering teams that rejected Jira but with different theories about what teams need. Linear bets on minimalism and speed as the dominant requirements. Shortcut bets on epics-and-stories planning hierarchy plus integrated docs. For solo or small teams optimizing for ship velocity, Linear is the obvious pick. For product-development teams where planning structure is the daily activity, Shortcut earns its richer surface. The choice maps to how your team works, not to which is better.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Linear for indie SaaS. The speed advantage matters daily; the planning hierarchy advantage matters rarely at indie scale. Shortcut is the better pick once a product team needs serious epic-and-story discipline, which is usually a later-stage need.",
+    },
+    faqs: [
+      {
+        q: "Why is Shortcut not more widely known than Linear?",
+        a: "Brand and momentum. Shortcut (formerly Clubhouse) has been around longer but Linear captured the modern-team-leaving-Jira mindshare with a sharper aesthetic and stronger founder-led marketing. Shortcut's product quality is comparable; the perception gap is real.",
+      },
+      {
+        q: "Does Shortcut Write replace the need for Notion?",
+        a: "For team docs co-located with engineering work, often yes. For broader company wikis, marketing docs, and cross-functional knowledge, Notion remains the broader default. Many teams use both.",
+      },
+      {
+        q: "Can I migrate from Linear to Shortcut or vice versa?",
+        a: "Yes; both have import tools that cover the mechanical part. The harder migration is the team's mental model — switching from issues-cycles-projects to stories-epics-iterations (or vice versa) takes weeks of habit-reshaping.",
+      },
+      {
+        q: "What about Jira, Asana, or ClickUp instead?",
+        a: "Jira is the enterprise default that both Linear and Shortcut compete against. Asana serves cross-functional teams; ClickUp is the configurability-first option. The Linear-vs-Shortcut decision is specifically about engineering-team-friendly modern alternatives to Jira.",
+      },
+      {
+        q: "What is the Brunson lens on Linear vs Shortcut?",
+        a: "Both companies execute Brunson Dream Customer naming for engineering teams, with slightly different sub-segment focus. Linear names the speed-first engineer; Shortcut names the product-discipline-first team. Both win their segments; the markets do not actually overlap as much as the surface comparison suggests.",
+      },
+    ],
+    tags: ["project-management", "developer-tools", "speed-vs-structure", "indie-friendly"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "cursor-vs-windsurf",
+    a: { name: "Cursor", url: "https://www.cursor.com/" },
+    b: { name: "Windsurf", url: "https://windsurf.com/" },
+    category: "AI-native code editor",
+    oneLine:
+      "Cursor and Windsurf are the canonical AI-editor pair in 2026. Cursor pioneered the category; Windsurf challenges on agentic flow.",
+    tldr:
+      "Cursor and Windsurf both reimagine the code editor around LLM assistance but with different bets. Cursor leans tab-completion-plus-chat with a familiar VS Code shell. Windsurf (from Codeium) leans agentic Cascade flow that takes multi-step actions across the codebase. For coders who want AI as a writing assistant, Cursor; for coders who want AI to drive multi-file changes autonomously, Windsurf.",
+    bestFor: {
+      a: "Indie developers and engineers who want fast inline AI assistance with familiar VS Code-style ergonomics.",
+      b: "Developers who want agentic multi-file AI actions that compose into longer autonomous flows.",
+    },
+    pickAIf: [
+      "You value tab-completion and inline chat as the dominant interaction.",
+      "You prefer the most popular tool in the category for plugin and community support.",
+      "You want a battle-tested experience built on the VS Code base.",
+    ],
+    pickBIf: [
+      "You want Cascade-style agentic flows that act across multiple files autonomously.",
+      "You value Codeium's free tier and broader IDE plugin ecosystem.",
+      "You want the second-mover advantage of a tool built knowing what Cursor got right and wrong.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Free tier with limits; Pro ~$20/mo; Business plans (verified 2026-05-17).",
+        b: "Free tier with credits; Pro ~$15-20/mo depending on plan tier (verified 2026-05-17).",
+        winner: "tie",
+      },
+      {
+        name: "Agentic flow",
+        a: "Composer and Agent modes available; less aggressive than Cascade.",
+        b: "Cascade is the defining feature — multi-step actions across files driven by intent.",
+        winner: "B",
+      },
+      {
+        name: "Inline completion",
+        a: "Polished; the experience that defined the modern AI-editor category.",
+        b: "Strong; Codeium's completion is mature from years of pre-Cursor history.",
+        winner: "tie",
+      },
+      {
+        name: "Brand and mindshare",
+        a: "Category default; the name developers say when they say 'AI editor'.",
+        b: "Strong challenger; growing fast but not yet at parity for new-user defaults.",
+        winner: "A",
+      },
+      {
+        name: "VS Code compatibility",
+        a: "Built on VS Code base; extension compatibility is high.",
+        b: "Standalone editor with VS Code-style ergonomics; plus IDE plugins for VS Code, JetBrains, others.",
+        winner: "tie",
+      },
+      {
+        name: "Model selection",
+        a: "Multiple model options including frontier models with usage credits.",
+        b: "Multiple model options; pricing structure differs.",
+        winner: "tie",
+      },
+      {
+        name: "Enterprise features",
+        a: "Business tier with SSO, admin controls.",
+        b: "Enterprise tier with broader security and SOC2 emphasis (Codeium history).",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Cursor and Windsurf are the canonical AI-editor competitive pair in 2026. Cursor pioneered the category and still holds the mindshare default — when developers say 'AI editor' they usually mean Cursor. Windsurf (renamed from Codeium's IDE) challenges on agentic flow with Cascade as the differentiating feature. For most indie developers in 2026 the choice is taste-driven; for developers who want AI to take longer multi-file autonomous actions, Windsurf's bet pays off more often.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you are starting fresh and value mindshare and community, Cursor. If you specifically value agentic flows and want a more aggressive autonomous-AI experience, Windsurf. Both work; the productive default is to try whichever has the better free tier match for your usage and switch later if needed.",
+    },
+    faqs: [
+      {
+        q: "Is Cursor still the default in 2026?",
+        a: "Yes, but Windsurf has closed the gap meaningfully. Cursor remains the mindshare default for new users; Windsurf wins among developers who specifically tried both and preferred Cascade. The market has space for both.",
+      },
+      {
+        q: "What was Windsurf before it was Windsurf?",
+        a: "Windsurf is the standalone editor product from Codeium, which was a long-running AI completion provider for VS Code, JetBrains, and other IDEs. The Windsurf editor launched in late 2024 as Codeium's answer to Cursor's success.",
+      },
+      {
+        q: "Should I use AI editors as an indie founder?",
+        a: "Almost certainly yes. The productivity multiplier for indie founders writing application code is significant in 2026. The choice between Cursor and Windsurf matters less than the choice to adopt one.",
+      },
+      {
+        q: "What about Continue, Aider, or Claude Code?",
+        a: "Continue and Aider are open-source alternatives that integrate with existing editors. Claude Code is Anthropic's CLI-first agentic coding tool. All valid; the Cursor vs Windsurf comparison is the canonical GUI-editor pair, while the alternatives serve different surface preferences.",
+      },
+      {
+        q: "What is the Brunson lens on Cursor vs Windsurf?",
+        a: "Cursor ran the canonical New Opportunity move (AI-first VS Code) and captured the category. Windsurf is the second-mover response that picked a structural differentiator (Cascade agentic flow) Cursor was not optimizing for. Brunson lesson: second movers win when they pick a structural differentiator the incumbent cannot match without abandoning their identity.",
+      },
+    ],
+    tags: ["ai-editor", "developer-tools", "category-fight", "agentic"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "vercel-vs-render",
+    a: { name: "Vercel", teardownSlug: "vercel", url: "https://vercel.com/" },
+    b: { name: "Render", url: "https://render.com/" },
+    category: "Frontend cloud and hosting",
+    oneLine:
+      "Vercel optimizes for frontend deployment depth. Render optimizes for full-stack-app simplicity.",
+    tldr:
+      "Vercel and Render both host modern web apps but with different scopes. Vercel is the depth-first frontend cloud — best for Next.js and React-centric SaaS. Render is the breadth-first full-stack platform — best for teams that want managed Postgres, Redis, background workers, and cron all in one dashboard. For React-centric indie SaaS, Vercel; for full-stack apps with significant backend, Render's bundled services often beat assembling Vercel + external providers.",
+    bestFor: {
+      a: "React, Next.js, and frontend-heavy SaaS teams that value the strongest framework DX.",
+      b: "Full-stack teams running Postgres + Redis + background workers + crons who want one dashboard for everything.",
+    },
+    pickAIf: [
+      "You build with Next.js or React and want the canonical platform for the framework.",
+      "You value the polished frontend DX, AI SDK, and platform services integration.",
+      "Your backend is light or external (separate API, Supabase, etc.).",
+    ],
+    pickBIf: [
+      "You run a full-stack app with managed Postgres, Redis, background jobs, and cron all in one place.",
+      "You want a simpler pricing model and tooling that does not split frontend from backend.",
+      "Your stack is framework-agnostic (Django, Rails, Node, Go, etc.) and Vercel's Next.js depth does not benefit you.",
+    ],
+    dimensions: [
+      {
+        name: "Frontend / Next.js depth",
+        a: "Canonical; Vercel maintains Next.js.",
+        b: "Functional via standard build; less optimized than Vercel for Next-specific features.",
+        winner: "A",
+      },
+      {
+        name: "Bundled backend services",
+        a: "Marketplace integrations for Postgres, Redis, AI gateway; not native to Vercel.",
+        b: "Native Postgres, Redis, background workers, cron jobs all on one bill.",
+        winner: "B",
+      },
+      {
+        name: "Pricing",
+        a: "Hobby free (no commercial); Pro ~$20/user/mo + metered overages.",
+        b: "Free static; Individual ~$7/mo; Team ~$19/user/mo; service-tier pricing on Postgres, Redis (verified 2026-05-17).",
+        winner: "different",
+        note: "Different pricing shapes; Render bundles services so the per-product cost adds up differently.",
+      },
+      {
+        name: "Background jobs and cron",
+        a: "Cron available; background workers via Vercel Functions plus queues.",
+        b: "Native background workers and cron as first-class service types.",
+        winner: "B",
+      },
+      {
+        name: "Edge network",
+        a: "Strong; runs on Vercel edge plus partner infrastructure.",
+        b: "Solid; smaller edge footprint than Vercel or Cloudflare.",
+        winner: "A",
+      },
+      {
+        name: "Developer experience",
+        a: "Polished; opinionated for the Next.js workflow.",
+        b: "Polished; opinionated for the full-stack workflow.",
+        winner: "tie",
+      },
+      {
+        name: "AI tooling integration",
+        a: "Vercel AI SDK, AI Gateway, deep integration with React.",
+        b: "Less AI-specific tooling; relies on external providers.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Vercel and Render serve adjacent buyers but with different shapes. Vercel goes deep on frontend and React/Next.js with the strongest DX and AI tooling in the category. Render goes broad on full-stack with native managed services (Postgres, Redis, workers, cron) that Vercel pushes to marketplace partners. For Next.js-centric indie SaaS, Vercel is the obvious pick. For full-stack teams that want one dashboard for everything, Render's bundled approach often wins. The two products do not actually compete head-to-head as much as the surface comparison suggests.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you ship Next.js with a light or external backend, Vercel. If you build a full-stack app with Postgres + background jobs + cron, Render's bundling and simpler pricing wins. The framework and backend shape determine the choice.",
+    },
+    faqs: [
+      {
+        q: "Can I run a Next.js app on Render?",
+        a: "Yes — Render supports Next.js as a standard web service. The deployment works but you lose Vercel-specific features (latest framework support on day one, AI SDK integration, Vercel-native Edge functions). For framework-agnostic teams, Render's Next.js support is reasonable.",
+      },
+      {
+        q: "Can I add Postgres to Vercel?",
+        a: "Yes, via the Marketplace (Neon, Supabase, others). The integration is good but the pricing and operational model is separate from Vercel itself. Render's native Postgres bundles everything on one bill.",
+      },
+      {
+        q: "Is Render cheaper than Vercel?",
+        a: "Often, especially for full-stack apps where the marketplace-service pricing on Vercel adds up. For pure frontend apps, the comparison is closer and Vercel's Pro tier is competitive.",
+      },
+      {
+        q: "What about Railway, Fly.io, or Cloudflare Pages?",
+        a: "Railway and Fly.io are direct Render competitors with similar full-stack focus. Cloudflare Pages is more Vercel-like (frontend focus). The four-way decision depends on which axis matters most: framework depth (Vercel), edge network (Cloudflare), full-stack bundling (Render), or developer experience for ops-heavy apps (Fly).",
+      },
+      {
+        q: "What is the Brunson lens on Vercel vs Render?",
+        a: "Vercel ran the Dream 100 move into the React/Next community and built depth in that segment. Render ran the broader full-stack-platform move that does not depend on a framework win. Both work; the Dream Customer (React-developer vs full-stack-team) determines the right pick.",
+      },
+    ],
+    tags: ["hosting", "developer-tools", "full-stack-vs-frontend", "nextjs"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "cal-com-vs-savvycal",
+    a: { name: "Cal.com", teardownSlug: "cal-com", url: "https://cal.com/" },
+    b: { name: "SavvyCal", url: "https://savvycal.com/" },
+    category: "Scheduling",
+    oneLine:
+      "Cal.com is the open-source scheduling default. SavvyCal is the polished indie alternative for Calendly defectors who do not want open source.",
+    tldr:
+      "Cal.com and SavvyCal both serve the indie-buyer end of the scheduling market with different bets. Cal.com is open-source and self-hostable with a generous free tier. SavvyCal is closed-source and prices on aesthetic polish and a few unique features (calendar overlay, scheduling preferences). For developers and principled buyers, Cal.com; for indie founders who want a polished Calendly alternative without the open-source commitment, SavvyCal.",
+    bestFor: {
+      a: "Developers, principled buyers, and indie founders who value open-source positioning and the self-host option.",
+      b: "Indie founders, creators, and small teams who want a polished Calendly alternative with distinctive UX touches.",
+    },
+    pickAIf: [
+      "You value open source for principle, extensibility, or self-host insurance.",
+      "You want the most generous free hosted tier in the category.",
+      "You are technical and may eventually want to deploy your own instance.",
+    ],
+    pickBIf: [
+      "You want a polished Calendly alternative without thinking about open-source tradeoffs.",
+      "You value the calendar-overlay feature where bookers see your full availability.",
+      "You prefer a smaller, focused indie SaaS over a venture-funded open-source project.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Free hosted; Teams ~$12-15/seat/mo; Organizations ~$37-50/seat/mo (verified 2026-05-17).",
+        b: "Free tier; Basic ~$12/mo; Premium ~$20/mo (verified 2026-05-17).",
+        winner: "tie",
+        note: "SavvyCal prices per-user differently; Cal.com's free hosted is more generous than SavvyCal's free tier.",
+      },
+      {
+        name: "Open source",
+        a: "AGPL-licensed; self-host supported.",
+        b: "Closed source.",
+        winner: "A",
+      },
+      {
+        name: "Free-tier generosity",
+        a: "Full feature surface on free hosted.",
+        b: "Limited free tier; paid features kick in quickly.",
+        winner: "A",
+      },
+      {
+        name: "Calendar overlay feature",
+        a: "Available but less prominent in the UX.",
+        b: "Distinctive — bookers can overlay your calendar with their own to find mutual availability.",
+        winner: "B",
+      },
+      {
+        name: "Polish and UX details",
+        a: "Solid; growing.",
+        b: "Excellent; smaller surface allows tighter design execution.",
+        winner: "B",
+      },
+      {
+        name: "Brand recognition with bookers",
+        a: "Lower; many bookers encounter Cal.com for the first time.",
+        b: "Lower than Calendly but distinct branded experience.",
+        winner: "tie",
+      },
+      {
+        name: "Integration ecosystem",
+        a: "Strong; growing app directory.",
+        b: "Solid; smaller surface but covers the canonical integrations.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Cal.com and SavvyCal both serve the indie-buyer segment that has left or is leaving Calendly, but with different positioning. Cal.com leads on open source, self-host option, and generous free tier — the developer-friendly pick. SavvyCal leads on aesthetic polish and distinctive features (especially the calendar-overlay scheduling experience) — the indie-founder-who-does-not-care-about-open-source pick. For most indie SaaS founders the decision comes down to whether open-source matters to them personally; the functional difference is otherwise modest.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you value open source or might want to self-host later, Cal.com. If you do not care about open source and want the most polished indie Calendly alternative with distinctive features, SavvyCal. Neither is wrong; the choice is values-aligned.",
+    },
+    faqs: [
+      {
+        q: "Is SavvyCal's calendar-overlay feature really differentiating?",
+        a: "For bookers scheduling with you, yes — it materially reduces back-and-forth because bookers see mutual availability without exposing their own calendar to you. Cal.com has working scheduling but does not lead on this specific feature.",
+      },
+      {
+        q: "Is open source actually useful for scheduling?",
+        a: "Less than for documentation or developer tools, but still meaningful as a trust signal and as insurance against the SaaS being shut down or repricing aggressively. For most users the self-host option matters as a safety valve more than as an active deployment plan.",
+      },
+      {
+        q: "Why is Calendly not in this comparison?",
+        a: "Cal.com vs Calendly and SavvyCal vs Calendly are separate canonical comparisons. The Cal.com vs SavvyCal comparison specifically targets buyers who have already decided to leave Calendly and are choosing between modern alternatives.",
+      },
+      {
+        q: "Can I migrate from one to the other?",
+        a: "Yes; both have export tools. The mechanical migration is easy. The harder migration is your bookers' habit if you have a frequently-shared booking link.",
+      },
+      {
+        q: "What is the Brunson lens on Cal.com vs SavvyCal?",
+        a: "Both companies execute Brunson Dream Customer naming for the post-Calendly indie buyer with different values emphases. Cal.com names the open-source-aligned buyer; SavvyCal names the polish-and-distinctive-features buyer. Both segments exist; neither owns the entire market.",
+      },
+    ],
+    tags: ["scheduling", "indie-friendly", "open-source-vs-polished", "alternative-to-incumbent"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "mintlify-vs-docusaurus",
+    a: { name: "Mintlify", teardownSlug: "mintlify", url: "https://mintlify.com/" },
+    b: { name: "Docusaurus", url: "https://docusaurus.io/" },
+    category: "Developer documentation",
+    oneLine:
+      "Mintlify is the polished docs SaaS. Docusaurus is the open-source framework. SaaS vs self-host, the canonical dev-docs decision.",
+    tldr:
+      "Mintlify and Docusaurus solve documentation but at opposite ends of the SaaS-vs-self-host axis. Mintlify is the managed platform with a recognizable modern aesthetic; Docusaurus (Meta's open-source React docs framework) is the free self-hostable option that requires engineering time. For teams that value engineering time over docs hosting cost, Mintlify; for teams that have engineering bandwidth and want zero ongoing fees, Docusaurus.",
+    bestFor: {
+      a: "Dev-tool SaaS teams that want polished modern docs without engineering investment in the docs platform itself.",
+      b: "Teams with React engineering capacity who want full control, zero ongoing fees, and custom theming.",
+    },
+    pickAIf: [
+      "You want the modern docs aesthetic shared by Anthropic, Cursor, Resend.",
+      "You value engineering time over the recurring docs platform cost.",
+      "You want managed AI search and analytics without building them yourself.",
+    ],
+    pickBIf: [
+      "You have React engineering capacity and want full control over the docs platform.",
+      "You want zero ongoing platform fees and are happy with self-hosting.",
+      "You need custom theming or features that Mintlify's managed platform does not support.",
+    ],
+    dimensions: [
+      {
+        name: "Cost",
+        a: "Free for OSS; Pro ~$150/mo; Growth ~$550/mo; Enterprise custom (verified 2026-05-17).",
+        b: "Free (open source); hosting cost is whatever your static-host provider charges (Vercel free tier, Netlify, GitHub Pages all viable).",
+        winner: "B",
+      },
+      {
+        name: "Setup time",
+        a: "Hours to a polished site.",
+        b: "Hours to days; theming and customization can extend the curve.",
+        winner: "A",
+      },
+      {
+        name: "Authoring model",
+        a: "Docs-as-code with MDX; Git workflow.",
+        b: "Docs-as-code with MDX or Markdown; Git workflow.",
+        winner: "tie",
+      },
+      {
+        name: "Aesthetic out of the box",
+        a: "Distinctive modern docs aesthetic; recognizable across the dev-tool category.",
+        b: "Functional default theme; customization requires CSS/React work.",
+        winner: "A",
+      },
+      {
+        name: "AI search and assistant",
+        a: "Built-in; LLM-powered docs search and Q&A.",
+        b: "DIY; integrate Algolia, your own LLM, or skip.",
+        winner: "A",
+      },
+      {
+        name: "Maintenance and updates",
+        a: "Managed; Mintlify handles platform updates.",
+        b: "Self-managed; React, Docusaurus, and plugin updates are on you.",
+        winner: "A",
+      },
+      {
+        name: "Customization ceiling",
+        a: "Constrained to Mintlify's platform.",
+        b: "Full React app — anything is possible with engineering time.",
+        winner: "B",
+      },
+      {
+        name: "Customer-roster trust signal",
+        a: "Anthropic, Cursor, Resend, others — visible logo bar.",
+        b: "Used by many but not prominently branded on customer sites.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Mintlify and Docusaurus represent the SaaS-vs-self-host trade canonical in developer tooling. Mintlify wins on time-to-polished-docs and the recognizable aesthetic that signals category membership; Docusaurus wins on cost and customization ceiling. For most indie SaaS dev-tool companies in 2026, Mintlify's time saving and aesthetic match are worth the recurring fee. For teams with engineering bandwidth that genuinely value customization or zero platform cost, Docusaurus is the right pick. The decision is not whether one is better; it is whether your team prefers to spend engineering time or platform money.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Mintlify for indie dev-tool SaaS — the aesthetic match and time savings compound. Docusaurus is excellent but the engineering time to maintain it is real cost an indie founder usually cannot afford.",
+    },
+    faqs: [
+      {
+        q: "Is Docusaurus really free?",
+        a: "Yes for the framework; you pay only for hosting (which can also be free via GitHub Pages, Vercel hobby, Netlify free tier). The cost is engineering time for setup, theming, and ongoing maintenance.",
+      },
+      {
+        q: "Can I customize Mintlify if I do not like the default theme?",
+        a: "Some customization is supported (colors, fonts, layout variants), but the platform is intentionally opinionated. Heavy custom theming is where Docusaurus's customization ceiling beats Mintlify materially.",
+      },
+      {
+        q: "What about Docusaurus alternatives like Nextra or Astro Starlight?",
+        a: "Nextra is Vercel's Next.js docs framework — similar SaaS-vs-self-host tradeoff with Mintlify. Astro Starlight is the Astro-ecosystem docs framework with similar properties to Docusaurus. The Mintlify vs Docusaurus comparison is the canonical pair; the alternatives serve adjacent niches.",
+      },
+      {
+        q: "Should an indie SaaS pick Mintlify even with venture-thin runway?",
+        a: "Usually yes if the docs are customer-facing. The time savings on docs platform maintenance free up engineering for product work, which typically pays back the subscription cost. Self-host Docusaurus only if your engineering budget genuinely cannot absorb the SaaS fee.",
+      },
+      {
+        q: "What is the Brunson lens on Mintlify vs Docusaurus?",
+        a: "Mintlify executed a New Opportunity move (managed modern docs) and bet on the visible-customer flywheel (every Mintlify-built docs site advertises the platform). Docusaurus is the open-source framework that wins on principle and customization. Brunson lesson: in the SaaS-vs-self-host fight, the SaaS usually wins among buyers who value time over money; the self-host wins among buyers who value control over convenience.",
+      },
+    ],
+    tags: ["documentation", "developer-tools", "saas-vs-self-host", "indie-tools"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "resend-vs-loops",
+    a: { name: "Resend", teardownSlug: "resend", url: "https://resend.com/" },
+    b: { name: "Loops", teardownSlug: "loops", url: "https://loops.so/" },
+    category: "SaaS email platform",
+    oneLine:
+      "Resend is the email API for developers. Loops is the SaaS-marketing email platform. Same modern aesthetic, different jobs.",
+    tldr:
+      "Resend and Loops both target modern SaaS teams with sharp DX, but the jobs differ. Resend is the developer-first transactional email API (the modern alternative to SendGrid). Loops is the SaaS-marketing email platform (the modern alternative to Mailchimp or Customer.io). Most serious SaaS use both — Resend for transactional, Loops for lifecycle and campaigns. The comparison is rarely either-or.",
+    bestFor: {
+      a: "Developers and SaaS teams sending transactional email (password resets, receipts, notifications).",
+      b: "SaaS founders and growth teams running lifecycle email, onboarding sequences, broadcast campaigns.",
+    },
+    pickAIf: [
+      "Your primary need is transactional email reliability and a clean API.",
+      "You want React Email for template authoring.",
+      "Your marketing email volume is small enough that a separate platform is overkill.",
+    ],
+    pickBIf: [
+      "You run sophisticated lifecycle sequences and broadcast campaigns.",
+      "You need a UI for non-developers (marketing, success) to build email flows.",
+      "You want subscriber segmentation, audience targeting, and analytics beyond basic open and click metrics.",
+    ],
+    dimensions: [
+      {
+        name: "Primary job",
+        a: "Transactional email API.",
+        b: "SaaS lifecycle and marketing email platform.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free 3K/mo; Pro ~$20/mo for 50K; scales linearly (verified 2026-05-17).",
+        b: "Free up to 1K contacts; Paid tiers scale by contact count (verified 2026-05-17).",
+        winner: "different",
+      },
+      {
+        name: "Developer experience",
+        a: "Industry-leading; React Email integration is the differentiator.",
+        b: "Strong; built for the SaaS-developer audience.",
+        winner: "A",
+      },
+      {
+        name: "Non-developer UI",
+        a: "Limited; built for developers to send.",
+        b: "Native visual editor for campaigns and sequences; non-developers can build flows.",
+        winner: "B",
+      },
+      {
+        name: "Lifecycle automation",
+        a: "Basic; you build automation in your application code.",
+        b: "Native lifecycle automation with visual triggers and conditions.",
+        winner: "B",
+      },
+      {
+        name: "Audience segmentation",
+        a: "Audiences and broadcasts available but lighter than dedicated marketing platforms.",
+        b: "Full segmentation with custom properties, behavior triggers, audience targeting.",
+        winner: "B",
+      },
+      {
+        name: "Brand momentum",
+        a: "Strong; winning developer mindshare in 2026.",
+        b: "Strong; winning SaaS-marketing mindshare among indie founders in 2026.",
+        winner: "tie",
+      },
+      {
+        name: "Stack composability",
+        a: "Designed to compose with anything for marketing.",
+        b: "Designed to compose with Resend or other transactional providers.",
+        winner: "tie",
+        note: "They are designed to complement each other, not replace each other.",
+      },
+    ],
+    honestTake:
+      "Resend and Loops are not really competitors despite both being modern email platforms for SaaS. Resend is the developer-first transactional API; Loops is the marketing-flow platform. Most serious SaaS use both — Resend for password resets and notifications, Loops for onboarding sequences and campaigns. The mistake is picking one to do both jobs; the platforms are designed to compose. The right indie-SaaS stack often includes both, not one.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Use both if you can afford to. Resend handles transactional cleanly; Loops handles lifecycle and broadcasts at a tier indie SaaS can adopt. If you must pick one, start with Resend if transactional is the immediate need (most indie SaaS launch this first), then add Loops when lifecycle email becomes a real surface to invest in.",
+    },
+    faqs: [
+      {
+        q: "Can Resend replace Loops for marketing email?",
+        a: "Possibly at very low volumes with custom application code. For sophisticated lifecycle sequences, broadcasts to segments, and non-developer authoring, Loops is materially better-suited. Resend's audiences feature is growing but is not a replacement for a dedicated marketing platform.",
+      },
+      {
+        q: "Can Loops replace Resend for transactional email?",
+        a: "Loops supports transactional sends but it is not the primary design center. For high-volume transactional with strict deliverability requirements, Resend or Postmark are usually the better-fit dedicated platforms.",
+      },
+      {
+        q: "What about Customer.io or Klaviyo as alternatives to Loops?",
+        a: "Customer.io is the enterprise lifecycle platform that Loops competes with at the indie-friendlier price point. Klaviyo is the ecommerce-focused marketing platform. The Loops vs Resend comparison is for SaaS specifically; Customer.io and Klaviyo serve adjacent verticals.",
+      },
+      {
+        q: "Should I use both Resend and Loops together?",
+        a: "For most indie SaaS at any scale, yes. They are designed to compose — Resend handles your transactional sends, Loops handles your lifecycle and broadcasts. The combined cost is usually less than one enterprise platform doing both jobs poorly.",
+      },
+      {
+        q: "What is the Brunson lens on Resend vs Loops?",
+        a: "Both companies execute precise Brunson Dream Customer naming, in adjacent product shapes. Resend names the developer who sends transactional email; Loops names the SaaS founder who sends lifecycle email. Both win their respective segments because they do not actually compete on the same job. The Brunson lesson: precise audience targeting beats broad positioning.",
+      },
+    ],
+    tags: ["email", "developer-tools", "transactional-vs-marketing", "cross-manifest"],
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup.
