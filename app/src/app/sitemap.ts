@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
+import { COMPARISON_SLUGS } from "@/lib/comparisons";
 
 /**
  * Sitemap for UnlockSaaS — Surface A of the Google strategy.
@@ -207,6 +208,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/pricing-teardown/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #4 — head-to-head comparisons.
+    // Data source: src/lib/comparisons.ts. Highest-intent SaaS-research
+    // search class: "[A] vs [B]". Article + FAQPage + BreadcrumbList
+    // JSON-LD per detail page. CollectionPage on the hub.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/compare`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/compare`),
+    },
+    ...COMPARISON_SLUGS.map((slug) => ({
+      url: `${base}/compare/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/compare/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

@@ -4,21 +4,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
-  PRICING_TEARDOWNS,
-  groupPricingTeardownsByCategory,
-} from "@/lib/pricing-teardowns";
+  COMPARISONS,
+  groupComparisonsByCategory,
+} from "@/lib/comparisons";
 
 /**
- * Pricing teardowns hub — third pSEO surface index.
+ * Compare hub — fourth pSEO surface index.
  *
- * Same shape as /alternatives-to and /funnel-teardown:
- *   1. Indexable for the broader query class ("saas pricing teardowns",
- *      "indie saas pricing strategy breakdowns").
- *   2. Recycles internal PageRank across the programmatic block: detail
- *      pages link back; the hub links out; related-by-tag block on each
- *      detail page cross-links siblings.
- *
- * Statically rendered. All data module-level.
+ * Same shape as the prior hubs: CollectionPage + BreadcrumbList JSON-LD,
+ * category grouping, cross-links to teardown surfaces.
  */
 
 const BASE = "https://unlocksaas.com";
@@ -27,28 +21,26 @@ export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title:
-    "Pricing Teardowns — How Indie SaaS Actually Price Their Products",
+    "Compare — Honest Head-to-Head Comparisons of the Tools Indie SaaS Founders Evaluate",
   description:
-    "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens. Built for post-launch pre-revenue founders building their own pricing page.",
-  alternates: { canonical: "/pricing-teardown" },
+    "Symmetric head-to-head comparisons. Dimension-by-dimension verdicts, honest take, and the right pick for indie SaaS founders specifically.",
+  alternates: { canonical: "/compare" },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Pricing Teardowns — Unlock SaaS",
+    title: "Compare — Unlock SaaS",
     description:
-      "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens.",
+      "Honest head-to-head comparisons of the tools indie SaaS founders evaluate.",
     type: "website",
-    url: "/pricing-teardown",
+    url: "/compare",
     siteName: "Unlock SaaS",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pricing Teardowns — Unlock SaaS",
+    title: "Compare — Unlock SaaS",
     description:
-      "Pattern-level teardowns of indie SaaS pricing models.",
+      "Honest head-to-head comparisons of the tools indie SaaS founders evaluate.",
   },
 };
-
-// ----- JSON-LD (module-hoisted) ----------------------------------------------
 
 const BREADCRUMB_JSON = JSON.stringify({
   "@context": "https://schema.org",
@@ -63,8 +55,8 @@ const BREADCRUMB_JSON = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
-      name: "Pricing teardowns",
-      item: `${BASE}/pricing-teardown`,
+      name: "Compare",
+      item: `${BASE}/compare`,
     },
   ],
 });
@@ -72,11 +64,11 @@ const BREADCRUMB_JSON = JSON.stringify({
 const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Pricing teardowns — Unlock SaaS",
-  url: `${BASE}/pricing-teardown`,
+  name: "Compare — Unlock SaaS",
+  url: `${BASE}/compare`,
   inLanguage: "en-US",
   description:
-    "Pattern-level teardowns of indie SaaS pricing models through the Brunson Stack and Value Ladder lens. Built for post-launch pre-revenue founders building their own pricing page.",
+    "Symmetric head-to-head comparisons of the tools indie SaaS founders evaluate. Dimension-by-dimension verdicts, honest take, indie-founder recommendation.",
   isPartOf: {
     "@type": "WebSite",
     name: "Unlock SaaS",
@@ -84,18 +76,18 @@ const COLLECTION_JSON = JSON.stringify({
   },
   mainEntity: {
     "@type": "ItemList",
-    numberOfItems: PRICING_TEARDOWNS.length,
-    itemListElement: PRICING_TEARDOWNS.map((t, i) => ({
+    numberOfItems: COMPARISONS.length,
+    itemListElement: COMPARISONS.map((c, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: `${t.displayName} pricing teardown`,
-      url: `${BASE}/pricing-teardown/${t.slug}`,
+      name: `${c.a.name} vs ${c.b.name}`,
+      url: `${BASE}/compare/${c.slug}`,
     })),
   },
 });
 
-export default function PricingTeardownHub() {
-  const groups = groupPricingTeardownsByCategory();
+export default function CompareHub() {
+  const groups = groupComparisonsByCategory();
 
   return (
     <main className="min-h-screen">
@@ -121,7 +113,7 @@ export default function PricingTeardownHub() {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-foreground">
-            Pricing teardowns
+            Compare
           </li>
         </ol>
       </nav>
@@ -129,17 +121,16 @@ export default function PricingTeardownHub() {
       {/* Hero */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Pricing teardowns
+          Head-to-head comparisons
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          How indie SaaS pricing actually works
+          Honest comparisons. Both sides get a fair read.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Tier structure, anchor mechanics, upgrade triggers, and payment
-          model — read through the Brunson Stack and Value Ladder lens. The
-          same four levers the Machine applies when critiquing your own
-          pricing page, applied to the indie SaaS pages founders are already
-          studying.
+          Symmetric dimension-by-dimension breakdowns of the tools indie SaaS
+          founders are mid-evaluation on. Each page names who each side is for,
+          why you would pick either, and what the right call is specifically for
+          a post-launch pre-revenue founder.
         </p>
       </header>
 
@@ -148,27 +139,30 @@ export default function PricingTeardownHub() {
       {/* How to read */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="lens">
         <h2 id="lens" className="text-xl font-bold mb-4 leading-tight">
-          How to read a pricing teardown
+          How to read a comparison
         </h2>
         <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
           <li>
-            <span className="text-foreground font-semibold">Structure</span> is
-            the tier ladder — what each rung includes and what it costs.
+            <span className="text-foreground font-semibold">Best for</span>{" "}
+            names the canonical buyer for each side.
           </li>
           <li>
-            <span className="text-foreground font-semibold">Anchor</span> is
-            the tier doing psychological work — usually the highest tier
-            making the middle tier look reasonable.
+            <span className="text-foreground font-semibold">Pick X if</span>{" "}
+            lists 3-5 reasons to pick each side, side-by-side.
           </li>
           <li>
-            <span className="text-foreground font-semibold">Upgrade trigger</span>{" "}
-            is the specific behavior or scale event that converts a free or
-            lower-tier user to the next rung.
+            <span className="text-foreground font-semibold">
+              Dimension-by-dimension
+            </span>{" "}
+            scores each comparison axis: A wins, B wins, tied, or different
+            shapes.
           </li>
           <li>
-            <span className="text-foreground font-semibold">Brunson lens</span>{" "}
-            maps the page to Stack, Value Ladder, decoy or anchor psychology,
-            and payment mechanics.
+            <span className="text-foreground font-semibold">
+              Indie founder pick
+            </span>{" "}
+            names the right call specifically for a post-launch pre-revenue
+            SaaS founder.
           </li>
         </ul>
       </section>
@@ -178,7 +172,7 @@ export default function PricingTeardownHub() {
       {/* Grouped list */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="list">
         <h2 id="list" className="sr-only">
-          All pricing teardowns
+          All comparisons
         </h2>
         <div className="space-y-10">
           {groups.map((group) => (
@@ -187,32 +181,32 @@ export default function PricingTeardownHub() {
                 {group.category}
               </h3>
               <div className="space-y-3">
-                {group.teardowns.map((t) => (
+                {group.comparisons.map((c) => (
                   <Card
-                    key={t.slug}
+                    key={c.slug}
                     className="hover:border-primary/30 transition"
                   >
                     <CardContent className="pt-6">
                       <h4 className="text-lg font-semibold leading-tight mb-2">
                         <Link
-                          href={`/pricing-teardown/${t.slug}`}
+                          href={`/compare/${c.slug}`}
                           className="hover:text-primary transition"
                         >
-                          {t.displayName} pricing teardown
+                          {c.a.name} vs {c.b.name}
                         </Link>
                       </h4>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                        {t.oneLine}
+                        {c.oneLine}
                       </p>
                       <div className="flex items-center justify-between gap-4">
                         <Link
-                          href={`/pricing-teardown/${t.slug}`}
+                          href={`/compare/${c.slug}`}
                           className="text-sm font-semibold text-primary hover:underline"
                         >
-                          Read the teardown →
+                          Read the comparison →
                         </Link>
                         <span className="text-xs text-muted-foreground">
-                          Verified {t.lastVerified}
+                          Verified {c.lastVerified}
                         </span>
                       </div>
                     </CardContent>
@@ -229,13 +223,11 @@ export default function PricingTeardownHub() {
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Run the same teardown on your own pricing page
+              Building a SaaS that wins this kind of comparison?
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              The diagnostic labels what is broken on your offer: Wrong
-              Person, Weak Offer, or Weak Belief. Pricing-page dysfunction
-              usually shows up as Weak Offer — and the Machine names the
-              specific fix.
+              The 90-second diagnostic labels what is broken on your offer:
+              Wrong Person, Weak Offer, or Weak Belief.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
@@ -269,17 +261,16 @@ export default function PricingTeardownHub() {
               Funnel teardowns →
             </Link>{" "}
             Hook / Story / Offer breakdowns of indie SaaS marketing surfaces.
-            Several companies have both a pricing and a funnel teardown.
           </p>
           <p>
             <Link
-              href="/compare"
+              href="/pricing-teardown"
               className="text-primary hover:underline font-semibold"
             >
-              Head-to-head comparisons →
+              Pricing teardowns →
             </Link>{" "}
-            Symmetric dimension-by-dimension breakdowns of the tools you are
-            mid-evaluation on.
+            Tier structure, anchor mechanics, and upgrade triggers through the
+            Brunson Stack lens.
           </p>
           <p>
             <Link
@@ -288,8 +279,8 @@ export default function PricingTeardownHub() {
             >
               Honest alternatives →
             </Link>{" "}
-            Side-by-side comparisons against the tools indie SaaS founders
-            actually evaluate before buying.
+            Side-by-side comparisons of Unlock SaaS against the tools founders
+            evaluate alongside it.
           </p>
         </div>
       </section>
@@ -297,9 +288,10 @@ export default function PricingTeardownHub() {
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          Prices in these teardowns are approximate, with lastVerified ISO
-          dates on each entry. Pricing pages shift; we re-verify periodically.
-          If anything is wrong, unfair, or out of date, email{" "}
+          We do not slag either side of these comparisons. Both products get
+          honest credit for what they do well, and the verdict per dimension is
+          named explicitly. If any comparison is unfair, wrong, or out of date,
+          email{" "}
           <a
             href="mailto:maryan@unlocksaas.com"
             className="underline hover:text-foreground"

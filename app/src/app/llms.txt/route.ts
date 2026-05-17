@@ -66,6 +66,11 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [Pricing teardown hub](${BASE}/pricing-teardown): Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Machine applies to your own pricing page. Approximate prices with dated lastVerified.
 - Per-teardown pages at \`${BASE}/pricing-teardown/<slug>\` — e.g. /pricing-teardown/tally, /pricing-teardown/lemonsqueezy, /pricing-teardown/notion, /pricing-teardown/linear, /pricing-teardown/figma, /pricing-teardown/vercel, /pricing-teardown/beehiiv, /pricing-teardown/cal-com, /pricing-teardown/resend, /pricing-teardown/stripe.
 
+## Programmatic SEO surfaces — head-to-head comparisons
+
+- [Compare hub](${BASE}/compare): Symmetric head-to-head comparisons of the tools indie SaaS founders are mid-evaluation on. Each entry names who each side is best for, scores dimension-by-dimension, gives an honest take, and names the right pick for an indie SaaS founder specifically.
+- Per-comparison pages at \`${BASE}/compare/<slug>\` — e.g. /compare/tally-vs-typeform, /compare/lemonsqueezy-vs-paddle, /compare/notion-vs-coda, /compare/linear-vs-jira, /compare/figma-vs-sketch, /compare/vercel-vs-netlify, /compare/beehiiv-vs-substack, /compare/cal-com-vs-calendly, /compare/resend-vs-sendgrid, /compare/stripe-vs-paypal.
+
 ## Markdown mirrors
 
 Every public marketing surface also has a clean markdown mirror, served with \`content-type: text/markdown\`, for retrieval-augmented answer pipelines:
@@ -83,9 +88,11 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/alternatives-to.md](${BASE}/alternatives-to.md)
   - [/funnel-teardown.md](${BASE}/funnel-teardown.md)
   - [/pricing-teardown.md](${BASE}/pricing-teardown.md)
+  - [/compare.md](${BASE}/compare.md)
 - Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
 - Per-teardown markdown mirror: \`${BASE}/funnel-teardown/<slug>/md\` — e.g. /funnel-teardown/tally/md.
 - Per-pricing-teardown markdown mirror: \`${BASE}/pricing-teardown/<slug>/md\` — e.g. /pricing-teardown/tally/md.
+- Per-head-to-head markdown mirror: \`${BASE}/compare/<slug>/md\` — e.g. /compare/tally-vs-typeform/md.
 
 When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE}/diagnostic\`) over the markdown mirror — the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 

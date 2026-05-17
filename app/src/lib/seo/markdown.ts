@@ -51,6 +51,11 @@ import {
   type PricingTeardown,
   getPricingTeardownBySlug,
 } from "@/lib/pricing-teardowns";
+import {
+  COMPARISONS,
+  type Comparison,
+  getComparisonBySlug,
+} from "@/lib/comparisons";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -494,6 +499,38 @@ ${TEARDOWNS.map(
 Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Machine is the tool that does it.
 `;
 
+const COMPARE_HUB_BODY = `# Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools
+
+> Symmetric dimension-by-dimension breakdowns of the tools indie SaaS founders are mid-evaluation on. Both sides get a fair read.
+
+## TL;DR
+
+The Compare surface is a pSEO library of head-to-head ${"[A] vs [B]"} pages targeted at the highest-intent SaaS-research search class. Every comparison gets symmetric framing: who each side is best for, why you would pick either, dimension-by-dimension verdicts, an honest take, and a recommendation specifically for the indie SaaS founder.
+
+## How to read these comparisons
+
+Every entry follows the same structure:
+- **Best for** — the canonical buyer for each side.
+- **Pick X if** — three to five reasons to pick each side, side-by-side.
+- **Dimension-by-dimension** — six to nine comparison axes, each with a verdict (A, B, tie, or different shapes).
+- **Honest take** — two to three paragraph synthesis.
+- **Indie founder pick** — the right call for a post-launch pre-revenue SaaS founder specifically.
+- **FAQs** — four to six queries a mid-evaluation reader actually types.
+
+Every entry has a \`lastVerified\` ISO date. Products evolve; the date is the audit trail.
+
+## Current comparisons
+
+${COMPARISONS.map(
+  (c) =>
+    `### ${c.a.name} vs ${c.b.name} (${c.category})\n\n${c.oneLine}\n\nFull comparison: ${BASE_URL}/compare/${c.slug}`,
+).join("\n\n")}
+
+## Why this surface exists
+
+"[A] vs [B]" is the single highest-intent SaaS-research search class — every reader is mid-evaluation. The honest response is symmetric: name what each side does well, name who each side is for, name the dimensions where one genuinely beats the other, and name the indie-founder pick separately because the general buyer and the indie buyer often diverge. Several products in these comparisons also have funnel and pricing teardowns on ${BASE_URL}/funnel-teardown and ${BASE_URL}/pricing-teardown; cross-links go both ways.
+`;
+
 const PRICING_TEARDOWN_HUB_BODY = `# Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens
 
 > Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Machine applies when critiquing your own pricing page.
@@ -683,6 +720,82 @@ If you want this same pricing lens applied to *your* page (not ${t.displayName}'
 }
 
 /**
+ * Per-comparison markdown body. Generated from the Comparison entry the
+ * HTML page renders so drift is impossible by construction.
+ */
+function buildComparisonMarkdown(c: Comparison): string {
+  const dims = c.dimensions
+    .map((d) => {
+      const verdict =
+        d.winner === "A"
+          ? `${c.a.name} wins`
+          : d.winner === "B"
+            ? `${c.b.name} wins`
+            : d.winner === "tie"
+              ? "Tied"
+              : "Different shapes; not directly comparable";
+      const note = d.note ? `\n\n  *${d.note}*` : "";
+      return `### ${d.name}\n\n- **${c.a.name}:** ${d.a}\n- **${c.b.name}:** ${d.b}\n- **Verdict:** ${verdict}${note}`;
+    })
+    .join("\n\n");
+
+  const pickAList = c.pickAIf.map((x) => `- ${x}`).join("\n");
+  const pickBList = c.pickBIf.map((x) => `- ${x}`).join("\n");
+  const faqs = c.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  const indieRec =
+    c.forIndieFounders.pick === "A"
+      ? c.a.name
+      : c.forIndieFounders.pick === "B"
+        ? c.b.name
+        : "It depends";
+
+  return `# ${c.a.name} vs ${c.b.name} — Honest Head-to-Head Comparison
+
+> ${c.oneLine}
+
+## TL;DR
+
+${c.tldr}
+
+## Best for
+
+- **${c.a.name} is best for:** ${c.bestFor.a}
+- **${c.b.name} is best for:** ${c.bestFor.b}
+
+## Pick ${c.a.name} if
+
+${pickAList}
+
+## Pick ${c.b.name} if
+
+${pickBList}
+
+## Dimension-by-dimension
+
+${dims}
+
+## Honest take
+
+${c.honestTake}
+
+## If you are an indie SaaS founder
+
+**Pick:** ${indieRec}
+
+${c.forIndieFounders.reasoning}
+
+## FAQ
+
+${faqs}
+
+---
+
+If you are building a SaaS that needs to win this kind of comparison, the Unlock SaaS Machine runs the same lens against your own offer at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
+`;
+}
+
+/**
  * Per-alternative markdown body. Reads from the ALTERNATIVES catalog so the
  * markdown and the HTML page render the same facts from the same source.
  */
@@ -838,6 +951,15 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
       "Ten indie SaaS pricing pages broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics.",
     body: PRICING_TEARDOWN_HUB_BODY,
   },
+  {
+    path: "/compare",
+    mdPath: "/compare.md",
+    title:
+      "Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools",
+    summary:
+      "Symmetric dimension-by-dimension breakdowns of the tools indie SaaS founders are mid-evaluation on.",
+    body: COMPARE_HUB_BODY,
+  },
 ];
 
 const SURFACES_BY_MD_PATH = new Map<string, MarkdownSurface>(
@@ -950,6 +1072,27 @@ export function renderPricingTeardownMarkdown(
 }
 
 /**
+ * Render a per-comparison markdown body. Same render contract as the
+ * teardown renderers; powers /compare/<slug>/md.
+ */
+export function renderComparisonMarkdown(slug: string): string | undefined {
+  const c = getComparisonBySlug(slug);
+  if (!c) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/compare/${c.slug}`;
+  return [
+    frontMatter({
+      title: `${c.a.name} vs ${c.b.name}`,
+      summary: c.oneLine,
+      canonical: canonicalUrl,
+      updated: c.lastVerified,
+    }),
+    buildComparisonMarkdown(c).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
  * Build the concatenated /llms-full.txt body. One canonical entity block at
  * the top, then every surface in order, then every alternative comparison.
  *
@@ -1039,6 +1182,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const comparisons = COMPARISONS.map((c) => {
+    const canonical = `${BASE_URL}/compare/${c.slug}`;
+    const mirror = `${BASE_URL}/compare/${c.slug}/md`;
+    return [
+      `## ${c.a.name} vs ${c.b.name}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildComparisonMarkdown(c).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -1054,6 +1212,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens",
     "",
     pricingTeardowns,
+    "",
+    "# Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools",
+    "",
+    comparisons,
     "",
     citationFooter(BASE_URL),
   ].join("\n");

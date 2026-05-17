@@ -278,6 +278,16 @@ export default function FunnelTeardownHub() {
           </p>
           <p>
             <Link
+              href="/compare"
+              className="text-primary hover:underline font-semibold"
+            >
+              Head-to-head comparisons →
+            </Link>{" "}
+            Symmetric dimension-by-dimension breakdowns of the tools you are
+            mid-evaluation on.
+          </p>
+          <p>
+            <Link
               href="/alternatives-to"
               className="text-primary hover:underline font-semibold"
             >

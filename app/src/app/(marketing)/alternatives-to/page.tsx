@@ -233,6 +233,16 @@ export default function AlternativesHub() {
             Stack lens — the same four levers the Machine applies to your
             own pricing page.
           </p>
+          <p>
+            <Link
+              href="/compare"
+              className="text-primary hover:underline font-semibold"
+            >
+              Head-to-head comparisons →
+            </Link>{" "}
+            Symmetric dimension-by-dimension breakdowns of the tools you
+            are mid-evaluation on. Both sides get a fair read.
+          </p>
         </div>
       </section>
 

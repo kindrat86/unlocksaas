@@ -12,6 +12,7 @@ import {
   type FunnelTeardown,
 } from "@/lib/funnel-teardowns";
 import { hasPricingTeardown } from "@/lib/pricing-teardowns";
+import { getComparisonsForProductSlug } from "@/lib/comparisons";
 
 /**
  * Programmatic SEO surface — Funnel teardown: {Company}.
@@ -178,6 +179,7 @@ export default function FunnelTeardownPage({
   const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(t, canonicalUrl);
   const related = getRelatedTeardowns(t.slug, 4);
   const hasPricing = hasPricingTeardown(t.slug);
+  const comparisons = getComparisonsForProductSlug(t.slug);
 
   return (
     <article className="min-h-screen">
@@ -510,6 +512,39 @@ export default function FunnelTeardownPage({
           </CardContent>
         </Card>
       </section>
+
+      {/* Head-to-head comparisons including this product */}
+      {comparisons.length > 0 ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+          aria-labelledby="comparisons"
+        >
+          <h2
+            id="comparisons"
+            className="text-lg font-bold mb-4 leading-tight"
+          >
+            {t.displayName} compared head-to-head
+          </h2>
+          <ul className="space-y-2">
+            {comparisons.map((c) => (
+              <li key={c.slug}>
+                <Link
+                  href={`/compare/${c.slug}`}
+                  className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                >
+                  <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
+                  <span>
+                    <span className="font-semibold">
+                      {c.a.name} vs {c.b.name}
+                    </span>{" "}
+                    <span className="text-muted-foreground">— {c.oneLine}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* Related teardowns (internal linking graph) */}
       {related.length > 0 ? (
