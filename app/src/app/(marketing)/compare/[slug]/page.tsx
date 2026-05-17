@@ -13,6 +13,7 @@ import {
 } from "@/lib/comparisons";
 import { getTeardownBySlug as getFunnelTeardownBySlug } from "@/lib/funnel-teardowns";
 import { getPricingTeardownBySlug } from "@/lib/pricing-teardowns";
+import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
@@ -251,6 +252,7 @@ export default function ComparePage({ params }: { params: RouteParams }) {
     c.b.teardownSlug && getFunnelTeardownBySlug(c.b.teardownSlug);
   const bPricing =
     c.b.teardownSlug && getPricingTeardownBySlug(c.b.teardownSlug);
+  const category = getCategoryByRawString(c.category);
 
   const indieRec =
     c.forIndieFounders.pick === "A"
@@ -607,6 +609,18 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           >
             <ArrowRight className="h-4 w-4 inline" /> Browse every comparison
           </Link>
+          {category ? (
+            <>
+              {" "}
+              ·{" "}
+              <Link
+                href={`/category/${category.slug}`}
+                className="text-primary hover:underline font-semibold"
+              >
+                Browse {category.displayName.toLowerCase()} →
+              </Link>
+            </>
+          ) : null}
         </p>
       </section>
 

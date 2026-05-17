@@ -232,6 +232,19 @@ export function getCategoryBySlug(slug: string): CategoryDef | undefined {
   return CATEGORIES_BY_SLUG.get(slug);
 }
 
+/**
+ * Reverse lookup: given a raw manifest `category` string (the free-form
+ * field on FunnelTeardown / PricingTeardown / Comparison entries), find
+ * the canonical CategoryDef whose matcher list contains that string.
+ * Returns undefined when no category bucket matches — useful as a guard
+ * for detail-page cross-links.
+ */
+export function getCategoryByRawString(
+  rawCategory: string,
+): CategoryDef | undefined {
+  return CATEGORIES_LIST.find((cat) => cat.matchers.includes(rawCategory));
+}
+
 // -- Aggregator helpers ------------------------------------------------------
 
 /**

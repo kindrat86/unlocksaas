@@ -13,6 +13,7 @@ import {
 } from "@/lib/pricing-teardowns";
 import { getTeardownBySlug as getFunnelTeardownBySlug } from "@/lib/funnel-teardowns";
 import { getComparisonsForProductSlug } from "@/lib/comparisons";
+import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
@@ -211,6 +212,7 @@ export default function PricingTeardownPage({
   // Cross-pattern: does this company also have a funnel teardown?
   const hasFunnelTeardown = Boolean(getFunnelTeardownBySlug(t.slug));
   const comparisons = getComparisonsForProductSlug(t.slug);
+  const category = getCategoryByRawString(t.category);
 
   return (
     <article className="min-h-screen">
@@ -292,6 +294,29 @@ export default function PricingTeardownPage({
               className="text-sm font-semibold text-primary hover:underline shrink-0"
             >
               Read the funnel teardown →
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Category roundup callout */}
+      {category ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-2"
+          aria-labelledby="category-cross"
+        >
+          <h2 id="category-cross" className="sr-only">
+            Browse the category
+          </h2>
+          <div className="rounded-lg border border-border bg-card px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+            <p className="text-sm leading-relaxed">
+              Comparing every pricing model in this category?
+            </p>
+            <Link
+              href={`/category/${category.slug}`}
+              className="text-sm font-semibold text-primary hover:underline shrink-0"
+            >
+              Browse {category.displayName.toLowerCase()} →
             </Link>
           </div>
         </section>
