@@ -178,6 +178,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
       alternates: hreflang(`${base}/about`),
     },
+    // Press / media kit. Off-page lever: the URL we hand any journalist,
+    // blogger, or podcaster covering Unlock SaaS so they have a single
+    // canonical source for brand facts, founder bio, story angles, and
+    // embed-ready copy. Indexable so it ranks for branded media-kit
+    // queries ("unlock saas press kit", "unlock saas founder", etc.).
+    {
+      url: `${base}/press`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/press`),
+    },
     {
       url: `${base}/contact`,
       lastModified: now,
