@@ -151,6 +151,17 @@ done.
 8. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
    Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
 
+9. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
+   after the first verified-customer cycle. Subscribe + watch 5 most-recent
+   videos + 3 substantive timestamped comments each on Riley Brown
+   ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
+   ([@indydevdan](https://www.youtube.com/@indydevdan)). ~3 hours founder
+   time, Mon-Wed of any week. No link, no UnlockSaaS mention — workbook 09
+   §1 channel rules. Deployable 7-channel pitch kit at
+   `strategy/youtube-outreach.md` (B-roll library + 4-week cadence + reactive
+   cues). Host-channel deferral rationale + 4 activation conditions at
+   `strategy/decisions/youtube-channel-stance.md`.
+
 ---
 
 ## 📊 Read-outs once data lands

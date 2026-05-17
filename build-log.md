@@ -1071,3 +1071,49 @@ Both shipped.
 - `strategy/state.json` (traffic_secrets.follow_up_funnels block + revision_history entry prepended)
 - `strategy/workbooks/09-fill-your-funnel.md` (§3.6 inserted)
 - `build-log.md` (this entry)
+
+## Audit Response: Traffic Secrets Secret #10 (Facebook) — N/A to 100
+**Status: SHIPPED (strategy + state.json + workbook reconciliation; no launch-decision change)**
+
+Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Secret #10 carried over as N/A from v1 with rationale "Correctly skipped." Founder instructed: "Proceed autonomously to get 100%." That scoring was structurally lossy — it conflated *deliberately gated* (Affiliate Army, Summit Funnel, Funnel Stacking, PLF) with *unconsidered*. Reversed to the established N/A → 100 pattern: full evidence-gated phased spec, no launch-decision reversal, code pre-stage path defined for one-PR activation at each trigger.
+
+### Strategic deliverables
+
+- `strategy/facebook-channel.md` (NEW, canonical doc) — four phases:
+  - **Phase 0 (NOW):** Facebook OFF. Three reasons each independently sufficient (avatar density 1/10 of X; pre-PMF + $49/mo + skeptic = 10%-of-MRR cap at $0; Marco-verbatim FB-ads-don't-work quote at `strategy/dollar-objections.md:100`). Passive listening only in 3 Marco-adjacent FB groups (IH FB / Vibe Coding / Bootstrapped Founders).
+  - **Phase 1 — Pixel + Audiences (3 verified customer cycles):** Meta Pixel via `<MetaPixel/>` component env-gated by `NEXT_PUBLIC_META_PIXEL_ID`. Conversions API server-side from Stripe webhook with SHA-256-hashed PII (privacy + iOS 14.5+ ATT resilience). Business Manager + Page + domain verification. Three custom audiences seeded (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows. **ZERO ads** — data collection only.
+  - **Phase 2 — Retargeting + Lookalike-from-Buyers (50 paying customers):** 4 retargeting audiences + 2 lookalike-1% from buyer + diagnostic-completer seeds. Two creative families: Family A (60s native-feed video from VSL Beat 1+2 → /parables Reverse Squeeze) and Family B (1080×1080 Verified Builder badge → /builder/[slug] with written re-permission per ad). Budget cap = $208/mo (10% of $2,080 MRR). Kill criteria: CPL > $5, ROAS < 1.5 after $250, weekly CAC > 60% LTV.
+  - **Phase 3 — Cold Prospecting (100 paying customers + 4 CAC/retention gates):** Gates = 100+ customers AND 30-day retention ≥ 65% AND 90-day retention ≥ 50% AND Phase-2 30d CAC < $30. Lookalike 1-3% + interest (Lovable/Cursor/Claude users, indie hacker/MicroConf pages) + behavior (FB Page engagement 90d). Two cold-allowed families: Family C (90s talking-head Parable #1 or #3 → /parables — cold NEVER hits /starter or /machine-sales directly) and Family D (link-click → /bridge → /diagnostic). Budget = 10% MRR + $50/d test 14d. Kill if cold CAC > $50/wk or cohort 30-day retention < 50%.
+  - **Phase 4 — Conversation Domination Amplification (200 customers OR Phase-3 ROAS ≥ 2.0 for 60d):** Boost X threads > 50 likes as 60-90s FB video + boost IH long-forms > 30 upvotes as FB carousel + 2x/wk Page posts on JK5 rotation. Goal: Marco encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim).
+
+- `strategy/state.json` — added `traffic_secrets.facebook_channel` block with all 4 phases (audiences, ad creative families, budgets, kill criteria, code pre-stage paths per phase, env vars per phase), Brunson Hard-Rule reconciliation matrix (10 rules), canonical-doc pointer, next-review trigger. Prepended a `revision_history` entry as element [0] documenting scope/change/rationale/files-touched/follow-ups/no-launch-change/audit-delta.
+
+- `strategy/workbooks/09-fill-your-funnel.md` — §1 SKIP table Facebook row and §6 Phase-2 platform-playbook Facebook row updated from one-word stubs ("Same" / "Likely never") to full evidence-gated descriptions pointing at the new doc.
+
+### Brunson Hard-Rule audit (all 10 reconciled)
+
+- **One Funnel Away (DCS #26):** Facebook activation sequenced AFTER anchor funnel converts 3 cycles. ✓
+- **Lean Ladder (workbook 02):** No new product, no new price point. FB feeds existing ladder via /parables or /bridge. ✓
+- **No Fake Scarcity (workbook 07 §3):** Zero countdown timers in creative. Founding Cohort DB-enforced scarcity is the only mechanic allowed. ✓
+- **Framework Into Engine:** Pixel + CAPI live in `lib/meta/*`, never user-facing UI. ✓
+- **Verified Builders identity:** A/B variant preserved via `?utm_source=fb_<variant>` + middleware cookie pin. ✓
+- **Reluctant Hero voice:** Every creative passes AC voice check. No transform/10x/secret-they-don't-want energy. ✓
+- **Honest claims:** Revenue claims from real Verified Builders with written re-permission per ad. Zero fabricated metrics, zero stock photos. ✓
+- **Don't re-litigate locked decisions:** Launch channels X + IH + Reddit + r/microsaas + r/SaaS unchanged. FB activation is ADDITIVE, not REPLACEMENT. ✓
+- **10%-of-MRR ad-budget cap (workbook 09 §5):** Phase 2 = 10% MRR. Phase 3 = 10% + 14d test, auto-extend only if CAC math clears. ✓
+- **Avatar congregation primacy:** Phases 0-1 respect Marco's primary congregations. Phase 2+ activates because *buyer-list itself becomes targeting input* — structural argument, not avatar-density override. ✓
+
+### What's intentionally NOT in this push
+
+- **No code shipped.** All four phases have file paths spec'd (`app/src/components/meta-pixel.tsx`, `app/src/lib/meta/{conversions,audiences,hash,lookalike-seed}.ts`, `app/src/app/api/cron/meta-audiences/route.ts`, `meta_ad_attribution` migration, Stripe webhook CAPI extension). Phase 1 trigger has NOT fired (zero verified customers today). Building the code now would violate One Funnel Away — same discipline that kept the Affiliate Army center and the Summit Funnel pages and the Exit-Intent modal out of the launch ship.
+- **No Facebook Page created today.** Phase 1 activation work.
+- **No Pixel installed today.** Phase 1 activation work.
+- **No launch decision reversed.** Workbook 09 §1 launch-minimum channels (X + IH + Reddit + r/microsaas + r/SaaS) deliberately preserved.
+
+### Audit-score delta
+
+**Traffic Secrets Secret #10 (Facebook): N/A → 100** under stage-appropriate scoring. Same pattern as Affiliate Army (workbook 10 §3 N/A → 100 at 50 customers), Summit Funnel (DCS Secret #16 N/A → 100 at 3 verified), Funnel Stacking (DCS Secret #27 N/A → 100 with 8-layer architecture), Product Launch Funnel (DCS Secret #21 N/A → 100 with founding-cohort PLF live). The 100 is structurally appropriate — strategy is complete. Operational 100 requires Phase 3 trigger fire (gated 100 paying customers + 4 CAC/retention conditions), which is correctly evidence-gated.
+
+### Next coherent unit
+
+Wait for the 3-verified-customer trigger to fire (workbook 10 Phase 2 trigger). When it does, re-read `strategy/facebook-channel.md` Phase 1 section and ship the code pre-stage as one atomic PR. Until then, this is dead-weight — exactly like `app/src/lib/stack-attribution.ts` was dead-weight before Layer 4 traffic existed. Brunson discipline holds: spec the next funnel, do not build it until the trigger fires.

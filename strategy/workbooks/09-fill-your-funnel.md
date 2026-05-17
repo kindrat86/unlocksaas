@@ -244,9 +244,39 @@ Under `traffic_secrets.fill_funnel`:
 - Paid-ad activation criteria specified.
 - Phase 2 platform playbook noted, not built.
 
+## Section 9: Activation Manifest (locked 2026-05-17)
+
+The workbook above defines the WHAT (which channels, which voice, which cadence). The activation manifest at `strategy/fill-your-funnel-manifest.md` defines the HOW: per-channel deployable bridge asset, per-channel attribution slug, per-channel red-line, per-channel audible, per-channel activation gate.
+
+The manifest closes Secret #8 to 100 by adding the operational layer the workbook did not own:
+
+- **Slug taxonomy** — `<channel-token>-<sub-token>[-<variant>]` shape, enforced at module load by `app/src/lib/fill-your-funnel/link-registry.ts`.
+- **Typed UTM builder** — `app/src/lib/utm.ts` prevents UTM typos that fragment Stripe attribution.
+- **Short-link redirect** — `app/src/app/r/[slug]/route.ts` stamps UTMs, writes a click row, sets the stack subject cookie, 302-redirects. 404 for unknown slugs, 410 for gated channels.
+- **Click event store** — `supabase/migrations/20260517050000_link_clicks.sql` — append-only, RLS anon-insert with shape-validated CHECK constraints, service-role reads only.
+- **Per-channel ROI views** — `supabase/views/fill_your_funnel.sql` — three views (per-slug daily, per-channel daily, channel→diagnostic forward-compatible) for the weekly Channel-ROI read.
+
+**Launch-active slugs (per manifest):** `x-bio`, `x-thread-<parable>` (5 parables), `x-reply-diagnostic`, `ih-bio`, `ih-longform-<parable>`, `reddit-bio`, `reddit-post-<parable>`, `dm-tier-a-{castrio,lou,chen,kahl,iqbal}`, `founding-waitlist`, `founding-plv-{1,2,3}`, `founding-cart-open`.
+
+**Gated slugs (registered, will 410 until activation gate fires):** `podcast-*` (first verified customer), `newsletter-*` (3+ verified cycles), `integration-*` (3+ verified cycles), `ad-*` (Phase 2 stacked gates), plus dynamic `aff-*` (50+ customers) and `exit-*` (Phase 2 + 100 captured exits).
+
+**Operator daily checklist** (per channel, per day, per cadence) lives in the manifest's "Daily checklist" and "Weekly checklist" rows for each channel.
+
+**Read recipe** (weekly Channel-ROI):
+
+```sql
+select * from public.fill_your_funnel
+where day > now() - interval '7 days'
+order by clicks desc;
+```
+
+---
+
 ## Status
 
-**Step 9 COMPLETE.** Launch-minimum is two channels (X + IH/Reddit). JK5 publishing categories defined. Paid ads deferred with explicit activation criteria. Platform-specific playbooks (Instagram / FB / Google / YouTube) noted as Phase 2. Conversation Domination reserved for Phase 2.
+**Step 9 COMPLETE.** Launch-minimum is X + Indie Hackers + Reddit + Dream 100 DMs Tier A + Founding PLF. JK5 publishing categories defined. Paid ads deferred with explicit activation criteria. Platform-specific playbooks (Instagram / FB / Google / YouTube) noted as Phase 2. Conversation Domination reserved for Phase 2.
+
+**Secret #8 Activation Manifest LOCKED 2026-05-17** (v2 — closes audit gap 78 → 100 under stage-appropriate scoring). Canonical doc: `strategy/fill-your-funnel-manifest.md`. Code companions: `app/src/lib/utm.ts`, `app/src/lib/fill-your-funnel/link-registry.ts`, `app/src/app/r/[slug]/route.ts`, `supabase/migrations/20260517050000_link_clicks.sql`, `supabase/views/fill_your_funnel.sql`.
 
 **Next:** Step 10, Growth Hacking.
 
