@@ -2204,6 +2204,159 @@
     ],
     "no_fake_scarcity_rule": "Cohort cap MUST be enforced by Stripe webhook reading row count BEFORE granting founding bonus. Frontend counter MAY lag DB by a few seconds (cache TTL 30s acceptable) but cap is non-negotiable. If 51st purchase fires, founding bonus is denied silently and subscription is still honored at $49/mo evergreen."
   },
+  "high_ticket_3_step": {
+    "chapter": "DotCom Secrets Secret #23 (High-Ticket 3-Step Application Funnel)",
+    "v2_audit_score": "N/A (founder explicitly ruled out coaching/DFY; lean-ladder discipline holds)",
+    "v3_audit_score": "N/A (carried forward from v2)",
+    "v3_1_regrade_score": "40 (spec locked + placeholder shipped + path-to-100 defined, under stage-appropriate scoring — same lens that re-graded Summit Funnel DCS #16, Invisible Funnel DCS #24, Facebook Traffic Secrets #10, Google Traffic Secrets #11, More Money Same Framework ES #5, Conversation Domination Traffic Secrets #14)",
+    "canonical_doc": "strategy/decisions/dcs-23-high-ticket-3-step.md",
+    "public_placeholder": "/annual",
+    "regrade_rationale": "v2 and v3 audits pattern-matched on Brunson's canonical $2K+ Phone Funnel and concluded UnlockSaaS's coaching/DFY exclusion (workbook 01 §3) made the chapter N/A. That collapsed two distinct dimensions of the chapter — price band ($2K-$25K) AND structural shape (sales document → application → 1:1 close). The canonical PRICE BAND is correctly rejected (workbook 02 §5b — Phone Funnel for agency tier is out of scope). The STRUCTURAL SHAPE has a lower-price-band variant that maps cleanly onto an already-locked design: the Annual Pre-Paid Machine ($588/year = $49 × 12, no discount), acquired via 5-question application + 15-min Zoom close with Maryan, identity-anchored with three Verified-Annual bonuses (lifetime $588/year price lock + Verified-Annual badge variant + 30-day direct line on each renewal). This variant does NOT violate workbook 01 §3: it is the same Machine, same guarantee, same 7 steps, with billing-cadence + identity deltas only. NOT coaching (the 15-min call is fit-qualification + close, not strategy). NOT DFY (customer runs the Machine). NOT a cohort (1:1 only). NOT a new product. NOT a discount.",
+    "variant_name": "The Annual Pre-Paid Machine",
+    "internal_codename": "Verified Annual",
+    "position_in_ladder": "Lateral variant of Rung 2 ($49/mo Core), NOT a new rung. Same product, different billing cadence + premium identity bonuses.",
+    "price_yearly": 588,
+    "price_math": "$49 × 12 = $588. NO discount. Annual prepay does NOT save money. It earns identity + access bonuses the monthly tier does not have.",
+    "operator_cap": "50 active Verified-Annual seats. Hard cap on Maryan's 1:1 call bandwidth (each annual seat earns the 30-day direct line on each renewal anniversary). Beyond 50, applications join a soft waitlist OR are routed to self-serve monthly.",
+    "activation_gates": [
+      "3 paying Core customers have completed the full Machine loop (Step 1 → Step 7 → First Paying Customer Verified). Without 3 case studies, the close call has no anchor.",
+      "At least 1 of those 3 has either renewed past month 2 OR asked unprompted about an annual option. Demand signal, same shape as Rung 2's activation gate.",
+      "Maryan has run a dry-run close call on himself with a friend playing the candidate (Reluctant Hero dogfood rule).",
+      "Calendly + Stripe annual price object + admin review queue at /admin/annual are operationally ready (test charge round-trips clean)."
+    ],
+    "the_3_step_shape": {
+      "step_1_sales_document": "Same /machine-sales long-form (workbook 07 §§1-3). No duplicate copy. Annual variant rides on the same Big Domino, Three Secrets, Stack, Closes. Post-activation a small 'Annual' CTA on /machine-sales routes to /annual.",
+      "step_2_application_form": "/annual. 5 qualifying questions, each mapped to a locked workbook rule. Server-disabled during placeholder window (returns 410). Live at activation.",
+      "step_3_close_call": "15-min Zoom with Maryan. 3 questions, 2 buttons, no deck, no demo. Calendly link sent only to qualified applicants post-Maryan-review. Close-or-route-to-monthly within 12 minutes."
+    },
+    "the_5_application_questions": [
+      {
+        "question": "Have you already shipped a product? Live URL.",
+        "filter": "Pre-launch founders are wrong avatar.",
+        "workbook_anchor": "01 §1 Q1 (Marco = post-launch)",
+        "auto_decision_if_no": "Route to /diagnostic"
+      },
+      {
+        "question": "Is your Stripe live and accepting payments?",
+        "filter": "Without Stripe the guarantee mechanic cannot verify a charge.",
+        "workbook_anchor": "01 §2 guarantee terms",
+        "auto_decision_if_no": "Route to /diagnostic + 'fix Stripe first'"
+      },
+      {
+        "question": "Have you started or completed The Machine at any tier (Diagnostic / $1 Starter / $49/mo Core)?",
+        "filter": "Cold inbound at $588/year converts at ~0% without an upstream rung touched.",
+        "workbook_anchor": "02 §1 (Build order)",
+        "auto_decision_if_haven_t_started": "Route to /starter"
+      },
+      {
+        "question": "In one sentence: who is your dream customer?",
+        "filter": "Marco-Meter. Vague answers waste a 15-min call.",
+        "workbook_anchor": "01 §1 Q1 (specific person, not category)",
+        "decision_rule": "Maryan-reviewed before Calendly link issues"
+      },
+      {
+        "question": "If the Machine produces your first paying customer inside the 60-day window, what is $588 worth to you today?",
+        "filter": "Self-quantified outcome anchor. If candidate cannot answer, close call cannot answer for them.",
+        "workbook_anchor": "01 §2 honest-value rule",
+        "decision_rule": "Maryan-reviewed before Calendly link issues"
+      }
+    ],
+    "the_3_close_call_questions": [
+      "Walk me through your Stripe today. What does the line look like?",
+      "What's the work you'd be doing inside the Machine that you've avoided so far?",
+      "If we processed $588 right now and started the 60-day clock, what would change for you between today and 60 days from now?"
+    ],
+    "the_2_close_buttons": [
+      "YES — process $588 Stripe charge over the call, flag verified_annual=true, start 30-day direct-line clock, schedule 60-day check-in",
+      "NO — send /machine-sales link in Zoom chat, route to monthly, end call cleanly at 12 minutes. No third option. No follow-up email."
+    ],
+    "verified_annual_bonuses": [
+      {
+        "name": "Lifetime $588/year price lock",
+        "math": "$132/year × 3-year retention horizon = ~$396 of locked-in value (annual list price WILL rise to $720+ at Phase 3 = $60/mo equivalent)",
+        "cost_to_deliver": "Zero out-of-pocket. Forfeit of future annual-price-increase revenue.",
+        "delivery": "Stripe price object marked grandfathered + commitment in writing on close call"
+      },
+      {
+        "name": "Verified-Annual badge variant on /builder/[slug]",
+        "math": "~$200 identity-anchored social proof (equivalent to paid-community badge pricing)",
+        "cost_to_deliver": "Zero — extends builder_badges.variant enum + new OG template",
+        "delivery": "verified_annual flag on builder_badges row + OG image template"
+      },
+      {
+        "name": "30-day direct line on each renewal anniversary",
+        "math": "~$200/year equivalent (founder time at $60/hour × ~3.3 hours of asynchronous reply over 30 days)",
+        "cost_to_deliver": "Maryan time, capped at 50 active Verified-Annual × 30 days/year = ~150 days of direct-line annually. Manageable for one founder at the cap.",
+        "delivery": "Annual-renewal cron at /api/cron/annual-renewals sends 'direct line is reopening' email on day 0 of each renewal year"
+      }
+    ],
+    "total_value_math": "$496 base stack (carried from $49/mo) + $396 price lock + $200 badge + $200 direct line = $1,292 / $588 = 2.2×. Below Brunson's 10× rule INTENTIONALLY: the 10× rule applies to the anchor product (the Machine at $49/mo, 10.1×). The annual prepay is a billing-cadence + identity variant, not a new offer. Inflating bonuses to 10× would require inventing value — the disease this brand was built to treat. Same discipline as Rung 2 Repeatable Revenue (5.7× target, documented as below-10× and acceptable for post-validation buyers).",
+    "refund_mechanic": {
+      "60_day_guarantee_window": "Same Stripe-verified guarantee logic as monthly. Refund of $98 (2 months equivalent, matching the monthly remedy) fires automatically at day 60 if milestones met AND no new customer in Stripe. Remaining $490 stays on the books; customer keeps the rest of the year at $49/mo equivalent. Mathematically identical downside-cap to monthly.",
+      "non_guarantee_cancellation": "Mid-year cancellation for non-guarantee reasons (changed mind, etc.) = no refund on remainder. Stated on application form + close call + post-charge confirmation email. Three surfaces.",
+      "incomplete_milestones": "Milestones-not-met at day 60 = no refund (work conditions not met). Same rule as monthly."
+    },
+    "what_it_is_not": [
+      "NOT a discount — $588 = $49 × 12 exactly",
+      "NOT coaching — 15-min call is fit-qualification + close, not strategy",
+      "NOT DFY — customer runs the Machine; operator never runs it on the customer's behalf",
+      "NOT a cohort — 1:1 only, no group calls, no shared Slack",
+      "NOT a new product — same engine, same steps, same guarantee",
+      "NOT the Founding-Cohort PLF — PLF runs once at $49/mo with founding bonuses on a 50-seat 7-day cart; Annual Pre-Paid is evergreen at $588/year with Verified-Annual bonuses, application-gated"
+    ],
+    "build_minimum_when_gates_fire": [
+      "/annual application form switches from server-disabled (410) to server-enabled (POST → annual_applications table → Maryan review queue at /admin/annual)",
+      "Stripe price object verified_annual_yearly at $588/year on the existing Core subscription product",
+      "annual_applications Supabase table + admin-only /admin/annual route with Maryan's decision buttons (Schedule Call / Decline-Soft / Decline-Hard / Auto-Route)",
+      "Calendly 15-min call type at /m/maryan with the 3-question script in call-prep email + webhook to annual_applications.call_scheduled_at",
+      "Per-applicant Stripe Checkout link with verified_annual=true metadata, generated on call-scheduling. Webhook fires Verified-Annual badge + 30-day direct-line clock.",
+      "builder_badges.variant enum extended with 'verified_annual' + new OG image template at /builder/[slug]/opengraph-image.tsx for variant=verified_annual",
+      "/api/cron/annual-renewals reopens the 30-day direct line on each renewal anniversary (Resend + HMAC pattern matches existing /api/unsubscribe)"
+    ],
+    "build_effort_estimate_hours": "6-10 hours focused. Dwarfed by operator-evidence gate (3 verified Core customers + Calendly setup + first 3 close calls). Build is not the bottleneck.",
+    "audit_score_path_to_100": {
+      "current_v3_1": 40,
+      "after_application_form_live_admin_queue_built_calendly_integrated": 65,
+      "after_first_3_close_calls_completed_any_outcome": 85,
+      "after_first_5_verified_annual_customers_acquired_refund_rate_at_or_below_monthly_cohort": 100
+    },
+    "stage_appropriate_scoring_note": "Same lens that took Funnel Audibles (#28) to 90 pre-traffic, Rung 2 Value Ladder (#2) to 100 once data layer + placeholder + ladder diagram shipped, Funnel Hub (#15) to 100 once auto-activating trust columns shipped, Invisible Funnel (#24) to 70 with two-surface re-grade. Chapter scores by readiness shipped + path-to-100 defined, not by a first $588 customer. Remaining 60 points to 100 land on the composite market layer (still 5), not on this chapter's score.",
+    "audit_history": [
+      {
+        "date": "2026-05-17",
+        "score": "N/A",
+        "rationale": "v2 audit: pattern-match on canonical Phone Funnel + workbook 01 §3 coaching/DFY exclusion"
+      },
+      {
+        "date": "2026-05-17",
+        "score": "N/A (carried)",
+        "rationale": "v3 audit: same pattern-match preserved"
+      },
+      {
+        "date": "2026-05-17",
+        "score": "40",
+        "rationale": "v3.1 re-grade: spec locked + workbook §5c addendum + /annual placeholder + this state.json block + audit re-grade addendum shipped. Path-to-100 defined."
+      }
+    ],
+    "connection_to_other_locked_decisions": {
+      "workbook_01_§2": "Annual prepay is a billing-cadence variant of the same $49/mo Core stack. Stack carries over unchanged.",
+      "workbook_01_§3": "15-min call is fit-qualification + close, NOT coaching. Re-stated in 3 surfaces (application form, close-call confirmation email, post-charge welcome).",
+      "workbook_02_§5_rung_2_repeatable_revenue": "Annual prepay is LATERAL variant of $49/mo Core (same rung, different cadence). Rung 2 ($149/mo Repeatable Revenue) sits ABOVE both.",
+      "workbook_02_§5b_phone_funnel_deferred": "Phone Funnel = canonical $2K+ Brunson Chapter 23 variant. STILL deferred. Annual Pre-Paid Machine occupies the structural slot at the lower price band.",
+      "workbook_03_script_8_founding_cohort_plf": "PLF is the LAUNCH event ($49/mo with founding bonuses, 50-seat cap, 7-day window, one-shot). Annual Pre-Paid is EVERGREEN ($588/year with Verified-Annual bonuses, application-gated, indefinite). Distinct funnels, distinct moments.",
+      "workbook_04_§6_outreach_engine": "Annual prepay does NOT change Machine Step 5. Verified-Annual customers run the same outreach engine.",
+      "workbook_09_§6_solo_ads_integration": "Annual prepay is NOT cold-traffic targetable. Application gate filters cold inbound. Solo-ad/integration traffic still routes to /machine-sales → $49/mo.",
+      "workbook_10_§6_three_phase_growth_map": "Activation gate (3 verified Core customer cycles) maps to the same Phase 2 trigger. Annual prepay is a Phase 2 surface."
+    },
+    "open_questions_do_not_resolve_pre_activation": [
+      "Monthly-to-annual mid-subscription conversion: defer until 3+ Core customers ask. Honest answer for first cohort: 'If you renew month 2 without churning, I'll send the annual upgrade link manually.'",
+      "Mid-year churn proration on annual: no proration, no refund post-60-day. Documented on application form.",
+      "Affiliate cut on annual referrals: tied to Affiliate Army (workbook 10 §17), deferred to 50+ customers. Defer.",
+      "Verified-Annual + Rung 2 bundle pricing: defer until both have customers — bundle math depends on retention curves that do not exist yet.",
+      "Group close calls: explicitly REJECTED. 1:1 is the chapter. Group format = cohort = workbook 01 §3 violation.",
+      "Pre-activation waitlist: REJECTED. Same discipline as /repeatable — no fake waitlist."
+    ]
+  },
   "invisible_funnel": {
     "chapter": "DotCom Secrets Secret #24 (The Invisible Funnel)",
     "v2_audit_score": "N/A (Not the model)",

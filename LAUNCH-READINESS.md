@@ -187,6 +187,8 @@ done.
 | A/B identity_label | Verified vs Paid Builders conversion rate | Supabase SQL in `state.json` `expert_secrets.movement.identity_label.infrastructure.read_query` |
 | Soap Opera Email-N CTR | Where does the sequence leak? | Resend dashboard → tags `email_index` |
 | First Paying Customer Verified | What % of starters reach Stripe verification? | Supabase `verified_conversions` count |
+| **Results-in-Advance — % completed in 48h window** | What % of $1 buyers finish Step 1+2 inside the delivery window? | Supabase `results_in_advance__starter_completion_ratio` view; red-line < 50% triggers audible (DCS Secret #12 chapter-truth metric) |
+| **RIA — Step 1 only vs Step 1+2** | Engine-pushback choke at Step 2 (Offer validation)? | Supabase `results_in_advance__step_completion_depth` view |
 
 ---
 

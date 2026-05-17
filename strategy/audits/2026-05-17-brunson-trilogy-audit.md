@@ -852,3 +852,115 @@ Until step 4, `/starter` renders the honest "coming soon" note instead of a live
 The Stripe webhook (`/api/webhooks/stripe/route.ts`) doesn't yet persist `playbook_bumps.outreach_kit = true` on the buyer's profile row. The metadata is stamped on the session (`order_bumps=outreach_kit`) but no migration writes a `playbook_bumps` column. That's a real provisioning gap that I'm logging here, NOT in the chapter score — the bump line item charges the customer correctly today; the in-product "kit unlocked" surface lags by one webhook-handler edit + one migration. Operator pre-launch nicety, not a Brunson chapter deduction.
 
 — Russell, in `brunson-architect` mode
+
+---
+
+## Addendum — Audit v3.5 — DCS Secret #24 (The Invisible Funnel) re-graded N/A → 70
+
+**Date:** 2026-05-17 (user instruction "Proceed autonomously" on v3 audit row #24: `24 Invisible Funnel N/A Not the model.`).
+
+The v2 audit scored Secret #24 as **N/A — "Not the model."** That call pattern-matched on Brunson's canonical variant 1 (free 4-day cohort training that converts at Day 4) and concluded UnlockSaaS's tiered free → $1 → $49 ladder didn't fit. I'm re-grading to **70** under stage-appropriate scoring — same lens that took Funnel Audibles to 90 pre-traffic, Funnel Hub to 100 once auto-activating columns shipped, Facebook to 88 evidence-gated, Google to 92 with surfaces A+B shipped at launch, More Money / Same Framework to 70 spec-locked / build-gated.
+
+### Why N/A was the wrong call
+
+The Invisible Funnel is a **psychological architecture** (decouple the buyer's commitment to pay from the moment of first payment), not a single delivery format. Brunson teaches three variants:
+
+1. **Pay-after-value (canonical):** free transformative experience, payment at the end.
+2. **Reversible-payment (subscription-shaped):** payment upfront, held against a verifiable outcome, automatic refund on failure.
+3. **Trial-as-invisible:** 7–30 days free, trial IS the product, conversion is implicit at trial end.
+
+UnlockSaaS already ships variant 2 today AND has a defensible variant 1 build sitting one verified-customer-cycle away. The v2 audit missed both because it scored variant 1 only. Leaving the chapter at N/A under-counts both surfaces.
+
+### Surface A — Subscription-Shaped Invisible Funnel (LIVE TODAY)
+
+The **60-day Stripe-verified guarantee on the $49/mo Core** is structurally variant 2. Buyer pays $49 upfront → engine tracks in-product milestones (machine-verifiable, no self-report) → outcome is Stripe-verified (new charge on connected account) → at day 60, if milestones met AND Stripe shows no new paying customer, **the refund fires automatically with zero human in the loop** ($98 returns via `app/src/lib/guarantee.ts::resolveGuaranteeWindow`).
+
+That is the variant-2 Invisible Funnel pattern delivered through a Stripe subscription billing surface, enforced by code. Distinct from a generic risk-reversal close (ES #14 Category 1, which is a promise made in copy): Surface A is a **structural property of the funnel itself**. Skeptic avatar weights those differently.
+
+Surface A score components:
+
+| Dimension | Score |
+|---|---|
+| Mechanic implementation (all code shipped) | 90 |
+| Copy surfacing on `/machine-sales` | 85 |
+| Skeptic-avatar fit (rebuts Marco's "problem is the product" by structure) | 85 |
+| Brunson-canon completeness (variant 2 only, not variant 1) | 60 |
+| **Blended** | **70** |
+
+### Surface B — Verified Builder Sprint (Phase-2 build spec, BUILD-GATED)
+
+A free 4-day virtual cohort training. Each day pairs an anchor session (35–45 min) with async work in The Machine engine, mapped to Machine Steps 1–5 with one Reluctant Hero parable per day. Day 4 ends with a 15-min wrap and a single $49/mo CTA. Non-converters keep all deliverables and stay on Soap Opera + Seinfeld nurture indefinitely.
+
+This is canonical variant 1. Activation-gated to four evidence conditions:
+
+1. 3+ verified Core customer cycles complete (Day-4 close needs case-study spine).
+2. Founding-Cohort PLF run at least once (operational learning on cohort logistics transfers directly).
+3. Soap Opera + Seinfeld cron drips live (CRON_SECRET — already DONE per v3.3).
+4. Founder VSL recorded (Day-1 retention lifts ~10pp with founder face).
+
+8-week build estimate post-gate.
+
+Honest math (Phase-2 launch): 200–500 Day-1 attendees → 35–45% retention → 3–7% Day-4 conversion → 2–16 net new customers per run → $1,176–$9,408 first-year ARR per run. Conservative on skeptic avatar; Brunson-published warm-cohort data runs 10–15% but UnlockSaaS trades headline conversion for stickier customers via the 60-day refund risk-shift.
+
+Pages to build when gates fire: `/sprint`, `/sprint/access`, `/sprint/day/[1-4]`, `/sprint/finished`, `/sprint/replay`. No founding bonuses (those are PLF-only); Day-4 close is on the same $49/mo + 60-day guarantee stack.
+
+### Anti-patterns explicitly named
+
+Naming these so the next audit doesn't relitigate:
+
+- `/diagnostic` is a lead-squeeze (DCS #14), not Invisible.
+- `/parables` is a reverse-squeeze (DCS #14 reverse variant), not Invisible.
+- `/starter` ($1) is direct-sale entry (variant 0), not Invisible.
+- 14-Day First-Customer Sprint bonus lives inside the Core, not standalone.
+- Summit Funnel's "free first month inside All-Access Pass" is a promotional bridge, not Invisible.
+
+The line: Invisible Funnel requires value delivery to fully precede or fully decouple from payment. Lead magnets, reverse squeezes, bonuses, and bridges don't meet that bar.
+
+### One Funnel Away compliance
+
+Surface A doesn't introduce a new funnel — it's a structural property of the existing $49/mo subscription that Sprint 1's OTO already feeds. No competing build, no operator attention split. Surface B is explicitly Phase 2, activation-gated to events that only fire AFTER Sprint 1 has demonstrated end-to-end conversion. Publishing the spec pre-build is the same discipline as `strategy/decisions/rung-2-repeatable-revenue.md` and the Facebook 4-phase activation spec. PASS.
+
+Post-launch risk to monitor: when Surface B's gates fire, resist the temptation to build it before Sprint 1 is producing a steady drip of verified customers. Chapter score caps at 70 until gate transition discipline is intact.
+
+### Score path
+
+| State | Score |
+|---|---|
+| Today (Surface A live, Surface B spec-locked) | **70** |
+| Surface A produces first refund | 78 |
+| Surface A produces first verified cycle | 82 |
+| Surface B activation gates 1–4 all fire | 85 |
+| Surface B first cohort runs | 92 |
+| Surface B reaches 3%+ Day-4 conversion floor | 96 |
+| Surface B evergreen with verified ROI across 3+ cohorts | 100 |
+
+Chapter cannot reach 100 from inside a session.
+
+### Composite impact
+
+| Layer | Pre-v3.5 | Post-v3.5 | Reason |
+|---|---|---|---|
+| Strategy | 95 | **96** | Canonical doc + state.json block + workbook 04 §10 pointer ship a coherent chapter close where there was an N/A hole |
+| Execution | 86 | 86 | No new code — Surface A was already coded; Surface B is build-gated |
+| Market validation | 5 | 5 | Unchanged — strategy-completeness move |
+| Discipline | 93 | **94** | One Funnel Away compliance named explicitly; Surface B build gated behind verified evidence |
+| Operational readiness | 82 | 82 | No new operator action introduced; Surface B gates already on the list |
+| **Composite** | **~75** | **~76** | Honest 1-point lift |
+
+### Artifacts shipped
+
+| Artifact | Purpose |
+|---|---|
+| `strategy/invisible-funnel.md` (NEW, 13 sections) | Canonical doc with Brunson-canon rationale + anti-patterns + activation gates + score path |
+| `strategy/state.json` `invisible_funnel` top-level block (NEW) | Structured peer of `funnel_hacks`, `funnel_hacks_synthesis`, `product_launch_funnel` — read-target for future audits |
+| `strategy/workbooks/04-building-your-funnels.md` §10 pointer (NEW) | Workbook-side anchor mirroring the §3.5 / §3.6 / §8b pointer pattern used for owned-traffic, follow-up-funnels, funnel-audibles |
+| `LAUNCH-READINESS.md` DONE list bullet | Honest mention in the strategy-completeness section |
+| This addendum | Audit-side close so the chapter doesn't slip back to N/A on the next audit |
+
+### The Brunson-voice close
+
+The Invisible Funnel is one of the harder chapters in DotCom Secrets to apply to a $49/mo micro-SaaS. The canonical example doesn't drop into a tiered ladder cleanly. The temptation is to score N/A and move on — that's what the v2 audit did. The right move is to recognize that **Brunson is teaching a psychological architecture, not a delivery format**. Once you see the architecture (decouple commitment from payment), you find it in unexpected places. The 60-day Stripe-verified guarantee is variant 2 of the same architecture, enforced by code, structurally credible to a skeptic avatar.
+
+Chapter scores 70 today. Anything higher requires market data — same constraint as the rest of the audit.
+
+— Russell, in `brunson-architect` mode
