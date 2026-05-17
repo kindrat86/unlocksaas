@@ -46,6 +46,11 @@ import {
   type FunnelTeardown,
   getTeardownBySlug,
 } from "@/lib/funnel-teardowns";
+import {
+  PRICING_TEARDOWNS,
+  type PricingTeardown,
+  getPricingTeardownBySlug,
+} from "@/lib/pricing-teardowns";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -489,6 +494,40 @@ ${TEARDOWNS.map(
 Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Machine is the tool that does it.
 `;
 
+const PRICING_TEARDOWN_HUB_BODY = `# Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens
+
+> Ten indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. The same four levers the Machine applies when critiquing your own pricing page.
+
+## TL;DR
+
+The Pricing Teardown surface is a pSEO library that decomposes ten well-known indie SaaS pricing pages through the Brunson Stack and Value Ladder lens. Each teardown names the model, the tier ladder, the anchor tier, the upgrade trigger, and what payment mechanics do to commitment. Approximate prices with dated lastVerified; no fabricated copy or invented metrics.
+
+## How to read these teardowns
+
+Every entry follows the same structure:
+- **Pricing structure** — model name, tier ladder with approximate price points, payment frequency, free-or-trial behavior.
+- **Anchor analysis** — which tier is doing the psychological anchoring, and why.
+- **Upgrade trigger** — the specific behavior or scale event that converts a free or lower-tier user to the next rung.
+- **What's working** — five to seven deliberate pricing moves that read as intentional.
+- **What to adapt** — three to five lessons safe to steal regardless of category.
+- **What to avoid** — two to four moves a pre-revenue indie founder should NOT copy.
+- **Brunson lens** — stack, value ladder, decoy-or-anchor, and payment mechanics, in one paragraph each.
+- **FAQs** — four to six queries a pricing-researcher actually types.
+
+Every entry has a \`lastVerified\` ISO date. Pricing pages change; the date is the audit trail.
+
+## Current pricing teardowns
+
+${PRICING_TEARDOWNS.map(
+  (t) =>
+    `### ${t.displayName} (${t.category})\n\n${t.oneLine}\n\nFull teardown: ${BASE_URL}/pricing-teardown/${t.slug}`,
+).join("\n\n")}
+
+## Why this surface exists
+
+The pricing page is where most pre-revenue indie SaaS founders lose buyers without realizing it. The teardowns name what successful indie SaaS do deliberately, so the reader can apply the same levers to their own page. Five of the ten companies (Tally, Lemon Squeezy, Beehiiv, Cal.com, Resend) also have a funnel teardown on ${BASE_URL}/funnel-teardown — both surfaces cross-link for the company-aware reader.
+`;
+
 /**
  * Per-funnel-teardown markdown body. Reads from the TEARDOWNS catalog so
  * the markdown and the HTML page render the same facts from the same
@@ -559,6 +598,87 @@ ${faqs}
 ---
 
 If you want this same Hook-Story-Offer lens applied to *your* product page (not ${t.displayName}'s), the Unlock SaaS Machine does exactly that at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
+`;
+}
+
+/**
+ * Per-pricing-teardown markdown body. Same render contract as
+ * buildTeardownMarkdown — generated from the PricingTeardown entry the HTML
+ * page renders so drift is impossible by construction.
+ */
+function buildPricingTeardownMarkdown(t: PricingTeardown): string {
+  const faqs = t.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+  const tiers = t.pricingStructure.tiers
+    .map(
+      (tier) =>
+        `### ${tier.name} — ${tier.pricePoint}\n\n${tier.includes}\n\n**For:** ${tier.audience}`,
+    )
+    .join("\n\n");
+
+  return `# ${t.displayName} Pricing Teardown
+
+> ${t.oneLine}
+
+## TL;DR
+
+${t.tldr}
+
+## What ${t.displayName} sells
+
+${t.productSnapshot.whatTheySell}
+
+**Who it's for:** ${t.productSnapshot.whoFor}
+
+## Pricing structure (as observed ${t.lastVerified})
+
+**Model:** ${t.pricingStructure.model}
+
+**Payment frequency:** ${t.pricingStructure.paymentFrequency}
+
+**Free or trial behavior:** ${t.pricingStructure.freeTrialBehavior}
+
+### Tiers
+
+${tiers}
+
+## Anchor analysis
+
+**Pattern:** ${t.anchorAnalysis.pattern}
+
+${t.anchorAnalysis.analysis}
+
+## Upgrade trigger
+
+**Pattern:** ${t.upgradeTrigger.pattern}
+
+${t.upgradeTrigger.analysis}
+
+## What's working
+
+${t.whatsWorking.map((x) => `- ${x}`).join("\n")}
+
+## What to adapt to your own indie SaaS
+
+${t.whatToAdapt.map((x) => `- ${x}`).join("\n")}
+
+## What to specifically NOT copy if you're pre-revenue
+
+${t.whatToAvoid.map((x) => `- ${x}`).join("\n")}
+
+## Brunson lens — Stack, Value Ladder, Anchor, Mechanics
+
+- **Stack:** ${t.brunsonLens.stack}
+- **Value Ladder:** ${t.brunsonLens.valueLadder}
+- **Decoy or anchor:** ${t.brunsonLens.decoyOrAnchor}
+- **Payment mechanics:** ${t.brunsonLens.paymentMechanics}
+
+## FAQ
+
+${faqs}
+
+---
+
+If you want this same pricing lens applied to *your* page (not ${t.displayName}'s), the Unlock SaaS Machine does exactly that at ${BASE_URL}/machine-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door — pricing-page dysfunction usually shows up as the Weak Offer label.
 `;
 }
 
@@ -710,6 +830,14 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
       "Twelve indie SaaS funnels analyzed through Hook / Story / Offer. Pattern-level lessons, no invented metrics.",
     body: FUNNEL_TEARDOWN_HUB_BODY,
   },
+  {
+    path: "/pricing-teardown",
+    mdPath: "/pricing-teardown.md",
+    title: "Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens",
+    summary:
+      "Ten indie SaaS pricing pages broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics.",
+    body: PRICING_TEARDOWN_HUB_BODY,
+  },
 ];
 
 const SURFACES_BY_MD_PATH = new Map<string, MarkdownSurface>(
@@ -799,6 +927,29 @@ export function renderTeardownMarkdown(slug: string): string | undefined {
 }
 
 /**
+ * Render a per-pricing-teardown markdown body. Same render contract as
+ * renderTeardownMarkdown; powers /pricing-teardown/<slug>/md.
+ */
+export function renderPricingTeardownMarkdown(
+  slug: string,
+): string | undefined {
+  const t = getPricingTeardownBySlug(slug);
+  if (!t) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/pricing-teardown/${t.slug}`;
+  return [
+    frontMatter({
+      title: `${t.displayName} Pricing Teardown`,
+      summary: t.oneLine,
+      canonical: canonicalUrl,
+      updated: t.lastVerified,
+    }),
+    buildPricingTeardownMarkdown(t).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
  * Build the concatenated /llms-full.txt body. One canonical entity block at
  * the top, then every surface in order, then every alternative comparison.
  *
@@ -873,6 +1024,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const pricingTeardowns = PRICING_TEARDOWNS.map((t) => {
+    const canonical = `${BASE_URL}/pricing-teardown/${t.slug}`;
+    const mirror = `${BASE_URL}/pricing-teardown/${t.slug}/md`;
+    return [
+      `## ${t.displayName} Pricing Teardown`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildPricingTeardownMarkdown(t).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -884,6 +1050,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Funnel Teardowns — Indie SaaS Through the Brunson Lens",
     "",
     teardowns,
+    "",
+    "# Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens",
+    "",
+    pricingTeardowns,
     "",
     citationFooter(BASE_URL),
   ].join("\n");
