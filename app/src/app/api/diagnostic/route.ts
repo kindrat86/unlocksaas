@@ -280,43 +280,63 @@ export async function POST(req: NextRequest) {
 
   // Persist the labeled diagnosis. Service role bypasses RLS; the result
   // page reads back by id (also service role) and renders.
+  //
+  // We insert (not upsert) because the quota gate above intercepts every
+  // repeat email before we get here. PostgREST's `on_conflict` parameter
+  // cannot reference the expression-based unique index on
+  // (lower(email), product_url) — it only accepts plain column identifiers
+  // — so a real upsert would 400. On the rare concurrent-first-submit race
+  // we catch the unique-violation (23505) and read back the winner's row.
+  const row = {
+    email,
+    product_url: productUrl,
+    label: diagnosis.label,
+    headline: diagnosis.headline,
+    explanation: diagnosis.explanation,
+    evidence: diagnosis.evidence,
+    next_step: diagnosis.nextStep,
+    source,
+    identity_variant: identityVariant,
+    subscriber_id: subscriberId,
+    user_agent: userAgent,
+    ip,
+    time_since_launch: survey?.time_since_launch ?? null,
+    recent_revenue: survey?.recent_revenue ?? null,
+    biggest_attempt: survey?.biggest_attempt ?? null,
+    bucket,
+    is_returning: isReturning,
+  };
+
   const { data, error } = await supabase
     .from("diagnostic_leads")
-    .upsert(
-      {
-        email,
-        product_url: productUrl,
-        label: diagnosis.label,
-        headline: diagnosis.headline,
-        explanation: diagnosis.explanation,
-        evidence: diagnosis.evidence,
-        next_step: diagnosis.nextStep,
-        source,
-        identity_variant: identityVariant,
-        subscriber_id: subscriberId,
-        user_agent: userAgent,
-        ip,
-        time_since_launch: survey?.time_since_launch ?? null,
-        recent_revenue: survey?.recent_revenue ?? null,
-        biggest_attempt: survey?.biggest_attempt ?? null,
-        bucket,
-        is_returning: isReturning,
-      },
-      { onConflict: "lower(email),product_url" },
-    )
+    .insert(row)
     .select("id")
     .single();
 
-  if (error || !data) {
-    console.error("[diagnostic] db upsert failed", error);
-    return NextResponse.json(
-      {
-        error:
-          "I read your page but could not save the result. Try again in a minute, or email me at maryan@unlocksaas.com.",
-      },
-      { status: 500 },
-    );
+  if (data?.id) {
+    return NextResponse.json({ id: data.id });
   }
 
-  return NextResponse.json({ id: data.id });
+  if ((error as { code?: string } | null)?.code === "23505") {
+    const { data: existing } = await supabase
+      .from("diagnostic_leads")
+      .select("id")
+      .ilike("email", email)
+      .eq("product_url", productUrl)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (existing?.id) {
+      return NextResponse.json({ id: existing.id });
+    }
+  }
+
+  console.error("[diagnostic] db insert failed", error);
+  return NextResponse.json(
+    {
+      error:
+        "I read your page but could not save the result. Try again in a minute, or email me at maryan@unlocksaas.com.",
+    },
+    { status: 500 },
+  );
 }
