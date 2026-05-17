@@ -1201,6 +1201,516 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     pricingPageUrl: "https://stripe.com/pricing",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "plausible",
+    displayName: "Plausible Analytics",
+    creator: "Uku Taht and Marko Saric",
+    category: "Privacy analytics",
+    oneLine:
+      "Plausible's pricing scales by pageviews. The visible revenue page is itself a pricing argument: customers can see what they're paying into.",
+    tldr:
+      "Plausible prices on pageviews with a sliding scale, plus a self-hosted free option under their license. The public revenue dashboard turns the pricing model into proof — buyers see real customers paying real money before they decide. The lesson for indie founders: when transparency is the brand, the pricing page should let buyers see what they're buying into, not just what they're paying.",
+    productSnapshot: {
+      whatTheySell:
+        "A privacy-focused, cookie-free web analytics SaaS positioned as the ethical alternative to Google Analytics.",
+      whoFor:
+        "Indie founders, small SaaS, and privacy-leaning teams who do not want cookie banners or GDPR overhead.",
+    },
+    pricingStructure: {
+      model: "Volume-tiered subscription scaled by monthly pageviews; self-host free under AGPL",
+      tiers: [
+        {
+          name: "Hosted (volume-tiered)",
+          pricePoint:
+            "starts at ~$9/mo for 10K pageviews/mo; scales linearly to enterprise volumes (verified 2026-05-17)",
+          includes:
+            "Cookieless analytics, custom events, multi-site, team features at higher volumes, all dashboards, public-share links.",
+          audience: "Indie SaaS, small teams, privacy-leaning operators.",
+        },
+        {
+          name: "Self-host",
+          pricePoint: "$0 (AGPL license)",
+          includes:
+            "Full open-source code, run your own infrastructure, no Plausible fee. Maintenance is on you.",
+          audience: "Developers and principled buyers who refuse hosted SaaS.",
+        },
+        {
+          name: "Custom (enterprise volume)",
+          pricePoint: "Custom contact for very high volumes",
+          includes:
+            "Negotiated rate, dedicated infrastructure, SLA conversations.",
+          audience: "Larger operators above the published volume tiers.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount; tier re-evaluated by actual monthly pageviews",
+      freeTrialBehavior:
+        "30-day free trial on hosted; self-host is free in perpetuity (no trial needed).",
+    },
+    anchorAnalysis: {
+      pattern: "Transparency-as-anchor",
+      analysis:
+        "Plausible's anchor mechanic is unusual: the published revenue dashboard at plausible.io/revenue functions as a social-proof anchor. A buyer comparing privacy analytics tools sees Plausible's actual MRR and customer count, which converts the abstract question 'is this credible' into the concrete fact 'these many other people are paying this much'. The pricing page itself is straightforward volume-tiered; the anchor work happens on the revenue page.",
+    },
+    upgradeTrigger: {
+      pattern: "Pageview-cap volume threshold",
+      analysis:
+        "The structural trigger is volume — buyers move up the tier ladder as their pageviews grow. There is no feature-gate trigger because all tiers include the full feature set. This aligns the bill with customer success (more pageviews = more value) and removes feature-comparison friction.",
+    },
+    whatsWorking: [
+      "Public revenue dashboard turns pricing into proof — buyers can verify the model works at scale before committing.",
+      "Volume tiering aligns the bill with customer success and platform cost simultaneously.",
+      "Same feature set across all tiers removes feature-comparison friction.",
+      "Self-host at $0 captures the principled buyer who would reject hosted SaaS.",
+      "Open-source code makes the platform's privacy claims verifiable, not just stated.",
+      "Annual discount is sized to materially shift commitment without forcing the choice on monthly buyers.",
+    ],
+    whatToAdapt: [
+      "If transparency is your brand, make at least one operational fact public (revenue, MRR, signup count). Visible proof beats marketing copy.",
+      "Volume-tiered pricing with the same feature set across tiers removes evaluation friction when the platform cost scales with usage.",
+      "A self-host or escape-hatch option captures principled buyers without giving up hosted revenue.",
+    ],
+    whatToAvoid: [
+      "Do not publish revenue if it is flat or declining; transparency works against you in that case.",
+      "Do not tier on pageviews if your unit economics do not actually scale with pageviews.",
+      "Do not offer self-host if you cannot sustain the open-source project long-term; stale repos hurt trust more than no repo.",
+    ],
+    brunsonLens: {
+      stack: "Single-feature-set stack — every tier includes the same capabilities; the tier difference is volume.",
+      valueLadder: "Two-rung Value Ladder (hosted plus self-host) with an off-ladder enterprise option for very large volumes.",
+      decoyOrAnchor: "Transparency-as-anchor: the public revenue page does the social-proof work pricing-tier anchors usually do.",
+      paymentMechanics: "Monthly or annual subscription scaled by pageview tier; perpetual free for self-host.",
+    },
+    faqs: [
+      {
+        q: "Why does Plausible publish their revenue?",
+        a: "Because the revenue page IS the pricing argument. Buyers comparing privacy analytics platforms can verify that Plausible is a real, growing business with real paying customers — which converts the abstract 'is this credible' question into a concrete fact. Public revenue is unusual pricing-page strategy but works precisely because most competitors do not do it.",
+      },
+      {
+        q: "Should every SaaS publish revenue?",
+        a: "Only if revenue is growing AND if transparency aligns with your brand. Public revenue from a flat or declining business converts against you. Plausible's revenue page works because the trajectory matches the privacy-conscious indie-friendly brand the rest of the marketing makes.",
+      },
+      {
+        q: "Why is the feature set the same across paid tiers?",
+        a: "Because the platform cost scales with pageviews, not with features. Tiering on volume rather than features means buyers do not feel punished for needing scale, and the platform captures more revenue from the customers using more of the infrastructure.",
+      },
+      {
+        q: "What is the Brunson lens on Plausible's pricing?",
+        a: "Two-rung Value Ladder with transparency-as-anchor instead of psychological tier anchoring. The Brunson 'borrowed authority' move is executed through visible operational facts (revenue) rather than through customer logos. Unusual but effective when the brand earns the right to use it.",
+      },
+    ],
+    tags: ["volume-tiered", "transparency", "open-source", "self-host"],
+    homepageUrl: "https://plausible.io/",
+    pricingPageUrl: "https://plausible.io/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "mintlify",
+    displayName: "Mintlify",
+    creator: "Han Wang and Hahnbee Lee",
+    category: "Developer documentation",
+    oneLine:
+      "Mintlify prices on editor seats and reserves the most valuable feature (AI search) for higher tiers. The free-OSS tier feeds the customer-roster flywheel.",
+    tldr:
+      "Mintlify's pricing is per-editor with a free tier for open-source projects and graduated paid tiers for teams. The most valuable forward-looking feature (AI-powered search and Q&A) is reserved for higher tiers, creating an upgrade trigger as customer expectations evolve. The lesson for indie founders: gate the future-state feature, not the table-stakes one — buyers upgrade for capability they do not yet have, not for what they take for granted.",
+    productSnapshot: {
+      whatTheySell:
+        "A documentation-as-code platform that turns Markdown plus components into a polished docs site with search, analytics, and AI-assisted answers.",
+      whoFor:
+        "Developer-tool SaaS, API companies, and platforms that want documentation that looks intentional rather than templated.",
+    },
+    pricingStructure: {
+      model: "Per-editor seat tiered subscription with free OSS tier",
+      tiers: [
+        {
+          name: "Free (OSS)",
+          pricePoint: "$0 for open-source projects",
+          includes:
+            "Hosting, custom domain, OpenAPI imports, basic analytics, Mintlify branding.",
+          audience: "Open-source projects building public docs.",
+        },
+        {
+          name: "Pro",
+          pricePoint: "approximately $150/mo (verified 2026-05-17)",
+          includes:
+            "Unlimited editor seats up to plan limit, AI chat, analytics, custom domain, no Mintlify branding.",
+          audience: "Small dev-tool companies and SaaS docs teams.",
+        },
+        {
+          name: "Growth",
+          pricePoint: "approximately $550/mo (verified 2026-05-17)",
+          includes:
+            "Higher seat limits, advanced AI features, SSO, advanced analytics, priority support.",
+          audience: "Growing dev-tool companies with multiple editors.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Custom seat counts, SAML, audit logs, dedicated success manager, custom contracts.",
+          audience: "Larger organizations with procurement requirements.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount",
+      freeTrialBehavior:
+        "Free OSS tier IS the trial for open-source projects. Paid tiers can be trialed via direct conversation; standard self-serve evaluation is mostly via the OSS tier or a sandbox.",
+    },
+    anchorAnalysis: {
+      pattern: "Growth tier as anchor",
+      analysis:
+        "The Growth tier at approximately $550/mo anchors the page for serious dev-tool companies, making Pro at approximately $150/mo read as the reasonable starting tier. The free OSS tier is the entry; Enterprise sits ready for procurement. Anchoring is conventional; the unusual move is the AI-feature gating that makes upgrading a forward-looking decision rather than a feature-gap fix.",
+    },
+    upgradeTrigger: {
+      pattern: "AI feature gating and brand removal",
+      analysis:
+        "Two upgrade triggers work together: brand removal (the OSS free tier carries Mintlify branding; Pro removes it) for buyers ready to publish to a marketing-grade audience, and AI feature gating (search, chat, advanced AI) for buyers whose users expect LLM-powered docs. The AI trigger is forward-looking — buyers upgrade for capability that becomes table-stakes over the next year, not for a feature they already need.",
+    },
+    whatsWorking: [
+      "Free OSS tier seeds visible-customer presence across the dev-tool category — every Mintlify-built docs site advertises the platform.",
+      "Brand removal as Pro trigger aligns with the moment a buyer is ready to publish without third-party branding.",
+      "AI feature gating creates a forward-looking upgrade trigger — buyers upgrade for capability that becomes expected, not for missing basics.",
+      "Per-editor pricing on Pro and Growth captures revenue from teams as they scale.",
+      "Visible customer roster on the marketing surface (Anthropic, Cursor, Resend) borrows authority from category-recognizable companies.",
+    ],
+    whatToAdapt: [
+      "Gate the forward-looking feature, not the table-stakes one. Buyers upgrade for what they do not yet have but will soon need.",
+      "Use a free tier with branding to seed visible-customer presence; remove branding at the trigger where the buyer's willingness to pay structurally spikes.",
+      "Per-editor pricing works when each editor produces value the team consumes; combine with visible customer roster for compounding authority.",
+    ],
+    whatToAvoid: [
+      "Do not gate features your buyer already considers table-stakes; the gating reads as nickel-and-diming and lowers trust.",
+      "Do not free OSS without the bandwidth to support OSS users; bad OSS support poisons the customer-roster flywheel.",
+      "Do not adopt per-editor pricing if seats do not get clear individual value.",
+    ],
+    brunsonLens: {
+      stack: "Tiered stack with progressive AI features per rung; Growth tier is the visual anchor.",
+      valueLadder: "Four-rung ladder (Free OSS → Pro → Growth → Enterprise) with AI as forward-state continuity feature.",
+      decoyOrAnchor: "Growth as anchor; Pro as the visible starting tier; Free OSS as visible-customer flywheel seed.",
+      paymentMechanics: "Per-editor monthly or annual with annual discount; no usage metering on docs traffic.",
+    },
+    faqs: [
+      {
+        q: "Why does Mintlify gate AI features behind paid tiers?",
+        a: "Because AI-powered docs is the future-state expectation that buyers are upgrading toward, not the past-state baseline. Gating the forward-looking feature creates an upgrade trigger that fires as customer expectations evolve, which is more durable than gating an existing feature that buyers already expect.",
+      },
+      {
+        q: "Is the OSS free tier really free forever?",
+        a: "Yes for genuinely open-source projects. The OSS tier is calibrated as both a community-building investment and a visible-customer acquisition channel. The economics work because every OSS Mintlify docs site is a free advertisement for the paid Pro tier.",
+      },
+      {
+        q: "Should an indie SaaS gate AI features the same way?",
+        a: "Only if AI is genuinely forward-looking for your audience. For some audiences AI is already baseline; for others it is still novel. Gate features your buyer is moving TOWARD, not features they already expect.",
+      },
+      {
+        q: "What is the Brunson lens on Mintlify's pricing?",
+        a: "Four-rung Value Ladder with two simultaneous upgrade triggers (brand removal and AI features) and a free OSS rung that seeds visible-customer presence. The forward-looking-feature gating is the unusual move — it converts the pricing page from a fix-what-is-missing decision to a buy-what-you-want-to-become decision.",
+      },
+    ],
+    tags: ["per-editor", "forward-feature-gating", "free-oss", "borrowed-authority"],
+    homepageUrl: "https://mintlify.com/",
+    pricingPageUrl: "https://mintlify.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "senja",
+    displayName: "Senja",
+    creator: "Senja team",
+    category: "Testimonial collection",
+    oneLine:
+      "Senja prices the structural moment willingness-to-pay spikes: when the founder is ready to put testimonials on the public marketing site without the third-party brand.",
+    tldr:
+      "Senja's pricing is structured around brand removal as the upgrade trigger. The free tier collects and displays testimonials with a Senja attribution; paid tiers remove the attribution and add video, customization, and team features. The lesson for indie founders: when the buyer's willingness to pay spikes at a specific behavioral moment (here: publishing to their own marketing surface), price the trigger.",
+    productSnapshot: {
+      whatTheySell:
+        "A testimonial collection, video review, and social-proof display platform for SaaS, agencies, and creators.",
+      whoFor:
+        "Indie SaaS, agencies, and creators who need video and text testimonials displayed cleanly on their marketing site.",
+    },
+    pricingStructure: {
+      model: "Freemium with brand-removal upgrade trigger",
+      tiers: [
+        {
+          name: "Free (Starter)",
+          pricePoint: "$0",
+          includes:
+            "Text and video testimonial collection, basic Wall of Love widget, Senja branding visible, limited integrations.",
+          audience: "Indie founders collecting first testimonials before publishing.",
+        },
+        {
+          name: "Starter (paid)",
+          pricePoint: "approximately $19/mo (verified 2026-05-17)",
+          includes:
+            "Brand removal, custom forms, custom Wall of Love, video uploads, more integrations.",
+          audience: "Indie SaaS ready to publish testimonials on the marketing site.",
+        },
+        {
+          name: "Premium",
+          pricePoint: "approximately $59/mo (verified 2026-05-17)",
+          includes:
+            "Team workspace, advanced customization, video editing, embed analytics, API access.",
+          audience: "Agencies and SaaS with multiple team members managing testimonials.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Custom contracts, SSO, dedicated support, larger limits.",
+          audience: "Larger organizations or agencies serving many clients.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount",
+      freeTrialBehavior:
+        "Free tier IS the trial; paid features can be sampled via a brief trial on signup.",
+    },
+    anchorAnalysis: {
+      pattern: "Brand-removal-trigger anchor",
+      analysis:
+        "Senja's pricing-page center of gravity is the brand-removal trigger between Free and Starter. The Premium tier at approximately $59/mo anchors above, making Starter at approximately $19/mo read as the natural choice for the indie buyer. The structural upgrade trigger (publishing to marketing site without Senja branding) does most of the work; the anchor mechanics support it but are not the primary driver.",
+    },
+    upgradeTrigger: {
+      pattern: "Brand removal at marketing-surface publication",
+      analysis:
+        "The trigger fires when the founder decides to put testimonials on a public marketing surface (landing page, product page, sales page). At that moment, the Senja attribution becomes a visible cost (it appears on the founder's marketing site) and willingness to pay structurally spikes. The trigger is precisely calibrated to the behavioral moment of maximum buyer surplus.",
+    },
+    whatsWorking: [
+      "Brand-removal trigger aligns the upgrade moment with structural willingness-to-pay spike.",
+      "Free tier with branding feeds the visible-customer flywheel — every Senja widget on someone else's marketing site is an ad.",
+      "Premium tier anchors the price ladder while Starter captures the indie-founder mainstream.",
+      "Universal-pain category (testimonials) removes the awareness-stage funnel work; buyers arrive already qualified.",
+      "Video-first positioning lands the high-conversion testimonial format as a differentiator on Starter and above.",
+    ],
+    whatToAdapt: [
+      "Identify the specific behavioral moment where buyer willingness-to-pay spikes, and price the trigger.",
+      "Free-with-branding works when the branding is on the customer's public marketing surface (not on internal-only screens) — the attribution becomes a visible cost the buyer eventually wants to remove.",
+      "If you serve a universal-pain category, skip the awareness-stage marketing and lead with the offer.",
+    ],
+    whatToAvoid: [
+      "Do not free-with-branding if your output is not public; if buyers do not see the attribution on their own marketing surface, the upgrade trigger never fires.",
+      "Do not free-tier features your paid tier depends on. The paid trigger must be a real value gap, not an annoyance.",
+      "Do not adopt universal-pain positioning if your buyer does not yet recognize the pain; you need story-led marketing to teach the pain first.",
+    ],
+    brunsonLens: {
+      stack: "Modest stack — free tier is functional, paid tiers extend without dramatically restructuring value.",
+      valueLadder: "Four-rung ladder (Free → Starter → Premium → Enterprise) with brand removal as the structural front-end trigger.",
+      decoyOrAnchor: "Premium tier as anchor; Starter as the indie-friendly mainstream; Free as flywheel seed.",
+      paymentMechanics: "Monthly or annual subscription; no usage metering or per-seat scaling below Premium tier.",
+    },
+    faqs: [
+      {
+        q: "Why does Senja's free tier require keeping the Senja brand?",
+        a: "Because the visible attribution IS the marketing channel that funds the free tier. Every Senja widget on a customer's marketing site exposes the platform to that customer's audience. The trade-off is explicit: free becomes possible because branding compounds; remove branding becomes the upgrade trigger.",
+      },
+      {
+        q: "Should an indie SaaS adopt brand-removal pricing?",
+        a: "Only when your output is published on a customer's public marketing surface. Form tools, testimonial tools, video tools, link-in-bio tools all work. Internal SaaS, dashboards, admin tools do not — the attribution is invisible to anyone but the buyer.",
+      },
+      {
+        q: "Why is the Premium tier so much more expensive than Starter?",
+        a: "Premium serves a different buyer (agency or team) with team-collaboration features. Pricing it well above Starter is intentional anchoring — it makes Starter read as the indie choice and Premium as the professional choice. The price gap reinforces the segment difference.",
+      },
+      {
+        q: "What is the Brunson lens on Senja's pricing?",
+        a: "Brand-removal-trigger Value Ladder with visible-customer-flywheel free tier. The structural trigger does most of the conversion work, with conventional tier anchoring supporting. The Brunson 'price the willingness-to-pay spike, not the feature gap' move is executed cleanly here.",
+      },
+    ],
+    tags: ["brand-removal-trigger", "visible-customer", "freemium", "social-proof"],
+    homepageUrl: "https://senja.io/",
+    pricingPageUrl: "https://senja.io/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "polar",
+    displayName: "Polar",
+    creator: "Birk Jernström and team",
+    category: "Creator monetization and payments",
+    oneLine:
+      "Polar prices as percentage-of-revenue with no monthly base. The model aligns the platform's incentives with the creator's success.",
+    tldr:
+      "Polar prices as a single percentage of revenue with Merchant of Record included. There is no monthly subscription fee — Polar makes money when the creator makes money. The lesson for indie founders: when your customer's revenue is the primary value driver AND the platform cost scales with their success, revenue-share pricing removes commitment friction and aligns incentives.",
+    productSnapshot: {
+      whatTheySell:
+        "A Merchant of Record platform with subscription, sponsorship, and licensing features designed for open-source maintainers and creators.",
+      whoFor:
+        "Open-source maintainers, creators, and indie developers who want monetization plus compliance without separately wiring Stripe and a tax platform.",
+    },
+    pricingStructure: {
+      model: "Pure percentage-of-revenue with no monthly base; MoR bundled",
+      tiers: [
+        {
+          name: "Standard",
+          pricePoint:
+            "approximately 4% + Stripe fees per transaction with MoR included (verified 2026-05-17)",
+          includes:
+            "Hosted checkout, subscriptions, sponsorships, licensing, customer portal, global tax compliance, GitHub integration.",
+          audience: "Open-source maintainers, indie creators, solo developers monetizing globally.",
+        },
+        {
+          name: "Custom (high volume)",
+          pricePoint: "Negotiated rate at higher volumes",
+          includes:
+            "Same feature set with volume-discounted percentage; sales conversation.",
+          audience: "Higher-volume creators or platforms.",
+        },
+      ],
+      paymentFrequency: "Per-transaction; no monthly base fee",
+      freeTrialBehavior:
+        "No subscription to trial — pricing is purely transactional. Account is free to create; you pay only when you collect.",
+    },
+    anchorAnalysis: {
+      pattern: "No-anchor minimalism",
+      analysis:
+        "Polar's pricing has no tier-anchor mechanics because there are no tiers in the traditional sense. The published rate is one line: approximately 4% + Stripe fees. The simplicity is the anchor — buyers comparing Polar to Stripe-plus-Paddle-Tax-plus-Lemon-Squeezy see one number and convert without further analysis. The absence of complexity IS the conversion driver.",
+    },
+    upgradeTrigger: {
+      pattern: "No upgrade trigger by design",
+      analysis:
+        "Polar has no internal upgrade ladder. The structural trigger that drives buyers TO Polar is the first international sale that exposes them to VAT or sales-tax registration overhead. Polar's pricing is calibrated to be cheaper than the time-cost of handling compliance themselves. Once a creator is on Polar, there is no upgrade pressure — only volume-discount conversations at scale.",
+    },
+    whatsWorking: [
+      "Pure percentage-of-revenue removes monthly commitment friction for early-stage creators.",
+      "No-tier pricing makes the decision binary: use Polar or do not. No internal evaluation required.",
+      "Revenue-share alignment makes Polar's incentives match the creator's: the platform only wins when the creator wins.",
+      "MoR bundle hides the per-feature comparison against Stripe; buyers evaluate on outcome (compliance handled).",
+      "GitHub-native integration removes setup friction every maintainer expects to deal with.",
+      "Round-ish percentage (4%) is memorable and signals confidence.",
+    ],
+    whatToAdapt: [
+      "If your customer's revenue is the primary value driver, revenue-share pricing aligns incentives and removes commitment friction.",
+      "Single-line published pricing removes evaluation friction when your buyer is comparing complex tiered alternatives.",
+      "Bundle compatible services at one rate to escape per-feature comparison shootouts.",
+    ],
+    whatToAvoid: [
+      "Do not adopt revenue-share if your unit economics do not actually scale with customer revenue.",
+      "Do not adopt MoR positioning without the legal and operational capacity. MoR is a regulatory commitment, not a marketing one.",
+      "Do not skip a custom tier when you have enterprise customers; published pricing must end where negotiation begins.",
+    ],
+    brunsonLens: {
+      stack: "No stack — single-line rate is the entire offer. Add-on features (sponsorships, licensing) are included at the same rate.",
+      valueLadder: "Single transactional rung with custom enterprise option; no front-end free, no high-ticket back-end.",
+      decoyOrAnchor: "No anchor — simplicity IS the anchor. The page deliberately avoids inviting comparison shopping.",
+      paymentMechanics: "Pure percentage-of-revenue; no monthly base, no per-seat, perfectly aligned with customer success.",
+    },
+    faqs: [
+      {
+        q: "Why does Polar have no monthly fee?",
+        a: "Because monthly fees create commitment friction for creators who do not yet know how much they will sell. Pure percentage-of-revenue means a creator can list a product, sell zero, and pay zero — which lowers the barrier to trying Polar. The platform monetizes when the creator monetizes.",
+      },
+      {
+        q: "Should every payments SaaS use revenue-share pricing?",
+        a: "Only if your platform cost scales with customer revenue (per-transaction infrastructure, tax compliance, customer service load). Pure infrastructure platforms (raw Stripe) work fine on flat percentages; bundled service platforms (MoR, full-stack creator monetization) work better on revenue share because the service load scales.",
+      },
+      {
+        q: "Is Polar's rate higher than Stripe's?",
+        a: "Marginally, in exchange for MoR service (tax compliance, legal seller of record). For creators selling internationally and dealing with VAT, the rate gap is usually cheaper than the time-cost of compliance. For domestic-only creators with simple tax situations, raw Stripe is cheaper.",
+      },
+      {
+        q: "What is the Brunson lens on Polar's pricing?",
+        a: "Single-rung transactional Value Ladder with revenue-share mechanics and no anchor work. The minimal-anchor approach is intentional — Polar's positioning is 'we make money when you make money,' which only works if the pricing itself feels frictionless. Adding tiers would contradict the positioning.",
+      },
+    ],
+    tags: ["revenue-share", "transactional", "single-line", "mor", "creator-tools"],
+    homepageUrl: "https://polar.sh/",
+    pricingPageUrl: "https://polar.sh/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "screen-studio",
+    displayName: "Screen Studio",
+    creator: "Adam Pietrasiak",
+    category: "Screen recording for marketing video",
+    oneLine:
+      "Screen Studio prices one-time at a premium. No subscription, no tiers, no upsells — the simplest possible offer.",
+    tldr:
+      "Screen Studio is sold as a one-time license at approximately $229 with optional yearly updates. There is no subscription, no tier ladder, no usage limit. The lesson for indie founders: when your product produces a discrete output and has no ongoing infrastructure cost, one-time pricing escapes subscription fatigue and converts buyers who would reject monthly recurring on principle.",
+    productSnapshot: {
+      whatTheySell:
+        "A macOS screen recording app that auto-zooms, smooths cursor motion, and produces high-quality marketing videos from raw screen captures.",
+      whoFor:
+        "Indie SaaS founders, designers, and creators producing product demos and tutorial videos who do not want to learn video editing software.",
+    },
+    pricingStructure: {
+      model: "Single one-time license with optional yearly update subscription",
+      tiers: [
+        {
+          name: "License",
+          pricePoint: "approximately $229 one-time (verified 2026-05-17)",
+          includes:
+            "Full Screen Studio app, one year of free updates, perpetual use of the version at purchase.",
+          audience: "Indie operators, designers, marketers producing marketing video.",
+        },
+        {
+          name: "Yearly updates renewal",
+          pricePoint: "Optional, approximately $79/year for continued updates after the first year",
+          includes:
+            "Continued access to new features and major releases beyond the initial year.",
+          audience: "Customers who want to keep current with new features after the first year.",
+        },
+      ],
+      paymentFrequency: "One-time payment for license; optional yearly renewal for continued updates",
+      freeTrialBehavior:
+        "Free trial available before purchase; the output sample on the homepage IS the demo for most buyers.",
+    },
+    anchorAnalysis: {
+      pattern: "Single-line premium anchor",
+      analysis:
+        "Screen Studio's pricing has no internal anchor mechanics — there are no tiers to anchor between. The premium one-time price (approximately $229) anchors against subscription competitors: a buyer comparing Screen Studio at $229 one-time against Loom or Tella at $10-20/month sees a 12-24 month payback. For professionals whose video output reflects on their brand, that math works. The single price line IS the entire pricing argument.",
+    },
+    upgradeTrigger: {
+      pattern: "No upgrade trigger by design",
+      analysis:
+        "There is no internal upgrade ladder. The optional yearly update renewal is the only secondary purchase decision, and it fires after the first year as a continuity option for buyers who want new features. Most customers continue using the version they purchased without renewing. The absence of upgrade pressure is intentional — Screen Studio sells the artifact, not the relationship.",
+    },
+    whatsWorking: [
+      "One-time pricing escapes subscription fatigue and converts buyers who reject monthly recurring on principle.",
+      "Premium price screens out casual buyers but is trivial for any working professional.",
+      "Single-line pricing removes evaluation friction entirely.",
+      "Solo-founder identity (Adam Pietrasiak) signals 'buy from a person you can find,' which the indie buyer audience trusts.",
+      "Output sample on the homepage IS the trial — autoplaying demo converts visitors who can see the output is what they need.",
+      "Optional renewal model captures continuing revenue without forcing it.",
+    ],
+    whatToAdapt: [
+      "Consider one-time pricing for tools that produce discrete outputs rather than ongoing utility. Subscription is not the only valid model.",
+      "Premium one-time pricing converts the working-professional buyer who would resist subscription but accepts a clear capital expense.",
+      "If you are a solo founder, lead with your face, name, and output. Indie buyers trust a person more than a faceless brand.",
+    ],
+    whatToAvoid: [
+      "Do not use one-time pricing for tools that require ongoing infrastructure costs (servers, send volume, API calls). The economics fail.",
+      "Do not adopt premium pricing if your buyer is a casual user. The screening effect works against you.",
+      "Do not adopt solo-founder positioning if you are not solo; the trust signal is fake and customers eventually find out.",
+    ],
+    brunsonLens: {
+      stack: "No stack — single price line, no upsells, no add-ons. The simplest possible Value Ladder.",
+      valueLadder: "Single transactional rung with optional continuity (yearly updates).",
+      decoyOrAnchor: "External anchor against subscription competitors; no internal anchor mechanics.",
+      paymentMechanics: "One-time payment with optional yearly continuity; no recurring revenue model by default.",
+    },
+    faqs: [
+      {
+        q: "Why does Screen Studio not have a subscription?",
+        a: "Because the product is a discrete output tool with no ongoing infrastructure cost. A subscription would feel extractive for a tool the customer uses occasionally to produce specific videos. One-time pricing matches the value shape: customer pays once for the artifact-producing capability they keep forever.",
+      },
+      {
+        q: "Should every creator tool be priced one-time?",
+        a: "Only when the tool has no ongoing infrastructure cost AND when the buyer uses it sporadically rather than continuously. Subscription is the right model for tools that run continuously on the buyer's behalf (analytics, monitoring, email sending). Match the pricing model to the value shape.",
+      },
+      {
+        q: "Why is Screen Studio priced so high relative to subscription competitors?",
+        a: "Because one-time premium pricing screens for the professional buyer whose output reflects on their brand. Casual buyers reject the price; professionals see a 12-24 month payback against subscription competitors and the premium signals quality. The price IS the qualification mechanism.",
+      },
+      {
+        q: "What is the Brunson lens on Screen Studio's pricing?",
+        a: "Single-rung transactional Value Ladder with external-anchor mechanics against subscription competitors. The unusual move is the deliberate absence of upsells — Screen Studio sells the artifact-producing capability and trusts the customer to come back for the next version when ready. Minimal Brunson stack; maximum trust.",
+      },
+    ],
+    tags: ["one-time", "solo-founder", "premium", "no-subscription", "marketing-tools"],
+    homepageUrl: "https://www.screen.studio/",
+    pricingPageUrl: "https://www.screen.studio/pricing",
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access.
