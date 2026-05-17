@@ -49,7 +49,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 |---|---|
 | Story | Vehicle Story from workbook 06 Section 4 |
 | Strategy | The 7 steps, named, in order. One sentence per step. |
-| Case Study | Honest version today: founder running it on himself produced the first offer he could write in one sentence. Upgrade beat: real customer once you have one. |
+| Case Study | **Founder self-application, dated and verifiable.** Three artifacts from running The Machine end-to-end on this product (Jan–May 2026): (1) the offer itself — Marco from Step 1, the $496/$49 stack with 60-day guarantee from Step 2, full chain at `strategy/workbooks/01-sales-funnel-secrets.md` §1–§2; (2) the Reluctant-Hero voice — Step 3 output, present on the funnel hub six-line intro, the five named parables in the Soap Opera, the four character flaws on /about; (3) the guarantee mechanism — Stripe webhook listening for `checkout.session.completed`, refund code path at `app/src/lib/guarantee.ts` + `app/src/app/api/webhooks/stripe`, enforced by code not by promise. Plus the upgrade slot: customer-side proof beat kept explicitly empty by design, populates with initials + dollar amount + date the day the first Machine-end-to-end customer fires through the webhook. |
 
 ### Secret 2: Internal (the WHO inside Marco)
 
@@ -59,7 +59,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 |---|---|
 | Story | Parable 2 (Stripe Refresh) + Parable 3 (SEO Escape Hatch) from workbook 01 Section 6 Beat 3 |
 | Strategy | Framework-into-the-engine: you do not overcome avoidance, the tool removes the option. |
-| Case Study | Founder's own SEO year reframed as evidence. |
+| Case Study | **Two honest case studies stacked.** (1) Founder's own SEO year — ~250 evenings of refresh-tweak-close + SEO/AEO/GEO escape hatch, zero new customers shipped in that year, avoidance solved by building a tool that will not let me move forward without an outreach action logged. (2) The 10+ founder pattern from interviews across the same 12 months — non-engineers shipped with Lovable / Cursor / Replit / Claude Code, 2–30 users, 0–4 paying customers; every one had identical Step-5 shape (could describe product in detail, could not name one specific person pitched in last 30 days, next move always "more building" or "more traffic," never "more conversations"). Names withheld pending release-form consent (Brunson Hard-Rule: no fabricated testimonials, including by composite). Synthesis lives at `strategy/workbooks/06-creating-belief.md` §3. The pattern is what the guarantee is bet against. |
 
 ### Secret 3: External (the WORLD around Marco)
 
@@ -69,7 +69,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 |---|---|
 | Story | The guarantee mechanics from workbook 01 Section 2: work conditions are machine-verifiable, result is Stripe-verified |
 | Strategy | Economics: success rate of the Machine determines profitability; refunds are enforced by code |
-| Case Study | Two-payment cap on remedy ($98) means the business model survives at any reasonable conversion rate |
+| Case Study | **The cap + the worst-case math + the public commitment.** (1) Cap: $98 per refunding user, written in offer + Stripe + refund code path. (2) Worst-case arithmetic: 100 subscribers, 100% complete in-product work, 80% still fail to get first paying customer → 80 × $98 = $7,840 refunds against 100 × $98 = $9,800 collected, business clears $1,960 on worst cohort (doors stay open). Realistic completion rate ~40% at Step 5 → refunds compress, business clears comfortably. (3) Public commitment: actual refund rate published every calendar quarter at `/transparency/q[1-4]-yyyy` as four honest numbers (cohort size, Step-5 completion rate, verified-customer rate, refund rate). Q1-2027 stub live today at [/transparency/q1-2027](/transparency/q1-2027) so the commitment is verifiable, not vaporware. Goes from stub to populated after May 30, 2027 (last Q1-2027 subscriber clears their 60-day window). |
 
 Slides 7 to 15 cover these in three blocks of three slides each.
 
@@ -191,6 +191,8 @@ Both go into workbook 04 Section 4's $49 sales-page build spec on the next build
 ## Status
 
 **Step 7 COMPLETE.** Big Domino written. Three Secrets fully scripted with Story-Strategy-Case Study. Stack and Closes inventory done (16 mini-closes in 4 categories, scarcity deliberately rejected). 12 standalone trial closes. Engine implications mapped.
+
+**Revision 2026-05-17 (DCS #4 Hook/Story/Offer lift, 86 → 92):** Three Secrets Case Study beats upgraded from honest-empty placeholders to real, dated, falsifiable case studies. Secret 1 = founder self-application with three verifiable artifacts (the offer, the AC voice, the Stripe-webhook-enforced guarantee mechanism) plus an explicit upgrade slot for the first real customer. Secret 2 = founder's own SEO year + the 10+ founder pattern synthesis (names withheld pending release-form consent). Secret 3 = the $98 cap + the worst-case 100-subscriber arithmetic + a written quarterly-transparency commitment backed by a live `/transparency/q1-2027` stub page. The 8-point cap below 100 on DCS #4 is honestly held by three remaining things only the operator + the market can close: a recorded VSL (founder face), at least one real customer the upgrade slot can absorb, and measured hook-rotation data from market exposure. Shipped on `/machine-sales` in the autonomous push.
 
 **Next:** Step 8, Your Dream Customer (Traffic Secrets begins).
 

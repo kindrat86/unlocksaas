@@ -11,6 +11,11 @@ import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { VslBlock } from "@/components/blocks/vsl-block";
 import { MediaBar } from "@/components/blocks/media-bar";
 import { AvatarWall } from "@/components/blocks/avatar-wall";
+import { ValueLadderDiagram } from "@/components/blocks/value-ladder-diagram";
+import { GuaranteeCallout } from "@/components/blocks/guarantee-callout";
+import { PricingBreakdown } from "@/components/blocks/pricing-breakdown";
+import { DisqualifyingCopy } from "@/components/blocks/disqualifying-copy";
+import { FounderPs } from "@/components/blocks/founder-ps";
 import { shouldRenderMediaBar } from "@/lib/media-mentions";
 import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
@@ -192,6 +197,15 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
+      {/* ---------------- GUARANTEE CALLOUT (Block #9 — Risk Reversal) ----------------
+          Brunson rule: anchor the risk reversal above the demand surfaces
+          (value ladder + pricing breakdown). The buyer should read the
+          guarantee BEFORE the price. Sourced from workbook 01 §2 + workbook
+          07 §3 Closes Category 1. Closes Building Block #9. */}
+      <GuaranteeCallout />
+
+      <Separator className="max-w-4xl mx-auto" />
+
       {/* ---------------- BEFORE / AFTER (Block #22) ---------------- */}
       <BeforeAfter />
 
@@ -307,6 +321,36 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
+      {/* ---------------- VALUE LADDER DIAGRAM ----------------
+          DCS Secret #2 — once a buyer says yes, there must always be a next
+          yes. The full ladder is rendered honestly: live rungs link to the
+          live pages; gated rungs (Rung 3 Repeatable Revenue Layer) link to
+          the public spec at /repeatable; deferred rungs (Rung 4 Agency) show
+          the deferral reason in plain English. No fake "coming soon"
+          countdowns. */}
+      <ValueLadderDiagram
+        heading="The full ladder"
+        intro={
+          <>
+            Brunson rule: once a buyer says yes, there must always be a next
+            yes. Below is every rung — live, gated, or deferred. The price
+            climbs because the result climbs.
+          </>
+        }
+        highlight={2}
+      />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- PRICING BREAKDOWN (Block #10 — The Stack) ----------------
+          The ladder above shows progression across rungs; the breakdown here
+          shows the stack at the $49 Rung 2 specifically — itemized, summed,
+          10.1x ratio visible. Sources: workbook 01 §2 offer_stack + workbook
+          07 §3 Slides 16-30. Already-shipped component; this is the mount. */}
+      <PricingBreakdown />
+
+      <Separator className="max-w-4xl mx-auto" />
+
       {/* ---------------- HONEST TESTIMONIALS (Block #7) ---------------- */}
       <HonestTestimonials />
 
@@ -318,6 +362,15 @@ export default function FunnelHub() {
       <Suspense fallback={null}>
         <AvatarWall />
       </Suspense>
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- DISQUALIFYING COPY (Block #11 — Polarity / Disqualifier) ----------------
+          Pre-FAQ filter. Brunson rule (DCS Secret 13): a high-converting
+          funnel actively repels the wrong avatar before the FAQ handles
+          objections from the right one. Five honest disqualifiers, each
+          mirroring an AGAINST line from workbook 01 §6 Beat 5. */}
+      <DisqualifyingCopy />
 
       <Separator className="max-w-4xl mx-auto" />
 
@@ -412,12 +465,33 @@ export default function FunnelHub() {
         </div>
       </section>
 
+      {/* ---------------- PS (Block #13 — Closing reminder) ----------------
+          Brunson rule: the PS is the second-most-read piece of copy on any
+          long-form page. The footer paragraph below functions as "about
+          the founder"; this PS is the closing offer-reminder in Reluctant
+          Hero voice with a single inline diagnostic CTA. */}
+      <FounderPs />
+
       {/* ---------------- FOOTER ---------------- */}
       {/* E-E-A-T trust columns surface from the footer. About/Contact/Privacy/
           Terms are low-priority SERP pages but high structural weight: Google
           quality raters and LLM citation pipelines both look for a real
-          about/contact/legal surface before treating an entity as credible. */}
+          about/contact/legal surface before treating an entity as credible.
+
+          Pieter-style handwritten signature paragraph above the © line —
+          Funnel Hacker's Cookbook Swipe 4 ship-now. The footer is the last
+          place an AC voice can land before a visitor leaves; Pieter's
+          levels.io / Nomads.com footer is the canonical reference. One
+          founder, one reader, no corporate "we." */}
       <footer className="py-8 px-4 sm:px-6 text-center text-xs text-muted-foreground mt-auto">
+        <p className="max-w-2xl mx-auto text-sm leading-relaxed text-foreground/80 mb-4">
+          I&apos;m Maryan. I built this because I was Marco — a non-engineer
+          who shipped products nobody paid for, and refused to look at the
+          flat Stripe line for almost a year. The Machine is what I wish
+          someone had handed me. If you take it for a spin, reply to any
+          email and you&apos;ll get me, not a support queue.{" "}
+          <span className="font-semibold text-foreground">— Maryan</span>
+        </p>
         <p>&copy; 2026 Unlock SaaS. Built by a non-engineer who shipped anyway.</p>
         <p className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
           <Link

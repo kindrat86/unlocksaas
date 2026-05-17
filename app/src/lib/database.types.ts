@@ -657,6 +657,7 @@ export type Database = {
       }
       soap_opera_subscribers: {
         Row: {
+          bucket: string | null
           diagnostic_result: string | null
           email: string
           emails_sent: number
@@ -671,6 +672,7 @@ export type Database = {
           unsubscribed_at: string | null
         }
         Insert: {
+          bucket?: string | null
           diagnostic_result?: string | null
           email: string
           emails_sent?: number
@@ -685,6 +687,7 @@ export type Database = {
           unsubscribed_at?: string | null
         }
         Update: {
+          bucket?: string | null
           diagnostic_result?: string | null
           email?: string
           emails_sent?: number

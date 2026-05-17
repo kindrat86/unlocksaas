@@ -4,6 +4,7 @@ import {
   renderEmail,
   SEQUENCE_LENGTH,
   type DiagnosticResult,
+  type OpenerBucket,
 } from "./emails";
 import { buildUnsubscribeUrl } from "./tokens";
 
@@ -16,11 +17,17 @@ import { buildUnsubscribeUrl } from "./tokens";
  *   1 = Email 1 has been sent; Email 2 is next
  *   ...
  *   5 = all 5 emails sent; sequence complete
+ *
+ * bucket: Brunson Survey Funnel segment from @/lib/diagnostic. Drives the
+ * Day-0 opener (DCS Secret 15). Optional — pre-survey legacy rows and
+ * non-diagnostic intakes (funnel_hub, parables) ship as null and fall through
+ * to the diagnosis-label opener or the neutral opener.
  */
 export interface DueRow {
   id: string;
   email: string;
   diagnostic_result: DiagnosticResult | null;
+  bucket: OpenerBucket | null;
   emails_sent: number;
 }
 
@@ -61,6 +68,7 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
   const rendered = renderEmail(index, {
     email: row.email,
     diagnosis: row.diagnostic_result,
+    bucket: row.bucket,
     baseUrl: baseUrl(),
   });
   const unsubscribeUrl = buildUnsubscribeUrl(row.email, baseUrl());
@@ -86,6 +94,9 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
           name: "diagnosis",
           value: row.diagnostic_result ?? "none",
         },
+        // Resend tag for per-bucket open/click slicing in the dashboard. The
+        // diagnostic Bridge Page label, in the operator's hands at send time.
+        { name: "bucket", value: row.bucket ?? "none" },
       ],
     });
     if (result.error) {

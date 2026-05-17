@@ -40,6 +40,14 @@ export const Event = {
   // property so we can compare mid-content vs end-content conversion.
   ParablesPageViewed: "parables_page_viewed",
   ParablesOptInSubmitted: "parables_opt_in_submitted",
+  // Canonical Lead Squeeze (DotCom Secrets Secret 14, forward variant) —
+  // single-field email opt-in for cold ad / bio / podcast call-out
+  // traffic. Source attribution = "fast_lane_squeeze" on
+  // soap_opera_subscribers, measurable per-day in
+  // supabase/views/squeeze_conversion.sql against /diagnostic and
+  // /parables to compare per-source conversion.
+  FastLaneSqueezeViewed: "fast_lane_squeeze_viewed",
+  FastLaneSqueezeSubmitted: "fast_lane_squeeze_submitted",
   StarterPageViewed: "starter_page_viewed",
   StarterCheckoutClicked: "starter_checkout_clicked",
   MachineSalesPageViewed: "machine_sales_page_viewed",
@@ -47,6 +55,13 @@ export const Event = {
   OtoPageViewed: "oto_page_viewed",
   OtoUpgradeClicked: "oto_upgrade_clicked",
   OtoDeclined: "oto_declined",
+  // Rung 2 (Repeatable Revenue Layer) — the next-yes signal layer
+  // (DCS Secret #2 / strategy/decisions/rung-2-repeatable-revenue.md).
+  // NOT a waitlist — these events capture demand-signal volume that backs
+  // the "no supply without demand signal" activation gate.
+  RepeatablePageViewed: "repeatable_page_viewed",
+  RepeatableInterestSubmitted: "repeatable_interest_submitted",
+  ValueLadderRungClicked: "value_ladder_rung_clicked",
 
   // Mid-funnel (authenticated, client-side)
   MachineStepStarted: "machine_step_started",

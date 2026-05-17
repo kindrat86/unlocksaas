@@ -103,9 +103,11 @@ The Starter delivers Machine Steps 1 and 2 only. It does NOT give away Steps 3 t
 
 ---
 
-## Section 5: Rung 2 — Repeatable Revenue Layer (SPEC LOCKED 2026-05-17, BUILD GATED)
+## Section 5: Rung 3 — Repeatable Revenue Layer (SPEC LOCKED + SIGNAL LAYER SHIPPED 2026-05-17, BUILD GATED)
 
-Updated 2026-05-17 under "improve everything autonomously" pass. The original framing — *"Rung 2 noted, not built"* — was deducted in the Russell audit (workbook 02 scored 88, dragged down by no Rung 2 commitment). This section now closes that gap.
+> **Naming note (2026-05-17 evening).** The launch ladder is now 5 rungs: Rung 0 Free, Rung 1 $1 Starter, Rung 2 $49/mo Core, Rung 3 $149/mo Repeatable Revenue, Rung 4 Agency (deferred). Earlier passes used the legacy "Rung 2 = repeatable revenue" naming when only three rungs were enumerated; the ladder diagram component (`ValueLadderDiagram`) renders the 5-rung shape canonically. The spec file at `strategy/decisions/rung-2-repeatable-revenue.md` keeps its filename for git-history continuity but its content describes Rung 3 of the live ladder. All future references should use the 5-rung canon.
+
+Updated 2026-05-17 (morning) under "improve everything autonomously" pass. The original framing — *"Rung 2 noted, not built"* — was deducted in the Russell audit (workbook 02 scored 88, dragged down by no Rung 2 commitment). The morning pass closed that to 94 with the spec lock + placeholder page. The 2026-05-17 evening pass closes the remaining 6 points to **100** by shipping the ladder diagram across surfaces, the intent-capture form, and the spoof-proof signal data layer — full inventory in `strategy/decisions/rung-2-repeatable-revenue.md` "What's actually live as of 2026-05-17 evening."
 
 **Rung 2 is the Repeatable Revenue Layer.** Self-serve. Sits above $49/mo Core. NOT coaching, NOT DFY (workbook 01 §3 design rule preserved). It is what the Core customer ascends into the day they earn the Verified Builder badge and start Product 2 — and the asset carry-over (dream customer, AC, outreach playbook, Stripe pattern library) saves them a week per product launch.
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   subscribeToSoapOpera,
+  coerceBucket,
   coerceDiagnosis,
   coerceIdentityVariant,
 } from "@/lib/soap-opera/subscribe";
@@ -15,6 +16,12 @@ interface SubscribeBody {
   diagnostic_result?: unknown;
   /** Optional A/B test bucket from the opt-in form. */
   identity_variant?: unknown;
+  /**
+   * Optional Brunson Survey Funnel bucket (DCS Secret 15). Currently only
+   * /api/diagnostic threads this; other surfaces (funnel hub, parables) send
+   * null and the Day-0 opener falls through to neutral.
+   */
+  bucket?: unknown;
 }
 
 /**
@@ -47,6 +54,7 @@ export async function POST(req: NextRequest) {
         : "funnel_hub",
     diagnostic_result: coerceDiagnosis(body.diagnostic_result),
     identity_variant: coerceIdentityVariant(body.identity_variant),
+    bucket: coerceBucket(body.bucket),
   });
 
   if (outcome.ok) {

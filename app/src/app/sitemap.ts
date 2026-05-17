@@ -142,6 +142,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/faq`),
     },
+    // Public quarterly transparency report — Q1 2027 cohort. Stub today;
+    // populated automatically once the Q1-2027 cohort closes its 60-day
+    // guarantee window (earliest May 30, 2027). Backs the public commitment
+    // in workbook 07 §2 Secret 3 Case Study + machine-sales page. The page
+    // exists pre-population so the commitment is verifiable, not vaporware.
+    {
+      url: `${base}/transparency/q1-2027`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/transparency/q1-2027`),
+    },
     // ---------------------------------------------------------------------
     // Programmatic SEO block — honest named-competitor comparisons.
     // Data source: src/lib/alternatives.ts. Adding a new alternative there

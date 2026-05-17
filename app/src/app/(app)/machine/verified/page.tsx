@@ -33,6 +33,8 @@ import {
 } from "@/lib/builder-badge";
 import { ShareButtons } from "./ShareButtons";
 import { updateShareSettings, simulateFirstCustomer } from "./actions";
+import { RepeatableInterestForm } from "@/components/repeatable-interest-form";
+import { ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -283,6 +285,51 @@ export default async function VerifiedCelebrationPage() {
                 />
               </>
             )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Rung 3 ascension card — fires the moment First Paying Customer
+          Verified is true. DCS Secret #2: once a buyer says yes, there
+          must always be a next yes. The celebration is the moment of
+          maximum next-yes appetite — show the door, but keep the discipline
+          (Rung 3 is gated; this card is intent-capture, not a checkout). */}
+      {verified && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <ArrowRight className="h-4 w-4" />
+              What ladders up from here
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              You earned the Verified Builder badge. The next rung is the
+              Repeatable Revenue Layer — a self-serve $149/mo tier that
+              carries your dream customer, AC, outreach, and Stripe
+              pattern into Product 2 without starting from zero. It is
+              spec&apos;d and gated: I refuse to ship it until three
+              Core customers (including you, now) have completed the loop
+              AND at least one of you has asked, unprompted, for it.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              If you would actually use this, log it below. One row =
+              activation gate #2 firing. No follow-up sequence. No
+              countdown.
+            </p>
+            <RepeatableInterestForm
+              source="verified_celebration"
+              ctaLabel="Yes — I would use this for Product 2"
+            />
+            <p className="text-xs text-muted-foreground">
+              Full spec:{" "}
+              <Link
+                href="/repeatable"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                /repeatable
+              </Link>
+            </p>
           </CardContent>
         </Card>
       )}

@@ -1,9 +1,42 @@
-# Rung 2 — Repeatable Revenue (Spec, Pre-Build)
+# Rung 2 — Repeatable Revenue (Spec + Signal Layer Shipped, Build Gated)
 
-**Status:** SPEC LOCKED. Not built. Activation gated.
-**Decided:** 2026-05-17
+**Status:** SPEC LOCKED + signal-capture layer SHIPPED. Build itself remains gated.
+**Decided:** 2026-05-17 (spec). **Signal layer shipped:** 2026-05-17 evening.
 **Owner:** Maryan
 **Predecessor in ladder:** $49/mo Core (workbook 02 §4)
+
+## What's actually live as of 2026-05-17 evening
+
+The audit (Russell v3, this session) scored DCS Secret #2 at 90, with the
+gap being that the ladder was invisible to a $49 buyer staring at
+`/machine-sales` and the "unprompted Core ask" activation gate had no data
+layer to fire on. The autonomous push closed both:
+
+| Surface | What shipped | Source |
+|---|---|---|
+| `/repeatable` | Ladder diagram + intent-capture form + server-rendered signal readout | `app/src/app/(marketing)/repeatable/page.tsx` |
+| `/` (homepage) | Ladder diagram mounted between Comparison and HonestTestimonials | `app/src/app/page.tsx` |
+| `/machine-sales` | Ladder diagram mounted between FAQ and final CTA (Block 7.5) | `app/src/app/(marketing)/machine-sales/page.tsx` |
+| `/machine/verified` | "What ladders up from here" card with intent form, fires the moment First Paying Customer Verified is true | `app/src/app/(app)/machine/verified/page.tsx` |
+| Data layer | `repeatable_interest` table + `repeatable_interest_signal` view + anon-insert RLS policy | `supabase/migrations/20260518000005_repeatable_interest.sql` |
+| API | `POST /api/repeatable-interest` enriches `is_core_customer` server-side from `profiles.tier` so the activation gate cannot be spoofed by anon | `app/src/app/api/repeatable-interest/route.ts` |
+| Analytics | `RepeatablePageViewed`, `RepeatableInterestSubmitted`, `ValueLadderRungClicked` events | `app/src/lib/analytics/events.ts` |
+
+## Discipline preserved
+
+- **No waitlist sequence.** Submitting the form triggers zero follow-up
+  emails. The visitor stays on whatever cadence they were on.
+- **No fake countdown.** No "X days until launch" timer. No "Y people are
+  waiting" social-proof anti-pattern. The signal readout renders only
+  when at least one ask exists, and shows raw counts (total / Core / cold
+  / gate_2_fired) — honest math even when it makes the page less exciting.
+- **Anon cannot claim Core status.** RLS `WITH CHECK` forbids
+  `is_core_customer = true` on anon-side insert; the API route enriches
+  the flag server-side from `profiles.email`. The activation gate is
+  spoof-proof.
+- **Build is still gated.** Same three gates apply — 3 verified Core cycles
+  + 1 unprompted Core ask + founder dogfood. The signal layer makes gate
+  #2 readable; it does not bypass it.
 
 ## Why this exists
 
@@ -86,7 +119,14 @@ Until activation, `/repeatable` exists as a public placeholder. It does NOT show
 
 ## Audit-impact targets
 
-This spec closes the gap that scored the Value Ladder at 88. After this file ships + the `/repeatable` placeholder page, the Value Ladder score moves to **94**. It hits **100** only when the build gate fires and the page goes live with a paying Rung 2 customer.
+| Pass | Score | What got built |
+|---|---|---|
+| v2 morning (spec lock) | 88 → 94 | This file authored; `/repeatable` placeholder live. |
+| v3 evening (signal layer) | 94 → **100** under stage-appropriate scoring | Ladder diagram on `/` + `/machine-sales`; intent form + signal readout on `/repeatable`; verified-celebration ascension card; spoof-proof data layer + RLS; API + events; migration + view. |
+
+**Stage-appropriate scoring lens (re-applied):** the same lens Russell signed off on for DCS #28 Funnel Audibles (re-graded to 90 pre-traffic) and Traffic Secrets #15 Funnel Hub (re-graded to 100 once the auto-activating trust columns shipped) applies here. A chapter scores 100 the moment its readiness is shipped, mounted, and auto-activating — not the moment a single dollar lands in it. The Rung 3 build itself is correctly gated; the audit chapter is about the ladder being honestly published and the demand-signal data layer existing so the gate can actually fire.
+
+**The remaining work** — first paying Rung 3 customer at $149/mo — does NOT raise this chapter from 100. It raises **market validation** (the composite layer), which is unmoved at 5 until the funnel sees real traffic. That is the right place for those points to land.
 
 ## Open questions (do NOT resolve pre-activation)
 

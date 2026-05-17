@@ -602,9 +602,11 @@ async function deliverStepResult(
   }
 
   // 2. Step-output persistence (project_state.<col>).
+  let projectIdForCompletion: string | null = null;
   if (isEngineStepId(stepId)) {
     const projectId = await getProjectIdForUser(admin, user.id);
     if (projectId) {
+      projectIdForCompletion = projectId;
       result.persisted = await persistStepOutput({
         adminClient: admin,
         projectId,
@@ -629,5 +631,79 @@ async function deliverStepResult(
     }
   }
 
+  // 4. Brunson DCS Secret #12 beat 6 (Results-in-Advance time-bound delivery):
+  // when the user completes BOTH Step 1 (Dream Customer) and Step 2 (Offer),
+  // mark profiles.starter_completed_at. This is the chapter's "verifiably
+  // delivered" beat — once set, the 24h-before-deadline reminder cron drops
+  // the buyer from its selection (see app/src/app/api/cron/starter-deadline-
+  // reminder/route.ts). Side-effect: feeds the
+  // results_in_advance__starter_completion_funnel view used for the weekly
+  // chapter audit. Spec: strategy/results-in-advance.md beat 6.
+  //
+  // Fires only on Step 1 or Step 2 completion. Idempotent: once set, never
+  // overwritten (the timestamp is the canonical "result-in-advance landed"
+  // moment for that buyer, not the most recent re-run).
+  if (
+    profile &&
+    projectIdForCompletion &&
+    (stepId === "1" || stepId === "2")
+  ) {
+    await maybeMarkStarterCompleted({
+      admin,
+      profileId: profile.id as string,
+      projectId: projectIdForCompletion,
+    });
+  }
+
   return result;
+}
+
+/**
+ * Mark profiles.starter_completed_at if BOTH project_state.dream_customer
+ * AND project_state.offer are present. Idempotent: only sets when the
+ * column is currently null.
+ *
+ * Brunson DCS Secret #12 beat 6/7 (time-bound, verifiably delivered).
+ */
+async function maybeMarkStarterCompleted(args: {
+  admin: ReturnType<typeof createAdminClient>;
+  profileId: string;
+  projectId: string;
+}): Promise<void> {
+  const { admin, profileId, projectId } = args;
+  try {
+    const { data: state } = await admin
+      .from("project_state")
+      .select("dream_customer,offer")
+      .eq("project_id", projectId)
+      .maybeSingle();
+    if (!state || !state.dream_customer || !state.offer) return;
+
+    // Cast: starter_completed_at column added by
+    // 20260518000005_starter_completion_deadline.sql, not yet in generated
+    // database.types.ts. Same pattern as cart-recovery cron + RIA reminder cron.
+    const adminLoose = admin as unknown as { from: (t: string) => any };
+    const { data: current } = await adminLoose
+      .from("profiles")
+      .select("starter_completed_at")
+      .eq("id", profileId)
+      .maybeSingle();
+    if (current?.starter_completed_at) return; // idempotent
+
+    const { error: updErr } = await adminLoose
+      .from("profiles")
+      .update({ starter_completed_at: new Date().toISOString() })
+      .eq("id", profileId);
+    if (updErr) {
+      console.warn("[engine] mark_starter_completed failed", {
+        profileId,
+        message: updErr.message,
+      });
+    }
+  } catch (err) {
+    console.warn("[engine] maybeMarkStarterCompleted threw", {
+      profileId,
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
 }

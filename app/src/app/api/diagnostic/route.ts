@@ -249,11 +249,19 @@ export async function POST(req: NextRequest) {
     diagnosis.label === "weak_offer" ||
     diagnosis.label === "weak_belief"
   ) {
+    // Bucket is never "error" inside this branch (we guarded on diagnosis.label
+    // above). Cast is safe; coerce keeps the type narrow for the subscribe
+    // input and lets the Bridge Page label flow into Day-0 personalisation.
+    const openerBucket =
+      bucket === "error"
+        ? null
+        : (bucket as Exclude<typeof bucket, "error">);
     const outcome = await subscribeToSoapOpera({
       email,
       source: source ?? "free_diagnostic",
       diagnostic_result: diagnosis.label as SoapDiagnosis,
       identity_variant: identityVariant,
+      bucket: openerBucket,
     });
     if (outcome.ok) {
       subscriberId = outcome.id;

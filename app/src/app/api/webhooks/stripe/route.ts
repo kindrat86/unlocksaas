@@ -24,6 +24,12 @@ import {
   recordCartAbandonment,
   maybeShortCircuitRecovery,
 } from "@/lib/cart-recovery/subscribe";
+import { maybeShortCircuitSeinfeld } from "@/lib/seinfeld/conversion";
+import {
+  subscribeStarterBuyerToSoapOpera,
+  maybeShortCircuitSoapOpera,
+  coerceIdentityVariant,
+} from "@/lib/soap-opera/subscribe";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
 export const runtime = "nodejs";
@@ -108,6 +114,25 @@ export async function POST(req: NextRequest) {
           session.customer_details?.email ?? session.customer_email ?? null;
         if (completedEmail) {
           await maybeShortCircuitRecovery(completedEmail, session.id);
+          // FOLLOW-UP: enrol cold-direct $1 Starter buyers into the Soap
+          // Opera so the SOS becomes the lossless Return Path for every
+          // Starter buyer — not only those who entered via /diagnostic.
+          // Closes the integrity gap on
+          //   strategy/decisions/seven-phases-coverage.md §"Why no downsell"
+          //   point #4 ("Soap Opera is the lossless Return Path"). The
+          //   helper is idempotent on existing subscribers (diagnostic-
+          //   entry buyers do not get re-enrolled or have their clock
+          //   reset). Stripe webhook idempotency (markEventProcessed) +
+          //   helper's own existence-check make retries no-ops.
+          if (session.mode === "payment") {
+            const variant = coerceIdentityVariant(
+              session.metadata?.[IDENTITY_AB_KEY],
+            );
+            await subscribeStarterBuyerToSoapOpera({
+              email: completedEmail,
+              identity_variant: variant,
+            });
+          }
         }
         break;
       }
@@ -132,7 +157,39 @@ export async function POST(req: NextRequest) {
         await captureInvoiceEvent(invoice, Event.InvoicePaymentFailed);
         break;
       }
-      case "customer.subscription.created":
+      case "customer.subscription.created": {
+        const sub = event.data.object as Stripe.Subscription;
+        await handleSubscriptionUpserted(sub);
+        // FOLLOW-UP: stop the Seinfeld nurture cadence the moment a subscriber
+        // becomes a paying Core customer. Brunson hard rule (workbook 08 §6,
+        // strategy/follow-up-funnels.md Part 6): never email a customer like
+        // a lead. Companion to maybeShortCircuitRecovery on checkout.session.
+        const subCustomerId =
+          typeof sub.customer === "string"
+            ? sub.customer
+            : sub.customer?.id ?? null;
+        if (subCustomerId) {
+          const profile = await getProfileByCustomerId(subCustomerId);
+          if (profile?.email) {
+            await maybeShortCircuitSeinfeld(
+              profile.email,
+              `stripe_subscription_created:${sub.id}`,
+            );
+            // FOLLOW-UP: pause any active Soap Opera row for this email.
+            // A Core customer who is still mid-SOS would receive Email 5
+            // ("the offer for the full Machine") which they just bought.
+            // Brunson hard rule: never email a customer like a lead.
+            // Companion to maybeShortCircuitSeinfeld; both flip status to
+            // 'paused' so a future Win-Back move can re-activate without
+            // re-asking permission.
+            await maybeShortCircuitSoapOpera(
+              profile.email,
+              `stripe_subscription_created:${sub.id}`,
+            );
+          }
+        }
+        break;
+      }
       case "customer.subscription.updated": {
         const sub = event.data.object as Stripe.Subscription;
         await handleSubscriptionUpserted(sub);
@@ -231,6 +288,18 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
 
   const nowIso = new Date().toISOString();
 
+  // Brunson DCS Secret #12 beat 6 (Results-in-Advance, time-bound delivery):
+  // a Starter purchase sets a 48-hour completion deadline for Step 1 + Step 2.
+  // /api/cron/starter-deadline-reminder fires once at deadline - 24h if the
+  // buyer has not yet finished both. Spec: strategy/results-in-advance.md
+  // beat 6. Migration: 20260518000005_starter_completion_deadline.sql.
+  //
+  // Core purchasers don't get a Starter deadline — the 60-day guarantee
+  // clock takes over and the Machine carries them past Steps 1+2.
+  const starterDeadlineAt = isCore
+    ? null
+    : new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
+
   const profile = await upsertProfileByEmail({
     email,
     stripe_customer_id: stripeCustomerId,
@@ -238,6 +307,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     stripe_subscription_id: stripeSubscriptionId,
     subscription_status: isCore ? "active" : undefined,
     starter_purchased_at: isCore ? undefined : nowIso,
+    starter_completion_deadline_at: starterDeadlineAt,
     // core_started_at + guarantee_expires_at set on invoice.payment_succeeded
     // when billing_reason='subscription_create'.
   });

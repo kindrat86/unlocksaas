@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,8 +10,20 @@ import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { VslPlayer } from "@/components/vsl/vsl-player";
+import { PlaybookMockup } from "@/components/blocks/playbook-mockup";
+import { PlaybookContents } from "@/components/blocks/playbook-contents";
+import { RiaPreview } from "@/components/blocks/ria-preview";
+import { PLAYBOOK, ORDER_FORM_BUMP } from "@/lib/playbook";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
+
+// Brunson DCS Secret #17 §3: the order-form bump is a public-by-design
+// surface. We expose ONLY a boolean toggle through NEXT_PUBLIC so the client
+// knows whether to render an interactive checkbox vs an honest "coming soon"
+// note. The actual Stripe price id (STRIPE_OUTREACH_KIT_PRICE_ID) stays
+// server-side; /api/checkout is the authoritative gate.
+const BUMP_PUBLIC_ENABLED =
+  process.env.NEXT_PUBLIC_OUTREACH_BUMP_ENABLED === "1";
 
 // Per-label / per-bucket one-liner that opens the page when the visitor comes
 // from the diagnostic Bridge Page (/diagnostic/result/). The Bridge Page owns
@@ -141,6 +153,13 @@ function StarterSalesPageInner() {
     };
   }, [params]);
 
+  // Brunson DCS Secret #17 §3: order-form bump state.
+  // The buyer's checked/unchecked decision rides the same handleCheckout
+  // payload. If the public toggle is off, the checkbox renders as honest
+  // "coming soon" copy and never sets this to true. The authoritative gate
+  // is server-side (STRIPE_OUTREACH_KIT_PRICE_ID).
+  const [bumpChecked, setBumpChecked] = useState(false);
+
   useEffect(() => {
     track(Event.StarterPageViewed, attribution ? { ...attribution } : undefined);
   }, [attribution]);
@@ -149,6 +168,7 @@ function StarterSalesPageInner() {
     track(Event.StarterCheckoutClicked, {
       price_type: "starter",
       surface: "starter",
+      bumps: bumpChecked ? [ORDER_FORM_BUMP.id] : [],
       ...(attribution ?? {}),
     });
     const res = await fetch("/api/checkout", {
@@ -159,6 +179,12 @@ function StarterSalesPageInner() {
         // Forwarded to Stripe session metadata so the webhook can stamp
         // diagnostic_leads.converted_to_starter_at on this row.
         attribution,
+        // Brunson order-form bump: included as a separate Stripe line item
+        // when checked AND when STRIPE_OUTREACH_KIT_PRICE_ID is configured
+        // server-side. The server is authoritative — a checked bump with no
+        // configured price is silently dropped (logged) rather than failing
+        // the whole checkout.
+        bumps: bumpChecked ? [ORDER_FORM_BUMP.id] : [],
       }),
     });
     const { url } = await res.json();
@@ -201,6 +227,19 @@ function StarterSalesPageInner() {
           with more than ten other founders telling my own story back to me. So I
           built the machine I wish someone had handed me.
         </p>
+
+        {/* Book mock-up — Brunson DCS Secret #17 (Book Funnel). Even a digital
+            artifact gets a cover. Buyers need to SEE the thing they're paying
+            for before the page asks for the dollar. The mockup carries the
+            identity-anchor effect the noun "Playbook" cannot deliver alone. */}
+        <div className="mb-10 flex flex-col items-center gap-4">
+          <PlaybookMockup />
+          <p className="text-center text-sm text-muted-foreground max-w-md leading-relaxed">
+            <strong className="text-foreground">{PLAYBOOK.name}</strong> — the
+            artifact you take home with your $1. Yours to keep, no recurring
+            charge, regardless of what you decide on the next page.
+          </p>
+        </div>
 
         {/* Founder VSL — the in-110-seconds version for cold scrollers who
             will not read the long-form below. Autoplay off here because the
@@ -372,6 +411,24 @@ function StarterSalesPageInner() {
           </div>
         </section>
 
+        {/* Brunson DCS Secret #12 (Results-in-Advance), beat 5 — the result
+            must be visible BEFORE the buyer pays. The block above shows what
+            engine pushback LOOKS like during a conversation; this block shows
+            what the finished deliverable LOOKS like after a run. Two beats,
+            two surfaces. Spec: strategy/results-in-advance.md. */}
+        <RiaPreview mode="full" />
+
+        {/* Playbook Table of Contents — Brunson DCS Secret #17 + Secret #10
+            (23 Building Blocks). Shows every chapter the buyer will receive
+            BEFORE they pay. Free chapters get a green check, locked chapters
+            show a lock + the $49 unlock tag. Closes the "what am I actually
+            buying" friction better than three more paragraphs of feature
+            copy. Honest-math discipline: locked blurbs stay readable; the
+            buyer can see exactly what they're choosing to defer. */}
+        <div className="mb-12">
+          <PlaybookContents />
+        </div>
+
         {/* What happens when you click — Brunson Cart Funnel specificity
             block. Removes the "I don't know what I am buying" friction. */}
         <Card className="mb-8">
@@ -464,13 +521,76 @@ function StarterSalesPageInner() {
           verified paying customer?
         </p>
 
+        {/* Order-Form Bump — Brunson DCS Secret #17 §3. A small ($19) add-on
+            checkbox positioned ON the order form, immediately above the CTA.
+            30–50% of buyers click. Lifts AOV without adding friction. Honest-
+            math discipline: bump shows the retail anchor, not a fake
+            "limited time," and the toggle is gated by env so the operator
+            can ship the Stripe price ID separately from the page copy. When
+            the env toggle is off the block renders an honest "coming soon"
+            note rather than a fake checkbox. */}
+        <div className="mb-6">
+          <label
+            htmlFor="bump-outreach-kit"
+            className={`block rounded-md border-2 border-dashed bg-yellow-50 p-4 sm:p-5 ${
+              BUMP_PUBLIC_ENABLED
+                ? "cursor-pointer border-yellow-400 hover:bg-yellow-100"
+                : "cursor-not-allowed border-yellow-200 opacity-90"
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <input
+                id="bump-outreach-kit"
+                type="checkbox"
+                checked={BUMP_PUBLIC_ENABLED && bumpChecked}
+                disabled={!BUMP_PUBLIC_ENABLED}
+                onChange={(e) => setBumpChecked(e.target.checked)}
+                className="mt-1 h-5 w-5 shrink-0 rounded border-gray-400 accent-orange-600 disabled:cursor-not-allowed"
+                aria-describedby="bump-outreach-kit-desc"
+              />
+              <div className="flex-1">
+                <p className="text-sm font-bold text-gray-900 leading-snug">
+                  YES! Add{" "}
+                  <span className="underline decoration-yellow-500 decoration-2 underline-offset-2">
+                    {ORDER_FORM_BUMP.name}
+                  </span>{" "}
+                  to my order for{" "}
+                  <span className="bg-yellow-300 px-1 py-0.5 box-decoration-clone">
+                    +${ORDER_FORM_BUMP.bumpPrice}
+                  </span>{" "}
+                  <span className="text-xs font-normal text-gray-600">
+                    (normally ${ORDER_FORM_BUMP.retailPrice}, one-time, no
+                    recurring)
+                  </span>
+                </p>
+                <p
+                  id="bump-outreach-kit-desc"
+                  className="text-xs text-gray-700 mt-2 leading-relaxed"
+                >
+                  {ORDER_FORM_BUMP.blurb}
+                </p>
+                {!BUMP_PUBLIC_ENABLED && (
+                  <p className="text-[11px] uppercase tracking-wider text-gray-500 mt-2 font-semibold">
+                    Coming soon — same $1 today either way.
+                  </p>
+                )}
+              </div>
+            </div>
+          </label>
+        </div>
+
         {/* CTA */}
         <div className="text-center">
           <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-            Start the Machine for $1
+            {BUMP_PUBLIC_ENABLED && bumpChecked
+              ? `Start the Machine for $${1 + ORDER_FORM_BUMP.bumpPrice}`
+              : "Start the Machine for $1"}
           </Button>
           <p className="text-xs text-muted-foreground mt-3">
             One-time payment. No subscription. No auto-upgrade.
+            {BUMP_PUBLIC_ENABLED && bumpChecked && (
+              <> Outreach Script Kit included.</>
+            )}
           </p>
         </div>
 

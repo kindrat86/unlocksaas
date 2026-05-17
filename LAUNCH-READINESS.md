@@ -66,31 +66,38 @@ done.
 
 ### Tier 1 — blocks revenue today
 
-1. **Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel** (all
-   3 environments — production, preview, development).
+1. ~~**Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel.**~~
+   **DONE** — both are set in all 3 environments (verified via `vercel env ls`
+   2026-05-17, encrypted, 16h ago). All 5 cron cadences are now scheduled in
+   `app/vercel.json` (soap-opera 14:00, seinfeld 15:00, founding 16:00,
+   cart-recovery 17:00, challenge 18:00 UTC). Every cron tick writes to
+   `cron_run_history` for the Friday Audible Call.
 
-   Per the secret-entry convention (locked 2026-05-17 after the zsh-leak
-   incident), generation + push MUST go through the dedicated getpass
-   scripts. Raw secret values must NEVER appear in any markdown file, chat
-   scrollback, or shell history — including this checklist.
+   *(Re-enable here only if a leak triggers rotation; in that case re-run the
+   `scripts/setup-cron-secret.py` / `scripts/setup-unsubscribe-secret.py`
+   scripts and re-push to all 3 environments.)*
+
+1b. **Configure Resend webhook + push `RESEND_WEBHOOK_SECRET` to Vercel.**
+   New as of the v3.2 audit push. Without this, the cadence stack still sends
+   but cannot self-heal on bounce / complaint — see DCS Secret #6 (Soap Opera)
+   audit addendum.
 
    ```bash
-   # Each script generates a fresh 32-byte hex secret, confirms with you,
-   # and pushes to Vercel via the CLI for all three environments:
-   ./scripts/setup-cron-secret.py
-   ./scripts/setup-unsubscribe-secret.py
+   # 1. Resend dashboard → Webhooks → Add endpoint
+   #      URL:    https://unlocksaas.com/api/webhooks/resend
+   #      Events: email.sent, email.delivered, email.bounced,
+   #              email.complained, email.opened, email.clicked
+   # 2. Copy the signing secret (whsec_...)
+   # 3. Run the sanctioned setup script
+   ./scripts/setup-resend-webhook-secret.py
+   # 4. Push to all 3 environments
+   vercel env add RESEND_WEBHOOK_SECRET production --sensitive
+   vercel env add RESEND_WEBHOOK_SECRET preview --sensitive
+   vercel env add RESEND_WEBHOOK_SECRET development
    ```
 
-   Until both are set in Vercel, the Soap Opera + Seinfeld daily crons
-   cannot fire and unsubscribe links cannot verify against a stable secret.
-
-   Notes:
-   - `--sensitive` works on production + preview but fails server-side on
-     development (Vercel CLI limitation). The setup scripts handle this
-     branching automatically.
-   - Any candidate values that ever appeared in a plaintext file or chat
-     transcript are considered compromised — regenerate fresh ones via the
-     scripts above.
+   Until set, the webhook accepts unverified events with a loud `console.warn`
+   — the right dev posture and the wrong production posture.
 
 2. **Create PostHog project + push project key.**
    Sign in at posthog.com → New project (EU region recommended for GDPR) →

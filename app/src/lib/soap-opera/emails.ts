@@ -10,19 +10,32 @@
  *   - Reluctant Hero voice. Sign every email "— Maryan".
  *   - PS line drives to /starter on every email.
  *
- * Personalisation:
- *   - Email 1 (Day 0) varies its opener by `diagnosis`
- *     (wrong_person / weak_offer / weak_belief). If diagnosis is null the
- *     subscriber came from a non-diagnostic surface (funnel hub etc.) and
- *     gets the neutral opener. All other emails are the same across
- *     diagnoses — by design, the Soap Opera is about the Reluctant Hero
- *     arc, not about re-explaining the diagnosis.
+ * Personalisation (Brunson DCS Secret 15 — Survey Funnel + Bridge Scripts):
+ *   - Email 1 (Day 0) selects its opener with this precedence:
+ *       1. bucket (one of seven from assignBucket() in @/lib/diagnostic) —
+ *          mirrors the Bridge Page acknowledgement the subscriber just read
+ *          so the inbox label matches the page label.
+ *       2. diagnosis (one of three Claude labels) — legacy fallback for
+ *          pre-survey rows and any diagnostic intake where survey is missing.
+ *       3. neutral — non-diagnostic intakes (funnel_hub, parables).
+ *   - All other emails are the same across buckets — by design, the Soap
+ *     Opera is the shared Reluctant Hero arc, not seven parallel narratives.
+ *     The bucket-aware Day 0 is the consistency hook that lands the visitor
+ *     into the shared arc with their bridge label intact.
  */
 
 import { buildUnsubscribeUrl } from "./tokens";
+import type { Bucket } from "@/lib/diagnostic";
 
 /** Diagnostic labels stored in soap_opera_subscribers.diagnostic_result. */
 export type DiagnosticResult = "wrong_person" | "weak_offer" | "weak_belief";
+
+/**
+ * Buckets that carry a personalized Day-0 opener. Excludes "error" because
+ * the diagnostic route guards on diagnosis.label before calling
+ * subscribeToSoapOpera() — error rows never reach the soap_opera table.
+ */
+export type OpenerBucket = Exclude<Bucket, "error">;
 
 interface RenderedEmail {
   subject: string;
@@ -34,11 +47,45 @@ interface RenderContext {
   email: string;
   /** From soap_opera_subscribers.diagnostic_result. Null = non-diagnostic intake. */
   diagnosis: DiagnosticResult | null;
+  /**
+   * From soap_opera_subscribers.bucket. The Survey Funnel bucket — see
+   * @/lib/diagnostic.ts assignBucket(). When present, takes precedence over
+   * `diagnosis` for Day-0 personalisation so the inbox label matches the
+   * Bridge Page label the subscriber just saw (DCS Secret 15).
+   */
+  bucket: OpenerBucket | null;
   /** Absolute origin of the app, e.g. https://unlocksaas.com */
   baseUrl: string;
 }
 
 // ── opener variants (Email 1 only) ──────────────────────────────────────────
+
+/**
+ * Per-bucket openers. Each one echoes the Bridge Page acknowledgement
+ * (see app/src/app/(marketing)/diagnostic/result/page.tsx BRIDGE_COPY).
+ * Brunson consistency rule: the bridge page says "Customer Avoider" out loud,
+ * fifteen minutes later the first email opens with the same words.
+ */
+const BUCKET_OPENER: Record<OpenerBucket, string> = {
+  customer_avoider:
+    "Your diagnosis came back: Customer Avoider. You shipped something real and the line is still flat. You are not lazy. You are doing the most respectable form of avoidance there is, the one nobody including you can call out. That is why the line stays flat.",
+  stuck_builder:
+    "Your diagnosis came back: Stuck Builder. Ninety days in, the product is good, you kept building. Building is the highest-status form of avoidance — nobody can fault you for it, including you. That is why the line stays flat.",
+  tactic_shopper:
+    "Your diagnosis came back: Tactic Shopper. You tried SEO, or ads, or content. Each one promised it was the answer. The line is still flat. The tactics did not fail you. They were downstream of the upstream thing that nobody fixed.",
+  premature:
+    "Your diagnosis came back: Premature. You shipped less than thirty days ago. The Machine is for founders who have lived with a flat line long enough to know it is not the product. You have not lived with it long enough yet. Stay on this list. When the silence starts to bend you, the door is here.",
+  traction_but_stuck:
+    "Your diagnosis came back: Traction but Stuck. You have a few buyers. That is harder to do than ten zeros. The work now is not new traction — it is naming the ONE person who already paid and writing the offer they would pay AGAIN for. That is why the line stays flat.",
+  ready_to_scale:
+    "Your diagnosis came back: Ready to Scale. Revenue. Customer conversations. You are past the bridge most founders die on. Steps 1 and 2 of the Machine are downstream of where you are — you need the full system, not the $1 Starter. Read this week of emails, then Email 5 has the upgrade path.",
+};
+
+/**
+ * Legacy per-Claude-label openers. Used when bucket is null but diagnosis is
+ * present — typically pre-survey rows or future intakes that skip the survey.
+ * Each maps to the closest 1:1 bucket opener pattern.
+ */
 const DIAGNOSIS_OPENER: Record<DiagnosticResult, string> = {
   wrong_person:
     "Your diagnosis came back: Wrong Person. Your copy speaks to a category, not a specific person. The visitor reads it and nods politely. They do not feel addressed. That is why the line stays flat.",
@@ -50,6 +97,19 @@ const DIAGNOSIS_OPENER: Record<DiagnosticResult, string> = {
 
 const NEUTRAL_OPENER =
   "You landed on UnlockSaaS and walked away. Most people do. The page is honest about what it asks of you, which means it sells more slowly than something with a countdown timer screaming at you. I am okay with that. I want to tell you why I built it anyway.";
+
+/**
+ * Opener selection. Brunson DCS Secret 15 ordering: bucket → diagnosis →
+ * neutral. Exported for unit testing and Resend-tag stability.
+ */
+export function selectDay0Opener(
+  bucket: OpenerBucket | null,
+  diagnosis: DiagnosticResult | null,
+): string {
+  if (bucket) return BUCKET_OPENER[bucket];
+  if (diagnosis) return DIAGNOSIS_OPENER[diagnosis];
+  return NEUTRAL_OPENER;
+}
 
 const PS_LINE_DEFAULT = (baseUrl: string) =>
   `If you want to finish your WHO and WHAT for $1, the door is here: ${baseUrl}/starter`;
@@ -122,7 +182,7 @@ function render({
 
 // ── EMAIL 1 (Day 0): Diagnosis + Parable 1 (Blank Offer Page) ───────────────
 function email1(ctx: RenderContext): RenderedEmail {
-  const opener = ctx.diagnosis ? DIAGNOSIS_OPENER[ctx.diagnosis] : NEUTRAL_OPENER;
+  const opener = selectDay0Opener(ctx.bucket, ctx.diagnosis);
   return render({
     subject: "Your diagnosis is below. Here is what nobody told you about it.",
     bodyParagraphs: [

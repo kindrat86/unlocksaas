@@ -100,13 +100,25 @@ A person can legitimately be on multiple lists. Examples:
 | Cadence | End condition | Post-completion |
 |---|---|---|
 | Soap Opera | `emails_sent = 5` | `status='complete'`. NOT auto-cross-enrolled. Email 5 includes optional CTA to Seinfeld. |
-| Seinfeld | None (ongoing) | Continues weekly until unsubscribe |
+| Seinfeld | None time-based. Soft-end on **Core conversion** (status flips to `paused`); hard-end on **two consecutive send failures** (status flips to `errored`). | Continues 3x/week until unsubscribe, conversion, or escalation. Tier-aware PS rotation routes Starter buyers to `/machine-sales` instead of `/starter` (workbook 02 §1 — never ask a customer to buy what they own). |
 | Founding Pre-Launch | `emails_sent = 6` OR cart-close OR cap reached | `status='complete'`. Cohort claim moves them off the waitlist. |
 | Challenge | `emails_sent = 14` | `status='complete'`. Email 14 includes optional CTA to Seinfeld + upgrade to $49 Machine. |
 | Cart Recovery | `emails_sent = 3` OR successful checkout in the meantime | `status='complete'` on either condition. Email 3 includes optional CTA to Seinfeld + diagnostic. |
 | Win-Back (deferred) | `emails_sent = 3` | `status='complete'`. Quarterly re-ask if no response. |
 
 **Recovery short-circuit:** Cart Recovery is the only cadence with a non-time-based termination. If the subscriber completes any Stripe checkout (`checkout.session.completed`) AFTER enrolment, the recovery row is flipped to `status='recovered'` and remaining emails are suppressed. Brunson rule: the moment they buy, you stop the chase email. This is enforced in `app/src/lib/cart-recovery/dispatch.ts` (per-send check before render).
+
+**Seinfeld short-circuit (added 2026-05-17 — audit close DCS Secret #7, 80 → 100):** Seinfeld inherits the same Brunson stop-on-buy rule. When `customer.subscription.created` fires (the canonical "they just became a paying Core customer" signal), the Stripe webhook calls `maybeShortCircuitSeinfeld(email, reason)` in `app/src/lib/seinfeld/conversion.ts`, which flips every active Seinfeld row for that email to `status='paused'`. The cron's WHERE clause filters `status='active'` and so excludes paused rows on the next tick without any other change. Why `'paused'` and not `'unsubscribed'`: a purchase is not an unsubscribe request, and leaving the row recoverable preserves the future Win-Back move (Part 2 cadence #6). Defence in depth: `lib/seinfeld/dispatch.ts` re-reads the row status before every Resend call, AND reads the subscriber's profile tier; if a tier='core' subscriber slips through the pause webhook, the dispatcher self-heals (flips status to paused) and skips the send. The two-strike bounce-escalation rule lives in the same dispatcher: if `last_error` was non-null when the cron picked the row up AND this send also fails, status flips to `'errored'` and the row is permanently excluded from future ticks until an operator re-subscribes via `POST /api/seinfeld/subscribe` (which refreshes to active while preserving `sends_count` rotation state).
+
+**Tier-aware PS-line rotation (Seinfeld, added 2026-05-17):** The dispatcher resolves the subscriber's tier (`'none' | 'starter' | 'core'`) from `public.profiles` at send time and passes it to the renderer. The renderer's `pickPsTarget(sendsCount, tier)` matrix:
+- `tier='none'`: even sends → `/diagnostic`, odd sends → `/starter` (the legacy v1 behaviour).
+- `tier='starter'`: even sends → `/diagnostic`, odd sends → `/machine-sales` (Brunson rule: ask for the next *unowned* rung).
+- `tier='core'`: should never reach the renderer; defensive fallback to `/diagnostic`.
+
+**Operator visibility (Seinfeld, added 2026-05-17):**
+- `GET /api/seinfeld/preview?email=foo@bar.com&n=5` returns the next 5 sends for that subscriber, with JK5 category + content_id + subject + ps_target each. Bearer `CRON_SECRET` auth.
+- `GET /api/seinfeld/preview?index=12&n=5` returns the next 5 items from rotation index 12 (no subscriber lookup). Optional `&tier=starter` simulates the tier-aware PS rotation.
+- `supabase/views/seinfeld_funnel.sql` ships six read-only views for the Friday Audible Call's Seinfeld panel: daily enrollments by source, current status mix with %, engagement-depth buckets, last-JK5-category distribution, rotation-health warning (alerts when any active subscriber's `sends_count >= 25` and a within-category repeat is imminent), and a single-row weekly summary.
 
 ---
 

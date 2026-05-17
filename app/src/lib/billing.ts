@@ -104,6 +104,9 @@ interface UpsertProfileArgs {
   core_started_at?: string | null;
   guarantee_expires_at?: string | null;
   cancel_at_period_end?: boolean;
+  /** Brunson DCS Secret #12 beat 6: 48h Starter completion window. Set on
+   *  starter checkout completion; null when not applicable. */
+  starter_completion_deadline_at?: string | null;
 }
 
 /**
@@ -148,6 +151,8 @@ export async function upsertProfileByEmail(args: UpsertProfileArgs): Promise<{
   if (args.core_started_at !== undefined) patch.core_started_at = args.core_started_at;
   if (args.guarantee_expires_at !== undefined) patch.guarantee_expires_at = args.guarantee_expires_at;
   if (args.cancel_at_period_end !== undefined) patch.cancel_at_period_end = args.cancel_at_period_end;
+  if (args.starter_completion_deadline_at !== undefined)
+    patch.starter_completion_deadline_at = args.starter_completion_deadline_at;
 
   const { data: row, error } = await db()
     .from("profiles")

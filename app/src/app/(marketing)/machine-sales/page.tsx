@@ -13,6 +13,10 @@ import { ComparisonTable } from "@/components/blocks/comparison-table";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
 import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { VslBlock } from "@/components/blocks/vsl-block";
+import { ValueLadderDiagram } from "@/components/blocks/value-ladder-diagram";
+import { DisqualifyingCopy } from "@/components/blocks/disqualifying-copy";
+import { FounderPs } from "@/components/blocks/founder-ps";
+import { PrintPageLink } from "@/components/print-page-link";
 import {
   MachineProductJsonLd,
   FaqPageJsonLd,
@@ -156,11 +160,90 @@ export default function MachineSalesPage() {
           </p>
 
           {/* Slide 6 — Transition into the three secrets. */}
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed mb-6">
             Here are the three things you have to believe for The Machine
             to work for you.
           </p>
+
+          {/* Polarity AGAINST line under the Big Domino — Funnel Hacker's
+              Cookbook v3 Action Matrix Row 13 closure. Workbook 01 §6 Beat
+              5 enemy sentence belongs on every long-form surface; cold
+              traffic reading the Big Domino needs the polarity that earned
+              the right to make a 60-day claim. Italic + smaller weight so
+              the AGAINST line reads as a footnote-to-belief, not a second
+              headline. */}
+          <p className="text-sm italic text-muted-foreground leading-relaxed border-l-2 border-muted pl-4">
+            The problem stuck founders have is not the product. It is that
+            an entire industry profits from teaching them to keep building
+            when the only thing left is to sell.
+          </p>
         </section>
+
+        {/* ============================================================ */}
+        {/* JUMP-NAV — Brunson long-form discipline (DCS Secret #22).     */}
+        {/* A 1000-line sales page needs entry points. The skeptic-avatar */}
+        {/* often skips to the FAQ or the guarantee first; if they cannot */}
+        {/* navigate, they bounce. Hidden in print so the saved artifact   */}
+        {/* reads like a clean letter.                                     */}
+        {/* ============================================================ */}
+        <nav
+          aria-label="Jump to a section"
+          className="print:hidden mb-12 rounded-lg border border-border/60 bg-muted/30 px-4 py-3 sm:px-5 sm:py-4"
+        >
+          <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-2">
+            What this page covers
+          </p>
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            <li>
+              <a
+                href="#secrets"
+                className="text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                Three Secrets
+              </a>
+            </li>
+            <li>
+              <a
+                href="#stack"
+                className="text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                What you get for $49
+              </a>
+            </li>
+            <li>
+              <a
+                href="#guarantee"
+                className="text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                The 60-day guarantee
+              </a>
+            </li>
+            <li>
+              <a
+                href="#faq"
+                className="text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                FAQ
+              </a>
+            </li>
+            <li>
+              <a
+                href="#disqualifier-heading"
+                className="text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                Who this is not for
+              </a>
+            </li>
+            <li>
+              <a
+                href="#checkout"
+                className="text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                Start the Machine
+              </a>
+            </li>
+          </ul>
+        </nav>
 
         {/* Building Block #20 — Social Proof Bar (honest variant). */}
         <SocialProofBar />
@@ -177,7 +260,7 @@ export default function MachineSalesPage() {
         {/* Workbook 07 §2 — Vehicle, Internal, External                  */}
         {/* Each: Story / Strategy / Case Study explicitly labelled.      */}
         {/* ============================================================ */}
-        <section className="space-y-14 mb-16">
+        <section id="secrets" className="space-y-14 mb-16 scroll-mt-8">
           <h2 className="text-2xl sm:text-3xl font-bold">The Three Secrets</h2>
 
           {/* SECRET 1 — VEHICLE (slides 7–9) */}
@@ -296,6 +379,16 @@ export default function MachineSalesPage() {
                 </em>
               </p>
             </div>
+
+            {/* Inline trial close after the Vehicle Secret.
+                Workbook 07 §4 trial close #3. Brunson canon: trial closes
+                fire after each major belief beat, not in a single clumped
+                section. This one ladders the reader's own history of
+                buying tactics they did not use. */}
+            <p className="text-sm italic text-muted-foreground border-l-2 border-primary/30 pl-4 leading-relaxed">
+              Have you ever bought a course because you wanted permission to
+              keep planning?
+            </p>
           </article>
 
           {/* SECRET 2 — INTERNAL (slides 10–12) */}
@@ -397,6 +490,14 @@ export default function MachineSalesPage() {
                 against.
               </p>
             </div>
+
+            {/* Inline trial close after the Internal Secret.
+                Workbook 07 §4 trial close #9 — the one that catches Marco
+                in his own avoidance pattern. The italics + soft border
+                signal "honest question, not a sales line." */}
+            <p className="text-sm italic text-muted-foreground border-l-2 border-primary/30 pl-4 leading-relaxed">
+              Do you suspect you have been avoiding the customer?
+            </p>
           </article>
 
           {/* SECRET 3 — EXTERNAL (slides 13–15) */}
@@ -498,6 +599,15 @@ export default function MachineSalesPage() {
                 month.
               </p>
             </div>
+
+            {/* Inline trial close after the External Secret.
+                Workbook 07 §4 trial close #11. Pure mechanical math
+                question — the only close that lands on a skeptic after
+                the refund-rate breakeven block. */}
+            <p className="text-sm italic text-muted-foreground border-l-2 border-primary/30 pl-4 leading-relaxed">
+              Would a $98 cap on a 60-day risk be acceptable for the chance
+              of recurring revenue?
+            </p>
           </article>
         </section>
 
@@ -514,7 +624,7 @@ export default function MachineSalesPage() {
         {/* Workbook 07 §3 — one Card per slide, NOT collapsed into one   */}
         {/* table. Stack itself + math + each bonus expanded.             */}
         {/* ============================================================ */}
-        <section className="space-y-6 mb-16">
+        <section id="stack" className="space-y-6 mb-16 scroll-mt-8">
           <h2 className="text-2xl sm:text-3xl font-bold">Here is what you get for $49.</h2>
           <p className="text-muted-foreground leading-relaxed">
             One core system. Three bonuses. One guarantee in writing. The
@@ -768,7 +878,7 @@ export default function MachineSalesPage() {
         {/* BLOCK 4 — THE GUARANTEE IN WRITING                            */}
         {/* Workbook 01 §2                                                */}
         {/* ============================================================ */}
-        <section className="mb-16">
+        <section id="guarantee" className="mb-16 scroll-mt-8">
           <Card className="border-primary/40">
             <CardContent className="pt-6 space-y-4">
               <div className="flex items-center gap-2 text-primary">
@@ -1035,7 +1145,7 @@ export default function MachineSalesPage() {
         {/* Workbook 06 §4 — six External Belief rewrites verbatim        */}
         {/* (5 originals + "build it myself" from dollar-objections.md)   */}
         {/* ============================================================ */}
-        <section className="space-y-6 mb-16">
+        <section id="faq" className="space-y-6 mb-16 scroll-mt-8">
           <h2 className="text-2xl sm:text-3xl font-bold">
             Six things you might be telling yourself right now.
           </h2>
@@ -1057,6 +1167,28 @@ export default function MachineSalesPage() {
             ))}
           </div>
         </section>
+
+        <Separator className="my-12" />
+
+        {/* ============================================================ */}
+        {/* BLOCK 7.5 — VALUE LADDER DIAGRAM                              */}
+        {/* DCS Secret #2 — the next-yes must be visible BEFORE the buy.  */}
+        {/* Rendered after the FAQ so the reader knows what they are      */}
+        {/* climbing into, not after the buy when it is too late. Gated   */}
+        {/* Rung 3 links to /repeatable with the build gate stated.       */}
+        {/* ============================================================ */}
+        <ValueLadderDiagram
+          heading="Where the $49 sits in the ladder"
+          intro={
+            <>
+              You are about to buy Rung 2. Here is the rung above it (spec
+              public, build gated on three verified Core cycles) and the
+              one above that (deferred). Brunson rule: no fake doors.
+            </>
+          }
+          highlight={2}
+          compact
+        />
 
         <Separator className="my-12" />
 

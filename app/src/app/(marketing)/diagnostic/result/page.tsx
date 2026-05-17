@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { createAdminClient } from "@/lib/supabase/server";
+import { RiaPreview } from "@/components/blocks/ria-preview";
 import {
   bucketDestination,
   type Bucket,
@@ -394,6 +395,17 @@ function BridgePage({ row }: { row: LeadRow }) {
               : "Free. No card. Five short emails over five days."}
         </p>
       </section>
+
+      {/* Brunson DCS Secret #12 (Results-in-Advance), beat 5 — compact preview.
+          A diagnostic-result visitor heading toward the $1 door sees what
+          actually walks out of one run, not just a CTA. Mounted only when
+          the destination is the Starter (or Machine sale page) — for the
+          free-content destination, the bridge page itself is the value. */}
+      {(destination === "starter" || destination === "machine") && (
+        <section className="mt-10">
+          <RiaPreview mode="compact" ctaHref={primaryHref} />
+        </section>
+      )}
 
       <p className="text-xs text-muted-foreground mt-10 text-center">
         The diagnosis is also in your inbox. Reply if you want me to look at it

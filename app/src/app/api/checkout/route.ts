@@ -7,6 +7,12 @@ import {
 } from "@/lib/ab";
 import { captureServer } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
+import {
+  ORDER_FORM_BUMP,
+  isKnownBumpId,
+  outreachKitPriceId,
+  type BumpId,
+} from "@/lib/playbook";
 
 type CheckoutBody = {
   priceType?: string;
@@ -17,6 +23,14 @@ type CheckoutBody = {
     bucket?: string;
     lead?: string;
   } | null;
+  /**
+   * Order-form bumps the buyer ticked on /starter. Brunson DCS Secret #17 §3.
+   * The server is authoritative: an unknown bump id is dropped silently; a
+   * known bump with no STRIPE_*_PRICE_ID env var is dropped silently (with a
+   * console.warn) so the primary $1 purchase still succeeds and never strands
+   * a checked checkbox without delivery.
+   */
+  bumps?: string[];
 };
 
 // Stripe metadata only accepts string values up to 500 chars. Coerce + clamp.
@@ -28,9 +42,32 @@ function clampMeta(v: unknown): string | undefined {
 }
 
 export async function POST(req: NextRequest) {
-  const { priceType, attribution } = (await req.json()) as CheckoutBody;
+  const { priceType, attribution, bumps } = (await req.json()) as CheckoutBody;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+  // Resolve order-form bumps. Whitelisted server-side against KNOWN_BUMP_IDS,
+  // then each surviving bump must also have a configured Stripe price id;
+  // missing price ids are warned-and-dropped (the buyer still gets the $1
+  // Playbook; the checked checkbox is honored on next visit when env lands).
+  const requestedBumpIds: BumpId[] = Array.isArray(bumps)
+    ? bumps.filter(isKnownBumpId)
+    : [];
+  const resolvedBumps: { id: BumpId; priceId: string }[] = [];
+  for (const id of requestedBumpIds) {
+    if (id === ORDER_FORM_BUMP.id) {
+      const priceId = outreachKitPriceId();
+      if (priceId) {
+        resolvedBumps.push({ id, priceId });
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "[checkout] outreach_kit bump requested but STRIPE_OUTREACH_KIT_PRICE_ID is not set — dropping line item; primary $1 purchase will still proceed",
+        );
+      }
+    }
+  }
+  const bumpIdsStamped = resolvedBumps.map((b) => b.id).join(",");
 
   // Stamp the A/B identity variant + subject onto the Stripe session so the
   // webhook can attribute the purchase back to the variant when it fires
@@ -62,6 +99,12 @@ export async function POST(req: NextRequest) {
   if (priceType === "starter" || priceType === "machine") {
     abMetadata.price_type = priceType;
   }
+
+  // Stamp the resolved bump ids onto Stripe session metadata so the webhook
+  // can provision them on `checkout.session.completed` without re-deriving
+  // from line items. Empty string = no bumps (still set the key so the
+  // webhook's read is non-conditional).
+  abMetadata.order_bumps = bumpIdsStamped;
 
   // Distinct id for server-side analytics. At checkout-time we don't have a
   // Stripe customer id yet (Stripe assigns one at session completion), so we
