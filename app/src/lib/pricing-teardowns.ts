@@ -1711,6 +1711,421 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     pricingPageUrl: "https://www.screen.studio/pricing",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "fathom",
+    displayName: "Fathom Analytics",
+    creator: "Jack Ellis and Paul Jarvis",
+    category: "Privacy analytics",
+    oneLine:
+      "Fathom prices on pageviews with a 30-day trial. No self-host option, no public revenue dashboard — the price page leans on founder-led trust instead of operational transparency.",
+    tldr:
+      "Fathom's pricing structure is volume-tiered subscription scaled by monthly pageviews, with a 30-day free trial and no self-host option. The structural pricing decisions diverge from Plausible's: no open-source escape valve and no public revenue page. The trust load shifts to founder visibility (Jack Ellis and Paul Jarvis) instead of operational transparency. The lesson for indie founders: when founder-led-as-trust is your model, you can skip the operational-transparency proof — but you must sustain founder visibility forever.",
+    productSnapshot: {
+      whatTheySell:
+        "A privacy-focused, cookie-free web analytics SaaS positioned as the ethical alternative to Google Analytics.",
+      whoFor:
+        "Indie founders, small SaaS, and privacy-leaning teams who do not want cookie banners or GDPR overhead, and who prefer buying from identifiable indie operators.",
+    },
+    pricingStructure: {
+      model: "Volume-tiered subscription scaled by monthly pageviews; hosted only",
+      tiers: [
+        {
+          name: "Hosted (volume-tiered)",
+          pricePoint:
+            "starts ~$15/mo for 100K pageviews/mo; scales linearly to enterprise (verified 2026-05-17)",
+          includes:
+            "Cookieless analytics, custom events, multi-site (single account covers up to 50 sites at lower tiers, more at higher), Wayback Machine integration, EU isolation option.",
+          audience: "Indie SaaS, small teams, privacy-leaning operators.",
+        },
+        {
+          name: "Custom (enterprise volume)",
+          pricePoint: "Custom contact for very high volumes",
+          includes:
+            "Negotiated rate, dedicated infrastructure, SLA conversations, advanced support.",
+          audience: "Larger operators above the published volume tiers.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount; tier re-evaluated by actual monthly pageviews",
+      freeTrialBehavior:
+        "30-day free trial with no credit card required; converts to paid or expires.",
+    },
+    anchorAnalysis: {
+      pattern: "Founder-led-trust anchor",
+      analysis:
+        "Fathom's pricing page does not anchor through a public revenue dashboard (like Plausible) or through an explicit decoy tier. The anchor mechanic is implicit: Jack and Paul are visible enough across the marketing surface and broader content that buyers anchor on founder credibility rather than on price-comparison logic. The simplicity of the pricing matches the brand voice — founders who trust the operators do not require complex pricing arguments.",
+    },
+    upgradeTrigger: {
+      pattern: "30-day trial expiration plus pageview growth",
+      analysis:
+        "Two triggers fire together: the 30-day trial creates a binary conversion moment (subscribe or stop using); pageview growth then drives tier upgrades within the paid customer base. The trial-expiration trigger is mechanical and the volume-tier upgrade is structural. Both align with how indie SaaS founders actually evaluate analytics tools.",
+    },
+    whatsWorking: [
+      "Founder-led-trust replaces the operational-transparency proof Plausible uses — same trust outcome, different mechanism.",
+      "30-day trial with no credit card removes friction at the highest-friction moment in the funnel.",
+      "Volume tiering aligns the bill with customer success without exposing the buyer to per-event metering surprise.",
+      "Same principle stack as Plausible (privacy, GDPR-by-construction, cookie-free) — both companies validate the category together.",
+      "No self-host option simplifies the operations surface — every customer is on the same hosted infrastructure.",
+      "EU isolation option for buyers with stricter data-residency needs adds a structural differentiator without complicating the main pricing page.",
+    ],
+    whatToAdapt: [
+      "If founder-led-as-trust is your model, you can skip operational-transparency tools (public revenue, open-source) — but you must sustain founder visibility continuously.",
+      "30-day trials with no credit card remove the canonical friction at signup; recover the conversion at trial-end with a clear payment prompt.",
+      "Volume tiering aligns the bill with success when the underlying cost (your infrastructure) actually scales with the metric you tier on.",
+    ],
+    whatToAvoid: [
+      "Do not adopt founder-led-trust as the only trust mechanism if the founders cannot sustain visibility. Without founders on the marketing surface, the model collapses.",
+      "Do not skip self-host capability if your category buyers value it (open-source-aligned developers, privacy-extremists). The audience overlap with operational-transparency buyers matters.",
+    ],
+    brunsonLens: {
+      stack: "Two-rung stack: hosted volume tiers plus enterprise custom. No add-on layer.",
+      valueLadder: "Two-rung Value Ladder with trial-to-paid conversion as the front-end trigger.",
+      decoyOrAnchor: "Founder-led-trust anchor — Jack and Paul replace explicit anchor-tier mechanics with brand credibility.",
+      paymentMechanics: "Monthly or annual volume-tiered subscription; no usage metering surprise; no per-seat scaling.",
+    },
+    faqs: [
+      {
+        q: "How does Fathom's pricing differ from Plausible's?",
+        a: "Same volume-tiered shape, similar price bands. The structural differences are operational: Fathom has no self-host option (Plausible does, via AGPL) and no public revenue dashboard (Plausible's is at plausible.io/revenue). Fathom anchors trust on founder visibility; Plausible anchors trust on operational transparency.",
+      },
+      {
+        q: "Why does Fathom not offer self-host?",
+        a: "Operationally simpler — every customer runs on the same hosted infrastructure, which keeps the team small and the support load predictable. The trade-off is losing the principled-buyer segment that requires self-host on principle. Plausible captures that segment; Fathom focuses on hosted-only buyers.",
+      },
+      {
+        q: "Is the 30-day trial really no-credit-card?",
+        a: "Yes, as of 2026-05-17. The friction removal at signup is meaningful for indie buyers evaluating multiple privacy-analytics options simultaneously. The trial-expiration prompt then asks for payment at the conversion-likely moment.",
+      },
+      {
+        q: "What is the Brunson lens on Fathom's pricing?",
+        a: "Two-rung Value Ladder with founder-led-trust as the anchor mechanic. The unusual move is the deliberate absence of operational-transparency tools (public revenue, open source) — Fathom bets that founder visibility is sufficient trust signal, which works because Jack and Paul sustain it continuously.",
+      },
+    ],
+    tags: ["volume-tiered", "founder-led-trust", "trial-no-credit-card", "privacy-analytics"],
+    homepageUrl: "https://usefathom.com/",
+    pricingPageUrl: "https://usefathom.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "calendly",
+    displayName: "Calendly",
+    creator: "Tope Awotona",
+    category: "Scheduling",
+    oneLine:
+      "Calendly prices on category-default mindshare. The free tier is the acquisition engine; per-user paid tiers scale into enterprise.",
+    tldr:
+      "Calendly's pricing structure is built around brand-default acquisition: free tier with the Calendly brand on every booking page seeds the visible-customer flywheel, and per-user paid tiers scale into enterprise with CRM integrations, advanced workflows, and SSO. The lesson for indie founders: free-tier acquisition compounds when the customer's output is publicly visible — but the moat depends on years of compounding to earn category-default status.",
+    productSnapshot: {
+      whatTheySell:
+        "A scheduling platform for sales calls, demos, customer meetings, and recruiter coordination, with a Calendly-branded booking page recipients use.",
+      whoFor:
+        "Sales teams, recruiters, customer success managers, and any professional whose calendar coordination is high-volume.",
+    },
+    pricingStructure: {
+      model: "Per-user tiered subscription with free-tier acquisition flywheel and enterprise upsell ladder",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0",
+          includes:
+            "1 event type, basic scheduling, integrations with Google Calendar, Outlook, iCloud, Zoom, Meet, Calendly branding on booking page.",
+          audience: "Individual users evaluating Calendly or scheduling at very low volume.",
+        },
+        {
+          name: "Standard",
+          pricePoint:
+            "approximately $12/seat/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Unlimited event types, group events, advanced customization, basic Salesforce + HubSpot integrations, removable branding option.",
+          audience: "Individual professionals and small teams using scheduling daily.",
+        },
+        {
+          name: "Teams",
+          pricePoint:
+            "approximately $20/seat/mo billed annually (verified 2026-05-17)",
+          includes:
+            "Round-robin, collective events, deeper CRM integrations, routing forms, advanced workflows, admin features.",
+          audience: "Sales teams and small organizations with cross-member scheduling.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "SSO, advanced security, audit logs, dedicated success manager, custom contracts, advanced governance.",
+          audience: "Larger organizations with procurement requirements.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount; per-user pricing",
+      freeTrialBehavior:
+        "Free tier IS the trial; paid features available on time-limited trial for evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Teams tier as anchor",
+      analysis:
+        "Teams at approximately $20/seat/mo anchors the page for the sales-team segment. Standard at approximately $12/seat/mo reads as the natural starting tier for individuals; Free is the entry. Enterprise sits ready for procurement-driven buyers. The anchor mechanic is conventional; the unusual structural element is the Calendly brand on free-tier booking pages, which doubles as the acquisition engine.",
+    },
+    upgradeTrigger: {
+      pattern: "Event-type cap plus team-feature need",
+      analysis:
+        "Two triggers fire together: the 1 event type cap on Free forces individual users to upgrade to Standard when they need more than one booking type; the team-feature need (round-robin, collective events, deeper CRM integrations) drives Standard users to Teams. Both triggers map to natural usage growth, which is why Calendly's conversion rates compound over time as customers grow into deeper use.",
+    },
+    whatsWorking: [
+      "Free tier with branding seeds visible-customer flywheel — every shared Calendly link reinforces the brand to a new recipient.",
+      "1 event type cap on Free is a structural upgrade trigger that fires the moment a user needs a second booking type.",
+      "Per-user pricing aligns revenue with team-scale growth without per-feature complexity.",
+      "Enterprise tier captures the largest deals without exposing volume-discount pricing to seat-counting competitors.",
+      "CRM integration depth (Salesforce, HubSpot, Marketo) at higher tiers locks in enterprise customers who built workflows around the platform.",
+      "Cross-functional positioning (sales, recruiting, success, education) broadens the addressable market — only sustainable for the category default.",
+    ],
+    whatToAdapt: [
+      "Free tier with branding is the most efficient acquisition channel when your customer's output is publicly visible (booking pages, form embeds, video links).",
+      "Structural upgrade triggers (event-type caps, team-feature gates) compound conversion as usage grows naturally.",
+      "Per-user pricing scales with customer success and avoids the per-feature comparison shopping that tiered-feature pricing creates.",
+    ],
+    whatToAvoid: [
+      "Do not assume free-tier branding works if your output is not publicly visible. The flywheel requires customers to share the branded surface with their audience.",
+      "Do not adopt category-default positioning before you have earned the recognition. New entrants need to lead with the structural differentiator, not the brand.",
+    ],
+    brunsonLens: {
+      stack: "Four-tier stack with progressive feature additions; Teams tier is the visual anchor.",
+      valueLadder: "Full four-rung Value Ladder (Free → Standard → Teams → Enterprise) with structural upgrade triggers at each rung.",
+      decoyOrAnchor: "Teams tier as anchor; Standard as reasonable individual choice; Free as visible-customer flywheel seed; Enterprise as procurement door.",
+      paymentMechanics: "Per-user monthly or annual with annual discount; no usage metering on bookings.",
+    },
+    faqs: [
+      {
+        q: "Why does Calendly cap Free at 1 event type?",
+        a: "Because 1 event type is the structural upgrade trigger. The moment a user needs a second booking type (different durations, different scopes, different audiences), they must upgrade. The cap is calibrated to fire at the exact moment willingness-to-pay materializes.",
+      },
+      {
+        q: "Can an indie SaaS use Calendly's free-tier-with-branding model?",
+        a: "Only if the customer's output is publicly visible (booking pages, form embeds, video links shared externally). For internal SaaS or admin tools without public output, the flywheel does not compound and the free tier just bleeds money.",
+      },
+      {
+        q: "Why is Calendly more expensive than Cal.com at the team tier?",
+        a: "Brand premium plus mature integration ecosystem. Calendly's CRM integrations (Salesforce, HubSpot, Marketo) are deeper than Cal.com's, and the brand recognition with bookers reduces conversion friction for sales teams using scheduling for prospect calls. The price gap reflects what enterprise buyers pay for these structural advantages.",
+      },
+      {
+        q: "What is the Brunson lens on Calendly's pricing?",
+        a: "Four-rung Value Ladder with structural upgrade triggers at each rung, free-tier visible-customer flywheel as the front-end acquisition engine, and Teams tier as anchor mechanic. The unusual element is the depth of free-tier acquisition compounding — years of branded booking pages produced category-default brand recognition that no competitor can quickly dislodge.",
+      },
+    ],
+    tags: ["per-user", "free-with-branding", "category-default", "enterprise-upsell"],
+    homepageUrl: "https://calendly.com/",
+    pricingPageUrl: "https://calendly.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "postmark",
+    displayName: "Postmark",
+    creator: "Wildbit team (acquired by ActiveCampaign in 2022)",
+    category: "Email API",
+    oneLine:
+      "Postmark prices on send volume with a conservative free tier. The pricing matches the brand promise: deliverability-first, no surprises.",
+    tldr:
+      "Postmark's pricing structure is volume-tiered subscription scaled by emails sent per month. The free tier is conservative (100 emails/month) compared to Resend's 3K — the structural decision favors paid customers who care about deliverability enough to commit. The lesson for indie founders: when your brand promise is operational reliability, your pricing structure should attract committed buyers rather than maximize free signups.",
+    productSnapshot: {
+      whatTheySell:
+        "A developer-friendly transactional email API with separate streams for transactional and broadcast sends, optimized for deliverability.",
+      whoFor:
+        "Developers and SaaS teams sending transactional email (password resets, receipts, notifications) who prioritize inbox placement above all else.",
+    },
+    pricingStructure: {
+      model: "Volume-tiered subscription scaled by monthly email sends; conservative free tier",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0",
+          includes:
+            "100 emails/month, separate transactional and broadcast streams, all core API features, Postmark branding in marketing email signatures.",
+          audience: "Developers evaluating the platform or shipping very low-volume projects.",
+        },
+        {
+          name: "Paid (volume-tiered)",
+          pricePoint:
+            "starts ~$15/mo for 10K emails/mo; scales linearly to ~$115/mo for 100K, higher tiers up to enterprise (verified 2026-05-17)",
+          includes:
+            "Volume-appropriate sends, full API, separate transactional and broadcast streams, dedicated IP option on higher tiers, advanced bounce handling, deliverability monitoring.",
+          audience: "Production SaaS with real transactional or broadcast volume.",
+        },
+        {
+          name: "Enterprise (volume + custom)",
+          pricePoint: "Custom contact for very high volumes or specific requirements",
+          includes:
+            "Negotiated rate, dedicated infrastructure, SLAs, advanced security and compliance certifications, dedicated success manager.",
+          audience: "Larger operators with deliverability-critical workflows or regulated industries.",
+        },
+      ],
+      paymentFrequency: "Monthly subscription tied to volume tier; auto-upgrade as volume grows",
+      freeTrialBehavior:
+        "Free tier IS the trial; 100 emails/month is enough for development testing but not for production.",
+    },
+    anchorAnalysis: {
+      pattern: "Brand-promise anchor",
+      analysis:
+        "Postmark's pricing page does not lead with an aggressive free tier or an obvious anchor tier. The implicit anchor is the brand promise itself: deliverability over a decade. Buyers who land on the pricing page have already been pre-sold on the promise via marketing; the pricing decision is the binary 'commit at this volume' decision. The simplicity matches the brand voice.",
+    },
+    upgradeTrigger: {
+      pattern: "Volume threshold plus deliverability-critical use case",
+      analysis:
+        "Two triggers fire together: the 100/month free cap forces any production use to upgrade immediately; the deliverability-critical nature of transactional email (password resets, receipts) means buyers who reach this volume have already decided they need Postmark-grade reliability. The conservative free tier filters out experimenters and converts only buyers who commit to the brand promise.",
+    },
+    whatsWorking: [
+      "Conservative free tier (100/month) filters for committed buyers and reduces free-tier infrastructure costs.",
+      "Volume tiering aligns the bill with both customer value (send volume) and platform cost (infrastructure to deliver reliably).",
+      "Separate transactional and broadcast streams as architectural pricing differentiator — same feature on all tiers, never removed for cost.",
+      "Dedicated IP option on higher tiers gives marketing-email senders a meaningful deliverability lever as they scale.",
+      "Brand-promise marketing pre-sells the pricing decision — buyers arrive at the pricing page already pre-decided on the value.",
+      "ActiveCampaign acquisition (2022) keeps the platform operationally stable while preserving the deliverability-first brand.",
+    ],
+    whatToAdapt: [
+      "Conservative free tiers filter for committed buyers — sometimes the right move is to attract fewer signups who convert at higher rates rather than more signups who burn infrastructure.",
+      "Pricing structure should match brand voice: deliverability-first products price like infrastructure (volume-based, no surprises); aggressive growth products price like consumer SaaS (generous free tiers, viral mechanics).",
+      "Architectural decisions (like separated streams) can be the structural pricing differentiator instead of feature-gating tiers.",
+    ],
+    whatToAvoid: [
+      "Do not adopt conservative free tiers if your brand promise is growth or viral acquisition. The pricing model must match the brand promise.",
+      "Do not skip dedicated IPs or advanced deliverability features at higher tiers if you serve marketing-email senders. The structural needs at high volume justify the price gap.",
+    ],
+    brunsonLens: {
+      stack: "Three-rung stack: free, volume-tiered paid, enterprise custom. No add-on layer, no feature gates within tiers.",
+      valueLadder: "Three-rung Value Ladder with conservative free filter at the front and custom enterprise back-end.",
+      decoyOrAnchor: "Brand-promise anchor — the pricing decision is pre-sold by the deliverability marketing.",
+      paymentMechanics: "Monthly volume-tiered subscription; no per-seat scaling; auto-upgrade as send volume grows.",
+    },
+    faqs: [
+      {
+        q: "Why is Postmark's free tier so conservative compared to Resend's?",
+        a: "Because the conservative cap filters for committed buyers. Resend's 3K/mo free tier is calibrated for growth (more signups, more eventual paid conversion); Postmark's 100/mo is calibrated for filtering (fewer signups, higher commitment rate among those who arrive). Different pricing philosophies aligned with different growth strategies.",
+      },
+      {
+        q: "Should an indie SaaS use Postmark for marketing email?",
+        a: "Postmark supports marketing email through its broadcast streams, but the platform is primarily designed for transactional. For high-volume marketing email with sophisticated automation and segmentation, dedicated marketing-email platforms (Loops, Klaviyo, Customer.io) usually serve better. Postmark + a marketing platform is a common stack.",
+      },
+      {
+        q: "Why are separate transactional and broadcast streams included on all tiers?",
+        a: "Because the architectural decision is the brand promise. Removing the separation at lower tiers would contradict the deliverability-first positioning. Postmark prices the volume, not the architecture.",
+      },
+      {
+        q: "What is the Brunson lens on Postmark's pricing?",
+        a: "Three-rung Value Ladder with brand-promise anchor mechanics and a deliberately conservative free filter. The unusual element is the alignment between pricing strategy and brand voice — Postmark's single-message deliverability marketing flows directly into a pricing model that filters for committed buyers. Most SaaS treat pricing as separate from brand; Postmark treats them as one decision.",
+      },
+    ],
+    tags: ["volume-tiered", "conservative-free", "brand-promise-anchor", "deliverability"],
+    homepageUrl: "https://postmarkapp.com/",
+    pricingPageUrl: "https://postmarkapp.com/pricing",
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "testimonial-to",
+    displayName: "Testimonial.to",
+    creator: "Damon Chen",
+    category: "Testimonial collection",
+    oneLine:
+      "Testimonial.to converged on the same pricing model as Senja: free-with-branding plus brand-removal upsell. The convergence proves the model is right for the category.",
+    tldr:
+      "Testimonial.to's pricing structure is functionally identical to Senja's: free tier with Testimonial.to branding on the Wall of Love widget, paid tiers remove branding and unlock advanced features. Both companies converged on this model because it works structurally for the category. The lesson for indie founders: when two competitors independently arrive at the same pricing model, the model is structurally correct for the category — copy the structure and compete on execution.",
+    productSnapshot: {
+      whatTheySell:
+        "A testimonial collection and display platform for SaaS, agencies, and creators, with strong video testimonial features and AI-assisted editing.",
+      whoFor:
+        "Indie SaaS, agencies, and creators who need video and text testimonials displayed cleanly on their marketing sites.",
+    },
+    pricingStructure: {
+      model: "Freemium with brand-removal upgrade trigger and AI-feature gating",
+      tiers: [
+        {
+          name: "Free (Hobby)",
+          pricePoint: "$0",
+          includes:
+            "Text and video testimonial collection, basic Wall of Love widget, Testimonial.to branding visible, limited responses per month, basic integrations.",
+          audience: "Indie founders collecting first testimonials before serious publication.",
+        },
+        {
+          name: "Starter (paid)",
+          pricePoint: "approximately $20/mo (verified 2026-05-17)",
+          includes:
+            "Brand removal, custom Wall of Love, video uploads, more integrations, more monthly responses.",
+          audience: "Indie SaaS ready to publish testimonials on the marketing site.",
+        },
+        {
+          name: "Premium",
+          pricePoint: "approximately $50/mo (verified 2026-05-17)",
+          includes:
+            "AI-assisted video editing and highlights, team workspace, advanced customization, embed analytics, API access.",
+          audience: "Agencies, SaaS with multiple team members, creators using video at scale.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Custom contracts, SSO, dedicated support, larger limits, advanced security.",
+          audience: "Larger organizations or agencies serving many clients.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount",
+      freeTrialBehavior:
+        "Free tier IS the trial; paid features can be sampled briefly on signup.",
+    },
+    anchorAnalysis: {
+      pattern: "Brand-removal-trigger anchor (same as Senja)",
+      analysis:
+        "Testimonial.to's center of gravity is the brand-removal trigger between Free and Starter, identical to Senja's pattern. Premium tier at approximately $50/mo anchors above; Starter at approximately $20/mo reads as the natural choice for the indie buyer. The convergence with Senja on this anchor mechanic is not coincidence — it is the structurally correct shape for testimonial SaaS where the customer's output (Wall of Love widget) is publicly visible.",
+    },
+    upgradeTrigger: {
+      pattern: "Brand removal at marketing-surface publication, plus AI feature gating",
+      analysis:
+        "Two triggers fire: brand removal at publication (same as Senja) drives free-to-Starter conversion when the founder publishes testimonials on a public marketing page; AI feature gating (AI-assisted video editing, highlights) drives Starter-to-Premium conversion when video testimonials become a serious surface. The double trigger captures conversion at two distinct usage moments.",
+    },
+    whatsWorking: [
+      "Brand-removal trigger aligns the upgrade moment with structural willingness-to-pay spike (same mechanic as Senja).",
+      "Free tier with branding feeds the visible-customer flywheel — every Testimonial.to widget on a customer's marketing site is implicit advertising.",
+      "AI-feature gating on Premium creates a second upgrade trigger that fires for video-heavy use cases.",
+      "Premium tier price gap from Starter (approximately $50 vs $20) anchors the page and reinforces the indie-vs-agency tier split.",
+      "Solo-founder operations match indie-buyer expectations — Damon Chen is the brand, the product, and the support.",
+      "Convergence with Senja on pricing structure validates the category model — the structurally correct shape is replicated by both companies.",
+    ],
+    whatToAdapt: [
+      "When two competitors converge on the same pricing model, the model is structurally correct for the category. Copy the structure and compete on execution rather than reinventing pricing.",
+      "Brand-removal triggers compound visible-customer presence: free customers seed the flywheel; paid customers extract value at the moment willingness-to-pay spikes.",
+      "Layer secondary triggers (AI-feature gating) on top of the primary trigger to capture additional upgrade conversion as usage matures.",
+    ],
+    whatToAvoid: [
+      "Do not adopt free-with-branding if your product output is not publicly visible. The flywheel needs the branding to compound through customer marketing surfaces.",
+      "Do not over-tier AI features if they become table-stakes faster than expected. AI-feature gating works when the features are forward-looking; it fails when they become expected baseline.",
+    ],
+    brunsonLens: {
+      stack: "Four-rung stack with progressive feature additions; Premium tier anchors against Starter.",
+      valueLadder: "Four-rung Value Ladder (Free → Starter → Premium → Enterprise) with brand removal as the structural front-end trigger and AI features as the secondary upgrade trigger.",
+      decoyOrAnchor: "Premium tier as anchor; Starter as indie-friendly mainstream; Free as visible-customer flywheel seed.",
+      paymentMechanics: "Monthly or annual subscription; no usage metering below the response-count caps on Free and Starter.",
+    },
+    faqs: [
+      {
+        q: "Why is Testimonial.to's pricing nearly identical to Senja's?",
+        a: "Because both companies independently arrived at the structurally correct shape for testimonial SaaS: free-with-branding seeds the visible-customer flywheel, brand removal is the upgrade trigger at publication. When two competitors converge on a pricing model, the model is right; the convergence is signal, not coincidence.",
+      },
+      {
+        q: "Should an indie SaaS in a different category copy this exact pricing model?",
+        a: "Only if your output is publicly visible. The free-with-branding flywheel works for testimonial widgets, form embeds, scheduling pages, video links — anywhere the customer surface includes the platform's brand. For invisible-output products (internal tools, dashboards, admin panels), the model does not work and the free tier just bleeds money.",
+      },
+      {
+        q: "Why does Testimonial.to gate AI features at Premium?",
+        a: "Because AI features (video editing, highlights, summarization) are forward-looking for testimonial workflows in 2026. Gating them at Premium creates an upgrade trigger that fires as customer expectations evolve — Starter buyers upgrade to Premium when AI becomes the expected baseline. The gating is a future-state revenue lever.",
+      },
+      {
+        q: "What is the Brunson lens on Testimonial.to's pricing?",
+        a: "Four-rung Value Ladder with brand-removal-trigger acquisition flywheel plus AI-feature-gated secondary upgrade trigger. The unusual element is the explicit convergence with Senja on pricing structure — both companies validate the category model. Brunson lesson: when category convergence happens on pricing, copy the structure and compete on execution.",
+      },
+    ],
+    tags: ["brand-removal-trigger", "visible-customer", "freemium", "ai-feature-gating"],
+    homepageUrl: "https://testimonial.to/",
+    pricingPageUrl: "https://testimonial.to/pricing",
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access.
