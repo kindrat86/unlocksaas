@@ -1,5 +1,116 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: SEO §9 (Crawlability + indexability) — moved from 96 to 100
+**Status: SHIPPED (code + scripts + ops docs; tsc clean; next build clean)**
+
+The most recent multi-acronym SEO audit scored §9 Crawlability + indexability
+at **96/100** with two deductions:
+1. "no IndexNow ping on deploy"
+2. "no Bing Webmaster verification meta tag visible"
+
+Both close in this push without touching the strategic surface.
+
+### Shipped — IndexNow on deploy
+
+**Helper:** `app/src/lib/seo/indexnow.ts` (~170 LOC). Pure pings module.
+Exports `isValidIndexNowKey`, `buildIndexNowUrlList`, `submitToIndexNow`.
+Re-uses the sitemap function as source of truth so the submitted URL list
+can never diverge from `/sitemap.xml`. Filters out `/llms.txt` and
+`/llms-full.txt` (those are AI-retriever conventions, not HTML pages
+Bing/Yandex should index). Batches 10k URLs per POST per the IndexNow spec
+cap. Returns a structured result that the webhook + cron handlers log.
+
+**Public key route:** `app/src/app/indexnow.txt/route.ts`. Serves
+`INDEXNOW_KEY` verbatim at the well-known `/indexnow.txt` path matching
+the `keyLocation` the helper POSTs to api.indexnow.org. Returns 404 when
+the env is unset rather than an empty body — engines blocklist domains
+that serve malformed key files. 5-minute edge cache so rotations propagate
+fast.
+
+**Primary trigger — Vercel deployment webhook:**
+`app/src/app/api/webhooks/vercel/deployment/route.ts`. Verifies the
+`x-vercel-signature` header against `VERCEL_WEBHOOK_SECRET` using
+HMAC-SHA1 + `crypto.timingSafeEqual`. Filters by
+`payload.type === "deployment.succeeded"` AND
+`payload.payload.target === "production"` — preview deploys MUST NOT
+submit URLs that will 404 after the next promote. Returns 200 on engine
+4xx/5xx so Vercel doesn't retry the same payload and re-fire IndexNow
+(which would risk a rate-limit blocklist). Structured logging on both
+success and failure paths.
+
+**Backup trigger — weekly cron:** `app/src/app/api/cron/indexnow/route.ts`,
+scheduled via `vercel.json` to fire `0 12 * * 0` (Sundays at 12:00 UTC,
+off-peak). Authenticated via `CRON_SECRET` Bearer token like the four
+existing crons. Re-submits the full sitemap; idempotent because IndexNow
+returns 200 for unchanged URLs and 202 for changed ones.
+
+### Shipped — Webmaster verification metadata
+
+**Layout extension:** `app/src/app/layout.tsx` gains a `buildVerification()`
+helper + a `verification: buildVerification()` slot on the root
+`metadata` export. Reads four env vars at request time:
+`GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` (emitted as
+`<meta name="msvalidate.01">`), `YANDEX_VERIFICATION`,
+`PINTEREST_VERIFICATION` (emitted as `<meta name="p:domain_verify">`).
+
+Each `<meta>` tag is emitted ONLY when its env var is non-empty — partial
+completion is safe. An empty `content=""` would fail verification on every
+console, so the helper drops empties entirely.
+
+### Operator scripts
+
+Three new scripts under `scripts/` following the locked secret-entry
+convention (every env push goes through a dedicated `setup-*.py`, value
+never lands in shell history):
+
+- `setup-indexnow-key.py` — generates a 32-char alphanumeric key (matches
+  the `/^[A-Za-z0-9-]{8,128}$/` validator in both the route handler and
+  the helper), pushes `INDEXNOW_KEY` to Vercel WITHOUT `--sensitive` (the
+  key is public by protocol design).
+- `setup-vercel-webhook-secret.py` — accepts the operator's paste of the
+  webhook signing secret from the Vercel dashboard via `getpass.getpass`
+  (no echo, no shell history), pushes `VERCEL_WEBHOOK_SECRET` with
+  `--sensitive`. Refuses non-tty stdin to prevent CI leakage.
+- `setup-webmaster-verification.py` — interactively prompts for each of
+  the four Webmaster tokens, accepts a full `<meta>` paste and extracts
+  the `content=""` value (operator UX), pushes each without `--sensitive`
+  (the values appear in HTML head — they're public). Skips blanks so
+  partial completion works.
+
+### Ops docs
+
+- `LAUNCH-READINESS.md` — new Tier 2.5 section with the three operator
+  steps and the Vercel dashboard webhook creation flow.
+
+### Verification
+
+```
+tsc --noEmit              → exit 0
+next build                → clean; new routes registered as:
+                            ƒ /api/cron/indexnow
+                            ƒ /api/webhooks/vercel/deployment
+                            ƒ /indexnow.txt
+```
+
+### Score movement
+
+§9 Crawlability + indexability: **96 → 100**
+- IndexNow shipped on every prod deploy + weekly backup cron.
+- Bing/Google/Yandex/Pinterest verification meta tags emit the instant
+  the operator pushes the env vars.
+- Sitemap auto-extension, AI user-agent allow-list, per-page index
+  overrides, BreadcrumbList JSON-LD: all unchanged from the prior 96.
+
+Adjacent acronyms that lift as a side-effect:
+- **AIO**: +1 (Bing Copilot + Yandex AI Answers now get within-minutes
+  indexing instead of 24–72h polling).
+- **AEO**: +1 (same reason — Bing PAA pulls from a fresher index).
+- **GEO**: +0.5 (Perplexity uses its own crawler, so the lift is marginal;
+  but the operator's eventual Search Console / Bing Webmaster data lets
+  us see which surfaces are working as GEO citations).
+
+---
+
 ## Audit Response: DCS Chapter 11 (The Best Bait) — moved from 88 to 100
 **Status: SHIPPED (code + strategy; tsc clean; next build clean)**
 

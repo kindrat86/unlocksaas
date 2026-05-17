@@ -139,6 +139,58 @@ done.
    replaces the public IH/HN proxies with verbatim language from Marco-
    adjacent real founders.
 
+### Tier 2.5 — Crawlability + AI-engine discoverability
+
+These close the SEO audit deductions on item §9 (crawlability + indexability).
+None block revenue, all compound visibility once shipped.
+
+5a. **Push `INDEXNOW_KEY` + create the Vercel deployment webhook.** Three
+    steps, ~5 minutes total:
+
+    ```bash
+    # 1. Generate + push the public IndexNow key to Vercel (production).
+    python3 scripts/setup-indexnow-key.py
+    ```
+
+    Then in the Vercel dashboard:
+
+    - Project settings → Webhooks → **Create webhook**
+    - Endpoint URL: `https://unlocksaas.com/api/webhooks/vercel/deployment`
+    - Events: `deployment.succeeded`
+    - Copy the signing secret shown ONCE on creation.
+
+    ```bash
+    # 2. Paste the signing secret into the env (input is not echoed).
+    python3 scripts/setup-vercel-webhook-secret.py
+    ```
+
+    After the next production deploy:
+    - `https://unlocksaas.com/indexnow.txt` will serve the key.
+    - The deployment webhook fires the IndexNow ping to Bing + Yandex +
+      Naver + Seznam + Yep within seconds of promote.
+    - The weekly cron at `/api/cron/indexnow` re-submits the full sitemap
+      every Sunday at 12:00 UTC as belt-and-suspenders.
+
+5b. **Push Webmaster verification tokens + verify in each console.** Each
+    token is a public meta-tag value — the script only emits the
+    corresponding `<meta>` tag when the env var is set, so partial
+    completion is safe (you can verify Google today and Bing next week).
+
+    ```bash
+    # Prompts for each token in turn; leave blank to skip any.
+    python3 scripts/setup-webmaster-verification.py
+    ```
+
+    Then in each console:
+    - Google Search Console → property → Verify
+    - Bing Webmaster Tools → site → Verify
+    - Yandex Webmaster → site → Verify
+    - Pinterest business → claim website → Verify
+
+    With these verified, you get indexing telemetry (impressions, CTR,
+    average position) from each engine, plus the ability to submit
+    sitemap updates manually if the IndexNow flow ever misfires.
+
 ### Tier 3 — first 100 visitors
 
 6. **Post the launch X thread.** Lead with Story #1 (The Blank Offer

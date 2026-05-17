@@ -7,6 +7,55 @@ import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
 
+/**
+ * Webmaster verification tokens — operator-pushed env vars.
+ *
+ * Closes the SEO audit deduction "no Bing Webmaster verification meta tag
+ * visible" (see build-log.md for crawlability §9). Each search / AI
+ * console (Google Search Console, Bing Webmaster Tools, Yandex Webmaster,
+ * Pinterest) requires a one-time meta-tag handshake before we can submit
+ * sitemaps and read indexing telemetry.
+ *
+ * Env-driven so the meta tag appears the instant the operator pushes the
+ * value — no code edit or redeploy gates the verification step. Each tag
+ * is emitted ONLY when its env var is set; an empty content="" attribute
+ * would fail verification on every console.
+ *
+ * Brunson Hard-Rule reconciliation: every token below is verifiable by
+ * the operator with one "confirm" click in the corresponding console.
+ * No fabricated tokens. See LAUNCH-READINESS.md §Webmaster-verification
+ * for the push flow.
+ */
+type VerificationOther = NonNullable<
+  NonNullable<Metadata["verification"]>["other"]
+>;
+
+function buildVerification(): Metadata["verification"] | undefined {
+  const google = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+  const yandex = process.env.YANDEX_VERIFICATION?.trim();
+  const bing = process.env.BING_SITE_VERIFICATION?.trim();
+  const pinterest = process.env.PINTEREST_VERIFICATION?.trim();
+
+  // Next.js's typed `verification` only covers google / yandex / yahoo / me.
+  // Bing's tag is <meta name="msvalidate.01"> and Pinterest's is
+  // <meta name="p:domain_verify"> — both go through `other`.
+  const other: VerificationOther = {};
+  if (bing) other["msvalidate.01"] = bing;
+  if (pinterest) other["p:domain_verify"] = pinterest;
+
+  const hasAny =
+    Boolean(google) ||
+    Boolean(yandex) ||
+    Object.keys(other).length > 0;
+  if (!hasAny) return undefined;
+
+  const v: NonNullable<Metadata["verification"]> = {};
+  if (google) v.google = google;
+  if (yandex) v.yandex = yandex;
+  if (Object.keys(other).length > 0) v.other = other;
+  return v;
+}
+
 // Mobile-first viewport. `viewportFit: cover` lets the page paint under
 // iOS notches; padding then uses safe-area-inset via Tailwind utilities.
 // `maximumScale: 5` (not 1) preserves accessibility — Marco's avatar
@@ -52,6 +101,7 @@ export const metadata: Metadata = {
     },
   },
   robots: { index: true, follow: true },
+  verification: buildVerification(),
   openGraph: {
     type: "website",
     siteName: "Unlock SaaS",
