@@ -294,10 +294,9 @@ const DIAGNOSTIC_HOWTO_JSON = JSON.stringify({
   inLanguage: "en-US",
   // VEO — HowTo steps are inherently voice-readable: a voice assistant
   // already reads the `name` + `text` of each step out loud when answering
-  // "how do I do X." Declaring `speakable` extends the same affordance to
-  // the page's headline+lede (tagged data-speakable) so the voice intro
-  // also reads naturally.
-  speakable: SPEAKABLE_SPEC,
+  // "how do I do X." A page-specific `speakable` block is declared below
+  // (after `step`) so the voice intro reads the same three Wrong Person /
+  // Weak Offer / Weak Belief labels the on-page section renders.
   ...ACCESS_MODE_TEXTUAL,
   step: [
     {
