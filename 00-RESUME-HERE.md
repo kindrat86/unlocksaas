@@ -47,16 +47,19 @@ Open this folder in Claude Code. Paste the prompt block from `strategy/BUILD-PRO
 - **Movement:** Manifesto locked. Identity: **Verified Builders** (canonical / SSR default, LOCKED 2026-05-17). 50/50 A/B against "Paid Builders" is LIVE in production code (cookies + beacons + Stripe-metadata attribution shipped; awaiting Vercel deploy for first exposures). Future-based cause: "founders who build real things with AI deserve to get paid for them."
 - **Belief work:** Full Epiphany Bridge (7 elements). Four Core Stories: Vehicle, 4 Internal rewrites with kinda-like bridges, 5 External rewrites, 3 chain breakers.
 - **Long-form $49 sales page:** Big Domino written. Three Secrets fully scripted with Story-Strategy-Case Study. Stack slides 16-30. 16 mini-closes in 4 categories. Scarcity deliberately rejected.
-- **Dream 100:** ~100 entries across 7 categories. Pending: founder confirms 10 specific Category 2 influencer names.
+- **Dream 100:** 100 specific entries across 7 categories. Category 2 LOCKED 2026-05-17 (rows 31-40 filled with Castrio / Chen / Nutlope / Tibo / Mubs / Walling / Lavingia / Walls / Jackson / Gascoigne). Podcast warm-up plan locked in workbook 08 §3 (5 Tier-1 targets with contact path + pitch angle + lead time).
 - **Launch channels:** X + Indie Hackers + r/SaaS + r/microsaas. All others deferred.
 - **Growth map:** Three phases, evidence-based not time-based. Phase 2 trigger: 3 verified customer cycles. Phase 3 trigger: 50 paying customers.
 - **Design principle:** framework into the engine, not onto the user.
+- **Funnel hacks:** v2 LOCKED 2026-05-17 — 7 competitors hacked + 1 anti-hack. Full breakdown in `strategy/funnel-hacks.md`; structured array in `state.json` `funnel_hacks` (8 entries) + `funnel_hacks_synthesis` (v1 + v2 patterns); 17-row action matrix maps every finding to a specific file with P0/P1/P2 priority. Closes DCS Secret #5 + #8 + ES Secret #20 (Funnel Hacker's Cookbook).
 
 ## Founder open items before launch
 
-1. Fill 10 specific Category 2 influencer names in the Dream 100 (entries 31-40 still TBD in workbook 08 and in `dream-100.csv`).
-2. Fill `strategy/dollar-objections.md` template from 10+ founder conversations (template ready; conversations are founder-data-bound). This feeds $49 FAQ + disqualifying copy.
-3. Post-launch (~200 exposures per variant, after Vercel deploy unblocks): read Verified vs Paid Builders A/B results — SQL query lives in `state.json` `expert_secrets.movement.identity_label.infrastructure.read_query`. The A/B itself is already live in code.
+1. **Begin Dream 100 warm-up reps** on the 10 newly-locked Category 2 influencers (rows 31-40 of `dream-100.csv`) AND the 5 Tier-1 podcasts (workbook 08 §3). Daily replies + 1 cited mention per week. Track in a spreadsheet. No pitches — pitch readiness gate is first verified-customer cycle.
+2. Re-mine the private 10-conversation set via authenticated MCP (Slack / Gmail / Granola) to refine niche-specific dollar-objection language for $49 FAQ + disqualifier copy. Public-source mine already shipped in `strategy/dollar-objections.md` (30+ quotes, 7 categories).
+3. Record the six-line founder-intro video (workbook 01 §6 Beat 2 verbatim) and replace the placeholder on `/`. Phone-camera quality is fine — Reluctant Hero voice beats polish.
+4. Push `CRON_SECRET` + `UNSUBSCRIBE_SECRET` + PostHog key + Sentry credentials to Vercel envs. Setup scripts already exist (`scripts/setup-cron-secret.py`, `scripts/setup-posthog-key.py`, `scripts/setup-sentry.py`).
+5. Post-launch (~200 exposures per variant, once cron is live): read Verified vs Paid Builders A/B results — SQL query in `state.json` `expert_secrets.movement.identity_label.infrastructure.read_query`.
 
 ## Tech stack (locked in BUILD-PROMPT)
 

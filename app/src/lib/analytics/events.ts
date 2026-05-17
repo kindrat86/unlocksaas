@@ -23,9 +23,23 @@ export const Event = {
   // Top-of-funnel (client-side)
   FunnelHubViewed: "funnel_hub_viewed",
   FunnelHubCtaClicked: "funnel_hub_cta_clicked",
+  // VSL — Who/What/Why/How player on funnel hub, $1 Starter, $49 sales.
+  // Per DotCom Secrets Secret #20: VSL completion is the highest-correlation
+  // pre-conversion signal on cold traffic. Track granularly.
+  VslImpression: "vsl_impression",         // mounted in viewport
+  VslPlayed: "vsl_played",                  // user pressed play (or autoplay started)
+  VslSceneAdvanced: "vsl_scene_advanced",   // each scene boundary
+  VslSkippedToOffer: "vsl_skipped_to_offer",
+  VslReplayed: "vsl_replayed",
+  VslCompleted: "vsl_completed",
   DiagnosticPageViewed: "diagnostic_page_viewed",
   DiagnosticFormSubmitted: "diagnostic_form_submitted",
   DiagnosticResultViewed: "diagnostic_result_viewed",
+  // Reverse Squeeze (DotCom Secrets Secret 14, reverse variant) — value-first
+  // public page, opt-in mid- and end-content. Placement is tracked as a
+  // property so we can compare mid-content vs end-content conversion.
+  ParablesPageViewed: "parables_page_viewed",
+  ParablesOptInSubmitted: "parables_opt_in_submitted",
   StarterPageViewed: "starter_page_viewed",
   StarterCheckoutClicked: "starter_checkout_clicked",
   MachineSalesPageViewed: "machine_sales_page_viewed",
@@ -99,4 +113,25 @@ export interface ConversionProps {
 export interface DiagnosticResultProps {
   label: "wrong_person" | "weak_offer" | "weak_belief" | "indeterminate";
   product_url?: string;
+}
+
+export type VslSurface = "funnel_hub" | "starter" | "machine_sales";
+export type VslMode = "video" | "scripted";
+
+export interface VslEventProps {
+  surface: VslSurface;
+  mode: VslMode;
+}
+
+export interface VslSceneProps extends VslEventProps {
+  scene_id: string;
+  scene_index: number;
+  scene_role: string;
+}
+
+export interface VslCompletionProps extends VslEventProps {
+  /** Percentage of total runtime watched, 0-100. */
+  watched_percent: number;
+  /** Whether the visitor sat through to the end or skipped. */
+  reached_end: boolean;
 }

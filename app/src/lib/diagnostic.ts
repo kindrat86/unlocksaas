@@ -26,6 +26,179 @@ export type DiagnosticResult = {
   nextStep: string; // single-action CTA copy
 };
 
+// ---------------------------------------------------------------------------
+// Survey Funnel + Bridge Script taxonomy (Brunson DCS Secret 15).
+//
+// The Free Diagnostic asks 3 segmenting questions in addition to URL+email.
+// Combined with the Claude label, each lead lands in one of six buckets that
+// drive a UNIQUE bridge page + (sometimes) a different downstream destination.
+// ---------------------------------------------------------------------------
+
+export type TimeSinceLaunch = "under_30" | "30_to_90" | "90_plus";
+export type RecentRevenue = "zero" | "under_100" | "100_to_1k" | "over_1k";
+export type BiggestAttempt =
+  | "more_building"
+  | "seo_content"
+  | "paid_ads"
+  | "customer_conversations"
+  | "nothing_yet";
+
+export const TIME_VALUES: readonly TimeSinceLaunch[] = [
+  "under_30",
+  "30_to_90",
+  "90_plus",
+] as const;
+export const REVENUE_VALUES: readonly RecentRevenue[] = [
+  "zero",
+  "under_100",
+  "100_to_1k",
+  "over_1k",
+] as const;
+export const ATTEMPT_VALUES: readonly BiggestAttempt[] = [
+  "more_building",
+  "seo_content",
+  "paid_ads",
+  "customer_conversations",
+  "nothing_yet",
+] as const;
+
+export type SurveyAnswers = {
+  time_since_launch: TimeSinceLaunch;
+  recent_revenue: RecentRevenue;
+  biggest_attempt: BiggestAttempt;
+};
+
+export type Bucket =
+  // The Marco prototype: a year of avoidance, flat Stripe, builds/SEOs/runs
+  // ads as a substitute for talking to a customer. Most common bucket.
+  | "customer_avoider"
+  // Pure builder: keeps shipping features, won't sell. Time since launch +
+  // "more_building" + $0 revenue.
+  | "stuck_builder"
+  // Tried marketing tactics (SEO, ads), still flat. The SEO Escape Hatch
+  // parable lands hardest here.
+  | "tactic_shopper"
+  // Shipped <30 days ago, low revenue: upstream of where the Machine helps.
+  // Sent to free content, NOT to the $1 Starter. Different destination.
+  | "premature"
+  // Has some traction, still flat. Marco's exact profile minus the bad
+  // marketing tactic — most likely to convert on the Mirror in Ten Founders
+  // parable.
+  | "traction_but_stuck"
+  // Revenue + already doing customer conversations. Past the bridge.
+  // Skip the $1 Starter; go straight to the $49 Machine sales page.
+  | "ready_to_scale"
+  // Fall-through for "error" label or unclassifiable rows.
+  | "error";
+
+export const BUCKETS: readonly Bucket[] = [
+  "customer_avoider",
+  "stuck_builder",
+  "tactic_shopper",
+  "premature",
+  "traction_but_stuck",
+  "ready_to_scale",
+  "error",
+] as const;
+
+/**
+ * Cross-tabulate the Claude label with the 3 survey signals into one of
+ * the seven named buckets.
+ *
+ * Order matters: the first rule that fires wins. Rules are arranged so the
+ * most specific (and most actionable) buckets get first dibs, then we fall
+ * through to broader segments, then to the safe default.
+ */
+export function assignBucket(
+  label: DiagnosticLabel | "error",
+  survey: SurveyAnswers,
+): Bucket {
+  if (label === "error") return "error";
+
+  const { time_since_launch, recent_revenue, biggest_attempt } = survey;
+
+  // 1. Ready-to-scale: already doing the work, has revenue. Past the gate.
+  if (
+    biggest_attempt === "customer_conversations" &&
+    (recent_revenue === "100_to_1k" || recent_revenue === "over_1k")
+  ) {
+    return "ready_to_scale";
+  }
+
+  // 2. Premature: shipped <30 days ago AND no real revenue. The Machine is
+  //    upstream of where they are. Sending them to the $1 Starter risks
+  //    burning a high-intent lead on work they haven't earned yet.
+  if (
+    time_since_launch === "under_30" &&
+    (recent_revenue === "zero" || recent_revenue === "under_100")
+  ) {
+    return "premature";
+  }
+
+  // 3. Tactic shopper: tried SEO or ads, 90+ days flat. The SEO Escape Hatch
+  //    parable is the bridge here.
+  if (
+    (biggest_attempt === "seo_content" || biggest_attempt === "paid_ads") &&
+    time_since_launch === "90_plus" &&
+    (recent_revenue === "zero" || recent_revenue === "under_100")
+  ) {
+    return "tactic_shopper";
+  }
+
+  // 4. Stuck builder: kept building, 90+ days, $0. Blank Offer Page parable.
+  if (
+    biggest_attempt === "more_building" &&
+    time_since_launch === "90_plus" &&
+    recent_revenue === "zero"
+  ) {
+    return "stuck_builder";
+  }
+
+  // 5. Traction but stuck: $100-$1k MRR, anything but customer conversations.
+  //    Closer than they think, but missing the systematization.
+  if (
+    recent_revenue === "100_to_1k" &&
+    biggest_attempt !== "customer_conversations" &&
+    (time_since_launch === "30_to_90" || time_since_launch === "90_plus")
+  ) {
+    return "traction_but_stuck";
+  }
+
+  // 6. Default: customer avoider. Catches the long tail of Marco-shaped
+  //    leads who don't fit the more specific buckets but match the disease.
+  return "customer_avoider";
+}
+
+/**
+ * The downstream destination per bucket. Brunson rule (DCS Secret 15):
+ * the bridge points to a different door for different readiness levels.
+ *
+ *  - "free_content" → no $1 ask yet; let the Soap Opera Sequence warm them up
+ *  - "starter"      → $1 Starter (the default for Marco-shaped leads)
+ *  - "machine"      → $49 Machine sales page directly (skip the $1)
+ */
+export function bucketDestination(
+  bucket: Bucket,
+): "free_content" | "starter" | "machine" {
+  if (bucket === "premature") return "free_content";
+  if (bucket === "ready_to_scale") return "machine";
+  return "starter";
+}
+
+export function isTimeSinceLaunch(v: unknown): v is TimeSinceLaunch {
+  return typeof v === "string" && (TIME_VALUES as readonly string[]).includes(v);
+}
+export function isRecentRevenue(v: unknown): v is RecentRevenue {
+  return (
+    typeof v === "string" && (REVENUE_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isBiggestAttempt(v: unknown): v is BiggestAttempt {
+  return (
+    typeof v === "string" && (ATTEMPT_VALUES as readonly string[]).includes(v)
+  );
+}
+
 export type DiagnosticError = {
   kind: "fetch_failed" | "blocked_host" | "invalid_url" | "empty_page" | "engine_failed";
   message: string;

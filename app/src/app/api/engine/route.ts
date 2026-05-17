@@ -6,6 +6,13 @@ import {
   type MilestoneKey,
   markMilestone,
 } from "@/lib/guarantee";
+import {
+  getProjectIdForUser,
+  isEngineStepId,
+  persistStepOutput,
+  type EngineStepId,
+} from "@/lib/step-outputs";
+import { sendStepDeliverableEmail } from "@/lib/deliverable-email";
 
 /**
  * Engine routes for The Machine, Steps 1-5.
@@ -162,9 +169,10 @@ REJECT (accepted: false) if the answer is:
 - Too vague to act on (no specifics, no quotes, no named places)
 
 When rejecting, use pushback drawn from these belief rewrites:
-- "Customers exist outside your head. The only way to find them is to leave it."
+- "Customers exist outside your head. The only way to find them is to leave it." (Internal Belief rewrite #4, workbook 06 §4)
 - "'Founders' is a category, not a person. Try again with a name and a situation."
 - "If you cannot name them, you have not talked to them yet."
+- "Before you call them validated, check Stripe. The people who upvote your milestones aren't always the people who pay for your product." (verbatim from nimesh on Indie Hackers — see strategy/dollar-objections.md Category 7; use this when the user's named customer is a praise-source rather than a payment-source)
 
 ACCEPT (accepted: true) if the answer is specific: a real name, a real situation, a quoted pain, named places.
 
@@ -291,6 +299,8 @@ When rejecting, push back:
 - "'Founders' is the same trap we caught in Step 1. Niche keywords mean: the 2-3 words your dream customer would use to describe themselves to a stranger."
 - "Pick categories where YOUR dream customer actually congregates, not where the loudest noise is."
 - "Outreach without the AC voice is spam. The point is the parasocial bond. Tone notes that break the voice break the funnel."
+- "Zero paying customers. Zero cold emails sent. Zero uncomfortable conversations. That is the pattern almost every stuck founder shares. Step 5 is the bridge out of that pattern — it only works if you actually fire the messages, not just generate them." (verbatim from jackfranklyn on Indie Hackers — see strategy/dollar-objections.md Category 4; use this when the user is hesitating on the send mechanic itself, e.g. asking the engine to draft 50 variants instead of sending the first one)
+- "Outreach is not anyone's strength. It is a mechanical process. The tool generates the message, picks the target, and tracks the send. Strength is irrelevant." (External Belief rewrite #3, workbook 06 §4)
 
 ACCEPT (accepted: true) if specific, on-voice, and on-strategy.
 
@@ -326,6 +336,22 @@ export async function POST(req: NextRequest) {
   const startedAt = Date.now();
   let stepId: string | undefined;
   let questionIndex: number | undefined;
+
+  // Fail loudly if the engine is unkeyed. The previous behaviour (lazy init
+  // throwing only inside Anthropic.messages.create) surfaced as a generic
+  // 500 with no operator signal. Brunson's Results-in-Advance contract
+  // requires that the engine either pushes back hard or refuses to run —
+  // never that it silently accepts everything.
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.error("[engine] ANTHROPIC_API_KEY missing — refusing to run");
+    return NextResponse.json(
+      {
+        error:
+          "The engine is not yet keyed up. Reach out to maryan@unlocksaas.com and I will turn it on.",
+      },
+      { status: 503 }
+    );
+  }
 
   try {
     const body = await req.json();
@@ -364,16 +390,57 @@ Validate this answer. Respond ONLY with JSON.`,
         ? validationResponse.content[0].text
         : "";
 
+    // Brunson Reluctant-Hero default: when the engine cannot read its own
+    // validator output, REJECT, do not accept. Accepting on parse failure
+    // turns the engine into a vague-answer rubber stamp — the exact failure
+    // mode the Machine exists to prevent. Reject with a pushback that names
+    // the gap so the user re-submits sharper, not louder.
     let parsed: { accepted: boolean; message: string };
     try {
       parsed = JSON.parse(validationText);
     } catch {
       const jsonMatch = validationText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
-        parsed = JSON.parse(jsonMatch[0]);
+        try {
+          parsed = JSON.parse(jsonMatch[0]);
+        } catch {
+          console.warn("[engine] validator JSON parse failed — defaulting REJECT", {
+            stepId,
+            questionIndex,
+            preview: validationText.slice(0, 200),
+          });
+          parsed = {
+            accepted: false,
+            message:
+              "I could not read that as a specific answer. Try again — name the person, the moment, the number. The vaguer the answer, the harder the engine pushes back.",
+          };
+        }
       } else {
-        parsed = { accepted: true, message: "Good. Next." };
+        console.warn("[engine] validator returned no JSON — defaulting REJECT", {
+          stepId,
+          questionIndex,
+          preview: validationText.slice(0, 200),
+        });
+        parsed = {
+          accepted: false,
+          message:
+            "I could not read that as a specific answer. Try again — name the person, the moment, the number. The vaguer the answer, the harder the engine pushes back.",
+        };
       }
+    }
+
+    if (typeof parsed.accepted !== "boolean") {
+      console.warn("[engine] validator returned malformed shape — defaulting REJECT", {
+        stepId,
+        questionIndex,
+        parsed,
+      });
+      parsed = {
+        accepted: false,
+        message:
+          parsed.message ??
+          "Engine had to re-read your answer. Try once more, sharper. Name the person, the moment, the number.",
+      };
     }
 
     if (!parsed.accepted) {
@@ -406,22 +473,49 @@ Assemble the output now.`,
           ? assemblyResponse.content[0].text
           : "";
 
-      await fireMilestoneForStep(stepId!).catch((err) => {
-        console.warn("[engine] markMilestone failed", {
+      // Refuse to fire the milestone or deliver the email if the engine
+      // produced an empty body — that's a degenerate run, not a success.
+      if (!outputText.trim()) {
+        console.warn("[engine] assembly returned empty output — not delivering", {
+          stepId,
+        });
+        return NextResponse.json(
+          {
+            error:
+              "The engine could not assemble a final deliverable. Re-run the last answer with more specifics and try again.",
+          },
+          { status: 502 }
+        );
+      }
+
+      // Three parallel side-effects on successful assembly: milestone fire
+      // (gates the 60-day guarantee), step-output persistence (makes the
+      // deliverable survive session loss — Brunson Results-in-Advance), and
+      // deliverable email (puts the deliverable in the user's inbox where
+      // tab-close cannot reach it). All three are best-effort; the user
+      // already has the output on screen.
+      const deliveryResult = await deliverStepResult(
+        stepId!,
+        outputText
+      ).catch((err) => {
+        console.warn("[engine] delivery side-effect failed", {
           stepId,
           message: err instanceof Error ? err.message : String(err),
         });
+        return { milestone_fired: false, persisted: false, emailed: false };
       });
 
       console.log("[engine] step assembled", {
         stepId,
         durationMs: Date.now() - startedAt,
+        ...deliveryResult,
       });
 
       return NextResponse.json({
         accepted: true,
         message: parsed.message,
         output: outputText,
+        delivery: deliveryResult,
       });
     }
 
@@ -443,40 +537,97 @@ Assemble the output now.`,
   }
 }
 
+interface DeliveryResult {
+  milestone_fired: boolean;
+  persisted: boolean;
+  emailed: boolean;
+}
+
 /**
- * Mark the milestone for the just-completed step on the signed-in user's
- * profile. No-op if (a) the step has no associated milestone, (b) no signed-in
- * user (auth UI is in flight, separate sprint), or (c) the user has no
- * profile row yet (no checkout completed). The unique index on milestones
- * makes this safely idempotent.
+ * Run the three Brunson Results-in-Advance side-effects on a completed step:
+ *
+ *   1. Fire the milestone on profiles (gates the 60-day guarantee per
+ *      lib/guarantee.ts). Idempotent via the unique (profile_id, key) index.
+ *   2. Persist the assembled output to project_state.<step-column> so the
+ *      deliverable survives the user closing the tab.
+ *   3. Email the deliverable to the user from maryan@unlocksaas.com so the
+ *      inbox copy outlives any browser-side state. Reluctant Hero voice;
+ *      see lib/deliverable-email.ts.
+ *
+ * All three are best-effort. The user already received `output` in the
+ * synchronous response — degraded side-effects are a logging matter, not a
+ * delivery failure. An unauthenticated caller (no user row yet) gets no
+ * persist + no email, but the milestone path is also no-op so the contract
+ * is preserved (anonymous engine usage works, just without inbox copy).
  */
-async function fireMilestoneForStep(stepId: string): Promise<void> {
-  const key = STEP_TO_MILESTONE[stepId];
-  if (!key) return;
+async function deliverStepResult(
+  stepId: string,
+  outputText: string
+): Promise<DeliveryResult> {
+  const result: DeliveryResult = {
+    milestone_fired: false,
+    persisted: false,
+    emailed: false,
+  };
 
   const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("user_id", user.id)
-    .maybeSingle();
-  if (!profile) return;
+  if (!user) return result;
 
   const admin = createAdminClient();
-  const result = await markMilestone(admin, profile.id, key, "engine", {
-    stepId,
-  });
 
-  if (result.inserted) {
-    console.log("[engine] milestone fired", {
-      profileId: profile.id,
-      stepId,
-      key,
-    });
+  // 1. Milestone fire (gates the 60-day guarantee).
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("id,email,builder_name")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (profile) {
+    const key: MilestoneKey | undefined = STEP_TO_MILESTONE[stepId];
+    if (key) {
+      try {
+        const ms = await markMilestone(admin, profile.id, key, "engine", {
+          stepId,
+        });
+        result.milestone_fired = ms.inserted;
+      } catch (err) {
+        console.warn("[engine] markMilestone failed", {
+          stepId,
+          message: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
   }
+
+  // 2. Step-output persistence (project_state.<col>).
+  if (isEngineStepId(stepId)) {
+    const projectId = await getProjectIdForUser(admin, user.id);
+    if (projectId) {
+      result.persisted = await persistStepOutput({
+        adminClient: admin,
+        projectId,
+        stepId: stepId as EngineStepId,
+        outputText,
+      });
+    }
+  }
+
+  // 3. Deliverable email — best-effort. Skip if we have no addressable email
+  // or if the engine ran for a step that does not have a canonical inbox
+  // deliverable.
+  if (isEngineStepId(stepId)) {
+    const recipientEmail = profile?.email ?? user.email ?? null;
+    if (recipientEmail) {
+      result.emailed = await sendStepDeliverableEmail({
+        to: recipientEmail,
+        firstName: profile?.builder_name ?? null,
+        stepId: stepId as EngineStepId,
+        outputText,
+      });
+    }
+  }
+
+  return result;
 }

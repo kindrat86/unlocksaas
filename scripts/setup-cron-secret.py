@@ -100,6 +100,13 @@ def push_to_vercel(env_target: str, value: str) -> None:
     project_unlocksaas_vercel.md). Skip it for development.
     """
     args = ["vercel", "env", "add", KEY_NAME, env_target, "--force", "--yes"]
+    # Vercel CLI agent-mode quirk (documented in project_unlocksaas_vercel.md):
+    # with the claude-code-hint header set, `vercel env add NAME preview`
+    # refuses to proceed without an explicit Git branch positional. Passing an
+    # empty string applies the var to ALL preview branches, which is what we
+    # want for a globally-generated secret.
+    if env_target == "preview":
+        args.insert(5, "")
     if env_target != "development":
         args.append("--sensitive")
 

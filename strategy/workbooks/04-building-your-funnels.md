@@ -133,6 +133,32 @@ Each label has its own follow-up email sequence pointer.
 
 See Section 5 below for full copy.
 
+### Page 1b: Reverse Squeeze — `/parables` (DotCom Secrets Secret 14, reverse variant)
+
+Shipped 2026-05-17 to close out DCS Chapter 14 (Lead Squeeze + Reverse Squeeze) at full coverage. Pairs with the standard squeeze at `/diagnostic`. Same Day 0 destination (the Soap Opera Sequence), inverted opt-in mechanic.
+
+| Block | Content |
+|---|---|
+| Preface | Two short paragraphs framing the five parables and stating explicitly that no email is required to read them |
+| Parable 1 | The Blank Offer Page (workbook 01 §6 Beat 3), expanded to ~120 words, pull-quote with the lesson |
+| Parable 2 | The Stripe Refresh, same format |
+| Parable 3 | The SEO Escape Hatch, same format |
+| **Mid-content opt-in** | Card after Parable 3. Soft ask: "Want me to read your live page next? Send me the rest plus the diagnostic." POSTs to `/api/soap-opera/subscribe` with `source="reverse_squeeze_parables_mid_content"` |
+| Parable 4 | The Mirror in Ten Founders, same format |
+| Parable 5 | The Door That Opened, same format |
+| **End-content opt-in** | Card after Parable 5. Stronger ask: "The next five days are by email." Same endpoint, `source="reverse_squeeze_parables_end_content"` |
+| Bridge | For readers who skip both opt-ins: two buttons to `/starter` and `/diagnostic` |
+| Footer | Signature: "— Maryan" + AC one-line bio (workbook 01 §6 Beat 2) |
+
+**Brunson rules enforced:**
+- Value delivered FIRST (no gate above the parables). The reader has already accepted that the Reluctant Hero has something true to say before the email ask appears.
+- Two opt-in placements (`mid_content` + `end_content`) tracked separately. The split tells us whether readers bounce mid-page (mid wins) or read all the way through (end wins) — informs whether parable order or length needs to change.
+- Same Day 0 destination as the standard squeeze. One Soap Opera Sequence, two doors in.
+- Polarity AGAINST line NOT used on this page — the parables themselves are the polarity. Adding the disqualifier would over-egg the pudding.
+- The page link is surfaced from `/` (under the hero CTAs) and from `/diagnostic` (under the trust-line). Cold traffic that lands on the standard squeeze but refuses to type an email gets a second door, not a dead end.
+
+**Analytics:** `ParablesPageViewed` on mount + `ParablesOptInSubmitted` with `placement` property on submit (added to `app/src/lib/analytics/events.ts`). Compare opt-in rate by placement to learn where the value crests.
+
 ---
 
 ## Section 4: $49 Machine Presentation Funnel — Build Spec

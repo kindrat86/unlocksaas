@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
+  assignBucket,
   classifyUrl,
+  isBiggestAttempt,
   isDiagnosticError,
+  isRecentRevenue,
+  isTimeSinceLaunch,
   normalizeUrl,
+  type Bucket,
   type DiagnosticResult,
+  type SurveyAnswers,
 } from "@/lib/diagnostic";
 import { createAdminClient } from "@/lib/supabase/server";
 import {
@@ -64,6 +70,7 @@ export async function POST(req: NextRequest) {
     productUrl?: unknown;
     referrer?: unknown;
     source?: unknown;
+    survey?: unknown;
   };
   try {
     body = await req.json();
@@ -87,6 +94,29 @@ export async function POST(req: NextRequest) {
     typeof body.source === "string" && body.source.trim()
       ? body.source.trim()
       : null;
+
+  // Survey answers (Brunson Survey Funnel — DCS Secret 15). All three fields
+  // optional at the API edge so the old 2-field shape still works; the bucket
+  // assignment short-circuits to a label-only fallback if survey is missing.
+  let survey: SurveyAnswers | null = null;
+  if (body.survey && typeof body.survey === "object") {
+    const s = body.survey as {
+      time_since_launch?: unknown;
+      recent_revenue?: unknown;
+      biggest_attempt?: unknown;
+    };
+    if (
+      isTimeSinceLaunch(s.time_since_launch) &&
+      isRecentRevenue(s.recent_revenue) &&
+      isBiggestAttempt(s.biggest_attempt)
+    ) {
+      survey = {
+        time_since_launch: s.time_since_launch,
+        recent_revenue: s.recent_revenue,
+        biggest_attempt: s.biggest_attempt,
+      };
+    }
+  }
 
   if (!EMAIL_RE.test(email)) {
     return NextResponse.json(
@@ -149,6 +179,29 @@ export async function POST(req: NextRequest) {
   const supabase = createAdminClient();
   const userAgent = req.headers.get("user-agent");
   const ip = clientIp(req);
+
+  // Compute the Brunson Survey Funnel bucket. When the survey is missing
+  // (legacy 2-field caller), the bucket falls back to "customer_avoider" for
+  // labeled rows and "error" for error rows — the result page treats this
+  // as the Prospect Bridge default.
+  const bucket: Bucket =
+    diagnosis.label === "error"
+      ? "error"
+      : survey
+        ? assignBucket(diagnosis.label, survey)
+        : "customer_avoider";
+
+  // Returning-visitor detection. Drives Prospect Bridge vs Customer Bridge
+  // variant on the result page (Brunson DCS Secret 15). True iff ANY prior
+  // diagnostic_leads row exists for this email (across products).
+  let isReturning = false;
+  {
+    const { count } = await supabase
+      .from("diagnostic_leads")
+      .select("id", { count: "exact", head: true })
+      .ilike("email", email);
+    isReturning = (count ?? 0) > 0;
+  }
 
   // A/B split from workbook 05 §7 / 09 §3. Same lead, same variant across
   // surfaces — we look up an existing subscriber by email and reuse their
@@ -228,6 +281,11 @@ export async function POST(req: NextRequest) {
         subscriber_id: subscriberId,
         user_agent: userAgent,
         ip,
+        time_since_launch: survey?.time_since_launch ?? null,
+        recent_revenue: survey?.recent_revenue ?? null,
+        biggest_attempt: survey?.biggest_attempt ?? null,
+        bucket,
+        is_returning: isReturning,
       },
       { onConflict: "lower(email),product_url" },
     )
