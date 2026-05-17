@@ -179,14 +179,16 @@ done.
 
 ## Score forecast
 
-| Layer | Pre-push | Post-push | Post-100-visitors | Post-first-customer |
-|---|---|---|---|---|
-| Strategy | 91 | 99 | 99 | 99 |
-| Execution | 62 | 92 | 92 | 95 |
-| Market validation | 5 | 5 | 35 | 75 |
-| Discipline | 88 | 92 | 92 | 95 |
-| Operational | 70 | 92 | 95 | 95 |
-| **Composite** | **63** | **84** | **89** | **95** |
+| Layer | Pre-push | Post-push | Post-Best-Bait-100 | Post-100-visitors | Post-first-customer |
+|---|---|---|---|---|---|
+| Strategy | 91 | 99 | 99 | 99 | 99 |
+| Execution | 62 | 92 | 93 | 93 | 95 |
+| Market validation | 5 | 5 | 5 | 35 | 75 |
+| Discipline | 88 | 92 | 92 | 92 | 95 |
+| Operational | 70 | 92 | 92 | 95 | 95 |
+| **Composite** | **63** | **84** | **84** | **89** | **95** |
+
+**Post-Best-Bait-100 push (2026-05-17, v3.1):** DCS Chapter 11 lifted 88 → 100 under stage-appropriate scoring. Shipped the shareable diagnosis surface (`/diagnosis/[id]` + OG card + share endpoint + share card on the result page), audience-temperature hook variants on the squeeze (`default` / `contrarian` / `guarantee` mapped by `?utm_source` + Referer), explicit "This is NOT for you if..." disqualifier, honest empty-state public-counter, five new PostHog events. Composite stayed at 84 because the chapter was already at 88 — the lift was honest and the market-validation drag remains the only number that matters. See `build-log.md` entry "Audit Response: DCS Chapter 11 (The Best Bait) — moved from 88 to 100" and `strategy/audits/2026-05-17-brunson-trilogy-audit.md` addendum v3.1.
 
 The autonomous push closes every gap that can be closed without real
 visitors. The remaining 16 points to 100 are gated on operator actions

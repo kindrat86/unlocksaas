@@ -88,7 +88,17 @@ type AlreadyUsed = {
   previousUrl: string | null;
 };
 
-export function DiagnosticForm() {
+export function DiagnosticForm({
+  submitCta,
+}: {
+  /**
+   * Final-step CTA copy. Rotates with the hook variant chosen by the
+   * server-side resolver (workbook 01 §5, workbook 10 §4). Falls back to
+   * the pain-mirror default if the caller didn't pass one.
+   */
+  submitCta?: string;
+} = {}) {
+  const ctaLabel = submitCta?.trim() || "See why your launch is flat";
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
@@ -421,7 +431,7 @@ export function DiagnosticForm() {
               disabled={submitting}
               className="flex-1 text-base py-6"
             >
-              {submitting ? "Reading your page..." : "See why your launch is flat"}
+              {submitting ? "Reading your page..." : ctaLabel}
             </Button>
           </div>
 

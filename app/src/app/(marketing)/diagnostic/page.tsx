@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
+import { Suspense } from "react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
 import { DiagnosticJsonLd, BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import {
+  HOOK_COPY,
+  resolveHookVariant,
+} from "@/lib/diagnostic-hook-variant";
+import { DiagnosticHookVariantBeacon } from "@/components/diagnostic/hook-variant-beacon";
+import { DiagnosticPublicCounter } from "@/components/diagnostic/public-counter";
 
 // Brunson spec source:
 // - workbook 02 §2 (Free Diagnostic Lead Funnel)
 // - workbook 04 §3 (squeeze copy)
-// - workbook 01 §5 Hook #3 (pain mirror) chosen for cold squeeze
+// - workbook 01 §5 Hook #3 (pain mirror) / #10 (contrarian) / #7 (guarantee)
 // - workbook 01 §6 Beat 2 (three-line about opener)
 // - workbook 01 §6 Beat 5 (polarity AGAINST line as disqualifier)
+// - workbook 10 §4 (Eugene Schwartz awareness-to-hook mapping)
+// - DCS Chapter 11 The Best Bait (audience-temperature variants + shareable
+//   bait result via Butterfly-Marketing Loop 1)
 
 export const metadata: Metadata = {
   title: "Free Launch Diagnostic — Unlock SaaS",
@@ -22,7 +33,19 @@ export const metadata: Metadata = {
 // Squeeze must always be live; do not cache.
 export const dynamic = "force-dynamic";
 
-export default function DiagnosticSqueezePage() {
+export default async function DiagnosticSqueezePage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
+  // Eugene Schwartz awareness-to-hook mapping. Resolved server-side from
+  // ?utm_source / ?source / ?h plus the Referer header. The await is
+  // forward-compatible with Next 15+/16 and a no-op in Next 14.2.35.
+  const hdrs = await headers();
+  const referer = hdrs.get("referer");
+  const variantProps = resolveHookVariant({ searchParams, referer });
+  const hook = HOOK_COPY[variantProps.variant];
+
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
@@ -38,30 +61,47 @@ export default function DiagnosticSqueezePage() {
       />
       {/* A/B exposure attribution lives on every funnel hub & squeeze surface. */}
       <AbExposureBeacon />
+      {/* Hook variant attribution. Single-fire mount beacon, server-resolved
+          variant passed in as prop so no client-side round-trip. */}
+      <DiagnosticHookVariantBeacon
+        variant={variantProps.variant}
+        source={variantProps.source}
+      />
 
       <div className="max-w-2xl mx-auto">
-        {/* HERO — Hook #3 (pain mirror). Workbook 01 §5. */}
+        {/* HERO — hook rotated by audience temperature (workbook 10 §4):
+              "default"     → Hook #3 pain mirror     (problem-aware / cold)
+              "contrarian"  → Hook #10 contrarian     (solution-aware)
+              "guarantee"   → Hook #7 guarantee/result (product-aware) */}
         <header className="mb-8">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
             The Free Diagnostic
           </p>
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-            Your product is not broken. It was built for no one in particular.
+            {hook.headline}
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
-            Paste the live URL. In ninety seconds I label what is actually wrong
-            with one of three diagnoses — <strong>Wrong Person</strong>,{" "}
-            <strong>Weak Offer</strong>, or <strong>Weak Belief</strong> — and
-            hand you the door that fixes it.
+            {hook.lede}
           </p>
         </header>
 
-        {/* The form is the conversion event. Kept tight, two fields, one CTA. */}
+        {/* The form is the conversion event. Kept tight, two fields, one CTA.
+            CTA copy is passed in so it matches the hook (Brunson rule:
+            hook + CTA must rhyme). */}
         <Card className="mb-8 border-primary/20">
           <CardContent className="pt-6">
-            <DiagnosticForm />
+            <DiagnosticForm submitCta={hook.cta} />
           </CardContent>
         </Card>
+
+        {/* Honest empty-state public-diagnosis counter. Auto-flips to a real
+            count at >= 10 public shares (mirrors media-bar / avatar-wall on
+            `/`). Server-rendered, Suspense-friendly. */}
+        <div className="mb-10 text-center">
+          <Suspense fallback={null}>
+            <DiagnosticPublicCounter />
+          </Suspense>
+        </div>
 
         <Separator className="my-10" />
 
@@ -102,18 +142,35 @@ export default function DiagnosticSqueezePage() {
           </ul>
         </section>
 
-        {/* Polarity — AGAINST line as disqualifier. Workbook 01 §6 Beat 5. */}
+        {/* Polarity — AGAINST line as disqualifier. Workbook 01 §6 Beat 5.
+            Now strengthened with explicit "This is NOT for you if..." block
+            (DCS Chapter 11: an honest disqualifier converts the right-fit
+            visitor by raising perceived selectivity, NOT by lowering it). */}
         <section className="mb-10 rounded-lg border border-border bg-muted/40 px-5 py-4">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
             Before you paste your URL
           </p>
-          <p className="text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed mb-4">
             This is not &ldquo;validate your idea&rdquo; advice handed to a
             founder who has not shipped. You already shipped. The diagnostic
             assumes the product works and the problem is upstream — wrong
             person, wrong promise, or unbuilt belief — and gives you back the
             specific door that fixes the one that is broken.
           </p>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
+            This is NOT for you if
+          </p>
+          <ul className="text-sm leading-relaxed space-y-1.5 list-disc list-inside marker:text-muted-foreground">
+            <li>You have not shipped a live product yet.</li>
+            <li>
+              You want a content-marketing audit, an SEO teardown, or another
+              traffic playbook.
+            </li>
+            <li>
+              You are looking for someone to validate that the problem is the
+              product. I am the wrong person to ask.
+            </li>
+          </ul>
         </section>
 
         {/* Trust-line. Honest. */}

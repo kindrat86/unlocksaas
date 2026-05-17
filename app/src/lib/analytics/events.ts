@@ -35,6 +35,19 @@ export const Event = {
   DiagnosticPageViewed: "diagnostic_page_viewed",
   DiagnosticFormSubmitted: "diagnostic_form_submitted",
   DiagnosticResultViewed: "diagnostic_result_viewed",
+  // Bait Hook variant attribution (Eugene Schwartz awareness mapping —
+  // strategy/workbooks/10-growth-hacking.md §4 + Brunson DCS Chapter 11).
+  // Squeeze rotates Hook #3 (pain mirror) / #10 (contrarian) / #7 (guarantee)
+  // by source. Tracked as a property on PageViewed so cohort splits work.
+  DiagnosticHookVariantAssigned: "diagnostic_hook_variant_assigned",
+  // Butterfly Marketing Loop 1 — Brunson Traffic Secrets Chapter 19.
+  // Bait result share funnel: click → public page created → public page
+  // viewed by a referral → referral arrives back on /diagnostic.
+  DiagnosticShareClicked: "diagnostic_share_clicked",
+  DiagnosticShareCreated: "diagnostic_share_created",
+  DiagnosticShareRevoked: "diagnostic_share_revoked",
+  DiagnosticShareViewed: "diagnostic_share_viewed",
+  DiagnosticShareReferralArrived: "diagnostic_share_referral_arrived",
   // Reverse Squeeze (DotCom Secrets Secret 14, reverse variant) — value-first
   // public page, opt-in mid- and end-content. Placement is tracked as a
   // property so we can compare mid-content vs end-content conversion.
@@ -125,6 +138,29 @@ export interface ConversionProps {
 export interface DiagnosticResultProps {
   label: "wrong_person" | "weak_offer" | "weak_belief" | "indeterminate";
   product_url?: string;
+}
+
+// Eugene Schwartz awareness mapping — Hook variant assigned by source.
+// "default" = unknown / direct / cold (Hook #3 pain mirror).
+// "contrarian" = solution-aware visitor from r/SaaS, r/microsaas, IH —
+//                served Hook #10 ("Your product was built for no one in
+//                particular. That is the whole problem.").
+// "guarantee" = product-aware visitor from retargeting / PLF /
+//               founding-waitlist — served Hook #7 ("first paying customer
+//               in 60 days, even if your launch already flopped").
+export type DiagnosticHookVariant = "default" | "contrarian" | "guarantee";
+
+export interface DiagnosticHookVariantProps {
+  variant: DiagnosticHookVariant;
+  source: string; // "direct" | "x" | "reddit" | "ih" | "retarget" | "founding" | "<utm-source>"
+}
+
+export interface DiagnosticShareProps {
+  lead_id: string;
+  /** Diagnosis label of the share. Used for share-rate-by-label cohorts. */
+  label: "wrong_person" | "weak_offer" | "weak_belief";
+  /** Surface that initiated the share. */
+  surface?: "result_page" | "email" | "deep_link";
 }
 
 export type VslSurface = "funnel_hub" | "starter" | "machine_sales";

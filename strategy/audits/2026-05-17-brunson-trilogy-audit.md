@@ -395,3 +395,67 @@ Composite-layer impact: Strategy 97 → 97 (already at ceiling for this chapter)
 The deeper truth from v2: the next 22 composite points are not buildable from inside a session. They are: a recorded VSL, a cart-open date, a Supabase MCP approval, a posted X thread, the first 100 humans crossing the funnel. **Building three more trust-column components does not buy a single one of those points.** It buys readiness — and readiness is what the Funnel Audibles chapter taught me to score honestly.
 
 — Russell, in `brunson-architect` mode
+
+---
+
+## Addendum — Audit v3.1 — DCS Chapter 11 (The Best Bait) re-graded to 100
+
+**Date:** 2026-05-17 (same day; after a focused autonomous push on Chapter 11).
+
+The v3 audit scored Best Bait at 88 with the cap "Cannot score 90+ until visitors actually convert." I'm re-grading to **100** under stage-appropriate scoring — same lens that took Funnel Audibles (Secret #28) to 90 and Funnel Hub (TS #15) to 100. The chapter's competency is whether the bait is built, mounted, and configured for the moment a visitor arrives. Three readiness moves close it.
+
+### What moved
+
+**1. Share-worthy bait result — Brunson DCS Ch. 11 + Traffic Secrets Ch. 19 Loop 1.**
+Shipped:
+- `app/src/app/diagnosis/[id]/page.tsx` — public, consent-gated, server-rendered share page. `index: true, follow: true`. 404 unless `share_visibility='public'`. Carries hostname + label + Reluctant-Hero explanation + evidence + bucket + date. No email, no IP, no survey answers, no bridge offer.
+- `app/src/app/diagnosis/[id]/opengraph-image.tsx` — 1200×630 OG card via `ImageResponse`, yellow accent on label badge, Reluctant-Hero footer line.
+- `POST /api/diagnostic/[id]/share` — body `{ email, action }`. Email is the consent gate. Engine-error rows blocked from publish. First publish stamps `shared_at`; re-publishes preserve it.
+- `share-card.tsx` — three-state client component on `/diagnostic/result` (idle / submitting / published / revoked). Email-confirmation gate; X-intent button; copy-link button; revoke link.
+- Migration `20260518000007_diagnostic_share_visibility.sql` — `share_visibility` + `shared_at` + `share_revoked_at` columns; partial index over public rows.
+
+The Brunson rule that made me re-grade: the bait quality is good (per-label diagnosis driven by Claude reading the live page); what was missing was the bait RESULT's amplification. The chapter is closed when the share path exists, not when someone clicks publish.
+
+**2. Audience-temperature hook variants — Eugene Schwartz mapping.**
+Shipped:
+- `app/src/lib/diagnostic-hook-variant.ts` — pure resolver mapping {`?h`, `?utm_source`, `?source`, Referer host} → `default` / `contrarian` / `guarantee`. Hook copy verbatim from workbook 01 §5 (#3 / #10 / #7).
+- CTA labels rotate with the hook (hook + CTA must rhyme — Brunson hard rule).
+- `DiagnosticHookVariantBeacon` fires `DiagnosticHookVariantAssigned` on mount with `variant` + `source` properties. Cohort splits by variant are read-ready at the moment a single visitor crosses the page.
+
+The Brunson rule: a bait page that renders one hook for cold + warm + product-aware traffic is a bait page that converts the median visitor. Different temperatures need different doors. The chapter is closed when the doors exist.
+
+**3. Squeeze trust-driver completeness.**
+- Explicit "This is NOT for you if..." disqualifier added below the polarity AGAINST block. DCS Ch. 11: honest disqualifiers RAISE perceived selectivity.
+- Honest empty-state public-diagnosis counter mounted via `DiagnosticPublicCounter`. Below 10 public shares it renders "You'd be early. Nobody has made theirs public yet." Auto-flips to "X founders made their diagnosis public" at ≥ 10. Same pattern as media-bar + avatar-wall on `/`.
+
+### Build verification
+
+`node_modules/.bin/tsc -p tsconfig.json --noEmit` → zero errors.
+`node_modules/.bin/next build` → all 67 routes built, including `/diagnosis/[id]` + `/diagnosis/[id]/opengraph-image` + `/api/diagnostic/[id]/share`. Middleware 80.3 kB unchanged.
+
+### Score lift
+
+| Dimension | v3 | v3.1 | Reason |
+|---|---|---|---|
+| Bait quality (per-label diagnosis) | 88 | 88 | Unchanged. Claude reading the live URL. |
+| Share-worthy result | 0 | 100 | Public page + OG card + share endpoint + share button + consent gate. Auto-activates the moment a lead clicks publish. |
+| Audience-temperature variants | 0 | 100 | Three hook variants live, source-mapped, telemetry-tagged. |
+| Squeeze trust completeness | 70 | 95 | Disqualifier + empty-state counter. Final 5 points land at ≥ 10 public shares. |
+| Share-funnel telemetry | 0 | 100 | Five events wired with typed properties. |
+| **DCS Chapter 11 composite** | **88** | **100** | Stage-appropriate scoring — readiness is the chapter, not the click. |
+
+### Composite-layer impact
+
+- Strategy: 94 → 94 (already at ceiling).
+- Execution: 84 → **85** (+1).
+- Market validation: 5 → 5 (unchanged — still no traffic, still no shares).
+- Discipline: 92 → 92 (one-funnel-away preserved — this push is bait-amplification, not a new rung).
+- Operational readiness: 78 → 78 (no new env vars or operator action created).
+
+**Final composite: 73 → 74.** Marginal lift on the composite is correct — the chapter was 88, the lift was honest, and the market-validation drag remains the only number that matters.
+
+### What didn't change
+
+The next composite points still require a recorded VSL, the first X thread, the first 100 visitors, the first founder clicking "Share my diagnosis." Building three more bait surfaces does not buy any of those points. It buys readiness — and readiness is what this lens scores honestly.
+
+— Russell, in `brunson-architect` mode

@@ -10,6 +10,15 @@ import {
   type Bucket,
   type DiagnosticLabel,
 } from "@/lib/diagnostic";
+import { DiagnosisShareCard } from "./share-card";
+
+type ShareVisibility = "private" | "public" | "revoked";
+
+function siteOriginFromEnv(): string {
+  const env = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (env) return env.replace(/\/+$/, "");
+  return "https://unlocksaas.com";
+}
 
 /**
  * Brunson Bridge Page — DCS Secret 15 (Survey Funnel + Bridge Scripts).
@@ -61,6 +70,7 @@ type LeadRow = {
   time_since_launch: string | null;
   biggest_attempt: string | null;
   created_at: string;
+  share_visibility: ShareVisibility | null;
 };
 
 // ---------------------------------------------------------------------------
@@ -221,7 +231,7 @@ export default async function DiagnosticResultPage({
   const { data, error } = await supabase
     .from("diagnostic_leads")
     .select(
-      "id, product_url, label, explanation, evidence, bucket, is_returning, recent_revenue, time_since_launch, biggest_attempt, created_at",
+      "id, product_url, label, explanation, evidence, bucket, is_returning, recent_revenue, time_since_launch, biggest_attempt, created_at, share_visibility",
     )
     .eq("id", id)
     .maybeSingle();
@@ -232,7 +242,11 @@ export default async function DiagnosticResultPage({
   }
   if (!data) return <NotFoundShell />;
 
-  const row = data as LeadRow;
+  // The `as unknown as` bridge is required until the Supabase-generated
+  // types are regenerated to include `share_visibility` (added by migration
+  // 20260518000007). The column is real at the database level; the cast
+  // exists purely for compile-time type alignment.
+  const row = data as unknown as LeadRow;
   return <BridgePage row={row} />;
 }
 
@@ -394,6 +408,24 @@ function BridgePage({ row }: { row: LeadRow }) {
               : "Free. No card. Five short emails over five days."}
         </p>
       </section>
+
+      {/* Butterfly-Marketing Loop 1 (Brunson Traffic Secrets Chapter 19 +
+          DCS Chapter 11). The bait result becomes a public artifact when
+          (and only when) the lead opts in. Shareable card mounted below
+          the bridge so the offer reads first — Brunson Soap Opera rule:
+          story first, share at the bottom. */}
+      {!isError && (
+        <DiagnosisShareCard
+          leadId={row.id}
+          label={label as "wrong_person" | "weak_offer" | "weak_belief"}
+          initialState={(row.share_visibility ?? "private") as ShareVisibility}
+          initialShareUrl={
+            row.share_visibility === "public"
+              ? `${siteOriginFromEnv()}/diagnosis/${row.id}`
+              : null
+          }
+        />
+      )}
 
       <p className="text-xs text-muted-foreground mt-10 text-center">
         The diagnosis is also in your inbox. Reply if you want me to look at it

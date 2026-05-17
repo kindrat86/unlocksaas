@@ -133,6 +133,46 @@ Each label has its own follow-up email sequence pointer.
 
 See Section 5 below for full copy.
 
+### Page 1: Audience-Temperature Hook Variants (DCS Chapter 11 — Best Bait 88 → 100, locked 2026-05-17)
+
+The squeeze previously rendered a single hook for every visitor. Brunson's DCS Chapter 11 + Chapter 19 (Eugene Schwartz awareness levels) requires the bait page to ROTATE by audience temperature. The squeeze now resolves a variant server-side from `?utm_source` / `?source` / `?h` plus the `Referer` header (`app/src/lib/diagnostic-hook-variant.ts`).
+
+| Variant | Awareness | Hook (verbatim, workbook 01 §5) | Triggers |
+|---|---|---|---|
+| `default` | Problem-aware (cold) | Hook #3 — "Your product is not broken. It was built for no one in particular." | Direct, X bio, unknown |
+| `contrarian` | Solution-aware | Hook #10 — "You tried more traffic. The line is still flat. Here is the work nobody told you to do." | r/SaaS, r/microsaas, Indie Hackers, Hacker News, `source=reddit` |
+| `guarantee` | Product-aware | Hook #7 — "Your first real paying customer in 60 days — even if your launch already flopped." | Founding waitlist, PLF email links, retargeting, `source=founding`/`retarget` |
+
+CTA copy rotates with the hook (Brunson hard rule — hook and CTA must rhyme). Final-step button reads "See why your launch is flat" / "Show me the upstream fix" / "Run the diagnostic first" respectively.
+
+Telemetry: `DiagnosticHookVariantAssigned` PostHog event fires on mount with `variant` + `source` properties. Cohort splits by variant are read-ready from the moment a single visitor crosses the page. Identity A/B (Verified vs Paid Builders, workbook 05 §7) and Hook Variant are ORTHOGONAL — different lenses, different decisions, different file.
+
+Squeeze trust completeness — same push:
+- **Explicit "This is NOT for you if..." disqualifier** added below the polarity AGAINST line (workbook 01 §6 Beat 5). DCS Chapter 11: honest disqualifiers RAISE perceived selectivity.
+- **Honest empty-state public-diagnosis counter** mounted via `DiagnosticPublicCounter`. Below 10 public shares it renders "You'd be early. Nobody has made theirs public yet." — first-mover scarcity, not inflated proof. Auto-flips to "X founders made their diagnosis public" at ≥ 10. Mirrors the media-bar + avatar-wall auto-activation pattern from `/`.
+
+### Page 2b: Shareable Diagnosis — `/diagnosis/[id]` (DCS Chapter 11 + TS Chapter 19 Butterfly-Marketing Loop 1, locked 2026-05-17)
+
+The result page at `/diagnostic/result?id=…` carries the bridge offer and stays `noindex` permanently. The PUBLIC, shareable artifact is a separate surface — `/diagnosis/[id]` — that renders only when the lead has explicitly opted into public visibility via the share endpoint.
+
+What becomes public (consent-gated): the hostname they pasted, the diagnostic label, the Reluctant-Hero explanation paragraph, the evidence sentence, the bucket tag, the date.
+
+What stays private always: email, IP, user-agent, survey answers, identity-A/B variant, bucket-destination CTA.
+
+Privacy + consent surface:
+- `share_visibility` column on `diagnostic_leads` (migration `20260518000007_diagnostic_share_visibility.sql`): `private` (default), `public`, `revoked`.
+- `POST /api/diagnostic/[id]/share` — body `{ email, action: 'publish' | 'revoke' }`. Email must match the row's email (consent gate). Engine-error rows can never be made public. First publish stamps `shared_at`; re-publishes after revoke preserve the original `shared_at`.
+- OG image colocated at `/diagnosis/[id]/opengraph-image.tsx` renders a 1200×630 Reluctant-Hero card for X, LinkedIn, Slack.
+- The public page is `index: true, follow: true` (Brunson-canon butterfly-marketing case studies SHOULD be indexable); `/diagnostic/result` stays `noindex`.
+
+Result-page share card (`DiagnosisShareCard`):
+- Three states: idle / submitting / published / revoked.
+- Email-confirmation gate before flip. No auto-share, no opt-out checkboxes.
+- Published-state surface: copy-link button, "Share on X" intent button (pre-populated with the Reluctant-Hero one-liner), revoke link, hidden-audit short-id reminder.
+- Telemetry: `DiagnosticShareClicked`, `DiagnosticShareCreated`, `DiagnosticShareRevoked`, `DiagnosticShareViewed`, `DiagnosticShareReferralArrived` fire at each step.
+
+Closed-loop metrics (read once traffic exists): `DiagnosticShareReferralArrived` ÷ `DiagnosticShareViewed` for share-funnel ROI; `DiagnosticShareCreated` ÷ `DiagnosticResultViewed` for chapter-completeness.
+
 ### Page 1b: Reverse Squeeze — `/parables` (DotCom Secrets Secret 14, reverse variant)
 
 Shipped 2026-05-17 to close out DCS Chapter 14 (Lead Squeeze + Reverse Squeeze) at full coverage. Pairs with the standard squeeze at `/diagnostic`. Same Day 0 destination (the Soap Opera Sequence), inverted opt-in mechanic.

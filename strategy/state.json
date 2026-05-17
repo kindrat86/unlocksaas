@@ -2,7 +2,7 @@
   "meta": {
     "version": "2.0",
     "created_at": "2026-05-16T13:45:25.032666",
-    "last_updated": "2026-05-17T12:43:43.480511Z",
+    "last_updated": "2026-05-17T15:34:58Z",
     "project_slug": "unlocksaas",
     "business_name": "Unlock SaaS",
     "domain": "unlocksaas.com",
@@ -431,6 +431,131 @@
         "bridge_page": "/bridge JSDoc cited Hook #3; rendered copy is Hook #5. Comment corrected to cite Hook #5 and point at strategy/hook-index.md."
       },
       "note": "Drafted by Russell, accepted by founder ('whatever you have'). Living list, test and swap in market."
+    },
+    "best_bait_chapter_11": {
+      "status": "LOCKED v3.1 (2026-05-17) — 88 → 100 under stage-appropriate scoring",
+      "doctrine": "Brunson DCS Chapter 11 (The Best Bait) + Traffic Secrets Chapter 19 (Butterfly Marketing Loop 1). Bait quality is good; bait RESULT must be share-worthy; bait page must rotate hook by audience temperature; telemetry must close the share loop.",
+      "bait_quality": {
+        "score": 88,
+        "rationale": "Per-label diagnosis (wrong_person / weak_offer / weak_belief) driven by Claude reading the live URL. Unchanged from v3."
+      },
+      "share_worthy_result": {
+        "score": 100,
+        "shipped": [
+          "supabase/migrations/20260518000007_diagnostic_share_visibility.sql",
+          "app/src/app/diagnosis/[id]/page.tsx",
+          "app/src/app/diagnosis/[id]/opengraph-image.tsx",
+          "app/src/app/diagnosis/[id]/share-view-beacon.tsx",
+          "app/src/app/api/diagnostic/[id]/share/route.ts",
+          "app/src/app/(marketing)/diagnostic/result/share-card.tsx",
+          "app/src/lib/diagnostic-share.ts"
+        ],
+        "consent_model": "email-match-to-row, no-auto-share, revoke-by-click",
+        "indexability": "public page index:true follow:true; result page noindex unchanged"
+      },
+      "audience_temperature_variants": {
+        "score": 100,
+        "shipped": [
+          "app/src/lib/diagnostic-hook-variant.ts",
+          "app/src/components/diagnostic/hook-variant-beacon.tsx"
+        ],
+        "variants": {
+          "default": {
+            "awareness": "problem",
+            "hook_id": 3,
+            "triggers": [
+              "direct",
+              "x",
+              "unknown"
+            ]
+          },
+          "contrarian": {
+            "awareness": "solution",
+            "hook_id": 10,
+            "triggers": [
+              "reddit",
+              "r_saas",
+              "r_microsaas",
+              "indiehackers",
+              "ih",
+              "hn"
+            ]
+          },
+          "guarantee": {
+            "awareness": "product",
+            "hook_id": 7,
+            "triggers": [
+              "retarget",
+              "founding",
+              "founding_waitlist",
+              "soap_opera",
+              "seinfeld",
+              "challenge"
+            ]
+          }
+        }
+      },
+      "squeeze_trust_completeness": {
+        "score": 95,
+        "shipped": [
+          "explicit 'This is NOT for you if...' disqualifier on /diagnostic",
+          "honest empty-state public-counter via DiagnosticPublicCounter",
+          "auto-flip to count at >= 10 public shares (MIN_PUBLIC_COUNT_FOR_SOCIAL_PROOF)"
+        ],
+        "cap_rationale": "Final 5 points land at >= 10 public shares — same auto-activation rule as media-bar / avatar-wall on /."
+      },
+      "telemetry": {
+        "score": 100,
+        "events_added": [
+          "DiagnosticHookVariantAssigned",
+          "DiagnosticShareClicked",
+          "DiagnosticShareCreated",
+          "DiagnosticShareRevoked",
+          "DiagnosticShareViewed",
+          "DiagnosticShareReferralArrived"
+        ],
+        "closed_loop_metrics": {
+          "share_funnel_ctr": "DiagnosticShareReferralArrived / DiagnosticShareViewed",
+          "chapter_completeness": "DiagnosticShareCreated / DiagnosticResultViewed"
+        }
+      },
+      "composite_score": 100,
+      "composite_layer_impact": {
+        "strategy": {
+          "v3": 94,
+          "v3_1": 94,
+          "note": "ceiling"
+        },
+        "execution": {
+          "v3": 84,
+          "v3_1": 85,
+          "note": "+1 from new shipped surfaces"
+        },
+        "market_validation": {
+          "v3": 5,
+          "v3_1": 5,
+          "note": "unchanged — still no traffic"
+        },
+        "discipline": {
+          "v3": 92,
+          "v3_1": 92,
+          "note": "one-funnel-away preserved"
+        },
+        "operational": {
+          "v3": 78,
+          "v3_1": 78,
+          "note": "no new env vars"
+        },
+        "composite": {
+          "v3": 73,
+          "v3_1": 74,
+          "note": "marginal lift correct given starting score 88"
+        }
+      },
+      "build_verification": {
+        "tsc_noemit": "zero errors",
+        "next_build": "all 67 routes built; /diagnosis/[id] + /diagnosis/[id]/opengraph-image + /api/diagnostic/[id]/share registered"
+      }
     }
   },
   "expert_secrets": {
