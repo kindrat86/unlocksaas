@@ -3,16 +3,11 @@
  *
  * Composition:
  *  1. Headline + sub-headline (matches the existing page voice).
- *  2. `VslPlayer` — the actual moving surface. Renders the real video when
- *     `NEXT_PUBLIC_VSL_URL` is set, kinetic-typography fallback otherwise.
+ *  2. `VslPlayer` — renders the real video when `NEXT_PUBLIC_VSL_URL` is
+ *     set, a static placeholder otherwise (no slide fallback).
  *  3. The six-line founder intro (workbook 01 §6 Beat 2) collapsed in a
  *     <details> as the textual transcript below the player. Visitors who
  *     prefer reading get the identical content without watching.
- *
- * Why no `src` prop anymore: the player resolves its source from env, so
- * pages do not have to pass it. When the founder records and pushes the
- * URL to Vercel, every page that mounts this block flips to real video
- * with no code change.
  */
 
 import type { VslSurface } from "@/lib/analytics/events";
@@ -28,11 +23,9 @@ my own story back. So I built the machine I wish someone had handed me.`;
 interface Props {
   /** Which page is mounting the block. Drives analytics surface attribution. */
   surface?: VslSurface;
-  /** Autoplay the scripted fallback on mount. Default true. */
-  autoplay?: boolean;
 }
 
-export function VslBlock({ surface = "funnel_hub", autoplay = true }: Props) {
+export function VslBlock({ surface = "funnel_hub" }: Props) {
   return (
     <section className="py-16 px-6 max-w-3xl mx-auto">
       <div className="text-center mb-8">
@@ -44,13 +37,12 @@ export function VslBlock({ surface = "funnel_hub", autoplay = true }: Props) {
         </h2>
       </div>
 
-      {/* The moving surface — auto-swaps from scripted to recorded video
-          the moment NEXT_PUBLIC_VSL_URL is configured. */}
+      {/* Player surface — shows the real video when NEXT_PUBLIC_VSL_URL is
+          configured, a static placeholder otherwise. */}
       <VslPlayer
         surface={surface}
         showHeadline={false}
         showCta={false}
-        autoplay={autoplay}
       />
 
       {/* Transcript block, collapsed by default. Visible to all visitors —

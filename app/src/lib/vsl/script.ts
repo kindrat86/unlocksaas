@@ -5,11 +5,12 @@
  * (Epiphany Bridge) and Section Three (Big Domino + Three Secrets), and the
  * locked Attractive Character + Vehicle Story from `strategy/state.json`.
  *
- * Why this file exists: the script is the SAME content whether the founder
- * records a real-camera VSL or whether the site renders the
- * `ScriptedVsl` kinetic-typography fallback. Encoding it as typed data:
+ * Why this file exists: the script is the source of truth for what the
+ * founder records, and it also drives the analytics scene-boundary tracking
+ * inside `VideoVsl`. Encoding it as typed data:
  *   1. Keeps copy in one place. Workbook updates flow through here.
- *   2. Lets the scripted fallback auto-time itself off `durationMs`.
+ *   2. Lets `VideoVsl` derive scene boundaries from `durationMs` without
+ *      manual markers in the encoded file.
  *   3. Lets the recording-instructions doc (`strategy/vsl-script.md`)
  *      stay in sync: regenerate from this file when copy changes.
  *
@@ -228,13 +229,7 @@ export const VSL_SCRIPT: VslScript = {
  *
  * When `NEXT_PUBLIC_VSL_URL` is set in env (Cloudflare Stream HLS, Mux,
  * a direct MP4, anything `<video>` can play), the player renders the real
- * recording. When unset (today), the player renders the kinetic-typography
- * `ScriptedVsl` fallback so the funnel hub is NEVER without a VSL surface.
- *
- * The scripted fallback is not a placeholder. It is a real Brunson VSL
- * format (Frank Kern + Russell himself have used kinetic-typography VSLs
- * in production for campaigns where face-to-camera was not yet ready).
- * The recording replaces it, it does not unblock it.
+ * recording. When unset, the player renders a static placeholder.
  */
 export function getVslVideoUrl(): string | undefined {
   const url = process.env.NEXT_PUBLIC_VSL_URL;

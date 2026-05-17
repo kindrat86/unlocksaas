@@ -9,7 +9,7 @@
  * that a single MP4 host (Cloudflare Stream auto-publishes one) covers
  * every browser without a 30KB+ JS dependency on the critical path.
  *
- * Tracking parity with ScriptedVsl: same event names, mode: "video".
+ * Analytics — same event names used elsewhere, mode: "video".
  *   - vsl_impression on mount
  *   - vsl_played on first play (autoplay or click)
  *   - vsl_scene_advanced fires at the four chapter boundaries derived from
