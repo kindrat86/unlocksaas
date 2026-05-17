@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,13 @@ import {
   CAPABILITY_ROWS,
   UNLOCK_SAAS_CAPABILITIES,
   getAlternativeBySlug,
+  getRelatedAlternatives,
   type Alternative,
 } from "@/lib/alternatives";
+import { getTeardownBySlug } from "@/lib/funnel-teardowns";
+import { hasPricingTeardown } from "@/lib/pricing-teardowns";
+import { getComparisonsForProductSlug } from "@/lib/comparisons";
+import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
@@ -202,6 +207,19 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
   const canonicalUrl = `${BASE}/alternatives-to/${alt.slug}`;
   const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(alt, canonicalUrl);
 
+  // ----- Cross-link lookups (closes the 2026-05-17 link-graph dead-end) ------
+  // Each is defensive: if no matching entity exists in the sister manifests
+  // the corresponding section simply doesn't render. That keeps the page
+  // honest for current data (none of the 9 alternatives currently overlap
+  // with the teardown catalogues by slug) and ready to compound the moment
+  // the manifests fan out — the failure mode is "more internal links," not
+  // "broken links."
+  const hasFunnelTeardown = Boolean(getTeardownBySlug(alt.slug));
+  const hasPricing = hasPricingTeardown(alt.slug);
+  const comparisons = getComparisonsForProductSlug(alt.slug);
+  const category = getCategoryByRawString(alt.category);
+  const related = getRelatedAlternatives(alt.slug, 4);
+
   return (
     <article className="min-h-screen">
       <JsonLdBlock json={articleJson} />
@@ -246,6 +264,79 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
       </header>
 
       <Separator className="my-2" />
+
+      {/* ----- Cross-pattern callouts (link-graph parity with funnel /
+            pricing teardowns). Each renders only when a sister manifest
+            entry matches this slug; defensive-by-design. ----- */}
+      {hasFunnelTeardown ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-4"
+          aria-labelledby="cross-funnel"
+        >
+          <h2 id="cross-funnel" className="sr-only">
+            Also see
+          </h2>
+          <div className="rounded-lg border border-border bg-card px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+            <p className="text-sm leading-relaxed">
+              Want the full Hook / Story / Offer teardown of{" "}
+              <span className="font-semibold">{alt.displayName}</span>&apos;s
+              funnel?
+            </p>
+            <Link
+              href={`/funnel-teardown/${alt.slug}`}
+              className="text-sm font-semibold text-primary hover:underline shrink-0"
+            >
+              Read the funnel teardown →
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
+      {hasPricing ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-2"
+          aria-labelledby="cross-pricing"
+        >
+          <h2 id="cross-pricing" className="sr-only">
+            Also see
+          </h2>
+          <div className="rounded-lg border border-border bg-card px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+            <p className="text-sm leading-relaxed">
+              Studying{" "}
+              <span className="font-semibold">{alt.displayName}</span>&apos;s
+              pricing model specifically?
+            </p>
+            <Link
+              href={`/pricing-teardown/${alt.slug}`}
+              className="text-sm font-semibold text-primary hover:underline shrink-0"
+            >
+              Read the pricing teardown →
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
+      {category ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-2"
+          aria-labelledby="category-cross"
+        >
+          <h2 id="category-cross" className="sr-only">
+            Browse the category
+          </h2>
+          <div className="rounded-lg border border-border bg-card px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+            <p className="text-sm leading-relaxed">
+              Comparing every tool in this category?
+            </p>
+            <Link
+              href={`/category/${category.slug}`}
+              className="text-sm font-semibold text-primary hover:underline shrink-0"
+            >
+              Browse {category.displayName.toLowerCase()} →
+            </Link>
+          </div>
+        </section>
+      ) : null}
 
       {/* ----- The two-column quick-take ----- */}
       <section
@@ -484,6 +575,78 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </CardContent>
         </Card>
       </section>
+
+      {/* ----- Head-to-head comparisons featuring this product (internal
+            linking graph; mirrors the same block on funnel/pricing teardowns) ----- */}
+      {comparisons.length > 0 ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+          aria-labelledby="comparisons"
+        >
+          <h2
+            id="comparisons"
+            className="text-lg font-bold mb-4 leading-tight"
+          >
+            {alt.displayName} compared head-to-head
+          </h2>
+          <ul className="space-y-2">
+            {comparisons.map((c) => (
+              <li key={c.slug}>
+                <Link
+                  href={`/compare/${c.slug}`}
+                  className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                >
+                  <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
+                  <span>
+                    <span className="font-semibold">
+                      {c.a.name} vs {c.b.name}
+                    </span>{" "}
+                    <span className="text-muted-foreground">— {c.oneLine}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {/* ----- Related alternatives (closes the dead-end the SEO audit
+            flagged: tag-overlap-ranked sibling pages so crawlers and
+            humans both exit into more of the manifest). ----- */}
+      {related.length > 0 ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-10 border-t border-border/40"
+          aria-labelledby="related"
+        >
+          <h2 id="related" className="text-lg font-bold mb-4 leading-tight">
+            Related alternatives
+          </h2>
+          <ul className="space-y-2">
+            {related.map((r) => (
+              <li key={r.slug}>
+                <Link
+                  href={`/alternatives-to/${r.slug}`}
+                  className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                >
+                  <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
+                  <span>
+                    <span className="font-semibold">{r.displayName}</span>{" "}
+                    <span className="text-muted-foreground">— {r.oneLine}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-xs text-muted-foreground">
+            <Link
+              href="/alternatives-to"
+              className="underline hover:text-foreground"
+            >
+              Browse every alternatives comparison →
+            </Link>
+          </p>
+        </section>
+      ) : null}
 
       {/* ----- Honesty footer ----- */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">

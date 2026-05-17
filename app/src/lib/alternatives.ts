@@ -76,6 +76,15 @@ export interface Alternative {
   capabilities: AlternativeCapabilities;
   /** Competitor's canonical homepage. */
   homepageUrl?: string;
+  /**
+   * Descriptive tags (3-5) used by getRelatedAlternatives() to rank
+   * neighbours via tag overlap. Tags are descriptive labels, not claims —
+   * they group products that real founders mentally cluster together
+   * (e.g. "ai-builder", "no-code", "for-pre-launch"). Same shape as
+   * FunnelTeardown.tags so the related-ranking logic stays uniform across
+   * the four pSEO surfaces.
+   */
+  tags?: readonly string[];
   /** ISO date of last manual sanity check of every claim in this entry. */
   lastVerified: string;
 }
@@ -183,6 +192,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: false,
     },
     homepageUrl: "https://shipfa.st/",
+    tags: ["codebase", "saas-boilerplate", "for-pre-launch", "stripe-included"],
     lastVerified: "2026-05-17",
   },
 
@@ -239,6 +249,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: true,
     },
     homepageUrl: "https://lovable.dev/",
+    tags: ["ai-builder", "no-code", "for-pre-launch", "ai-tool"],
     lastVerified: "2026-05-17",
   },
 
@@ -295,6 +306,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: false,
     },
     homepageUrl: "https://onefunnelaway.com/",
+    tags: ["funnel-course", "info-product", "marketing-education", "brunson"],
     lastVerified: "2026-05-17",
   },
 
@@ -347,6 +359,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: false,
     },
     homepageUrl: "https://www.starterstory.com/",
+    tags: ["case-studies", "indie-founder-content", "marketing-education", "community"],
     lastVerified: "2026-05-17",
   },
 
@@ -403,6 +416,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: true,
     },
     homepageUrl: "https://www.cursor.com/",
+    tags: ["ai-builder", "developer-tool", "for-pre-launch", "ai-tool"],
     lastVerified: "2026-05-17",
   },
 
@@ -459,6 +473,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: true,
     },
     homepageUrl: "https://v0.app/",
+    tags: ["ai-builder", "ui-generator", "for-pre-launch", "ai-tool"],
     lastVerified: "2026-05-17",
   },
 
@@ -515,6 +530,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: true,
     },
     homepageUrl: "https://bolt.new/",
+    tags: ["ai-builder", "no-code", "for-pre-launch", "ai-tool"],
     lastVerified: "2026-05-17",
   },
 
@@ -571,6 +587,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: true,
     },
     homepageUrl: "https://www.indiehackers.com/",
+    tags: ["community", "indie-founder-content", "marketing-education", "case-studies"],
     lastVerified: "2026-05-17",
   },
 
@@ -627,6 +644,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: true,
     },
     homepageUrl: "https://carrd.co/",
+    tags: ["website-builder", "no-code", "for-pre-launch", "landing-page"],
     lastVerified: "2026-05-17",
   },
 ];
@@ -647,4 +665,41 @@ export const ALTERNATIVE_SLUGS: ReadonlyArray<string> = ALTERNATIVES_LIST.map(
 
 export function getAlternativeBySlug(slug: string): Alternative | undefined {
   return ALTERNATIVES_BY_SLUG.get(slug);
+}
+
+/**
+ * Return up to `limit` alternatives most-related to the seed slug, ranked by
+ * tag-overlap count (descending), excluding the seed itself.
+ *
+ * Mirrors getRelatedTeardowns() in src/lib/funnel-teardowns.ts so the four
+ * pSEO surfaces ship one shared notion of "related." Internal-linking parity
+ * closes the dead-end the 2026-05-17 SEO audit flagged on this surface:
+ * every alternative page now exits into 3-4 sibling alternatives, lifting
+ * crawl depth from 1 to 2+ for the same crawl budget.
+ *
+ * Returns an empty list when:
+ *   - the seed slug is unknown,
+ *   - the seed has no tags,
+ *   - no other alternative shares any tags with the seed.
+ *
+ * Tag overlap (not category equality) is deliberate: an alternative's
+ * `category` is a free-form prose label, tags are the curated cluster.
+ */
+export function getRelatedAlternatives(
+  slug: string,
+  limit: number = 4,
+): ReadonlyArray<Alternative> {
+  const seed = ALTERNATIVES_BY_SLUG.get(slug);
+  if (!seed?.tags || seed.tags.length === 0) return [];
+  const seedTags = new Set(seed.tags);
+
+  const scored = ALTERNATIVES_LIST.filter((a) => a.slug !== slug)
+    .map((a) => {
+      const overlap = (a.tags ?? []).filter((tag) => seedTags.has(tag)).length;
+      return { alt: a, overlap };
+    })
+    .filter((x) => x.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap);
+
+  return scored.slice(0, limit).map((x) => x.alt);
 }
