@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 /**
  * Cold traffic bridge page.
@@ -37,6 +38,17 @@ export const metadata: Metadata = {
 export default function ColdTrafficBridge() {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
+      {/* Surface B (AEO/SEO) — BreadcrumbList anchors this page in the
+          site graph. Two-deep trail (Home > Bridge) mirrors the visible
+          link in the footer block below. Google uses this to render
+          breadcrumb sitelinks in SERPs and LLMs use it to understand the
+          page's position in the funnel. */}
+      <BreadcrumbJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          { name: "For founders who already shipped", url: "https://unlocksaas.com/bridge" },
+        ]}
+      />
       <AbExposureBeacon />
       <div className="max-w-xl">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">

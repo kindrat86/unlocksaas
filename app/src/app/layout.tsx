@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   description:
     "A machine that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
   applicationName: "Unlock SaaS",
-  authors: [{ name: "Maryan", url: "https://unlocksaas.com/" }],
+  authors: [{ name: "Maryan", url: "https://unlocksaas.com/about" }],
   creator: "Maryan",
   publisher: "Unlock SaaS",
   alternates: {

@@ -130,6 +130,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
       alternates: hreflang(`${base}/repeatable`),
     },
+    // Standalone FAQ surface — AEO anchor page. Always-visible Q&A, sourced
+    // verbatim from strategy/dollar-objections.md via src/lib/faq-data.ts.
+    // Shares FAQ_ENTRIES with the sales-page accordion so schema and rendered
+    // text never diverge. Featured-snippet and PAA target for objection-style
+    // queries ("is unlock saas worth it", "$49 saas tool refund", etc.).
+    {
+      url: `${base}/faq`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/faq`),
+    },
     // ---------------------------------------------------------------------
     // Programmatic SEO block — honest named-competitor comparisons.
     // Data source: src/lib/alternatives.ts. Adding a new alternative there

@@ -440,6 +440,9 @@ export function VideoJsonLd(props: VideoSchemaInput) {
 
 // Duplicate `export function` declarations of PersonJsonLd, ArticleJsonLd,
 // FaqPageJsonLd, and BreadcrumbListJsonLd previously sat below this point —
-// concurrent build sessions landed two copies plus a stale re-export alias
-// (`export { BreadcrumbJsonLd as BreadcrumbListJsonLd }`) that pointed at a
-// function name no longer in the file. Canonical exports are above this line.
+// concurrent build sessions landed two copies plus a stale re-export alias.
+// Canonical exports are above this line. The alias below preserves the older
+// `BreadcrumbJsonLd` import name used by /faq/page.tsx (and any other caller
+// that has not migrated to the schema.org-literal `BreadcrumbListJsonLd` name)
+// so renames in this file do not break consumers.
+export { BreadcrumbListJsonLd as BreadcrumbJsonLd };

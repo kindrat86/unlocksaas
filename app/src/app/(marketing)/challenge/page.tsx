@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { ChallengeForm } from "./challenge-form";
 
 // Per-page metadata — Surface A of the Google strategy. Targets the
@@ -45,6 +46,15 @@ export const metadata: Metadata = {
 export default function ChallengePage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
+      {/* Surface B (AEO/SEO) — BreadcrumbList. Mirrors the visible "Want
+          the one-shot diagnosis instead?" / "Skip to the $1 Starter"
+          links in the footer block: Home → Challenge as the two-deep trail. */}
+      <BreadcrumbJsonLd
+        trail={[
+          { name: "Home", url: "https://unlocksaas.com/" },
+          { name: "The 14-Day First-Customer Sprint", url: "https://unlocksaas.com/challenge" },
+        ]}
+      />
       <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">
         <Badge variant="secondary" className="mb-4">

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import {
-  BreadcrumbJsonLd,
+  BreadcrumbListJsonLd,
   FaqPageJsonLd,
 } from "@/components/seo/json-ld";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
@@ -80,7 +80,7 @@ export default function FaqPage() {
           FaqPageJsonLd serializes from the same FAQ_ENTRIES array the page
           renders below, so schema and visible text never diverge. */}
       <FaqPageJsonLd items={FAQ_ENTRIES} />
-      <BreadcrumbJsonLd trail={BREADCRUMB_TRAIL} />
+      <BreadcrumbListJsonLd trail={BREADCRUMB_TRAIL} />
       <AbExposureBeacon />
 
       <article className="max-w-2xl mx-auto">
