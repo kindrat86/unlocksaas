@@ -1,22 +1,27 @@
 /**
- * Step-deliverable email.
+ * Step-deliverable email — a chapter of the Playbook lands in the inbox.
  *
- * Brunson rule (DotCom Secrets, Secret #12 + Frank Kern's Results-in-Advance):
- * when a user finishes a Machine step inside the $1 Starter, they MUST receive
- * the assembled deliverable in their inbox. The inbox copy is the part they
- * truly "keep" — the browser can crash, cookies can clear, the tab can close.
- * The email cannot.
+ * Brunson rule (DotCom Secrets, Secret #12 + Secret #17 Book Funnel + Frank
+ * Kern's Results-in-Advance): when a user finishes a Machine step inside the
+ * $1 Starter (or the full Machine), they MUST receive the assembled chapter
+ * in their inbox. The inbox copy is the part they truly "keep" — the browser
+ * can crash, cookies can clear, the tab can close. The email cannot.
+ *
+ * Each completed step delivers one CHAPTER of {PLAYBOOK.name} (named in
+ * lib/playbook.ts). Framing the output as a chapter of a named book — not
+ * just "a deliverable" — closes Brunson Secret #17's identity-anchor effect.
  *
  * Voice: Reluctant Hero (workbook 01 §6). Signed "— Maryan" per the locked
  * sender-identity memory (project_unlocksaas_email_identity.md). Sent from
  * maryan@unlocksaas.com via Resend so DKIM aligns and reply-to lands back in
  * the same mailbox scripts/mail.py reads.
  *
- * Subject lines are deliberately quiet, not hyped. The deliverable speaks
- * for itself — adding "URGENT!!!" or "HOT!" breaks the Reluctant Hero bond.
+ * Subject lines are deliberately quiet, not hyped. The chapter speaks for
+ * itself — adding "URGENT!!!" or "HOT!" breaks the Reluctant Hero bond.
  */
 import { getResend, FROM_ADDRESS, REPLY_TO } from "@/lib/resend";
 import { STEP_TITLE, type EngineStepId } from "@/lib/step-outputs";
+import { PLAYBOOK, chapterForEngineStep } from "@/lib/playbook";
 
 export interface StepDeliverableEmailArgs {
   to: string;

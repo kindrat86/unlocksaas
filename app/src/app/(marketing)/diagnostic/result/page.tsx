@@ -68,15 +68,21 @@ type LeadRow = {
 // Bridge copy table. One entry per bucket. Every field is mandatory; the
 // renderer trusts the table is complete.
 //
-// Brunson Bridge Script structure:
+// Brunson Bridge Script structure (DCS Secret 15, full 6-beat version):
 //   acknowledgement  — pattern interrupt + name what they are
 //   identification   — shared identity beat ("you are not lazy / broken / dumb")
 //   story            — a parable that mirrors their lived experience
 //   strategy         — why THIS door is the one for THIS bucket
+//   prediction       — Cost of Staying Stuck (future-paced, one sentence)
 //   trial_close      — soft-yes question (workbook 07 §2 inventory)
 //   destination      — bucketDestination() return value
 //   cta              — copy on the final button
 //   ctaSecondary     — optional fallback path
+//
+// The prediction beat (added 2026-05-17 Survey-Funnel 100% push) is what
+// separates a Brunson Bridge Script from a well-written pitch. It names the
+// specific bad thing that happens if they do not act. Without it, the trial
+// close has nothing to close ON.
 // ---------------------------------------------------------------------------
 
 type BridgeCopy = {
@@ -84,6 +90,14 @@ type BridgeCopy = {
   identification: string;
   story: string;
   strategy: string;
+  /**
+   * Cost of Staying Stuck beat. Doctrine added 2026-05-17 Survey-Funnel
+   * push (see header). Currently optional because only some buckets have
+   * the beat filled in; renderer must handle absence gracefully. Founder
+   * action: fill the 5 missing predictions with bucket-specific Reluctant
+   * Hero language, then flip this back to required.
+   */
+  prediction?: string;
   trial_close: string;
   cta: string;
   ctaSecondaryLabel?: string;

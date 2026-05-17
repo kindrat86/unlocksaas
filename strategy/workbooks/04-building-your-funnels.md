@@ -33,6 +33,28 @@ The reasons are locked in workbook 02, Section 6. Repeated here so the build cre
 
 Do not parallelize.
 
+### Section 1.1: One Funnel Away Guardrail (LOCKED 2026-05-17)
+
+The build order above is half of Secret #26. The other half is the discipline of refusing to ship a *second* funnel until the first one converts. That discipline now lives in [`strategy/decisions/one-funnel-away-guardrail.md`](../decisions/one-funnel-away-guardrail.md) — the load-bearing artifact for OFA enforcement.
+
+**What the guardrail locks:**
+
+1. **The One Funnel, named.** Ten surfaces (`/` → `/diagnostic` → `/diagnostic/result` → `/starter` → `/oto` → `/welcome` → `/machine-sales` → `/onboarding` → `/machine` → `/machine/verified`) — these are THE One Funnel. Everything else is a door, a support asset, or a time-boxed wrapper.
+
+2. **Route classification for every existing surface.** Categories A (the One Funnel itself), B (alternate doors: `/parables`, `/start`, `/bridge`, `/alternatives-to`), C (proof / trust / ladder visibility: `/builders`, `/builder/[slug]`, `/repeatable`, `/challenge`, `/transparency`, `/faq`, etc.), D (time-boxed event wrappers: `/founding`). **Zero OFA violations in the current codebase** at lock time.
+
+3. **The OFA Vow — three tests** every new surface must pass before it ships: (a) does it route into the One Funnel, (b) does it touch a different product, (c) does it pull attention from the work that produces the next customer. Failing any one = OFA breach.
+
+4. **The Veto List — fourteen named graveyards** of tempting next funnels that are pre-vetoed at the spec level until the One Funnel converts: agency tier, coaching, build-for-me, template marketplace, standalone paid community, host podcast, course, summit (gated to 3 verified customers), affiliate program (gated to 50 customers), paid ads (gated to evidence thresholds), public API, paid integrations, second Founding Cohort, vertical-specific diagnostics.
+
+5. **Activation trigger for the second funnel.** Four conditions, all measurable: ≥1 Stripe-verified customer + ≥3 Core customers complete the Machine + ≥1 unprompted "what's next" ask + founder self-dogfood pass. Until then, the second funnel (the Summit per `strategy/audits/2026-05-17-brunson-trilogy-audit.md` DCS #16 re-grade) stays in the Veto List.
+
+6. **Audible / new-funnel bright line.** A tweak to existing surfaces is an audible (handled by `strategy/funnel-audibles.md`). A new product, SKU, bonus tier, or sub-audience is a new funnel (vetoed). The Funnel Audibles Playbook can run weekly without ever accidentally breaching OFA because the bright line is documented.
+
+7. **Self-check question for every new file** that creates a route or product: *"Does this surface ship a new product line, or does it improve the conversion of the existing $1 → $49 chain?"* If "new product line" — check the Veto List. If "improves conversion" — proceed via the Audibles Playbook.
+
+**Why the guardrail is the load-bearing artifact and not just the build order:** the build order tells the founder *what to do*; the guardrail tells the founder *what to refuse to do*. Brunson's One Funnel Away is not the discipline of having one funnel by accident — it is the discipline of saying no to fourteen plausible next funnels every week until the first one converts. The veto is the discipline. The build order is just the schedule.
+
 ---
 
 ## Section 2: $1 Starter Unboxing Funnel — Build Spec

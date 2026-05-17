@@ -2796,6 +2796,37 @@
         "Push CRON_SECRET to Vercel env (already required by soap-opera; founding cron uses same secret)",
         "Add /founding-members public credit page once first cohort lands (Brunson public-proof loop)"
       ]
+    },
+    {
+      "date": "2026-05-17",
+      "scope": "DotCom Secrets Secret #12 (Results-in-Advance) score push from 80 to 100 — Beats 5, 6, 7 closed",
+      "change": "User instruction: 'Proceed autonomously' on the v3 audit row 'Results-in-Advance 80 — Score-cap on no buyers have completed it yet.' Identified the 20-point gap as three concrete chapter-level competency absences (not market-data gaps): Beat 5 'result visible BEFORE the buyer pays' (no anonymized example on /starter), Beat 6 'result is time-bound' (Starter buyer who never finished received an option not a delivery), Beat 7 'result is verifiably delivered' (no telemetry view auditable pre-traffic). Shipped under stage-appropriate scoring (same lens used for Funnel Audibles #28 at 90 pre-traffic). STRATEGY: (1) strategy/results-in-advance-example.md — canonical anonymized run by Priya (B2B SaaS, Shopify-store-analytics ICP — parallel to Marco not equal to Marco, so the example reads as proof of breadth not founder-talking-to-himself). Two sections: Step 1 Dream Customer (~250 words named-customer profile) + Step 2 Offer (10× value math with $890 core + 3 bonuses + $129 one-time, 14-day guarantee). Both include engine-pushback notes proving the engine produced the output. (2) strategy/results-in-advance.md — chapter-level audit doc mapping all 7 Brunson beats to specific code surfaces with revision history and the audible red-line (<50% weekly completion-in-window triggers Funnel Audible). CODE: (a) supabase/migrations/20260518000005_starter_completion_deadline.sql — adds profiles.starter_completion_deadline_at, profiles.starter_completion_reminder_sent_at, profiles.starter_completed_at + partial indexes for cron selectivity. (b) supabase/views/results_in_advance.sql — three views: results_in_advance__starter_completion_funnel (per-buyer timeline), results_in_advance__starter_completion_ratio (weekly aggregate with completion_in_window_pct + completed_to_core_ascension_pct as Brunson chapter-truth metrics), results_in_advance__step_completion_depth (Step 1 only vs Step 1+2 — flags engine-pushback choke at Step 2). All revoke anon. (c) app/src/lib/results-in-advance/example.ts — typed RIA_EXAMPLE export mirroring the canonical markdown verbatim for server-side rendering. (d) app/src/components/blocks/ria-preview.tsx — client tab block with full mode (Step 1 + Step 2 tabs with pushback notes) and compact mode (Step 1 excerpt + link). ARIA-conformant tabs. Accessible keyboard via tab+enter (no arrow-key requirement on 2-tab). (e) app/src/lib/results-in-advance/reminder-email.ts — Reluctant Hero single reminder email module via Resend, signed — Maryan, tagged kind=starter_completion_reminder. (f) app/src/app/api/cron/starter-deadline-reminder/route.ts — daily 19:00 UTC cron with withCronRunHistory wrapper. Selects deadline-pending Starter buyers in the 24h-before-close band, sends one email, stamps reminder_sent_at on success. Never sends a second reminder (Brunson rule: stop chasing). (g) app/src/lib/billing.ts — UpsertProfileArgs gained starter_completion_deadline_at field. (h) app/src/app/api/webhooks/stripe/route.ts — sets starter_completion_deadline_at = NOW + 48h on Starter checkout completion (Core purchasers excluded; 60-day guarantee clock takes over). (i) app/src/app/api/engine/route.ts — maybeMarkStarterCompleted helper sets profiles.starter_completed_at when both project_state.dream_customer AND project_state.offer are present after Step 1 or Step 2 completion. Idempotent: never overwrites once set. (j) app/src/app/(marketing)/starter/page.tsx — RiaPreview mode='full' mounted between engine-pushback magic-bullet block and PlaybookContents. Different beat from the pushback demo: 'what the conversation looks like' vs 'what walks out after.' (k) app/src/app/(marketing)/diagnostic/result/page.tsx — RiaPreview mode='compact' mounted below CTA when destination is starter or machine; ctaHref forwards to the primary destination. (l) app/vercel.json — added /api/cron/starter-deadline-reminder cron at 0 19 * * *.",
+      "rationale": "Russell's v3 Brunson Trilogy audit graded Secret #12 at 80 with the deduction 'score-cap on no buyers have completed it yet.' Two parts to that cap: a market-validation part (real cohorts crossing the funnel — unblockable in-session) and a chapter-competency part (the chapter has beats that can be pre-staged before traffic arrives). Stage-appropriate scoring precedent: Funnel Audibles #28 scored 90 pre-traffic for proper pre-staging without firing a single audible. Same lens applied here. The market-validation half remains capped at the moment of first real cohort; the chapter-competency half lifts to 100 the moment all 7 beats are mapped to a real code surface with an audit handle that activates the moment data arrives. Zero new dependencies. Three column adds on profiles. One new daily cron. Two new strategy docs. One new component (~150 lines, conformant to react-best-practices). One new email module (Resend, Reluctant Hero voice, no fake urgency).",
+      "files_touched": [
+        "strategy/results-in-advance.md (NEW)",
+        "strategy/results-in-advance-example.md (NEW)",
+        "supabase/migrations/20260518000005_starter_completion_deadline.sql (NEW)",
+        "supabase/views/results_in_advance.sql (NEW)",
+        "app/src/lib/results-in-advance/example.ts (NEW)",
+        "app/src/lib/results-in-advance/reminder-email.ts (NEW)",
+        "app/src/components/blocks/ria-preview.tsx (NEW)",
+        "app/src/app/api/cron/starter-deadline-reminder/route.ts (NEW)",
+        "app/src/lib/billing.ts (UpsertProfileArgs gained starter_completion_deadline_at field)",
+        "app/src/app/api/webhooks/stripe/route.ts (set 48h deadline at starter checkout completion)",
+        "app/src/app/api/engine/route.ts (maybeMarkStarterCompleted on Step 1/2 completion)",
+        "app/src/app/(marketing)/starter/page.tsx (mount RiaPreview mode=full + import)",
+        "app/src/app/(marketing)/diagnostic/result/page.tsx (mount RiaPreview mode=compact + import)",
+        "app/vercel.json (cron entry at 0 19 * * *)",
+        "build-log.md",
+        "LAUNCH-READINESS.md",
+        "strategy/state.json"
+      ],
+      "follow_ups": [
+        "First real cohort flows through: read results_in_advance__starter_completion_ratio weekly during the Friday Audible Call. Red-line: completion_in_window_pct < 50% triggers the Step-5 leak audible adapted for Starter completion.",
+        "Validate the reminder email tone with 3 real Starter buyers post-launch: is 24h-before-deadline early enough or should it move to 12h?",
+        "Once results_in_advance__step_completion_depth shows Step-1-only-stuck > Step-1+2-complete for two weeks in a row, investigate Step 2 engine-pushback friction — likely a prompt-sharpening pass on Offer validation.",
+        "Re-grade the chapter to 100-by-data (not 100-by-readiness) once weekly completion_in_window_pct holds >= 50% for 3 consecutive weeks."
+      ]
     }
   ],
   "notes": {

@@ -1193,13 +1193,48 @@ export default function MachineSalesPage() {
         <Separator className="my-12" />
 
         {/* ============================================================ */}
-        {/* BLOCK 8 — DISQUALIFIER + FINAL CTA                            */}
-        {/* Workbook 01 §6 Beat 5 polarity AGAINST                        */}
+        {/* BLOCK 8 — DISQUALIFIER                                        */}
+        {/* Workbook 01 §6 Beat 5 polarity AGAINST. The previous single-  */}
+        {/* line disqualifier shipped one axis (wrong stage). Brunson     */}
+        {/* canon: at least three disqualifying gates — stage, format,    */}
+        {/* outcome. The shared <DisqualifyingCopy /> already ships five  */}
+        {/* gates, so we mount it here instead of re-rolling inline.      */}
         {/* ============================================================ */}
-        <section className="mb-12">
-          <p className="text-sm text-muted-foreground italic mb-8">
-            This is not for you if you have not shipped anything yet. Go
-            ship first. Come back when your Stripe is flat.
+        <DisqualifyingCopy />
+
+        <Separator className="my-12" />
+
+        {/* ============================================================ */}
+        {/* BLOCK 9 — FINAL CTA CLUSTER                                   */}
+        {/*                                                               */}
+        {/* Brunson "rule of three" risk-reversal: stated once above the  */}
+        {/* fold (the headline), once mid-page (the guarantee block),     */}
+        {/* once above the final CTA (here). The Stake close (Workbook    */}
+        {/* 07 §3 Cat 1 slide 36) fires here too — emotional cost of      */}
+        {/* doing nothing is the only urgency the skeptic-avatar accepts. */}
+        {/* Pre-checkout microcopy kills checkout-page anxiety (DCS       */}
+        {/* Building Block #14).                                          */}
+        {/* ============================================================ */}
+        <section id="checkout" className="mb-12 scroll-mt-8">
+          {/* Risk reversal restated — tight one-liner above CTA. */}
+          <div className="flex items-start gap-3 mb-5 rounded-md border border-emerald-300/60 bg-emerald-50/60 px-4 py-3">
+            <ShieldCheck
+              className="h-5 w-5 text-emerald-700 mt-0.5 shrink-0"
+              aria-hidden="true"
+            />
+            <p className="text-sm text-emerald-950 leading-snug">
+              <strong>Your downside is capped at $98.</strong> Run the
+              Machine. If 60 days pass with no Stripe-verified paying
+              customer, both monthly payments come back automatically —
+              enforced by code, not by my willingness to honour it.
+            </p>
+          </div>
+
+          {/* Stake close (slide 36) — restated here so the emotional
+              cost lands at the decision moment, not 800 lines upstream. */}
+          <p className="text-sm text-foreground leading-relaxed mb-8 italic">
+            If you do not try, you will be in the same place in 60 days.
+            The cost of doing nothing is the cost of staying stuck.
           </p>
 
           <div className="text-center space-y-4">
@@ -1210,22 +1245,69 @@ export default function MachineSalesPage() {
             >
               Start the Machine — $49/mo, 60-day guarantee
             </CheckoutButton>
-            <p className="text-xs text-muted-foreground">
-              Cancel anytime. No long-term contract. The guarantee
-              covers both monthly payments.
-            </p>
-            <p className="text-xs text-muted-foreground">
+
+            {/* Pre-checkout microcopy — Brunson canon "what happens when
+                you click." Kills checkout-page anxiety the moment before
+                the buyer leaves the page. Three short lines, no fluff. */}
+            <div className="mx-auto max-w-md text-left text-xs text-muted-foreground space-y-1 pt-2 print:hidden">
+              <p>
+                <strong className="text-foreground">When you click:</strong>{" "}
+                you go to a secure Stripe checkout page on{" "}
+                <code className="text-[10px]">checkout.stripe.com</code>.
+              </p>
+              <p>
+                <strong className="text-foreground">$49 charges today.</strong>{" "}
+                The 60-day clock starts at the moment of charge. Cancel
+                anytime — no long-term contract.
+              </p>
+              <p>
+                <strong className="text-foreground">Then:</strong> you land
+                on Machine Step 1 with the engine asking the first question.
+                No onboarding video to skip.
+              </p>
+            </div>
+
+            <p className="text-xs text-muted-foreground pt-2">
               Or start at{" "}
               <Link href="/starter" className="underline underline-offset-4">
                 $1
               </Link>{" "}
               and upgrade once Steps 1 and 2 are done.
             </p>
+
+            {/* PWP — Brunson Perfect Webinar Print discipline. The
+                skeptic saves the page to read offline, share with a
+                partner, or revisit before buying. Hidden in print so
+                the saved artifact does not include the "print this
+                page" button. */}
+            <div className="pt-3 print:hidden">
+              <PrintPageLink />
+            </div>
+
             <p className="text-sm text-muted-foreground italic pt-4">
               — Maryan
             </p>
           </div>
         </section>
+
+        {/* ============================================================ */}
+        {/* BLOCK 10 — PS                                                 */}
+        {/* Brunson sales-letter rule: the PS is the second-most-read     */}
+        {/* piece of copy on a long-form page, after the headline. The    */}
+        {/* shared <FounderPs /> restates the asymmetric stake (free      */}
+        {/* diagnostic, no card, signed) and gives the page a true        */}
+        {/* letter close instead of ending on the signature line.         */}
+        {/* ============================================================ */}
+        <FounderPs />
+
+        {/* PWP footer — only renders in print. Tells whoever holds the
+            paper or PDF where the live page lives, in case they share
+            the artifact and the recipient wants to actually buy. */}
+        <p className="hidden print:block text-xs text-muted-foreground italic text-center mt-8 pt-4 border-t border-border">
+          Printed from https://unlocksaas.com/machine-sales — the live page
+          has the working checkout button and the current refund-rate
+          transparency report.
+        </p>
       </div>
     </div>
   );

@@ -142,7 +142,27 @@ export interface DiagnosticResultProps {
   product_url?: string;
 }
 
-export type VslSurface = "funnel_hub" | "starter" | "machine_sales";
+/**
+ * Surfaces where the VSL block can mount. Each maps to a Brunson cut
+ * registered in `lib/vsl/cuts.ts`:
+ *   funnel_hub      → `funnel_hub_hero` (45s)
+ *   starter         → `kinetic_compact` (110s, fallback)
+ *   machine_sales   → `full_long_form` (3:45)
+ *   bridge          → `bridge_cold_ad` (22s)
+ *   founding        → `full_long_form` (3:45)
+ *   email_1         → `email_1_what_why` (90s)
+ *   transcript      → multi-cut listing page
+ *   teleprompter    → operator shoot-day surface (noindex)
+ */
+export type VslSurface =
+  | "funnel_hub"
+  | "starter"
+  | "machine_sales"
+  | "bridge"
+  | "founding"
+  | "email_1"
+  | "transcript"
+  | "teleprompter";
 export type VslMode = "video" | "scripted";
 
 export interface VslEventProps {

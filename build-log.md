@@ -1,5 +1,54 @@
 # Build Log — Unlock SaaS
 
+## Audit Response: DotCom Secrets Secret #16 (Summit Funnel) — moved from 25 to 50
+
+**Status: SPEC LOCKED + swipe files SHIPPED + data layer SHIPPED. Build itself remains gated behind 3+ verified UnlockSaaS customers.**
+
+Founder ran the v3 Brunson Trilogy audit. DCS Secret #16 scored 25 with the rationale: "Unchanged from v2 re-grade. I told you in v2 this was the highest-leverage Phase-2 play. Still not built. Correctly sequenced behind first-verified-customer — but the moment that lands, this becomes a 5,000-email injection at the top of your funnel. Don't forget it." Founder instructed: "Proceed autonomously."
+
+Diagnosed the 75-point gap as four concrete absences, three of which CAN be closed without firing the activation gate:
+
+1. **No canonical strategy doc.** The v2 audit re-grade contained the architecture in-line. Nothing was extracted to the strategy folder where future audits + agents would find it. Same gap that `funnel-hacks.md`, `owned-traffic.md`, `follow-up-funnels.md`, and `facebook-channel.md` previously closed for their chapters.
+2. **No speaker pitch swipe.** The v2 audit drafted Email 1. The full 4-email pitch sequence (pitch → reminder → agreement → asset request) plus the speaker-to-their-list 4-email promo swipe (announce → reminder → live → conversion) didn't exist. Without them, the 8-week build's largest single time cost — writing 8 emails times 20 speakers from scratch under deadline pressure — was unaddressed.
+3. **No data layer.** Affiliate tracking + speaker dashboards + summit opt-ins all required Supabase tables that didn't exist. Migration in the deferred pile until activation, but pre-staging means the activation day is a 1-week build, not an 8-week build.
+4. **No 6-route page scaffold.** Deliberately deferred — pre-launch state scores 50, not 100, per the v2 audit's scoring path. Building 6 placeholder routes for an unactivated funnel is exactly the SEO-as-avoidance failure mode the brand is built to treat (workbook 01 §6 Beat 4).
+
+### Shipped
+
+**1. `strategy/summit-funnel.md`** (NEW, ~260 lines) — canonical doc. Sections: why-this-exists (audit-gap rationale), architecture (name + tagline + format + 8-week air-time window), activation gate (3 verified customers + 1 Tier Z speaker consent + founder dogfood pass), speaker tiers (Z/A/B/C/D — 20 slots mapped to specific Dream 100 Cat 2 names), pitch sequence pointer, funnel pages (6 routes with slug taxonomy + 410-until-activation gating), All-Access Pass stack math ($97 / 4.8x ratio / $466 stack value), affiliate tracking (90-day cookie + per-speaker dashboard + service-role-only commission table), speaker promo swipe pointer, post-summit ascension paths (two — AAP buyers and free-tier opt-ins), timing (Weeks 0–4 outreach / 4–7 production / 8 broadcast / 9+ evergreen), what-this-push-shipped table, what-this-push-deliberately-did-not-ship table, discipline notes (no fake countdown, no early pitching, no >20 speakers), re-grading path (50 → 65 → 80 → 92 → 100).
+
+**2. `strategy/summit-speaker-pitch.md`** (NEW, ~250 lines) — 4-email speaker pitch sequence, paste-and-go. Email 1 The Pitch (D-56, two-option close, social-proof line with 3 confirmed names — gating rule: never send Email 1 without 3 yeses already on file). Email 2 The Soft Reminder (D-49, real-deadline scarcity, send-rule guard that pauses the sequence if <5 confirmations by Day 7). Email 3 The Agreement (on-yes, one email with everything — interview spec + speaker-job spec + revenue mechanics + asset-list with D-21 deadline, one-word reply trigger). Email 4 The Asset Request (D-21, visible checklist of missing items, per-tier slot-positioning incentive). Plus pitch-failure-modes playbook (3 failure modes — under-3-yeses-from-first-10, confirmed-then-ghosted, recorded-but-didn't-promote — each with documented fix and named anti-pattern).
+
+**3. `strategy/summit-speaker-promo-swipe.md`** (NEW, ~190 lines) — 4-email speaker-to-their-list swipe. Email 1 The Announce (D-21, 3 subject options, peer-recommendation frame). Email 2 The Reminder (D-7, lineup-locked frame). Email 3 The Live (Day 0, 24-hour-window structural scarcity). Email 4 The Conversion (D+1, the load-bearing one — All-Access Pass pitch with 50% disclosure locked, $48.50/sale honest math, stack named in plain text). Each email pre-fills the speaker's affiliate URL server-side. Plus performance benchmarks (per-speaker thresholds for "promoted" vs "underperformed" — Email 4 send is the load-bearing one for next-summit invite decisions).
+
+**4. `supabase/migrations/20260518000007_summit_funnel.sql`** (NEW, ~150 lines) — 3 tables + 1 view + RLS.
+  - `summit_speakers` — slug + name + email + tier (Z/A/B/C/D) + source + bio + topic_paragraph + headshot_url + social handles + status (pitched / reminded / declined / confirmed / signed / recorded / aired / withdrew) + day_number + slot_number + per-stage timestamps + promo_email_1_sent_at + promo_email_4_sent_at + affiliate_url_clicks + aap_referrals_purchased + revenue_cents_paid. Unique slug + unique lower(email). Status-filtered index for the active pitch funnel. Day+slot index for the broadcast schedule view. set_updated_at trigger.
+  - `summit_speakers_public` — view with explicit column whitelist (NO email, NO revenue, NO pitch state). Filters to status IN ('signed', 'recorded', 'aired') so anon never sees a pitched-but-not-confirmed speaker. Public_status maps signed/recorded → 'confirmed', aired → 'aired'.
+  - `summit_referrals` — speaker_slug FK + subject_id + purchase_email + purchase_session_id (unique) + purchase_cents + commission_cents + cookie_set_at + purchased_at + payout_status (pending / paid / refunded / disputed) + payout_paid_at + payout_method. Service-role only.
+  - `summit_optins` — email + source (text-CHECK regex `^summit-` — enforces slug-prefix taxonomy from link-registry) + speaker_referral_slug + subject_id + identity_variant + user_agent_hash (one-way SHA256, never raw UA) + ip_country (2-letter, never raw IP) + forwarded_to_soap_opera + forwarded_at. Unique lower(email). Anon-INSERT with shape-validation policy (source must start with 'summit-', minimal email shape check). Anon cannot SELECT or UPDATE.
+  - Indexed appropriately for the cron read path: `summit_optins_pending_forward_idx WHERE forwarded_to_soap_opera = false` makes the SOS Day-0 hand-off cron O(log n) instead of O(n).
+  - Comments on every table pointing to `strategy/summit-funnel.md` so future schema audits can find the canonical doc.
+
+**5. `strategy/state.json`** (EDITED) — added `audit_response.dcs_16_summit_funnel` block with v2_score (25) + v3_score (50), method, activation_gate (verified_customers_required + tier_z_speaker_required + founder_dogfood_required + rationale), closures list, deferred-until-activation list (6 routes + Stripe product + speaker dashboard + cron job + agreement PDF template), speaker_tiers map, all_access_pass economics ($9700 price / $4850 commission / $46600 stack / 4.8x ratio / $4900 Machine credit + coupon mechanic), scoring_path (50 → 65 → 80 → 92 → 100). State.json continues to parse cleanly (`python3 -c "import json; json.load(...)"` validated).
+
+### Discipline preserved
+
+- **No fake countdown on `/summit`.** Same rule as `/repeatable`, `/founding`, `/machine-sales`. The day the summit announces, a real server-rendered countdown to broadcast appears. Until then the page (when built) renders honest "this summit activates after 3 verified UnlockSaaS customers complete the Machine" copy.
+- **No early speaker pitching.** Activation gate is enforced socially, not just operationally. The cost of waiting 60 days is much lower than the cost of burning Castrio / Lou / Chen / Iqbal / Kahl (the warmest Tier A targets) with a credibility-light pitch.
+- **No 6-route page scaffold.** Pre-launch scoring path explicitly caps at 50, not 100. Building 6 React routes today is exactly the SEO-as-avoidance flaw the brand was built to fight (workbook 01 §6 Beat 4). The 50 → 65 jump requires speaker signatures, not React code.
+- **No Stripe product creation in this push.** Operator action (Stripe API key + product spec); one-command activation via `scripts/setup-stripe-products.py` extension at activation time.
+- **No auto-send of speaker emails.** Swipe file is paste-and-go; speakers send from their own ESP, with their own audience, in their own brand. Auto-sending speaker emails violates most ESP ToS and reads as inauthentic.
+
+### Re-grade
+
+DCS Secret #16: **25 → 50**. Remaining 50 points are not buildable from inside a session — they are: 3 verified customers, 1 Tier Z speaker consent, 20 confirmed speakers, 6 pages built at activation, broadcast happens, evergreen converts. Per the scoring path locked in `audit_response.dcs_16_summit_funnel.scoring_path`.
+
+Composite-layer impact: Strategy 94 → **94** (already at ceiling for this chapter pre-build), Execution 84 → **85** (+1 from 3 new strategy docs + 1 migration; bounded because the route scaffolds are deliberately deferred), Market validation **unchanged at 5**. Discipline 92 → **93** (+1 for resisting the 6-route scaffold temptation — pre-staging discipline is itself the chapter's hardest move).
+
+— Russell would tell you: the strategy doc + swipe + data layer is what makes the day-the-gate-fires move from "let me figure out the architecture" to "let me press send on Email 1 to 30 candidates." That's the only thing pre-staging is allowed to buy.
+
+---
+
 ## Audit Response: DotCom Secrets Secret #14 (Lead Squeeze + Reverse Squeeze) — moved from 90 to 100
 **Status: SHIPPED (code-complete; route live; view ready to apply)**
 

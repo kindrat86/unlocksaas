@@ -5,6 +5,16 @@ import {
   readIdentityFromCookies,
   readSubjectFromCookies,
 } from "@/lib/ab";
+import {
+  StackLayer,
+  readStackSubjectFromCookies,
+  readStackEntryFromCookies,
+  readStackCurrentFromCookies,
+  readStackPathFromCookies,
+  readAffiliateFromCookies,
+  stackStripeStamp,
+  pickStackSubjectId,
+} from "@/lib/stack-attribution";
 import { captureServer } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
 import {
@@ -106,6 +116,39 @@ export async function POST(req: NextRequest) {
   // webhook's read is non-conditional).
   abMetadata.order_bumps = bumpIdsStamped;
 
+  // ── Funnel Stack (DotCom Secrets Secret #27) ───────────────────────────
+  //
+  // Cross-funnel attribution: stamp the eight-layer stack path onto Stripe
+  // session.metadata so the webhook can attribute the conversion to a full
+  // visitor path (e.g. ATTENTION → DIAGNOSIS → STARTER → CORE) even when
+  // cookies expired or the visitor cleared them.
+  //
+  // The stack stamp is joined with — not a replacement for — the existing
+  // A/B + diagnostic stamps. Both are needed: A/B answers "which variant
+  // won", stack answers "which path got them there".
+  //
+  // Cookies are written sticky in src/middleware.ts; this reads them.
+  // Defensive fallback: if the subject cookie is missing (visitor blocked
+  // cookies entirely), generate a one-shot subject so the row at least has
+  // a primary key. Subsequent requests by the same blocked visitor will get
+  // a different one — that's a known property of cookie-less attribution.
+  const stackSubject = readStackSubjectFromCookies() ?? pickStackSubjectId();
+  const stackEntry = readStackEntryFromCookies() ?? StackLayer.ATTENTION;
+  const stackCurrent = readStackCurrentFromCookies() ?? stackEntry;
+  const stackPath = readStackPathFromCookies();
+  const affiliate = readAffiliateFromCookies();
+  const layerPurchased =
+    priceType === "starter" ? StackLayer.STARTER : StackLayer.CORE;
+  const stackStamp = stackStripeStamp({
+    subject: stackSubject,
+    entry: stackEntry,
+    current: stackCurrent,
+    path: stackPath.length > 0 ? stackPath : [stackEntry],
+    layerPurchased,
+    affiliate,
+  });
+  Object.assign(abMetadata, stackStamp);
+
   // Distinct id for server-side analytics. At checkout-time we don't have a
   // Stripe customer id yet (Stripe assigns one at session completion), so we
   // fall back to the A/B subject cookie if present. This lets PostHog stitch
@@ -115,14 +158,22 @@ export async function POST(req: NextRequest) {
 
   try {
     if (priceType === "starter") {
-      const session = await getStripe().checkout.sessions.create({
-        mode: "payment",
-        line_items: [
+      // Build the line_items array: primary $1 Starter + resolved bumps.
+      // Brunson DCS Secret #17 §3: the bump is a SEPARATE line item, not a
+      // tier of the primary product. This way Stripe surfaces the bump as
+      // its own row in the receipt — the buyer sees what they bought.
+      const lineItems: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[] =
+        [
           {
             price: process.env.STRIPE_STARTER_PRICE_ID!,
             quantity: 1,
           },
-        ],
+          ...resolvedBumps.map((b) => ({ price: b.priceId, quantity: 1 })),
+        ];
+
+      const session = await getStripe().checkout.sessions.create({
+        mode: "payment",
+        line_items: lineItems,
         success_url: `${appUrl}/oto?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${appUrl}/starter`,
         metadata: abMetadata,
@@ -135,6 +186,7 @@ export async function POST(req: NextRequest) {
       captureServer(distinctId, Event.CheckoutSessionCreated, {
         price_type: "starter",
         stripe_session_id: session.id,
+        order_bumps: bumpIdsStamped,
         ...abMetadata,
       });
 
