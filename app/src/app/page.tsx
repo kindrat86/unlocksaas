@@ -1,11 +1,10 @@
 import { Suspense } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
+import { Hero } from "@/components/blocks/hero";
+import { BigDomino } from "@/components/blocks/big-domino";
 import { SocialProofBar } from "@/components/blocks/social-proof-bar";
 import { BeforeAfter } from "@/components/blocks/before-after";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
@@ -26,33 +25,37 @@ import {
 } from "@/components/seo/json-ld";
 
 /**
- * UnlockSaaS Funnel Hub.
+ * UnlockSaaS Funnel Hub — Perfect Webinar arc.
  *
- * Building blocks per workbook 04 §2 + 23 Building Blocks (DotCom Secrets) +
- * Funnel Hacker's Cookbook v1 trust columns (strategy/funnel-hackers-cookbook.md):
+ * Section order follows DotCom Secrets §2 + Expert Secrets §3 (Perfect Webinar
+ * Framework) + Funnel Hacker's Cookbook v1 (strategy/funnel-hackers-cookbook.md):
  *
- *   1. Hero — enemy sentence + one-line bio + 3 CTAs (diagnostic / starter / machine)
- *   2. Social proof bar (structural proof, not numeric)
- *   3. Media bar — earned mentions, auto-renders at ≥3 (Cookbook Swipe 3)
- *   4. Manifesto (half) — Verified / Paid Builders A/B from cookie
- *   5. Before / After block
- *   6. Founder VSL (env-driven, kinetic fallback)
- *   7. Founder timeline
- *   8. Comparison block — Machine vs Course vs DIY vs Doing-Nothing
- *   9. Stack Slide — eight deliverables + $49/mo anchor (Block #14)
- *  10. Guarantee Hero — 60-day Stripe-verified polarity move (Cookbook §4)
- *  11. Honest testimonials — public quotes from real founders
- *  12. Avatar wall — verified builders, auto-renders at ≥9 (Cookbook Swipe 6)
- *  13. FAQ — sourced from strategy/dollar-objections.md (6 entries)
- *  14. Newsletter signup — real form, fires Day 0 of Soap Opera
- *  15. Final CTA — close-the-loop three doors one more time (Block #21)
- *  16. Honest "as seen in" empty-state — only renders when MediaBar is hidden
- *  17. Social links
- *  18. Maryan signature footer (Cookbook Swipe 4)
- *  19. Sticky scroll CTA — always-visible offer bar below the hero
+ *   1. Hook            — promise + polarity move in <3 seconds
+ *   2. Big Domino      — the one claim the page must prove
+ *   3. Proof Bar       — structural credibility (refund-by-code + scar tissue)
+ *   4. Media Bar       — earned mentions, auto-renders at ≥3
+ *   5. Mirror Moment   — Honest testimonials (public pain in real founders'
+ *                        own words); positioned high so the visitor recognizes
+ *                        themselves BEFORE the longer origin story
+ *   6. Founder VSL     — origin story in the founder's voice
+ *   7. Manifesto       — A/B identity label (Verified / Paid Builders)
+ *   8. Timeline        — receipts that the story is real
+ *   9. Before / After  — the transformation made concrete
+ *  10. Comparison      — anti-secrets (what they tried that did not work)
+ *  11. Stack Slide     — the offer reveal + anchored price ($4,900 → $49)
+ *  12. Guarantee Hero  — the polarity move with refund conditions
+ *  13. Avatar Wall     — Verified Builder proof (renders at ≥9)
+ *  14. FAQ             — objection handling sourced from dollar-objections
+ *  15. Newsletter      — last-resort soft opt-in (Soap Opera Day 0 trigger)
+ *  16. Final CTA       — three doors one more time (close before the close)
+ *  17. Honest empty    — "as seen in" empty state when MediaBar hidden
+ *  18. Social links    — find-me row
+ *  19. Signature       — Maryan footer (Cookbook Swipe 4)
+ *  20. Sticky CTA      — always-visible offer bar below the hero
  *
- * Theming: matches the rest of the app. shadcn theme tokens only — no
- * explicit colors, no script fonts. Inherits dark mode from layout.tsx.
+ * Theming: shadcn dark tokens only — no explicit colors, no script fonts, no
+ * ClickFunnels 1.0 yellow attention bars. The header now reads as the same
+ * visual family as every block below it (eyebrow → heading → body → CTAs).
  */
 export default function FunnelHub() {
   const variant = readIdentityFromCookies();
@@ -70,70 +73,48 @@ export default function FunnelHub() {
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
       <AbExposureBeacon />
 
-      {/* ---------------- HERO ---------------- */}
-      <header className="py-16 sm:py-24 px-4 sm:px-6 text-center">
-        <div className="max-w-3xl mx-auto">
-          <Badge variant="secondary" className="mb-6">
-            Pre-revenue founders building with AI
-          </Badge>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight mb-6">
-            The problem stuck founders have is not the product. It is that an
-            entire industry profits from teaching them to keep building when
-            the only thing left is to sell.
-          </h1>
-          <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-            Marketer, non-engineer, built a dozen AI products that nobody paid
-            for. Then I figured out why.{" "}
-            <span className="text-foreground">— Maryan</span>
-          </p>
+      {/* ---------------- 1. HOOK ---------------- */}
+      <Hero />
 
-          {/* Primary CTA — restrained shadcn default. */}
-          <div className="flex flex-col items-center gap-3 mb-8">
-            <Button asChild size="lg">
-              <Link href="/diagnostic">Yes — get my free diagnosis</Link>
-            </Button>
-            <p className="text-xs text-muted-foreground">
-              Free · 2 minutes · No card required
-            </p>
-          </div>
+      {/* ---------------- 2. BIG DOMINO ---------------- */}
+      <BigDomino />
 
-          {/* Secondary CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-xl mx-auto">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/starter">Start the Machine for $1</Link>
-            </Button>
-            <Button asChild variant="ghost" size="lg">
-              <Link href="/machine-sales">The Full Machine — $49/mo</Link>
-            </Button>
-          </div>
-
-          {/* Reverse-squeeze bridge — DCS Secret 14 reverse variant. */}
-          <p className="mt-10 text-sm text-muted-foreground">
-            Or{" "}
-            <Link
-              href="/parables"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              read the five parables first
-            </Link>
-            {" "}— free, no email required.
-          </p>
-        </div>
-      </header>
-
-      {/* Building Block #20 — Social Proof Bar (honest variant). */}
+      {/* ---------------- 3. STRUCTURAL PROOF BAR ---------------- */}
       <SocialProofBar />
 
-      {/* Cookbook Swipe 3 — "As seen in" earned-media bar. Pre-staged. */}
+      {/* ---------------- 4. EARNED MEDIA (pre-staged) ---------------- */}
       <MediaBar />
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- MANIFESTO (half) — A/B identity_label ---------------- */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-2xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center leading-tight">
-          {labels.manifestoTitle}
-        </h2>
+      {/* ---------------- 5. MIRROR MOMENT — moved up ----------------
+          Brunson rule: the visitor must recognize themselves in real public
+          pain BEFORE the longer origin story. Mirror first, autobiography
+          second. */}
+      <HonestTestimonials />
+
+      {/* Cookbook Swipe 6 — Verified Builder avatar wall (pre-staged at ≥9). */}
+      <Suspense fallback={null}>
+        <AvatarWall />
+      </Suspense>
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- 6. FOUNDER VSL ---------------- */}
+      <VslBlock />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- 7. MANIFESTO (half) — A/B identity_label ---------------- */}
+      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
+        <div className="text-center mb-7">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            The Movement
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
+            {labels.manifestoTitle}
+          </h2>
+        </div>
         <blockquote className="text-muted-foreground space-y-4 leading-relaxed">
           <p>
             We are non-engineer founders who shipped real things with AI tools
@@ -163,21 +144,16 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- BEFORE / AFTER (Block #22) ---------------- */}
-      <BeforeAfter />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- FOUNDER VSL (Block #20) ---------------- */}
-      <VslBlock />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- FOUNDER TIMELINE ---------------- */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-2xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center leading-tight">
-          The Timeline
-        </h2>
+      {/* ---------------- 8. FOUNDER TIMELINE ---------------- */}
+      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
+        <div className="text-center mb-10">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            Receipts
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
+            How a flat Stripe line became this page.
+          </h2>
+        </div>
         <ol className="space-y-5 sm:space-y-4">
           {[
             {
@@ -223,11 +199,21 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- COMPARISON ---------------- */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-3xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center leading-tight">
-          What you have been trying — and what is different about this.
-        </h2>
+      {/* ---------------- 9. BEFORE / AFTER ---------------- */}
+      <BeforeAfter />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- 10. ANTI-SECRETS — Comparison ---------------- */}
+      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-3xl mx-auto">
+        <div className="text-center mb-10">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            What you have been trying
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
+            None of these remove the one thing that keeps the line flat.
+          </h2>
+        </div>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
             <thead className="bg-muted/40 text-foreground">
@@ -288,36 +274,31 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- STACK SLIDE — Block #14 ---------------- */}
+      {/* ---------------- 11. STACK SLIDE — the offer ---------------- */}
       <StackSlide />
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- GUARANTEE HERO — polarity move (Cookbook §4) ---------------- */}
+      {/* ---------------- 12. GUARANTEE HERO — polarity move ---------------- */}
       <GuaranteeHero />
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- HONEST TESTIMONIALS (Block #7) ---------------- */}
-      <HonestTestimonials />
-
-      {/* Cookbook Swipe 6 — Verified Builder avatar wall. Pre-staged. */}
-      <Suspense fallback={null}>
-        <AvatarWall />
-      </Suspense>
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- FAQ ---------------- */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-2xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center leading-tight">
-          Honest objections.
-        </h2>
-        <p className="text-sm text-muted-foreground text-center mb-8">
-          Mined from public Indie Hackers and Hacker News threads written by
-          founders matching the Marco avatar. Full sources:{" "}
-          <code className="text-xs">strategy/dollar-objections.md</code>.
-        </p>
+      {/* ---------------- 13. FAQ — objection handling ---------------- */}
+      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
+        <div className="text-center mb-8">
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+            Honest objections
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
+            What founders push back on — answered straight.
+          </h2>
+          <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto leading-relaxed">
+            Mined from public Indie Hackers and Hacker News threads written by
+            founders matching the Marco avatar. Full sources:{" "}
+            <code className="text-xs">strategy/dollar-objections.md</code>.
+          </p>
+        </div>
         <div className="space-y-6">
           {HOMEPAGE_FAQS.map((item) => (
             <div key={item.q}>
@@ -332,12 +313,15 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- NEWSLETTER ---------------- */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-md mx-auto text-center">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 leading-tight">
-          Not ready to subscribe? Read the five-day arc first.
+      {/* ---------------- 14. NEWSLETTER — soft opt-in ---------------- */}
+      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-md mx-auto text-center">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          Not ready to subscribe?
+        </p>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 leading-tight text-balance">
+          Read the five-day arc first.
         </h2>
-        <p className="text-sm text-muted-foreground mb-6">
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
           Founders who build real things with AI deserve to get paid for them.
           One short email a day for five days, written like a letter from one
           founder to another. Reply STOP anytime.
@@ -347,10 +331,10 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- FINAL CTA — close-the-loop ---------------- */}
+      {/* ---------------- 15. FINAL CTA — close-the-loop ---------------- */}
       <FinalCta />
 
-      {/* ---------------- HONEST "AS SEEN IN" EMPTY-STATE ----------------
+      {/* ---------------- 16. HONEST "AS SEEN IN" EMPTY-STATE ----------------
           Only renders when the MediaBar above is hidden (< 3 earned mentions). */}
       {showHonestEmptyState ? (
         <>
@@ -370,7 +354,7 @@ export default function FunnelHub() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- SOCIAL ---------------- */}
+      {/* ---------------- 17. SOCIAL ---------------- */}
       <section className="py-10 sm:py-12 px-4 sm:px-6 max-w-md mx-auto text-center">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
           Find me
@@ -403,10 +387,10 @@ export default function FunnelHub() {
         </div>
       </section>
 
-      {/* ---------------- FOOTER — Maryan signature (Cookbook Swipe 4) ---------------- */}
+      {/* ---------------- 18. SIGNATURE FOOTER ---------------- */}
       <SignatureFooter />
 
-      {/* ---------------- STICKY SCROLL CTA — below-hero offer bar ---------------- */}
+      {/* ---------------- 19. STICKY SCROLL CTA ---------------- */}
       <StickyCta />
     </div>
   );
