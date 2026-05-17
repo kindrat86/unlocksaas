@@ -33,15 +33,27 @@ const QUOTES: Quote[] = [
     source: "Indie Hackers",
   },
   {
-    pain: "Silence after shipping",
+    pain: "Shipped to crickets, repeatedly",
+    text: "I've shipped products to crickets more times than I'd like to admit.",
+    author: "erichjeff",
+    source: "Indie Hackers",
+  },
+  {
+    pain: "Built, nobody showed up",
     text: "Most of us don't fail because we can't build. We fail because we build… and nobody shows up.",
     author: "Abdelrahman Al Omari",
     source: "Indie Hackers",
   },
   {
-    pain: "Avoidance disguised as work",
-    text: "Meanwhile: zero paying customers. Zero cold emails sent. Zero uncomfortable conversations.",
-    author: "jackfranklyn",
+    pain: "The distribution problem nobody names",
+    text: "The silence after shipping isn't market rejection. It's a distribution problem nobody talks about enough.",
+    author: "launchstack_hq",
+    source: "Indie Hackers",
+  },
+  {
+    pain: "Feedback is not intent",
+    text: "I got tonnes of feedback, but nobody was interested.",
+    author: "Daniel Gibbons",
     source: "Indie Hackers",
   },
   {
@@ -51,15 +63,27 @@ const QUOTES: Quote[] = [
     source: "Indie Hackers",
   },
   {
+    pain: "Avoidance disguised as work",
+    text: "Meanwhile: zero paying customers. Zero cold emails sent. Zero uncomfortable conversations.",
+    author: "jackfranklyn",
+    source: "Indie Hackers",
+  },
+  {
+    pain: "Built beside, not inside",
+    text: "Most founders think they are building a product. In reality they are often building a second tool that sits beside the thing people already use.",
+    author: "Astra Wysocka",
+    source: "Indie Hackers",
+  },
+  {
     pain: "Specificity, not distribution",
     text: "Most indie founders doing $0 aren't distribution-constrained. They're specificity-constrained.",
     author: "pradeepbisht",
     source: "Indie Hackers",
   },
   {
-    pain: "The actual diagnosis",
-    text: "The product works. What's broken is everything around it — how I sell, who I sell to, what I sell.",
-    author: "Daniil Khanin",
+    pain: "Market motion, not product",
+    text: "A lot of founders think they have a product problem when they really have a market-motion problem.",
+    author: "clawback",
     source: "Indie Hackers",
   },
 ];
