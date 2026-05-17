@@ -4266,6 +4266,635 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["hosting", "developer-tools", "managed-paas-vs-edge", "global-deployment"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "notion-vs-airtable",
+    a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
+    b: { name: "Airtable", url: "https://www.airtable.com/" },
+    category: "Productivity and workspace",
+    oneLine:
+      "Notion is a docs canvas with databases bolted in. Airtable is a database with docs and apps bolted in. Different centers of gravity in the same broad workspace category.",
+    tldr:
+      "Notion and Airtable both blur the line between database and workspace, but from opposite starting points. Notion is a docs platform with database blocks; Airtable is a relational database with documents and apps wrapped around it. For teams whose primary work is documents and lightly-structured project planning, Notion. For teams whose primary work is structured data with relationships, automations, and lightweight internal tools, Airtable. The mistake is picking based on overlap features rather than on the dominant starting point.",
+    bestFor: {
+      a: "Teams whose primary work is docs, wikis, knowledge bases, and lightly-structured project planning.",
+      b: "Teams whose primary work is structured relational data, with documents and apps as adjacent capabilities.",
+    },
+    pickAIf: [
+      "Your team writes more than it stores structured data.",
+      "You value the largest template ecosystem and template-driven onboarding.",
+      "You want a workspace that scales from personal notes to team wiki.",
+    ],
+    pickBIf: [
+      "Your team's primary surface is structured data with relationships, formulas, and automations.",
+      "You need to build lightweight internal tools (intake forms, dashboards, approval workflows) without code.",
+      "Your team values database-grade integrity and formula depth over docs polish.",
+    ],
+    dimensions: [
+      {
+        name: "Starting shape",
+        a: "Docs first; databases are blocks embedded in pages.",
+        b: "Database first; documents and interfaces wrap structured data.",
+        winner: "different",
+      },
+      {
+        name: "Document editing",
+        a: "Best-in-class; the workspace canvas is the product.",
+        b: "Functional; docs exist but are secondary.",
+        winner: "A",
+      },
+      {
+        name: "Structured data depth",
+        a: "Limited; databases support basic views and formulas without relational depth.",
+        b: "Deep; relational tables, sophisticated formulas, junction tables, rollups.",
+        winner: "B",
+      },
+      {
+        name: "Pricing",
+        a: "Free personal; Plus ~$10/seat/mo; Business ~$18/seat/mo (verified 2026-05-17).",
+        b: "Free; Team ~$20/seat/mo; Business ~$45/seat/mo (verified 2026-05-17).",
+        winner: "A",
+        note: "Airtable is meaningfully more expensive per seat at growth tiers.",
+      },
+      {
+        name: "Internal-tool building",
+        a: "Possible but limited; Notion is not designed for building forms-into-database internal tools.",
+        b: "Native; Airtable Interface Designer + Automations enable lightweight no-code app building.",
+        winner: "B",
+      },
+      {
+        name: "Template ecosystem",
+        a: "Largest in the workspace category.",
+        b: "Growing; smaller than Notion's but mature for database-first use cases.",
+        winner: "A",
+      },
+      {
+        name: "Best for knowledge base",
+        a: "Excellent — Notion is the category default.",
+        b: "Possible but awkward; the database starting shape adds friction.",
+        winner: "A",
+      },
+      {
+        name: "Best for CRM, project tracker, inventory",
+        a: "Possible via databases but limited at scale.",
+        b: "Native — Airtable is the canonical no-code platform for these use cases.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Notion and Airtable both sit in the broad workspace category but solve different jobs. Notion's docs-first shape wins for knowledge work; Airtable's database-first shape wins for structured-data work and lightweight internal tools. Most teams who try to use one for both jobs eventually feel the gap and either accept it or add the second tool. For pure knowledge platforms, Notion. For data-shaped operations (CRM, inventory, project tracking with formulas), Airtable. Picking based on feature overlap rather than dominant starting shape is the common mistake.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Notion for most indie SaaS teams. The team's primary work at indie scale is writing (specs, docs, customer notes, marketing copy) more than structured data operations. Airtable becomes the better pick when ops complexity grows enough that structured-data workflows dominate — usually a later-stage need.",
+    },
+    faqs: [
+      {
+        q: "Can Notion replace Airtable for structured data?",
+        a: "For light tabular data with simple views, yes. For relational databases with formulas, junction tables, and rollups, no — Notion's database is intentionally simpler. Teams that try to build serious data ops in Notion eventually hit the limit.",
+      },
+      {
+        q: "Can Airtable replace Notion for team docs?",
+        a: "Workably for simple docs. For rich team wikis, knowledge bases, and writing surfaces, Notion is meaningfully better. The starting-shape difference shows up immediately when you try to write a 5000-word doc in Airtable.",
+      },
+      {
+        q: "Should I use both at the same company?",
+        a: "Common at slightly larger teams — Notion for docs and wikis, Airtable for structured ops. The cost is two subscriptions and ambiguity about which tool owns which workflow. For indie teams the duplication is usually not worth it; pick one and stretch.",
+      },
+      {
+        q: "What about Coda as an alternative to either?",
+        a: "Coda sits between Notion and Airtable — documents with serious database power. For teams that genuinely need both writing and database depth, Coda is the hybrid option. The Notion vs Airtable comparison is for teams that have already decided which side dominates.",
+      },
+      {
+        q: "What is the Brunson lens on Notion vs Airtable?",
+        a: "Both companies execute Brunson Dream Customer naming in opposite directions. Notion names the docs-first team; Airtable names the data-first team. Brunson lesson: when two competitors share keywords but target different Dream Customers, both can win their respective segments without zero-sum competition.",
+      },
+    ],
+    tags: ["workspace", "docs-vs-database", "different-starting-shapes", "no-code"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "stripe-vs-braintree",
+    a: { name: "Stripe", teardownSlug: "stripe", url: "https://stripe.com/" },
+    b: { name: "Braintree", url: "https://www.braintreepayments.com/" },
+    category: "Payments processing",
+    oneLine:
+      "Stripe is the modern developer-first payments default. Braintree is PayPal-owned, mature, with PayPal-native checkout. Different positions in the same broad category.",
+    tldr:
+      "Stripe and Braintree both process payments but from opposite positions. Stripe is the modern developer-first platform that won mindshare in the 2010s and continues to define the category. Braintree (owned by PayPal since 2013) is the mature enterprise platform with native PayPal checkout integration as the structural differentiator. For new SaaS, Stripe is the obvious pick. For businesses that need PayPal checkout depth without separate integration, Braintree retains value.",
+    bestFor: {
+      a: "Modern SaaS, startups, and developer-led teams building checkout from scratch.",
+      b: "Businesses that need native PayPal checkout integration as part of a single payment platform.",
+    },
+    pickAIf: [
+      "You are building a new payment integration and value the strongest developer experience.",
+      "Your customers do not specifically require PayPal as a payment method.",
+      "You want the broadest ecosystem of integrations, libraries, and Stripe-native tooling.",
+    ],
+    pickBIf: [
+      "Your customer base specifically requires PayPal checkout as a primary payment method.",
+      "You want one platform handling both card and PayPal payments natively.",
+      "You are already on the PayPal ecosystem and want consolidated billing.",
+    ],
+    dimensions: [
+      {
+        name: "Developer experience",
+        a: "Industry-leading; clean API, deep documentation, mature SDKs in every language.",
+        b: "Functional; less polished than Stripe's modern DX.",
+        winner: "A",
+      },
+      {
+        name: "Native PayPal integration",
+        a: "Available via Stripe's PayPal add-on; not deeply integrated.",
+        b: "Native — Braintree was acquired by PayPal specifically for this integration.",
+        winner: "B",
+      },
+      {
+        name: "Pricing",
+        a: "2.9% + 30¢ per charge (US standard).",
+        b: "2.59% + 49¢ per charge (US standard, verified 2026-05-17).",
+        winner: "tie",
+        note: "Slightly different fee structures; comparable at typical volumes.",
+      },
+      {
+        name: "Subscription billing",
+        a: "Stripe Billing is the canonical subscription product with deep tooling.",
+        b: "Braintree Recurring Billing exists but is less feature-rich than Stripe Billing.",
+        winner: "A",
+      },
+      {
+        name: "Marketplaces and Connect",
+        a: "Stripe Connect is the canonical platform for marketplaces.",
+        b: "Braintree Marketplace exists but less developer-friendly than Connect.",
+        winner: "A",
+      },
+      {
+        name: "Brand recognition for developers",
+        a: "Category-default — every new SaaS in 2026 considers Stripe first.",
+        b: "Known but secondary; primarily evaluated when PayPal integration is the priority.",
+        winner: "A",
+      },
+      {
+        name: "International coverage",
+        a: "Broad and continuously expanding.",
+        b: "Solid international coverage via PayPal infrastructure.",
+        winner: "tie",
+      },
+      {
+        name: "Brand momentum in 2026",
+        a: "Strong; winning developer mindshare continuously.",
+        b: "Stable; established but no longer growing as fast in new-SaaS segment.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Stripe and Braintree both process payments but from opposite positions in the modern payments fight. Stripe owns the developer mindshare and continues to define the modern payments DX category. Braintree's structural advantage is the native PayPal checkout integration — for businesses where PayPal is part of the customer expectation, Braintree's bundled approach beats Stripe-plus-PayPal-as-add-on. For most new SaaS in 2026, Stripe is the obvious default; Braintree is the right pick when PayPal-native checkout is structurally important.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Stripe for indie SaaS in 2026. The developer experience advantage compounds, the ecosystem is broader, and the subscription billing depth matters more than native PayPal integration for most indie buyers. Add PayPal as a Stripe payment method if specific customer cohorts demand it.",
+    },
+    faqs: [
+      {
+        q: "Why does Braintree exist if Stripe is better at most things?",
+        a: "Native PayPal integration. PayPal acquired Braintree in 2013 specifically to bring developer-friendly payments under the PayPal ecosystem. For businesses where customers expect PayPal as a primary payment method, Braintree's bundled approach saves the integration work Stripe-plus-PayPal would require.",
+      },
+      {
+        q: "Can I use both Stripe and Braintree?",
+        a: "Possible but unusual. Most teams pick one for their primary checkout. The complexity of operating two payment platforms exceeds the marginal benefit for almost all SaaS — pick the one that matches your primary buyer's expectation.",
+      },
+      {
+        q: "Is Braintree's pricing really cheaper than Stripe's?",
+        a: "Slightly, at certain volumes. The 2.59% + 49¢ vs 2.9% + 30¢ structures cross over depending on average transaction size. For micro-transactions Stripe is often cheaper; for higher-value charges Braintree's lower percentage helps. The difference rarely justifies switching alone.",
+      },
+      {
+        q: "What about Adyen, Square, or Authorize.net?",
+        a: "Adyen serves enterprise with similar developer experience to Stripe. Square is the small-business physical-payments default. Authorize.net is the legacy enterprise option. The Stripe vs Braintree comparison is specifically about modern developer-led SaaS payments; alternatives serve adjacent niches.",
+      },
+      {
+        q: "What is the Brunson lens on Stripe vs Braintree?",
+        a: "Stripe executed the canonical New Opportunity move (modern developer-led payments) and captured the category default. Braintree is the PayPal-acquired challenger whose structural differentiator (native PayPal checkout) serves a specific buyer segment. Brunson lesson: even category-winners do not capture every segment — niche structural differentiators preserve markets the winner cannot easily take.",
+      },
+    ],
+    tags: ["payments", "developer-tools", "category-default-vs-niche-incumbent", "paypal-integration"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "linear-vs-trello",
+    a: { name: "Linear", teardownSlug: "linear", url: "https://linear.app/" },
+    b: { name: "Trello", url: "https://trello.com/" },
+    category: "Project management",
+    oneLine:
+      "Linear is opinionated issue tracking for engineering. Trello is the Kanban board for everyone. Different categories despite the surface comparison.",
+    tldr:
+      "Linear and Trello both manage tasks but for completely different buyers and purposes. Linear is the modern issue tracker built for software engineering teams that rejected Jira. Trello (owned by Atlassian) is the Kanban-board-for-everyone platform that pioneered visual task management for non-technical teams. For engineering work, Linear is the obvious pick. For lightweight cross-functional task tracking, content planning, or personal project organization, Trello's simplicity is the structural advantage.",
+    bestFor: {
+      a: "Software engineering teams that want fast, opinionated issue tracking with engineer-first workflows.",
+      b: "Cross-functional teams, marketing, content planning, personal projects — anyone who wants simple Kanban without engineering-team overhead.",
+    },
+    pickAIf: [
+      "Your work is software engineering and you want issue tracking calibrated to dev workflows.",
+      "You value keyboard-first UX and opinionated defaults over Kanban flexibility.",
+      "You measure tooling on velocity and want issue tracking to disappear most of the time.",
+    ],
+    pickBIf: [
+      "Your work is cross-functional, content-driven, or personal organization.",
+      "You want the simplest possible Kanban board without learning curve.",
+      "Your team includes non-technical members who would resist Linear's engineering-flavored UX.",
+    ],
+    dimensions: [
+      {
+        name: "Target user",
+        a: "Software engineering teams; engineers are the first-class user.",
+        b: "Everyone; designed to be approachable for non-technical teams.",
+        winner: "different",
+      },
+      {
+        name: "Workflow complexity",
+        a: "Issues, cycles, projects, sub-issues; opinionated.",
+        b: "Lists, cards, basic automation; intentionally simple.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free (250 issues); Basic ~$8-10/user/mo; Business ~$14/user/mo (verified 2026-05-17).",
+        b: "Free; Standard ~$5/user/mo; Premium ~$10/user/mo; Enterprise ~$17.50/user/mo (verified 2026-05-17).",
+        winner: "B",
+        note: "Trello is meaningfully cheaper at growth tiers; the categories serve different buyers.",
+      },
+      {
+        name: "Speed and UX",
+        a: "Among the fastest web apps in the category.",
+        b: "Fast and approachable; less keyboard-driven than Linear.",
+        winner: "A",
+      },
+      {
+        name: "Engineering workflow fit",
+        a: "Native — built for engineering teams.",
+        b: "Possible but awkward — engineering workflows feel constrained on plain Kanban.",
+        winner: "A",
+      },
+      {
+        name: "Non-engineering workflow fit",
+        a: "Awkward — Linear is calibrated for engineering teams.",
+        b: "Native — Trello is the canonical Kanban for content, marketing, personal use.",
+        winner: "B",
+      },
+      {
+        name: "Setup time",
+        a: "Minutes; opinionated defaults work immediately.",
+        b: "Seconds; the visual Kanban is immediately understandable.",
+        winner: "B",
+      },
+      {
+        name: "Brand momentum in 2026",
+        a: "Strong; winning new engineering team mindshare.",
+        b: "Stable; established but no longer growing rapidly.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Linear and Trello sit in the same broad task-management category but for completely different buyers. Linear serves software engineering teams that left Jira; Trello serves the everyone-else segment that wants visual Kanban without engineering-tool overhead. The comparison appears in searches because both contain 'task management' but the audiences barely overlap. For engineering work, Linear is the obvious pick. For content planning, cross-functional teams, or personal projects, Trello's simplicity is the structural advantage. The mistake is forcing one onto a team that fits the other.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Linear for indie SaaS engineering work. The speed and engineering-workflow fit match how indie founders actually ship. Trello might serve a content-planning or marketing-task workflow alongside Linear, but for the primary engineering work Linear wins decisively.",
+    },
+    faqs: [
+      {
+        q: "Why is Trello so much simpler than Linear?",
+        a: "Different target buyer. Trello was designed for non-technical teams who needed visual task management without complexity. Linear was designed for engineering teams who needed velocity-optimized issue tracking. The complexity gap is intentional; both teams optimized for their respective audiences.",
+      },
+      {
+        q: "Can Trello handle engineering work?",
+        a: "Workably for very small teams or simple workflows. For real engineering team operations (sprints, cycles, GitHub integration, complex dependencies), Trello's simplicity becomes a constraint. Engineering teams that try Trello usually outgrow it quickly.",
+      },
+      {
+        q: "Why is Linear so much more expensive at higher tiers?",
+        a: "Different target buyer with higher willingness to pay. Engineering teams typically have higher per-seat tooling budgets than cross-functional teams. Linear's pricing reflects what engineering buyers pay; Trello's pricing reflects what cross-functional buyers pay.",
+      },
+      {
+        q: "What about Jira, Asana, or ClickUp instead?",
+        a: "Jira is the enterprise default for engineering. Asana serves cross-functional teams. ClickUp is the configurability-first all-in-one. The Linear vs Trello comparison is specifically the engineering-vs-everyone-else split; alternatives address adjacent niches.",
+      },
+      {
+        q: "What is the Brunson lens on Linear vs Trello?",
+        a: "Both companies execute precise Brunson Dream Customer naming for fundamentally different audiences. Linear names the engineering team; Trello names the everyone-else team. Brunson lesson: name your buyer specifically and serve them deeply; the market is large enough for both companies to win their segments without zero-sum competition.",
+      },
+    ],
+    tags: ["project-management", "engineering-vs-everyone-else", "different-buyers", "kanban"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "mailchimp-vs-beehiiv",
+    a: { name: "Mailchimp", url: "https://mailchimp.com/" },
+    b: { name: "Beehiiv", teardownSlug: "beehiiv", url: "https://www.beehiiv.com/" },
+    category: "Newsletter and creator email",
+    oneLine:
+      "Mailchimp is the legacy default for newsletter and marketing email. Beehiiv is the modern creator-business platform with native monetization stack.",
+    tldr:
+      "Mailchimp and Beehiiv both ship newsletters but from opposite positions in the modern email category. Mailchimp is the legacy platform that defined the category for small businesses in the 2010s; Beehiiv is the modern challenger built specifically for creators treating newsletters as businesses. For traditional small-business email marketing, Mailchimp retains brand familiarity. For modern creators monetizing via ads, paid subscriptions, and referral mechanics, Beehiiv's native monetization stack is the structural advantage.",
+    bestFor: {
+      a: "Small businesses and traditional marketing teams that want familiar email-marketing tooling with the longest brand recognition.",
+      b: "Modern creators treating the newsletter as a business with multiple revenue streams (ads, paid subs, referrals, Boost network).",
+    },
+    pickAIf: [
+      "You are a small business doing traditional email marketing with no creator-monetization needs.",
+      "Your team values familiar tooling that anyone who has worked in marketing knows.",
+      "You need the broader marketing-automation surface beyond newsletters (landing pages, basic CRM).",
+    ],
+    pickBIf: [
+      "You are a creator treating the newsletter as a business.",
+      "You want the native monetization stack (ads network, paid subs, Boost referrals).",
+      "You value the modern creator-business positioning over legacy marketing tooling.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Free up to 500 contacts; paid tiers scale by audience and feature complexity from ~$13/mo (verified 2026-05-17).",
+        b: "Free up to 2,500 subscribers; paid tiers from ~$39/mo for Scale (verified 2026-05-17).",
+        winner: "different",
+        note: "Beehiiv's free tier is more generous; Mailchimp's paid tiers scale faster with audience size.",
+      },
+      {
+        name: "Native ad network monetization",
+        a: "Not available.",
+        b: "Built-in — Beehiiv pays creators ad revenue alongside subscription revenue.",
+        winner: "B",
+      },
+      {
+        name: "Paid subscription monetization",
+        a: "Limited; not the core use case.",
+        b: "Native — paid newsletter subscriptions are a primary feature.",
+        winner: "B",
+      },
+      {
+        name: "Cross-promotion network",
+        a: "Not available.",
+        b: "Boost network — creators pay each other for referrals, Beehiiv brokers.",
+        winner: "B",
+      },
+      {
+        name: "Brand recognition with recipients",
+        a: "Very high — Mailchimp is the brand non-marketers know.",
+        b: "Lower; recipients may not recognize Beehiiv-built emails as a category.",
+        winner: "A",
+      },
+      {
+        name: "Marketing automation breadth",
+        a: "Mature; includes landing pages, basic CRM, customer journey automation beyond email.",
+        b: "Newsletter-focused; less marketing-automation breadth.",
+        winner: "A",
+      },
+      {
+        name: "Brand momentum in 2026",
+        a: "Stable; established but losing creator-business mindshare to modern challengers.",
+        b: "Strong; winning new creator signups in 2026.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Mailchimp and Beehiiv ship newsletters but for fundamentally different buyers. Mailchimp is the legacy small-business marketing platform that defined the category and still serves it; Beehiiv is the modern creator-business platform built natively for monetization. For traditional small-business email marketing without creator-monetization needs, Mailchimp's brand familiarity and broader marketing automation hold value. For modern creators building newsletter businesses, Beehiiv's native ads network, paid subscriptions, and Boost referrals are structural advantages Mailchimp does not offer. The mistake is comparing them as if they compete for the same buyer.",
+    forIndieFounders: {
+      pick: "B",
+      reasoning:
+        "Beehiiv for indie SaaS founders running newsletters as a marketing channel or business asset. The native monetization stack matters even if you do not use it immediately — it preserves the option. Mailchimp's broader automation surface only matters if you genuinely need marketing-automation beyond newsletters, which is rare for indie SaaS.",
+    },
+    faqs: [
+      {
+        q: "Is Mailchimp still relevant in 2026?",
+        a: "For traditional small-business email marketing, yes — the brand familiarity and broader marketing-automation surface retain value. For modern creator newsletter businesses, Beehiiv, Substack, and Kit have taken meaningful mindshare.",
+      },
+      {
+        q: "Can a creator use Mailchimp for a newsletter business?",
+        a: "Possible but awkward. Mailchimp lacks the native monetization stack (ads network, paid subscriptions, Boost referrals) that creator-business platforms now provide. Creators on Mailchimp typically end up assembling these from separate vendors or switching.",
+      },
+      {
+        q: "Why does Beehiiv have an ad network natively?",
+        a: "Because the creator-business model requires multiple revenue streams to make sustainable income from newsletters. Native ads network means creators do not need to sell sponsorships individually; Beehiiv aggregates demand and distributes revenue to creators. This is the structural advantage over Mailchimp.",
+      },
+      {
+        q: "Should I migrate from Mailchimp to Beehiiv?",
+        a: "Yes if you are treating the newsletter as a creator business. The migration is mechanical (Beehiiv has Mailchimp import) and the monetization-stack difference is meaningful for creator economics. For traditional small-business marketing without creator-business intent, the migration may not pay back.",
+      },
+      {
+        q: "What is the Brunson lens on Mailchimp vs Beehiiv?",
+        a: "Mailchimp owns the legacy category (small-business email marketing) by virtue of being first. Beehiiv is the New Opportunity move (newsletter-as-business with native monetization) that captures the segment Mailchimp cannot serve without abandoning its broader marketing-automation identity. Brunson lesson: when an incumbent cannot pivot to serve a new opportunity without breaking its existing position, the challenger wins that segment.",
+      },
+    ],
+    tags: ["newsletter", "creator-business-vs-traditional-marketing", "monetization-stack", "legacy-vs-modern"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "figma-vs-framer",
+    a: { name: "Figma", teardownSlug: "figma", url: "https://www.figma.com/" },
+    b: { name: "Framer", url: "https://www.framer.com/" },
+    category: "Design and prototyping",
+    oneLine:
+      "Figma owns design collaboration. Framer expanded from prototyping into design-and-publish. Different parts of the design lifecycle.",
+    tldr:
+      "Figma and Framer both serve the design lifecycle but from different positions. Figma is the canonical collaborative design tool that won the category in the late 2010s. Framer started as a code-driven prototyping tool and pivoted to compete on design-plus-publish — meaning Framer designs become live websites without engineering handoff. For design collaboration with developer handoff, Figma. For designers who want to publish marketing sites without engineering, Framer's bundled design-and-publish is the structural differentiator.",
+    bestFor: {
+      a: "Product design teams collaborating with developers, PMs, and clients in real time.",
+      b: "Designers building marketing sites and landing pages who want to publish without engineering handoff.",
+    },
+    pickAIf: [
+      "Your team's primary use case is collaborative product design with developer handoff.",
+      "You value the largest design-systems community and plugin ecosystem.",
+      "Your sites are built by engineers, not designed-to-deploy by designers.",
+    ],
+    pickBIf: [
+      "You are a designer building marketing sites and want to publish directly without engineering involvement.",
+      "You value the design-to-live-site workflow without handoff steps.",
+      "Your team's design output is primarily marketing sites and landing pages, not product UI.",
+    ],
+    dimensions: [
+      {
+        name: "Primary use case",
+        a: "Product design with developer handoff.",
+        b: "Marketing-site design with direct publish.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free Starter; Professional ~$15/editor/mo; Organization ~$45/editor/mo; Enterprise ~$75/editor/mo (verified 2026-05-17).",
+        b: "Free; Mini ~$5/site/mo; Basic ~$15/site/mo; Pro ~$30/site/mo (verified 2026-05-17). Plus seat pricing for design tier.",
+        winner: "different",
+        note: "Different pricing models — per-editor (Figma) vs per-site (Framer for publishing).",
+      },
+      {
+        name: "Real-time collaboration",
+        a: "Native multiplayer — defined the modern category.",
+        b: "Available; less mature than Figma's collaboration tooling.",
+        winner: "A",
+      },
+      {
+        name: "Design-to-publish workflow",
+        a: "Designs export to developer handoff; engineering builds the live site.",
+        b: "Designs publish as live sites directly from Framer; no engineering handoff required.",
+        winner: "B",
+      },
+      {
+        name: "Plugin ecosystem",
+        a: "Large and growing.",
+        b: "Smaller plugin ecosystem; Framer has fewer plugins but a tighter design-to-publish surface.",
+        winner: "A",
+      },
+      {
+        name: "Developer handoff",
+        a: "Dev Mode is native — inspect, copy code, export assets.",
+        b: "Less developer-handoff focused; the philosophy is publish-without-developers.",
+        winner: "A",
+      },
+      {
+        name: "CMS and dynamic content",
+        a: "Not native — Figma is design-only.",
+        b: "Native CMS for blog posts, dynamic pages, content collections.",
+        winner: "B",
+      },
+      {
+        name: "Brand recognition in design teams",
+        a: "Category default — every design team considers Figma first.",
+        b: "Growing among designers building marketing sites; less recognition for product design.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Figma and Framer both serve the design lifecycle but solve different jobs. Figma is the collaborative design tool for product teams that hand off to engineering. Framer is the design-plus-publish tool for designers who want to ship marketing sites without engineering involvement. The comparison appears in searches because both contain 'design' but the audiences barely overlap. For product design teams, Figma is the obvious pick. For designers building marketing sites who want direct publish, Framer's bundled workflow is the structural differentiator. The mistake is comparing them on the design-tool axis alone without considering the publish-or-handoff distinction.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your design work is product UI that engineering builds, Figma. If your design work is marketing sites you want to publish without engineering, Framer. Most indie SaaS use Figma for product and either a Next.js site (engineering-built) or Framer (design-published) for marketing. The choice depends on your marketing-site workflow.",
+    },
+    faqs: [
+      {
+        q: "Can Figma replace Framer for marketing sites?",
+        a: "Only with separate engineering work to build the designs into live sites. Figma exports designs; engineering implements. Framer's design-to-publish flow skips the engineering step entirely, which is the structural differentiator for designer-led marketing teams.",
+      },
+      {
+        q: "Can Framer replace Figma for product design?",
+        a: "Possible but awkward. Framer's collaboration tooling is less mature, the plugin ecosystem is smaller, and the developer-handoff workflow is less optimized. Product design teams that try Framer usually keep Figma for product and use Framer only for marketing sites.",
+      },
+      {
+        q: "Why is Framer's pricing per-site instead of per-editor?",
+        a: "Because Framer monetizes the publish step, not the design step. Per-site pricing aligns with the value Framer adds (publishing the site live); per-editor pricing would not match the value-capture moment for Framer's publish-focused workflow.",
+      },
+      {
+        q: "What about Webflow as an alternative to Framer?",
+        a: "Webflow is the canonical no-code-site-builder competitor — more mature for complex sites, less designer-friendly than Framer. The Framer-vs-Webflow comparison is for buyers who want designer-led publishing; Figma-vs-Framer is for buyers deciding between collaborative design tooling and design-plus-publish workflows.",
+      },
+      {
+        q: "What is the Brunson lens on Figma vs Framer?",
+        a: "Figma owns the collaborative design category by virtue of being the category default. Framer is the New Opportunity move (design-plus-publish in one tool) that escapes the Figma category fight entirely. Brunson lesson: when an incumbent owns the category, the challenger wins by claiming an adjacent category the incumbent does not serve.",
+      },
+    ],
+    tags: ["design", "collaboration-vs-publish", "different-workflows", "no-handoff"],
+    lastVerified: "2026-05-17",
+  },
+
+  {
+    slug: "loom-vs-tella",
+    a: { name: "Loom", teardownSlug: "loom", url: "https://www.loom.com/" },
+    b: { name: "Tella", teardownSlug: "tella", url: "https://www.tella.tv/" },
+    category: "Screen recording for marketing video",
+    oneLine:
+      "Loom optimizes for fast async communication. Tella optimizes for polished marketing video. Same surface, opposite optimization targets.",
+    tldr:
+      "Loom and Tella both record screen videos but optimize for opposite jobs. Loom is the canonical async-team-communication platform — record fast, share a link, save a meeting. Tella is the polished marketing video tool — branded backgrounds, layered camera-and-screen, cinematic export. For daily async team communication, Loom. For marketing-page videos where output polish matters, Tella. Most serious indie founders use both — Loom for async, Tella for marketing.",
+    bestFor: {
+      a: "Distributed teams, customer success, sales async pitches — anyone whose primary use case is fast async video communication.",
+      b: "Indie SaaS founders, designers, marketers producing marketing videos where output polish matters.",
+    },
+    pickAIf: [
+      "You record async videos multiple times per day for team or customer communication.",
+      "You want instant share links and viewer analytics.",
+      "Speed-of-recording-to-share matters more than cinematic output polish.",
+    ],
+    pickBIf: [
+      "The video will appear on a marketing page, app store listing, or social media.",
+      "You want layered camera-and-screen with branded backgrounds without manual editing.",
+      "You value polished output over the absolute speed of recording-to-share.",
+    ],
+    dimensions: [
+      {
+        name: "Primary use case",
+        a: "Fast async team communication.",
+        b: "Polished marketing video production.",
+        winner: "different",
+      },
+      {
+        name: "Output polish",
+        a: "Utilitarian — fast and functional, not cinematic.",
+        b: "Distinctive — auto-zoom, layered camera, branded backgrounds, cinematic export.",
+        winner: "B",
+      },
+      {
+        name: "Speed of recording-to-share",
+        a: "Near-instant; record, auto-upload, share link.",
+        b: "Recording then editing then export; minutes per video.",
+        winner: "A",
+      },
+      {
+        name: "Pricing",
+        a: "Free tier (25 videos/person, 5-min limit); Business ~$12.50/user/mo (verified 2026-05-17).",
+        b: "Free tier with watermark; Pro tiers per editor for team and branding (verified 2026-05-17).",
+        winner: "different",
+      },
+      {
+        name: "Team collaboration features",
+        a: "Rich — comments, reactions, viewer analytics, team workspace.",
+        b: "Team workspace available; less mature than Loom's async-team focus.",
+        winner: "A",
+      },
+      {
+        name: "Editing capabilities",
+        a: "Basic — trim, drawing, captions.",
+        b: "Native non-linear editor with cuts, zoom, music, branded templates.",
+        winner: "B",
+      },
+      {
+        name: "Brand fit for marketing video",
+        a: "Awkward — Loom output reads as async-communication, not marketing.",
+        b: "Native — Tella output is designed for marketing surfaces.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Loom and Tella both record screen videos but solve opposite jobs. Loom optimizes for the speed of going from 'I need to explain this' to 'here is a link.' Tella optimizes for the polish of the final exported video. They share the format (screen recording with camera) but the workflows and outputs diverge sharply. Most serious indie founders use both — Loom for daily async communication, Tella for marketing-page videos and product demos that need to look intentional. Picking one to do both jobs always feels like a compromise.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Use both. Loom for daily async communication with team, customers, and contractors; Tella for your marketing page videos, product demos, and anything seen by your public audience. The video category for indie founders is genuinely two-product; the productive default is to adopt one of each.",
+    },
+    faqs: [
+      {
+        q: "Can Loom replace Tella for marketing videos?",
+        a: "Not really. Loom's output is intentionally utilitarian for async sharing; using it for a marketing video gives a recognizably Loom aesthetic that reads as effort-light. For marketing pages and product demos where polish matters, Tella's structural differentiator (auto-zoom, branded layouts) cannot be matched in Loom.",
+      },
+      {
+        q: "Can Tella replace Loom for async team communication?",
+        a: "Workably but not naturally. Tella's editing-required workflow adds friction that compounds for high-frequency async communication. Use Loom for that workflow.",
+      },
+      {
+        q: "Is it expensive to use both Loom and Tella?",
+        a: "Modest. Both have free tiers that cover indie-founder use; paid tiers run in the low-double-digits per month. The combined cost is usually less than trying to do polished marketing video with Loom's free tier (impossible) or daily async with Tella's editing workflow (slow).",
+      },
+      {
+        q: "What about Screen Studio as a third option?",
+        a: "Screen Studio is the macOS-native polished marketing video tool sold as one-time license. Screen Studio vs Tella is the canonical 'polished marketing video' comparison. Loom vs Tella is the 'should I have both?' question; Screen Studio vs Tella is the 'which polished marketing video tool?' question.",
+      },
+      {
+        q: "What is the Brunson lens on Loom vs Tella?",
+        a: "Both companies execute precise Brunson Dream Customer naming in opposite directions. Loom names the async-team-communication operator; Tella names the marketing-video producer. Brunson lesson: when two products share keywords but optimize for different jobs, both can win their respective segments — the productive answer for many buyers is to use both.",
+      },
+    ],
+    tags: ["video", "screen-recording", "async-vs-marketing", "use-both"],
+    lastVerified: "2026-05-17",
+  },
 ];
 
 // Indexed lookup.
