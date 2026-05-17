@@ -138,6 +138,46 @@ export async function loadPublicBadge(
   };
 }
 
+/**
+ * Load up to `limit` public verified builders, ordered most-recent-first.
+ *
+ * Powers the Brunson Funnel Hacker's Cookbook Swipe 6 — the avatar wall
+ * of real, named users on the funnel hub. Reads from the `builder_badges`
+ * view, which already filters out private profiles and missing
+ * first-customer timestamps via the view definition.
+ *
+ * Returns an empty array on error or no rows. Callers (avatar-wall block)
+ * are responsible for the "≥9 to render" gate.
+ *
+ * Caller passes either a server-side anon client or admin client; both
+ * work. The view is granted to anon and authenticated.
+ */
+export async function loadVerifiedBuilders(
+  client: SupabaseClient,
+  limit = 9
+): Promise<PublicBadge[]> {
+  const { data, error } = await client
+    .from("builder_badges")
+    .select("id,builder_slug,builder_name,product_name,product_url,first_customer_at")
+    .order("first_customer_at", { ascending: false })
+    .limit(Math.max(0, Math.min(limit, 50)));
+
+  if (error || !data) return [];
+
+  return data
+    .filter(
+      (row) => Boolean(row.builder_slug) && Boolean(row.first_customer_at)
+    )
+    .map((row) => ({
+      id: row.id as string,
+      slug: row.builder_slug as string,
+      builderName: (row.builder_name as string | null) ?? "Verified Builder",
+      productName: (row.product_name as string | null) ?? null,
+      productUrl: (row.product_url as string | null) ?? null,
+      firstCustomerAt: new Date(row.first_customer_at as string),
+    }));
+}
+
 // ── share intent URLs ─────────────────────────────────────────────────────────
 
 const VOICE = "Reluctant Hero" as const;

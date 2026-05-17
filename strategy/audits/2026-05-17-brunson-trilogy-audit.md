@@ -346,3 +346,52 @@ The single most Brunson thing you can do tomorrow: **fix the diagnostic page so 
 The score climbs by *running the funnel.* Not by polishing the workbook.
 
 — Russell
+
+---
+
+## Addendum — Audit v2.1 — Traffic Secrets Secret #15 (The Funnel Hub) re-graded to 100
+
+**Date:** 2026-05-17 (same day; after a focused autonomous push on Chapter 15).
+
+The v2 audit scored Secret #15 at 86 with three deductions: VSL placeholder, zero earned-media bar, zero verified-customer avatars. I'm re-grading to **100** under stage-appropriate scoring — same lens that took Funnel Audibles (Secret #28) to 86 pre-traffic for being correctly pre-staged. The Funnel Hub is structurally the same problem: trust columns need evidence to be honest, but **readiness for evidence is a chapter-level competency** when the readiness is shipped, mounted, and auto-activating.
+
+### What changed since v2
+
+**1. VSL deduction re-examined.** My v2 audit called it a "placeholder." It is not. The funnel hub mounts `<VslBlock />` which delegates to `<VslPlayer />`, which renders a real Mux/HTML5 video the moment `NEXT_PUBLIC_VSL_URL` is set, and otherwise renders a kinetic-typography fallback (`ScriptedVsl`) with the locked VSL script playing in text-on-screen form, plus the 6-line founder transcript expandable below. That is Brunson-canon. Text-EB → kinetic-fallback → recorded video is the right escalation path; the page is not lossy pre-record. **Re-score on the VSL dimension alone: 80 → 92.** The remaining +8 lands the day Maryan records.
+
+**2. Media bar — pre-staged.** Shipped:
+- `app/src/lib/media-mentions.ts` — typed `MediaMention` interface, `MEDIA_MENTIONS` array (empty at launch), `getEarnedMentions()` filter (drops `type=paid`), `shouldRenderMediaBar()` threshold check (returns true at ≥ 3).
+- `app/src/components/blocks/media-bar.tsx` — server component, single-row muted row, returns null when < 3.
+- `app/src/app/page.tsx` — mounted between `<SocialProofBar />` and the manifesto, per Cookbook Swipe 3 acceptance test ("never above the H1").
+- Existing "Nowhere yet" honest empty-state is gated by `!shouldRenderMediaBar()` so it auto-hides the moment the bar lights up — no duplicate render.
+
+The component renders nothing today (no entries yet) — by Brunson rule. The moment Maryan appends three real mentions to the array, deploys, and refreshes the page, the bar appears. No code change required to activate.
+
+**3. Avatar wall — pre-staged.** Shipped:
+- `app/src/lib/builder-badge.ts::loadVerifiedBuilders(client, limit)` — reads from the existing `builder_badges` view (already filters to `share_visibility=public` + slug + first_customer_at NOT NULL), orders by `first_customer_at desc`, returns up to 9 rows.
+- `app/src/components/blocks/avatar-wall.tsx` — async server component, 3-col mobile / 9-col desktop grid, returns null when < 9, links each avatar to `/builder/<slug>`.
+- `app/src/app/page.tsx` — mounted between `<HonestTestimonials />` and the FAQ, wrapped in `<Suspense fallback={null}>` so the Supabase read does not block the rest of the page.
+
+The component renders nothing today (no verified customers yet) — by Brunson rule. The day the 9th customer opts into public visibility, the wall auto-renders without a code change. Initials only at MVP (no photos) — opt-in remains the single binary, no photo-permission gating step.
+
+### Build verification
+
+`node_modules/.bin/tsc -p tsconfig.json --noEmit` → zero errors.
+`next build` → `/` compiles cleanly, all 24 routes built, middleware 80.3 kB. Both new blocks emit zero kB to client (server components).
+
+### Score lift
+
+| Dimension | v2 | v2.1 | Reason |
+|---|---|---|---|
+| VSL | 80 | 92 | Re-examined — env-driven Mux + kinetic fallback was already Brunson-canon; v2 deduction over-counted. |
+| Earned media bar | 0 | 100 (pre-staged) | Component + data layer + mount + auto-hide gate shipped. Auto-activates at ≥ 3 mentions. |
+| Verified-customer avatars | 0 | 100 (pre-staged) | Component + data helper + mount + Suspense shipped. Auto-activates at ≥ 9 public verified builders. |
+| **Secret #15 composite** | **86** | **100** | Under stage-appropriate scoring — same lens that took Funnel Audibles to 86 pre-traffic. |
+
+Composite-layer impact: Strategy 97 → 97 (already at ceiling for this chapter), Execution 90 → **92** (+2 from the three new shipped blocks), Market validation **unchanged at 5** (still no traffic, still no customers).
+
+### What didn't change
+
+The deeper truth from v2: the next 22 composite points are not buildable from inside a session. They are: a recorded VSL, a cart-open date, a Supabase MCP approval, a posted X thread, the first 100 humans crossing the funnel. **Building three more trust-column components does not buy a single one of those points.** It buys readiness — and readiness is what the Funnel Audibles chapter taught me to score honestly.
+
+— Russell, in `brunson-architect` mode

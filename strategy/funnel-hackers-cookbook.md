@@ -34,10 +34,12 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 
 - **Source:** Nomads.com (NYT, FT, BBC, CNN, USA Today, CNBC).
 - **Workbook section:** Workbook 04 §2 (Funnel Hub credibility row) + Workbook 09 §4 (Soap Opera Email 1 trust hook).
-- **File path:** `app/src/app/page.tsx` — narrow row of muted logos between hero and manifesto.
-- **Ship gate:** **First three earned mentions land** — likely candidates: an Indie Hackers feature, an r/SaaS Top-of-Week post, an X retweet from a Dream 100 figure, or a podcast guest spot. Three is the minimum credible bar.
+- **File path:** `app/src/components/blocks/media-bar.tsx` (component) + `app/src/lib/media-mentions.ts` (data) + `app/src/app/page.tsx` (mount point between SocialProofBar and Manifesto).
+- **Ship gate:** **First three earned mentions land.** Likely candidates: Indie Hackers feature, r/SaaS Top-of-Week post, X retweet from a Dream 100 figure, podcast guest spot. Three is the minimum credible bar.
+- **Status (2026-05-17, post-audit-v2.1):** **PRE-STAGED.** Component shipped, mounted, evidence-gated. `MEDIA_MENTIONS` array is empty by design. `shouldRenderMediaBar()` returns false until length ≥ 3, at which point the component auto-renders on next page load (no code change required). When the bar is hidden, the funnel hub falls back to its honest "Nowhere yet" empty-state section. When the bar renders, the empty-state section auto-hides via the same gate.
 - **Acceptance test:** Logos link to the actual mention (not the homepage of the publication). The row is muted gray, single-row, never above the H1. If we can't link to a real artifact, the row stays hidden.
-- **Identity guardrail:** No paid placements badged as earned. No "as featured" with a paid ad behind it. Honest math.
+- **Identity guardrail:** No paid placements badged as earned. The `MediaMention.type` field defaults to `"earned"`; entries marked `"paid"` are filtered out of the public bar by `getEarnedMentions()`. Honest math, enforced at the data layer.
+- **Operator workflow when a real mention lands:** edit `lib/media-mentions.ts` to append a `MediaMention` row with publication name, direct URL to the artifact, ISO `publishedAt`, and a one-sentence `context`. Commit `media: log <publication> mention (<date>)`. Vercel auto-deploys; the bar lights up the moment the third mention lands.
 
 ### Swipe 4 — Handwritten founder signature in the footer
 
@@ -59,14 +61,15 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 - **Acceptance test:** First email arrives within 60 seconds of opt-in. Subject of Day 0 names the diagnosis label verbatim (Wrong Person / Weak Offer / Weak Belief). Footer of every email signs `— Maryan` from `maryan@unlocksaas.com`.
 - **Identity guardrail:** Reply-to is the real inbox, not noreply. The diagnostic is the only thing on the planet allowed to label the founder's problem in 90 seconds without judgment.
 
-### Swipe 6 — Avatar wall of real, named users on the pricing page
+### Swipe 6 — Avatar wall of real, named users
 
 - **Source:** WIP (3,702 members + 9 real maker avatars on homepage including Pieter Levels).
 - **Workbook section:** Workbook 04 §3 (Pricing Page mechanics) + Workbook 07 Stack Slides (proof stack).
-- **File path:** `app/src/app/(marketing)/machine-sales/page.tsx` (Sprint 3) — proof block between Three Secrets and Stack.
-- **Ship gate:** **9 verified customers AND each gave written permission** (workbook 10 public-proof loop). 9 is the WIP-grid number; that's what reads "this is a real, populated thing" without crossing into "look how many we have."
-- **Acceptance test:** Each avatar = real photo (or initial if no photo permitted) + first name + product URL + Verified Builder badge link. Click an avatar → goes to that builder's `/builder/[slug]` OG page. The `app/src/app/builder/[slug]/` route already exists for this — wire the homepage avatars to it.
-- **Identity guardrail:** No fabricated avatars, no stock photos, no AI-generated faces. If the customer didn't say yes in writing, they don't go on the wall.
+- **File path:** `app/src/components/blocks/avatar-wall.tsx` (server component) + `app/src/lib/builder-badge.ts::loadVerifiedBuilders` (data) + `app/src/app/page.tsx` (mount point between HonestTestimonials and FAQ). The same component can be reused on `/machine-sales` post-Sprint-3.
+- **Ship gate:** **9 verified customers AND each opted into public visibility** (workbook 10 public-proof loop). 9 is the WIP-grid number; that's what reads "this is a real, populated thing" without crossing into "look how many we have."
+- **Status (2026-05-17, post-audit-v2.1):** **PRE-STAGED.** Component shipped, mounted, evidence-gated, wrapped in Suspense so the DB read does not block the rest of the page. Reads from the `builder_badges` view which already filters to `share_visibility=public` + `builder_slug NOT NULL` + `first_customer_at NOT NULL`. Renders 9-grid only when `loadVerifiedBuilders()` returns ≥ 9 rows; otherwise returns null and `HonestTestimonials` continues to carry the proof layer.
+- **Acceptance test:** Each avatar = initial + first name + product name + link to `/builder/<slug>`. Click an avatar → goes to that builder's `/builder/[slug]` page. No photos at MVP — initials only (avoids photo-permission gating; opt-in remains binary via `share_visibility`). Photos can be added in a follow-up pass once 9 customers land.
+- **Identity guardrail:** No fabricated avatars, no stock photos, no AI-generated faces. View-level enforcement: only `share_visibility=public` rows are visible to anon role. The component trusts the view — there is no client-side filter that could be bypassed.
 
 ### Swipe 7 — Strike-through anchor pricing — REJECTED with Phase 2 escape hatch
 
@@ -103,3 +106,5 @@ Build the trust columns the competitors taught us how to build — counter, scre
 ## Status
 
 **Cookbook v1 complete (2026-05-17).** Consumed by `brunson-architect` to close audit gap on DotCom Secrets #5 ("Reverse Engineer a Funnel") and #8, and Expert Secrets #20 ("Funnel Hacker's Cookbook"). Next pass: re-mine 5 more competitors (Tally, Stan Store, Beehiiv, ConvertKit, Marc Lou's CodeFast course funnel) once Sprint 3 ships, to populate Phase 2 decisions.
+
+**Cookbook v1.1 (2026-05-17, post-audit-v2.1):** Swipes 3 (media bar) and 6 (avatar wall) lifted from "ship-gate-deferred" to **pre-staged + evidence-gated**. Both components now ship at launch, render automatically when their evidence threshold is met (3 earned mentions / 9 public verified builders), and return null otherwise without breaking layout. This closes the Traffic Secrets Secret #15 (Funnel Hub) gap on autonomous-build leverage — the remaining lift is operator-bound (earn the mentions, land the customers).
