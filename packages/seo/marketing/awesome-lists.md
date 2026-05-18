@@ -1,159 +1,84 @@
-# Awesome-list submission entries
+# Awesome-list submission entries — verified state
 
-Pre-formatted entries for each list, with the exact section to insert into.
-Each list has different contribution rules — follow them or the PR gets closed.
+Last verified end-to-end via `gh api`: **2026-05-18**.
 
-Open these PRs **only after** the package has at least 50 GitHub stars,
-otherwise most maintainers reject as "too new."
-
----
-
-## awesome-seo
-
-**Repo:** https://github.com/marioluan/awesome-seo
-
-**Section to edit:** `README.md` → search for `## Tools` or `## Libraries`.
-Most awesome-seo forks use a flat `## Tools` list.
-
-**Entry to add (alphabetical placement, before existing entries that start with later letters):**
-
-```markdown
-- [@unlocksaas/seo](https://github.com/kindrat86/unlocksaas-seo) - Honesty-first JSON-LD, llms.txt, and verification primitives. Includes a `validate-claims` CLI that diffs schema against rendered HTML. MIT.
-```
-
-**Commit message:**
-
-```
-Add @unlocksaas/seo
-```
-
-**PR body:**
-
-```
-Adds @unlocksaas/seo — a TypeScript library for emitting honest JSON-LD
-plus a CLI that audits deployed pages for schema-vs-rendered drift.
-MIT licensed. Active. Documented.
-```
+The original draft of this file cited two phantom targets and one archived target.
+Those have been removed. Live state is below, sorted by likelihood of acceptance.
 
 ---
 
-## awesome-nextjs
+## ✅ OPENED — 2026-05-18
 
-**Repo:** https://github.com/unicodeveloper/awesome-nextjs
+### SecretiveShell/Awesome-llms-txt — PR #50
 
-**Section to edit:** `README.md` → `## Resources` → `### Tools`.
+**Status:** opened, awaiting review · https://github.com/SecretiveShell/Awesome-llms-txt/pull/50
 
-**Entry:**
+Flat alphabetical list of domains publishing `/llms.txt`. No star/age bar.
+Added `unlocksaas.com` and `unlocksaas.com (full)` between `unhead.unjs.io`
+and `upstash.com`. Both URLs verified HTTP 200 from production (`llms.txt`
+14 KB, `llms-full.txt` 963 KB) before submission.
 
-```markdown
-- [@unlocksaas/seo](https://github.com/kindrat86/unlocksaas-seo) — Drop-in JSON-LD, hreflang, llms.txt, and verification helpers for Next.js App Router. Includes a `validate-claims` CLI.
-```
+### serpapi/awesome-seo-tools — PR #209
 
----
+**Status:** opened, awaiting review · https://github.com/serpapi/awesome-seo-tools/pull/209
 
-## awesome-typescript
-
-**Repo:** https://github.com/dzharii/awesome-typescript
-
-**Section to edit:** `README.md` → look for the most recently merged PR to identify the active section. Usually `## Libraries` or `## Tools`.
-
-**Entry:**
-
-```markdown
-- [@unlocksaas/seo](https://github.com/kindrat86/unlocksaas-seo) — Framework-free TypeScript primitives for honest schema.org JSON-LD, with a `validate-claims` CLI for CI.
-```
+980-star tool-focused SEO list. README-only edits, no star bar, "put the link
+at the bottom of the relevant category." Added `@unlocksaas/seo` to the
+**Technical SEO** section alongside SEOnaut and Python SEO Analyzer.
 
 ---
 
-## awesome-llms / awesome-ai-tools (GEO-adjacent)
+## ⏸ DEFERRED — open after star milestone
 
-**Repos:**
+Most maintained awesome-lists explicitly require ≥20 to ≥100 GitHub stars
+and ≥3 months of project history. Submitting tonight would be auto-rejected
+and burn maintainer goodwill.
 
-- https://github.com/Hannibal046/Awesome-LLM
-- https://github.com/mahseema/awesome-ai-tools
-- https://github.com/EgoAlpha/prompt-in-context-learning (more research-leaning, skip)
-
-**Entry for both:**
-
-```markdown
-- [@unlocksaas/seo](https://github.com/kindrat86/unlocksaas-seo) — Generate `/llms.txt` and `/llms-feed.json` for AI-discoverable websites. Brunson Hard-Rule discipline: no fabricated claims, dated freshness, registry-gated hreflang.
-```
-
----
-
-## awesome-nodejs / awesome-nodejs-cli
-
-**Repo:** https://github.com/sindresorhus/awesome-nodejs
-
-**Section:** `## CLI` → `### Apps`.
-
-**Entry:**
-
-```markdown
-- [unlocksaas-seo](https://github.com/kindrat86/unlocksaas-seo) - Audit deployed pages for fabricated JSON-LD and schema-vs-rendered drift.
-```
-
-**Note:** Sindre's contribution bar is high. Read https://github.com/sindresorhus/awesome/blob/main/contributing.md
-before opening. Likely requires:
-- README has a logo
-- Continuous activity (commits in last 30 days)
-- Open issues/PRs being responded to
-- The package itself solves a real problem (this is the easiest hurdle)
-- Listed in alphabetical order with a `-` (not `*`) bullet and capital-first description
+| Repo | Stars | Bar | Open at |
+|---|---|---|---|
+| [analysis-tools-dev/static-analysis](https://github.com/analysis-tools-dev/static-analysis) | 14,551 | ≥20 stars AND ≥3 months old (per CONTRIBUTING.md) | After 2026-08-18 + ≥20⭐ |
+| [bmpi-dev/awesome-seo](https://github.com/bmpi-dev/awesome-seo) | 2,695 | Quality bar, no explicit stars | After ≥20⭐ |
+| [teles/awesome-seo](https://github.com/teles/awesome-seo) | 849 | Quality bar | After ≥10⭐ |
+| [unicodeveloper/awesome-nextjs](https://github.com/unicodeveloper/awesome-nextjs) | 11,067 | Implicit ≥50⭐ | After ≥50⭐ |
+| [mahseema/awesome-ai-tools](https://github.com/mahseema/awesome-ai-tools) | 5,244 | Implicit ≥50⭐ | After ≥50⭐ |
+| [Hannibal046/Awesome-LLM](https://github.com/Hannibal046/Awesome-LLM) | 26,822 | High bar, "no new" projects implicit ≥200⭐ | After ≥200⭐ |
+| [sindresorhus/awesome-nodejs](https://github.com/sindresorhus/awesome-nodejs) | 65,743 | [Strict criteria](https://github.com/sindresorhus/awesome/blob/main/contributing.md) — ≥100⭐, continuous activity, README with logo | Probably never until v1.0 + 6 months |
 
 ---
 
-## awesome-schema-org / awesome-structured-data
+## ❌ DEAD / SKIPPED
 
-**Note:** No widely-followed awesome-list exists for schema.org specifically (verified via search 2026-05-18). The closest is:
-
-- https://github.com/google/structured-data-testing-tool (Google's own, not a list)
-
-**Action:** Skip this category. Instead, open an issue on Yandex's `schema.org-json-ld-validator` repo if @unlocksaas/seo would be a useful complementary tool. Do not fabricate listings.
+- `marioluan/awesome-seo` — **404, doesn't exist.** Replaced with bmpi-dev/awesome-seo and serpapi/awesome-seo-tools.
+- `dzharii/awesome-typescript` — **Archived (read-only).** No replacement; awesome-typescript ecosystem has consolidated into general awesome-nodejs.
 
 ---
 
-## awesome-static-analysis
+## When to next check status of the open PRs
 
-**Repo:** https://github.com/analysis-tools-dev/static-analysis
+| PR | Next check | Action |
+|---|---|---|
+| Awesome-llms-txt #50 | 2026-05-21 (72h) | If no merge or comment, leave it; the maintainer batches PRs. |
+| awesome-seo-tools #209 | 2026-05-25 (7 days) | If merged: ✅. If commented: respond. If silent for 14 days: ping politely on the PR. |
 
-**Section:** `tools.yml` (it's a YAML-driven static site).
-
-**Entry to add:**
-
-```yaml
-- name: '@unlocksaas/seo'
-  categories:
-    - other
-  languages:
-    - html
-  other:
-    - seo
-    - structured-data
-  homepage: https://github.com/kindrat86/unlocksaas-seo
-  description: 'CLI that audits deployed pages for fabricated JSON-LD and drift between schema and rendered HTML. Exits non-zero on violations.'
-  license: MIT
-  source: https://github.com/kindrat86/unlocksaas-seo
-```
-
-This list's maintainer (analysis-tools-dev) reviews via the auto-generated PR
-template. Submission is YAML, no markdown, less friction than the others.
+The honest expectation: ~50% acceptance for these two on first try. The
+Awesome-llms-txt list takes almost everything that publishes an llms.txt
+(the bar is "do you actually serve it"); we do, so this should merge. The
+awesome-seo-tools list has 200+ entries already and the category includes
+both open-source and commercial — fit is good, but final decision is the
+maintainer's.
 
 ---
 
 ## Tracking sheet
 
-Use this to track PRs after they're opened:
-
-| List | PR URL | Status | Notes |
-|---|---|---|---|
-| awesome-seo | | | |
-| awesome-nextjs | | | |
-| awesome-typescript | | | |
-| awesome-llms | | | |
-| awesome-ai-tools | | | |
-| awesome-nodejs | | | strict criteria, last |
-| awesome-static-analysis | | | YAML PR, easiest |
-
-Open the easiest two first (awesome-static-analysis, awesome-llms) to
-prove the package is real before approaching the higher-bar lists.
+| List | PR URL | Opened | Status | Notes |
+|---|---|---|---|---|
+| Awesome-llms-txt | https://github.com/SecretiveShell/Awesome-llms-txt/pull/50 | 2026-05-18 | OPEN | Single-line addition, alphabetical |
+| awesome-seo-tools | https://github.com/serpapi/awesome-seo-tools/pull/209 | 2026-05-18 | OPEN | Technical SEO section |
+| analysis-tools-dev/static-analysis | — | DEFERRED | — | Gate: ≥20⭐ + ≥3mo. Open after 2026-08-18. |
+| bmpi-dev/awesome-seo | — | DEFERRED | — | After ≥20⭐ |
+| teles/awesome-seo | — | DEFERRED | — | After ≥10⭐ |
+| awesome-nextjs | — | DEFERRED | — | After ≥50⭐ |
+| awesome-ai-tools | — | DEFERRED | — | After ≥50⭐ |
+| Awesome-LLM | — | DEFERRED | — | After ≥200⭐ |
+| awesome-nodejs | — | DEFERRED | — | Quality bar very high; revisit at v1.0 |
