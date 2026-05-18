@@ -1119,6 +1119,250 @@ const ALTERNATIVES_LIST: Alternative[] = [
     tags: ["newsletter", "publishing", "creator-economy", "paid-subscription"],
     lastVerified: "2026-05-18",
   },
+
+  {
+    slug: "notion",
+    displayName: "Notion",
+    creator: "Notion Labs, Inc.",
+    category: "All-in-one workspace (docs, wiki, database, project tracker)",
+    oneLine:
+      "Notion is where your work lives. Unlock SaaS decides which work actually produces a paying customer. Different jobs, different shelves.",
+    pricingNote:
+      "Notion has a free Personal tier and paid Plus, Business, and Enterprise plans billed per member per month (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A flexible workspace mixing docs, databases, wikis, and lightweight project tracking",
+      "A horizontal tool used across product, marketing, ops, knowledge management, and personal organisation",
+      "A genuinely strong second-brain and team-knowledge surface",
+    ],
+    whatItIsNot: [
+      "A diagnostic of why your shipped offer page is converting at zero",
+      "An outreach mechanism that sends one specific message to one named human",
+      "A Stripe-verified guarantee tied to your real customer ledger",
+    ],
+    whoForIt:
+      "Solo operators and teams who want one flexible surface for notes, docs, wikis, and lightweight project tracking.",
+    whoNotForIt:
+      "Founders whose problem is not 'we are not organised' but 'we shipped a product and nobody is paying for it'.",
+    honestVerdict:
+      "Notion is a genuinely great workspace. Workspace quality does not produce paying customers. Unlock SaaS exists for the upstream decision Notion does not make: which one human you should talk to this week, what to say, and whether the offer page is even survivable. Keep Notion for notes; let the Playbook decide what the notes should be about.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Notion alternative?",
+        a: "No. Notion is an all-in-one workspace. Unlock SaaS is a single-founder customer-acquisition playbook with a Stripe-verified refund. They sit on completely different shelves.",
+      },
+      {
+        q: "Can I run the Unlock SaaS playbook inside Notion?",
+        a: "You can track the Playbook's outputs in Notion if you want — the Playbook is opinionated about what to do, not where to track it. Many members already live in Notion for their second brain and the Playbook fits cleanly on top.",
+      },
+      {
+        q: "Should I build my SaaS docs and help centre on Notion?",
+        a: "Notion is a fine first-pass help centre — but a help centre never made a flat Stripe line less flat. If your problem is 'nobody is buying yet', better docs are downstream of the actual problem. Run the diagnostic first.",
+      },
+      {
+        q: "Does Unlock SaaS replace Notion?",
+        a: "No. It does not try to. There is nothing in the Playbook that competes with Notion's databases or page hierarchy, and nothing in Notion that diagnoses offers or guarantees customers.",
+      },
+      {
+        q: "I love Notion's flexibility. Will Unlock SaaS feel rigid in comparison?",
+        a: "Yes, intentionally. Notion's strength is that you can model anything. The Playbook's strength is the opposite: it refuses to let you reshape the work around your favourite reason to delay outreach.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://www.notion.so/",
+    tags: ["work-os", "knowledge-management", "docs", "no-code"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "calendly",
+    displayName: "Calendly",
+    creator: "Calendly LLC",
+    category: "Scheduling and meeting-booking software",
+    oneLine:
+      "Calendly books the meeting. Unlock SaaS decides whether the meeting should exist and what to do if no one books it. Different layers of the funnel.",
+    pricingNote:
+      "Calendly has a free tier and paid Standard, Teams, and Enterprise plans billed per seat per month (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A scheduling tool that lets prospects book time on your calendar without back-and-forth",
+      "A near-universal integration in B2B sales motions and customer success workflows",
+      "A genuinely good answer to the 'when are you free' email thread",
+    ],
+    whatItIsNot: [
+      "A reason anyone wants to book a meeting with you in the first place",
+      "A diagnostic of why your offer page is converting at zero",
+      "A Stripe-verified guarantee tied to your customer ledger",
+    ],
+    whoForIt:
+      "Anyone whose existing audience already wants to talk to them and needs a frictionless way to book the call.",
+    whoNotForIt:
+      "Founders whose Calendly link is plumbed everywhere but nobody is booking — adding more Calendly is not the fix.",
+    honestVerdict:
+      "Calendly is the right answer once people want to talk to you. The upstream problem — getting one specific human to want a conversation about your specific product — is what Unlock SaaS exists for. The Playbook produces the named human and the message that earns the meeting; Calendly then takes the booking. Use both, in that order.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Calendly alternative?",
+        a: "No. Calendly is scheduling software. Unlock SaaS is a customer-acquisition playbook. They sit on completely different rungs of the same funnel — one earns the meeting, the other books it.",
+      },
+      {
+        q: "My Calendly link gets no bookings. What should I do?",
+        a: "That is a demand problem, not a scheduling problem. The Playbook's diagnostic labels whether your offer is survivable in the first place, then the outreach loop generates the warm-enough humans who actually book the call.",
+      },
+      {
+        q: "Does Unlock SaaS integrate with Calendly?",
+        a: "Not directly — the Playbook does not write to your calendar. It does instruct you to put your Calendly link in the right place at the right moment in the Soap-Opera and Seinfeld sequences, where the meeting offer makes sense.",
+      },
+      {
+        q: "Should I include a Calendly link on my offer page?",
+        a: "Usually no, not pre-revenue. The diagnostic typically labels 'add a Calendly link' as a delay tactic — most pre-revenue offer pages need a buy button, not a meeting button. The Playbook will tell you when (and if) calendar links earn their place.",
+      },
+      {
+        q: "If I have Calendly, do I still need Unlock SaaS?",
+        a: "Calendly answers 'when'. Unlock SaaS answers 'why anyone should care, who specifically, and what message earns the meeting'. Different questions.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://calendly.com/",
+    tags: ["scheduling", "meetings", "sales-tool", "b2b"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "clickup",
+    displayName: "ClickUp",
+    creator: "ClickUp, Inc.",
+    category: "Project management and work-OS platform",
+    oneLine:
+      "ClickUp gives you a project-management surface that does almost everything. Unlock SaaS narrows the surface to one thing: get a paying customer.",
+    pricingNote:
+      "ClickUp has a free tier and paid Unlimited, Business, Business Plus, and Enterprise plans billed per user per month (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A horizontally broad project-management platform with tasks, docs, goals, automations, dashboards, and time tracking",
+      "A 'one app to replace them all' positioning aimed at teams consolidating tooling",
+      "A genuinely capable backbone for shipping team work once the work is scoped",
+    ],
+    whatItIsNot: [
+      "A way to decide which one piece of work this week actually produces revenue",
+      "A diagnostic of why your already-shipped product is converting at zero",
+      "A Stripe-verified guarantee that a paying customer arrives in 60 days",
+    ],
+    whoForIt:
+      "Teams that want a deep, configurable, all-in-one project management tool and have the time to set it up.",
+    whoNotForIt:
+      "Solo non-engineer founders pre-first-customer whose problem is not 'we cannot track tasks' but 'we cannot turn our live product into revenue'.",
+    honestVerdict:
+      "ClickUp is excellent at being a configurable home for team work. Pre-revenue solo founders almost never have a team-coordination problem — they have a 'no one is paying yet' problem. Unlock SaaS treats that problem directly: one diagnostic, one playbook, one Stripe-verified refund. Use ClickUp later when you have a team and a backlog worth coordinating.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a ClickUp alternative?",
+        a: "No. ClickUp is project management software. Unlock SaaS is a customer-acquisition playbook with a Stripe-verified refund. Completely different categories.",
+      },
+      {
+        q: "Can I track Unlock SaaS playbook steps inside ClickUp?",
+        a: "Yes. The Playbook is opinionated about which moves to make, not about where to track them. Many members already live in ClickUp and the Playbook fits cleanly on top.",
+      },
+      {
+        q: "Will Unlock SaaS replace my entire ClickUp setup?",
+        a: "No. The Playbook is a vertical workflow for one founder solving one problem (first paying customer). It does not try to be a horizontal project management platform.",
+      },
+      {
+        q: "I have not shipped a product yet. Should I set up ClickUp first?",
+        a: "Almost never. Pre-shipping, a notebook and a calendar usually beat any project-management tool. Unlock SaaS only starts mattering AFTER you have a live product the diagnostic can score.",
+      },
+      {
+        q: "How is Unlock SaaS different from ClickUp's templates for marketing or sales?",
+        a: "Templates are containers; the Playbook is the actual work. ClickUp templates organise what you have already decided. The Playbook decides what you should be doing, then verifies the result in your Stripe account.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://clickup.com/",
+    tags: ["project-management", "work-os", "team-collaboration", "for-teams"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "loom",
+    displayName: "Loom",
+    creator: "Loom (an Atlassian company)",
+    category: "Async video messaging",
+    oneLine:
+      "Loom helps you record and send a video. Unlock SaaS helps you decide whether a video should exist and what the message inside it should be.",
+    pricingNote:
+      "Loom has a free tier and paid Business and Enterprise plans billed per creator per month (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "An async video tool that records screen, camera, and microphone with one click",
+      "A genuinely fast way to replace meetings, demos, and long Slack threads with a watchable clip",
+      "A common surface for product walkthroughs, customer onboarding, and sales follow-ups",
+    ],
+    whatItIsNot: [
+      "A reason anyone wants to watch your video in the first place",
+      "A diagnostic of why your offer page is converting at zero",
+      "A Stripe-verified guarantee that a paying customer arrives in 60 days",
+    ],
+    whoForIt:
+      "Solo operators and teams whose existing audience already wants to hear from them and prefers async video to meetings.",
+    whoNotForIt:
+      "Founders sending Loom walkthroughs into the void with no replies — adding more Looms is not the fix.",
+    honestVerdict:
+      "Loom is the right medium once someone wants to hear from you. The harder upstream problem — getting one specific human to want a personalised walkthrough of your specific product — is what Unlock SaaS exists for. The Playbook produces the named human and the reason the video is worth watching; Loom then records it. Use both, in that order.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Loom alternative?",
+        a: "No. Loom is async video software. Unlock SaaS is a customer-acquisition playbook with a Stripe-verified refund. Different categories.",
+      },
+      {
+        q: "Should I send Loom walkthroughs as my outreach?",
+        a: "Sometimes — the Playbook will tell you when. Personalised Loom walkthroughs work well at the warm end of the funnel; cold-cold outreach almost never earns a Loom click. The diagnostic and the outreach loop decide which channel earns its place.",
+      },
+      {
+        q: "Does Unlock SaaS integrate with Loom?",
+        a: "Not directly. The Playbook will instruct you to include a personalised Loom in specific outreach steps when it makes sense; you record it in Loom and paste the link.",
+      },
+      {
+        q: "My Looms get zero replies. What should I do?",
+        a: "That is a message problem, not a video-tool problem. The Playbook rewrites the first 12 seconds and the named-human framing — almost always the issue is who you sent it to, not which tool you sent it with.",
+      },
+      {
+        q: "If I have Loom, do I still need Unlock SaaS?",
+        a: "Loom answers 'how'. Unlock SaaS answers 'why anyone should watch, who specifically, and what the video has to say to earn the meeting'. Different questions.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://www.loom.com/",
+    tags: ["async-video", "communication", "sales-tool", "remote-work"],
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
