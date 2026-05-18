@@ -226,7 +226,7 @@ async function triggerDayZero(list: FunnelList, id: string): Promise<void> {
       const supabase = createAdminClient();
       const { data: r } = await supabase
         .from("soap_opera_subscribers")
-        .select("id, email, diagnostic_result, emails_sent")
+        .select("id, email, diagnostic_result, emails_sent, source")
         .eq("id", id)
         .single();
       if (r) {
@@ -235,6 +235,7 @@ async function triggerDayZero(list: FunnelList, id: string): Promise<void> {
           email: r.email,
           diagnostic_result: r.diagnostic_result as DiagnosticResult | null,
           emails_sent: r.emails_sent,
+          source: (r as { source?: string | null }).source ?? null,
         });
       }
       return;

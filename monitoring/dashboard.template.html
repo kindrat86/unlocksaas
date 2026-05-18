@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="3600">
+<title>Operator Dashboard — UnlockSaaS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #fafafa;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --fg: #111827;
+    --muted: #6b7280;
+    --faint: #9ca3af;
+    --accent: #0d8050;
+    --accent-soft: #ecfdf5;
+    --pill-live-bg: #d1fae5;
+    --pill-live-fg: #065f46;
+    --pill-warn-bg: #fef3c7;
+    --pill-warn-fg: #92400e;
+    --pill-off-bg: #fee2e2;
+    --pill-off-fg: #991b1b;
+    --pill-neutral-bg: #f3f4f6;
+    --pill-neutral-fg: #4b5563;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body {
+    margin: 0;
+    color: var(--fg);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  code, .mono { font-family: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace; }
+  code { background: var(--pill-neutral-bg); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 32px 28px 56px; }
+  h1 { font-size: 22px; margin: 0 0 4px; font-weight: 600; letter-spacing: -0.01em; }
+  h2 { font-size: 18px; margin: 36px 0 4px; font-weight: 600; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; }
+  .stack { color: var(--faint); font-size: 12px; margin-top: 4px; }
+  .section-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .grid { display: grid; gap: 16px; margin-top: 16px; }
+  .cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .span-2 { grid-column: span 2; }
+  .span-all { grid-column: 1 / -1; }
+  @media (max-width: 1000px) {
+    .cols-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .cols-3, .cols-2 { grid-template-columns: 1fr; }
+    .span-2 { grid-column: auto; }
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .kpi .num { font-size: 30px; font-weight: 700; line-height: 1.1; color: var(--fg); font-variant-numeric: tabular-nums; }
+  .kpi .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 8px; }
+  .kpi .note { font-size: 11px; color: var(--faint); margin-top: 4px; }
+  h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 0 0 14px; font-weight: 600; }
+  h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.bench-active td { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .pill { display: inline-block; padding: 2px 9px; font-size: 11px; border-radius: 999px; background: var(--pill-neutral-bg); color: var(--pill-neutral-fg); font-weight: 500; }
+  .pill.live { background: var(--pill-live-bg); color: var(--pill-live-fg); }
+  .pill.warn { background: var(--pill-warn-bg); color: var(--pill-warn-fg); }
+  .pill.off  { background: var(--pill-off-bg);  color: var(--pill-off-fg); }
+  .verdict {
+    background: var(--pill-neutral-bg);
+    border-left: 4px solid var(--faint);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-top: 20px;
+  }
+  .verdict.green { border-left-color: var(--accent); background: var(--accent-soft); }
+  .verdict.warn  { border-left-color: #f59e0b; background: #fffbeb; }
+  .verdict.off   { border-left-color: #dc2626; background: #fef2f2; }
+  .verdict .hl { font-weight: 600; font-size: 15px; color: var(--fg); }
+  .verdict .dt { color: var(--muted); margin-top: 4px; font-size: 13px; line-height: 1.6; }
+  .kv { font-size: 13px; line-height: 2; color: var(--fg); }
+  .kv .lbl { color: var(--muted); }
+  .funnel-row { display: flex; align-items: center; margin: 8px 0; gap: 14px; }
+  .funnel-label { min-width: 200px; font-size: 13px; color: var(--fg); }
+  .funnel-bar-wrap { flex: 1; height: 26px; background: var(--pill-neutral-bg); border-radius: 4px; overflow: hidden; }
+  .funnel-bar { height: 100%; background: var(--accent); color: #fff; display: flex; align-items: center; padding-left: 12px; font-weight: 600; font-size: 13px; min-width: 36px; }
+  canvas { max-height: 280px; }
+  .empty { color: var(--faint); font-style: italic; font-size: 13px; padding: 6px 0; }
+  .foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--faint); font-size: 12px; line-height: 1.7; }
+  .preset-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .preset-btn {
+    border: 1px solid var(--border); background: var(--card);
+    padding: 6px 12px; border-radius: 6px; font-size: 12px;
+    cursor: pointer; color: var(--fg); font-family: inherit;
+  }
+  .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+  input[type=date] {
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 10px; font-family: inherit; font-size: 13px; color: var(--fg); background: var(--card);
+    width: 100%;
+  }
+  .date-card { padding: 14px 18px; }
+  .date-card .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .delta { font-variant-numeric: tabular-nums; }
+  .em { color: var(--fg); }
+  ul.assumptions { margin: 0; padding-left: 18px; color: var(--fg); }
+  ul.assumptions li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  .legend-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Operator Dashboard</h1>
+<div class="sub">
+  UnlockSaaS · Window: last 30 days · Generated: <span id="gen">—</span>
+</div>
+<div class="stack">
+  Stack: PostHog (analytics) · Supabase (auth + DB) · Stripe (billing) · Resend (email) · Vercel (host)
+</div>
+
+<!-- ============ Top KPIs ============ -->
+<div class="grid cols-4">
+  <div class="card kpi"><div class="num" id="k-visitors">—</div><div class="lbl">Visitors (all time)</div></div>
+  <div class="card kpi"><div class="num" id="k-diagnostic">—</div><div class="lbl">Diagnostic submissions</div></div>
+  <div class="card kpi">
+    <div class="num" id="k-subs-fresh">—</div>
+    <div class="lbl">Email subscribers (fresh)</div>
+    <div class="note" id="k-subs-carryover">—</div>
+  </div>
+  <div class="card kpi"><div class="num" id="k-paid">—</div><div class="lbl">Paid subs (Starter + Core)</div></div>
+</div>
+
+<!-- ============ Verdict ============ -->
+<div class="verdict" id="verdict">
+  <div class="hl" id="v-headline">—</div>
+  <div class="dt" id="v-detail">—</div>
+</div>
+
+<!-- ============ FunnelFixer carry-over rollout (live, 30s polling) ============ -->
+<h2 style="margin-top:40px">FunnelFixer carry-over rollout <span class="pill" id="ff-status-pill" style="margin-left:8px">—</span></h2>
+<div class="section-sub">
+  Live state of the 34-subscriber re-engagement rollout that started 2026-05-19. Polls
+  <code>/api/monitoring/funnelfixer-status</code> every 30 seconds. Activation cron runs daily at 06:00 UTC (09:00 Athens) and stages 5 subs/day with 30-minute spacing between sends. Last refresh:
+  <code id="ff-as-of">—</code>.
+</div>
+<div class="grid cols-4">
+  <div class="card kpi"><div class="num" id="ff-paused">—</div><div class="lbl">Paused (queue)</div></div>
+  <div class="card kpi"><div class="num" id="ff-active" style="color:var(--accent)">—</div><div class="lbl">Active (in sequence)</div></div>
+  <div class="card kpi"><div class="num" id="ff-complete">—</div><div class="lbl">Complete (→ Seinfeld)</div></div>
+  <div class="card kpi"><div class="num" id="ff-dropped" style="color:#991b1b">—</div><div class="lbl">Bounced / complained / unsubscribed</div></div>
+</div>
+<div class="grid cols-2" style="margin-top:16px">
+  <div class="card">
+    <h3>In flight — next sends scheduled</h3>
+    <table>
+      <thead><tr><th>Email</th><th class="num">Sent</th><th>Next send (UTC)</th></tr></thead>
+      <tbody id="ff-inflight"><tr><td colspan="3" style="color:var(--muted)">Loading…</td></tr></tbody>
+    </table>
+    <div class="stack">Sorted by next_send_at ascending. The next 30-minute tick at the top of this list fires first.</div>
+  </div>
+  <div class="card">
+    <h3>Recent sends</h3>
+    <table>
+      <thead><tr><th>Email</th><th class="num">Email #</th><th>Sent (UTC)</th></tr></thead>
+      <tbody id="ff-recent"><tr><td colspan="3" style="color:var(--muted)">Loading…</td></tr></tbody>
+    </table>
+    <div class="stack">Last 20 funnelfixer sends. Updates within 30s of each tick cron dispatching a send.</div>
+  </div>
+</div>
+<script>
+(function () {
+  // The dashboard is hosted at file://… so we cannot use relative URLs;
+  // hard-code the production API.
+  var ENDPOINT = "https://unlocksaas.com/api/monitoring/funnelfixer-status";
+  var POLL_MS = 30 * 1000;
+
+  function fmt(n) { return (typeof n === "number" ? n : 0).toLocaleString(); }
+  function txt(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+  function fmtUtc(iso) {
+    if (!iso) return "—";
+    try {
+      var d = new Date(iso);
+      var pad = function (n) { return n < 10 ? "0" + n : "" + n; };
+      return d.getUTCFullYear() + "-" + pad(d.getUTCMonth() + 1) + "-" + pad(d.getUTCDate()) +
+        " " + pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
+    } catch (e) {
+      return iso;
+    }
+  }
+  function emailDot(s) {
+    if (s === "funnelfixer_google") return '<span title="Google OAuth" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0d8050;margin-right:6px;vertical-align:middle"></span>';
+    return '<span title="Email signup" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9ca3af;margin-right:6px;vertical-align:middle"></span>';
+  }
+
+  function render(data) {
+    if (!data || !data.ok) return;
+    txt("ff-as-of", fmtUtc(data.as_of) + " UTC");
+    var t = data.totals || {};
+    txt("ff-paused", fmt(t.paused));
+    txt("ff-active", fmt(t.active));
+    txt("ff-complete", fmt(t.complete));
+    var dropped = (t.bounced || 0) + (t.complained || 0) + (t.unsubscribed || 0);
+    txt("ff-dropped", fmt(dropped));
+
+    var pill = document.getElementById("ff-status-pill");
+    if (pill) {
+      if ((t.paused || 0) > 0 || (t.active || 0) > 0) {
+        pill.textContent = "rollout active";
+        pill.style.background = "var(--pill-live-bg)";
+        pill.style.color = "var(--pill-live-fg)";
+      } else {
+        pill.textContent = "rollout complete";
+        pill.style.background = "var(--pill-neutral-bg)";
+        pill.style.color = "var(--pill-neutral-fg)";
+      }
+    }
+
+    var inflight = document.getElementById("ff-inflight");
+    if (inflight) {
+      if (!data.in_flight || data.in_flight.length === 0) {
+        inflight.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">No active sequences yet.</td></tr>';
+      } else {
+        inflight.innerHTML = data.in_flight.map(function (r) {
+          return '<tr>' +
+            '<td>' + emailDot(r.source) + (r.email || "").replace(/</g, "&lt;") + '</td>' +
+            '<td class="num">' + (r.emails_sent || 0) + '/5</td>' +
+            '<td class="mono">' + fmtUtc(r.next_send_at) + '</td>' +
+          '</tr>';
+        }).join("");
+      }
+    }
+
+    var recent = document.getElementById("ff-recent");
+    if (recent) {
+      if (!data.recent_sends || data.recent_sends.length === 0) {
+        recent.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">No sends recorded yet.</td></tr>';
+      } else {
+        recent.innerHTML = data.recent_sends.map(function (r) {
+          return '<tr>' +
+            '<td>' + emailDot(r.source) + (r.email || "").replace(/</g, "&lt;") + '</td>' +
+            '<td class="num">E' + (r.emails_sent || 0) + '</td>' +
+            '<td class="mono">' + fmtUtc(r.last_sent_at) + '</td>' +
+          '</tr>';
+        }).join("");
+      }
+    }
+  }
+
+  function poll() {
+    fetch(ENDPOINT, { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(render)
+      .catch(function () { /* swallow — next tick retries */ });
+  }
+  poll();
+  setInterval(poll, POLL_MS);
+})();
+</script>
+
+<!-- ============ Benchmark + How tracking ============ -->
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Benchmark — Brunson rule of thumb</h3>
+    <table>
+      <thead><tr><th>Traffic / mo</th><th class="num">Subs @3%</th><th class="num">Paid @1%</th></tr></thead>
+      <tbody id="bench-table"></tbody>
+    </table>
+    <div style="margin-top:12px;font-size:11px;color:var(--faint)">Highlighted row = your current traffic band.</div>
+  </div>
+  <div class="card">
+    <h3>How you're tracking</h3>
+    <div class="kv">
+      <div><span class="lbl">Stage:</span> <strong id="b-stage">—</strong></div>
+      <div><span class="lbl">Opt-in rate:</span> <strong id="b-optin">—</strong> (target 3%) <span class="pill" id="b-optin-pill">—</span></div>
+      <div><span class="lbl">Expected subs from</span> <span id="b-visitors">0</span> visitors: <strong id="b-expected-subs">—</strong></div>
+      <div><span class="lbl">Actual subs:</span> <strong id="b-actual-subs">0</strong></div>
+      <div style="margin-top:8px"><span class="lbl">Paid subs:</span> <strong id="b-paid">0</strong> · rate: <strong id="b-paid-rate">—</strong> <span class="pill" id="b-paid-pill">—</span></div>
+      <div><span class="lbl">Expected paid range:</span> <strong id="b-expected-paid">—</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Funnel + Daily chart ============ -->
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Funnel — value ladder</h3>
+    <div id="funnel"></div>
+  </div>
+  <div class="card">
+    <h3>Visitors &amp; diagnostic submissions — daily (last 30D)</h3>
+    <canvas id="dailyChart"></canvas>
+  </div>
+</div>
+
+<!-- ============ Traffic sources (PostHog) ============ -->
+<div class="grid">
+  <div class="card span-all">
+    <h3>Traffic sources (PostHog · all time)</h3>
+    <table>
+      <thead><tr><th>Referrer</th><th class="num">Pageviews</th></tr></thead>
+      <tbody id="ph-sources"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ Section: Traffic sources daily breakdown ============ -->
+<h2 style="margin-top:40px">Traffic sources — daily breakdown</h2>
+<div class="section-sub">
+  PostHog <code>$pageview</code> events grouped by referring domain. Each day's visitors split across channel categories.
+  <span style="color:var(--faint)">Hover bars for per-channel counts. Use the table below for raw referrers per day.</span>
+</div>
+
+<div class="grid cols-4">
+  <div class="card kpi"><div class="num" id="src-direct">—</div><div class="lbl">Direct (all time)</div></div>
+  <div class="card kpi"><div class="num" id="src-search" style="color:#1d4ed8">—</div><div class="lbl">Search (all time)</div></div>
+  <div class="card kpi"><div class="num" id="src-ai" style="color:var(--accent)">—</div><div class="lbl">AI engines (all time)</div></div>
+  <div class="card kpi"><div class="num" id="src-social" style="color:#a855f7">—</div><div class="lbl">Social (all time)</div></div>
+</div>
+
+<div class="grid">
+  <div class="card span-all">
+    <h3>Visitors per day by channel category (stacked)</h3>
+    <canvas id="sourcesChannelChart" style="max-height:340px"></canvas>
+    <div style="margin-top:10px;font-size:11px;color:var(--faint)">
+      <span class="legend-swatch" style="background:#9ca3af"></span> Direct
+      <span class="legend-swatch" style="background:#1d4ed8;margin-left:14px"></span> Search
+      <span class="legend-swatch" style="background:var(--accent);margin-left:14px"></span> AI (Perplexity / ChatGPT / Claude)
+      <span class="legend-swatch" style="background:#a855f7;margin-left:14px"></span> Social (Reddit / X / LinkedIn)
+      <span class="legend-swatch" style="background:#f59e0b;margin-left:14px"></span> Dev (GitHub / IndieHackers)
+      <span class="legend-swatch" style="background:#ec4899;margin-left:14px"></span> Email
+      <span class="legend-swatch" style="background:#d1d5db;margin-left:14px"></span> Other
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card span-all">
+    <h3>Day-by-day breakdown — top sources + landing pages</h3>
+    <div style="max-height:520px;overflow-y:auto">
+      <table>
+        <thead><tr>
+          <th style="min-width:110px">Date</th>
+          <th class="num" style="min-width:80px">Visitors</th>
+          <th>Top referrers (channel · visitors)</th>
+          <th>Top landing pages</th>
+        </tr></thead>
+        <tbody id="sources-by-day"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--faint)">
+      Newest day at top. <code>(direct)</code> = no referrer (typed URL, app, dark social, or stripped UTM-redirect).
+    </div>
+  </div>
+</div>
+
+<!-- ============ UTM campaign attribution ============ -->
+<div class="grid">
+  <div class="card span-all">
+    <h3>UTM campaign attribution per day</h3>
+    <table>
+      <thead><tr><th>Date</th><th>Source</th><th>Medium</th><th>Campaign</th><th class="num">Visitors</th></tr></thead>
+      <tbody id="utm-by-day"></tbody>
+    </table>
+    <div style="margin-top:10px;font-size:11px;color:var(--faint)">
+      Only shows pageviews with <code>?utm_source=…</code> tagged. Tag your Twitter / Reddit / IndieHackers / email links to see them here.
+    </div>
+  </div>
+</div>
+
+<!-- ============ Stripe + Top pages ============ -->
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Stripe tier breakdown</h3>
+    <table>
+      <thead><tr><th>Tier</th><th class="num">Active</th><th class="num">MRR</th></tr></thead>
+      <tbody id="stripe-tiers"></tbody>
+    </table>
+    <div style="margin-top:18px"><h4>Subscription status</h4></div>
+    <table>
+      <thead><tr><th>Status</th><th class="num">Count</th></tr></thead>
+      <tbody id="stripe-statuses"></tbody>
+    </table>
+    <div style="margin-top:14px;font-size:11px;color:var(--faint);line-height:1.6">
+      Source: Stripe API, filtered to UnlockSaaS price IDs only (Starter <code id="stripe-starter-id">price_…</code>, Core <code id="stripe-core-id">price_…</code>). Subs / charges tied to other products on the shared Stripe account are excluded.
+    </div>
+  </div>
+  <div class="card">
+    <h3>Top pages (PostHog)</h3>
+    <table>
+      <thead><tr><th>Path</th><th class="num">Views</th></tr></thead>
+      <tbody id="ph-pages"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ Country ============ -->
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Traffic by country</h3>
+    <table>
+      <thead><tr><th>Country</th><th class="num">Pageviews</th></tr></thead>
+      <tbody id="ph-countries"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Country mix (top 5)</h3>
+    <canvas id="countryChart" style="max-height:240px"></canvas>
+  </div>
+</div>
+
+<!-- ============ GSC ============ -->
+<h2 style="margin-top:40px">Google Search Console — last 30 days</h2>
+<div class="section-sub" id="gsc-sub">
+  Awaiting first GSC pull. unlocksaas.com is verified; queries / impressions feed will populate once the operator wires the service-account credential.
+</div>
+<div class="grid cols-4">
+  <div class="card kpi"><div class="num" id="gsc-clicks">—</div><div class="lbl">Clicks</div></div>
+  <div class="card kpi"><div class="num" id="gsc-impressions">—</div><div class="lbl">Impressions</div></div>
+  <div class="card kpi"><div class="num" id="gsc-ctr">—</div><div class="lbl">CTR</div></div>
+  <div class="card kpi"><div class="num" id="gsc-position">—</div><div class="lbl">Avg position</div></div>
+</div>
+
+<!-- ============ All subscribers ============ -->
+<div class="grid">
+  <div class="card span-all">
+    <h3>All subscribers <span id="subs-count" style="color:var(--faint);font-weight:500;text-transform:none;letter-spacing:0;margin-left:6px">(0)</span></h3>
+    <div style="max-height:520px;overflow-y:auto;border:1px solid var(--border);border-radius:6px">
+      <table>
+        <thead style="position:sticky;top:0;background:var(--card);z-index:1">
+          <tr>
+            <th>Email</th>
+            <th>Source</th>
+            <th>Subscribed</th>
+            <th>Status</th>
+            <th class="num">Emails sent</th>
+            <th class="num">Open %</th>
+            <th class="num">Click %</th>
+          </tr>
+        </thead>
+        <tbody id="recent-subs"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Marketing & distribution channels ============ -->
+<h2 style="margin-top:40px">Marketing &amp; distribution channels</h2>
+<div class="section-sub">
+  Channel inventory for <code>maryan@unlocksaas.com</code>. <strong>"Live"</strong> = account exists and is verified by me. <strong>"Not created"</strong> = the account doesn't exist yet — this row is a TODO, not telemetry. Update <code>STATIC_CHANNELS</code> in <code>scripts/build-dashboard.py</code> as you register each one.
+</div>
+
+<div class="grid cols-4">
+  <div class="card kpi"><div class="num" id="ch-total">—</div><div class="lbl">Total channels</div></div>
+  <div class="card kpi"><div class="num" id="ch-live">—</div><div class="lbl">Live / verified</div></div>
+  <div class="card kpi"><div class="num" id="ch-submitted">—</div><div class="lbl">Submitted / pending</div></div>
+  <div class="card kpi"><div class="num" id="ch-not-created">—</div><div class="lbl">Not created yet</div></div>
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Social &amp; community</h3>
+    <table>
+      <thead><tr><th>Channel</th><th>Stats</th><th>Status</th></tr></thead>
+      <tbody id="ch-social"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Content &amp; publishing</h3>
+    <table>
+      <thead><tr><th>Platform</th><th>Activity</th><th>Status</th></tr></thead>
+      <tbody id="ch-content"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Directories &amp; listings</h3>
+    <table>
+      <thead><tr><th>Directory</th><th>Category</th><th>Status</th><th>As of</th></tr></thead>
+      <tbody id="ch-directories"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Dev ecosystem &amp; search / AEO</h3>
+    <table>
+      <thead><tr><th>Platform</th><th>Info</th><th>Status</th></tr></thead>
+      <tbody id="ch-dev"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ Forecast ============ -->
+<h2 style="margin-top:40px">Organic traffic forecast — next 16 weeks</h2>
+<div class="section-sub">
+  Channel-decomposed weekly visitor estimate. Baseline = current PostHog rate. Bands = scenario range (low / mid / high).
+  <span style="color:var(--faint)">Recalibrate when actuals diverge ≥30% from mid for 2 consecutive weeks.</span>
+</div>
+
+<div class="grid cols-4">
+  <div class="card kpi"><div class="num" id="fc-baseline">—</div><div class="lbl">Baseline / week (now)</div></div>
+  <div class="card kpi"><div class="num" id="fc-w4">—</div><div class="lbl">Week 4 mid</div></div>
+  <div class="card kpi"><div class="num" id="fc-w12">—</div><div class="lbl">Week 12 mid</div></div>
+  <div class="card kpi"><div class="num" id="fc-w16">—</div><div class="lbl">Week 16 (low–high)</div></div>
+</div>
+
+<div class="grid">
+  <div class="card span-all">
+    <h3>Weekly visitors by channel (stacked) + scenario bands</h3>
+    <canvas id="forecastChart" style="max-height:360px"></canvas>
+    <div style="margin-top:10px;font-size:11px;color:var(--faint)">
+      Stacked bars = mid scenario by channel. Dashed lines = low (50%) and high (170%) totals. Baseline persists across all weeks.
+    </div>
+  </div>
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h3>Week-by-week table (mid scenario)</h3>
+    <table>
+      <thead><tr><th>Wk</th><th>Starts</th><th class="num">Low</th><th class="num">Mid</th><th class="num">High</th><th class="num">Cum.</th></tr></thead>
+      <tbody id="fc-table"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Model assumptions</h3>
+    <ul class="assumptions" id="fc-assumptions"></ul>
+    <div style="margin-top:14px"><h4>Channel mix at week 16 (mid)</h4></div>
+    <table>
+      <thead><tr><th>Channel</th><th class="num">/ week</th><th class="num">Share</th></tr></thead>
+      <tbody id="fc-mix"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ Projected vs reality ============ -->
+<h2 style="margin-top:40px">Projected vs reality — daily</h2>
+<div class="section-sub">
+  Pick any date range. Projected = weekly mid distributed across 7 days. Reality = PostHog daily uniques.
+  <span style="color:var(--faint)">Today is excluded from the Δ stat (partial day).</span>
+</div>
+
+<div class="grid cols-4">
+  <div class="card date-card"><div class="lbl">From</div><input type="date" id="pvr-from"></div>
+  <div class="card date-card"><div class="lbl">To</div><input type="date" id="pvr-to"></div>
+  <div class="card kpi"><div class="num" id="pvr-actual">—</div><div class="lbl">Actual visitors (range)</div></div>
+  <div class="card kpi"><div class="num delta" id="pvr-delta">—</div><div class="lbl">Δ vs projected</div></div>
+</div>
+
+<div class="preset-row">
+  <button class="preset-btn" data-preset="last7">Last 7 days</button>
+  <button class="preset-btn" data-preset="last30">Last 30 days</button>
+  <button class="preset-btn" data-preset="next14">Next 14 days</button>
+  <button class="preset-btn" data-preset="next30">Next 30 days</button>
+  <button class="preset-btn" data-preset="last30next14">Last 30 + next 14</button>
+</div>
+
+<div class="grid" style="margin-top:18px">
+  <div class="card span-all">
+    <canvas id="pvrChart" style="max-height:280px"></canvas>
+  </div>
+</div>
+
+<div class="foot">
+  Layout modelled on <code>vc-deal-flow-signal/monitoring/dashboard.html</code>. Theme: UnlockSaaS light (money green primary, Geist sans).
+  Data refreshes hourly via launchd (<code>com.unlocksaas.monitoring</code>) running <code>scripts/build-dashboard.py</code>.
+  Source script pulls PostHog (visitors, sources, countries), Supabase (email subscribers, diagnostic submissions), Stripe (Starter / Core subs, MRR), Resend (email engagement),
+  and replaces the <code>__data__</code> block below.
+</div>
+
+</div><!-- /wrap -->
+
+<script id="__data__" type="application/json">{{__DATA__}}</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('__data__').textContent);
+
+  const fmt = (n) => (n == null ? '—' : Number(n).toLocaleString());
+  const pct = (n, digits = 1) => (n == null || isNaN(n) ? '—' : Number(n).toFixed(digits) + '%');
+  const dashIfZero = (n) => (!n ? '—' : fmt(n));
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+
+  // -- header
+  setText('gen', D.generated_display || '—');
+
+  // -- top KPIs
+  const kpi = D.kpis || {};
+  setText('k-visitors', fmt(kpi.visitors));
+  setText('k-diagnostic', fmt(kpi.diagnostic_submissions));
+  setText('k-subs-fresh', fmt(kpi.subs_fresh));
+  if (kpi.carryover) setText('k-subs-carryover', '+' + kpi.carryover + ' FunnelFixer carry-over (paused)');
+  setText('k-paid', fmt(kpi.paid_subs));
+
+  // -- verdict
+  const v = D.verdict || {};
+  setText('v-headline', v.headline || '—');
+  setText('v-detail', v.detail || '—');
+  const vEl = document.getElementById('verdict');
+  if (v.tone) vEl.classList.add(v.tone);
+
+  // -- benchmark
+  const bench = D.benchmark || {};
+  const benchBody = document.getElementById('bench-table');
+  (bench.rows || []).forEach((r, i) => {
+    const tr = document.createElement('tr');
+    if (i === bench.active_idx) tr.className = 'bench-active';
+    tr.innerHTML =
+      '<td>' + fmt(r.traffic) + '</td>' +
+      '<td class="num">' + fmt(r.subs) + '</td>' +
+      '<td class="num">' + fmt(r.paid) + '</td>';
+    benchBody.appendChild(tr);
+  });
+  setText('b-stage', bench.stage || '—');
+  setText('b-optin', bench.actual_opt_in_pct != null ? pct(bench.actual_opt_in_pct, 2) : '—');
+  setText('b-visitors', fmt(kpi.visitors || 0));
+  setText('b-expected-subs', bench.expected_subs != null ? fmt(bench.expected_subs) : '—');
+  setText('b-actual-subs', fmt(kpi.subs_fresh || 0));
+  setText('b-paid', fmt(kpi.paid_subs || 0));
+  setText('b-paid-rate', bench.actual_paid_rate_pct != null ? pct(bench.actual_paid_rate_pct, 2) : '—');
+  setText('b-expected-paid', bench.expected_paid_range || '—');
+  const optinPill = document.getElementById('b-optin-pill');
+  const paidPill = document.getElementById('b-paid-pill');
+  function setPill(el, status, label) {
+    el.textContent = label;
+    el.className = 'pill ' + (status === 'above' ? 'live' : status === 'on-track' ? 'warn' : status === 'below' ? 'off' : '');
+  }
+  setPill(optinPill, bench.opt_in_status, bench.opt_in_pill || 'No data');
+  setPill(paidPill, bench.paid_status, bench.paid_pill || 'No data');
+
+  // -- funnel
+  const funnelEl = document.getElementById('funnel');
+  const fmax = Math.max(1, ...(D.funnel || []).map(s => s.value || 0));
+  (D.funnel || []).forEach(step => {
+    const pctW = Math.max(6, (step.value / fmax) * 100);
+    const v = step.value;
+    const label = step.value == null ? '—' : (v === 0 ? '—' : fmt(v));
+    const row = document.createElement('div');
+    row.className = 'funnel-row';
+    row.innerHTML =
+      '<div class="funnel-label">' + step.label + '</div>' +
+      '<div class="funnel-bar-wrap"><div class="funnel-bar" style="width:' + pctW + '%">' + label + '</div></div>';
+    funnelEl.appendChild(row);
+  });
+
+  // -- daily chart
+  const dailyLabels = (D.daily || []).map(r => r.d.slice(5));
+  const dailyVisitors = (D.daily || []).map(r => r.visitors || 0);
+  const dailyDiag = (D.daily || []).map(r => r.diagnostic || 0);
+  new Chart(document.getElementById('dailyChart'), {
+    type: 'line',
+    data: {
+      labels: dailyLabels,
+      datasets: [
+        { label: 'Visitors', data: dailyVisitors, borderColor: '#1d4ed8', backgroundColor: 'rgba(29,78,216,0.08)', tension: 0.25 },
+        { label: 'Diagnostic submissions', data: dailyDiag, borderColor: '#0d8050', backgroundColor: 'rgba(13,128,80,0.08)', tension: 0.25 },
+      ]
+    },
+    options: { plugins: { legend: { position: 'top', labels: { font: { family: 'Geist' } } } }, scales: { x: { ticks: { maxRotation: 60, font: { size: 10 } } }, y: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+
+  // -- ph sources / pages / countries
+  function fillSimple(tbodyId, rows, key, label, fallback) {
+    const tb = document.getElementById(tbodyId);
+    if (!rows || !rows.length) {
+      tb.innerHTML = '<tr><td colspan="2"><div class="empty">' + fallback + '</div></td></tr>';
+      return;
+    }
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + r[key] + '</td><td class="num">' + fmt(r.n) + '</td>';
+      tb.appendChild(tr);
+    });
+  }
+  fillSimple('ph-sources', D.ph_sources, 'src', 'src', 'Awaiting PostHog feed.');
+  fillSimple('ph-pages', D.ph_pages, 'p', 'p', 'Awaiting PostHog feed.');
+  // countries (3-col)
+  const countryBody = document.getElementById('ph-countries');
+  if (!D.ph_countries || !D.ph_countries.length) {
+    countryBody.innerHTML = '<tr><td colspan="2"><div class="empty">Awaiting PostHog feed.</div></td></tr>';
+  } else {
+    D.ph_countries.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + (r.name || r.code) + '</td><td class="num">' + fmt(r.n) + '</td>';
+      countryBody.appendChild(tr);
+    });
+  }
+
+  // -- channel KPI totals
+  const ct = (D.sources_daily && D.sources_daily.channel_totals) || {};
+  setText('src-direct', fmt(ct.Direct || 0));
+  setText('src-search', fmt(ct.Search || 0));
+  setText('src-ai', fmt(ct.AI || 0));
+  setText('src-social', fmt(ct.Social || 0));
+
+  // -- channel stacked chart
+  const CH_COLORS = { Direct: '#9ca3af', Search: '#1d4ed8', AI: '#0d8050', Social: '#a855f7', Dev: '#f59e0b', Email: '#ec4899', Other: '#d1d5db' };
+  const sd = D.sources_daily || { days: [], channels: ['Direct','Search','AI','Social','Dev','Email','Other'] };
+  const chLabels = sd.days.map(d => d.d.slice(5));
+  const chDatasets = (sd.channels || ['Direct','Search','AI','Social','Dev','Email','Other']).map(ch => ({
+    label: ch,
+    data: sd.days.map(d => (d.by_channel && d.by_channel[ch]) || 0),
+    backgroundColor: CH_COLORS[ch] || '#94a3b8'
+  }));
+  new Chart(document.getElementById('sourcesChannelChart'), {
+    type: 'bar',
+    data: { labels: chLabels, datasets: chDatasets },
+    options: { plugins: { legend: { display: false } }, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+
+  // -- sources by day table
+  const sbd = document.getElementById('sources-by-day');
+  if (!sd.days || !sd.days.length || sd.days.every(d => !d.total)) {
+    sbd.innerHTML = '<tr><td colspan="4"><div class="empty">Awaiting PostHog feed.</div></td></tr>';
+  } else {
+    sd.days.slice().reverse().forEach(d => {
+      if (!d.total) return;
+      const refs = (d.top_sources || []).map(s => s.src + ' (' + s.channel + '·' + s.uv + ')').join(', ');
+      const pages = (d.top_pages || []).map(p => p.p + ' · ' + p.uv).join(', ');
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + d.d + '</td><td class="num">' + fmt(d.total) + '</td><td>' + refs + '</td><td>' + pages + '</td>';
+      sbd.appendChild(tr);
+    });
+  }
+
+  // -- UTM
+  const utmBody = document.getElementById('utm-by-day');
+  if (!D.utm_daily || !D.utm_daily.length) {
+    utmBody.innerHTML = '<tr><td colspan="5"><div class="empty">Tag your links with <code>?utm_source=…</code> to see them here.</div></td></tr>';
+  } else {
+    D.utm_daily.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + r.d + '</td><td>' + (r.utm_src || '–') + '</td><td>' + (r.utm_med || '–') + '</td><td>' + (r.utm_cmp || '–') + '</td><td class="num">' + fmt(r.uv) + '</td>';
+      utmBody.appendChild(tr);
+    });
+  }
+
+  // -- Stripe
+  const st = D.stripe || {};
+  setText('stripe-starter-id', (st.starter_price_id || 'price_…').slice(0, 14) + '…');
+  setText('stripe-core-id', (st.core_price_id || 'price_…').slice(0, 14) + '…');
+  const stb = document.getElementById('stripe-tiers');
+  (st.tiers || [
+    { name: 'Starter ($1, 7-day trial)', active: 0, mrr: 0 },
+    { name: 'Core ($49/mo)', active: 0, mrr: 0 },
+  ]).forEach(t => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + t.name + '</td><td class="num">' + fmt(t.active) + '</td><td class="num">$' + fmt(t.mrr) + '</td>';
+    stb.appendChild(tr);
+  });
+  const stsBody = document.getElementById('stripe-statuses');
+  if (!st.statuses || !st.statuses.length) {
+    stsBody.innerHTML = '<tr><td colspan="2"><div class="empty">No subscriptions yet.</div></td></tr>';
+  } else {
+    st.statuses.forEach(s => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + s.k + '</td><td class="num">' + fmt(s.n) + '</td>';
+      stsBody.appendChild(tr);
+    });
+  }
+
+  // -- Country donut
+  const top5 = (D.ph_countries || []).slice(0, 5);
+  new Chart(document.getElementById('countryChart'), {
+    type: 'doughnut',
+    data: {
+      labels: top5.length ? top5.map(r => r.name || r.code) : ['No data'],
+      datasets: [{
+        data: top5.length ? top5.map(r => r.n) : [1],
+        backgroundColor: top5.length ? ['#0d8050','#1d4ed8','#a855f7','#f59e0b','#ec4899'] : ['#0d8050'],
+        borderWidth: 0
+      }]
+    },
+    options: { plugins: { legend: { position: 'right', labels: { font: { family: 'Geist', size: 11 } } } }, cutout: '60%' }
+  });
+
+  // -- GSC
+  const g = D.gsc;
+  if (g) {
+    setText('gsc-clicks', fmt(g.clicks));
+    setText('gsc-impressions', fmt(g.impressions));
+    setText('gsc-ctr', pct(g.ctr, 2));
+    setText('gsc-position', g.position != null ? Number(g.position).toFixed(1) : '—');
+    setText('gsc-sub', 'GSC last 30 days for unlocksaas.com');
+  }
+
+  // -- All subscribers
+  const rsBody = document.getElementById('recent-subs');
+  const countEl = document.getElementById('subs-count');
+  if (countEl) countEl.textContent = '(' + (D.recent ? D.recent.length : 0) + ')';
+  if (!D.recent || !D.recent.length) {
+    rsBody.innerHTML = '<tr><td colspan="7"><div class="empty">No subscribers yet.</div></td></tr>';
+  } else {
+    function statusBadge(s) {
+      const st = (s || '').toLowerCase();
+      if (st === 'active')        return '<span class="pill live">active</span>';
+      if (st === 'paused')        return '<span class="pill">paused</span>';
+      if (st === 'unsubscribed')  return '<span class="pill off">unsubscribed</span>';
+      if (st === 'pending')       return '<span class="pill warn">pending</span>';
+      return '<span class="pill">' + (s || '–') + '</span>';
+    }
+    D.recent.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + (r.email || '–') + '</td>' +
+        '<td><span class="pill warn">' + (r.source || '–') + '</span></td>' +
+        '<td>' + (r.subscribed_at || '–') + '</td>' +
+        '<td>' + statusBadge(r.status) + '</td>' +
+        '<td class="num">' + fmt(r.emails_sent || 0) + '</td>' +
+        '<td class="num">' + (r.open_rate ? pct(r.open_rate, 1) : '0') + '</td>' +
+        '<td class="num">' + (r.click_rate ? pct(r.click_rate, 1) : '0') + '</td>';
+      rsBody.appendChild(tr);
+    });
+  }
+
+  // -- Channels
+  const chans = D.channels || { social: [], content: [], directories: [], dev: [] };
+  function statusPill(s) {
+    if (s === 'live')      return '<span class="pill live">live</span>';
+    if (s === 'submitted') return '<span class="pill warn">submitted</span>';
+    if (s === 'pending')   return '<span class="pill warn">pending</span>';
+    return '<span class="pill off">not created</span>';
+  }
+  function fillChan(tbodyId, rows, cols) {
+    const tb = document.getElementById(tbodyId);
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = cols.map(c => {
+        if (c === 'status') return '<td>' + statusPill(r.status) + '</td>';
+        return '<td>' + (r[c] || '–') + '</td>';
+      }).join('');
+      tb.appendChild(tr);
+    });
+  }
+  fillChan('ch-social',      chans.social || [],      ['name', 'stat', 'status']);
+  fillChan('ch-content',     chans.content || [],     ['name', 'activity', 'status']);
+  fillChan('ch-directories', chans.directories || [], ['name', 'category', 'status', 'as_of']);
+  fillChan('ch-dev',         chans.dev || [],         ['name', 'info', 'status']);
+  // Channel totals
+  const allChans = [].concat(chans.social || [], chans.content || [], chans.directories || [], chans.dev || []);
+  setText('ch-total', allChans.length);
+  setText('ch-live', allChans.filter(c => c.status === 'live').length);
+  setText('ch-submitted', allChans.filter(c => c.status === 'submitted' || c.status === 'pending').length);
+  setText('ch-not-created', allChans.filter(c => !c.status || c.status === 'not_created').length);
+
+  // -- Forecast
+  const fc = D.forecast || {};
+  if (fc.baseline_weekly) setText('fc-baseline', fmt(fc.baseline_weekly));
+  if (fc.w4_mid) setText('fc-w4', fmt(fc.w4_mid));
+  if (fc.w12_mid) setText('fc-w12', fmt(fc.w12_mid));
+  if (fc.w16_low != null && fc.w16_high != null) setText('fc-w16', fmt(fc.w16_low) + '–' + fmt(fc.w16_high));
+  // assumptions
+  const aUl = document.getElementById('fc-assumptions');
+  (fc.assumptions || [
+    'Baseline anchored on current PostHog 30-day rate (visitors / 30 × 7).',
+    'Mid scenario: linear ramp from baseline to 1.5× baseline by week 16.',
+    'Low band = 50% of mid (publishing cadence slips). High band = 170% of mid (one breakout post lands).',
+    'Recalibrate when actuals diverge ≥30% from mid for 2 consecutive weeks.'
+  ]).forEach(a => {
+    const li = document.createElement('li');
+    li.textContent = a;
+    aUl.appendChild(li);
+  });
+  // table
+  const fcTb = document.getElementById('fc-table');
+  if (!fc.rows || !fc.rows.length) {
+    fcTb.innerHTML = '<tr><td colspan="6"><div class="empty">Forecast model runs once first 7 days of PostHog data are in.</div></td></tr>';
+  } else {
+    fc.rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>W' + r.w + '</td><td>' + r.starts + '</td><td class="num">' + fmt(r.low) + '</td><td class="num">' + fmt(r.mid) + '</td><td class="num">' + fmt(r.high) + '</td><td class="num">' + fmt(r.cum) + '</td>';
+      fcTb.appendChild(tr);
+    });
+  }
+  // mix
+  const mixBody = document.getElementById('fc-mix');
+  if (!fc.mix_w16 || !fc.mix_w16.length) {
+    mixBody.innerHTML = '<tr><td colspan="3"><div class="empty">Mix computes from forecast model.</div></td></tr>';
+  } else {
+    fc.mix_w16.forEach(m => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + m.channel + '</td><td class="num">' + fmt(m.per_week) + '</td><td class="num">' + pct(m.share, 1) + '</td>';
+      mixBody.appendChild(tr);
+    });
+  }
+  // forecast chart
+  const FC_COLORS = { SEO: '#1d4ed8', Social: '#a855f7', AI_AEO: '#0d8050', Email: '#ec4899', Direct: '#9ca3af' };
+  new Chart(document.getElementById('forecastChart'), {
+    type: 'bar',
+    data: {
+      labels: (fc.rows || []).map(r => 'W' + r.w),
+      datasets: (fc.channels || ['SEO','Social','AI_AEO','Email','Direct']).map(ch => ({
+        label: ch.replace('_', ' / '),
+        data: (fc.rows || []).map(r => (r.by_channel && r.by_channel[ch]) || 0),
+        backgroundColor: FC_COLORS[ch] || '#94a3b8',
+        stack: 'mid'
+      })).concat([
+        { label: 'Low band',  data: (fc.rows || []).map(r => r.low),  type: 'line', borderColor: '#dc2626', borderDash: [4,4], borderWidth: 1.5, pointRadius: 0, backgroundColor: 'transparent' },
+        { label: 'High band', data: (fc.rows || []).map(r => r.high), type: 'line', borderColor: '#0d8050', borderDash: [4,4], borderWidth: 1.5, pointRadius: 0, backgroundColor: 'transparent' },
+      ])
+    },
+    options: { plugins: { legend: { position: 'top', labels: { font: { family: 'Geist', size: 11 } } } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } }
+  });
+
+  // -- Projected vs reality
+  function isoDate(d) { return d.toISOString().slice(0, 10); }
+  const today = new Date();
+  const dailyByDate = {};
+  (D.daily || []).forEach(r => dailyByDate[r.d] = r.visitors || 0);
+  const fromInput = document.getElementById('pvr-from');
+  const toInput = document.getElementById('pvr-to');
+  let pvrChart = null;
+  function midForDate(dateStr) {
+    if (!fc.daily_mid) return 0;
+    return fc.daily_mid[dateStr] || 0;
+  }
+  function renderPVR() {
+    const from = new Date(fromInput.value);
+    const to = new Date(toInput.value);
+    if (isNaN(from) || isNaN(to) || from > to) return;
+    const labels = [], projected = [], actual = [];
+    let actualTotal = 0, projTotal = 0;
+    const d = new Date(from);
+    while (d <= to) {
+      const ds = isoDate(d);
+      labels.push(ds.slice(5));
+      const p = midForDate(ds);
+      projected.push(p);
+      projTotal += p;
+      if (d < today) {
+        const a = dailyByDate[ds] || 0;
+        actual.push(a);
+        actualTotal += a;
+      } else {
+        actual.push(null);
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    setText('pvr-actual', fmt(actualTotal));
+    const delta = projTotal ? Math.round((actualTotal - projTotal) / projTotal * 100) : 0;
+    setText('pvr-delta', projTotal ? (delta >= 0 ? '+' : '') + delta + '%' : '—');
+    if (pvrChart) pvrChart.destroy();
+    pvrChart = new Chart(document.getElementById('pvrChart'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'Projected (mid)', data: projected, borderColor: '#9ca3af', borderDash: [4,4], pointRadius: 0, backgroundColor: 'transparent' },
+          { label: 'Actual', data: actual, borderColor: '#0d8050', backgroundColor: 'rgba(13,128,80,0.12)', tension: 0.2, spanGaps: false }
+        ]
+      },
+      options: { plugins: { legend: { position: 'top', labels: { font: { family: 'Geist', size: 11 } } } }, scales: { x: { ticks: { maxRotation: 60, font: { size: 10 } } }, y: { beginAtZero: true } } }
+    });
+  }
+  function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = btn.dataset.preset;
+      let from, to;
+      if (p === 'last7')          { from = addDays(today, -7);  to = today; }
+      else if (p === 'last30')    { from = addDays(today, -30); to = today; }
+      else if (p === 'next14')    { from = today; to = addDays(today, 14); }
+      else if (p === 'next30')    { from = today; to = addDays(today, 30); }
+      else if (p === 'last30next14') { from = addDays(today, -30); to = addDays(today, 14); }
+      fromInput.value = isoDate(from);
+      toInput.value   = isoDate(to);
+      renderPVR();
+    });
+  });
+  // init: last 30 + next 14
+  fromInput.value = isoDate(addDays(today, -30));
+  toInput.value   = isoDate(addDays(today, 14));
+  fromInput.addEventListener('change', renderPVR);
+  toInput.addEventListener('change', renderPVR);
+  renderPVR();
+})();
+</script>
+</body>
+</html>

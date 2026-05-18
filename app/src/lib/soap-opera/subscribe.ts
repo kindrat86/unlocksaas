@@ -185,6 +185,7 @@ export async function subscribeToSoapOpera(
     email: row.email,
     diagnostic_result: row.diagnostic_result as DiagnosticResult | null,
     emails_sent: row.emails_sent,
+    source: input.source,
   });
 
   if (!dispatch.ok) {

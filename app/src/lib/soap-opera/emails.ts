@@ -36,6 +36,14 @@ interface RenderContext {
   diagnosis: DiagnosticResult | null;
   /** Absolute origin of the app, e.g. https://unlocksaas.com */
   baseUrl: string;
+  /**
+   * Acquisition source. When it starts with 'funnelfixer_' (i.e. the
+   * carry-over import from the discontinued FunnelFixer product), Email 1
+   * renders the bridge variant that reconciles the rebrand before falling
+   * back into the standard SOS narrative. Other sources go through the
+   * diagnosis-driven openers as before.
+   */
+  source?: string | null;
 }
 
 // ── opener variants (Email 1 only) ──────────────────────────────────────────
@@ -50,6 +58,25 @@ const DIAGNOSIS_OPENER: Record<DiagnosticResult, string> = {
 
 const NEUTRAL_OPENER =
   "You landed on UnlockSaaS and walked away. Most people do. The page is honest about what it asks of you, which means it sells more slowly than something with a countdown timer screaming at you. I am okay with that. I want to tell you why I built it anyway.";
+
+/**
+ * Bridge opener for FunnelFixer carry-over subscribers. Replaces the first
+ * two paragraphs of Email 1 (the diagnosis/neutral opener + the "here is what
+ * nobody told you" line). The story body then continues with the Blank Offer
+ * Page paragraphs unchanged, so the narrative arc into Emails 2-5 still holds.
+ *
+ * Tone: same Reluctant Hero voice as the rest of the sequence. No mention of
+ * the user's old FunnelFixer signup date (we know it, but reciting it back to
+ * them reads as surveillance). Polarity move at the end: hand the unsubscribe
+ * link to anyone who is not the right reader.
+ */
+function funnelfixerBridgeOpener(): string[] {
+  return [
+    "A few months back you signed up at FunnelFixer. I shut that product down.",
+    "I noticed something while running it. Founders kept asking me to fix the funnel when the actual problem was upstream. Wrong customer, weak offer, or a story nobody believed yet. Building a slicker funnel on top of a broken foundation just made the leak louder. So I closed FunnelFixer and built UnlockSaaS – same operator, different scope. It is for post-launch pre-revenue founders, and it answers one question: which of the three is breaking your launch?",
+    "Over the next four days I will walk you through how I worked it out on my own product, and how the same diagnosis applies to yours. If this is not for you, the unsubscribe link at the bottom is one click. No hard feelings.",
+  ];
+}
 
 const PS_LINE_DEFAULT = (baseUrl: string) =>
   `If you want to finish your WHO and WHAT for $1, the door is here: ${baseUrl}/starter`;
@@ -121,7 +148,31 @@ function render({
 }
 
 // ── EMAIL 1 (Day 0): Diagnosis + Story 1 (Blank Offer Page) ───────────────
+//
+// Three branches:
+//   1. source LIKE 'funnelfixer_%' → bridge opener that reconciles the rebrand,
+//      then drops into the Blank Offer Page story so Emails 2-5 still flow.
+//   2. diagnosis is set → diagnosis-specific opener.
+//   3. neither → neutral opener.
 function email1(ctx: RenderContext): RenderedEmail {
+  const isFunnelfixerCarryover =
+    typeof ctx.source === "string" && ctx.source.startsWith("funnelfixer_");
+
+  if (isFunnelfixerCarryover) {
+    return render({
+      subject: "I shut down FunnelFixer. Here is what replaced it.",
+      bodyParagraphs: [
+        ...funnelfixerBridgeOpener(),
+        "I sat down one night to write the offer for this product. I had features for days. I had traffic tactics for days. I opened a blank doc and tried to write one sentence: who this is for, and what it does for them. I stared at it for forty minutes and produced nothing.",
+        "That was the night I realised I had been building a beautiful thing for no one in particular.",
+        "If you cannot write your offer in one sentence, to one real person, you have not earned the right to build the product. I had not. I do not think you have either, yet. That is the diagnosis underneath the funnel-tweaking spiral most of us go in circles on.",
+        "The fix is not another feature. It is the work I had been skipping. Naming one person. Writing one promise.",
+      ],
+      ps: PS_LINE_DEFAULT(ctx.baseUrl),
+      ctx,
+    });
+  }
+
   const opener = ctx.diagnosis ? DIAGNOSIS_OPENER[ctx.diagnosis] : NEUTRAL_OPENER;
   return render({
     subject: "Your diagnosis is below. Here is what nobody told you about it.",

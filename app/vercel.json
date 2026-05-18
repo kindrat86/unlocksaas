@@ -6,6 +6,14 @@
   ],
   "crons": [
     {
+      "path": "/api/cron/activate-funnelfixer-carryover",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/funnelfixer-tick",
+      "schedule": "*/30 * * * *"
+    },
+    {
       "path": "/api/cron/soap-opera",
       "schedule": "0 14 * * *"
     },

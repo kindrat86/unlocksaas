@@ -22,6 +22,12 @@ export interface DueRow {
   email: string;
   diagnostic_result: DiagnosticResult | null;
   emails_sent: number;
+  /**
+   * soap_opera_subscribers.source. Threaded through to renderEmail so Email 1
+   * can render the FunnelFixer bridge variant for carry-over subscribers
+   * (source LIKE 'funnelfixer_%').
+   */
+  source?: string | null;
 }
 
 export interface SendResult {
@@ -62,6 +68,7 @@ export async function sendNextAndAdvance(row: DueRow): Promise<SendResult> {
     email: row.email,
     diagnosis: row.diagnostic_result,
     baseUrl: baseUrl(),
+    source: row.source ?? null,
   });
   const unsubscribeUrl = buildUnsubscribeUrl(row.email, baseUrl());
 

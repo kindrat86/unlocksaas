@@ -36,15 +36,20 @@ export async function GET(req: NextRequest) {
   const supabase = createAdminClient();
   const nowIso = new Date().toISOString();
 
+  // FunnelFixer carry-over subscribers are dispatched by /api/cron/funnelfixer-tick
+  // every 30 minutes (one row per tick, throttled for deliverability on the
+  // unwarmed sending domain). Excluding them here prevents this daily fan-out
+  // cron from racing the tick cron and producing double sends.
   const { data: due, error } = await supabase
     .from("soap_opera_subscribers")
-    .select("id, email, diagnostic_result, emails_sent")
+    .select("id, email, diagnostic_result, emails_sent, source")
     .eq("status", "active")
     // Subscribe owns Day 0; cron handles Days 1-4.
     .gte("emails_sent", 1)
     .lt("emails_sent", 5)
     .not("next_send_at", "is", null)
     .lte("next_send_at", nowIso)
+    .not("source", "ilike", "funnelfixer_%")
     // Cap per-run fan-out. If we ever blow past this the next cron tick picks
     // up the rest — no data is lost.
     .limit(500);
@@ -72,6 +77,7 @@ export async function GET(req: NextRequest) {
       email: raw.email,
       diagnostic_result: raw.diagnostic_result as DiagnosticResult | null,
       emails_sent: raw.emails_sent,
+      source: (raw as { source?: string | null }).source ?? null,
     };
     const result = await sendNextAndAdvance(row);
     if (result.ok) {
