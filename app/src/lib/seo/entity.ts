@@ -437,6 +437,70 @@ export const ORGANIZATION = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Worldwide geo signal – the "no Local SEO" decision, codified
+// ---------------------------------------------------------------------------
+
+/**
+ * Local SEO is deliberately N/A for Unlock SaaS.
+ *
+ * Why this constant exists
+ * ------------------------
+ * Unlock SaaS is a worldwide, digital-only product. There is no
+ * `LocalBusiness` subtype, no `PostalAddress`, no `GeoCoordinates`, no
+ * `GeoCircle`, and no street address anywhere in the schema graph – and
+ * there never should be. That is the correct posture for a SaaS sold
+ * globally to indie founders on the public internet.
+ *
+ * The risk this constant defends against is NOT that we accidentally add
+ * a local signal. The risk is the opposite: that the *absence* of a
+ * geo declaration on a Service / Product / Offer is read by some
+ * crawler heuristic as "geo-unknown" rather than "deliberately
+ * worldwide." A geo-unknown Service can lose visibility in queries
+ * Google interprets as having local intent ("SaaS founder coach near me",
+ * "indie SaaS playbook in the US") even when the right answer for the
+ * searcher is a worldwide product. An explicit worldwide declaration
+ * closes that ambiguity.
+ *
+ * Two shapes are exported because schema.org accepts both:
+ *
+ *   - `WORLDWIDE_AREA_SERVED` (string): the canonical free-text form
+ *     used by `Organization.areaServed`, `Service.areaServed`, and
+ *     `Product.areaServed`. Matches the existing `ORGANIZATION.areaServed`
+ *     value verbatim so every node in the graph says exactly the same
+ *     word.
+ *
+ *   - `WORLDWIDE_PLACE` (typed Place node): the validator-preferred
+ *     form for `Offer.eligibleRegion`, where schema.org's documented
+ *     shape is a `Place` / `GeoShape` / ISO country code. We pick
+ *     `Place` because the closest honest declaration is "name: Worldwide" –
+ *     not a list of every ISO country code (which would be redundant
+ *     and noisy), and not a GeoShape (which implies bounded coordinates).
+ *
+ * Brunson Hard-Rule reconciliation
+ * --------------------------------
+ *   - No new claim: "Worldwide" is already declared on `ORGANIZATION.areaServed`
+ *     and on `FOUNDER.hasOccupation.occupationLocation`. This constant is
+ *     a re-use, not a new fact.
+ *   - No fabricated geo: we are NOT listing countries we do not serve;
+ *     we are NOT carving out any region; we are NOT implying local
+ *     presence anywhere.
+ *   - Single source of truth: every schema node that wants a worldwide
+ *     declaration imports from here, so a future scope change (e.g.
+ *     restricted to "EU+US" for GDPR reasons) is a one-file edit.
+ *
+ * Activation log: 2026-05-18 – audit pass item 12 (Local SEO N/A,
+ * autonomous mode). Codifies the existing posture, adds the worldwide
+ * declaration to the Service / Product / Offer nodes that previously
+ * relied on inheritance from Organization.
+ */
+export const WORLDWIDE_AREA_SERVED = "Worldwide" as const;
+
+export const WORLDWIDE_PLACE = Object.freeze({
+  "@type": "Place" as const,
+  name: "Worldwide",
+});
+
+// ---------------------------------------------------------------------------
 // Founder (Person) entity
 // ---------------------------------------------------------------------------
 

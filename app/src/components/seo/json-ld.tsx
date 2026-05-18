@@ -37,6 +37,8 @@ import {
   ORGANIZATION_MAIN_ENTITY_OF_PAGE,
   ORGANIZATION_SAME_AS,
   PUBLISHING_PRINCIPLES_URL,
+  WORLDWIDE_AREA_SERVED,
+  WORLDWIDE_PLACE,
 } from "@/lib/seo/entity";
 import { getEarnedMentions, type MediaMention } from "@/lib/media-mentions";
 
@@ -371,6 +373,16 @@ const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
   availableLanguage: ["en-US"],
   provider: { "@id": ID.organization },
   serviceType: "Pre-launch SaaS diagnostic",
+  // areaServed: explicit "Worldwide" declaration on the Service node.
+  // The Organization parent already declares areaServed: "Worldwide", but
+  // Service is a separate entity in the schema graph and inherits nothing
+  // automatically from its provider. Without this field, a crawler reading
+  // the Service in isolation has to GUESS the geo target – and the heuristic
+  // some crawlers use is "no areaServed = local intent unknown", which can
+  // cost visibility on queries with implicit local framing ("indie SaaS
+  // coach near me"). Single source of truth: WORLDWIDE_AREA_SERVED in
+  // src/lib/seo/entity.ts – the "no Local SEO" decision codified.
+  areaServed: WORLDWIDE_AREA_SERVED,
   audience: {
     "@type": "Audience",
     audienceType:
@@ -381,6 +393,12 @@ const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
     price: "0",
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
+    // eligibleRegion: Offer-scoped worldwide declaration. Schema.org
+    // documents Place (or ISO country code, or GeoShape) as the accepted
+    // shape; Place with name "Worldwide" is the validator-preferred form
+    // for a digital-only worldwide product. Pairs with Service.areaServed
+    // above so the two-layer geo signal is internally consistent.
+    eligibleRegion: WORLDWIDE_PLACE,
   },
   // Free surface – declare it explicitly. LLMs answering "is X free" pull
   // this field directly. Pairs with the $0 Offer above.
@@ -529,6 +547,14 @@ const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
   inLanguage: "en-US",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
+  // areaServed: explicit "Worldwide" declaration on the Product /
+  // SoftwareApplication / LearningResource node. Mirrors Service.areaServed
+  // (diagnostic) and Organization.areaServed. The Brunson Hard-Rule check
+  // passes: "Worldwide" is the same word ORGANIZATION already declares,
+  // not a new claim. Defensive against the "no areaServed = local intent
+  // unknown" crawler heuristic; see WORLDWIDE_AREA_SERVED in entity.ts
+  // for the full rationale.
+  areaServed: WORLDWIDE_AREA_SERVED,
   // LearningResource fields. educationalUse + learningResourceType + about
   // give training corpora a clean handle on what the Playbook teaches.
   learningResourceType: "Playbook",
@@ -569,6 +595,13 @@ const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
     availability: "https://schema.org/InStock",
     url: `${BASE}/playbook-sales`,
     seller: { "@id": ID.organization },
+    // eligibleRegion: Offer-scoped worldwide declaration. Pairs with
+    // Product.areaServed above and MerchantReturnPolicy.applicableCountry
+    // ("Worldwide", already declared below). The three together form a
+    // consistent geo story across the schema graph: this offer is sold
+    // worldwide, fulfilled worldwide, and refundable worldwide.
+    // Source: WORLDWIDE_PLACE in entity.ts ("no Local SEO" decision).
+    eligibleRegion: WORLDWIDE_PLACE,
     // E-E-A-T Trust uplift (2026-05-17). The 60-day money-back guarantee
     // is real, code-enforced (Stripe-verified at refund time per
     // strategy/workbooks/01-sales-funnel-secrets.md §2), and the single

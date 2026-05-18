@@ -315,14 +315,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
-    // Both routes are public, indexable text/markdown bodies that AI
-    // retrievers (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI
-    // Overviews, Gemini, You.com) treat as the canonical paraphrase target
-    // for the site. llmstxt.org is well-known so discovery happens via
-    // convention; listing them in the sitemap is the cheapest extra signal
-    // that says "yes, these surfaces are intentional and current."
-    // Low priority because they are not user-facing pages — they are
-    // crawler bait — but lastModified ties their freshness to the build.
+    // Three routes are public, indexable bodies that AI retrievers
+    // (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI Overviews,
+    // Gemini, You.com) treat as the canonical paraphrase target for the
+    // site. /llms.txt is the curated markdown index; /llms-full.txt is
+    // the concatenated corpus; /llms-feed.json is the machine-typed JSON
+    // sibling for retrievers that prefer JSON over markdown (added
+    // 2026-05-18 GEO uplift).
+    //
+    // llmstxt.org is well-known so /llms.txt discovery happens via
+    // convention. The JSON sibling has no documented well-known path
+    // yet, so the sitemap entry is the primary discovery anchor for it –
+    // listing all three says "yes, these surfaces are intentional and
+    // current." Low priority because they are not user-facing pages –
+    // they are crawler bait – but lastModified ties their freshness to
+    // the build.
     // -------------------------------------------------------------------------
     {
       url: `${base}/llms.txt`,
@@ -332,6 +339,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${base}/llms-full.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${base}/llms-feed.json`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
