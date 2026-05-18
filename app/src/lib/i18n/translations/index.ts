@@ -412,3 +412,384 @@ export const PAGE_CHROME_REPEATABLE: Record<Locale, PageChromeRepeatable> = {
 export function getRepeatableChrome(locale: Locale): PageChromeRepeatable {
   return PAGE_CHROME_REPEATABLE[locale] ?? PAGE_CHROME_REPEATABLE["en-US"];
 }
+
+/**
+ * Per-locale page chrome strings for /editorial-policy.
+ *
+ * E-E-A-T anchor. Google Quality Rater Guidelines §3.1 + §3.4 explicitly
+ * look for a "clearly stated editorial policy" and a "corrections policy"
+ * on sites that publish opinions or comparisons (which UnlockSaaS does on
+ * every pSEO surface).
+ *
+ * Brand-glossary preservation rules apply in every locale:
+ *   Unlock SaaS, Maryan, founder, editorial board, contractor pool,
+ *   ghost-written / ghostwriter, parable, funnel teardown, pricing
+ *   teardown, comparison (translated grammatically), category roundup,
+ *   byline, footer, Indie Hackers, Hacker News, thread (translated),
+ *   Stripe, ChatGPT, canonical audience, lastVerified, datePublished,
+ *   dateModified, schema.org/Article, affiliate links, paid placements,
+ *   Person schema graph stay English. USD pricing verbatim
+ *   ($1 Starter, $49/mo Playbook).
+ *
+ * Voice: Reluctant Hero, working-policy register (not legal boilerplate).
+ * Spanish: neutral LATAM, no 'vosotros'. Portuguese: Brazilian, não
+ * peninsular.
+ *
+ * The mailto link in section 5 item 1 renders the email address as
+ * plain text in locale pages (canonical en-US keeps its <a href> link).
+ * Acceptable degradation: the address is still legible and copy-pasteable.
+ *
+ * TypeScript enforces key parity across all three locales at build.
+ */
+export interface LabeledItem {
+  /** Bold-rendered label prefix. */
+  label: string;
+  /** Body sentence(s) that follow the label. */
+  body: string;
+}
+
+export interface PageChromeEditorialPolicy {
+  breadcrumbHome: string;
+  breadcrumbEditorial: string;
+  pageLabel: string;
+  headline: string;
+  lede: string;
+  publishedLabel: string;
+  reviewedLabel: string;
+
+  section1Heading: string;
+  section1P1: string;
+  section1P2: string;
+
+  section2Heading: string;
+  section2Items: readonly [
+    LabeledItem,
+    LabeledItem,
+    LabeledItem,
+    LabeledItem,
+  ];
+
+  section3Heading: string;
+  section3P1: string;
+  section3P2: string;
+
+  section4Heading: string;
+  section4Items: readonly [
+    LabeledItem,
+    LabeledItem,
+    LabeledItem,
+    LabeledItem,
+    LabeledItem,
+  ];
+
+  section5Heading: string;
+  section5Intro: string;
+  section5Items: readonly [string, string, string, string];
+
+  section6Heading: string;
+  section6Intro: string;
+  section6EmptyState: string;
+
+  footerSigPre: string;
+  footerSigPost: string;
+  footerSeeAlso: string;
+  footerLinkAbout: string;
+  footerLinkPress: string;
+  footerLinkContact: string;
+
+  seoTitle: string;
+  seoDescription: string;
+}
+
+export const PAGE_CHROME_EDITORIAL_POLICY: Record<
+  Locale,
+  PageChromeEditorialPolicy
+> = {
+  "en-US": {
+    breadcrumbHome: "Unlock SaaS",
+    breadcrumbEditorial: "Editorial Policy",
+    pageLabel: "Editorial Policy",
+    headline: "How we source, date, sign, and correct every public claim.",
+    lede:
+      "Unlock SaaS publishes opinions and comparisons of real products. This page is the standard those publications hold themselves to, written by the person who writes them.",
+    publishedLabel: "Published",
+    reviewedLabel: "Last reviewed",
+
+    section1Heading: "1. Who writes this site",
+    section1P1:
+      "One person. Maryan, the founder. There is no anonymous editorial board, no contractor pool, no ghost-written posts. Every parable, every funnel teardown, every pricing teardown, every comparison, every category roundup is the work of the named human in the footer.",
+    section1P2:
+      "If a future contributor publishes here, they will be bylined on the piece, named here, and added to the Person schema graph. No unsigned editorial. Ever.",
+
+    section2Heading: "2. How claims get sourced",
+    section2Items: [
+      {
+        label: "Funnel teardowns + pricing teardowns + comparisons",
+        body: "are written from a live read of the competitor's public page on the dated lastVerified shown at the bottom of every detail page. No second-hand summaries, no ChatGPT-paraphrased reviews, no quoted copy.",
+      },
+      {
+        label: "FAQ entries",
+        body: "are verbatim objections sourced from real Indie Hackers and Hacker News threads. The thread links are not surfaced publicly to avoid driving traffic to individual users who did not consent to being quoted; they are retained in the project repository for audit.",
+      },
+      {
+        label: "Parables and stories",
+        body: "are the founder's own experience. When a parable references a third-party product or person, the reference is on the public record.",
+      },
+      {
+        label: "Statistics and dollar figures",
+        body: "only appear when they are about Unlock SaaS itself and verifiable inside our own Stripe account. No third-party statistics from a report we did not read end-to-end.",
+      },
+    ],
+
+    section3Heading: "3. Datelines",
+    section3P1:
+      "Every published-once-and-left-alone article carries a hard published date (the article's datePublished in schema and the human-readable footer date). It does not silently move forward when the page is redeployed. If the article changes materially, the change is logged in the corrections section below and the dateModified field updates separately.",
+    section3P2:
+      "Programmatic SEO surfaces (funnel teardowns, pricing teardowns, comparisons, category roundups) carry a separate lastVerified ISO date on the page itself, declaring when the live competitor surface was last read.",
+
+    section4Heading: "4. Financial and editorial disclosures",
+    section4Items: [
+      {
+        label: "Affiliate links:",
+        body: "none. No comparison page, teardown page, or parable contains a paid affiliate link to any competitor named. Linking out is free. If this ever changes, every page that contains an affiliate link will carry a per-link disclosure and this section will be updated.",
+      },
+      {
+        label: "Paid placements:",
+        body: "none. No competitor has paid to be included in or excluded from any teardown, comparison, or category roundup. The list of products analyzed is the operator's editorial judgement of what the canonical audience already evaluates.",
+      },
+      {
+        label: "Sponsored content:",
+        body: "none. The site has not published a single sponsored post. If that changes, every sponsored piece will be labeled in the first line of the article and excluded from the schema.org/Article graph.",
+      },
+      {
+        label: "Ownership and funding:",
+        body: "Unlock SaaS is fully owned and self-funded by the named founder. No outside investors. No grants. Revenue comes from product sales (currently $1 Starter and $49/mo Playbook).",
+      },
+      {
+        label: "Customer relationships:",
+        body: "the operator has not been compensated by any competitor named on this site. If a future customer of Unlock SaaS is also named in a teardown or comparison, that relationship will be disclosed on the relevant page.",
+      },
+    ],
+
+    section5Heading: "5. Corrections workflow",
+    section5Intro: "If a claim on this site is wrong:",
+    section5Items: [
+      "Email maryan@unlocksaas.com with the URL, the claim, and the correction.",
+      "The operator confirms or rejects the correction within 7 days. Confirmations are not gated on the reporter being a representative of the affected entity; the standard is whether the claim is wrong, not who is reporting it.",
+      "Confirmed corrections are logged below with date, URL, the old claim, the corrected claim, and the source. The page itself is updated and the dateModified field is bumped.",
+      "Rejected corrections receive a reply explaining why and what evidence would change the answer. No silence.",
+    ],
+
+    section6Heading: "6. Corrections log",
+    section6Intro:
+      "Reverse-chronological. Every confirmed correction since the site launched. Empty does not mean nothing has ever been wrong; it means nothing has been reported and confirmed yet.",
+    section6EmptyState:
+      "No corrections logged yet. If you find a wrong claim, the workflow above is how it lands here.",
+
+    footerSigPre: "Editorial policy · signed",
+    footerSigPost: ", founder, Unlock SaaS.",
+    footerSeeAlso: "See also:",
+    footerLinkAbout: "About the operator",
+    footerLinkPress: "Press",
+    footerLinkContact: "Contact",
+
+    seoTitle: "Editorial Policy – Unlock SaaS",
+    seoDescription:
+      "How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log.",
+  },
+  es: {
+    breadcrumbHome: "Unlock SaaS",
+    breadcrumbEditorial: "Política Editorial",
+    pageLabel: "Política Editorial",
+    headline:
+      "Cómo elegimos fuentes, fechamos, firmamos y corregimos cada afirmación pública.",
+    lede:
+      "Unlock SaaS publica opiniones y comparaciones de productos reales. Esta página es el estándar al que se sujetan esas publicaciones, escrito por la persona que las escribe.",
+    publishedLabel: "Publicado",
+    reviewedLabel: "Última revisión",
+
+    section1Heading: "1. Quién escribe este sitio",
+    section1P1:
+      "Una sola persona. Maryan, el founder. No hay un editorial board anónimo, ni un pool de contractors, ni posts escritos por ghostwriters. Cada parable, cada funnel teardown, cada pricing teardown, cada comparación, cada category roundup es el trabajo del humano nombrado en el footer.",
+    section1P2:
+      "Si en el futuro un colaborador publica acá, llevará byline en la pieza, será nombrado acá y agregado al graph del Person schema. Editorial sin firmar, nunca. Jamás.",
+
+    section2Heading: "2. Cómo obtenemos las fuentes de las afirmaciones",
+    section2Items: [
+      {
+        label: "Funnel teardowns + pricing teardowns + comparaciones",
+        body: "se escriben a partir de una lectura en vivo de la página pública del competidor en la fecha lastVerified que se muestra al pie de cada detail page. Sin resúmenes de segunda mano, sin reviews parafraseadas por ChatGPT, sin copy citado.",
+      },
+      {
+        label: "Entradas del FAQ",
+        body: "son objeciones verbatim sacadas de hilos reales de Indie Hackers y Hacker News. Los links a los hilos no se exponen públicamente para evitar mandar tráfico a usuarios individuales que no consintieron ser citados; se conservan en el repositorio del proyecto para auditoría.",
+      },
+      {
+        label: "Parables y stories",
+        body: "son la propia experiencia del founder. Cuando un parable referencia un producto o persona de un tercero, la referencia está en el registro público.",
+      },
+      {
+        label: "Estadísticas y cifras en dólares",
+        body: "solo aparecen cuando son sobre Unlock SaaS mismo y verificables dentro de nuestra propia cuenta de Stripe. No hay estadísticas de terceros de algún reporte que no leímos de punta a punta.",
+      },
+    ],
+
+    section3Heading: "3. Fechas",
+    section3P1:
+      "Cada artículo publicado una vez y dejado tranquilo lleva una fecha de publicación dura (el datePublished del artículo en el schema y la fecha legible en el footer). No se mueve silenciosamente hacia adelante cuando la página se redeploya. Si el artículo cambia materialmente, el cambio queda registrado en la sección de correcciones de abajo y el campo dateModified se actualiza por separado.",
+    section3P2:
+      "Las superficies de SEO programático (funnel teardowns, pricing teardowns, comparaciones, category roundups) llevan una fecha ISO lastVerified separada en la propia página, declarando cuándo se leyó por última vez la superficie en vivo del competidor.",
+
+    section4Heading: "4. Divulgaciones financieras y editoriales",
+    section4Items: [
+      {
+        label: "Affiliate links:",
+        body: "ninguno. Ninguna comparison page, teardown page o parable contiene un affiliate link pago a ningún competidor nombrado. Linkear hacia afuera es gratis. Si esto cambia alguna vez, cada página que contenga un affiliate link llevará una divulgación por link y esta sección se actualizará.",
+      },
+      {
+        label: "Paid placements:",
+        body: "ninguno. Ningún competidor pagó para ser incluido ni excluido de ningún teardown, comparación o category roundup. La lista de productos analizados es el juicio editorial del operador sobre qué evalúa ya la canonical audience.",
+      },
+      {
+        label: "Contenido patrocinado:",
+        body: "ninguno. El sitio no publicó ni un solo post patrocinado. Si eso cambia, cada pieza patrocinada se etiquetará en la primera línea del artículo y se excluirá del graph de schema.org/Article.",
+      },
+      {
+        label: "Propiedad y funding:",
+        body: "Unlock SaaS es enteramente propiedad y self-funded del founder nombrado. Sin inversores externos. Sin subvenciones. Los ingresos vienen de ventas de productos (actualmente $1 Starter y $49/mes Playbook).",
+      },
+      {
+        label: "Relaciones con clientes:",
+        body: "el operador no recibió compensación de ningún competidor nombrado en este sitio. Si un cliente futuro de Unlock SaaS también aparece nombrado en un teardown o comparación, esa relación se divulgará en la página relevante.",
+      },
+    ],
+
+    section5Heading: "5. Flujo de correcciones",
+    section5Intro: "Si una afirmación de este sitio está mal:",
+    section5Items: [
+      "Escribí a maryan@unlocksaas.com con la URL, la afirmación y la corrección.",
+      "El operador confirma o rechaza la corrección dentro de 7 días. Las confirmaciones no están condicionadas a que quien reporta sea representante de la entidad afectada; el estándar es si la afirmación está mal, no quién la está reportando.",
+      "Las correcciones confirmadas se registran abajo con fecha, URL, la afirmación vieja, la afirmación corregida y la fuente. La página misma se actualiza y el campo dateModified se bumpea.",
+      "Las correcciones rechazadas reciben una respuesta explicando por qué y qué evidencia cambiaría la respuesta. Sin silencio.",
+    ],
+
+    section6Heading: "6. Registro de correcciones",
+    section6Intro:
+      "Orden cronológico inverso. Cada corrección confirmada desde que el sitio se lanzó. Vacío no significa que nunca hubo nada mal; significa que todavía no se reportó y confirmó nada.",
+    section6EmptyState:
+      "Todavía no hay correcciones registradas. Si encontrás una afirmación equivocada, el flujo de arriba es la manera en que aterriza acá.",
+
+    footerSigPre: "Política editorial · firmada por",
+    footerSigPost: ", founder, Unlock SaaS.",
+    footerSeeAlso: "Ver también:",
+    footerLinkAbout: "Sobre el operador",
+    footerLinkPress: "Press",
+    footerLinkContact: "Contacto",
+
+    seoTitle: "Política Editorial – Unlock SaaS",
+    seoDescription:
+      "Cómo Unlock SaaS obtiene fuentes, fecha, firma y corrige cada afirmación pública. Estándares editoriales, divulgaciones financieras y el registro de correcciones en curso.",
+  },
+  "pt-BR": {
+    breadcrumbHome: "Unlock SaaS",
+    breadcrumbEditorial: "Política Editorial",
+    pageLabel: "Política Editorial",
+    headline:
+      "Como pesquisamos fontes, datamos, assinamos e corrigimos cada afirmação pública.",
+    lede:
+      "O Unlock SaaS publica opiniões e comparações de produtos reais. Essa página é o padrão ao qual essas publicações se sujeitam, escrito pela pessoa que as escreve.",
+    publishedLabel: "Publicado",
+    reviewedLabel: "Última revisão",
+
+    section1Heading: "1. Quem escreve esse site",
+    section1P1:
+      "Uma única pessoa. Maryan, o founder. Não tem editorial board anônimo, nem pool de contractors, nem posts escritos por ghostwriters. Cada parable, cada funnel teardown, cada pricing teardown, cada comparação, cada category roundup é o trabalho do humano nomeado no footer.",
+    section1P2:
+      "Se um colaborador no futuro publicar aqui, vai levar byline na peça, ser nomeado aqui e adicionado ao graph do Person schema. Editorial sem assinatura, nunca. Jamais.",
+
+    section2Heading: "2. Como obtemos as fontes das afirmações",
+    section2Items: [
+      {
+        label: "Funnel teardowns + pricing teardowns + comparações",
+        body: "são escritos a partir de uma leitura ao vivo da página pública do competidor na data lastVerified mostrada no pé de cada detail page. Sem resumos de segunda mão, sem reviews parafraseadas por ChatGPT, sem copy citado.",
+      },
+      {
+        label: "Entradas do FAQ",
+        body: "são objeções verbatim tiradas de threads reais de Indie Hackers e Hacker News. Os links pras threads não são expostos publicamente para evitar mandar tráfego pra usuários individuais que não consentiram em ser citados; ficam guardados no repositório do projeto pra auditoria.",
+      },
+      {
+        label: "Parables e stories",
+        body: "são a experiência do próprio founder. Quando um parable referencia um produto ou pessoa de terceiros, a referência está no registro público.",
+      },
+      {
+        label: "Estatísticas e cifras em dólares",
+        body: "só aparecem quando são sobre o próprio Unlock SaaS e verificáveis dentro da nossa própria conta no Stripe. Não tem estatísticas de terceiros de um relatório que a gente não leu de ponta a ponta.",
+      },
+    ],
+
+    section3Heading: "3. Datas",
+    section3P1:
+      "Cada artigo publicado uma vez e deixado quieto carrega uma data de publicação firme (o datePublished do artigo no schema e a data legível no footer). Ela não anda silenciosamente pra frente quando a página é re-deployada. Se o artigo muda materialmente, a mudança é registrada na seção de correções abaixo e o campo dateModified atualiza separadamente.",
+    section3P2:
+      "As superfícies de SEO programático (funnel teardowns, pricing teardowns, comparações, category roundups) carregam uma data ISO lastVerified separada na própria página, declarando quando a superfície ao vivo do competidor foi lida pela última vez.",
+
+    section4Heading: "4. Divulgações financeiras e editoriais",
+    section4Items: [
+      {
+        label: "Affiliate links:",
+        body: "nenhum. Nenhuma comparison page, teardown page ou parable contém um affiliate link pago a nenhum competidor nomeado. Linkar pra fora é grátis. Se isso mudar algum dia, cada página que contiver um affiliate link vai levar uma divulgação por link e essa seção vai ser atualizada.",
+      },
+      {
+        label: "Paid placements:",
+        body: "nenhum. Nenhum competidor pagou para ser incluído ou excluído de nenhum teardown, comparação ou category roundup. A lista de produtos analisados é o julgamento editorial do operador sobre o que a canonical audience já avalia.",
+      },
+      {
+        label: "Conteúdo patrocinado:",
+        body: "nenhum. O site não publicou um único post patrocinado. Se isso mudar, cada peça patrocinada vai ser rotulada na primeira linha do artigo e excluída do graph do schema.org/Article.",
+      },
+      {
+        label: "Propriedade e funding:",
+        body: "o Unlock SaaS é integralmente de propriedade e self-funded do founder nomeado. Sem investidores externos. Sem subvenções. A receita vem de vendas de produtos (atualmente $1 Starter e $49/mês Playbook).",
+      },
+      {
+        label: "Relações com clientes:",
+        body: "o operador não recebeu compensação de nenhum competidor nomeado neste site. Se um cliente futuro do Unlock SaaS também aparecer nomeado em um teardown ou comparação, essa relação vai ser divulgada na página relevante.",
+      },
+    ],
+
+    section5Heading: "5. Fluxo de correções",
+    section5Intro: "Se uma afirmação desse site está errada:",
+    section5Items: [
+      "Escreva pra maryan@unlocksaas.com com a URL, a afirmação e a correção.",
+      "O operador confirma ou rejeita a correção dentro de 7 dias. As confirmações não são condicionadas ao reporter ser representante da entidade afetada; o padrão é se a afirmação está errada, não quem está reportando.",
+      "Correções confirmadas são registradas abaixo com data, URL, a afirmação antiga, a afirmação corrigida e a fonte. A própria página é atualizada e o campo dateModified é bumpeado.",
+      "Correções rejeitadas recebem uma resposta explicando por que e qual evidência mudaria a resposta. Sem silêncio.",
+    ],
+
+    section6Heading: "6. Registro de correções",
+    section6Intro:
+      "Ordem cronológica inversa. Cada correção confirmada desde que o site foi lançado. Vazio não significa que nunca teve nada errado; significa que nada foi reportado e confirmado ainda.",
+    section6EmptyState:
+      "Ainda não tem correções registradas. Se você achar uma afirmação errada, o fluxo de cima é como ela aterrissa aqui.",
+
+    footerSigPre: "Política editorial · assinada por",
+    footerSigPost: ", founder, Unlock SaaS.",
+    footerSeeAlso: "Veja também:",
+    footerLinkAbout: "Sobre o operador",
+    footerLinkPress: "Press",
+    footerLinkContact: "Contato",
+
+    seoTitle: "Política Editorial – Unlock SaaS",
+    seoDescription:
+      "Como o Unlock SaaS pesquisa fontes, data, assina e corrige cada afirmação pública. Padrões editoriais, divulgações financeiras e o registro de correções em curso.",
+  },
+} as const;
+
+export function getEditorialPolicyChrome(
+  locale: Locale,
+): PageChromeEditorialPolicy {
+  return (
+    PAGE_CHROME_EDITORIAL_POLICY[locale] ??
+    PAGE_CHROME_EDITORIAL_POLICY["en-US"]
+  );
+}
