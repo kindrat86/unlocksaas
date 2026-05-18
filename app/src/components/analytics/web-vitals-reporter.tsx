@@ -80,7 +80,17 @@
 
 import { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics/client";
-import { Event, type WebVitalReportedProps } from "@/lib/analytics/events";
+import { Event } from "@/lib/analytics/events";
+
+/**
+ * `track<P extends Record<string, unknown>>` rejects named-interface
+ * variables (interfaces don't carry an implicit index signature). The
+ * project convention is to pass inline object literals at the call site
+ * – every other `track()` callsite (PlaybookStepStarted,
+ * DiagnosticFormSubmitted, etc.) does this. We follow suit below; the
+ * WebVitalReportedProps interface still serves as documentation in
+ * events.ts and as the contract the PostHog dashboard reads.
+ */
 
 /**
  * Standard CWV metric names that carry a Google-defined `rating`. Next.js
@@ -103,7 +113,9 @@ export function WebVitalsReporter() {
     const route =
       typeof window !== "undefined" ? window.location.pathname : "";
 
-    const props: WebVitalReportedProps = {
+    // Inline object literal so it's structurally a Record<string, unknown>
+    // at the call site (see import-block note above).
+    track(Event.WebVitalReported, {
       metric_name: metric.name,
       metric_id: metric.id,
       // round to 3 decimals so PostHog dashboards aren't littered with
@@ -115,8 +127,8 @@ export function WebVitalsReporter() {
       // custom timing metrics omit it; send null so every row in PostHog
       // has the same shape and dashboards can group cleanly.
       rating: RATED_METRICS.has(metric.name)
-        ? (metric as { rating?: WebVitalReportedProps["rating"] }).rating ??
-          null
+        ? (metric as { rating?: "good" | "needs-improvement" | "poor" })
+            .rating ?? null
         : null,
       // `navigationType` is the browser-defined nav class. Lets us split
       // BFCache restores from cold navs in the dashboard – BFCache restores
@@ -124,9 +136,7 @@ export function WebVitalsReporter() {
       navigation_type:
         (metric as { navigationType?: string | null }).navigationType ?? null,
       route,
-    };
-
-    track(Event.WebVitalReported, props);
+    });
   });
 
   // Beacon component – renders nothing.
