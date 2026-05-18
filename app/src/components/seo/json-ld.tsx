@@ -1358,22 +1358,37 @@ export { BreadcrumbListJsonLd as BreadcrumbJsonLd };
  * Render once on the funnel hub (`/`). The set is hoisted at module
  * load – no per-render allocation.
  */
+// The DefinedTermSet's canonical entity now anchors at `/glossary` (the
+// indexable surface added 2026-05-19), not the funnel hub's hash fragment.
+// Per-term `@id` and `url` resolve to the in-page anchor on /glossary, so
+// citation surfaces (AI Overviews, Perplexity, Bing Copilot) land on the
+// canonical term anchor with one fragment per term. The funnel hub keeps
+// emitting this script tag — multiple pages may declare the same @id;
+// crawlers unify on the @id, not the declaring page.
 const DEFINED_TERM_SET_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "DefinedTermSet",
-  "@id": `${BASE}/#brunson-glossary`,
+  "@id": `${BASE}/glossary#defined-term-set`,
   name: "Unlock SaaS Brunson Glossary",
   description:
     "Working definitions of the Russell Brunson sales-funnel concepts Unlock SaaS teaches and applies to indie SaaS pages.",
   inLanguage: "en-US",
   publisher: { "@id": ID.organization },
-  url: `${BASE}/`,
-  hasDefinedTerm: DEFINED_TERMS.map((t) => ({
-    "@type": "DefinedTerm",
-    name: t.term,
-    description: t.definition,
-    inDefinedTermSet: `${BASE}/#brunson-glossary`,
-  })),
+  url: `${BASE}/glossary`,
+  hasDefinedTerm: DEFINED_TERMS.map((t) => {
+    const slug = t.term
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    return {
+      "@type": "DefinedTerm",
+      "@id": `${BASE}/glossary#${slug}`,
+      name: t.term,
+      description: t.definition,
+      inDefinedTermSet: `${BASE}/glossary#defined-term-set`,
+      url: `${BASE}/glossary#${slug}`,
+    };
+  }),
 });
 
 export function DefinedTermSetJsonLd() {

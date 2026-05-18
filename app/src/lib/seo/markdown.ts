@@ -34,10 +34,12 @@
 
 import {
   BASE_URL,
+  DEFINED_TERMS,
   FOUNDER,
   ORGANIZATION,
   ALTERNATE_NAMES,
 } from "@/lib/seo/entity";
+import { glossaryTermSlug } from "@/lib/glossary";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
 import {
   ALTERNATIVES,
@@ -639,6 +641,34 @@ ${FAQ_ENTRIES.map(
 Email ${FOUNDER.email}. Real human, same time zone as Stripe, answers in plain English.
 `;
 
+const GLOSSARY_BODY = `# Glossary — Unlock SaaS
+
+> Working definitions of the ${DEFINED_TERMS.length} Brunson sales-funnel terms Unlock SaaS teaches.
+
+## TL;DR
+
+These are the concepts the seven-step Playbook applies to a flat Stripe line: Hook, Story, Offer, Big Domino, Value Ladder, Stack Slide, Perfect Webinar, Soap Opera Sequence, Seinfeld Email, Reluctant Hero, Dream 100, Wrong Person, Weak Offer, Weak Belief, Verified Builder, and the Brunson Hard-Rule. Every definition below is the working version actually used inside the diagnostic, the funnel teardowns, and the email sequences — not the textbook version. Same vocabulary appears on /faq, /stories, /funnel-teardown, /pricing-teardown, and /diagnostic.
+
+## Terms
+
+${DEFINED_TERMS.map(
+  (t) =>
+    `### ${t.term}\n\n${t.definition}\n\nAnchor: ${BASE_URL}/glossary#${glossaryTermSlug(t.term)}`,
+).join("\n\n")}
+
+## Where these terms live on the rest of the site
+
+- ${BASE_URL}/faq — objections answered using the same vocabulary.
+- ${BASE_URL}/stories — the same concepts in long-form essays, no email required.
+- ${BASE_URL}/funnel-teardown — every teardown applies the Hook / Story / Offer lens.
+- ${BASE_URL}/pricing-teardown — every pricing analysis uses the Stack and Value Ladder lenses.
+- ${BASE_URL}/diagnostic — labels your page Wrong Person, Weak Offer, or Weak Belief.
+
+## How this glossary is maintained
+
+Every entry in this file is the verbatim text from \`DEFINED_TERMS\` in src/lib/seo/entity.ts. The glossary HTML page (${BASE_URL}/glossary) renders the same data structure. Drift between this markdown and the HTML is a maintenance bug, not a stylistic choice. Brunson Hard-Rule: no paraphrasing on the canonical reference surface.
+`;
+
 const ALTERNATIVES_HUB_BODY = `# Alternatives to Unlock SaaS — Honest Comparisons
 
 > Named-competitor comparison pages. No slagging, no fabricated prices, no fake quotes.
@@ -1231,6 +1261,15 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     summary:
       "Verbatim objections and replies from real Indie Hackers and Hacker News threads.",
     body: FAQ_BODY,
+  },
+  {
+    path: "/glossary",
+    mdPath: "/glossary.md",
+    title:
+      "Glossary – Hook, Story, Offer, Value Ladder, and 13 Other Brunson Terms",
+    summary:
+      "Working definitions of the 16 Brunson sales-funnel terms Unlock SaaS teaches, in the founder's own words.",
+    body: GLOSSARY_BODY,
   },
   {
     path: "/alternatives-to",

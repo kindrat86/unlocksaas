@@ -132,6 +132,16 @@ const MANIFEST = {
       summary: "Get one of the seven Playbook steps by number (1-7).",
     },
     {
+      name: "list_glossary_terms",
+      summary:
+        "List every Brunson term UnlockSaaS teaches (Hook, Story, Offer, Value Ladder, Stack Slide, Dream 100, etc.).",
+    },
+    {
+      name: "get_glossary_term",
+      summary:
+        "Get the working definition of one Brunson term by slug (e.g. 'hook', 'value-ladder', 'big-domino').",
+    },
+    {
       name: "get_faq",
       summary:
         "Search or list UnlockSaaS FAQ entries (objection answers, guarantee mechanics).",

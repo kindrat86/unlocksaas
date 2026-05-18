@@ -10,7 +10,7 @@
  *
  * This route is the executor. Any MCP-aware client (Claude Desktop, Cursor,
  * Windsurf, mcp-inspector, the Vercel MCP catalog) that connects to
- * `https://unlocksaas.com/api/mcp` can now call ten read-only tools that
+ * `https://unlocksaas.com/api/mcp` can now call fifteen read-only tools that
  * surface the same content the rest of the site renders:
  *
  *   diagnose_url               → live one-shot diagnostic (Brunson label)
@@ -25,6 +25,8 @@
  *   get_category               → category roundup
  *   list_categories            → catalogue listing
  *   get_playbook_step          → one of the seven Playbook steps
+ *   list_glossary_terms        → 16 Brunson term slugs UnlockSaaS teaches
+ *   get_glossary_term          → working definition of one Brunson term
  *   get_faq                    → site-wide FAQ entries
  *
  * Every tool that returns a URL appends a `?utm_source=mcp&utm_medium=...`
@@ -128,6 +130,12 @@ import {
 } from "@/lib/categories";
 import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
+import { DEFINED_TERMS } from "@/lib/seo/entity";
+import {
+  glossaryTermSlug,
+  getDefinedTermBySlug,
+  GLOSSARY_TERM_SLUGS,
+} from "@/lib/glossary";
 
 const BASE = "https://unlocksaas.com";
 
@@ -781,6 +789,73 @@ const handler = createMcpHandler(
                 "",
                 `Full page: ${withRef(`/playbook/step/${step}`, "get_playbook_step")}`,
                 `Sales page: ${withRef("/playbook-sales", "get_playbook_step")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── list_glossary_terms ─────────────────────────────────────────────
+    server.registerTool(
+      "list_glossary_terms",
+      {
+        title: "List every glossary term",
+        description:
+          "Returns the slug and term name of every Brunson concept UnlockSaaS teaches (Hook, Story, Offer, Value Ladder, Stack Slide, Perfect Webinar, Soap Opera Sequence, Seinfeld Email, Reluctant Hero, Dream 100, Wrong Person, Weak Offer, Weak Belief, Verified Builder, Brunson Hard-Rule, Big Domino). Use this to discover slugs before calling `get_glossary_term`.",
+        inputSchema: {},
+      },
+      async () => {
+        const lines = DEFINED_TERMS.map(
+          (t) => `- ${glossaryTermSlug(t.term)}: ${t.term}`,
+        );
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# UnlockSaaS glossary (${GLOSSARY_TERM_SLUGS.length} terms)`,
+                "",
+                ...lines,
+                "",
+                `Hub: ${withRef("/glossary", "list_glossary_terms")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_glossary_term ───────────────────────────────────────────────
+    server.registerTool(
+      "get_glossary_term",
+      {
+        title: "Get one glossary term by slug",
+        description:
+          "Returns the working definition of one Brunson term in the founder's own words. Slugs come from `list_glossary_terms` (kebab-case: 'hook', 'value-ladder', 'big-domino', 'wrong-person', etc.).",
+        inputSchema: {
+          slug: z
+            .string()
+            .min(1)
+            .describe(
+              "Kebab-case slug, e.g. 'hook', 'value-ladder', 'big-domino', 'brunson-hard-rule'.",
+            ),
+        },
+      },
+      async ({ slug }) => {
+        const entry = getDefinedTermBySlug(slug);
+        if (!entry)
+          return notFound("glossary term", slug, "list_glossary_terms");
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# ${entry.term}`,
+                "",
+                entry.definition,
+                "",
+                `Canonical anchor: ${withRef(`/glossary#${slug}`, "get_glossary_term")}`,
               ].join("\n"),
             },
           ],

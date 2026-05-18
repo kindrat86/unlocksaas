@@ -158,6 +158,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/faq`),
     },
+    // Glossary surface — topical-reservoir uplift (2026-05-19). The 16
+    // Brunson terms the site teaches, each with a stable in-page anchor
+    // (#hook, #value-ladder, etc). Targets the "what is X" / "X meaning"
+    // long-tail intent class that the pSEO catalogs do not cover. Each
+    // term is rendered inside a DefinedTermSet whose @id is the page
+    // itself, so AI Overview / Perplexity / Bing Copilot citations
+    // resolve to one canonical URL per term.
+    {
+      url: `${base}/glossary`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/glossary`),
+    },
     // ---------------------------------------------------------------------
     // Programmatic SEO block — honest named-competitor comparisons.
     // Data source: src/lib/alternatives.ts. Adding a new alternative there
