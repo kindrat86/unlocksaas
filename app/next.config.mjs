@@ -85,27 +85,39 @@ const nextConfig = {
   poweredByHeader: false,
 
   /**
-   * Content-Language HTTP header.
+   * Content-Language HTTP header — locale-aware (2026-05-18 i18n unlock).
    *
-   * Pairs with `<html lang="en-US">` (src/app/layout.tsx), the hreflang
-   * alternates in metadata + sitemap, and the `inLanguage` JSON-LD fields.
-   * The HTTP header is the canonical locale signal for crawlers and assistive
-   * tech that read response headers before parsing HTML — some bots (Bing,
-   * older Googlebot mobile, accessibility tools) prioritize it over markup.
+   * Pairs with the per-locale `<div lang>` wrapper in app/[locale]/layout.tsx,
+   * the hreflang alternates in metadata + sitemap, and the `inLanguage`
+   * JSON-LD fields. The HTTP header is the canonical locale signal for
+   * crawlers and assistive tech that read response headers before parsing
+   * HTML — some bots (Bing, older Googlebot mobile, accessibility tools)
+   * prioritize it over markup.
    *
-   * Deliberately monolingual. If multi-locale ever ships, swap to a matcher
-   * that emits the per-route locale (e.g. en-US for `/`, es-ES for `/es/*`).
-   * Until then this single header is the honest declaration: every URL on
-   * unlocksaas.com is en-US, and there is no alternate.
+   * Routing order matters: more-specific patterns FIRST. Next evaluates the
+   * array top-to-bottom and stops at the first match for a given path.
+   *
+   * Brunson Hard-Rule reconciliation: declaring Content-Language es on a
+   * /es/* URL is honest only because the `app/[locale]` segment 404s for
+   * any locale without renderable content (registry-gated via
+   * generateStaticParams + dynamicParams: false). A locale header on a
+   * 404 response is still honest — the response IS in that locale's format.
+   *
+   * Adding a new locale: add a matcher row here at the same time as the
+   * locale is added to SUPPORTED_LOCALES in src/lib/i18n/locales.ts.
    */
   async headers() {
+    // Locale-specific paths evaluated first; en-US is the catch-all
+    // default. The `app/[locale]/*` segment 404s for any locale without
+    // approved content (registry-gated via generateStaticParams +
+    // dynamicParams: false). A locale header on a 404 response is still
+    // honest — the response IS in that locale's format.
     return [
-      {
-        source: "/:path*",
-        headers: [
-          { key: "Content-Language", value: "en-US" },
-        ],
-      },
+      { source: "/es/:path*", headers: [{ key: "Content-Language", value: "es" }] },
+      { source: "/es", headers: [{ key: "Content-Language", value: "es" }] },
+      { source: "/pt-BR/:path*", headers: [{ key: "Content-Language", value: "pt-BR" }] },
+      { source: "/pt-BR", headers: [{ key: "Content-Language", value: "pt-BR" }] },
+      { source: "/:path*", headers: [{ key: "Content-Language", value: "en-US" }] },
     ];
   },
 

@@ -4,6 +4,11 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import {
+  allApprovedTranslations,
+  approvedLocalesForPath,
+} from "@/lib/i18n/registry";
+import { localizedPath } from "@/lib/i18n/locales";
 
 /**
  * Sitemap for UnlockSaaS — Surface A of the Google strategy.
@@ -36,26 +41,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   /**
-   * Self-referencing hreflang for a deliberately monolingual surface.
+   * Per-URL hreflang map, READ FROM THE TRANSLATION REGISTRY.
    *
-   * The Brunson Hard-Rule (no fabricated claims) forbids declaring
-   * alternates that do not exist. We are NOT inventing /es/ or /de/
-   * pages. We ARE declaring, honestly, that this URL is the en-US
-   * canonical and that there is no language-specific alternate
-   * (`x-default`), which is the correct signal for an English-only
-   * surface targeting global English-speaking founders.
+   * Brunson Hard-Rule (no fabricated claims) requires that hreflang
+   * alternates only resolve to approved translations. The registry at
+   * src/lib/i18n/registry.ts is the single source of truth.
    *
-   * Without these alternates, a single-language site sends an
-   * "unspecified" locale signal and loses International SEO points
-   * it could trivially claim. With them, the site reads to Google as
-   * "deliberately en-US," which is what UnlockSaaS is.
+   * The helper always declares en-US + x-default, then adds one entry
+   * per APPROVED translation of the same canonical path. Pending or
+   * archived rows are silently skipped — they are not advertised.
+   *
+   * Honest-monolingual fallback: when no translation is approved, output
+   * is byte-identical to the previous {"en-US": url, "x-default": url} map.
    */
-  const hreflang = (url: string) => ({
-    languages: {
-      "en-US": url,
-      "x-default": url,
-    },
-  });
+  const hreflang = (absUrl: string) => {
+    const path = absUrl.startsWith(base)
+      ? absUrl.slice(base.length) || "/"
+      : absUrl;
+    const languages: Record<string, string> = {
+      "en-US": absUrl,
+      "x-default": absUrl,
+    };
+    for (const locale of approvedLocalesForPath(path)) {
+      languages[locale] = `${base}${localizedPath(path, locale)}`;
+    }
+    return { languages };
+  };
 
   return [
     // Funnel Hub — highest priority, brand-canonical entry point.
@@ -349,5 +360,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
+    // -------------------------------------------------------------------------
+    // Approved locale translations (Surface A — International SEO).
+    //
+    // One entry per APPROVED (path, locale) pair from
+    // src/lib/i18n/registry.ts. Pending or archived rows are silently
+    // omitted — never advertised in the sitemap, never reachable via
+    // hreflang return-tag. Brunson Hard-Rule reconciliation: an entry
+    // here is a public claim that the translation is live, founder-
+    // reviewed, and Brunson-voice-compliant. The registry's approval
+    // workflow is the single gate; this block is a pure read.
+    //
+    // `lastModified` reads from the approvedAt timestamp so locale URLs
+    // carry their own freshness signal, not the build time.
+    // -------------------------------------------------------------------------
+    ...allApprovedTranslations().map((row) => {
+      const localised = `${base}${localizedPath(row.path, row.locale)}`;
+      const canonical =
+        row.path === "/" ? `${base}/` : `${base}${row.path}`;
+      return {
+        url: localised,
+        lastModified: row.approvedAt ? new Date(row.approvedAt) : now,
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+        alternates: {
+          languages: {
+            "en-US": canonical,
+            "x-default": canonical,
+            ...Object.fromEntries(
+              approvedLocalesForPath(row.path).map((loc) => [
+                loc,
+                `${base}${localizedPath(row.path, loc)}`,
+              ]),
+            ),
+          },
+        },
+      };
+    }),
   ];
 }

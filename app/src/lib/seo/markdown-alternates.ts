@@ -32,6 +32,8 @@
 
 import type { Metadata } from "next";
 import { BASE_URL } from "./entity";
+import { approvedLocalesForPath } from "@/lib/i18n/registry";
+import { localizedPath } from "@/lib/i18n/locales";
 
 /**
  * Shape of the `alternates` fragment we return. Narrowed to the keys
@@ -40,21 +42,44 @@ import { BASE_URL } from "./entity";
 type AlternatesFragment = NonNullable<Metadata["alternates"]>;
 
 /**
- * Self-referencing hreflang map for the monolingual surface.
+ * Build the per-URL hreflang `languages` map for a given source path.
  *
- * Honest monolingual: both `en-US` and `x-default` point at the same
- * canonical, telling Google "this is deliberately en-US, no language
- * alternates exist." Mirrors the per-URL hreflang block in `sitemap.ts`.
+ * Reads from the translation registry at module load. The honest contract:
+ *   - en-US canonical always appears.
+ *   - Each APPROVED translation appears under its BCP 47 locale tag.
+ *   - `x-default` points at the en-US canonical.
+ *   - Pending or archived translations are silently skipped. Brunson
+ *     Hard-Rule: never advertise alternates that aren't approved.
  *
- * Used by `pageAlternates()` and by the default branch of
- * `markdownAlternate()`. Exposed standalone for cases where a page builds
- * a custom alternates fragment but still wants the canonical hreflang.
+ * Until any translation is approved, output is byte-identical to the
+ * previous monolingual self-referencing map.
  */
-export function selfHreflang(canonical: string) {
-  return {
-    "en-US": canonical,
-    "x-default": canonical,
-  } as const;
+export function buildHreflangMap(
+  canonical: string,
+  opts: { absolute?: boolean } = {},
+): Record<string, string> {
+  const abs = opts.absolute === true;
+  const wrap = (p: string) => (abs ? `${BASE_URL}${p}` : p);
+  const map: Record<string, string> = {
+    "en-US": wrap(canonical),
+    "x-default": wrap(canonical),
+  };
+  for (const locale of approvedLocalesForPath(canonical)) {
+    map[locale] = wrap(localizedPath(canonical, locale));
+  }
+  return map;
+}
+
+/**
+ * Self-referencing hreflang for the canonical, with approved-translation
+ * alternates appended. Backwards-compatible signature — every existing
+ * caller (pageAlternates, markdownAlternate, layout) routes through this
+ * and automatically picks up approved translations without per-call
+ * updates. Until any translation is `approved`, the output is
+ * byte-identical to the previous monolingual map.
+ */
+export function selfHreflang(canonical: string): Record<string, string> {
+  return buildHreflangMap(canonical);
 }
 
 /**
