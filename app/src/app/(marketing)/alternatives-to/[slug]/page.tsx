@@ -19,6 +19,7 @@ import { getComparisonsForProductSlug } from "@/lib/comparisons";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -260,6 +261,26 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           {alt.oneLine}
+        </p>
+        {/*
+          Above-the-fold "Verified" stamp. Alternatives pages compare a
+          live competitor surface against Unlock SaaS — the visible date
+          is the audit trail. Semantic <time> for Google's "Last Updated"
+          snippet extractor; editorial-policy link reinforces E-E-A-T at
+          the first scroll position.
+         */}
+        <p className="mt-4 text-xs text-muted-foreground">
+          Verified{" "}
+          <time dateTime={alt.lastVerified}>
+            {formatVerifiedDate(alt.lastVerified)}
+          </time>
+          {" · "}
+          <Link
+            href="/editorial-policy"
+            className="underline hover:text-foreground"
+          >
+            editorial policy
+          </Link>
         </p>
       </header>
 
@@ -651,7 +672,11 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
       {/* ----- Honesty footer ----- */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          Last verified {alt.lastVerified}. {alt.pricingNote}
+          Last verified{" "}
+          <time dateTime={alt.lastVerified}>
+            {formatVerifiedDate(alt.lastVerified)}
+          </time>
+          . {alt.pricingNote}
           {alt.homepageUrl ? (
             <>
               {" "}

@@ -16,6 +16,7 @@ import { getComparisonsForProductSlug } from "@/lib/comparisons";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -254,6 +255,25 @@ export default function PricingTeardownPage({
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           {t.oneLine}
+        </p>
+        {/*
+          Above-the-fold "Verified" stamp. Pricing pages drift fastest of
+          any pSEO surface — the visible date is the single most-cited
+          trust signal a founder looks for before trusting an approximate-
+          price teardown. Semantic <time> for snippet-extractor handles.
+         */}
+        <p className="mt-4 text-xs text-muted-foreground">
+          Verified{" "}
+          <time dateTime={t.lastVerified}>
+            {formatVerifiedDate(t.lastVerified)}
+          </time>
+          {" · "}
+          <Link
+            href="/editorial-policy"
+            className="underline hover:text-foreground"
+          >
+            editorial policy
+          </Link>
         </p>
       </header>
 
@@ -694,10 +714,13 @@ export default function PricingTeardownPage({
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          Last verified {t.lastVerified}. Prices noted in this teardown are
-          approximations as observed on {t.displayName}&apos;s public pricing
-          page at that date; the exact figures and tier composition may shift
-          between verifications.
+          Last verified{" "}
+          <time dateTime={t.lastVerified}>
+            {formatVerifiedDate(t.lastVerified)}
+          </time>
+          . Prices noted in this teardown are approximations as observed on{" "}
+          {t.displayName}&apos;s public pricing page at that date; the exact
+          figures and tier composition may shift between verifications.
           {t.pricingPageUrl ? (
             <>
               {" "}

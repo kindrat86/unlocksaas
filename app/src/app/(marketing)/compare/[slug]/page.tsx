@@ -16,6 +16,8 @@ import { getPricingTeardownBySlug } from "@/lib/pricing-teardowns";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { formatVerifiedDate } from "@/lib/seo/dates";
+import { deriveComparisonRatings } from "@/lib/seo/review-rating";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -171,11 +173,104 @@ function buildJsonLd(c: Comparison, canonicalUrl: string): string[] {
     ],
   };
 
-  return [
+  // ---------- Review + ReviewRating per product ----------------------------
+  //
+  // Surface B (AEO/GEO) extension landing 2026-05-18 from the SEO-audit
+  // dings: "no Review schema variant for the 'best for' verdict blocks."
+  // Review Rich Result eligibility requires `reviewRating.ratingValue`;
+  // emitting the rating from a fabricated number would re-introduce the
+  // Brunson Hard-Rule violation the rest of this file painstakingly avoids
+  // (no aggregateRating, no testimonial counts before they exist).
+  //
+  // Honest path: derive the rating deterministically from the dimensional
+  // `winner` field the page already renders, via deriveComparisonRatings
+  // (see src/lib/seo/review-rating.ts for the algorithm + edge cases).
+  // The reader can reproduce the math by counting the dimension table.
+  //
+  // Two Review nodes — one per product, symmetric framing — so both
+  // products are eligible for star-rating snippets on their own name
+  // searches when this page surfaces.
+  //
+  // reviewBody composes: per-product "best for" + (when this product is
+  // the indie-founder pick) the indie-specific reasoning. The body never
+  // restates the dimensions verbatim; it cites the verdict the page
+  // already publishes in prose. Drift class: zero.
+  const ratings = deriveComparisonRatings(c);
+
+  const buildReviewBody = (
+    side: "A" | "B",
+    bestForLine: string,
+  ): string => {
+    const indiePicksThisSide =
+      (side === "A" && c.forIndieFounders.pick === "A") ||
+      (side === "B" && c.forIndieFounders.pick === "B");
+    return indiePicksThisSide
+      ? `${bestForLine} ${c.forIndieFounders.reasoning}`
+      : bestForLine;
+  };
+
+  // Only emit Review nodes when there is at least one comparable
+  // dimension (aWins + bWins + ties > 0). All-"different" or empty
+  // dimensions would emit a neutral 3.0/3.0 that adds no signal and
+  // would clutter the page schema with low-value nodes.
+  const hasComparableDimensions =
+    ratings.aWins + ratings.bWins + ratings.ties > 0;
+
+  const reviewA = hasComparableDimensions
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        name: `${c.a.name} review — Unlock SaaS head-to-head verdict against ${c.b.name}`,
+        itemReviewed: {
+          ...subjectA,
+          // Reuse the same Organization name + url shape declared above
+          // so retrievers see one consistent entity reference per product
+          // across `about`, `mentions`, and `itemReviewed`.
+        },
+        author: { "@id": ID.person },
+        publisher: { "@id": ID.organization },
+        datePublished: c.lastVerified,
+        inLanguage: "en-US",
+        reviewBody: buildReviewBody("A", c.bestFor.a),
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: ratings.aRating.toFixed(1),
+          bestRating: "5",
+          worstRating: "1",
+        },
+      }
+    : null;
+
+  const reviewB = hasComparableDimensions
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        name: `${c.b.name} review — Unlock SaaS head-to-head verdict against ${c.a.name}`,
+        itemReviewed: {
+          ...subjectB,
+        },
+        author: { "@id": ID.person },
+        publisher: { "@id": ID.organization },
+        datePublished: c.lastVerified,
+        inLanguage: "en-US",
+        reviewBody: buildReviewBody("B", c.bestFor.b),
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: ratings.bRating.toFixed(1),
+          bestRating: "5",
+          worstRating: "1",
+        },
+      }
+    : null;
+
+  const json: string[] = [
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
   ];
+  if (reviewA) json.push(JSON.stringify(reviewA));
+  if (reviewB) json.push(JSON.stringify(reviewB));
+  return json;
 }
 
 function JsonLdBlock({ json }: { json: string }) {
@@ -242,7 +337,11 @@ export default function ComparePage({ params }: { params: RouteParams }) {
   if (!c) notFound();
 
   const canonicalUrl = `${BASE}/compare/${c.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(c, canonicalUrl);
+  // buildJsonLd returns a variable-length array: always Article, FAQPage,
+  // BreadcrumbList; optionally two Review nodes (one per product) when the
+  // comparison has at least one A/B/tie dimension. Iterate rather than
+  // destructure so the optional tail is not silently dropped.
+  const jsonLdBlocks = buildJsonLd(c, canonicalUrl);
 
   const aFunnel =
     c.a.teardownSlug && getFunnelTeardownBySlug(c.a.teardownSlug);
@@ -263,9 +362,16 @@ export default function ComparePage({ params }: { params: RouteParams }) {
 
   return (
     <article className="min-h-screen">
-      <JsonLdBlock json={articleJson} />
-      <JsonLdBlock json={faqJson} />
-      <JsonLdBlock json={breadcrumbJson} />
+      {jsonLdBlocks.map((json, idx) => (
+        <JsonLdBlock
+          // The block ordering is fixed by buildJsonLd (Article, FAQPage,
+          // BreadcrumbList, optional Review×2) so the index is a stable
+          // React key across renders. Each block is a distinct JSON
+          // document so keying by content would be wasteful.
+          key={idx}
+          json={json}
+        />
+      ))}
 
       {/* Breadcrumb */}
       <nav
@@ -301,6 +407,29 @@ export default function ComparePage({ params }: { params: RouteParams }) {
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           {c.oneLine}
+        </p>
+        {/*
+          Above-the-fold "Verified" date stamp. Surface A (organic) +
+          Surface B (AEO) lift landing 2026-05-18 from the SEO-audit
+          dings: the footer date was technically present but never in
+          the snippet-extraction window for Google's "Last Updated"
+          heuristic. Semantic <time> with machine-readable dateTime
+          gives the snippet extractor a clean handle; the human-readable
+          "Verified May 17, 2026" copy is the trust signal a real
+          founder reads before trusting the comparison.
+         */}
+        <p className="mt-4 text-xs text-muted-foreground">
+          Verified{" "}
+          <time dateTime={c.lastVerified}>
+            {formatVerifiedDate(c.lastVerified)}
+          </time>
+          {" · "}
+          <Link
+            href="/editorial-policy"
+            className="underline hover:text-foreground"
+          >
+            editorial policy
+          </Link>
         </p>
       </header>
 
@@ -627,10 +756,13 @@ export default function ComparePage({ params }: { params: RouteParams }) {
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          Last verified {c.lastVerified}. This comparison describes publicly
-          observable product behavior on {c.a.name} and {c.b.name} at that
-          date. No quoted copy, no fabricated metrics, no claims about
-          internal performance.{" "}
+          Last verified{" "}
+          <time dateTime={c.lastVerified}>
+            {formatVerifiedDate(c.lastVerified)}
+          </time>
+          . This comparison describes publicly observable product behavior on{" "}
+          {c.a.name} and {c.b.name} at that date. No quoted copy, no
+          fabricated metrics, no claims about internal performance.{" "}
           {c.a.url ? (
             <>
               See{" "}

@@ -16,6 +16,7 @@ import { getComparisonsForProductSlug } from "@/lib/comparisons";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -259,6 +260,26 @@ export default function FunnelTeardownPage({
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           {t.oneLine}
+        </p>
+        {/*
+          Above-the-fold "Verified" stamp. Funnel teardowns are tied to
+          a live read of the competitor's landing page — the visible
+          date is the audit trail. Semantic <time> for snippet-extractor
+          handles. Editorial-policy link strengthens E-E-A-T at the
+          first scroll position the visitor sees.
+         */}
+        <p className="mt-4 text-xs text-muted-foreground">
+          Verified{" "}
+          <time dateTime={t.lastVerified}>
+            {formatVerifiedDate(t.lastVerified)}
+          </time>
+          {" · "}
+          <Link
+            href="/editorial-policy"
+            className="underline hover:text-foreground"
+          >
+            editorial policy
+          </Link>
         </p>
       </header>
 
@@ -649,10 +670,13 @@ export default function FunnelTeardownPage({
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>
-          Last verified {t.lastVerified}. This teardown describes publicly
-          observable funnel patterns on {t.displayName}&apos;s marketing surface
-          at that date. No quoted copy, no fabricated metrics, no claims about
-          internal performance.
+          Last verified{" "}
+          <time dateTime={t.lastVerified}>
+            {formatVerifiedDate(t.lastVerified)}
+          </time>
+          . This teardown describes publicly observable funnel patterns on{" "}
+          {t.displayName}&apos;s marketing surface at that date. No quoted
+          copy, no fabricated metrics, no claims about internal performance.
           {t.homepageUrl ? (
             <>
               {" "}
