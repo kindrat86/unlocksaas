@@ -11,7 +11,7 @@ Initial public release. Extracted from the production codebase at https://unlock
 - **`validate-claims` CLI**: fetches a URL, extracts JSON-LD + meta + visible text, audits for honesty violations and schema-vs-rendered drift. Exits non-zero on failure.
 - **`generate-llms-txt` CLI**: reads a `SiteDescriptor` JSON config and writes `/llms.txt` + `/llms-feed.json`.
 - **`init` CLI**: scaffolds a starter `site.config.json`.
-- **Next.js adapter**: `pageAlternates`, `markdownAlternate`, `JsonLdScript` component. Next is an optional peer dep.
+- **Next.js adapter**: `pageAlternates`, `markdownAlternate`, `serializeJsonLd`, `jsonLdScriptProps`. **Zero runtime peer deps** — the adapter exposes plain functions instead of a React component, so it works in any React-shaped framework (Next, Preact, Solid, Astro) without dragging React into the dependency tree.
 - **Verification env slots**: Google, Bing, Yandex, Pinterest, Facebook, Naver — empty until env var is set.
 - **Freshness primitives**: `createFreshness`, `renderActivationLog`.
 - **Rating derivation**: `deriveComparisonRatings` for honest head-to-head Review ratings.

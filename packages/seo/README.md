@@ -177,35 +177,37 @@ export const metadata: Metadata = {
 
 ```tsx
 // app/page.tsx
-import { JsonLdScript } from "@unlocksaas/seo/next";
+import { jsonLdScriptProps } from "@unlocksaas/seo/next";
 import { buildOrganization, buildWebSite, buildIds } from "@unlocksaas/seo/jsonld";
 
 const ids = buildIds("https://yoursite.com");
 
+const jsonLd = [
+  buildOrganization({ id: ids.organization, name: "Your Co", url: "https://yoursite.com" }),
+  buildWebSite({
+    id: ids.website,
+    name: "Your Co",
+    url: "https://yoursite.com",
+    publisher: { "@id": ids.organization },
+    potentialAction: [{
+      type: "SearchAction",
+      target: "https://yoursite.com/search?q={search_term_string}",
+      queryInput: "search_term_string",
+    }],
+  }),
+];
+
 export default function Page() {
   return (
     <>
-      <JsonLdScript data={[
-        buildOrganization({ id: ids.organization, name: "Your Co", url: "https://yoursite.com" }),
-        buildWebSite({
-          id: ids.website,
-          name: "Your Co",
-          url: "https://yoursite.com",
-          publisher: { "@id": ids.organization },
-          potentialAction: [{
-            type: "SearchAction",
-            target: "https://yoursite.com/search?q={search_term_string}",
-            queryInput: "search_term_string",
-          }],
-        }),
-      ]} />
+      <script {...jsonLdScriptProps(jsonLd)} />
       <h1>...</h1>
     </>
   );
 }
 ```
 
-Next.js is an **optional peer dependency** — install this package without it and the core JSON-LD/llms/honesty modules still work.
+This package has **zero runtime dependencies** — including no React peer dep. The Next.js adapter exposes plain functions (`pageAlternates`, `markdownAlternate`, `serializeJsonLd`, `jsonLdScriptProps`) that work in any React-shaped framework. The core JSON-LD / llms / honesty modules are framework-free.
 
 ---
 
@@ -220,7 +222,7 @@ Next.js is an **optional peer dependency** — install this package without it a
 | `@unlocksaas/seo/verification` | `buildVerification` (Google/Bing/Yandex/Pinterest/Facebook/Naver env slots) |
 | `@unlocksaas/seo/freshness` | `createFreshness`, `renderActivationLog` |
 | `@unlocksaas/seo/review` | `deriveComparisonRatings` |
-| `@unlocksaas/seo/next` | `pageAlternates`, `markdownAlternate`, `JsonLdScript` |
+| `@unlocksaas/seo/next` | `pageAlternates`, `markdownAlternate`, `serializeJsonLd`, `jsonLdScriptProps` |
 
 ---
 

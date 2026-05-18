@@ -1,18 +1,21 @@
 /**
  * Next.js adapter — opt-in helpers for App Router projects.
  *
- * Next is declared as an optional peer dependency. This module imports
- * only types from "next" so it works whether or not Next is installed
- * in the consumer's project. The functions here return plain JS objects
- * that are SHAPE-COMPATIBLE with Next.js's Metadata type.
+ * The adapter is intentionally React-free. The original draft shipped a
+ * `<JsonLdScript>` component, but that requires React as a peer
+ * dependency and pulls a CommonJS `require()` into an ESM package. The
+ * standard Next.js JSON-LD pattern is a one-line inline script tag
+ * (`<script type="application/ld+json" dangerouslySetInnerHTML={...}>`),
+ * so the helpers here return the data the script tag needs and let
+ * consumers compose the tag themselves. Zero peer deps, ESM-safe.
  *
- * Usage:
- *
- *   import { pageAlternates, markdownAlternate, JsonLdScript } from
- *     "@unlocksaas/seo/next";
+ * Functions exposed:
+ *   - `pageAlternates(...)` — Next.js Metadata.alternates fragment
+ *   - `markdownAlternate(...)` — same, plus the text/markdown mirror link
+ *   - `serializeJsonLd(data)` — JSON.stringify with stable ordering
+ *   - `jsonLdScriptProps(data)` — props object ready to spread onto
+ *     `<script>` (`type` + `dangerouslySetInnerHTML`)
  */
-
-import type { ReactElement } from "react";
 
 export interface PageAlternatesInput {
   /** Site-relative canonical path, e.g. "/faq". */
@@ -74,43 +77,38 @@ export function markdownAlternate(
 }
 
 /**
- * React component that renders one or more JSON-LD blocks as
- * `<script type="application/ld+json">` tags. Pass plain objects
- * produced by the builders in `@unlocksaas/seo/jsonld`.
- *
- * Server-renders by default in Next.js App Router because no client
- * hooks are used.
- *
- * Note: this is a TSX function but the package's tsconfig uses
- * jsx: "react-jsx", so we return ReactElement via createElement to
- * avoid forcing consumers to pull in @types/react when they only
- * use the framework-free builders.
+ * Serialize one or more JSON-LD blocks to a single string. Multiple
+ * blocks are emitted as a JSON array; a single block is emitted as a
+ * plain object. Pass the result as the `__html` of a
+ * `dangerouslySetInnerHTML` prop on a `<script type="application/ld+json">`.
  */
-export function JsonLdScript(props: {
-  data: Record<string, unknown> | ReadonlyArray<Record<string, unknown>>;
-  /** Inline space for readability. Defaults to undefined (compact). */
-  space?: string | number;
-}): ReactElement | null {
-  // Lazily import React only when this component is actually rendered.
-  // Consumers who never import this module will not pay the React cost.
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const React = require("react") as typeof import("react");
-  const blocks = Array.isArray(props.data) ? props.data : [props.data];
-  if (blocks.length === 0) return null;
-  return React.createElement(
-    React.Fragment,
-    null,
-    ...blocks.map((block, idx) =>
-      React.createElement("script", {
-        key: idx,
-        type: "application/ld+json",
-        // dangerouslySetInnerHTML is the documented Next.js pattern
-        // for inline JSON-LD; the alternative (children) escapes the
-        // angle brackets and breaks the JSON.
-        dangerouslySetInnerHTML: {
-          __html: JSON.stringify(block, null, props.space),
-        },
-      }),
-    ),
-  );
+export function serializeJsonLd(
+  data: Record<string, unknown> | ReadonlyArray<Record<string, unknown>>,
+  opts: { space?: string | number } = {},
+): string {
+  const payload = Array.isArray(data) ? Array.from(data) : data;
+  return JSON.stringify(payload, null, opts.space);
+}
+
+/**
+ * Build the props object a Next.js / React caller can spread onto a
+ * `<script>` tag for JSON-LD output. Saves the consumer from typing the
+ * `type` attribute and the `dangerouslySetInnerHTML` shape by hand.
+ *
+ *   <script {...jsonLdScriptProps(buildOrganization({...}))} />
+ *
+ * Returns a plain object — no React types, no React import. Spreadable
+ * onto any framework's script tag (React, Preact, Solid, Svelte
+ * `{@html}` is different, etc.).
+ */
+export function jsonLdScriptProps(
+  data: Record<string, unknown> | ReadonlyArray<Record<string, unknown>>,
+  opts: { space?: string | number } = {},
+): { type: string; dangerouslySetInnerHTML: { __html: string } } {
+  return {
+    type: "application/ld+json",
+    dangerouslySetInnerHTML: {
+      __html: serializeJsonLd(data, opts),
+    },
+  };
 }
