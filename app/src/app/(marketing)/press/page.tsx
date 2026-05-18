@@ -453,9 +453,42 @@ export default function PressPage() {
           </p>
         </section>
 
+        {/* ── Pre-assembled story packages ─────────────────────────── */}
+        <Separator className="my-8" />
+        <section
+          aria-labelledby="story-angles"
+          className="mb-10 space-y-4 text-base leading-relaxed"
+        >
+          <h2 id="story-angles" className="text-2xl font-bold">
+            Pre-assembled story angles
+          </h2>
+          <p>
+            If you arrived here hunting for a quotable source on a topic
+            rather than a profile of Unlock SaaS itself, the{" "}
+            <Link
+              href="/press/topics"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              Press Topics hub
+            </Link>{" "}
+            carries pre-built story packages: drop-in lede, pre-approved
+            founder quotes, three data points each cited to a live URL,
+            three honest counter-points, fact sheet, and embed-ready
+            blockquote. One topic per recognisable angle. The article is
+            80% drafted before you start typing.
+          </p>
+        </section>
+
         <div className="mt-12 text-xs text-muted-foreground">
           <p>
             Related surfaces:{" "}
+            <Link
+              href="/press/topics"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              Press topics
+            </Link>{" "}
+            ·{" "}
             <Link
               href="/about"
               className="underline underline-offset-4 hover:text-foreground"
@@ -468,6 +501,20 @@ export default function PressPage() {
               className="underline underline-offset-4 hover:text-foreground"
             >
               Five Stories
+            </Link>{" "}
+            ·{" "}
+            <Link
+              href="/editorial-policy"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              Editorial Policy
+            </Link>{" "}
+            ·{" "}
+            <Link
+              href="/dont-buy-unlock-saas"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              Don&apos;t buy this
             </Link>{" "}
             ·{" "}
             <Link

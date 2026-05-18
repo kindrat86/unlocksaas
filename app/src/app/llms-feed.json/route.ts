@@ -23,6 +23,21 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import {
+  DATASET_BUNDLE,
+  DATASET_CITATION,
+  DATASET_CSV_COLUMNS,
+  DATASET_KEYWORDS,
+  DATASET_LICENSE_SPDX,
+  DATASET_LICENSE_URL,
+  DATASET_NAME,
+  DATASET_PER_TABLE_CSV,
+  DATASET_PER_TABLE_SLUGS,
+  DATASET_SLUG,
+  DATASET_URLS,
+  DATASET_VERSION,
+  perTableCsvUrl,
+} from "@/lib/seo/dataset";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -443,6 +458,43 @@ function buildPayload() {
         catalogs: Object.keys(PSEO_CATALOGS).length,
         slugs: PSEO_TOTAL,
       },
+    },
+    /**
+     * Public dataset descriptor (Surface C). The Indie SaaS Teardowns
+     * Dataset is a bundled, CC-BY-4.0 licensed re-projection of the
+     * five pSEO catalogs. Exposing it here gives JSON-first retrievers
+     * a deterministic anchor: name + version + license + download URLs
+     * + citation, addressable as a single JSON-path slice.
+     */
+    publicDataset: {
+      name: DATASET_NAME,
+      slug: DATASET_SLUG,
+      version: DATASET_VERSION,
+      description: DATASET_BUNDLE.description,
+      lastVerified: DATASET_BUNDLE.lastVerified,
+      generatedAt: DATASET_BUNDLE.generatedAt,
+      counts: DATASET_BUNDLE.counts,
+      license: {
+        spdx: DATASET_LICENSE_SPDX,
+        url: DATASET_LICENSE_URL,
+        attribution: DATASET_BUNDLE.license.attribution,
+      },
+      citation: DATASET_CITATION,
+      urls: DATASET_URLS,
+      keywords: DATASET_KEYWORDS,
+      csvColumns: DATASET_CSV_COLUMNS,
+      // Per-table CSVs. One entry per record type, each with its own
+      // column contract. Retrievers that want a specific slice (e.g.
+      // "give me only pricing teardowns") can pick the matching URL
+      // without parsing the universal flat CSV.
+      perTableCsvs: DATASET_PER_TABLE_SLUGS.map((slug) => ({
+        slug,
+        displayName: DATASET_PER_TABLE_CSV[slug].displayName,
+        sourceTable: DATASET_PER_TABLE_CSV[slug].sourceTable,
+        url: perTableCsvUrl(slug),
+        rowCount: DATASET_PER_TABLE_CSV[slug].rowCount,
+        columns: DATASET_PER_TABLE_CSV[slug].columns,
+      })),
     },
     facts: KEY_FACTS,
     mentions: MENTIONED_ENTITIES,

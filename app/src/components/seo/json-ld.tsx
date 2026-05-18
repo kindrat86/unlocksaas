@@ -1441,6 +1441,161 @@ export function HubDatasetJsonLd(props: HubDatasetInput) {
   return <JsonLdScript json={buildHubDatasetJson(props)} />;
 }
 
+// ---------------------------------------------------------------------------
+// Public Dataset JSON-LD (downloadable, citable, CC-BY-4.0)
+// ---------------------------------------------------------------------------
+
+/**
+ * Schema.org `Dataset` block for the public Indie SaaS Teardowns dataset
+ * served at `/dataset` with downloads at `/dataset/<slug>.json` and
+ * `/dataset/<slug>.csv`.
+ *
+ * Why this is a SEPARATE component from HubDatasetJsonLd:
+ *   - The hub variant treats the pSEO hub as a "dataset of entries"
+ *     metaphor — discovery, not download. The HTML hub IS the dataset.
+ *   - This variant publishes a real CC-BY-4.0 corpus with versioned
+ *     downloadable artifacts (JSON, CSV) — the canonical shape Google
+ *     Dataset Search indexes, and the citation hook for academic /
+ *     newsletter re-use.
+ *
+ * Brunson Hard-Rule reconciliation:
+ *   - `dateModified` and `version` carry through from the dataset
+ *     module unchanged; no fabricated freshness signal.
+ *   - `aggregateRating` deliberately omitted (no public reviewers of
+ *     the dataset itself yet — same honesty rule as the Playbook).
+ *   - `funder` / `sponsor` not claimed.
+ *   - `license` resolves to the canonical CC-BY-4.0 URL; the
+ *     attribution clause is mirrored in the same license URL so a
+ *     re-user can verify the obligation without trusting us.
+ */
+export type PublicDatasetInput = {
+  /** Display name, e.g. "Indie SaaS Teardowns Dataset". */
+  name: string;
+  /** Stable URL slug used in filenames. */
+  slug: string;
+  /** SemVer version string. */
+  version: string;
+  /** Long-form description. Appears as `Dataset.description`. */
+  description: string;
+  /** ISO date the editorial corpus was last verified. */
+  lastVerified: string;
+  /** ISO datetime the bundle was assembled (deployment timestamp). */
+  generatedAt: string;
+  /** Canonical landing-page URL. */
+  landingUrl: string;
+  /** JSON download URL. */
+  jsonUrl: string;
+  /** CSV download URL. */
+  csvUrl: string;
+  /** Markdown mirror URL. */
+  markdownUrl: string;
+  /** CC-BY-4.0 license URL. */
+  licenseUrl: string;
+  /** Plain-text citation string. */
+  citation: string;
+  /** Keyword list for `Dataset.keywords`. */
+  keywords: ReadonlyArray<string>;
+  /** Variable names exposed in the bundle (e.g. table names). */
+  variableMeasured: ReadonlyArray<string>;
+  /** Total row count across all tables. */
+  totalRows: number;
+  /**
+   * Per-table CSV distributions. Each becomes an additional
+   * `Dataset.distribution` entry so Google Dataset Search and any
+   * structured-data crawler can index the per-table slices as distinct
+   * download URLs. Empty array supported for older callers.
+   */
+  perTableDistributions?: ReadonlyArray<{
+    /** Public display name, e.g. "Funnel teardowns". */
+    name: string;
+    /** Absolute download URL. */
+    url: string;
+  }>;
+};
+
+function buildPublicDatasetJson(input: PublicDatasetInput): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${input.landingUrl}#dataset`,
+    name: input.name,
+    alternateName: input.slug,
+    description: input.description,
+    url: input.landingUrl,
+    sameAs: input.landingUrl,
+    identifier: `${input.slug}-v${input.version}`,
+    version: input.version,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: input.licenseUrl,
+    creator: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    sourceOrganization: { "@id": ID.organization },
+    citation: input.citation,
+    keywords: input.keywords.join(", "),
+    variableMeasured: input.variableMeasured,
+    dateModified: input.lastVerified,
+    datePublished: input.lastVerified,
+    // schema.org Dataset has no native `generatedAt`; use the
+    // additional-properties pattern so the deployment timestamp is
+    // still machine-readable.
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "generatedAt",
+        value: input.generatedAt,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "totalRows",
+        value: String(input.totalRows),
+      },
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: input.jsonUrl,
+        name: `${input.name} (JSON, v${input.version})`,
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/csv",
+        contentUrl: input.csvUrl,
+        name: `${input.name} (CSV, v${input.version})`,
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/markdown",
+        contentUrl: input.markdownUrl,
+        name: `${input.name} (Markdown summary)`,
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/html",
+        contentUrl: input.landingUrl,
+        name: `${input.name} (HTML landing)`,
+      },
+      // Per-table CSV distributions. Each table is its own DataDownload
+      // so Dataset Search can rank queries that match a specific
+      // record type (e.g. "indie SaaS pricing data") against the right
+      // narrower slice.
+      ...(input.perTableDistributions ?? []).map((t) => ({
+        "@type": "DataDownload" as const,
+        encodingFormat: "text/csv" as const,
+        contentUrl: t.url,
+        name: `${t.name} (CSV, v${input.version})`,
+      })),
+    ],
+    spatialCoverage: { "@type": "Place", name: "Worldwide" },
+    temporalCoverage: `${input.lastVerified}/..`,
+  });
+}
+
+export function PublicDatasetJsonLd(props: PublicDatasetInput) {
+  return <JsonLdScript json={buildPublicDatasetJson(props)} />;
+}
+
 /**
  * Speakable schema — declares which CSS selectors voice assistants
  * (Google Assistant, Siri shortcuts via the Vision Pro web client,
