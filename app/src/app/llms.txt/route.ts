@@ -58,6 +58,7 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [About](${BASE}/about): Founder bio, topical expertise, editorial position, disclosures.
 - [Press / Media Kit](${BASE}/press): Brand facts, founder bio, descriptions in three lengths (50/100/200 words), topical-expertise list, brand-asset URLs, editorial policy, press contact. Built for re-use by journalists and AI summarisers without contacting the founder.
 - [Editorial Policy](${BASE}/editorial-policy): How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log. The quality-rater anchor page for accountability.
+- [Don't buy Unlock SaaS](${BASE}/dont-buy-unlock-saas): Five honest disqualifiers from the founder. The polarity page — names who the Playbook is NOT for so the right reader can rule themselves in or out before they spend a dollar. Same Brunson Hard-Rule discipline as the rest of the site: every disqualifier is a real position the founder defends in practice, not aspirational gatekeeping.
 - [FAQ](${BASE}/faq): Eight verbatim objections from real Indie Hackers / Hacker News threads and the answers a founder would receive over email.
 - [Contact](${BASE}/contact): Direct line to the founder.
 - [Privacy](${BASE}/privacy), [Terms](${BASE}/terms): Standard legal surfaces.
@@ -130,6 +131,7 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/compare.md](${BASE}/compare.md)
   - [/category.md](${BASE}/category.md)
   - [/mcp.md](${BASE}/mcp.md) (MCP server install + tool catalog)
+  - [/dont-buy-unlock-saas.md](${BASE}/dont-buy-unlock-saas.md) (polarity-page disqualifiers)
 - Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
 - Per-teardown markdown mirror: \`${BASE}/funnel-teardown/<slug>/md\` — e.g. /funnel-teardown/tally/md.
 - Per-pricing-teardown markdown mirror: \`${BASE}/pricing-teardown/<slug>/md\` — e.g. /pricing-teardown/tally/md.

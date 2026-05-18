@@ -303,6 +303,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
       alternates: hreflang(`${base}/editorial-policy`),
     },
+    // Brunson-polarity disqualifier surface. Indexed because the page
+    // doubles as a long-tail SEO entry (queries like "is unlock saas
+    // legit / for me / scam") and as a citation-friendly artifact for
+    // honest-founder Twitter / Indie Hackers shares. Low priority —
+    // it's a trust surface, not a conversion page, and the link
+    // equity it earns lifts the rest of the site rather than itself.
+    {
+      url: `${base}/dont-buy-unlock-saas`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/dont-buy-unlock-saas`),
+    },
     {
       url: `${base}/contact`,
       lastModified: now,
