@@ -11,6 +11,56 @@
 
 ---
 
+## ⚡ PASTE-READY (open this section at submission time, ignore the rest)
+
+**Step 1.** Go to https://www.reddit.com/r/programming/submit and pick **Link post** (the GitHub repo is the link).
+
+**Step 2.** Paste the URL into the link field:
+
+```
+https://github.com/kindrat86/unlocksaas/tree/main/packages/seo
+```
+
+**Step 3.** Paste the TITLE:
+
+```
+A CLI that diffs JSON-LD claims against rendered HTML
+```
+
+**Step 4.** Submit. Immediately post the FIRST COMMENT as a reply on your own post:
+
+```markdown
+A few engineering decisions that might be interesting:
+
+**1. No HTML parser dependency.** The script blocks have well-bounded syntax
+(`<script type="application/ld+json">...</script>`) so regex is fine and
+ships zero deps. Visible-text extraction is a conservative tag-strip plus
+entity decode, not a full DOM. Tradeoff: this catches the common drift
+class but misses cases where JSON-LD is generated client-side. For
+server-rendered Next.js / Astro / SvelteKit it works.
+
+**2. Honesty primitives separated from builders.** `auditJsonLd` runs against
+ANY JSON-LD object, not just objects built by this library. So you can
+audit an existing site without rewriting its schema generation. The CLI
+does exactly this.
+
+**3. Zero runtime peer dependencies.** Even the Next.js adapter is React-free.
+Instead of shipping a component, it exposes `jsonLdScriptProps(data)` that
+returns `{ type, dangerouslySetInnerHTML }` ready to spread onto any
+React-shaped framework's <script> tag. Works in Next, Astro, Preact, Solid.
+
+**4. omit-empty is recursive but does NOT mutate.** Returns a new object so
+you can pass frozen schemas through it. Empty strings drop, but
+deliberately-empty arrays preserve their context inside larger structures.
+
+If anyone has tried similar drift detection at scale and has feedback on
+edge cases I haven't hit yet, I'd love to compare notes.
+```
+
+**Step 5.** Reply to every top-level comment within 30 minutes for the first 4 hours. /r/programming weights moderator engagement heavily.
+
+---
+
 ## Title
 
 ```
@@ -68,8 +118,8 @@ The whole thing was extracted from a production SaaS codebase as a
 distribution-first play – every npm install is a backlink to the origin
 site. Greg Isenberg called this "the great flip" and he's right.
 
-Source: <REPO URL>
-npm: <NPM URL>
+Source: https://github.com/kindrat86/unlocksaas/tree/main/packages/seo
+npm: https://www.npmjs.com/package/@unlocksaas/seo
 ```
 
 ---
@@ -91,10 +141,10 @@ ANY JSON-LD object, not just objects built by this library. So you can
 audit an existing site without rewriting its schema generation. The CLI
 does exactly this.
 
-**3. Next.js is an optional peer dep.** The core is framework-free. The Next
-adapter (Metadata helpers + the `<JsonLdScript>` component) lives in its
-own subpath export, so `import { ... } from "@unlocksaas/seo/jsonld"`
-never pulls React.
+**3. Zero runtime peer dependencies.** Even the Next.js adapter is React-free.
+Instead of shipping a component, it exposes `jsonLdScriptProps(data)` that
+returns `{ type, dangerouslySetInnerHTML }` ready to spread onto any
+React-shaped framework's <script> tag. Works in Next, Astro, Preact, Solid.
 
 **4. omit-empty is recursive but does NOT mutate.** Returns a new object so
 you can pass frozen schemas through it. Empty strings drop, but

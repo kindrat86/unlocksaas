@@ -8,6 +8,30 @@
 
 ---
 
+## ⚡ PASTE-READY (open this section at submission time, ignore the rest)
+
+**Step 1.** Go to https://news.ycombinator.com/submit
+
+**Step 2.** Paste the TITLE (pick the first one, fallbacks below):
+
+```
+Show HN: An SEO library that refuses to ship fabricated aggregateRating
+```
+
+**Step 3.** Paste the URL into the `url` field (leave `text` empty):
+
+```
+https://github.com/kindrat86/unlocksaas/tree/main/packages/seo
+```
+
+**Step 4.** Click submit. You'll land on the item page.
+
+**Step 5.** Within 60 seconds, paste the TOP COMMENT below as a reply to your own submission.
+
+**Step 6.** Set a 15-minute reminder to refresh and reply to any comments.
+
+---
+
 ## Title (80 char limit, HN strips marketing fluff)
 
 ```
@@ -29,10 +53,10 @@ Show HN: Honesty-first JSON-LD, llms.txt, and verification toolkit for AI search
 ## URL
 
 ```
-https://github.com/kindrat86/unlocksaas-seo
+https://github.com/kindrat86/unlocksaas/tree/main/packages/seo
 ```
 
-(Or the monorepo path if the standalone mirror isn't up yet: `https://github.com/kindrat86/unlocksaas/tree/main/packages/seo`)
+(If you create a standalone `github.com/kindrat86/unlocksaas-seo` mirror later, swap to that URL — top-level repos out-rank monorepo deep-links on HN's link-extraction heuristic.)
 
 ---
 
@@ -77,8 +101,8 @@ discipline for any site that wants to be cited by ChatGPT, Claude, or
 Perplexity instead of just ranked by Google. The tools should enforce
 the discipline, not let you bypass it.
 
-Source: <repo URL>
-Docs: <repo URL>#readme
+Source: https://github.com/kindrat86/unlocksaas/tree/main/packages/seo
+Docs: https://github.com/kindrat86/unlocksaas/tree/main/packages/seo#readme
 Built for: https://unlocksaas.com
 
 Happy to answer questions.
