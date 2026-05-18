@@ -113,6 +113,102 @@ export default async function EmbedPage(props: Props) {
    */
   const markdownSnippet = `[✓ Verified Builder – ${badge.builderName} on Unlock SaaS](${badgeUrl})`;
 
+  /**
+   * SVG image embed snippets — the off-page lift surface for any host
+   * that strips arbitrary HTML (GitHub README, Substack, Medium, Reddit,
+   * Notion exports, most issue trackers). The SVG endpoint at
+   * /builder/<slug>/badge.svg renders 600x80 with the builder name,
+   * product, Stripe-verified date, and wordmark; identical visual
+   * grammar to the in-page card above.
+   *
+   * The link wrapper carries the editorial backlink (rel="external") —
+   * that's the on-page-of-host signal Google reads. The <img> alt text
+   * carries the same Stripe-verified claim so screen readers and
+   * search-snippet pipelines have a non-visual handle on it.
+   *
+   * Why two forms (HTML and markdown):
+   *   - HTML form for personal product sites that accept raw HTML.
+   *   - Markdown form for README files, where `[![](...)](...)` is the
+   *     only embed grammar that renders as a clickable image.
+   *
+   * Why no shields.io: we control the SVG, the cache headers, the
+   * canonical URL, AND the link relationship. Outsourcing the render to
+   * a third party would either lose the canonical anchor or introduce a
+   * dependency the Brunson Hard-Rule can't honestly verify.
+   */
+  const svgUrl = `${badgeUrl}/badge.svg`;
+  const svgHtmlSnippet = `<a href="${badgeUrl}" rel="external">
+  <img src="${svgUrl}" alt="Verified Builder – ${escapeHtml(badge.builderName)} shipped ${escapeHtml(productLabel)} and got paid for it. Verified by Stripe." width="600" height="80" />
+</a>`;
+  const svgMarkdownSnippet = `[![Verified Builder – ${badge.builderName} on Unlock SaaS](${svgUrl})](${badgeUrl})`;
+
+  /**
+   * Review JSON-LD snippet — the off-page E-E-A-T amplifier.
+   *
+   * What this is:
+   *   A schema.org Review block the Verified Builder pastes on their own
+   *   product site (in a <head> or anywhere in <body>; schema.org doesn't
+   *   care about position). Google harvests Review schema from third-
+   *   party domains as long as the `itemReviewed` resolves to a real
+   *   entity — which it does, via the @id anchor pointing at the
+   *   canonical Organization node at unlocksaas.com/#organization.
+   *
+   * What it claims, in Brunson Hard-Rule:
+   *   - Author: the Verified Builder, by public slug — no email, no PII.
+   *   - itemReviewed: Unlock SaaS, by @id.
+   *   - reviewBody: the verifiable fact the badge already states. No
+   *     embellishment, no opinion-laundering. "X shipped Y and got a
+   *     paying customer. Verified by Stripe on DATE."
+   *   - publisher.url: points back at the founder's product URL when one
+   *     is on file. This is the symmetric backlink — UnlockSaaS now has a
+   *     Review schema citing the founder, and the founder's site has a
+   *     Review schema citing UnlockSaaS. Knowledge-graph reciprocity.
+   *
+   * What it deliberately does NOT include:
+   *   - No reviewRating. A rating implies a 1–5 evaluation; this is a
+   *     verifiable fact (cycle happened or didn't), not a graded
+   *     opinion. Brunson aggregateRating-omission rule cascades here:
+   *     no fabricated ratings, ever.
+   *   - No dateModified. The Stripe-verified date IS the publish date.
+   *
+   * Caller responsibility: the founder pastes both the badge link AND
+   * the JSON-LD on the same page. Google reads both, resolves @id, and
+   * the relationship lights up in the structured-data graph.
+   */
+  const reviewJsonLd = JSON.stringify(
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "Organization",
+        "@id": "https://unlocksaas.com/#organization",
+        "name": "Unlock SaaS",
+        "url": "https://unlocksaas.com",
+      },
+      "author": {
+        "@type": "Person",
+        "name": badge.builderName,
+        "url": badgeUrl,
+      },
+      "reviewBody": `${badge.builderName} shipped ${productLabel} and got a paying customer. Verified by Stripe on ${dateStr}.`,
+      "datePublished": badge.firstCustomerAt.toISOString().slice(0, 10),
+      ...(badge.productUrl
+        ? {
+            "publisher": {
+              "@type": "Organization",
+              "name": badge.productName ?? badge.builderName,
+              "url": badge.productUrl,
+            },
+          }
+        : {}),
+    },
+    null,
+    2,
+  );
+  const reviewSnippet = `<script type="application/ld+json">
+${reviewJsonLd}
+</script>`;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
@@ -176,6 +272,65 @@ export default async function EmbedPage(props: Props) {
 
         <Separator className="my-8" />
 
+        {/* ── Snippet 0: SVG image (most portable embed) ───────────────
+            Renders as a 600x80 image on any host that allows <img>:
+            GitHub README, Substack, Medium, Reddit, Notion, every issue
+            tracker. The SVG itself is served from /builder/<slug>/badge
+            .svg with edge caching, so a paste in a popular README costs
+            us roughly one Supabase round-trip per day per visitor pool. */}
+        <section aria-labelledby="svg-html" className="mb-10 space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="svg-html" className="text-xl font-bold">
+              SVG image (HTML)
+            </h2>
+            <CopyButton text={svgHtmlSnippet} label="Copy HTML" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            A self-contained SVG card – the most portable form. Renders
+            identically on GitHub READMEs, Substack, Medium, Reddit,
+            Notion, and any site that allows{" "}
+            <code className="text-xs">&lt;img&gt;</code>. No host CSS, no
+            JavaScript, no tracking.
+          </p>
+          <div className="rounded-md border bg-muted/40 p-4">
+            <img
+              src={svgUrl}
+              alt={`Verified Builder – ${badge.builderName} shipped ${productLabel} and got paid for it. Verified by Stripe on ${dateStr}.`}
+              width={600}
+              height={80}
+              className="block max-w-full h-auto"
+            />
+          </div>
+          <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
+            <code>{svgHtmlSnippet}</code>
+          </pre>
+        </section>
+
+        {/* ── Snippet 0b: SVG image markdown form ──────────────────────
+            The form GitHub READMEs and any markdown-rendered host
+            requires. `[![alt](image)](link)` is the only markdown
+            grammar that produces a clickable image. Same SVG URL, same
+            backlink semantics – the only difference is the wrapping
+            grammar. */}
+        <section aria-labelledby="svg-markdown" className="mb-10 space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="svg-markdown" className="text-xl font-bold">
+              SVG image (markdown)
+            </h2>
+            <CopyButton text={svgMarkdownSnippet} label="Copy markdown" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Drop this into your README.md, your Substack issue, your
+            Notion page. Same SVG, same backlink relationship – the
+            wrapping grammar is the only difference.
+          </p>
+          <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
+            <code>{svgMarkdownSnippet}</code>
+          </pre>
+        </section>
+
+        <Separator className="my-8" />
+
         {/* ── Snippet A: HTML card ──────────────────────────────────── */}
         <section aria-labelledby="card-html" className="mb-10 space-y-3">
           <div className="flex items-baseline justify-between gap-4">
@@ -224,6 +379,37 @@ export default async function EmbedPage(props: Props) {
           </p>
           <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
             <code>{markdownSnippet}</code>
+          </pre>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* ── Snippet D: structured-data block (E-E-A-T amplifier) ─────
+            Paste this on the same page as the badge. Google harvests
+            schema.org Review nodes from third-party domains and resolves
+            the `itemReviewed` @id back to the canonical Organization
+            node at unlocksaas.com/#organization. The founder's own site
+            now feeds Review schema to UnlockSaaS – the off-page E-E-A-T
+            signal that no amount of on-page work can produce. Brunson
+            Hard-Rule: no reviewRating (a 1-5 star claim implies a graded
+            opinion; this is a verifiable cycle, not an opinion). */}
+        <section aria-labelledby="review-jsonld" className="mb-10 space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="review-jsonld" className="text-xl font-bold">
+              Structured data (optional, advanced)
+            </h2>
+            <CopyButton text={reviewSnippet} label="Copy JSON-LD" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste this <code className="text-xs">&lt;script&gt;</code> tag
+            on the same page as the badge above. It tells Google &amp;
+            AI-Overview pipelines that you, by name, ran a Stripe-verified
+            cycle. The Review block carries no rating – the badge is a
+            verifiable fact, not a graded opinion – and never includes
+            your email or any private metadata.
+          </p>
+          <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
+            <code>{reviewSnippet}</code>
           </pre>
         </section>
 

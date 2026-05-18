@@ -69,8 +69,83 @@ export default async function BuilderBadgePage(props: Props) {
     day: "numeric",
   });
 
+  // ────────────────────────────────────────────────────────────────────
+  // JSON-LD — the canonical entity graph anchor for this builder.
+  //
+  // Three nodes, one document:
+  //   1. ProfilePage   — declares this URL as the Person's profile page.
+  //   2. Person        — the Verified Builder, by public slug. Anchored
+  //                      with an @id so the Review schema the founder
+  //                      pastes on their own site (rendered from
+  //                      /builder/<slug>/embed) can `author.@id` resolve
+  //                      back to this node and Google can collapse them
+  //                      into one knowledge-graph entity.
+  //   3. PublishingPrinciples — the Organization that issued the
+  //                      badge (UnlockSaaS), anchored to the canonical
+  //                      Organization @id in src/lib/seo/entity.ts.
+  //
+  // Brunson Hard-Rule reconciliation:
+  //   - No reviewRating, no aggregateRating, no fabricated review count.
+  //     The badge is a verifiable cycle, not an opinion.
+  //   - Person.name uses the public builder name only — never the email,
+  //     the Stripe customer id, or any private field.
+  //   - sameAs is set only when productUrl is on file. Empty array →
+  //     omit the key entirely, never claim a link we cannot prove.
+  // ────────────────────────────────────────────────────────────────────
+  const builderProfileUrl = absoluteBadgeUrl(badge.slug);
+  const personId = `${builderProfileUrl}#person`;
+  const profilePageId = `${builderProfileUrl}#profile`;
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        "@id": profilePageId,
+        "url": builderProfileUrl,
+        "name": `${badge.builderName} — Verified Builder`,
+        "dateCreated": badge.firstCustomerAt.toISOString().slice(0, 10),
+        "mainEntity": { "@id": personId },
+        "isPartOf": { "@id": "https://unlocksaas.com/#website" },
+        "publisher": { "@id": "https://unlocksaas.com/#organization" },
+      },
+      {
+        "@type": "Person",
+        "@id": personId,
+        "name": badge.builderName,
+        "url": builderProfileUrl,
+        "mainEntityOfPage": { "@id": profilePageId },
+        ...(badge.productUrl ? { sameAs: [badge.productUrl] } : {}),
+        // The verifiable badge. Brunson rule: this is a FACT, not a rating.
+        // Modeled as `subjectOf` → CreativeWork because schema.org Person
+        // does not have a "credential" property general enough to carry
+        // a Stripe-verified cycle; CreativeWork+about is the standard
+        // pattern for linking a profile to a documented event.
+        "subjectOf": {
+          "@type": "CreativeWork",
+          "headline": `Verified Builder — first paying customer on ${dateStr}`,
+          "datePublished": badge.firstCustomerAt
+            .toISOString()
+            .slice(0, 10),
+          "about": {
+            "@type": "Organization",
+            "@id": "https://unlocksaas.com/#organization",
+          },
+        },
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <script
+        type="application/ld+json"
+        // Server-rendered, no client-side allocation. Reused exactly as
+        // serialized — Google's structured-data tester accepts pretty
+        // JSON and compact JSON identically.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personJsonLd),
+        }}
+      />
       <main className="flex-1 flex items-center justify-center p-6">
         <article className="w-full max-w-2xl space-y-8">
           {/* Badge */}
