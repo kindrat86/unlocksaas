@@ -388,6 +388,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
     // -------------------------------------------------------------------------
+    // Surface C – Agent retrieval (MCP server).
+    //
+    // /mcp is the human-readable install + tool-catalog page. The actual
+    // MCP server lives at /api/mcp (excluded from the sitemap because the
+    // robots policy disallows /api/*) but the discovery manifest at
+    // /.well-known/mcp.json is listed here so registry crawlers (Vercel MCP
+    // catalog, mcp.run, Smithery) can self-populate from a sitemap fetch.
+    //
+    // hreflang is intentionally omitted – the manifest is a machine schema,
+    // not a translated surface.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/mcp`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/mcp`),
+    },
+    {
+      url: `${base}/.well-known/mcp.json`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    // -------------------------------------------------------------------------
     // Approved locale translations (Surface A — International SEO).
     //
     // One entry per APPROVED (path, locale) pair from

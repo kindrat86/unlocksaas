@@ -69,6 +69,16 @@ Two schema.org \`potentialAction\` declarations on the WebSite block name the tw
 - **SearchAction** → \`${BASE}/search?q={search_term_string}\` — site-wide search across every shipped marketing surface (funnel teardowns, pricing teardowns, head-to-head comparisons, alternatives, category roundups, the main pages). Plain GET. Results are server-rendered HTML grouped by surface. Companion markdown at [${BASE}/search.md](${BASE}/search.md) documents the corpus for AI agents.
 - **AskAction** → \`${BASE}/diagnostic?url={url_input}\` — paste any live product URL, get one of three labeled diagnoses (Wrong Person, Weak Offer, or Weak Belief) plus the specific next step that fixes the labeled problem. The canonical "ask the site to diagnose X" surface.
 
+## Agent retrieval — MCP server
+
+For MCP-aware clients (Claude Desktop, Cursor, Windsurf, mcp-inspector, Vercel MCP catalog), UnlockSaaS exposes a read-only Model Context Protocol server. The AskAction above is the JSON-LD declaration; this server is the executor. The endpoint is stateless Streamable HTTP, no auth, no rate keys:
+
+- **MCP endpoint** → \`${BASE}/api/mcp\` — exposes thirteen tools: \`diagnose_url\` (the live AskAction executor; same engine as the /diagnostic surface), \`list_funnel_teardowns\` / \`get_funnel_teardown\`, \`list_pricing_teardowns\` / \`get_pricing_teardown\`, \`list_comparisons\` / \`get_comparison\`, \`list_alternatives\` / \`find_alternative_to\`, \`list_categories\` / \`get_category\`, \`get_playbook_step\` (1-7), and \`get_faq\`.
+- **Install + tool catalog** → [${BASE}/mcp](${BASE}/mcp) — the canonical human-readable install page with Claude Desktop, Cursor, and MCP Inspector config snippets. Markdown mirror at [${BASE}/mcp.md](${BASE}/mcp.md).
+- **Discovery manifest** → [${BASE}/.well-known/mcp.json](${BASE}/.well-known/mcp.json) — JSON manifest that registries (Vercel MCP catalog, mcp.run, Smithery) ingest to self-populate their listings. Same Brunson Hard-Rule discipline: every advertised capability is implemented by the live endpoint.
+
+Tool payloads are sourced from the same static manifests that render the public HTML pages — no fabricated metrics, no slag, every entry carries a dated lastVerified. The diagnose_url tool returns the same Brunson-labeled diagnosis the live diagnostic engine produces, with a referrer-tagged link back to the full deep-analysis surface.
+
 ## Programmatic SEO surfaces — honest competitor comparisons
 
 - [Alternatives hub](${BASE}/alternatives-to): Index of named-competitor comparison pages. Every entry respects the competitor's real value proposition and names the category difference, not a quality gap.
@@ -119,6 +129,7 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/pricing-teardown.md](${BASE}/pricing-teardown.md)
   - [/compare.md](${BASE}/compare.md)
   - [/category.md](${BASE}/category.md)
+  - [/mcp.md](${BASE}/mcp.md) (MCP server install + tool catalog)
 - Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
 - Per-teardown markdown mirror: \`${BASE}/funnel-teardown/<slug>/md\` — e.g. /funnel-teardown/tally/md.
 - Per-pricing-teardown markdown mirror: \`${BASE}/pricing-teardown/<slug>/md\` — e.g. /pricing-teardown/tally/md.
