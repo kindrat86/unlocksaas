@@ -57,7 +57,9 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 
 - [About](${BASE}/about): Founder bio, topical expertise, editorial position, disclosures.
 - [Press / Media Kit](${BASE}/press): Brand facts, founder bio, descriptions in three lengths (50/100/200 words), topical-expertise list, brand-asset URLs, editorial policy, press contact. Built for re-use by journalists and AI summarisers without contacting the founder.
+- [Press Topics](${BASE}/press/topics): Pre-assembled story packages, one per recognisable angle. Each topic carries a drop-in lede, three pre-approved founder quotes, three data points cited to live URLs, three honest counter-points, fact sheet, embed-ready blockquote, and byline-ready headshot pointer. Built for writers Googling for sources on a specific angle. Per-topic markdown mirrors at \`${BASE}/press/topics/<slug>/md\`.
 - [Editorial Policy](${BASE}/editorial-policy): How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log. The quality-rater anchor page for accountability.
+- [Don't buy Unlock SaaS](${BASE}/dont-buy-unlock-saas): Eight honest disqualifiers and the canonical fit profile, named in plain language before checkout. Wrong-fit-customer screen and Brunson polarity surface. Markdown mirror at [${BASE}/dont-buy-unlock-saas.md](${BASE}/dont-buy-unlock-saas.md).
 - [FAQ](${BASE}/faq): Eight verbatim objections from real Indie Hackers / Hacker News threads and the answers a founder would receive over email.
 - [Contact](${BASE}/contact): Direct line to the founder.
 - [Privacy](${BASE}/privacy), [Terms](${BASE}/terms): Standard legal surfaces.
@@ -103,6 +105,23 @@ Tool payloads are sourced from the same static manifests that render the public 
 
 - [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
 - Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
+
+## Public dataset (CC-BY-4.0)
+
+The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:
+
+- [Landing page](${BASE}/dataset): citation, license, BibTeX, column contracts, conversion recipes for Parquet/Arrow/Excel.
+- [JSON bundle](${BASE}/dataset/indie-saas-teardowns.json): full structured rows for all five tables (funnel_teardowns, pricing_teardowns, comparisons, alternatives, categories) plus schema descriptions and citation metadata.
+- [CSV (flat, all tables)](${BASE}/dataset/indie-saas-teardowns.csv): one row per entry, denormalized to 14 universal columns with a record_type discriminator.
+- Per-table CSVs (richer table-specific columns):
+  - [Funnel teardowns](${BASE}/dataset/tables/funnel-teardowns.csv) – hook/story/offer patterns, Brunson lens, what's working, what to adapt, what to avoid.
+  - [Pricing teardowns](${BASE}/dataset/tables/pricing-teardowns.csv) – pricing model, payment frequency, free-trial behavior, anchor + upgrade-trigger analysis, Brunson lens.
+  - [Head-to-head comparisons](${BASE}/dataset/tables/comparisons.csv) – best-for fields per side, pick-A-if / pick-B-if lists, indie-founder verdict.
+  - [Alternatives](${BASE}/dataset/tables/alternatives.csv) – whatItIs / whatItIsNot, audience fit, honest verdict, capability count.
+  - [Categories](${BASE}/dataset/tables/categories.csv) – canonical buckets, AEO intent paragraphs, raw category matcher strings.
+- [Markdown summary](${BASE}/dataset.md): plain-text overview of the bundle for retrieval pipelines.
+
+License is Creative Commons Attribution 4.0 International (CC-BY-4.0). Re-use is unrestricted; the only obligation is attribution back to ${BASE}/dataset. Versioning is SemVer; downloads ship versioned filenames inside Content-Disposition headers so a cached re-use cannot silently drift.
 
 ## JSON sibling
 

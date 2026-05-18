@@ -54,6 +54,20 @@ export function SignatureFooter() {
             >
               Press
             </Link>
+            {/*
+              Quiet polarity link. Put after Press (canonical trust columns)
+              and before Verified Builder (positive-space proof) so the
+              negative-space "who we aren't for" sits structurally between
+              "who vouches for us" and "who's already crossed the cycle".
+              Surprising-but-not-shouted — the page itself is the artifact,
+              the footer link is just discovery.
+            */}
+            <Link
+              href="/dont-buy-unlock-saas"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Don&apos;t buy this
+            </Link>
             <Link
               href="/builders"
               className="underline underline-offset-4 hover:text-foreground transition-colors"

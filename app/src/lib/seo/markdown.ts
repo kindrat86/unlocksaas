@@ -69,6 +69,12 @@ import {
   getComparisonsInCategory,
 } from "@/lib/categories";
 import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
+import { DISQUALIFIERS, FIT_CRITERIA } from "@/lib/dont-buy";
+import {
+  PRESS_TOPICS,
+  type PressTopic,
+  getPressTopicBySlug,
+} from "@/lib/press-topics";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -569,6 +575,51 @@ _No corrections logged yet._
 ## Sign
 
 Signed ${FOUNDER.name}, founder, ${ORGANIZATION.name}. Editorial policy published 2026-05-17. Last reviewed 2026-05-17.
+`;
+
+// Polarity / anti-marketing page mirror. The disqualifier list and the
+// canonical fit profile both come from src/lib/dont-buy.ts – same registry
+// the HTML page renders, so the two surfaces are identical by construction.
+// Brunson Hard-Rule reconciliation: every disqualifier names a real
+// product constraint a wrong-fit buyer would hit in week one (see
+// src/lib/dont-buy.ts header for the audit). The "what to do instead"
+// pointers, when present, route honestly – sometimes off-site.
+const DONT_BUY_BODY = `# Don't buy Unlock SaaS
+
+> Eight honest disqualifiers and one canonical fit profile, said out loud before checkout.
+
+## TL;DR
+
+Most landing pages tell you who they are for. This one tells you who they are not for, in plain language, before checkout. If any disqualifier below matches, the Playbook is the wrong tool for you and a 60-day refund is the long way of finding that out.
+
+## Eight reasons to walk away
+
+${DISQUALIFIERS.map(
+  (d, i) =>
+    `### ${String(i + 1).padStart(2, "0")}. ${d.title}\n\n${d.body}${
+      d.insteadDo
+        ? `\n\nBetter next step: [${d.insteadDo.label}](${
+            d.insteadDo.href.startsWith("/")
+              ? `${BASE_URL}${d.insteadDo.href}`
+              : d.insteadDo.href
+          }).`
+        : ""
+    }`,
+).join("\n\n")}
+
+## Who the Playbook is for
+
+You are the canonical Unlock SaaS buyer if all four of these are true at the same time.
+
+${FIT_CRITERIA.map((line) => `- ${line}`).join("\n")}
+
+## On the fence?
+
+The free Launch Diagnostic costs nothing, takes about ninety seconds, and labels which of three things is actually broken on your live product page: Wrong Person, Weak Offer, or Weak Belief. Take it at ${BASE_URL}/diagnostic. Whether or not the Playbook is for you, the diagnostic is the cheapest answer to the question "what should I work on first?"
+
+## Sign
+
+Signed ${FOUNDER.name}, founder, ${ORGANIZATION.name}. Published 2026-05-18. Last reviewed 2026-05-18.
 `;
 
 const FAQ_BODY = `# Frequently Asked Questions — Unlock SaaS
@@ -1134,6 +1185,14 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     body: EDITORIAL_POLICY_BODY,
   },
   {
+    path: "/dont-buy-unlock-saas",
+    mdPath: "/dont-buy-unlock-saas.md",
+    title: "Don't buy Unlock SaaS",
+    summary:
+      "Eight honest disqualifiers and one canonical fit profile. Said out loud, before checkout.",
+    body: DONT_BUY_BODY,
+  },
+  {
     path: "/diagnostic",
     mdPath: "/diagnostic.md",
     title: "Free Launch Diagnostic — Unlock SaaS",
@@ -1368,6 +1427,125 @@ export function renderComparisonMarkdown(slug: string): string | undefined {
   ].join("\n");
 }
 
+// ---------------------------------------------------------------------------
+// Press-topic markdown rendering (off-page lift item #7)
+// ---------------------------------------------------------------------------
+
+/**
+ * Build the markdown body for a press-topic page. Same single-source-of-truth
+ * discipline as the alternative / teardown / comparison builders: every
+ * sentence below is generated from the PressTopic entry the HTML page also
+ * renders. Drift is impossible.
+ *
+ * The structure mirrors what a writer needs in order of usefulness:
+ *   1. Thesis (the angle, single sentence)
+ *   2. Lede (drop-in opening paragraph)
+ *   3. Quotes (pre-approved, with usage context)
+ *   4. Data points (with verifiable canonical URLs)
+ *   5. Counter-points (honest disqualifiers – Brunson polarity)
+ *   6. Fact sheet (sidebar / inset values)
+ *   7. Embed code (copy-paste blockquote)
+ *   8. Related surfaces (further linking)
+ *   9. Press contact
+ */
+function buildPressTopicMarkdown(t: PressTopic): string {
+  const lines: string[] = [];
+
+  lines.push(`# ${t.displayName}`);
+  lines.push("");
+  lines.push(`> ${t.thesis}`);
+  lines.push("");
+  lines.push(`Fits for: ${t.fitsFor.join("; ")}.`);
+  lines.push("");
+
+  lines.push("## Drop-in lede");
+  lines.push("");
+  lines.push(t.lede);
+  lines.push("");
+
+  lines.push("## Pre-approved founder quotes");
+  lines.push("");
+  for (const q of t.quotes) {
+    lines.push(`> "${q.text}"`);
+    lines.push(`> — ${FOUNDER.name}, founder, ${ORGANIZATION.name}`);
+    lines.push("");
+    lines.push(`Usage: ${q.context}`);
+    lines.push("");
+  }
+
+  lines.push("## Data points (each verifiable on the live site)");
+  lines.push("");
+  for (const d of t.dataPoints) {
+    lines.push(`- ${d.claim}`);
+    lines.push(`  - Source: ${BASE_URL}${d.sourcePath}`);
+    lines.push(`  - Verify: ${d.verifyNote}`);
+  }
+  lines.push("");
+
+  lines.push("## Honest counter-points");
+  lines.push("");
+  for (const c of t.counterPoints) {
+    lines.push(`- ${c.claim}`);
+    if (c.context) lines.push(`  - Context: ${c.context}`);
+  }
+  lines.push("");
+
+  lines.push("## Fact sheet");
+  lines.push("");
+  for (const row of t.factSheet) {
+    lines.push(`- ${row.label}: ${row.value}`);
+  }
+  lines.push("");
+
+  lines.push("## Embed-ready blockquote");
+  lines.push("");
+  lines.push("```html");
+  lines.push(t.embedHtml);
+  lines.push("```");
+  lines.push("");
+
+  lines.push("## Related surfaces");
+  lines.push("");
+  for (const r of t.relatedSurfaces) {
+    lines.push(`- [${r.label}](${BASE_URL}${r.path})`);
+  }
+  lines.push("");
+
+  lines.push("## Press contact");
+  lines.push("");
+  lines.push(
+    `${FOUNDER.name} (${FOUNDER.jobTitle}). Email: ${FOUNDER.email}. Time zone: EU. Typical response window: within one business day.`,
+  );
+  lines.push("");
+
+  lines.push(`Last verified: ${t.lastVerified}.`);
+
+  return lines.join("\n");
+}
+
+/**
+ * Render a per-press-topic markdown body wrapped in standard front-matter
+ * and citation footer. Powers /press/topics/<slug>/md.
+ */
+export function renderPressTopicMarkdown(
+  slug: string,
+): string | undefined {
+  const t = getPressTopicBySlug(slug);
+  if (!t) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/press/topics/${t.slug}`;
+  return [
+    frontMatter({
+      title: `${t.displayName} – Press kit topic`,
+      summary: t.thesis,
+      canonical: canonicalUrl,
+      updated: t.lastVerified,
+    }),
+    buildPressTopicMarkdown(t).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
 /**
  * Build the concatenated /llms-full.txt body. One canonical entity block at
  * the top, then every surface in order, then every alternative comparison.
@@ -1488,6 +1666,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const pressTopics = PRESS_TOPICS.map((t) => {
+    const canonical = `${BASE_URL}/press/topics/${t.slug}`;
+    const mirror = `${BASE_URL}/press/topics/${t.slug}/md`;
+    return [
+      `## ${t.displayName}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildPressTopicMarkdown(t).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -1511,6 +1704,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Categories — Best SaaS Tools by Category, Analyzed for Indie Founders",
     "",
     categories,
+    "",
+    "# Press Topics — Pre-Assembled Story Packages for Journalists and AI Summarisers",
+    "",
+    pressTopics,
     "",
     citationFooter(BASE_URL),
   ].join("\n");

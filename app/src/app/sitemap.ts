@@ -4,6 +4,7 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -289,6 +290,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
       alternates: hreflang(`${base}/press`),
     },
+    // ---------------------------------------------------------------------
+    // Reverse press kit – pre-assembled story packages for journalists.
+    // Off-page lift item #7 of the 2026-05-18 plan. Hub + per-topic detail
+    // pages, each pre-built around a recognisable story angle with
+    // thesis, founder quote, three data points, three counter-points,
+    // fact sheet, embed code. Data source: src/lib/press-topics.ts.
+    // Adding a new topic auto-extends this block on the next deploy.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/press/topics`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/press/topics`),
+    },
+    ...PRESS_TOPIC_SLUGS.map((slug) => ({
+      url: `${base}/press/topics/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/press/topics/${slug}`),
+    })),
     // Editorial policy + disclosures + corrections log. E-E-A-T Trust
     // uplift (2026-05-17). Google Search Quality Rater Guidelines §3.1
     // and §3.4 explicitly look for a stated editorial policy + a
@@ -302,6 +325,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.4,
       alternates: hreflang(`${base}/editorial-policy`),
+    },
+    // Polarity / anti-marketing page (2026-05-18 off-page uplift). The
+    // disqualifier list is the highest-share-probability surface on the
+    // site — honest-founder accounts on X / LinkedIn / Bluesky link to
+    // pages that turn audience away. Doubles as a wrong-fit-customer
+    // screen before checkout. See strategy/google-strategy.md §B.3.
+    // Crawl priority is moderate (0.5) because the page is intended to
+    // attract inbound links + AI citations, not to rank on its own.
+    {
+      url: `${base}/dont-buy-unlock-saas`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/dont-buy-unlock-saas`),
     },
     {
       url: `${base}/contact`,
@@ -350,6 +387,74 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.2,
       alternates: hreflang(`${base}/terms`),
+    },
+    // -------------------------------------------------------------------------
+    // Public dataset (Surface C – linkable asset / off-page lift).
+    //
+    // /dataset is the landing page that markets the bundled, CC-BY-4.0
+    // licensed Indie SaaS Teardowns Dataset. The two download URLs ship
+    // versioned filenames inside Content-Disposition headers; listing
+    // them here surfaces the artifacts to Google Dataset Search and to
+    // every aggregator that walks sitemaps before crawling. Higher
+    // priority than the llms.txt cluster because these are real,
+    // citable, human-facing assets – not crawler bait.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/dataset`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: hreflang(`${base}/dataset`),
+    },
+    {
+      url: `${base}/dataset/indie-saas-teardowns.json`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${base}/dataset/indie-saas-teardowns.csv`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    // Per-table CSVs – same dataset, narrower slices with table-
+    // specific columns. Lifted at priority 0.45 (just under the bundle
+    // downloads) so Google Dataset Search counts them as distinct
+    // distributions but ranks the bundle higher when a query matches
+    // multiple. Auto-extension: when a new record type lands in
+    // DATASET_PER_TABLE_CSV, add a sitemap entry here in the same
+    // commit so the new distribution is crawler-discoverable on first
+    // deploy.
+    {
+      url: `${base}/dataset/tables/funnel-teardowns.csv`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.45,
+    },
+    {
+      url: `${base}/dataset/tables/pricing-teardowns.csv`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.45,
+    },
+    {
+      url: `${base}/dataset/tables/comparisons.csv`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.45,
+    },
+    {
+      url: `${base}/dataset/tables/alternatives.csv`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.45,
+    },
+    {
+      url: `${base}/dataset/tables/categories.csv`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.45,
     },
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
