@@ -37,6 +37,7 @@ import { PRICING_TEARDOWNS } from "@/lib/pricing-teardowns";
 import { COMPARISONS } from "@/lib/comparisons";
 import { CATEGORIES } from "@/lib/categories";
 import { PRESS_TOPICS } from "@/lib/press-topics";
+import { GLOSSARY } from "@/lib/glossary";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { CopyButton } from "@/components/copy-button";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
@@ -221,6 +222,22 @@ const TOOL_GROUPS: ReadonlyArray<{
     ],
   },
   {
+    group: "Glossary",
+    tools: [
+      {
+        name: "list_glossary_terms",
+        description:
+          "Return slug + term for every entry in the indie SaaS marketing glossary.",
+      },
+      {
+        name: "get_glossary_term",
+        description:
+          "Return the full glossary entry — definition, why-it-matters, origin, related terms, and Unlock SaaS surfaces where the term appears.",
+        inputs: "{ slug: string }",
+      },
+    ],
+  },
+  {
     group: "Cross-catalog",
     tools: [
       {
@@ -245,7 +262,8 @@ const TOTAL_ROWS =
   PRICING_TEARDOWNS.length +
   COMPARISONS.length +
   CATEGORIES.length +
-  PRESS_TOPICS.length;
+  PRESS_TOPICS.length +
+  GLOSSARY.length;
 
 // Client-config JSON for each major MCP client.
 const CLAUDE_DESKTOP_CONFIG = JSON.stringify(

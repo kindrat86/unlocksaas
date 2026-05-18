@@ -6,6 +6,7 @@ import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { DATASET_FILES } from "@/lib/seo/dataset";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
+import { GLOSSARY_SLUGS } from "@/lib/glossary";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -324,6 +325,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.45,
       alternates: hreflang(`${base}/press/topics/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Glossary — seventh pSEO catalog. Data source:
+    // src/lib/glossary.ts. Each /glossary/<slug> page ships DefinedTerm
+    // + FAQPage + BreadcrumbList JSON-LD. The hub ships DefinedTermSet.
+    // Target query class: "what is X?" definition long-tail. AI
+    // Overviews and Perplexity cite DefinedTerm for these queries.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/glossary`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/glossary`),
+    },
+    ...GLOSSARY_SLUGS.map((slug) => ({
+      url: `${base}/glossary/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/glossary/${slug}`),
     })),
     // Editorial policy + disclosures + corrections log. E-E-A-T Trust
     // uplift (2026-05-17). Google Search Quality Rater Guidelines §3.1

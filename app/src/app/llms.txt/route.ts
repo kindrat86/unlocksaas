@@ -95,13 +95,20 @@ Two schema.org \`potentialAction\` declarations on the WebSite block name the tw
 - [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
 - Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 
+## Programmatic SEO surfaces — indie SaaS marketing glossary
+
+Definition-long-tail surface. Each entry ships schema.org DefinedTerm JSON-LD (canonical "what is X" answer type for AI Overviews and Perplexity) plus a sibling FAQPage block surfacing the why-it-matters beat.
+
+- [Glossary hub](${BASE}/glossary): DefinedTermSet anchor, alphabetic index, links to every term.
+- Per-term pages at \`${BASE}/glossary/<slug>\` — \`hook-story-offer\`, \`value-ladder\`, \`dream-100\`, \`soap-opera-sequence\`, \`seinfeld-emails\`, \`attractive-character\`, \`squeeze-page\`, \`oto\`, \`lead-magnet\`, \`stripe-connect\`, \`merchant-of-record\`, \`mrr\`, \`churn\`, \`icp\`, \`verified-builder\`. Each carries DefinedTerm + FAQPage + BreadcrumbList. Markdown mirrors at \`${BASE}/glossary/<slug>/md\` for retrieval pipelines that prefer markdown.
+
 ## MCP server — agent-callable read surface
 
 Sibling of the AskAction declared on the WebSite block, made real. A Model Context Protocol server at \`${BASE}/api/mcp\` (Streamable HTTP) and \`${BASE}/api/sse\` (legacy SSE) exposes every catalog as agent-callable tools. Same source-of-truth as the public site; drift impossible by construction. Read-only — the diagnostic engine is intentionally NOT exposed.
 
 - [MCP hub](${BASE}/mcp): canonical landing page with install snippets for Claude Desktop, Cursor, Cline, Goose; SoftwareApplication JSON-LD; tool catalog. The URL MCP registries should list.
 - Endpoint: \`${BASE}/api/mcp\` — Streamable HTTP.
-- Tools: \`list_funnel_teardowns\`, \`get_funnel_teardown\`, \`list_pricing_teardowns\`, \`get_pricing_teardown\`, \`list_comparisons\`, \`get_comparison\`, \`list_alternatives\`, \`get_alternative\`, \`list_categories\`, \`get_category\`, \`list_press_topics\`, \`get_press_topic\`, \`search\`, \`about\`.
+- Tools: \`list_funnel_teardowns\`, \`get_funnel_teardown\`, \`list_pricing_teardowns\`, \`get_pricing_teardown\`, \`list_comparisons\`, \`get_comparison\`, \`list_alternatives\`, \`get_alternative\`, \`list_categories\`, \`get_category\`, \`list_press_topics\`, \`get_press_topic\`, \`list_glossary_terms\`, \`get_glossary_term\`, \`search\`, \`about\`.
 - Brunson Hard-Rule reconciliation: no tool here will fabricate a diagnostic result. The \`about\` tool's return payload explicitly redirects agents to \`${BASE}/diagnostic\` when a fresh diagnosis of a specific URL is needed.
 
 ## Reverse press kit — pre-assembled story packages

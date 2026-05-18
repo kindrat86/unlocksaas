@@ -54,6 +54,7 @@ import { PRICING_TEARDOWNS } from "@/lib/pricing-teardowns";
 import { COMPARISONS } from "@/lib/comparisons";
 import { CATEGORIES } from "@/lib/categories";
 import { PRESS_TOPICS, getPressTopic } from "@/lib/press-topics";
+import { GLOSSARY, getGlossaryTerm } from "@/lib/glossary";
 
 const BASE = "https://unlocksaas.com";
 
@@ -440,6 +441,70 @@ const handler = createMcpHandler(
     );
 
     // ──────────────────────────────────────────────────────────────
+    // Glossary — indie SaaS marketing + Brunson framework vocabulary
+    // ──────────────────────────────────────────────────────────────
+    server.registerTool(
+      "list_glossary_terms",
+      {
+        title: "List glossary terms",
+        description:
+          "Return slug + term for every entry in the indie SaaS marketing glossary. Each entry carries a definition, why-it-matters note, term origin, related terms, and live cross-links into the Unlock SaaS surfaces where the term appears.",
+        inputSchema: {},
+      },
+      async () => {
+        const summary = GLOSSARY.map((t) => ({
+          slug: t.slug,
+          name: t.term,
+        }));
+        return {
+          content: [
+            { type: "text", text: `${summary.length} glossary terms on file.` },
+            { type: "text", text: JSON.stringify(summary, null, 2) },
+          ],
+        };
+      },
+    );
+
+    server.registerTool(
+      "get_glossary_term",
+      {
+        title: "Get glossary term",
+        description:
+          "Return the full glossary entry for one term, by slug. Includes definition, alternative names, why-it-matters beat, origin attribution, optional example or pitfall, related terms by slug, and a list of Unlock SaaS surfaces where the term appears in context.",
+        inputSchema: {
+          slug: z
+            .string()
+            .min(1)
+            .describe(
+              "Kebab-case glossary slug. Use list_glossary_terms to discover slugs.",
+            ),
+        },
+      },
+      async ({ slug }) => {
+        const row = getGlossaryTerm(slug);
+        if (!row) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `No glossary entry on file for "${slug}". Call list_glossary_terms to discover available slugs.`,
+              },
+            ],
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text",
+              text: `${row.term} (origin: ${row.origin}). Canonical: ${BASE}/glossary/${row.slug}. Verified ${row.lastVerified}.`,
+            },
+            { type: "text", text: JSON.stringify(row, null, 2) },
+          ],
+        };
+      },
+    );
+
+    // ──────────────────────────────────────────────────────────────
     // Cross-catalog search — the fuzzy entry point
     // ──────────────────────────────────────────────────────────────
     server.registerTool(
@@ -524,6 +589,19 @@ const handler = createMcpHandler(
           url: `${BASE}/press/topics/${t.slug}`,
         }));
 
+        const glossaryMatches = GLOSSARY.filter(
+          (t) =>
+            t.slug.includes(q) ||
+            t.term.toLowerCase().includes(q) ||
+            t.alsoKnownAs.some((a) => a.toLowerCase().includes(q)) ||
+            t.definition.toLowerCase().includes(q),
+        ).map((t) => ({
+          catalog: "glossary",
+          slug: t.slug,
+          name: t.term,
+          url: `${BASE}/glossary/${t.slug}`,
+        }));
+
         const all = [
           ...altMatches,
           ...teardownMatches,
@@ -531,6 +609,7 @@ const handler = createMcpHandler(
           ...comparisonMatches,
           ...categoryMatches,
           ...pressMatches,
+          ...glossaryMatches,
         ];
 
         return {
@@ -588,6 +667,7 @@ const handler = createMcpHandler(
                     comparisons: COMPARISONS.length,
                     categories: CATEGORIES.length,
                     press_topics: PRESS_TOPICS.length,
+                    glossary: GLOSSARY.length,
                   },
                   hand_off: {
                     diagnostic: `${BASE}/diagnostic`,
