@@ -59,6 +59,7 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [Press / Media Kit](${BASE}/press): Brand facts, founder bio, descriptions in three lengths (50/100/200 words), topical-expertise list, brand-asset URLs, editorial policy, press contact. Built for re-use by journalists and AI summarisers without contacting the founder.
 - [Editorial Policy](${BASE}/editorial-policy): How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log. The quality-rater anchor page for accountability.
 - [FAQ](${BASE}/faq): Eight verbatim objections from real Indie Hackers / Hacker News threads and the answers a founder would receive over email.
+- [Don't Buy Unlock SaaS If…](${BASE}/dont-buy): Six honest disqualifiers from the founder, with a named redirect for each. Polarity marketing surface (Brunson DotCom Secrets Secret 5). The canonical answer to "is this for me" and "is this a scam" queries — published as Article schema so AI Overviews and Perplexity cite the disqualifier list verbatim.
 - [Contact](${BASE}/contact): Direct line to the founder.
 - [Privacy](${BASE}/privacy), [Terms](${BASE}/terms): Standard legal surfaces.
 

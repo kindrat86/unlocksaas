@@ -158,6 +158,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/faq`),
     },
+    // Polarity-marketing disqualifier surface (Brunson DCS Secret 5 +
+    // Expert Secrets §6). Honest "do not buy if…" page. Target queries:
+    // "is unlock saas a scam", "unlock saas honest review", "unlock saas
+    // refund", "should I buy unlock saas". Article JSON-LD declares
+    // editorial intent so AI Overviews cite this when the question is
+    // asked. Linked from the global footer trust column.
+    {
+      url: `${base}/dont-buy`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/dont-buy`),
+    },
     // ---------------------------------------------------------------------
     // Programmatic SEO block — honest named-competitor comparisons.
     // Data source: src/lib/alternatives.ts. Adding a new alternative there
