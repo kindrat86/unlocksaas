@@ -1,0 +1,129 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Unlock SaaS//@unlocksaas/seo launch schedule//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:@unlocksaas/seo launch schedule
+X-WR-CALDESC:Time-boxed launch cadence for the @unlocksaas/seo package off-page-SEO play. Drag this file into Calendar.app, Google Calendar, or Outlook to import.
+X-WR-TIMEZONE:Europe/Athens
+
+BEGIN:VTIMEZONE
+TZID:Europe/Athens
+X-LIC-LOCATION:Europe/Athens
+BEGIN:STANDARD
+DTSTART:19701025T040000
+TZOFFSETFROM:+0300
+TZOFFSETTO:+0200
+TZNAME:EET
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:19700329T030000
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0300
+TZNAME:EEST
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+END:VTIMEZONE
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-launch-twitter-20260519T173000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260519T173000
+DTEND;TZID=Europe/Athens:20260519T180000
+SUMMARY:🐦 Twitter thread (T-30 to Show HN)
+DESCRIPTION:Post the 7-tweet thread BEFORE the Show HN submission.\n\nCommand:\n  bash packages/seo/scripts/launch-helper.sh twitter\n\nDraft: packages/seo/marketing/twitter-thread.md\n\nGoal: seed engagement that compounds with the HN front-page push.\n\nPin tweet 1 to your profile for 48h after posting.
+URL:https://x.com/compose/post
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-launch-hn-20260519T180000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260519T180000
+DTEND;TZID=Europe/Athens:20260519T200000
+SUMMARY:🟠 Show HN — submission window (HIGHEST LEVERAGE POST)
+DESCRIPTION:The single most important post of the campaign.\n\nCommand:\n  bash packages/seo/scripts/launch-helper.sh hn\n\nDraft: packages/seo/marketing/show-hn.md (read the ⚡ PASTE-READY block)\n\nAfter submitting:\n  • Within 60 seconds: paste the TOP COMMENT as a reply\n  • Reply to every comment within 15 minutes for the first 4h\n  • Do NOT edit the title (HN treats this as gaming)\n  • Do NOT ask anyone to upvote (vote-ring detection)
+URL:https://news.ycombinator.com/submit
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Show HN launch window opens in 5 minutes
+TRIGGER:-PT5M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Show HN launch — submit now
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-launch-ih-20260519T220000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260519T220000
+DTEND;TZID=Europe/Athens:20260519T223000
+SUMMARY:🤝 Indie Hackers (post after HN has settled)
+DESCRIPTION:Post on IH 4 hours after the Show HN submission.\n\nCommand:\n  bash packages/seo/scripts/launch-helper.sh ih\n\nDraft: packages/seo/marketing/indiehackers.md\n\nCategory: Building (NOT Marketing).\n\nIf HN hit front page: add "Previously on HN: <link>" at the top of the IH body.\nIf HN did not: omit any HN reference.
+URL:https://www.indiehackers.com/post/new
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-launch-reddit-saas-20260520T160000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260520T160000
+DTEND;TZID=Europe/Athens:20260520T170000
+SUMMARY:🟢 /r/SaaS launch window
+DESCRIPTION:Post to /r/SaaS on Wednesday morning US Eastern.\n\nCommand:\n  bash packages/seo/scripts/launch-helper.sh reddit-saas\n\nDraft: packages/seo/marketing/reddit-saas.md\n\nPick TEXT post (not Link). The link goes in the FIRST COMMENT only.\nNo product name in the title — /r/SaaS auto-removes those.\n\nReply to every top-level comment within 30 minutes for the first 4 hours.
+URL:https://www.reddit.com/r/SaaS/submit
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:/r/SaaS launch in 15 minutes
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-launch-reddit-programming-20260522T160000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260522T160000
+DTEND;TZID=Europe/Athens:20260522T170000
+SUMMARY:🔵 /r/programming launch (72h+ after r/SaaS)
+DESCRIPTION:Different angle from r/SaaS. /r/programming is engineers — lead with the technical bit, not the SEO play.\n\nCommand:\n  bash packages/seo/scripts/launch-helper.sh reddit-programming\n\nDraft: packages/seo/marketing/reddit-programming.md\n\nPick LINK post — the GitHub repo IS the link.\nFirst comment must be technical-decisions seed, not a pitch.
+URL:https://www.reddit.com/r/programming/submit
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:/r/programming launch in 15 minutes
+TRIGGER:-PT15M
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-checkin-awesome-lists-20260521T100000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260521T100000
+DTEND;TZID=Europe/Athens:20260521T101500
+SUMMARY:📋 Awesome-list PR check-in (Awesome-llms-txt #50)
+DESCRIPTION:72h check-in on the Awesome-llms-txt #50 submission.\n\nIf merged: 🎉. If commented: respond.\nIf silent: leave it — maintainer batches PRs.\n\nDo NOT ping unless 14+ days of silence.
+URL:https://github.com/SecretiveShell/Awesome-llms-txt/pull/50
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-checkin-awesome-seo-tools-20260525T100000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260525T100000
+DTEND;TZID=Europe/Athens:20260525T101500
+SUMMARY:📋 Awesome-list PR check-in (awesome-seo-tools #209)
+DESCRIPTION:7-day check-in on the serpapi/awesome-seo-tools #209 submission.\n\nIf merged: 🎉. If commented: respond.\nIf silent for 14 days from open date: ping politely on the PR.
+URL:https://github.com/serpapi/awesome-seo-tools/pull/209
+END:VEVENT
+
+BEGIN:VEVENT
+UID:unlocksaas-seo-star-check-20260526T100000@unlocksaas.com
+DTSTAMP:20260518T200000Z
+DTSTART;TZID=Europe/Athens:20260526T100000
+DTEND;TZID=Europe/Athens:20260526T103000
+SUMMARY:⭐ Star-milestone check (open deferred awesome-list PRs)
+DESCRIPTION:Check GitHub star count on github.com/kindrat86/unlocksaas (or unlocksaas-seo mirror if created).\n\nMilestones to unlock the next awesome-list batch:\n  • ≥10⭐ → teles/awesome-seo\n  • ≥20⭐ → bmpi-dev/awesome-seo + analysis-tools-dev/static-analysis (also needs ≥3mo project age, so unlock 2026-08-18+)\n  • ≥50⭐ → unicodeveloper/awesome-nextjs + mahseema/awesome-ai-tools\n  • ≥200⭐ → Hannibal046/Awesome-LLM\n\nOpen one PR per list as criteria are met. Track in packages/seo/marketing/awesome-lists.md.
+URL:https://github.com/kindrat86/unlocksaas
+END:VEVENT
+
+END:VCALENDAR
