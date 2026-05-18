@@ -13,6 +13,9 @@ drafts/
 logs/
 inbox-cache/
 
+# Operator dashboard — generated artifact (template + script are committed)
+monitoring/dashboard.html
+
 # Claude Code per-user / per-worktree state
 .claude/settings.local.json
 .claude/worktrees/
