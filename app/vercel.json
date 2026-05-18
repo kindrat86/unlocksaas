@@ -40,6 +40,10 @@
     {
       "path": "/api/cron/gsc-feedback",
       "schedule": "0 19 * * *"
+    },
+    {
+      "path": "/api/cron/teardown-courtesy",
+      "schedule": "0 13 * * 1-5"
     }
   ]
 }
