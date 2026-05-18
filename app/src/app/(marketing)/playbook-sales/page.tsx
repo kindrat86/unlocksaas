@@ -25,6 +25,9 @@ import {
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { PLAYBOOK_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
+import { loadPublicBadgeCount } from "@/lib/builder-badge";
+import { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
+import { createAdminClient } from "@/lib/supabase/server";
 
 /**
  * Per-page metadata. Surface A of strategy/google-strategy.md — this page is
@@ -58,6 +61,27 @@ export const metadata: Metadata = {
 };
 
 /**
+ * ISR revalidation window for the badge-count read.
+ *
+ * The page reads `loadPublicBadgeCount()` to fold a Stripe-verified
+ * AggregateRating into the SoftwareApplication schema. A new verified
+ * cycle (and therefore a count bump) lands at most a few times per
+ * week, so a 1-hour window is generous on freshness and avoids burning
+ * the page into a per-request dynamic render.
+ *
+ * Without this directive the `await loadPublicBadgeCount()` call would
+ * push the route to dynamic rendering, costing a Supabase round-trip
+ * per request for a number that changes ~weekly.
+ *
+ * Operator follow-up: wire a Supabase webhook on insert into
+ * verified_conversions to POST `/api/revalidate` with the canonical paths
+ * `/playbook-sales`, `/`, `/builders` for sub-second propagation. The
+ * 1-hour ISR window then becomes a fallback heartbeat, not the primary
+ * propagation channel.
+ */
+export const revalidate = 3600;
+
+/**
  * Long-form $49 Playbook sales page.
  *
  * Structure is locked by workbook 07 (10x Secrets / One-to-Many Selling):
@@ -88,7 +112,24 @@ export const metadata: Metadata = {
  * INP) and lets the page export per-route Metadata (SEO: real title +
  * description + canonical, not the layout-template fallback).
  */
-export default function PlaybookSalesPage() {
+export default async function PlaybookSalesPage() {
+  // Stripe-verified, public-shared Verified Builder count. Drives the
+  // AggregateRating sub-graph on the SoftwareApplication schema below.
+  // Read via the service-role admin client (the same client every other
+  // builder-data surface uses — avatar wall, /builder/<slug>, embed kit
+  // — so all six surfaces see the same number). The `builder_badges`
+  // view already filters out private profiles and missing
+  // first-customer timestamps; the count returned is the canonical
+  // "real, public, Stripe-verified" total.
+  //
+  // Brunson Hard-Rule: buildPlaybookAggregateRating returns null when
+  // count <= 0. Passing `null` to <PlaybookProductJsonLd> falls through
+  // to the rating-less constant — no fabricated rating is ever emitted.
+  const verifiedBadgeCount = await loadPublicBadgeCount(createAdminClient());
+  const playbookAggregateRating = buildPlaybookAggregateRating(
+    verifiedBadgeCount
+  );
+
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       {/* Surface B (AEO/GEO) — strategy/google-strategy.md §B.2.
@@ -96,8 +137,10 @@ export default function PlaybookSalesPage() {
           answers comparator queries ("alternatives to ShipFast",
           "tool that helps me get my first SaaS customer").
           BreadcrumbList earns the SERP sitelink and helps Google render
-          the (Home › The Playbook) crumb under the page title. */}
-      <PlaybookProductJsonLd />
+          the (Home › The Playbook) crumb under the page title.
+          AggregateRating is folded in only when verifiedBadgeCount >= 1
+          — see Brunson Hard-Rule note above. */}
+      <PlaybookProductJsonLd aggregateRating={playbookAggregateRating} />
       {/* HowTo with 7 named, numbered HowToSteps for the Playbook. Schema
           mirrors PLAYBOOK_STEPS (single source of truth shared with
           /llms-full.txt). Voice-engine eligibility via Speakable cssSelector
@@ -223,7 +266,11 @@ export default function PlaybookSalesPage() {
         </section>
 
         {/* Building Block #20 — Social Proof Bar (honest variant). */}
-        <SocialProofBar />
+        {/* SocialProofBar receives the SAME verifiedBadgeCount that feeds
+            the AggregateRating schema above. Locks the visible "N Verified
+            Builders" line to the schema's ratingCount — no DOM↔schema
+            drift, no Rich Result demotion risk. */}
+        <SocialProofBar verifiedCount={verifiedBadgeCount} />
 
         <Separator className="my-12" />
 

@@ -41,6 +41,10 @@ import {
   WORLDWIDE_PLACE,
 } from "@/lib/seo/entity";
 import { getEarnedMentions, type MediaMention } from "@/lib/media-mentions";
+import {
+  buildPlaybookAggregateRating,
+  type PlaybookAggregateRatingNode,
+} from "@/lib/seo/review-rating";
 
 const BASE = "https://unlocksaas.com";
 
@@ -584,7 +588,30 @@ const PLAYBOOK_HOWTO_JSON = JSON.stringify({
 //     as a structured learning resource; AI training pipelines for
 //     educational corpora prioritise this type. Honest: the Playbook IS
 //     a seven-step instructional surface, this is not stretching the type.
-const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
+//
+// aggregateRating wiring (2026-05-18 off-page uplift)
+// ---------------------------------------------------
+// The Playbook block now accepts an OPTIONAL aggregateRating node. The
+// no-arg call (`buildPlaybookProductJson()`) preserves the previous
+// rating-omitted output, byte-for-byte. The PLAYBOOK_PRODUCT_JSON_BASE
+// constant memoises that hot path so root-layout / non-canonical callers
+// pay zero allocation.
+//
+// When the canonical /playbook-sales surface fetches the current count of
+// Stripe-verified, publicly-shared builder badges, it passes a non-null
+// AggregateRating sub-graph through; the builder folds it into the
+// SoftwareApplication node so Google's Review Rich Result resolves the
+// aggregate to the same `@id` (ID.product) the per-builder Review nodes
+// reference cross-document.
+//
+// Brunson Hard-Rule reconciliation: the AggregateRating node is supplied
+// only by `buildPlaybookAggregateRating(count)` in lib/seo/review-rating.ts,
+// which returns null when count <= 0. There is no code path through which
+// a fabricated rating can ship.
+function buildPlaybookProductJson(opts?: {
+  aggregateRating?: PlaybookAggregateRatingNode | null;
+}): string {
+  const node = {
   "@context": "https://schema.org",
   "@type": ["Product", "SoftwareApplication", "LearningResource"],
   "@id": ID.product,
@@ -681,8 +708,24 @@ const PLAYBOOK_PRODUCT_JSON = JSON.stringify({
       url: `${BASE}/playbook-sales#guarantee`,
     },
   },
-  // aggregateRating intentionally omitted – see file header.
-});
+  // aggregateRating is folded in below when supplied. The pre-condition that
+  // guards against fabrication lives in buildPlaybookAggregateRating().
+  };
+  if (opts?.aggregateRating) {
+    return JSON.stringify({ ...node, aggregateRating: opts.aggregateRating });
+  }
+  return JSON.stringify(node);
+}
+
+/**
+ * Memoised, rating-less default. The root layout, root page, and any other
+ * surface that emits the Playbook node without a fresh badge count gets
+ * this string for free — no per-render allocation, no Supabase round-trip.
+ *
+ * The canonical /playbook-sales surface bypasses this constant via
+ * `buildPlaybookProductJson({ aggregateRating: ... })`.
+ */
+const PLAYBOOK_PRODUCT_JSON = buildPlaybookProductJson();
 
 // --- Playbook as Course ----------------------------------------------------
 // The Playbook is a seven-step, instructor-led, time-bounded learning
@@ -1127,13 +1170,38 @@ export function DiagnosticJsonLd() {
 /**
  * Product schema. Render on `/playbook-sales`.
  *
- * aggregateRating is intentionally omitted until verified customers with
- * public ratings exist. Brunson Hard-Rule (honest claims): no fabricated
- * review counts in structured data, ever.
+ * aggregateRating handling (2026-05-18 off-page uplift):
+ *   - Callers that DO NOT pass `aggregateRating` get the memoised
+ *     rating-less constant (PLAYBOOK_PRODUCT_JSON). Same byte output the
+ *     site has always shipped; no Supabase round-trip on root layout etc.
+ *   - Callers that pass a non-null `aggregateRating` (see
+ *     `buildPlaybookAggregateRating` in lib/seo/review-rating.ts, fed by
+ *     `loadPublicBadgeCount` in lib/builder-badge.ts) get the same node
+ *     with `aggregateRating` folded in. Google + LLM retrievers resolve
+ *     the aggregate against the parent `@id` (ID.product) which the
+ *     per-builder Review nodes also reference — one entity, N reviews,
+ *     deterministic count.
+ *
+ * Brunson Hard-Rule: no fabricated review counts in structured data, ever.
+ * The pre-condition that guards against fabrication lives upstream in
+ * `buildPlaybookAggregateRating`, which returns null when count <= 0;
+ * callers MUST forward a `null` result as `undefined` (or simply skip the
+ * prop) so the rating block is omitted entirely rather than emitted empty.
  */
-export function PlaybookProductJsonLd() {
-  return <JsonLdScript json={PLAYBOOK_PRODUCT_JSON} />;
+export function PlaybookProductJsonLd({
+  aggregateRating,
+}: {
+  aggregateRating?: PlaybookAggregateRatingNode | null;
+} = {}) {
+  const json = aggregateRating
+    ? buildPlaybookProductJson({ aggregateRating })
+    : PLAYBOOK_PRODUCT_JSON;
+  return <JsonLdScript json={json} />;
 }
+
+// Re-export so callers can avoid a second import path for the helper.
+export { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
+export type { PlaybookAggregateRatingNode } from "@/lib/seo/review-rating";
 
 /**
  * Course schema for the Playbook. Render on `/playbook-sales` next to

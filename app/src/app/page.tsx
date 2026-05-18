@@ -28,6 +28,8 @@ import {
   FounderVslAudioJsonLd,
   PersonJsonLd,
 } from "@/components/seo/json-ld";
+import { loadPublicBadgeCount } from "@/lib/builder-badge";
+import { createAdminClient } from "@/lib/supabase/server";
 
 /**
  * UnlockSaaS Funnel Hub — Perfect Webinar arc.
@@ -79,6 +81,16 @@ import {
 export default async function FunnelHub() {
   const variant = await readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
+  // Stripe-verified Verified Builder count. Powers the visible
+  // "N Verified Builders" slot in SocialProofBar AND keeps the funnel
+  // hub in lock-step with the AggregateRating ratingCount that ships
+  // from /playbook-sales. Same Supabase view, same number, three
+  // surfaces (funnel hub, /playbook-sales, /builders).
+  //
+  // Brunson Hard-Rule: SocialProofBar's `verifiedCount` prop falls back
+  // to the conversation-corpus copy when the count is 0 — no "0
+  // Verified Builders" line ever ships.
+  const verifiedBadgeCount = await loadPublicBadgeCount(createAdminClient());
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -111,7 +123,7 @@ export default async function FunnelHub() {
       <BigDomino />
 
       {/* ---------------- 3. STRUCTURAL PROOF BAR ---------------- */}
-      <SocialProofBar />
+      <SocialProofBar verifiedCount={verifiedBadgeCount} />
 
       {/* ---------------- 4. EARNED MEDIA (pre-staged) ---------------- */}
       <MediaBar />
