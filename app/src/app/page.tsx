@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { FunnelHubViewedTracker } from "@/components/analytics/funnel-hub-viewed-tracker";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
 import { TopTagline } from "@/components/blocks/top-tagline";
@@ -91,6 +92,7 @@ export default function FunnelHub() {
           (Brunson Hard-Rule: no contentUrl, no declaration). */}
       <FounderVslAudioJsonLd />
       <AbExposureBeacon />
+      <FunnelHubViewedTracker />
 
       {/* ---------------- 0. TOP TAGLINE ---------------- */}
       <TopTagline />
