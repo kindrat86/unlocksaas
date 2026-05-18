@@ -1140,6 +1140,20 @@ export function getAlternativeBySlug(slug: string): Alternative | undefined {
 }
 
 /**
+ * O(1) existence check for cross-pattern callouts.
+ *
+ * Mirrors hasPricingTeardown() in src/lib/pricing-teardowns.ts so the
+ * funnel-teardown and pricing-teardown routes can surface a "Compare to
+ * Unlock SaaS" callout when an /alternatives-to/{slug} page exists for the
+ * same product. Closes the same-company cluster: a reader on
+ * /funnel-teardown/asana can jump to /alternatives-to/asana to read the
+ * substitution-intent answer without re-searching.
+ */
+export function hasAlternative(slug: string): boolean {
+  return ALTERNATIVES_BY_SLUG.has(slug);
+}
+
+/**
  * Return up to `limit` alternatives most-related to the seed slug, ranked by
  * tag-overlap count (descending), excluding the seed itself.
  *

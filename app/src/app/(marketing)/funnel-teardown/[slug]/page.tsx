@@ -12,6 +12,7 @@ import {
   type FunnelTeardown,
 } from "@/lib/funnel-teardowns";
 import { hasPricingTeardown } from "@/lib/pricing-teardowns";
+import { hasAlternative } from "@/lib/alternatives";
 import { getComparisonsForProductSlug } from "@/lib/comparisons";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
@@ -217,6 +218,7 @@ export default function FunnelTeardownPage({
   const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(t, canonicalUrl);
   const related = getRelatedTeardowns(t.slug, 4);
   const hasPricing = hasPricingTeardown(t.slug);
+  const hasAlt = hasAlternative(t.slug);
   const comparisons = getComparisonsForProductSlug(t.slug);
   const category = getCategoryByRawString(t.category);
 
@@ -323,6 +325,30 @@ export default function FunnelTeardownPage({
               className="text-sm font-semibold text-primary hover:underline shrink-0"
             >
               Read the pricing teardown →
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Alternatives-to cross-pattern callout when an alternatives entry exists */}
+      {hasAlt ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-2"
+          aria-labelledby="alt-cross"
+        >
+          <h2 id="alt-cross" className="sr-only">
+            Compare to Unlock SaaS
+          </h2>
+          <div className="rounded-lg border border-border bg-card px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+            <p className="text-sm leading-relaxed">
+              Wondering if <span className="font-semibold">{t.displayName}</span>{" "}
+              is an Unlock SaaS alternative?
+            </p>
+            <Link
+              href={`/alternatives-to/${t.slug}`}
+              className="text-sm font-semibold text-primary hover:underline shrink-0"
+            >
+              Read the honest comparison →
             </Link>
           </div>
         </section>
