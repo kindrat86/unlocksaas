@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { localesWithApprovedContent } from "@/lib/i18n/registry";
 
 /**
  * robots.txt for UnlockSaaS — Surface A (crawl) + Surface B (AEO/GEO) policy.
@@ -42,8 +43,11 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   const base = "https://unlocksaas.com";
 
-  // Private surfaces re-used across rule groups.
-  const PRIVATE_DISALLOW = [
+  // Private surfaces (en-US canonical paths). Locale variants are
+  // appended below for every locale with at least one approved
+  // translation — defence-in-depth so private subtrees are blocked under
+  // every advertised locale prefix.
+  const PRIVATE_DISALLOW_CANONICAL = [
     "/playbook/",
     "/api/",
     "/auth/",
@@ -53,6 +57,18 @@ export default function robots(): MetadataRoute.Robots {
     "/oto",
     "/welcome",
     "/onboarding",
+  ];
+
+  // Locales with at least one approved translation get their private
+  // subtree mirrored. Locales with zero approved content are NOT mentioned
+  // at all — advertising an unbuilt subtree would invite crawlers into a
+  // 404 graveyard.
+  const ACTIVE_LOCALES = localesWithApprovedContent();
+  const PRIVATE_DISALLOW = [
+    ...PRIVATE_DISALLOW_CANONICAL,
+    ...ACTIVE_LOCALES.flatMap((loc) =>
+      PRIVATE_DISALLOW_CANONICAL.map((p) => `/${loc}${p}`),
+    ),
   ];
 
   // AI crawlers we explicitly welcome. Each one either powers a citation
