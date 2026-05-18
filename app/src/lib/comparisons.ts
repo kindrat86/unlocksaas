@@ -787,7 +787,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "beehiiv-vs-substack",
     a: { name: "Beehiiv", teardownSlug: "beehiiv", url: "https://www.beehiiv.com/" },
-    b: { name: "Substack", url: "https://substack.com/" },
+    b: { name: "Substack", teardownSlug: "substack", url: "https://substack.com/" },
     category: "Newsletter platform",
     oneLine:
       "Beehiiv treats your newsletter as a business; Substack treats your newsletter as a publication. The right pick depends on which one is true for you.",
@@ -1433,7 +1433,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "linear-vs-asana",
     a: { name: "Linear", teardownSlug: "linear", url: "https://linear.app/" },
-    b: { name: "Asana", url: "https://asana.com/" },
+    b: { name: "Asana", teardownSlug: "asana", url: "https://asana.com/" },
     category: "Project management",
     oneLine:
       "Linear is for engineering teams who hate Jira. Asana is for cross-functional teams who never wanted Jira in the first place.",
@@ -4270,7 +4270,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "notion-vs-airtable",
     a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
-    b: { name: "Airtable", url: "https://www.airtable.com/" },
+    b: { name: "Airtable", teardownSlug: "airtable", url: "https://www.airtable.com/" },
     category: "Productivity and workspace",
     oneLine:
       "Notion is a docs canvas with databases bolted in. Airtable is a database with docs and apps bolted in. Different centers of gravity in the same broad workspace category.",
@@ -4692,7 +4692,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "figma-vs-framer",
     a: { name: "Figma", teardownSlug: "figma", url: "https://www.figma.com/" },
-    b: { name: "Framer", url: "https://www.framer.com/" },
+    b: { name: "Framer", teardownSlug: "framer", url: "https://www.framer.com/" },
     category: "Design and prototyping",
     oneLine:
       "Figma owns design collaboration. Framer expanded from prototyping into design-and-publish. Different parts of the design lifecycle.",
@@ -4898,7 +4898,7 @@ const COMPARISONS_LIST: Comparison[] = [
 
   {
     slug: "airtable-vs-coda",
-    a: { name: "Airtable", url: "https://www.airtable.com/" },
+    a: { name: "Airtable", teardownSlug: "airtable", url: "https://www.airtable.com/" },
     b: { name: "Coda", url: "https://coda.io/" },
     category: "Productivity and workspace",
     oneLine:
@@ -5006,7 +5006,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "trello-vs-asana",
     a: { name: "Trello", url: "https://trello.com/" },
-    b: { name: "Asana", url: "https://asana.com/" },
+    b: { name: "Asana", teardownSlug: "asana", url: "https://asana.com/" },
     category: "Project management",
     oneLine:
       "Trello is the Kanban-for-everyone simple board. Asana is the cross-functional structured PM platform. Different complexity levels for different team sizes.",
@@ -5112,7 +5112,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "clickup-vs-asana",
     a: { name: "ClickUp", teardownSlug: "clickup", url: "https://clickup.com/" },
-    b: { name: "Asana", url: "https://asana.com/" },
+    b: { name: "Asana", teardownSlug: "asana", url: "https://asana.com/" },
     category: "Project management",
     oneLine:
       "ClickUp consolidates everything in one configurable platform. Asana focuses on structured project management with depth. Bundling vs specialization.",
@@ -5218,7 +5218,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "webflow-vs-framer",
     a: { name: "Webflow", url: "https://webflow.com/" },
-    b: { name: "Framer", url: "https://www.framer.com/" },
+    b: { name: "Framer", teardownSlug: "framer", url: "https://www.framer.com/" },
     category: "Design and prototyping",
     oneLine:
       "Webflow is the canonical no-code site builder with mature CMS depth. Framer is the design-first publisher built for designers who reject code workflows.",
@@ -5325,7 +5325,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "mailchimp-vs-substack",
     a: { name: "Mailchimp", url: "https://mailchimp.com/" },
-    b: { name: "Substack", url: "https://substack.com/" },
+    b: { name: "Substack", teardownSlug: "substack", url: "https://substack.com/" },
     category: "Newsletter and creator email",
     oneLine:
       "Mailchimp is the legacy small-business marketing platform. Substack is the modern publication network. Different jobs despite both shipping emails.",

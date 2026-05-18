@@ -2237,6 +2237,346 @@ const TEARDOWNS_LIST: FunnelTeardown[] = [
     homepageUrl: "https://www.gitbook.com/",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "asana",
+    displayName: "Asana",
+    creator: "Dustin Moskovitz and Justin Rosenstein",
+    category: "Project management",
+    oneLine:
+      "Asana's funnel runs on cross-functional-PM-default positioning. The marketing sells coordination as the work itself — not as overhead.",
+    tldr:
+      "Asana's funnel works because the marketing reframes cross-functional coordination as the work, not as overhead. The hero leads with goal hierarchy and timeline views; case studies feature marketing, design, ops, and engineering teams coordinating on the same projects. The lesson for indie founders: when your category buyer treats your product as overhead, the highest-leverage positioning move is to reframe the work itself so your product IS the work, not the cost of doing the work.",
+    productSnapshot: {
+      whatTheySell:
+        "A cross-functional project management platform with tasks, projects, portfolios, goals, timelines, and workload coordination.",
+      whoFor:
+        "Growing cross-functional teams (marketing, design, engineering, ops) that coordinate work across multiple departments and need structured project tracking.",
+      pricingNote:
+        "Free up to 10 users; Starter ~$11/user/mo; Advanced ~$25/user/mo; Enterprise custom (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Coordination-as-the-work positioning",
+      analysis:
+        "The hero reframes cross-functional coordination from overhead to value-add. This works because the canonical buyer (ops leaders, PMs, leadership) has already lived through the alternative — chaos across Slack, email, and spreadsheets — and recognizes structured coordination as the actual work. The hook compresses category evaluation by tapping the felt pain of unstructured cross-functional work.",
+    },
+    story: {
+      pattern: "Multi-function case study breadth",
+      analysis:
+        "Story is told through case studies featuring marketing, design, engineering, ops, finance, and HR teams using Asana to coordinate cross-functionally. The breadth of use cases doubles as proof — a platform that claims cross-functional coordination must show all functions in action. The marketing site reads as 'this works for your specific function' regardless of which function the visitor is in.",
+    },
+    offer: {
+      pattern: "Free tier acquisition plus enterprise upsell ladder",
+      analysis:
+        "Free tier captures up to 10 users, which fits early-stage teams; paid tiers (Starter, Advanced) scale into team and cross-functional features (timeline, custom fields, advanced workflows, Goals); Enterprise handles procurement and security. The free tier is calibrated to allow real adoption but not production for larger teams — the structural upgrade trigger is team growth past 10 users, which is mechanically predictable.",
+    },
+    whatsWorking: [
+      "Reframing cross-functional coordination as the work converts ops leaders who feel coordination pain daily.",
+      "Multi-function case study breadth makes the marketing site feel relevant to every visitor regardless of their role.",
+      "Free-tier 10-user cap is a predictable structural upgrade trigger that fires as teams grow.",
+      "Native Goals product is the canonical differentiator from PM tools that lack OKR hierarchy.",
+      "Timeline view appeals to PM-led teams who think in dependencies and milestones.",
+      "Mature integration ecosystem (Slack, Google Workspace, Microsoft 365, Salesforce) locks in cross-functional teams already on those platforms.",
+    ],
+    whatToAdapt: [
+      "If your category buyer treats your product as overhead, reframe the work itself so your product IS the work — not the cost of doing the work.",
+      "Multi-function case study breadth lets cross-functional platforms be relevant to every visitor without diluting the value proposition.",
+      "User-count caps on free tiers are predictable structural upgrade triggers that map to team-growth events.",
+    ],
+    whatToAvoid: [
+      "Do not reframe coordination as the work if your product genuinely IS overhead. The reframing must be honest — the cross-functional teams using Asana believe coordination matters because they have lived without it.",
+      "Do not pursue cross-functional breadth before you have depth in any single function. The breadth claim is fragile when buyers discover the product is generic across all use cases.",
+    ],
+    brunsonLens: {
+      hook: "New Opportunity hook (Brunson Expert Secrets) — buyers are not buying a better PM tool, they are stepping into the 'coordination IS the work' category.",
+      story:
+        "Multi-Dream-Customer story serving marketing, design, engineering, ops, finance simultaneously — only viable for a platform with genuine cross-functional depth.",
+      offer:
+        "Free tier acquisition (10-user cap) plus structured per-user upsell ladder with Enterprise back-end.",
+      valueLadderTier:
+        "Front-end lead funnel (free up to 10 users) plus per-user subscription core (Starter, Advanced) plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Why does Asana lead with Goals and Timeline instead of tasks?",
+        a: "Because tasks are commoditized — every PM tool ships tasks. Goals and Timeline are the structural differentiators that justify Asana over Trello (no Goals, no Timeline) or Linear (engineering-focused, lighter Goals). Leading with the differentiators tells the visitor 'you are buying coordination depth, not task management.'",
+      },
+      {
+        q: "Can an indie SaaS use the reframe-coordination-as-work strategy?",
+        a: "Only when your buyer genuinely feels coordination pain. The reframing works for Asana because cross-functional ops leaders have already lived through unstructured chaos. For categories where the buyer does not feel the pain you are reframing, the strategy converts nobody.",
+      },
+      {
+        q: "Why is Asana's free tier limited to 10 users?",
+        a: "Because 10 users is the structural upgrade trigger. Teams that adopt Asana on free and grow past 10 users have already proven they need cross-functional coordination at team scale — the upgrade is structurally predictable. A more generous free tier would dilute the conversion path.",
+      },
+      {
+        q: "What is the Brunson lens on Asana's funnel?",
+        a: "New Opportunity positioning (coordination IS the work, not overhead) plus multi-Dream-Customer breadth plus structured Value Ladder with user-count upgrade trigger. The unusual element is the depth of the cross-functional positioning — Asana genuinely serves multiple functions at depth, not just claims to.",
+      },
+      {
+        q: "How does Unlock SaaS think about Asana's pattern?",
+        a: "Reframing the buyer's mental model is one of the highest-leverage positioning moves available — when it works. The risk is honesty: the reframing fails when buyers discover the product does not actually justify the new mental model. Indie founders attempting this should audit whether their product can carry the reframe.",
+      },
+    ],
+    tags: ["cross-functional", "coordination-as-work", "free-user-cap", "goal-hierarchy"],
+    homepageUrl: "https://asana.com/",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "airtable",
+    displayName: "Airtable",
+    creator: "Howie Liu, Andrew Ofstad, Emmett Nicholas",
+    category: "Productivity and workspace",
+    oneLine:
+      "Airtable's funnel runs on the database-superpowers-for-non-developers positioning. The marketing sells the magic moment when a spreadsheet becomes an app.",
+    tldr:
+      "Airtable's funnel works because the marketing sells the specific magic moment when a spreadsheet stops being a list and becomes an app. The hero shows that moment — drag-drop forms, linked records, automations — in ways non-developers immediately recognize as 'this is what I have been trying to do in Excel.' The lesson for indie founders: when you democratize a previously-expert capability for non-experts, the marketing must show the magic moment, not explain the technical primitive.",
+    productSnapshot: {
+      whatTheySell:
+        "A relational database platform for non-developers with Interfaces, Automations, and AI for building no-code internal tools.",
+      whoFor:
+        "Operations-heavy teams, marketers, ops leaders, and product managers who need structured data and internal tools without engineering.",
+      pricingNote:
+        "Free up to 5 editors; Team ~$20/seat/mo; Business ~$45/seat/mo; Enterprise custom (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Magic-moment demonstration",
+      analysis:
+        "The hero shows the specific moment when structured data becomes an app — drag a form field, link records across tables, trigger an automation. Non-developers who have lived in Excel hitting database-shaped problems recognize the magic immediately. The hook compresses category evaluation because the audience does not need to be sold on database value; they need to be shown that database value is accessible without code.",
+    },
+    story: {
+      pattern: "Internal-tools-without-engineering narrative",
+      analysis:
+        "Story is told through ops-team case studies — content calendar that auto-publishes, inventory tracker with reorder alerts, applicant pipeline with status updates. The narrative pattern is consistent: 'this team built an internal tool in days without engineering involvement.' The story tells the buyer 'you can do this too' rather than 'here is what we can do.'",
+    },
+    offer: {
+      pattern: "Free editor cap plus per-seat enterprise ladder",
+      analysis:
+        "Free tier limits to 5 editors — predictable structural upgrade trigger as ops teams grow past the threshold. Team and Business tiers add Interfaces, Automations runs, more storage, advanced permissions. Enterprise handles procurement. The pricing scales with team adoption rather than with database volume, which matches how Airtable usage actually grows inside organizations.",
+    },
+    whatsWorking: [
+      "Magic-moment hero converts non-developers who recognize Excel limitations immediately.",
+      "Internal-tools-without-engineering narrative speaks to ops leaders' actual pain.",
+      "5-editor free tier cap is mechanical and predictable as ops teams grow.",
+      "Interfaces feature is the canonical differentiator for forms-to-database internal tools.",
+      "Automations runs price as the secondary upgrade trigger for teams scaling no-code workflows.",
+      "Massive template library shows the magic moment across hundreds of use cases — CRM, project tracker, inventory, content calendar.",
+    ],
+    whatToAdapt: [
+      "When democratizing an expert capability for non-experts, show the magic moment in the hero rather than explaining the technical primitive.",
+      "Internal-tools-without-engineering is a structural value proposition for ops-led teams; the narrative works when your product can actually deliver it.",
+      "Editor-count caps as upgrade triggers map to team-growth events and convert predictably.",
+    ],
+    whatToAvoid: [
+      "Do not claim no-code internal tools if your product requires non-trivial setup work. The magic-moment promise must be honest — ops leaders abandon platforms that promised easy and delivered hard.",
+      "Do not pursue Airtable's pricing model if your platform cost does not actually scale with team adoption. The per-editor model only works when value scales with editor count.",
+    ],
+    brunsonLens: {
+      hook: "Magic-moment hook (Brunson 'show the result, not the process') executed as the hero.",
+      story:
+        "Hero's-Journey-via-case-studies — ops teams who solved internal-tools problems without engineering, inviting the reader to follow the same arc.",
+      offer:
+        "Free-editor-cap acquisition plus per-seat enterprise upsell ladder with Interfaces and Automations as feature triggers.",
+      valueLadderTier:
+        "Front-end lead funnel (free 5-editor) plus per-seat subscription core (Team, Business) plus enterprise back-end.",
+    },
+    faqs: [
+      {
+        q: "Why does Airtable lead with the spreadsheet-to-app moment?",
+        a: "Because that moment is the specific value proposition. The audience (non-developers who have hit Excel limits) does not need to be sold on databases; they need to be shown that databases are accessible to them. The hero compresses the category-evaluation step.",
+      },
+      {
+        q: "Can Airtable really replace internal-tool engineering?",
+        a: "For many common internal tools (forms-to-database, CRMs, inventory trackers, content calendars), yes. For complex internal tools that require sophisticated workflows or external system integration, the limits emerge. Airtable's positioning is honest at the use cases it serves; teams that try to build serious applications eventually hit the constraints.",
+      },
+      {
+        q: "Why is the free tier limited to 5 editors specifically?",
+        a: "Because 5 editors is the structural team-formation threshold for ops use cases. Teams that adopt Airtable and grow past 5 editors have proven they need real-team Airtable use; the upgrade is mechanically predictable. A more generous free tier would dilute the conversion path.",
+      },
+      {
+        q: "What is the Brunson lens on Airtable's funnel?",
+        a: "Magic-moment hook (show the result) plus Hero's-Journey case studies (you can do this too) plus structured Value Ladder. The unusual element is the depth of the magic-moment marketing — Airtable demonstrates the spreadsheet-to-app transition continuously rather than explaining it once.",
+      },
+      {
+        q: "How does Unlock SaaS think about Airtable's pattern?",
+        a: "Showing the magic moment IS the conversion mechanism when democratizing an expert capability. The risk is delivering on the magic — Airtable can because the underlying database primitive is genuinely powerful. Indie founders attempting this should audit whether their magic moment is real or marketing-only.",
+      },
+    ],
+    tags: ["no-code", "database", "magic-moment", "ops-internal-tools"],
+    homepageUrl: "https://www.airtable.com/",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "framer",
+    displayName: "Framer",
+    creator: "Koen Bok and Jorn van Dijk",
+    category: "Design and prototyping",
+    oneLine:
+      "Framer's funnel runs on the design-to-publish-without-engineering positioning. The marketing sells the moment when a Figma-style design becomes a live site.",
+    tldr:
+      "Framer's funnel works because the marketing pivots the design tool category. The hero leads with 'design and publish' — the implicit promise that your design work goes live without engineering handoff. The lesson for indie founders: when an incumbent (Figma) owns the category default, the New Opportunity move is to claim an adjacent category (design-plus-publish) the incumbent cannot enter without abandoning its identity.",
+    productSnapshot: {
+      whatTheySell:
+        "A design-and-publish platform that lets designers ship live marketing sites and landing pages without engineering handoff.",
+      whoFor:
+        "Designers building marketing sites and landing pages who want to publish their design work directly without coding or engineering involvement.",
+      pricingNote:
+        "Free tier; Mini ~$5/site/mo; Basic ~$15/site/mo; Pro ~$30/site/mo (verified 2026-05-18). Plus seat-based design tier pricing.",
+    },
+    hook: {
+      pattern: "Adjacent-category claim",
+      analysis:
+        "The hero claims design-plus-publish as a distinct category rather than competing with Figma on design alone. This works because designers have lived through the design-engineering-handoff loop and recognize the friction; the alternative (design-to-publish in one tool) is immediately attractive. The hook compresses category evaluation by reframing the comparison from 'Framer vs Figma' to 'Framer vs the handoff loop.'",
+    },
+    story: {
+      pattern: "Design-output-as-marketing flywheel",
+      analysis:
+        "Story is told through customer case studies featuring distinctive Framer-built sites. The output is visibly different from Webflow-built sites (more designer-led, fewer marketing-CMS conventions), which creates a recognizable Framer aesthetic. Every Framer-built site is implicit advertising to designers who recognize the aesthetic and want it for themselves.",
+    },
+    offer: {
+      pattern: "Per-site pricing with design-tier seat add-on",
+      analysis:
+        "The pricing structure separates publishing (per-site) from designing (per-seat). This matches the value-capture moments — publishing is when the design becomes live; designing is the ongoing collaborative work. Per-site pricing aligns with the publishing value; per-seat aligns with the design value. The bifurcation works because designers usually own publishing decisions.",
+    },
+    whatsWorking: [
+      "Adjacent-category positioning escapes the Figma category fight entirely.",
+      "Design-output-as-marketing flywheel — every Framer-built site is implicit advertising.",
+      "Designer-native editing experience matches the Figma-style workflows the target audience already knows.",
+      "Per-site pricing aligns with the publishing value-capture moment rather than the design-time value.",
+      "Native CMS for blog posts and dynamic pages handles the marketing-site content needs without external CMS.",
+      "Animation and interaction capabilities (Framer Motion legacy) differentiate from static-only competitors.",
+    ],
+    whatToAdapt: [
+      "When an incumbent owns the category default, claim an adjacent category the incumbent cannot enter without abandoning its identity.",
+      "Design-output-as-marketing flywheel works when your product creates recognizable visible output that the target audience encounters in normal life.",
+      "Bifurcated pricing (per-site for publish, per-seat for design) matches multi-value-capture-moment products better than single-axis pricing.",
+    ],
+    whatToAvoid: [
+      "Do not claim an adjacent category if you cannot serve it credibly. Framer's design-plus-publish claim works because the publish capability is real; competitors that promise this and fail to deliver lose the positioning quickly.",
+      "Do not pursue per-site pricing if your platform cost does not actually scale with sites. The model only works when each site represents a value moment worth capturing.",
+    ],
+    brunsonLens: {
+      hook: "New Opportunity hook (Brunson Expert Secrets) — Framer claims design-plus-publish as a category distinct from design alone.",
+      story:
+        "Output-as-marketing flywheel — Framer-built sites are the case studies and the advertising simultaneously.",
+      offer:
+        "Bifurcated pricing matching publishing and design value-capture moments separately.",
+      valueLadderTier:
+        "Front-end free tier plus per-site publishing tiers plus per-seat design tier; bifurcated value ladder.",
+    },
+    faqs: [
+      {
+        q: "Why does Framer not compete with Figma directly on design tooling?",
+        a: "Because Figma owns the collaborative-design category and Framer cannot win there without abandoning the publish capability. The New Opportunity move (design-plus-publish) creates a category Figma cannot enter without disrupting its product identity. Competing in an adjacent category is structurally better than fighting the incumbent on their home turf.",
+      },
+      {
+        q: "Can Framer replace Figma for product design?",
+        a: "No, materially. Framer is optimized for marketing-site design-and-publish, not for product UI design with developer handoff. Product design teams that try to use Framer for UI work quickly feel the gap. Framer is for marketing sites; Figma is for product UI.",
+      },
+      {
+        q: "Why does Framer price per-site instead of just per-seat?",
+        a: "Because Framer monetizes the published site as a primary value-capture moment. Per-site pricing aligns with the publishing value; per-seat alone would not capture the value Framer provides to designers who publish many sites for different clients or campaigns.",
+      },
+      {
+        q: "What is the Brunson lens on Framer's funnel?",
+        a: "New Opportunity positioning that escapes the Figma category fight by claiming design-plus-publish as a distinct category. Combined with output-as-marketing flywheel and bifurcated pricing matching multiple value-capture moments. Brunson lesson: when an incumbent owns a category, the path forward is an adjacent category, not a head-on fight.",
+      },
+      {
+        q: "How does Unlock SaaS think about Framer's pattern?",
+        a: "Adjacent-category positioning is one of the highest-leverage positioning moves available when a category has a dominant incumbent. The requirements are real: the adjacent category must be genuinely distinct, your product must serve it credibly, and the incumbent must be structurally unable to enter. Indie founders attempting this should audit all three conditions.",
+      },
+    ],
+    tags: ["adjacent-category", "design-to-publish", "output-flywheel", "new-opportunity"],
+    homepageUrl: "https://www.framer.com/",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "substack",
+    displayName: "Substack",
+    creator: "Hamish McKenzie, Chris Best, Jairaj Sethi",
+    category: "Newsletter platform",
+    oneLine:
+      "Substack's funnel runs on the network-effect positioning. The platform sells the discovery graph as much as the publication tools.",
+    tldr:
+      "Substack's funnel works because the platform sells access to the Substack discovery network as the primary value proposition. The marketing leads with Notes, Recommendations, and the unified app — the implicit promise that joining Substack means joining an audience that grows through cross-publication discovery. The lesson for indie founders: when network effects are real, the network IS the marketing — sell access to the network, not just the product.",
+    productSnapshot: {
+      whatTheySell:
+        "A publication platform for writers with paid subscriptions, Notes (Twitter-style microblogging), Recommendations (cross-publication discovery), and the unified Substack app.",
+      whoFor:
+        "Writers, journalists, essayists building publications with paid subscriptions and audience growth through Substack's discovery network.",
+      pricingNote:
+        "Free for writers; Substack takes 10% of paid subscription revenue plus Stripe fees (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Network-as-value-proposition",
+      analysis:
+        "The hero leads with the discovery network rather than with publication tooling. Writers who have tried building newsletters elsewhere (Mailchimp, ConvertKit, self-hosted) recognize the audience-growth challenge immediately. The implicit promise — Substack's network drives your subscriber growth — converts writers who have hit the cold-start wall on other platforms.",
+    },
+    story: {
+      pattern: "Writer-success-via-network case studies",
+      analysis:
+        "Story is told through case studies featuring writers who grew large paid subscriptions through Substack — explicitly attributing growth to Recommendations and Notes. The story tells the writer 'this is what happens when you join the network' rather than 'this is what our platform tools can do.' Network effects are intangible; case studies make them concrete.",
+    },
+    offer: {
+      pattern: "Free platform plus 10% revenue share",
+      analysis:
+        "Substack charges no upfront fee — writers join free. The 10% revenue share on paid subscriptions captures value only when writers monetize, which aligns Substack's incentives with writer success. The model removes the canonical platform-adoption friction (cost) and shifts revenue capture to the success moment. Writers who never monetize cost Substack nothing; writers who succeed pay proportionally.",
+    },
+    whatsWorking: [
+      "Network-as-value-proposition matches what writers actually need (audience growth) rather than what platforms typically sell (tools).",
+      "Free platform removes adoption friction at the canonical decision point.",
+      "10% revenue share aligns Substack's incentives with writer success — Substack only wins when writers win.",
+      "Notes feature creates a microblogging surface that drives writer discovery beyond the newsletter format.",
+      "Recommendations drive cross-publication discovery — writers grow subscribers from other Substack writers' audiences.",
+      "Unified Substack app aggregates discovery in one place rather than scattering writers across platforms.",
+    ],
+    whatToAdapt: [
+      "When network effects are real, the network IS the marketing — sell access to the network, not just the product.",
+      "Revenue-share pricing models align incentives with customer success when the underlying value scales with customer revenue.",
+      "Case studies that explicitly attribute growth to your network effects make intangible value concrete.",
+    ],
+    whatToAvoid: [
+      "Do not claim network effects you do not have. The Substack network is real because thousands of writers have grown through Recommendations and Notes; claiming network value without delivering it loses trust quickly.",
+      "Do not pursue revenue-share pricing if your platform cost does not actually scale with customer revenue. The model only works when the economics align.",
+    ],
+    brunsonLens: {
+      hook: "Network-as-Common-Enemy hook — Substack frames the writing-platform decision as 'with network discovery' vs 'without network discovery,' positioning competitors as solo-publication platforms.",
+      story:
+        "Writer-success case studies attributing growth to the network — Hero's Journey via Substack-grown publications.",
+      offer:
+        "Free platform plus revenue-share alignment — Brunson 'no friction at adoption, capture value at success' pattern.",
+      valueLadderTier:
+        "Single-tier offer (free platform) with revenue-share monetization layer instead of subscription tiers.",
+    },
+    faqs: [
+      {
+        q: "Why does Substack take a 10% revenue share instead of charging upfront?",
+        a: "Because the revenue-share model removes adoption friction and aligns Substack's incentives with writer success. Writers who never monetize cost Substack nothing; writers who succeed pay proportionally. The model captures value at the success moment rather than at the friction-laden adoption moment.",
+      },
+      {
+        q: "Are Substack Recommendations actually meaningful for growth?",
+        a: "Yes for writers already inside the Substack ecosystem with momentum. Recommendations drive meaningful subscriber growth for publications that other Substack writers find worth recommending. For cold-start writers, the network effect is real but not magical — the writing quality still has to earn the recommendations.",
+      },
+      {
+        q: "Should writers leave Substack for Beehiiv or Kit?",
+        a: "Depends on what they value. Substack's network drives growth that Beehiiv and Kit cannot match through their own mechanics. Beehiiv's monetization stack (ads network, Boost) provides revenue streams Substack does not. Kit's marketing-email features matter for creators with product-launch sequences. The migration is about what mechanism matters most.",
+      },
+      {
+        q: "What is the Brunson lens on Substack's funnel?",
+        a: "Network-as-value-proposition (the network IS the marketing) plus writer-success case studies plus free-platform-with-revenue-share Value Ladder. The unusual element is the depth of network-effect investment — Substack built Notes, the app, and Recommendations specifically to make the network the primary differentiator, not the writing tools.",
+      },
+      {
+        q: "How does Unlock SaaS think about Substack's pattern?",
+        a: "Network effects are the strongest moat available when they are real. The requirements are demanding: you need critical mass, you need products that compound network value (Notes, Recommendations, app), and you need patience for compounding to take years. Indie founders should not chase network effects unless they have the time horizon and the audience density to compound.",
+      },
+    ],
+    tags: ["network-effects", "revenue-share", "publication-platform", "writer-first"],
+    homepageUrl: "https://substack.com/",
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
