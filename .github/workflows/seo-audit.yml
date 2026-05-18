@@ -148,12 +148,43 @@ jobs:
           PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
         working-directory: packages/seo
         run: |
+          # Vercel preview-deployment protection (enabled by default on
+          # team plans) gates preview URLs behind SSO and returns HTTP
+          # 401 to unauthenticated fetchers. Without this guard, the
+          # auditor would parse the auth-wall HTML, find no JSON-LD
+          # to lie about, and report a misleading PASS. Check the
+          # status FIRST and short-circuit on any non-2xx response.
           set +e
-          node dist/cli/index.js validate-claims "$PREVIEW_URL" > /tmp/report.txt 2>&1
-          code=$?
+          status=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "$PREVIEW_URL")
           set -e
-          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
+          echo "http_status=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" = "200" ]; then
+            set +e
+            node dist/cli/index.js validate-claims "$PREVIEW_URL" > /tmp/report.txt 2>&1
+            code=$?
+            set -e
+            echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          else
+            echo "exit_code=skipped" >> "$GITHUB_OUTPUT"
+            cat > /tmp/report.txt <<EOF
+          Preview URL returned HTTP $status.
+
+          The audit was skipped because the auditor cannot validate
+          schema.org claims against a response that is not the actual
+          page (most commonly Vercel preview-deployment protection,
+          which gates preview URLs behind SSO and returns 401).
+
+          To enable the preview audit on future PRs:
+            1. Disable preview protection in Vercel project settings, or
+            2. Add VERCEL_AUTOMATION_BYPASS_SECRET to repo secrets and
+               wire it into the curl + validate-claims fetch headers.
+
+          This is a visibility-loop skip, not a regression in the
+          package itself. The package job above is the gate, and it
+          passed.
+          EOF
+          fi
       - name: Hand the report to the comment step via GITHUB_OUTPUT
         id: report
         run: |
@@ -170,18 +201,24 @@ jobs:
         env:
           PR_NUMBER: ${{ steps.pr.outputs.number }}
           AUDIT_EXIT: ${{ steps.audit.outputs.exit_code }}
+          HTTP_STATUS: ${{ steps.audit.outputs.http_status }}
           PREVIEW_URL: ${{ steps.audit.outputs.preview_url }}
           REPORT_TXT: ${{ steps.report.outputs.report }}
         with:
           script: |
             const exit = process.env.AUDIT_EXIT;
+            const httpStatus = process.env.HTTP_STATUS;
             const url = process.env.PREVIEW_URL;
             const reportTxt = process.env.REPORT_TXT || '(empty report)';
-            const status = exit === '0' ? '✅ PASS' : '⚠️ Issues found';
+            const status =
+              exit === '0' ? '✅ PASS' :
+              exit === 'skipped' ? `⏭️ Skipped (HTTP ${httpStatus})` :
+              '⚠️ Issues found';
             const body = [
               `### @unlocksaas/seo · preview audit ${status}`,
               ``,
               `Target: ${url}`,
+              `HTTP status: \`${httpStatus}\``,
               `Exit code: \`${exit}\``,
               ``,
               `<details><summary>Full report</summary>`,

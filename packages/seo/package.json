@@ -76,7 +76,7 @@
     }
   },
   "bin": {
-    "unlocksaas-seo": "./dist/cli/index.js"
+    "unlocksaas-seo": "dist/cli/index.js"
   },
   "files": [
     "dist",
