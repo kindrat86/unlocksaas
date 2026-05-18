@@ -1,47 +1,70 @@
 /**
- * Verified Builder embed code page.
+ * Verified Builder embed-code helper page.
  *
  * Why this exists (off-page lift):
  *   Every Verified Builder is the post-launch proof point UnlockSaaS relies
- *   on for E-E-A-T. When a Verified Builder embeds their badge on their own
- *   product site, that becomes a real editorial backlink to
- *   /builder/<slug>. The backlink is honest — the founder really is a
- *   Verified Builder, Stripe really did confirm the first paying customer,
- *   the link points at the canonical proof page. No paid placements, no
- *   reciprocal link schemes, no PBN nonsense.
+ *   on for E-E-A-T. When a verified founder embeds their badge on their own
+ *   product site, README, or testimonial wall, that becomes a real
+ *   editorial backlink to /builder/<slug> AND ships a Review JSON-LD
+ *   node that Google can harvest on the founder's domain. The Review
+ *   resolves `itemReviewed.@id` back to the unlocksaas Playbook
+ *   SoftwareApplication; over time, the citation graph compounds.
  *
- *   Strategically: every verified-customer cycle that ships compounds into
- *   one more do-follow link to unlocksaas.com. That is the *only* off-page
- *   lift mechanism a pre-revenue solo SaaS can ship without violating the
- *   Brunson Hard-Rule. Every other link-building tactic either (a) asks
- *   the founder to fabricate value, or (b) waits on earned media.
+ *   This page is the founder-facing "copy this snippet" surface. It is a
+ *   tool, not editorial content — robots:noindex, never indexed.
  *
- * Page audience:
- *   - The verified builder themselves: copies the embed and drops it into
- *     their own site footer or testimonials section.
- *   - Anyone browsing /builders who wants to see what an embeddable badge
- *     looks like before they become a Verified Builder.
+ * Snippets shipped here (in priority order):
  *
- * Schema: BreadcrumbList only. The embed page is a tool, not editorial
- * content – we explicitly do not want Google ranking this surface above
- * the canonical badge page at /builder/<slug>.
+ *   1. The canonical bundle: <a rel="me external"> wrapping the SVG badge,
+ *      plus a sibling <script type="application/ld+json"> with the Review
+ *      payload. This is the snippet to use on a personal site / product
+ *      homepage / portfolio. One copy, three signals (backlink, identity
+ *      via rel="me", structured-data review).
  *
- * Static-render constraint: like /builder/<slug> itself, this page reads
- * from the public `builder_badges` view (which already filters out
- * private profiles), so we keep `force-dynamic` for the freshness story.
- * The page is cheap – no markdown rendering, just template substitution.
+ *   2. The iframe variant: <iframe src=".../embed.html">. For Notion,
+ *      Substack, Webflow CMS fields, Ghost, any host that only allows
+ *      iframes. The iframe document itself contains both the link and the
+ *      Review JSON-LD, so the signal chain survives the iframe boundary.
+ *
+ *   3. The plain-link variant: <a href=".../builder/<slug>" rel="me external">
+ *      with text only. For testimonial footer rows that already have
+ *      their own visual style.
+ *
+ *   4. The markdown variant: for READMEs, Notion pages, Substack posts,
+ *      and any markdown host.
+ *
+ *   5. The JSON-LD-only variant: just the <script type="application/ld+json">
+ *      Review block. For founders who already have their own visual
+ *      testimonial section and only want to add the structured-data
+ *      citation. Sourced from /builder/<slug>/review.json so the schema
+ *      stays in sync with what the canonical badge surface emits.
+ *
+ *   6. The image-only variant: a bare <img src=".../badge.svg"> with
+ *      anchor + rel attributes documented separately, for advanced users
+ *      who want full control of the surrounding markup.
+ *
+ *   7. The oEmbed discovery anchor URL: documented for advanced hosts
+ *      that consume oEmbed (Substack, Ghost, Medium auto-render).
+ *
+ * Editorial discipline:
+ *   No tracking pixel. No JavaScript. No third-party requests except the
+ *   stable badge SVG and oembed.json endpoints on unlocksaas.com. Every
+ *   snippet survives any host stylesheet because styles are inline.
  */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
+import { buildReviewJsonLd } from "@/lib/seo/builder-review";
 import { ArrowLeft, CheckCircle2, Code2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { CopyButton } from "@/components/copy-button";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+const BASE = "https://unlocksaas.com";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -53,14 +76,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   if (!badge) {
     return {
       title: "Verified Builder embed",
-      // Embed tooling is not editorial; never index these.
       robots: { index: false, follow: false },
     };
   }
 
   return {
     title: `Embed code – ${badge.builderName} (Verified Builder)`,
-    description: `Copy-paste HTML to embed ${badge.builderName}'s Verified Builder badge on any site. The badge links to the canonical Stripe-verified proof page at unlocksaas.com.`,
+    description: `Copy-paste HTML and JSON-LD to embed ${badge.builderName}'s Verified Builder badge on any site. Every snippet links to the canonical Stripe-verified proof page on unlocksaas.com.`,
     // index:false is correct: this is a tool surface for the verified
     // builder. The canonical badge at /builder/<slug> is the indexable
     // page; this one shipping into Google would create duplicate-intent
@@ -75,43 +97,56 @@ export default async function EmbedPage(props: Props) {
   if (!badge) notFound();
 
   const badgeUrl = absoluteBadgeUrl(badge.slug);
+  const svgUrl = `${BASE}/builder/${badge.slug}/badge.svg`;
+  const reviewJsonUrl = `${BASE}/builder/${badge.slug}/review.json`;
+  const embedHtmlUrl = `${BASE}/builder/${badge.slug}/embed.html`;
+  const oembedUrl = `${BASE}/builder/${badge.slug}/oembed.json`;
   const dateStr = badge.firstCustomerAt.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
   const productLabel = badge.productName ?? "their product";
+  const altText = `Stripe-Verified First Customer · Unlock SaaS · ${badge.builderName}`;
 
-  /**
-   * Two embed snippets. Both:
-   *   - link to the canonical badge URL (the backlink the founder gets);
-   *   - carry `rel="external"` to mark this as an editorial outbound
-   *     link – honest about its purpose, no nofollow needed since the
-   *     relationship is genuinely editorial.
-   *   - use inline styles only so the embed survives any host stylesheet.
-   *
-   * Snippet A: card badge – small box with the Verified Builder pill,
-   * the builder name, product, and date. ~6 lines of HTML. Style values
-   * are intentionally low-contrast (no brand purple/yellow/orange per
-   * the visual-style lock) so the badge fits on any site.
-   *
-   * Snippet B: plain text link – one-line `<a>` for sites that don't
-   * want the card chrome. Best for testimonials/footer link rows.
-   */
-  const cardSnippet = `<a href="${badgeUrl}" rel="external" style="display:inline-block;text-decoration:none;color:inherit;font:14px/1.4 system-ui,sans-serif;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;background:#fff;max-width:320px">
+  // Pre-built Review JSON-LD payload, formatted for human readability when
+  // the founder pastes it into their site source.
+  const reviewJsonPretty = JSON.stringify(buildReviewJsonLd(badge), null, 2);
+
+  // ── Snippet 1: canonical bundle ─────────────────────────────────────────
+  // The user's "all three signals in one paste" snippet. Anchor with
+  // rel="me external" carries identity verification + outbound-editorial
+  // semantics. Img is the hot-linked SVG (no host CSS needed). Script
+  // ships the Review JSON-LD inline. Pasted into a homepage or footer,
+  // this single block gives Google a backlink, identity reciprocity,
+  // and a third-party Review citation in one trip.
+  const canonicalSnippet = `<a href="${badgeUrl}" rel="me external">
+  <img src="${svgUrl}" alt="${escapeAttr(altText)}" width="360" height="80" loading="lazy" decoding="async" style="border:0;max-width:100%;height:auto" />
+</a>
+<script type="application/ld+json">
+${reviewJsonPretty}
+</script>`;
+
+  // ── Snippet 2: iframe variant ───────────────────────────────────────────
+  const iframeSnippet = `<iframe src="${embedHtmlUrl}" title="${escapeAttr(badge.builderName)} — Verified Builder" width="360" height="140" frameborder="0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;max-width:100%"></iframe>`;
+
+  // ── Snippet 3: card badge inline-styled (legacy from prior version) ─────
+  const cardSnippet = `<a href="${badgeUrl}" rel="me external" style="display:inline-block;text-decoration:none;color:inherit;font:14px/1.4 system-ui,sans-serif;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;background:#fff;max-width:320px">
   <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;margin-bottom:6px">✓ Verified Builder</div>
   <div style="font-weight:600;color:#111827;margin-bottom:2px">${escapeHtml(badge.builderName)} shipped ${escapeHtml(productLabel)} and got paid for it.</div>
   <div style="font-size:12px;color:#6b7280">Verified by Stripe · ${dateStr}</div>
 </a>`;
 
-  const linkSnippet = `<a href="${badgeUrl}" rel="external">✓ Verified Builder – ${escapeHtml(badge.builderName)} on Unlock SaaS</a>`;
+  // ── Snippet 4: plain link ───────────────────────────────────────────────
+  const linkSnippet = `<a href="${badgeUrl}" rel="me external">✓ Verified Builder – ${escapeHtml(badge.builderName)} on Unlock SaaS</a>`;
 
-  /**
-   * Markdown version – for builders embedding in a README, Notion page,
-   * Substack post, or anywhere markdown is the host language. Same backlink
-   * semantics; rendered text identical to the plain HTML link.
-   */
-  const markdownSnippet = `[✓ Verified Builder – ${badge.builderName} on Unlock SaaS](${badgeUrl})`;
+  // ── Snippet 5: markdown ─────────────────────────────────────────────────
+  const markdownSnippet = `[![✓ Verified Builder – ${badge.builderName} on Unlock SaaS](${svgUrl})](${badgeUrl})`;
+
+  // ── Snippet 6: JSON-LD only ─────────────────────────────────────────────
+  const jsonLdOnlySnippet = `<script type="application/ld+json">
+${reviewJsonPretty}
+</script>`;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -138,10 +173,10 @@ export default async function EmbedPage(props: Props) {
             Embed your Verified Builder badge.
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed">
-            Drop one of the snippets below into your product site, your
-            README, your Notion page, or anywhere else you want to show that
-            you shipped something real and a customer paid for it. Every
-            embed links back to the Stripe-verified proof at{" "}
+            Three signals in one paste: a backlink, an identity link, and a
+            structured-data review. Drop the canonical snippet below into your
+            product site or portfolio, or pick a variant that fits the host.
+            Every embed points at the Stripe-verified proof at{" "}
             <Link
               href={`/builder/${badge.slug}`}
               className="underline underline-offset-4 hover:text-foreground"
@@ -152,7 +187,7 @@ export default async function EmbedPage(props: Props) {
           </p>
         </header>
 
-        {/* ── Live preview of the card ──────────────────────────────── */}
+        {/* ── Live preview of the SVG badge ──────────────────────────── */}
         <section aria-labelledby="preview" className="mb-10">
           <h2
             id="preview"
@@ -160,41 +195,92 @@ export default async function EmbedPage(props: Props) {
           >
             Live preview
           </h2>
-          <div className="rounded-2xl border bg-card p-6 sm:p-8 space-y-2 shadow-sm">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wider font-medium">
-              <CheckCircle2 className="h-4 w-4 text-foreground" />
-              Verified Builder
-            </div>
-            <div className="font-semibold leading-snug">
-              {badge.builderName} shipped {productLabel} and got paid for it.
-            </div>
+          <div className="rounded-2xl border bg-card p-6 sm:p-8 space-y-4 shadow-sm">
+            {/* The very same SVG the embed serves. Hot-linked, not bundled. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={svgUrl}
+              alt={altText}
+              width={360}
+              height={80}
+              loading="lazy"
+              decoding="async"
+              style={{ border: 0, maxWidth: "100%", height: "auto" }}
+            />
             <div className="text-xs text-muted-foreground">
-              Verified by Stripe · {dateStr}
+              SVG renders crisply at any size. The clickable target is the
+              surrounding anchor — the badge image itself is decorative.
             </div>
           </div>
         </section>
 
         <Separator className="my-8" />
 
-        {/* ── Snippet A: HTML card ──────────────────────────────────── */}
-        <section aria-labelledby="card-html" className="mb-10 space-y-3">
+        {/* ── Snippet 1: canonical bundle ────────────────────────────── */}
+        <section aria-labelledby="canonical" className="mb-12 space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="canonical" className="text-xl font-bold">
+              Canonical snippet (recommended)
+            </h2>
+            <CopyButton text={canonicalSnippet} label="Copy snippet" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Three signals in one paste:{" "}
+            <code className="text-xs">rel=&quot;me&quot;</code> identity
+            link, <code className="text-xs">&lt;img&gt;</code> badge served
+            from our edge, and a{" "}
+            <code className="text-xs">
+              &lt;script type=&quot;application/ld+json&quot;&gt;
+            </code>{" "}
+            Review block. Paste both blocks adjacent to each other in your
+            page source. The image is hot-linked from our edge cache, so
+            updates propagate without you re-copying anything.
+          </p>
+          <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
+            <code>{canonicalSnippet}</code>
+          </pre>
+        </section>
+
+        {/* ── Snippet 2: iframe ──────────────────────────────────────── */}
+        <section aria-labelledby="iframe" className="mb-12 space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="iframe" className="text-xl font-bold">
+              Iframe (Notion, Substack, Ghost, Webflow CMS)
+            </h2>
+            <CopyButton text={iframeSnippet} label="Copy HTML" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            For hosts that only allow iframe embeds. The iframe document
+            ships both the link and the Review JSON-LD inside it, so the
+            signal chain survives the iframe boundary on every crawler that
+            indexes iframe contents.
+          </p>
+          <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
+            <code>{iframeSnippet}</code>
+          </pre>
+        </section>
+
+        {/* ── Snippet 3: card badge ──────────────────────────────────── */}
+        <section aria-labelledby="card-html" className="mb-12 space-y-3">
           <div className="flex items-baseline justify-between gap-4">
             <h2 id="card-html" className="text-xl font-bold">
-              Card badge (HTML)
+              Card badge (inline-styled HTML)
             </h2>
             <CopyButton text={cardSnippet} label="Copy HTML" />
           </div>
           <p className="text-sm text-muted-foreground">
             Self-contained inline-styled link. Works on any site, survives
-            any host stylesheet, no JavaScript required.
+            any host stylesheet, no JavaScript required, no external image
+            fetched. Best when you want a card that matches a minimal site
+            without depending on our SVG endpoint.
           </p>
           <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
             <code>{cardSnippet}</code>
           </pre>
         </section>
 
-        {/* ── Snippet B: plain HTML link ────────────────────────────── */}
-        <section aria-labelledby="link-html" className="mb-10 space-y-3">
+        {/* ── Snippet 4: plain link ──────────────────────────────────── */}
+        <section aria-labelledby="link-html" className="mb-12 space-y-3">
           <div className="flex items-baseline justify-between gap-4">
             <h2 id="link-html" className="text-xl font-bold">
               Plain link (HTML)
@@ -210,8 +296,8 @@ export default async function EmbedPage(props: Props) {
           </pre>
         </section>
 
-        {/* ── Snippet C: markdown ───────────────────────────────────── */}
-        <section aria-labelledby="markdown-link" className="mb-10 space-y-3">
+        {/* ── Snippet 5: markdown ────────────────────────────────────── */}
+        <section aria-labelledby="markdown-link" className="mb-12 space-y-3">
           <div className="flex items-baseline justify-between gap-4">
             <h2 id="markdown-link" className="text-xl font-bold">
               Markdown
@@ -219,12 +305,100 @@ export default async function EmbedPage(props: Props) {
             <CopyButton text={markdownSnippet} label="Copy markdown" />
           </div>
           <p className="text-sm text-muted-foreground">
-            README files, Notion pages, Substack posts, GitHub repo
-            descriptions – anywhere markdown is the host language.
+            For README files, Notion pages, Substack posts, GitHub repo
+            descriptions, and anywhere markdown is the host language.
+            Renders the SVG badge wrapped in the canonical link.
           </p>
           <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
             <code>{markdownSnippet}</code>
           </pre>
+        </section>
+
+        {/* ── Snippet 6: JSON-LD only ────────────────────────────────── */}
+        <section aria-labelledby="jsonld-only" className="mb-12 space-y-3">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 id="jsonld-only" className="text-xl font-bold">
+              Review JSON-LD only
+            </h2>
+            <CopyButton text={jsonLdOnlySnippet} label="Copy JSON-LD" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Just the structured-data block. Use this when you already have
+            your own testimonial section and only want to add the citation
+            signal. Paste anywhere inside <code className="text-xs">&lt;head&gt;</code>{" "}
+            or before the closing <code className="text-xs">&lt;/body&gt;</code>{" "}
+            tag. Same payload is served at{" "}
+            <a
+              href={reviewJsonUrl}
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              {reviewJsonUrl.replace(/^https?:\/\//, "")}
+            </a>{" "}
+            for server-side template inlining.
+          </p>
+          <pre className="text-xs sm:text-sm overflow-x-auto rounded-md border bg-muted/40 p-4 leading-snug">
+            <code>{jsonLdOnlySnippet}</code>
+          </pre>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* ── Reference URLs ─────────────────────────────────────────── */}
+        <section
+          aria-labelledby="reference-urls"
+          className="mb-10 space-y-4 text-sm"
+        >
+          <h2
+            id="reference-urls"
+            className="text-sm uppercase tracking-widest text-muted-foreground"
+          >
+            Reference URLs
+          </h2>
+          <dl className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+              <dt className="font-semibold w-40 shrink-0">Canonical badge</dt>
+              <dd className="text-muted-foreground break-all">
+                <a className="underline underline-offset-4" href={badgeUrl}>
+                  {badgeUrl}
+                </a>
+              </dd>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+              <dt className="font-semibold w-40 shrink-0">SVG badge</dt>
+              <dd className="text-muted-foreground break-all">
+                <a className="underline underline-offset-4" href={svgUrl}>
+                  {svgUrl}
+                </a>
+              </dd>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+              <dt className="font-semibold w-40 shrink-0">Review JSON-LD</dt>
+              <dd className="text-muted-foreground break-all">
+                <a
+                  className="underline underline-offset-4"
+                  href={reviewJsonUrl}
+                >
+                  {reviewJsonUrl}
+                </a>
+              </dd>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+              <dt className="font-semibold w-40 shrink-0">Iframe payload</dt>
+              <dd className="text-muted-foreground break-all">
+                <a className="underline underline-offset-4" href={embedHtmlUrl}>
+                  {embedHtmlUrl}
+                </a>
+              </dd>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+              <dt className="font-semibold w-40 shrink-0">oEmbed discovery</dt>
+              <dd className="text-muted-foreground break-all">
+                <a className="underline underline-offset-4" href={oembedUrl}>
+                  {oembedUrl}
+                </a>
+              </dd>
+            </div>
+          </dl>
         </section>
 
         <Separator className="my-8" />
@@ -242,15 +416,42 @@ export default async function EmbedPage(props: Props) {
           </h2>
           <p>
             <strong className="text-foreground">No tracking pixel.</strong>{" "}
-            The embed is a plain link, not a script. Your visitors are not
-            counted, profiled, or redirected through any third party.
+            The embed is a plain link plus an SVG image plus an inline
+            JSON-LD block. Your visitors are not counted, profiled, or
+            redirected through any third party.
+          </p>
+          <p>
+            <strong className="text-foreground">
+              Identity link, not a link-spam relationship.
+            </strong>{" "}
+            The anchor uses <code className="text-xs">rel=&quot;me external&quot;</code>{" "}
+            – the IndieWeb identity-verification relationship plus the
+            outbound-editorial relationship. Mastodon profile-link
+            verification and IndieAuth both honor reciprocal{" "}
+            <code className="text-xs">rel=&quot;me&quot;</code> when our
+            canonical badge page reciprocates by linking back to your
+            product URL with the same attribute (we do, automatically, when
+            your profile has a productUrl set).
+          </p>
+          <p>
+            <strong className="text-foreground">
+              Honest Review JSON-LD.
+            </strong>{" "}
+            The Review schema declares{" "}
+            <code className="text-xs">reviewRating: 5</code> with the
+            documented semantics &quot;Verified outcome: first paying
+            customer on a connected Stripe account.&quot; This is a binary
+            verification fact, not a satisfaction score — the rating
+            reflects the Stripe verification, not speculation about how
+            you feel. You consented to public verification when you flipped
+            your badge to public.
           </p>
           <p>
             <strong className="text-foreground">No revocation if you
               refund.</strong>{" "}
-            The customer who paid was real even if they later left. The badge
-            keeps reading the same way unless you flip your profile to
-            private in your{" "}
+            The customer who paid was real even if they later left. The
+            badge keeps reading the same way unless you flip your profile
+            to private in your{" "}
             <Link
               href="/playbook"
               className="underline underline-offset-4 hover:text-foreground"
@@ -259,16 +460,6 @@ export default async function EmbedPage(props: Props) {
             </Link>
             .
           </p>
-          <p>
-            <strong className="text-foreground">
-              Honest backlink relationship.
-            </strong>{" "}
-            The badge carries{" "}
-            <code className="text-xs">rel=&quot;external&quot;</code> – not{" "}
-            <code className="text-xs">nofollow</code> – because the
-            relationship is a real editorial link, not a paid placement or a
-            reciprocal-link scheme.
-          </p>
         </section>
       </main>
     </div>
@@ -276,11 +467,9 @@ export default async function EmbedPage(props: Props) {
 }
 
 /**
- * Minimal HTML escape for builder/product names that land in the embed
- * HTML. Builder names are user-controlled; treat as untrusted even though
- * the same names are also rendered in JSX elsewhere (which React escapes
- * automatically). Inline embeds bypass JSX escaping, so this guard is
- * necessary.
+ * Minimal HTML escape for user-controlled fields rendered inside inline
+ * embed snippets. The JSX paths above are React-escaped automatically;
+ * these helpers exist because the inline embed strings bypass JSX.
  */
 function escapeHtml(s: string): string {
   return s
@@ -289,4 +478,8 @@ function escapeHtml(s: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function escapeAttr(s: string): string {
+  return escapeHtml(s);
 }

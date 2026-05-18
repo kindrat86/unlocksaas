@@ -310,6 +310,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
       alternates: hreflang(`${base}/contact`),
     },
+    // Verified Builder directory hub. The individual /builder/<slug>
+    // pages aren't sitemap-listed (they're discovered via inbound links
+    // from each founder's own embedded badge, which is the entire point
+    // of the off-page lift strategy). The directory page IS listed so
+    // crawlers can find the canonical list of verified builders and
+    // follow internal links to each badge.
+    //
+    // E-E-A-T anchor: a directory of Stripe-verified outcomes is the
+    // strongest trust signal pre-revenue SaaS can ship. Quality raters
+    // look for exactly this surface on sites that publish "our customers"
+    // claims (Google Search Quality Rater Guidelines §4.5).
+    {
+      url: `${base}/builders`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/builders`),
+    },
     // Site-wide search — backed by app/(marketing)/search/page.tsx. Real
     // surface the WebSite SearchAction potentialAction points at.
     {

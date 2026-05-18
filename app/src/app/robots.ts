@@ -28,15 +28,30 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  * operating user-agent string verified at /etc/robots-research/ on
  * 2026-05-17.
  *
- * Disallow list for `*` mirrors the previous version and continues to block:
+ * Disallow list for `*` continues to block:
  *  - /playbook/*            — authenticated member area; per-user data
  *  - /api/*                — server routes, never indexable
  *  - /auth/*               — login / callback flow
  *  - /diagnostic/result    — per-lead diagnosis (already index:false)
- *  - /builder/*            — per-Verified-Builder OG / share routes
  *  - /login                — auth surface
  *  - /oto, /welcome        — post-purchase transitions; out-of-context
  *  - /onboarding           — post-purchase intake; auth-gated downstream
+ *
+ * Verified Builder strategy update (2026-05-18)
+ * ---------------------------------------------
+ * The canonical /builder/<slug> page is INDEXABLE — it must be, or the
+ * cross-domain Review JSON-LD citation chain breaks. When a verified
+ * founder embeds the badge on their own site with the supplied Review
+ * JSON-LD, the `itemReviewed.@id` resolves to the unlocksaas Playbook;
+ * Google validates that citation by crawling the canonical page named in
+ * the founder's anchor. Blocking /builder/* would invalidate every embed.
+ *
+ * What we DO block under /builder/<slug>/ are the tool / machine
+ * sub-routes (the embed-code helper UI, the SVG image asset, the JSON-LD
+ * payload, the iframe HTML, the oEmbed discovery JSON, and the auto-
+ * generated OG image). These exist for off-site consumption; indexing
+ * them would create duplicate-intent results competing with the canonical
+ * badge page for the same query.
  *
  * Sitemap reference: discovery anchor for every public surface.
  */
@@ -47,12 +62,25 @@ export default function robots(): MetadataRoute.Robots {
   // appended below for every locale with at least one approved
   // translation — defence-in-depth so private subtrees are blocked under
   // every advertised locale prefix.
+  //
+  // /builder/<slug> is INDEXABLE (see header comment, Verified Builder
+  // strategy update). Only the per-builder tool / machine sub-routes are
+  // blocked — those carry off-site consumption semantics, not editorial
+  // ranking content. robots.txt wildcards (`*`) are honored by Googlebot,
+  // Bingbot, Yandex, Applebot, and every AI crawler we allow-list below
+  // per RFC 9309 §2.2.
   const PRIVATE_DISALLOW_CANONICAL = [
     "/playbook/",
     "/api/",
     "/auth/",
     "/diagnostic/result",
-    "/builder/",
+    // Verified-Builder tool sub-routes — not the canonical /builder/<slug>.
+    "/builder/*/embed",
+    "/builder/*/embed.html",
+    "/builder/*/badge.svg",
+    "/builder/*/review.json",
+    "/builder/*/oembed.json",
+    "/builder/*/opengraph-image",
     "/login",
     "/oto",
     "/welcome",
