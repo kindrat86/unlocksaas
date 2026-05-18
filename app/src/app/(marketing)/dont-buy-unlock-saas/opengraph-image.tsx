@@ -45,13 +45,36 @@ export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
 /**
- * og:image:alt for screen readers and Slack/Discord preview captions.
- * Per the OG-image discipline shared with the pSEO fleet, the alt names
- * the artifact AND the publisher so the preview is intelligible even
- * when the image fails to load.
+ * generateImageMetadata vs `export const alt`.
+ *
+ * Both are documented Next 16 conventions for declaring OG image
+ * metadata. In this codebase, the static `export const alt` form was
+ * shipped on first cut (#31) but the page's `metadata.openGraph` block
+ * silently failed to auto-attach the per-route image, leaving every
+ * social share falling back to the site-level OG. The five other
+ * working pSEO OG routes (alternatives-to, funnel-teardown,
+ * pricing-teardown, compare, press/topics) all use
+ * `generateImageMetadata` with a single `card` id, and they all attach
+ * correctly. Matching their shape is the right call – the file-based
+ * metadata pipeline treats `generateImageMetadata` as a first-class
+ * declaration and merges it into the parent route's `openGraph.images`
+ * reliably.
+ *
+ * Brunson Hard-Rule reconciliation: alt text names the artifact + the
+ * publisher so the preview is intelligible even when the image fails
+ * to load. Disqualifier count is read dynamically from the registry
+ * (DISQUALIFIERS.length) so the card cannot drift from the truth.
  */
-export const alt =
-  "Don't buy Unlock SaaS – eight honest disqualifiers signed by the founder, before checkout";
+export function generateImageMetadata() {
+  return [
+    {
+      id: "card",
+      alt: `Don't buy Unlock SaaS – ${DISQUALIFIERS.length} honest disqualifiers signed by the founder, before checkout`,
+      size: OG_SIZE,
+      contentType: OG_CONTENT_TYPE,
+    },
+  ];
+}
 
 export default function OgImage() {
   return new ImageResponse(
