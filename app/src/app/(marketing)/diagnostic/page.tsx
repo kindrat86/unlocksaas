@@ -18,6 +18,7 @@ import {
 } from "@/lib/diagnostic-hook-variant";
 import { DiagnosticHookVariantBeacon } from "@/components/diagnostic/hook-variant-beacon";
 import { DiagnosticPublicCounter } from "@/components/diagnostic/public-counter";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 // Brunson spec source:
 // - workbook 02 §2 (Free Diagnostic Lead Funnel)
@@ -33,19 +34,17 @@ export const metadata: Metadata = {
   title: "Free Launch Diagnostic — Unlock SaaS",
   description:
     "Paste your live product page. In 90 seconds I tell you why it is flat: Wrong Person, Weak Offer, or Weak Belief. Then I hand you the door.",
-  // Self-referencing canonical + hreflang. Without this override, the root
-  // layout's `canonical: "/"` propagates here and tells Google /diagnostic
-  // is duplicate of the homepage – consolidating PageRank away from the
-  // squeeze surface that the sitemap declares at priority 0.9. Matches
-  // the sitemap.ts hreflang helper (en-US + x-default for a deliberately
-  // monolingual site). Closed 2026-05-17 alongside the per-slug OG batch.
-  alternates: {
-    canonical: "/diagnostic",
-    languages: {
-      "en-US": "/diagnostic",
-      "x-default": "/diagnostic",
-    },
-  },
+  // Self-referencing canonical + registry-driven hreflang. pageAlternates
+  // reads approvedLocalesForPath("/diagnostic") and emits one alternate per
+  // approved translation. Until /diagnostic gains an approved locale row,
+  // the output is byte-identical to the previous monolingual map (en-US +
+  // x-default → /diagnostic). When a locale row lands, the per-page <head>
+  // hreflang stays in sync with sitemap.xml's hreflang block without
+  // requiring a separate edit to this file. Original gap closed 2026-05-17
+  // (preventing root layout `canonical: "/"` from propagating); helper
+  // adopted 2026-05-19 to fix the registry-divergence risk that affected
+  // /repeatable too.
+  alternates: pageAlternates("/diagnostic"),
 };
 
 // Squeeze must always be live; do not cache.

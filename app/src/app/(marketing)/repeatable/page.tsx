@@ -4,6 +4,7 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 // Public placeholder for Rung 2 (Repeatable Revenue Layer).
 // Spec source: strategy/decisions/rung-2-repeatable-revenue.md.
@@ -17,18 +18,14 @@ export const metadata: Metadata = {
   description:
     "What ships after your first paying customer: a self-serve layer that carries dream customer, attractive character, outreach, and Stripe pattern across Product 2. Spec published; build gated on three Core customer cycles.",
   robots: { index: true, follow: true },
-  // Self-referencing canonical + hreflang. Without this override, the root
-  // layout's `canonical: "/"` propagates here and tells Google /repeatable
-  // is duplicate of the homepage. /repeatable is listed in sitemap.ts at
-  // priority 0.5 and is the public spec of the next product rung; it must
-  // be indexed on its own URL. Closed 2026-05-17.
-  alternates: {
-    canonical: "/repeatable",
-    languages: {
-      "en-US": "/repeatable",
-      "x-default": "/repeatable",
-    },
-  },
+  // Self-referencing canonical + registry-driven hreflang. pageAlternates
+  // reads approvedLocalesForPath("/repeatable") and emits one alternate
+  // entry per approved translation. Until /es/repeatable and /pt-BR/repeatable
+  // approved (2026-05-19), the output is byte-identical to the previous
+  // monolingual map { "en-US": "/repeatable", "x-default": "/repeatable" }.
+  // After approval the map auto-includes the locale variants, so the
+  // per-page hreflang stays in sync with sitemap.xml's hreflang block.
+  alternates: pageAlternates("/repeatable"),
 };
 
 export const dynamic = "force-dynamic";
