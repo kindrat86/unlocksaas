@@ -104,6 +104,16 @@ export const Event = {
   // INP/CLS by /alternatives-to vs /funnel-teardown etc. and catch the
   // first slug-page that drifts to "poor" before users feel it.
   WebVitalReported: "web_vital_reported",
+
+  // Google Search Console feedback loop (server-side, daily cron at 19:00
+  // UTC – /api/cron/gsc-feedback). One `GscSearchQueryObserved` per row
+  // returned by the Search Analytics API for the previous-day window
+  // (query + page + country + device + clicks/impressions/ctr/position).
+  // One `GscFeedbackSynced` summary per tick so the operator can pin a
+  // sync-health dashboard. Closes the CRO instrumentation → SEO loop
+  // called out as a gap in the Surface-13 audit row.
+  GscSearchQueryObserved: "gsc_search_query_observed",
+  GscFeedbackSynced: "gsc_feedback_synced",
 } as const;
 
 export type EventName = (typeof Event)[keyof typeof Event];
@@ -230,4 +240,66 @@ export interface VslCompletionProps extends VslEventProps {
   watched_percent: number;
   /** Whether the visitor sat through to the end or skipped. */
   reached_end: boolean;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Google Search Console feedback events.
+//
+// Emitted by the daily cron at /api/cron/gsc-feedback (19:00 UTC). The cron
+// pulls yesterday's Search Analytics rows and emits one row event per
+// result, plus one summary event per tick.
+//
+// `GSC_DISTINCT_ID` is the canonical distinct ID used for both events. GSC
+// data is not user-attributed (queries are anonymised at source) so we
+// emit under a stable synthetic ID with a `server:` namespace prefix that
+// mirrors the convention from `lib/analytics/server.ts` (where Stripe-only
+// rows fall back to `stripe:<customer_id>`). The synthetic distinct ID
+// gives the operator a clean person row in PostHog to pin a dashboard
+// against, and prevents GSC rows from polluting real user cohorts.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Distinct ID for GSC-sourced server events. Single row in PostHog. */
+export const GSC_DISTINCT_ID = "server:gsc";
+
+export interface GscSearchQueryObservedProps {
+  /** Search query string (top-1000 daily, capped upstream). */
+  query: string;
+  /** Landing page URL returned by GSC for the query. */
+  page: string;
+  /** ISO 3166-1 alpha-3 country code (e.g. "usa"). Optional – GSC omits the
+   *  field when the row aggregates across geographies. Mirrors upstream
+   *  `SearchAnalyticsRow.country?: string` in `lib/gsc/client.ts`. */
+  country?: string;
+  /** GSC device dimension. Optional – upstream shape from
+   *  `SearchAnalyticsRow.device?: "DESKTOP" | "MOBILE" | "TABLET"`. */
+  device?: "DESKTOP" | "MOBILE" | "TABLET";
+  clicks: number;
+  impressions: number;
+  /** Click-through rate, 0–1. */
+  ctr: number;
+  /** Average ranking position for the query (lower is better). */
+  position: number;
+  /** ISO date (YYYY-MM-DD) marking the start of the GSC window. */
+  window_start_date: string;
+  /** ISO date (YYYY-MM-DD) marking the end of the GSC window. */
+  window_end_date: string;
+}
+
+export interface GscFeedbackSyncedProps {
+  /** ISO date (YYYY-MM-DD) marking the start of the GSC window. */
+  window_start_date: string;
+  /** ISO date (YYYY-MM-DD) marking the end of the GSC window. */
+  window_end_date: string;
+  /** Total rows returned by GSC before the per-tick cap. */
+  rows_returned: number;
+  /** Rows actually emitted to PostHog (zero when PH not configured). */
+  rows_emitted: number;
+  /** True when the per-tick cap clipped the row set. */
+  cap_hit: boolean;
+  /** Wall-clock duration of the cron tick, milliseconds. */
+  elapsed_ms: number;
+  /** Highest-clicks query in the window (omitted when zero rows). */
+  top_query?: string;
+  /** Worst-CTR query in the window (omitted when zero rows). */
+  worst_ctr_query?: string;
 }
