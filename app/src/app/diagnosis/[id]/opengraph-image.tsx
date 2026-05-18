@@ -32,11 +32,12 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function OgImage({ params }: Props) {
-  const diag = await loadPublicDiagnosis(createAdminClient(), params.id);
+  const { id } = await params;
+  const diag = await loadPublicDiagnosis(createAdminClient(), id);
 
   const hostLine = diag ? diag.hostname : "unlocksaas.com";
   const labelLine = diag ? LABEL_PUBLIC_NAME[diag.label] : "Free Diagnostic";

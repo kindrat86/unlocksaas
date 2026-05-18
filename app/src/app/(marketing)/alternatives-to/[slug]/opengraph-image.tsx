@@ -58,8 +58,9 @@ export function generateImageMetadata({ params }: { params: Params }) {
   ];
 }
 
-export default function OgImage({ params }: { params: Params }) {
-  const a = getAlternativeBySlug(params.slug);
+export default async function OgImage({ params }: { params: Promise<Params> }) {
+  const { slug } = await params;
+  const a = getAlternativeBySlug(slug);
 
   // Defensive fallback: dynamicParams=false should make this unreachable,
   // but a stale slug list during a future refactor must still render a

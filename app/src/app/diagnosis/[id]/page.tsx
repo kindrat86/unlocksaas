@@ -43,11 +43,12 @@ export const runtime = "nodejs";
 
 type RouteParams = { id: string };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: RouteParams;
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<RouteParams>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const { id } = params;
   if (!isValidLeadId(id)) {
     return { robots: { index: false, follow: false } };
@@ -85,11 +86,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function PublicDiagnosisPage({
-  params,
-}: {
-  params: RouteParams;
-}) {
+export default async function PublicDiagnosisPage(
+  props: {
+    params: Promise<RouteParams>;
+  }
+) {
+  const params = await props.params;
   const { id } = params;
   if (!isValidLeadId(id)) notFound();
 
@@ -108,7 +110,6 @@ export default async function PublicDiagnosisPage({
       <Suspense fallback={null}>
         <DiagnosisShareViewBeacon leadId={diag.id} label={diag.label} />
       </Suspense>
-
       <div className="max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           A public Unlock SaaS diagnosis

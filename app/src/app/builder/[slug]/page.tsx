@@ -21,10 +21,11 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const badge = await loadPublicBadge(createAdminClient(), params.slug);
   if (!badge) {
     return {
@@ -57,7 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BuilderBadgePage({ params }: Props) {
+export default async function BuilderBadgePage(props: Props) {
+  const params = await props.params;
   const badge = await loadPublicBadge(createAdminClient(), params.slug);
   if (!badge) notFound();
 

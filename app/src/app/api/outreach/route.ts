@@ -33,7 +33,7 @@ const ALLOWED_CHANNELS = [
 type Channel = (typeof ALLOWED_CHANNELS)[number];
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     const {
       data: { user },
@@ -80,7 +80,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     const {
       data: { user },

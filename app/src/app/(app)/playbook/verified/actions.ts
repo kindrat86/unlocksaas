@@ -34,7 +34,7 @@ async function requireProfile(): Promise<{
   productUrl: string | null;
   shareVisibility: "private" | "public";
 }> {
-  const sb = createClient();
+  const sb = await createClient();
   const { data: userData, error: userErr } = await sb.auth.getUser();
   if (userErr || !userData.user) redirect("/login?next=/playbook/verified");
 

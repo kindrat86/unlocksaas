@@ -67,7 +67,7 @@ export const metadata: Metadata = {
 interface SearchPageProps {
   // Next 14 sync searchParams. Migrate to Promise<…> when the Next 16
   // upgrade ships per strategy/next-16-migration-plan.md.
-  searchParams?: { q?: string | string[] };
+  searchParams?: Promise<{ q?: string | string[] }>;
 }
 
 /**
@@ -75,7 +75,7 @@ interface SearchPageProps {
  * `?q=foo&q=bar` resolves to "foo" so the page never has to reason about
  * multi-value query semantics.
  */
-function readQuery(sp: SearchPageProps["searchParams"]): string {
+function readQuery(sp: Awaited<SearchPageProps["searchParams"]>): string {
   if (!sp) return "";
   const raw = sp.q;
   if (Array.isArray(raw)) return raw[0]?.trim() ?? "";
@@ -87,7 +87,8 @@ const BREADCRUMB_TRAIL = [
   { name: "Search", url: "https://unlocksaas.com/search" },
 ] as const;
 
-export default function SearchPage({ searchParams }: SearchPageProps) {
+export default async function SearchPage(props: SearchPageProps) {
+  const searchParams = await props.searchParams;
   const query = readQuery(searchParams);
   const results = query ? searchIndex(query) : [];
   const grouped = groupBySurface(results);

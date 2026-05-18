@@ -219,11 +219,12 @@ const LABEL_BADGE: Record<DiagnosticLabel | "error", string> = {
 
 type SearchParams = { id?: string | string[] };
 
-export default async function DiagnosticResultPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function DiagnosticResultPage(
+  props: {
+    searchParams: Promise<SearchParams>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const raw = searchParams?.id;
   const id = Array.isArray(raw) ? raw[0] : raw;
 
@@ -311,7 +312,6 @@ function BridgePage({ row }: { row: LeadRow }) {
           is at the bottom of this page.
         </p>
       </div>
-
       {/* CLAUDE READ-OUT — the story (workbook rule: story first). */}
       <article className="mb-8">
         <Card className={isError ? "border-destructive/30" : "border-primary/30"}>
@@ -348,14 +348,12 @@ function BridgePage({ row }: { row: LeadRow }) {
           </CardContent>
         </Card>
       </article>
-
       {/* DEEP REPORT — the 10x overdeliver. Three-axis scorecard, rewrites,
           30-day plan, competitors, strengths. Only present on v2 rows
           (label !== 'error' AND analysis_detail is non-null). */}
       {!isError && row.analysis_detail && (
         <DeepReport detail={row.analysis_detail} hostname={host} />
       )}
-
       {/* BRIDGE — the offer at the bottom. Hidden on print so the saved
           PDF is a clean teardown, not a sales page. */}
       <section className="print:hidden">
@@ -445,7 +443,6 @@ function BridgePage({ row }: { row: LeadRow }) {
               : "Free. No card. Five short emails over five days."}
         </p>
       </section>
-
       {/* Butterfly-Marketing Loop 1 (Brunson Traffic Secrets Chapter 19 +
           DCS Chapter 11). The bait result becomes a public artifact when
           (and only when) the lead opts in. Shareable card mounted below
@@ -465,12 +462,10 @@ function BridgePage({ row }: { row: LeadRow }) {
           />
         </div>
       )}
-
       <p className="text-xs text-muted-foreground mt-10 text-center print:hidden">
         The diagnosis is also in your inbox. Reply if you want me to look at it
         personally.
       </p>
-
       {/* Print-only footer attribution — shows up in the saved PDF so the
           artifact carries its source when a founder shares the file. */}
       <p className="hidden print:block mt-10 text-center text-xs text-muted-foreground">

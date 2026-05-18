@@ -28,11 +28,12 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function OgImage({ params }: Props) {
-  const badge = await loadPublicBadge(createAdminClient(), params.slug);
+  const { slug } = await params;
+  const badge = await loadPublicBadge(createAdminClient(), slug);
 
   const headline = badge
     ? `${badge.builderName} shipped and got paid.`

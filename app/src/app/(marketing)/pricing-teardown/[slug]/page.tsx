@@ -59,11 +59,12 @@ export function generateStaticParams() {
 // ----- Per-page metadata -----------------------------------------------------
 type RouteParams = { slug: string };
 
-export function generateMetadata({
-  params,
-}: {
-  params: RouteParams;
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<RouteParams>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = getPricingTeardownBySlug(params.slug);
   if (!t) return {};
 
@@ -200,11 +201,12 @@ function JsonLdBlock({ json }: { json: string }) {
 
 // ----- Page ------------------------------------------------------------------
 
-export default function PricingTeardownPage({
-  params,
-}: {
-  params: RouteParams;
-}) {
+export default async function PricingTeardownPage(
+  props: {
+    params: Promise<RouteParams>;
+  }
+) {
+  const params = await props.params;
   const t = getPricingTeardownBySlug(params.slug);
   if (!t) notFound();
 
@@ -222,7 +224,6 @@ export default function PricingTeardownPage({
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
-
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
@@ -246,7 +247,6 @@ export default function PricingTeardownPage({
           </li>
         </ol>
       </nav>
-
       {/* Hero */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
@@ -278,9 +278,7 @@ export default function PricingTeardownPage({
           </Link>
         </p>
       </header>
-
       <Separator className="my-2" />
-
       {/* TL;DR — AEO citation block */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="tldr">
         <h2 id="tldr" className="sr-only">
@@ -295,7 +293,6 @@ export default function PricingTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* Cross-pattern callout */}
       {hasFunnelTeardown ? (
         <section
@@ -320,7 +317,6 @@ export default function PricingTeardownPage({
           </div>
         </section>
       ) : null}
-
       {/* Alternatives-to cross-pattern callout when an alternatives entry exists */}
       {hasAlt ? (
         <section
@@ -344,7 +340,6 @@ export default function PricingTeardownPage({
           </div>
         </section>
       ) : null}
-
       {/* Category roundup callout */}
       {category ? (
         <section
@@ -367,7 +362,6 @@ export default function PricingTeardownPage({
           </div>
         </section>
       ) : null}
-
       {/* Product snapshot */}
       <section
         className="max-w-3xl mx-auto px-6 py-8"
@@ -395,7 +389,6 @@ export default function PricingTeardownPage({
           </div>
         </dl>
       </section>
-
       {/* Pricing structure */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -460,7 +453,6 @@ export default function PricingTeardownPage({
           ))}
         </div>
       </section>
-
       {/* Anchor analysis */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -480,7 +472,6 @@ export default function PricingTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* Upgrade trigger */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -500,7 +491,6 @@ export default function PricingTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* What's working */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -518,7 +508,6 @@ export default function PricingTeardownPage({
           ))}
         </ul>
       </section>
-
       {/* What to adapt vs avoid */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -562,7 +551,6 @@ export default function PricingTeardownPage({
           </Card>
         </div>
       </section>
-
       {/* Brunson lens */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -615,7 +603,6 @@ export default function PricingTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
@@ -643,7 +630,6 @@ export default function PricingTeardownPage({
           ))}
         </div>
       </section>
-
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-12" aria-labelledby="cta">
         <Card className="border-primary/40 bg-primary/5">
@@ -667,7 +653,6 @@ export default function PricingTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* Head-to-head comparisons including this product */}
       {comparisons.length > 0 ? (
         <section
@@ -700,7 +685,6 @@ export default function PricingTeardownPage({
           </ul>
         </section>
       ) : null}
-
       {/* Related pricing teardowns */}
       {related.length > 0 ? (
         <section
@@ -736,7 +720,6 @@ export default function PricingTeardownPage({
           </p>
         </section>
       ) : null}
-
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>

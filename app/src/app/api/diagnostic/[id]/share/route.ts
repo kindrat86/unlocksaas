@@ -45,10 +45,8 @@ function siteOrigin(req: NextRequest): string {
   return "https://unlocksaas.com";
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function POST(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const id = params.id;
   if (!isValidLeadId(id)) {
     return NextResponse.json({ error: "Invalid diagnosis id." }, { status: 404 });

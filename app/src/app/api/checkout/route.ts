@@ -35,8 +35,8 @@ export async function POST(req: NextRequest) {
   // Stamp the A/B identity variant + subject onto the Stripe session so the
   // webhook can attribute the purchase back to the variant when it fires
   // checkout.session.completed. Cookies are sticky for a year via middleware.
-  const abVariant = readIdentityFromCookies();
-  const abSubject = readSubjectFromCookies() ?? "";
+  const abVariant = await readIdentityFromCookies();
+  const abSubject = await readSubjectFromCookies() ?? "";
   const abMetadata: Record<string, string> = {
     ab_key: IDENTITY_AB_KEY,
     ab_variant: abVariant,

@@ -10,7 +10,7 @@ export default async function PlaybookDashboard() {
   // The layout already enforces auth + tier gating. Here we only need the
   // First Paying Customer Verified flag to decide whether to render the
   // celebration banner above the Step 1 CTA.
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
 
   let verified = false;

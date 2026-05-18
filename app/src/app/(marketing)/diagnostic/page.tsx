@@ -50,11 +50,12 @@ export const metadata: Metadata = {
 // Squeeze must always be live; do not cache.
 export const dynamic = "force-dynamic";
 
-export default async function DiagnosticSqueezePage({
-  searchParams,
-}: {
-  searchParams?: Record<string, string | string[] | undefined>;
-}) {
+export default async function DiagnosticSqueezePage(
+  props: {
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  }
+) {
+  const searchParams = await props.searchParams;
   // Eugene Schwartz awareness-to-hook mapping. Resolved server-side from
   // ?utm_source / ?source / ?h plus the Referer header. The await is
   // forward-compatible with Next 15+/16 and a no-op in Next 14.2.35.

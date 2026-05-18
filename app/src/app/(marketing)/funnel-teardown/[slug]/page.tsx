@@ -57,11 +57,12 @@ export function generateStaticParams() {
 // ----- Per-page metadata -----------------------------------------------------
 type RouteParams = { slug: string };
 
-export function generateMetadata({
-  params,
-}: {
-  params: RouteParams;
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<RouteParams>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = getTeardownBySlug(params.slug);
   if (!t) return {};
 
@@ -206,11 +207,12 @@ function JsonLdBlock({ json }: { json: string }) {
 
 // ----- Page ------------------------------------------------------------------
 
-export default function FunnelTeardownPage({
-  params,
-}: {
-  params: RouteParams;
-}) {
+export default async function FunnelTeardownPage(
+  props: {
+    params: Promise<RouteParams>;
+  }
+) {
+  const params = await props.params;
   const t = getTeardownBySlug(params.slug);
   if (!t) notFound();
 
@@ -227,7 +229,6 @@ export default function FunnelTeardownPage({
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
-
       {/* Breadcrumb visible trail (matches BreadcrumbList JSON-LD) */}
       <nav
         aria-label="Breadcrumb"
@@ -251,7 +252,6 @@ export default function FunnelTeardownPage({
           </li>
         </ol>
       </nav>
-
       {/* Hero */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
@@ -284,9 +284,7 @@ export default function FunnelTeardownPage({
           </Link>
         </p>
       </header>
-
       <Separator className="my-2" />
-
       {/* TL;DR — explicit citation block for LLMs */}
       <section
         className="max-w-3xl mx-auto px-6 py-8"
@@ -304,7 +302,6 @@ export default function FunnelTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* Cross-pattern callout to pricing teardown when both exist */}
       {hasPricing ? (
         <section
@@ -329,7 +326,6 @@ export default function FunnelTeardownPage({
           </div>
         </section>
       ) : null}
-
       {/* Alternatives-to cross-pattern callout when an alternatives entry exists */}
       {hasAlt ? (
         <section
@@ -353,7 +349,6 @@ export default function FunnelTeardownPage({
           </div>
         </section>
       ) : null}
-
       {/* Category roundup callout */}
       {category ? (
         <section
@@ -376,7 +371,6 @@ export default function FunnelTeardownPage({
           </div>
         </section>
       ) : null}
-
       {/* Product snapshot */}
       <section
         className="max-w-3xl mx-auto px-6 py-8"
@@ -412,7 +406,6 @@ export default function FunnelTeardownPage({
           </div>
         </dl>
       </section>
-
       {/* Hook / Story / Offer breakdown */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -457,7 +450,6 @@ export default function FunnelTeardownPage({
           </Card>
         </div>
       </section>
-
       {/* What's working */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -475,7 +467,6 @@ export default function FunnelTeardownPage({
           ))}
         </ul>
       </section>
-
       {/* What to adapt vs avoid */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -519,7 +510,6 @@ export default function FunnelTeardownPage({
           </Card>
         </div>
       </section>
-
       {/* Brunson lens */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -567,7 +557,6 @@ export default function FunnelTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
@@ -595,7 +584,6 @@ export default function FunnelTeardownPage({
           ))}
         </div>
       </section>
-
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-12" aria-labelledby="cta">
         <Card className="border-primary/40 bg-primary/5">
@@ -620,7 +608,6 @@ export default function FunnelTeardownPage({
           </CardContent>
         </Card>
       </section>
-
       {/* Head-to-head comparisons including this product */}
       {comparisons.length > 0 ? (
         <section
@@ -653,7 +640,6 @@ export default function FunnelTeardownPage({
           </ul>
         </section>
       ) : null}
-
       {/* Related teardowns (internal linking graph) */}
       {related.length > 0 ? (
         <section
@@ -692,7 +678,6 @@ export default function FunnelTeardownPage({
           </p>
         </section>
       ) : null}
-
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>

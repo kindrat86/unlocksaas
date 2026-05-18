@@ -19,12 +19,13 @@ import {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default async function OnboardingPage({
-  searchParams,
-}: {
-  searchParams: { session_id?: string; connect?: string; error?: string };
-}) {
-  const supabase = createClient();
+export default async function OnboardingPage(
+  props: {
+    searchParams: Promise<{ session_id?: string; connect?: string; error?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
     redirect("/login?next=/onboarding");

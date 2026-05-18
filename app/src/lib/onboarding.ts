@@ -291,7 +291,7 @@ export async function getOnboardingStatus(args: {
   userId: string;
   email: string;
 }): Promise<OnboardingStatus> {
-  const db = createClient();
+  const db = await createClient();
   const admin = createAdminClient();
 
   // Profile lookup: prefer by user_id, fall back to email (in case the

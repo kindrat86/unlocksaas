@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
   }
 
   // 1. Verify the signed user is authenticated AND matches state.
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: authData, error: authError } = await supabase.auth.getUser();
   if (authError || !authData.user) {
     return NextResponse.redirect(

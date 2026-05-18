@@ -22,7 +22,7 @@ export async function GET() {
   const startedAt = Date.now();
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,
@@ -86,7 +86,7 @@ export async function POST(req: Request) {
   const startedAt = Date.now();
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,

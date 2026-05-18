@@ -32,7 +32,7 @@ export default async function PlaybookLayout({
 }) {
   // Auth gate — anonymous traffic gets sent to /login with the original
   // path preserved so we can deep-link back after sign-in.
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
     redirect("/login?next=/playbook");

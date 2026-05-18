@@ -75,7 +75,7 @@ function formatDate(iso: string): string {
 }
 
 export default async function VerifiedCelebrationPage() {
-  const sb = createClient();
+  const sb = await createClient();
   const { data: userData } = await sb.auth.getUser();
   if (!userData?.user) redirect("/login?next=/playbook/verified");
 

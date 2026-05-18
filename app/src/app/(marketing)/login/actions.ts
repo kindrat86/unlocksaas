@@ -34,13 +34,13 @@ export async function sendMagicLink(
 
   // Build the absolute origin from the incoming request so previews work
   // without hard-coding NEXT_PUBLIC_APP_URL.
-  const host = headers().get("host");
-  const proto = headers().get("x-forwarded-proto") ?? "https";
+  const host = (await headers()).get("host");
+  const proto = (await headers()).get("x-forwarded-proto") ?? "https";
   const origin =
     process.env.NEXT_PUBLIC_APP_URL ||
     (host ? `${proto}://${host}` : "http://localhost:3000");
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {

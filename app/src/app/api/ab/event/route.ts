@@ -31,10 +31,10 @@ export async function POST(req: NextRequest) {
     // empty body is fine — treat as exposure
   }
 
-  const variant = readIdentityFromCookies();
-  const subjectId = readSubjectFromCookies();
+  const variant = await readIdentityFromCookies();
+  const subjectId = await readSubjectFromCookies();
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from("ab_tests").insert({
     key: IDENTITY_AB_KEY,
     variant,

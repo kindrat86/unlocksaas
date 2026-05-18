@@ -52,8 +52,9 @@ export function generateImageMetadata({ params }: { params: Params }) {
   ];
 }
 
-export default function OgImage({ params }: { params: Params }) {
-  const t = getPricingTeardownBySlug(params.slug);
+export default async function OgImage({ params }: { params: Promise<Params> }) {
+  const { slug } = await params;
+  const t = getPricingTeardownBySlug(slug);
 
   return new ImageResponse(
     buildOgCard({

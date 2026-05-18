@@ -1,32 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Launch-window pragmatic unblock. Originally added when multiple
-  // concurrent build sessions were landing in-progress scaffolding (unused
-  // state hooks, unused destructured imports) for features mid-wire-up
-  // (deliverable-email resend button, diagnostic survey bucketing).
-  // Compilation passes; only ESLint's strict no-unused-vars rule was
-  // failing the build.
-  //
-  // STATUS (2026-05-18 SXO sweep): the two symbols this block was holding
-  // open have since resolved on their own —
-  //   - src/app/(app)/playbook/step/[id]/page.tsx: every previously-unused
-  //     state hook is now referenced (emailedOnAssembly, hydratedFromServer,
-  //     resendStatus all read in the JSX from line 537+).
-  //   - src/app/api/diagnostic/route.ts: assignBucket, Bucket, and survey
-  //     are all referenced in the request body parsing + bucketing logic.
-  //
-  // The pragma is therefore now hygiene-only — held in place because a
-  // clean-lint pass has not been verified in this worktree (no node_modules
-  // installed here). Flip-point: run `cd app && npm run lint` from the main
-  // checkout; if it passes clean, flip `ignoreDuringBuilds: false` and
-  // delete this block. Same dependency as the Next 16 migration trigger
-  // documented in strategy/next-16-migration-plan.md — both safely land
-  // after the first verified Stripe customer cycle.
-  //
-  // TypeScript type-checking remains on; runtime correctness is unaffected.
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Next 16 removes the `eslint` config option and the `next lint` command.
+  // Lint runs through the ESLint CLI directly (out of the Next.js build) and
+  // is not configured in this baseline migration; the existing
+  // eslint-config-next dep is bumped so a follow-up can wire up
+  // `eslint.config.mjs` per the v16 codemod (`next-lint-to-eslint-cli`).
 
   /**
    * SXO / CWV bundle wins (2026-05-17).
