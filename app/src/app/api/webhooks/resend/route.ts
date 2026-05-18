@@ -1,23 +1,30 @@
 /**
  * POST /api/webhooks/resend
  *
- * Receives delivery-status events from Resend (Svix-signed). We only care
- * about `email.bounced` and `email.complained`: both signal an inbox we must
- * stop sending to immediately.
+ * Receives delivery-status events from Resend (Svix-signed). Two roles:
  *
- * On match, the corresponding subscriber row across all 4 funnel tables is
- * flipped to status='bounced' or 'complained'. Cron senders already filter
- * status='active', so the flip is enough to stop the sequence.
+ *   1. Suppression: `email.bounced` and `email.complained` flip the
+ *      corresponding subscriber row across all 4 funnel tables to
+ *      status='bounced' or 'complained'. Cron senders already filter
+ *      status='active', so the flip is enough to stop the sequence.
  *
- * Idempotent: re-receiving the same event is safe – the update is a no-op if
- * the row is already in the target status.
+ *   2. Engagement: `email.opened`, `email.clicked`, `email.delivered` are
+ *      written as one row each into `funnel_email_events`. The dashboard
+ *      builder aggregates these into per-subscriber open and click rates,
+ *      deduping multi-fires by resend_email_id.
+ *
+ * Idempotent for suppression: re-receiving a bounce is a no-op if the row is
+ * already in the target status. Engagement events are append-only — opens
+ * fire multiple times via pixel reloads, and the dashboard dedupes by
+ * resend_email_id at query time rather than enforcing a unique constraint.
  *
  * Configuration (manual, one-time):
  *   1. Add env var RESEND_WEBHOOK_SECRET (starts with `whsec_…`) to Vercel
  *      preview + production environments.
  *   2. In the Resend dashboard, add an endpoint pointing to
  *      https://unlocksaas.com/api/webhooks/resend and subscribe it to
- *      `email.bounced` and `email.complained` events.
+ *      `email.bounced`, `email.complained`, `email.opened`, `email.clicked`,
+ *      `email.delivered` events.
  *
  * Svix signature scheme (verbatim from Resend/Svix docs):
  *   - Headers: svix-id, svix-timestamp, svix-signature
@@ -45,6 +52,8 @@ interface ResendEvent {
     from?: string;
     subject?: string;
     bounce?: { type?: string; subType?: string };
+    /** Present on email.clicked events. */
+    click?: { link?: string };
   };
 }
 
@@ -144,12 +153,55 @@ export async function POST(req: NextRequest) {
   }
 
   const type = event?.type ?? "";
+
+  // Engagement events: opened / clicked / delivered → append-only event log.
+  // These don't mutate subscriber status; the dashboard aggregates from
+  // funnel_email_events. Return early after logging.
+  const engagementMap: Record<string, "opened" | "clicked" | "delivered"> = {
+    "email.opened": "opened",
+    "email.clicked": "clicked",
+    "email.delivered": "delivered",
+  };
+  const engagementType = engagementMap[type];
+  if (engagementType) {
+    const toRawE = event?.data?.to;
+    const toEmailE = Array.isArray(toRawE) ? toRawE[0] : toRawE;
+    if (!toEmailE || typeof toEmailE !== "string") {
+      return jsonResponse({ ok: true, skipped: "no_to_address", type });
+    }
+    const emailE = toEmailE.trim().toLowerCase();
+    const supabaseE = createAdminClient() as unknown as {
+      from: (t: string) => {
+        insert: (vals: Record<string, unknown>) => Promise<{
+          error: { message: string } | null;
+        }>;
+      };
+    };
+    const { error: insertError } = await supabaseE
+      .from("funnel_email_events")
+      .insert({
+        email: emailE,
+        resend_email_id: event?.data?.email_id ?? null,
+        event_type: engagementType,
+        raw: event as unknown as Record<string, unknown>,
+      });
+    if (insertError) {
+      console.error("[resend-webhook] insert_failed", {
+        type,
+        email: emailE,
+        error: insertError.message,
+      });
+      return jsonResponse({ error: "insert_failed" }, 500);
+    }
+    return jsonResponse({ ok: true, type, event_type: engagementType, email: emailE });
+  }
+
   let targetStatus: "bounced" | "complained" | null = null;
   if (type === "email.bounced") targetStatus = "bounced";
   else if (type === "email.complained") targetStatus = "complained";
 
   if (!targetStatus) {
-    // Other event types (delivered, opened, clicked, etc.) – ignore.
+    // Other event types we don't currently handle – ignore.
     return jsonResponse({ ok: true, ignored: true, type });
   }
 
