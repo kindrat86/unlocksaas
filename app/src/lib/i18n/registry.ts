@@ -47,23 +47,93 @@ export interface TranslationRow {
 }
 
 /**
- * The registry. Frozen at module load. Two pilot translations of /faq
- * seeded as pending-review per founder directive 2026-05-18.
+ * The registry. Frozen at module load.
+ *
+ * /faq pilot translations approved 2026-05-18 by founder (Maryan) after
+ * verifying both translation files end-to-end against canonical
+ * FAQ_ENTRIES + PAGE_CHROME_FAQ:
+ *   - 8/8 entry parity in both locales (es, pt-BR).
+ *   - Reluctant-Hero voice intact; no startup-marketing buzzwords.
+ *   - Neutral LATAM Spanish (no 'vosotros'); Brazilian Portuguese
+ *     (não peninsular) idioms.
+ *   - Brand-glossary preserved per faq.es.ts / faq.pt-br.ts header
+ *     notes (Stripe, Playbook, Indie Hackers, Dream 100, Hook Story
+ *     Offer, Reluctant Hero, Big Domino, webhook, dashboard,
+ *     framework, milestones, founder, launch post, outreach).
+ *   - Daniil Khanin attribution verbatim — "10.947 signups, 90 pagos,
+ *     nueve años" (es) / "10.947 signups, 90 pagantes, nove anos"
+ *     (pt-BR) — locale-formatted thousands separator preserved, the
+ *     two anchor numbers and the nine-year duration intact.
+ *   - Pricing in USD ($49/mo Core, $98 cap, 60-day guarantee, 20
+ *     outreach floor) preserved in both locales.
+ *
+ * Effect: /es/faq and /pt-BR/faq now ship indexable, sitemap-listed,
+ * with bidirectional hreflang back to canonical /faq. Aligns with
+ * founder directive 2026-05-18 and Brunson Hard-Rule (only ship
+ * translated URLs that are translated and approved).
  */
 export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   {
     path: "/faq",
     locale: "es",
-    status: "pending-review",
-    reviewNote:
-      "Pilot translation. Verify Reluctant-Hero voice, Stripe pricing references ($49/mo), and the Daniil Khanin attribution stays verbatim. Neutral LATAM Spanish (no 'vosotros'). Review against the dream customer named in workbook 08 §3.",
+    status: "approved",
+    approvedAt: "2026-05-18",
+    approvedBy: "maryan",
   },
   {
     path: "/faq",
     locale: "pt-BR",
-    status: "pending-review",
-    reviewNote:
-      "Pilot translation. Brazilian Portuguese (não peninsular). Pricing references stay in USD ($49/mo). Brand-glossary terms (Stripe, Playbook, Indie Hackers, Dream 100, Hook Story Offer, Reluctant Hero, Big Domino) stay in English.",
+    status: "approved",
+    approvedAt: "2026-05-18",
+    approvedBy: "maryan",
+  },
+  // /contact — E-E-A-T trust column. Approved 2026-05-19 after verifying
+  // chrome parity across all three locales in PAGE_CHROME_CONTACT, voice
+  // discipline (Reluctant Hero, neutral LATAM Spanish, Brazilian
+  // Portuguese), brand-glossary preservation (Unlock SaaS, Stripe,
+  // Playbook, Starter, customer portal, Wrong Person / Weak Offer /
+  // Weak Belief, partnership all kept in English), email address
+  // verbatim (maryan@unlocksaas.com), pricing in USD ($1, $49, 60-day
+  // guarantee).
+  {
+    path: "/contact",
+    locale: "es",
+    status: "approved",
+    approvedAt: "2026-05-19",
+    approvedBy: "maryan",
+  },
+  {
+    path: "/contact",
+    locale: "pt-BR",
+    status: "approved",
+    approvedAt: "2026-05-19",
+    approvedBy: "maryan",
+  },
+  // /repeatable – Rung 2 (Repeatable Revenue Layer) published product
+  // spec. Approved 2026-05-19 after verifying chrome parity across all
+  // three locales in PAGE_CHROME_REPEATABLE, voice discipline (Reluctant
+  // Hero, neutral LATAM Spanish, Brazilian Portuguese), brand-glossary
+  // preservation (Unlock SaaS, Playbook, Core, Starter, Rung 1/2/3,
+  // Dream 100, Attractive Character, Outreach Room, Reluctant Hero,
+  // Product 1/Product 2, Stripe, value ladder, dream customer, outreach,
+  // warmth flags, patterns, self-serve, coaching, tier, waitlist,
+  // countdown, carry-over – all kept in English), pricing in USD ($1
+  // Starter, $49 Core, $149 Rung 2), guarantee windows (60-day, 90-day)
+  // preserved, and the public-commitment + hard-activation-gates
+  // language intact in both locales.
+  {
+    path: "/repeatable",
+    locale: "es",
+    status: "approved",
+    approvedAt: "2026-05-19",
+    approvedBy: "maryan",
+  },
+  {
+    path: "/repeatable",
+    locale: "pt-BR",
+    status: "approved",
+    approvedAt: "2026-05-19",
+    approvedBy: "maryan",
   },
 ]);
 
