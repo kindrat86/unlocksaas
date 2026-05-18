@@ -6,6 +6,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
+import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
 import { buildVerification } from "@/lib/seo/verification";
 
 // Mobile-first viewport. `viewportFit: cover` lets the page paint under
@@ -99,6 +100,16 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <PostHogPageView />
           </Suspense>
+          {/*
+            Core Web Vitals + Next custom-timing beacon. Reports LCP, INP,
+            CLS, FCP, TTFB, FID, plus Next.js-hydration /
+            Next.js-route-change-to-render / Next.js-render. Sits outside
+            Suspense because useReportWebVitals does not subscribe to nav
+            hooks – Suspense would couple two unrelated lifecycles. Forwards
+            to PostHog via the lazy-loaded analytics client so first paint
+            stays unaffected (bundle-defer-third-party pattern).
+          */}
+          <WebVitalsReporter />
           {children}
         </PostHogProvider>
       </body>

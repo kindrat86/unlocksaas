@@ -94,6 +94,16 @@ export const Event = {
   // Per-channel bio link surfaces (workbook 09 §1 — Traffic Secrets #15
   // funnel-hub-from-cold-channel attribution). Used by IgBioLinkTracker.
   IgBioLinkViewed: "ig_bio_link_viewed",
+
+  // Core Web Vitals + Next.js custom metrics (LCP, INP, CLS, FCP, TTFB,
+  // FID-deprecated, and Next-specific 'Next.js-hydration',
+  // 'Next.js-route-change-to-render', 'Next.js-render'). Sent from a
+  // root-mounted client beacon via `next/web-vitals`. One event per metric
+  // per pageview – a single page typically emits 5-8. Property `metric_name`
+  // discriminates. SXO uplift: lets the brunson-funnel-metrics skill see
+  // INP/CLS by /alternatives-to vs /funnel-teardown etc. and catch the
+  // first slug-page that drifts to "poor" before users feel it.
+  WebVitalReported: "web_vital_reported",
 } as const;
 
 export type EventName = (typeof Event)[keyof typeof Event];
@@ -138,6 +148,44 @@ export interface ConversionProps {
 export interface DiagnosticResultProps {
   label: "wrong_person" | "weak_offer" | "weak_belief" | "indeterminate";
   product_url?: string;
+}
+
+/**
+ * Core Web Vitals + Next.js custom metrics property shape.
+ *
+ * Every field here is on the upstream `Metric` type from web-vitals v3 (the
+ * library Next.js's `useReportWebVitals` re-exports). Sent verbatim per
+ * metric event – PostHog auto-discovers each property and the dashboard
+ * surfaces "INP by route", "CLS by deployment", etc. with no schema work.
+ *
+ * `rating` is only populated by the standard CWV metrics (LCP/INP/CLS/FCP/
+ * TTFB). Next's custom timing metrics ('Next.js-hydration',
+ * 'Next.js-route-change-to-render', 'Next.js-render') don't emit a rating –
+ * we send `null` so the property is consistent across rows. `route` is the
+ * client-side pathname at the moment the metric fired (captured from
+ * `window.location.pathname`) so /alternatives-to/lovable rolls up
+ * separately from /alternatives-to/shipfast.
+ *
+ * Property names are snake_case to match the existing PostHog convention
+ * (Event names + every other Props shape in this file).
+ */
+export interface WebVitalReportedProps {
+  /** "LCP" | "INP" | "CLS" | "FCP" | "TTFB" | "FID" | "Next.js-hydration" |
+   *  "Next.js-route-change-to-render" | "Next.js-render" */
+  metric_name: string;
+  /** Per-metric unique id from web-vitals (route + timestamp shape). */
+  metric_id: string;
+  /** Metric value in its native unit (ms for timing, score for CLS). */
+  value: number;
+  /** Change since the last report for this metric on this page. */
+  delta: number;
+  /** "good" | "needs-improvement" | "poor" | null (null for Next custom). */
+  rating: "good" | "needs-improvement" | "poor" | null;
+  /** "navigate" | "reload" | "back-forward" | "back-forward-cache" |
+   *  "prerender" | "restore" | null */
+  navigation_type: string | null;
+  /** Pathname when the metric fired – lets reports roll up by route. */
+  route: string;
 }
 
 // Eugene Schwartz awareness mapping — Hook variant assigned by source.

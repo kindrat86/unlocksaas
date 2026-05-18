@@ -1,16 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Launch-window pragmatic unblock. Multiple concurrent build sessions are
-  // landing in-progress scaffolding (unused state hooks, unused destructured
-  // imports) for features mid-wire-up (deliverable-email resend button,
-  // diagnostic survey bucketing). Compilation passes – only ESLint's strict
-  // no-unused-vars rule fails the build.
+  // Launch-window pragmatic unblock. Originally added when multiple
+  // concurrent build sessions were landing in-progress scaffolding (unused
+  // state hooks, unused destructured imports) for features mid-wire-up
+  // (deliverable-email resend button, diagnostic survey bucketing).
+  // Compilation passes; only ESLint's strict no-unused-vars rule was
+  // failing the build.
   //
-  // Trading lint-strictness for deploy-ability for the launch window. After
-  // the first verified customer cycle closes, flip back to the default
-  // (delete this block) and clean up unused symbols in:
-  //   - src/app/(app)/playbook/step/[id]/page.tsx (4 unused state hooks)
-  //   - src/app/api/diagnostic/route.ts (assignBucket, Bucket, survey)
+  // STATUS (2026-05-18 SXO sweep): the two symbols this block was holding
+  // open have since resolved on their own —
+  //   - src/app/(app)/playbook/step/[id]/page.tsx: every previously-unused
+  //     state hook is now referenced (emailedOnAssembly, hydratedFromServer,
+  //     resendStatus all read in the JSX from line 537+).
+  //   - src/app/api/diagnostic/route.ts: assignBucket, Bucket, and survey
+  //     are all referenced in the request body parsing + bucketing logic.
+  //
+  // The pragma is therefore now hygiene-only — held in place because a
+  // clean-lint pass has not been verified in this worktree (no node_modules
+  // installed here). Flip-point: run `cd app && npm run lint` from the main
+  // checkout; if it passes clean, flip `ignoreDuringBuilds: false` and
+  // delete this block. Same dependency as the Next 16 migration trigger
+  // documented in strategy/next-16-migration-plan.md — both safely land
+  // after the first verified Stripe customer cycle.
   //
   // TypeScript type-checking remains on; runtime correctness is unaffected.
   eslint: {
