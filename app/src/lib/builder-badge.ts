@@ -139,6 +139,35 @@ export async function loadPublicBadge(
 }
 
 /**
+ * Count of public, Stripe-verified builders.
+ *
+ * Powers the AggregateRating sub-graph on the Playbook SoftwareApplication
+ * block. Calls the `builder_badges` view in head-only mode (`count=exact`),
+ * so the wire response is a single integer in the `content-range` header —
+ * no row payload, no per-row allocation.
+ *
+ * Brunson Hard-Rule reconciliation: the same view that powers the public
+ * /builders avatar wall, /builder/<slug> public badges, and the embed kit
+ * is what powers this count. Three surfaces, one source of truth — the
+ * number an LLM extracts from the AggregateRating schema is the SAME
+ * number a human counts on /builders.
+ *
+ * Returns 0 on error or empty. Callers (the Playbook SoftwareApplication
+ * schema in particular) MUST use that 0 to omit the AggregateRating node
+ * entirely — never emit a "5.0 from 0 reviews" fabrication.
+ */
+export async function loadPublicBadgeCount(
+  client: SupabaseClient
+): Promise<number> {
+  const { count, error } = await client
+    .from("builder_badges")
+    .select("id", { count: "exact", head: true });
+
+  if (error || typeof count !== "number") return 0;
+  return Math.max(0, count);
+}
+
+/**
  * Load up to `limit` public verified builders, ordered most-recent-first.
  *
  * Powers the Brunson Funnel Hacker's Cookbook Swipe 6 — the avatar wall

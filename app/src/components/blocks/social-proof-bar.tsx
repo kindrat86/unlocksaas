@@ -10,13 +10,46 @@
  *   - the founder's own scar tissue (12 shipped products, flat lines)
  *   - the conversation-corpus the avatar is built on (10+ founder interviews)
  *
- * Every line here is true today. When real customers exist, replace one or
- * two slots with first-paying-customer counts (per workbook 09 §6 Public
- * Proof Loop).
+ * Every line here is true today.
+ *
+ * Verified-Builder slot (DOM↔schema contract)
+ * -------------------------------------------
+ * When `verifiedCount` is >= 1, the third slot is REPLACED with a
+ * Stripe-verified count: "N Verified Builders". This is the visible
+ * rendering of the same number that the AggregateRating sub-graph on the
+ * Playbook SoftwareApplication schema reports (ratingCount = reviewCount).
+ *
+ * Google's structured-data policy demotes Rich Results when schema
+ * numbers don't appear in rendered DOM. Wiring both surfaces from the
+ * SAME `loadPublicBadgeCount()` call upstream keeps them locked together
+ * by construction — no drift surface.
+ *
+ * Brunson Hard-Rule: when verifiedCount is 0 or undefined, the bar falls
+ * back to the original "10+ founder conversations" line. No "0 Verified
+ * Builders" embarrassment. The slot only switches on when the number
+ * carries actual weight.
  */
 import { Stamp, Wallet, Users } from "lucide-react";
 
-export function SocialProofBar() {
+export interface SocialProofBarProps {
+  /**
+   * Public, Stripe-verified Verified Builder count from the
+   * `builder_badges` Supabase view. Same source the AggregateRating
+   * schema reads from upstream, so the rendered count and the
+   * schema count are mechanically identical.
+   *
+   * Optional. When undefined or < 1, the bar renders the
+   * conversation-corpus copy (the pre-revenue default).
+   */
+  verifiedCount?: number;
+}
+
+export function SocialProofBar({ verifiedCount }: SocialProofBarProps = {}) {
+  const showVerifiedSlot =
+    typeof verifiedCount === "number" &&
+    Number.isFinite(verifiedCount) &&
+    verifiedCount >= 1;
+
   return (
     <section
       aria-label="What this is built on"
@@ -47,14 +80,33 @@ export function SocialProofBar() {
         </div>
         <div className="flex items-start gap-3 md:justify-start justify-center">
           <Users className="h-5 w-5 text-primary mt-0.5 shrink-0" aria-hidden="true" />
-          <div>
-            <p className="text-sm font-semibold leading-tight">
-              10+ founder conversations
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-              Every story below is sourced from a real conversation.
-            </p>
-          </div>
+          {showVerifiedSlot ? (
+            /*
+              Verified-Builder count slot. The headline number matches
+              `aggregateRating.ratingCount` exactly (both read from the
+              same Supabase view). Subtitle states the verification
+              mechanism — no marketing softeners, no "happy customers"
+              language, just the binary fact the count represents.
+            */
+            <div>
+              <p className="text-sm font-semibold leading-tight">
+                {verifiedCount} Verified{" "}
+                {verifiedCount === 1 ? "Builder" : "Builders"}
+              </p>
+              <p className="text-xs text-muted-foreground leading-relaxed mt-1">
+                First paying customer confirmed by Stripe. Not self-reported.
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p className="text-sm font-semibold leading-tight">
+                10+ founder conversations
+              </p>
+              <p className="text-xs text-muted-foreground leading-relaxed mt-1">
+                Every story below is sourced from a real conversation.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

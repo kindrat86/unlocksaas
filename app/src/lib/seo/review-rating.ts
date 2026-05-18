@@ -69,6 +69,78 @@
 
 import type { Comparison, ComparisonDimension } from "@/lib/comparisons";
 
+// ── Playbook AggregateRating ──────────────────────────────────────────────────
+
+/**
+ * AggregateRating sub-graph for the Playbook SoftwareApplication node.
+ *
+ * Why this exists
+ * ---------------
+ * The SEO audit's outstanding gap: the Playbook Product/SoftwareApplication
+ * block deliberately omits `aggregateRating` until verified Stripe customer
+ * cycles exist with public-share opt-in. The moment any do, the schema
+ * should light up — without this helper, the rating block stays empty
+ * forever even when /builders is full of badges.
+ *
+ * Brunson Hard-Rule honest-claims policy
+ * --------------------------------------
+ *   - Returns null when count <= 0. The CALLER must omit the
+ *     `aggregateRating` property entirely in that case — never emit a
+ *     "5.0 from 0 reviews" fabrication.
+ *   - ratingValue = 5 with documented "verified outcome" semantics. This
+ *     mirrors the per-builder Review nodes already shipping from
+ *     /builder/<slug>/review.json (see lib/seo/builder-review.ts) where
+ *     each rating=5 means "first paying customer on a connected Stripe
+ *     account, confirmed by webhook." The aggregate of N binary outcomes
+ *     where every outcome is success is, by construction, 5.0 — not a
+ *     marketing claim, an arithmetic identity.
+ *   - ratingCount === reviewCount === count. The number a human counts on
+ *     /builders is the number an LLM reads from the AggregateRating
+ *     schema; the count an LLM reads from the AggregateRating schema is
+ *     the count of Review nodes addressable at /builder/<slug>/review.json.
+ *     One number, three surfaces, deterministic.
+ *   - itemReviewed is intentionally NOT set here. The aggregate is folded
+ *     into the parent SoftwareApplication node (whose `@id` is the Playbook
+ *     product), so the parent IS the itemReviewed.
+ *
+ * Schema.org reference
+ * --------------------
+ * AggregateRating: https://schema.org/AggregateRating. Google's Review
+ * Rich Result eligibility requires `ratingValue`, `bestRating`, and
+ * `ratingCount` OR `reviewCount`; we emit all five (worstRating too) so
+ * the SERP star widget renders without engine-side defaults.
+ */
+export interface PlaybookAggregateRatingNode {
+  readonly "@type": "AggregateRating";
+  readonly ratingValue: number;
+  readonly bestRating: number;
+  readonly worstRating: number;
+  readonly ratingCount: number;
+  readonly reviewCount: number;
+  readonly description: string;
+}
+
+export function buildPlaybookAggregateRating(
+  count: number
+): PlaybookAggregateRatingNode | null {
+  if (!Number.isFinite(count) || count < 1) return null;
+  return {
+    "@type": "AggregateRating",
+    ratingValue: 5,
+    bestRating: 5,
+    worstRating: 1,
+    ratingCount: count,
+    reviewCount: count,
+    // Documented semantics — not satisfaction, verification outcome.
+    // Mirrors the per-builder Review.reviewRating.description in
+    // lib/seo/builder-review.ts.
+    description:
+      "Verified outcomes. Each rating represents a Stripe-confirmed first-paying-customer cycle completed under the Playbook by a founder who opted into a public Verified Builder badge. Confirmed by Stripe webhook; not self-reported.",
+  };
+}
+
+// ── Comparison dimensional rating ─────────────────────────────────────────────
+
 export interface DerivedRatings {
   /** 1.0 to 5.0, one decimal place. */
   aRating: number;
