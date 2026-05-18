@@ -63,8 +63,32 @@ export function GuaranteeHero() {
         </h2>
         <p className="text-muted-foreground mt-4 max-w-xl mx-auto leading-relaxed">
           No course on this planet refunds you when their system fails to
-          produce a customer. We do — and the refund is enforced by code, not
+          produce a customer. We do – and the refund is enforced by code, not
           by an inbox.
+        </p>
+      </div>
+
+      {/* Founder restating the guarantee in his own voice. 51s, vertical
+          1080x1920, capped at phone width so the talking head supports the
+          polarity claim without dominating the section. The receipts grid
+          below carries the structural detail. */}
+      <div className="mx-auto mb-10 w-full max-w-xs">
+        <div className="relative aspect-[9/16] overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/founder-guarantee.mp4"
+            poster="/founder-guarantee-poster.jpg"
+            controls
+            preload="metadata"
+            playsInline
+          >
+            <track kind="captions" />
+            Your browser does not support embedded video. The four refund
+            conditions below carry the same information.
+          </video>
+        </div>
+        <p className="mt-2 text-center text-xs text-muted-foreground italic">
+          51s · the guarantee, said out loud
         </p>
       </div>
 
