@@ -4895,6 +4895,650 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["video", "screen-recording", "async-vs-marketing", "use-both"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "airtable-vs-coda",
+    a: { name: "Airtable", url: "https://www.airtable.com/" },
+    b: { name: "Coda", url: "https://coda.io/" },
+    category: "Productivity and workspace",
+    oneLine:
+      "Airtable is a relational database with documents wrapped around it. Coda is a document with serious database power baked in. Same broad job, opposite starting shapes.",
+    tldr:
+      "Airtable and Coda both blur the line between database and document but from opposite starting points. Airtable is a relational database (Bases, Tables, Records, Fields) with Interfaces and Documents wrapped around it. Coda is a document (Pages, Sections) with sophisticated table and formula primitives embedded. For database-first ops work, Airtable. For document-first work that needs serious database depth in line, Coda. The mistake is picking based on feature overlap rather than on the dominant primitive your team thinks in.",
+    bestFor: {
+      a: "Operations-heavy teams whose primary surface is structured relational data with formulas, automations, and interfaces.",
+      b: "Documentation-heavy teams that need serious database power embedded in the document flow itself.",
+    },
+    pickAIf: [
+      "Your team thinks in tables, records, and relationships as the dominant primitive.",
+      "You need to build internal tools (forms-to-database, dashboards, approval workflows) as part of your daily work.",
+      "You value Airtable's mature integration ecosystem and large template community.",
+    ],
+    pickBIf: [
+      "Your team thinks in documents and pages as the dominant primitive but needs database depth.",
+      "You want Pack-based extensibility (third-party Coda packs let you query external systems inline).",
+      "You value the document-first reading experience with database power available when needed.",
+    ],
+    dimensions: [
+      {
+        name: "Starting primitive",
+        a: "Tables, records, fields (database first).",
+        b: "Pages, sections, blocks (document first) with embedded tables.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free; Team ~$20/seat/mo; Business ~$45/seat/mo (verified 2026-05-18).",
+        b: "Free; Pro ~$10/Doc Maker/mo; Team ~$30/Doc Maker/mo (verified 2026-05-18).",
+        winner: "different",
+        note: "Different pricing units — per-seat (Airtable) vs per-Doc-Maker (Coda). Coda's model favors teams with few editors and many viewers.",
+      },
+      {
+        name: "Document editing depth",
+        a: "Functional — Documents and Interfaces exist but the database is the focus.",
+        b: "First-class — Coda's writing surface is competitive with dedicated document tools.",
+        winner: "B",
+      },
+      {
+        name: "Relational database depth",
+        a: "Mature — sophisticated relationships, formulas, junction tables, rollups.",
+        b: "Strong — tables and formulas approach Airtable depth though with different model.",
+        winner: "A",
+      },
+      {
+        name: "Internal tool building",
+        a: "Native — Airtable Interface Designer plus Automations is the canonical no-code-app surface.",
+        b: "Possible via Buttons and Packs; less optimized for forms-to-database workflows.",
+        winner: "A",
+      },
+      {
+        name: "Extensibility model",
+        a: "Airtable Scripts (JS) and Extensions; rich integration marketplace.",
+        b: "Coda Packs (third-party connectors that query external systems inline); growing ecosystem.",
+        winner: "different",
+      },
+      {
+        name: "Template ecosystem",
+        a: "Large and mature for database-first use cases.",
+        b: "Growing; smaller than Airtable's database community.",
+        winner: "A",
+      },
+      {
+        name: "Brand and category positioning",
+        a: "Category-default no-code-database platform.",
+        b: "Smaller mindshare; positioned as 'docs with database power'.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Airtable and Coda both blur the document/database boundary but from opposite starting points. Airtable's database-first shape wins for teams who think in tables and need to build internal tools; Coda's document-first shape wins for teams who think in pages but need database depth inline. The buyer's mental model determines the right pick — picking based on feature overlap leads to using the wrong tool and feeling the friction daily. For pure database operations Airtable; for documentation that needs embedded database power, Coda.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your indie SaaS operations involve structured data (CRM, inventory, project tracking with formulas), Airtable's database-first shape wins. If your work is documentation-heavy with occasional database needs (specs, customer notes, content calendars), Coda matches the primitive. Most indie founders use Notion as the default workspace and reach for Airtable or Coda only when the database depth becomes a real constraint.",
+    },
+    faqs: [
+      {
+        q: "Why does Airtable lead with the database primitive?",
+        a: "Because Airtable started as a database product and the value proposition is bringing database power to non-developers. Wrapping documents around tables fits naturally; reversing the shape (document with tables embedded) would dilute the core value proposition. The starting primitive determines the product's identity.",
+      },
+      {
+        q: "Can Coda replace Airtable for internal tools?",
+        a: "For many use cases yes, but Airtable's Interface Designer and Automations are more optimized for the forms-to-database workflow. Coda's Buttons and Packs are powerful but require a different mental model. Teams that try to build serious internal tools in Coda typically feel the friction Airtable solves natively.",
+      },
+      {
+        q: "Why is Coda's per-Doc-Maker pricing different from Airtable's per-seat?",
+        a: "Coda's value scales with editors creating documents; viewers consume without paying. Airtable's value scales with users interacting with bases regardless of role. The pricing models reflect the value-capture moment — Coda monetizes creators; Airtable monetizes everyone in the system.",
+      },
+      {
+        q: "What about Notion as a hybrid?",
+        a: "Notion is the docs-first workspace with light database power — less serious than either Airtable or Coda for structured-data work. Notion vs Airtable is for teams choosing between docs and database starting points; Airtable vs Coda is for teams who have already decided they need database depth.",
+      },
+      {
+        q: "What is the Brunson lens on Airtable vs Coda?",
+        a: "Both companies execute Dream Customer naming in adjacent directions. Airtable names the database-first ops operator; Coda names the document-first knowledge worker who needs database power. Brunson lesson: when two competitors share keywords but target different primitives, both can serve their respective segments without zero-sum competition.",
+      },
+    ],
+    tags: ["workspace", "database-vs-document", "no-code", "different-primitives"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "trello-vs-asana",
+    a: { name: "Trello", url: "https://trello.com/" },
+    b: { name: "Asana", url: "https://asana.com/" },
+    category: "Project management",
+    oneLine:
+      "Trello is the Kanban-for-everyone simple board. Asana is the cross-functional structured PM platform. Different complexity levels for different team sizes.",
+    tldr:
+      "Trello and Asana both manage tasks but at opposite ends of the complexity-vs-simplicity axis. Trello (also Atlassian-owned) is the canonical visual Kanban board for individuals and small teams who want immediate simplicity. Asana is the structured cross-functional PM platform with timelines, workflows, and goals for teams operating at scale. For lightweight personal or small-team task tracking, Trello. For cross-functional organizational coordination, Asana's depth earns its complexity.",
+    bestFor: {
+      a: "Individuals, small teams, content planning, personal projects — anyone who wants immediate Kanban without setup complexity.",
+      b: "Growing cross-functional teams that coordinate work across marketing, design, engineering, ops with timelines and goal hierarchies.",
+    },
+    pickAIf: [
+      "You are an individual or small team that wants the simplest possible visual task management.",
+      "You value zero setup time — drag cards across lists and you are done.",
+      "Your work is straightforward enough that structured PM features would feel like overhead.",
+    ],
+    pickBIf: [
+      "You coordinate work across multiple functional teams (marketing, design, engineering, ops).",
+      "You need timeline views, dependencies, custom workflows, and goal tracking.",
+      "Your team has grown past the point where simple Kanban boards capture the real work.",
+    ],
+    dimensions: [
+      {
+        name: "Target complexity",
+        a: "Intentionally simple — Kanban boards and basic automation.",
+        b: "Structured complexity — tasks, projects, portfolios, goals, custom fields, workflows.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free; Standard ~$5/user/mo; Premium ~$10/user/mo (verified 2026-05-18).",
+        b: "Free (up to 10 users); Starter ~$11/user/mo; Advanced ~$25/user/mo (verified 2026-05-18).",
+        winner: "A",
+      },
+      {
+        name: "Setup time",
+        a: "Seconds — the visual Kanban is immediately understandable.",
+        b: "Hours to days — projects, fields, workflows require upfront modeling.",
+        winner: "A",
+      },
+      {
+        name: "Cross-functional fit",
+        a: "Works for cross-functional teams but lacks structure for coordinating across many projects.",
+        b: "Native — Asana is the canonical cross-functional PM platform.",
+        winner: "B",
+      },
+      {
+        name: "Timeline and Gantt",
+        a: "Available via Power-Ups on paid tiers; not the focus.",
+        b: "Native Timeline view; designed for project managers coordinating dependencies.",
+        winner: "B",
+      },
+      {
+        name: "Goal and OKR tracking",
+        a: "Not available natively.",
+        b: "Native Goals product with OKR hierarchy and progress tracking.",
+        winner: "B",
+      },
+      {
+        name: "Brand recognition",
+        a: "Universal among knowledge workers — Trello is the brand non-PMs know.",
+        b: "Strong in cross-functional team contexts; mid-recognition outside that segment.",
+        winner: "A",
+      },
+      {
+        name: "Long-term fit as team grows",
+        a: "Teams typically outgrow Trello as cross-functional complexity emerges.",
+        b: "Scales with team growth into enterprise coordination.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Trello and Asana both ship from Atlassian but serve fundamentally different buyers. Trello is the visual Kanban board for individuals and small teams who want immediate simplicity. Asana is the structured cross-functional PM platform for growing organizations with multi-team coordination. Most teams start on Trello and migrate to Asana (or Jira, or Linear) when complexity grows past what simple Kanban can capture. The mistake is starting on Asana for a 2-person team or staying on Trello past 20-person cross-functional coordination.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Trello for solo or 2-3 person indie SaaS teams. The simplicity matches the actual work shape at indie scale. Migrate to Asana, Linear (engineering), or ClickUp (configurable) when the team grows past where simple Kanban captures the real coordination work — usually around 5-10 people across multiple functions.",
+    },
+    faqs: [
+      {
+        q: "Why do both Trello and Asana exist if Atlassian owns both?",
+        a: "Different target buyers. Trello (acquired by Atlassian in 2017) serves individuals and small teams who want simple Kanban; Asana serves cross-functional growing organizations. Atlassian segments the market rather than forcing one product to serve both ends of the complexity spectrum.",
+      },
+      {
+        q: "Can Trello scale to enterprise?",
+        a: "Workably for narrow use cases (content calendars, simple project tracking) but not for serious cross-functional enterprise coordination. Teams that stay on Trello past the natural complexity boundary typically duplicate the work in spreadsheets or migrate to a structured PM platform.",
+      },
+      {
+        q: "Why is Asana more expensive than Trello?",
+        a: "Different target buyer with higher willingness to pay. Cross-functional teams have larger PM tooling budgets than individuals or small teams. Asana's pricing reflects what cross-functional buyers pay; Trello's pricing reflects what individuals and small teams pay.",
+      },
+      {
+        q: "What about Linear, ClickUp, or Monday as alternatives?",
+        a: "Linear is the engineering-team-specific structured PM (Asana-adjacent but engineering-only). ClickUp is the configurability-first all-in-one. Monday is the visual-process platform. The Trello-vs-Asana comparison is specifically the simplicity-vs-structure choice; alternatives serve adjacent niches.",
+      },
+      {
+        q: "What is the Brunson lens on Trello vs Asana?",
+        a: "Atlassian executes precise Brunson Dream Customer naming twice — Trello for individuals and small teams, Asana for cross-functional organizations. Brunson lesson: when one company owns two related products for different segments, the products should NOT compete; they should serve complementary buyer journeys (Trello for the small-team start, Asana for the scale-up transition).",
+      },
+    ],
+    tags: ["project-management", "simplicity-vs-structure", "different-team-sizes", "atlassian"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "clickup-vs-asana",
+    a: { name: "ClickUp", teardownSlug: "clickup", url: "https://clickup.com/" },
+    b: { name: "Asana", url: "https://asana.com/" },
+    category: "Project management",
+    oneLine:
+      "ClickUp consolidates everything in one configurable platform. Asana focuses on structured project management with depth. Bundling vs specialization.",
+    tldr:
+      "ClickUp and Asana both serve cross-functional teams but with different bets. ClickUp consolidates tasks, docs, chat, whiteboards, forms, time tracking, and goals into one configurable platform — the bet is that buyers want one bill and one platform over best-of-breed depth. Asana focuses on structured PM with mature Goals, Timeline, and Workload features — the bet is that PM depth matters more than feature breadth. For teams that want consolidation, ClickUp. For teams that want PM-specific depth, Asana.",
+    bestFor: {
+      a: "Cross-functional teams that want to consolidate multiple SaaS tools under one bill with deep configurability.",
+      b: "Cross-functional teams that want structured PM depth (Goals, Timeline, Workload) without the configurability overhead.",
+    },
+    pickAIf: [
+      "You want one tool for tasks, docs, chat, whiteboards, forms, time tracking, and goals.",
+      "Your team has unusual workflows that require deep configurability.",
+      "You value the all-in-one bundling over best-of-breed depth in any single feature.",
+    ],
+    pickBIf: [
+      "You want a PM-focused tool with mature timeline, goal, and workload features.",
+      "You value opinionated depth over configurability and breadth.",
+      "Your team adopts specialist tools for non-PM functions (Notion for docs, Slack for chat, etc.).",
+    ],
+    dimensions: [
+      {
+        name: "Feature scope",
+        a: "Comprehensive — tasks, docs, chat, whiteboards, forms, time tracking, goals.",
+        b: "PM-focused — tasks, projects, portfolios, goals, timeline, workload.",
+        winner: "different",
+      },
+      {
+        name: "Configurability",
+        a: "Among the most configurable in the category.",
+        b: "Mature but more opinionated than ClickUp.",
+        winner: "A",
+      },
+      {
+        name: "Pricing",
+        a: "Free; Unlimited ~$10/user/mo; Business ~$19/user/mo (verified 2026-05-18).",
+        b: "Free; Starter ~$11/user/mo; Advanced ~$25/user/mo (verified 2026-05-18).",
+        winner: "A",
+      },
+      {
+        name: "Goal and OKR tracking",
+        a: "Native Goals feature with hierarchy.",
+        b: "Mature Goals product — Asana's strongest differentiator in PM depth.",
+        winner: "B",
+      },
+      {
+        name: "Timeline and Gantt views",
+        a: "Available; less mature than Asana.",
+        b: "Native Timeline is the canonical project-manager view.",
+        winner: "B",
+      },
+      {
+        name: "Workload management",
+        a: "Available; less polished than Asana's Workload view.",
+        b: "Mature — Workload is one of Asana's primary differentiators.",
+        winner: "B",
+      },
+      {
+        name: "Best for non-PM use cases",
+        a: "Native — bundles docs, chat, whiteboards alongside PM.",
+        b: "PM-specific — non-PM use cases require separate tools.",
+        winner: "A",
+      },
+      {
+        name: "Brand recognition with stakeholders",
+        a: "Growing; less mature than Asana for cross-functional B2B contexts.",
+        b: "Mature — Asana is the canonical cross-functional PM brand.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "ClickUp and Asana both serve cross-functional teams but with opposite bets. ClickUp bets that consolidation (one tool for many use cases) beats specialization. Asana bets that PM-specific depth (mature Goals, Timeline, Workload) matters more than feature breadth. For teams that want one bill and one platform, ClickUp. For teams that want PM depth and run specialist tools for non-PM functions, Asana. Both are legitimate; the choice depends on whether your team values consolidation or depth.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your indie SaaS team is small and cross-functional with limited tool budget, ClickUp's bundling can save real money and operational overhead. If your team is more specialized (engineering uses Linear, docs in Notion, chat in Slack), Asana's PM focus matches that operating model better. The choice is whether to consolidate or specialize.",
+    },
+    faqs: [
+      {
+        q: "Is ClickUp really better than Asana for PM specifically?",
+        a: "Not at the depth axis. Asana's Goals, Timeline, and Workload features are more mature than ClickUp's equivalents. ClickUp wins on breadth (docs, chat, whiteboards alongside PM); Asana wins on PM-specific depth. The right pick depends on whether breadth or depth matters more for your team.",
+      },
+      {
+        q: "Can ClickUp's docs replace Notion?",
+        a: "Workably for simple docs co-located with tasks. For serious team wikis and knowledge bases, Notion's docs experience is materially better. The 'one tool for everything' claim requires accepting depth gaps in adjacent features.",
+      },
+      {
+        q: "Why is Asana more expensive than ClickUp at growth tiers?",
+        a: "PM depth and enterprise sales focus. Asana targets larger cross-functional teams with bigger budgets; ClickUp targets a broader market including indie and small teams. The pricing reflects the buyer segments — Asana's tier prices match what enterprise PM buyers pay.",
+      },
+      {
+        q: "What about Monday, Jira, or Linear as alternatives?",
+        a: "Monday is the visual-process platform competitor. Jira is the enterprise engineering default. Linear is the engineering-team-specific opinionated PM. The ClickUp vs Asana comparison is specifically about consolidation vs PM depth for cross-functional teams; alternatives serve adjacent niches.",
+      },
+      {
+        q: "What is the Brunson lens on ClickUp vs Asana?",
+        a: "Both companies execute Brunson Dream Customer naming for cross-functional teams but with opposite product strategies. ClickUp names the team that values bundling; Asana names the team that values PM depth. Brunson lesson: even when targeting the same broad audience, the structural product bet (bundling vs depth) determines which sub-segment each company wins.",
+      },
+    ],
+    tags: ["project-management", "consolidation-vs-depth", "cross-functional"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "webflow-vs-framer",
+    a: { name: "Webflow", url: "https://webflow.com/" },
+    b: { name: "Framer", url: "https://www.framer.com/" },
+    category: "Design and prototyping",
+    oneLine:
+      "Webflow is the canonical no-code site builder with mature CMS depth. Framer is the design-first publisher built for designers who reject code workflows.",
+    tldr:
+      "Webflow and Framer both let non-developers ship live sites but from different positions. Webflow is the long-established no-code platform with mature CMS, e-commerce, and structured content workflows — built for marketers and ops who want to ship without engineering. Framer is the design-first publisher that pivoted from prototyping into design-and-publish — built for designers who want to deploy their Figma-style work as live sites. For complex sites with CMS and structured content, Webflow. For designer-led marketing sites with native publish, Framer.",
+    bestFor: {
+      a: "Marketing teams, agencies, and ops-led organizations building complex sites with structured content, CMS, and e-commerce.",
+      b: "Designers building marketing sites and landing pages who want to publish their design work directly without engineering involvement.",
+    },
+    pickAIf: [
+      "Your site needs serious CMS with content collections, dynamic pages, and structured content.",
+      "You value the mature ecosystem of Webflow agencies, plugins, and integrations.",
+      "Your team is marketing-led with non-designer contributors who need a familiar visual builder.",
+    ],
+    pickBIf: [
+      "You are a designer who wants the design-to-publish workflow without learning a separate no-code tool.",
+      "Your site is primarily marketing pages and landing pages, not complex CMS-driven content.",
+      "You value the integration with Figma-style design aesthetics and animations.",
+    ],
+    dimensions: [
+      {
+        name: "Target user",
+        a: "Marketers, agencies, ops-led teams.",
+        b: "Designers building marketing sites.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free starter; Basic ~$14/mo per site; CMS ~$23/mo; Business ~$39/mo per site (verified 2026-05-18). Plus seat-based workspace pricing.",
+        b: "Free; Mini ~$5/site/mo; Basic ~$15/site/mo; Pro ~$30/site/mo (verified 2026-05-18). Plus design tier pricing.",
+        winner: "B",
+        note: "Framer's per-site pricing is generally cheaper at indie scale; Webflow becomes competitive at multi-site agency scale.",
+      },
+      {
+        name: "CMS depth",
+        a: "Mature — collections, dynamic pages, e-commerce, structured content workflows.",
+        b: "Native CMS available; less mature than Webflow's depth.",
+        winner: "A",
+      },
+      {
+        name: "Design experience",
+        a: "Visual builder optimized for marketers; less designer-native than Framer.",
+        b: "Design-first — Framer's editing surface matches Figma-style designer workflows.",
+        winner: "B",
+      },
+      {
+        name: "E-commerce",
+        a: "Native Webflow Ecommerce with product collections, checkout, payment processing.",
+        b: "Limited e-commerce capabilities; Framer is design-and-publish focused.",
+        winner: "A",
+      },
+      {
+        name: "Plugin and integration ecosystem",
+        a: "Mature; large agency network and integration marketplace.",
+        b: "Growing; smaller plugin ecosystem.",
+        winner: "A",
+      },
+      {
+        name: "Designer workflow",
+        a: "Possible but feels engineering-marketing-tool, not designer-native.",
+        b: "Native — Framer is designed for designers who think in components and frames.",
+        winner: "B",
+      },
+      {
+        name: "Site speed and performance",
+        a: "Strong; Webflow optimizes well for performance.",
+        b: "Strong; Framer compiles to fast static sites.",
+        winner: "tie",
+      },
+    ],
+    honestTake:
+      "Webflow and Framer both let non-developers publish live sites but for different buyers. Webflow is the established no-code platform with mature CMS, e-commerce, and structured content workflows — the right pick for marketing-led organizations and agencies. Framer is the design-first publisher built for designers who want to deploy their Figma-style work directly — the right pick for designer-led marketing sites. The choice depends on whether your site is primarily CMS-driven (Webflow) or primarily marketing-page design (Framer). The mistake is comparing them on the no-code-site-builder axis alone without considering the marketer-vs-designer buyer split.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you have design skills and your indie SaaS marketing site is primarily landing pages, Framer matches the workflow. If you need a serious CMS for blog, docs, or structured content alongside marketing pages, Webflow's depth wins. Most indie founders pick based on their own design comfort — designers gravitate to Framer; marketing-leaning founders gravitate to Webflow.",
+    },
+    faqs: [
+      {
+        q: "Can Webflow do what Framer does for designer-led sites?",
+        a: "Workably but with friction. Webflow's visual builder is designer-friendly but optimized for marketers, not for designers who think in components and frames the way Figma does. Designers who try Webflow often feel the workflow gap; Framer was built specifically to close it.",
+      },
+      {
+        q: "Can Framer do what Webflow does for CMS-heavy sites?",
+        a: "For light CMS yes, for heavy CMS no. Framer's CMS is functional but less mature than Webflow's content collections, dynamic page generation, and structured content workflows. Sites with serious blog, docs, or product catalog needs typically outgrow Framer.",
+      },
+      {
+        q: "What about Next.js with Vercel for serious indie SaaS sites?",
+        a: "The engineering-built option. Next.js gives full control and integrates with the same CMS providers (Sanity, Contentful, Hygraph) Webflow or Framer would compete with. For indie SaaS that already runs on Vercel, building the marketing site in Next.js avoids platform lock-in entirely. Webflow-vs-Framer is for buyers who explicitly want a no-code path.",
+      },
+      {
+        q: "Why is Webflow's pricing per-site instead of just per-seat?",
+        a: "Because Webflow monetizes the published site as the primary value-capture moment. Per-site pricing aligns with the value Webflow adds (publishing and hosting); per-seat pricing alone would not capture the value Webflow provides to agencies building many client sites.",
+      },
+      {
+        q: "What is the Brunson lens on Webflow vs Framer?",
+        a: "Webflow owns the no-code-site-builder category by being first and going deep on CMS and e-commerce. Framer is the New Opportunity move (design-first publish) that escapes the Webflow category fight by targeting designers specifically. Brunson lesson: when a category has a mature incumbent, the challenger wins by claiming an adjacent buyer the incumbent does not serve natively.",
+      },
+    ],
+    tags: ["no-code-site-builder", "marketer-vs-designer", "cms-vs-design", "publish-workflow"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "mailchimp-vs-substack",
+    a: { name: "Mailchimp", url: "https://mailchimp.com/" },
+    b: { name: "Substack", url: "https://substack.com/" },
+    category: "Newsletter and creator email",
+    oneLine:
+      "Mailchimp is the legacy small-business marketing platform. Substack is the modern publication network. Different jobs despite both shipping emails.",
+    tldr:
+      "Mailchimp and Substack both ship emails but solve fundamentally different jobs. Mailchimp is the legacy small-business marketing platform with newsletters as one capability alongside landing pages, basic CRM, and marketing automation. Substack is the publication network where writers monetize via paid subscriptions and benefit from the Substack discovery graph. For traditional small-business email marketing, Mailchimp. For writers building a publication with cross-discovery network effects, Substack. They barely compete despite the surface overlap.",
+    bestFor: {
+      a: "Small businesses, e-commerce operators, traditional marketing teams running email campaigns as one channel.",
+      b: "Writers, journalists, essayists building publications with paid subscriptions and discovery via the Substack network.",
+    },
+    pickAIf: [
+      "You are a small business or e-commerce operator running marketing email as one channel among many.",
+      "You need landing pages, basic CRM, customer journey automation alongside email.",
+      "Your audience expects familiar marketing email aesthetics, not publication-style writing.",
+    ],
+    pickBIf: [
+      "You are a writer building a publication and want the Substack network to drive discovery.",
+      "You monetize primarily through paid subscriptions to your writing.",
+      "You value the writer-first publication aesthetic over marketing-email tooling.",
+    ],
+    dimensions: [
+      {
+        name: "Primary job",
+        a: "Small-business marketing automation with email as one channel.",
+        b: "Writer-first publication platform with paid subscriptions.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free up to 500 contacts; paid tiers scale by audience from ~$13/mo (verified 2026-05-18).",
+        b: "Free for writers; Substack takes 10% of paid subscription revenue (verified 2026-05-18).",
+        winner: "different",
+      },
+      {
+        name: "Discovery network",
+        a: "None — your audience is yours alone.",
+        b: "Strong — Substack Recommendations, Notes, and the Substack app drive cross-publication discovery.",
+        winner: "B",
+      },
+      {
+        name: "Marketing automation breadth",
+        a: "Mature — landing pages, basic CRM, customer journey automation.",
+        b: "None — Substack is publication-focused.",
+        winner: "A",
+      },
+      {
+        name: "Paid subscription monetization",
+        a: "Limited; basic paid newsletter features.",
+        b: "Native — paid subscriptions are the core monetization model.",
+        winner: "B",
+      },
+      {
+        name: "Writer-first aesthetic",
+        a: "Marketing-email aesthetic; not optimized for long-form writing.",
+        b: "Writer-first; designed for essays, journalism, long-form publications.",
+        winner: "B",
+      },
+      {
+        name: "Audience ownership",
+        a: "You own the audience and the relationship.",
+        b: "You own the email list but Substack controls discovery, comments, and the app surface.",
+        winner: "A",
+      },
+      {
+        name: "Brand recognition",
+        a: "Very high — Mailchimp is the canonical small-business email brand.",
+        b: "High — Substack is the canonical modern publication brand.",
+        winner: "tie",
+      },
+    ],
+    honestTake:
+      "Mailchimp and Substack both ship emails but solve fundamentally different jobs. Mailchimp is the small-business marketing platform that happens to include newsletters; Substack is the writer-first publication network with paid subscription monetization built in. They appear in comparison searches because both contain 'newsletter' but the audiences barely overlap. For small business marketing, Mailchimp. For writer-built publications, Substack. The mistake is comparing them as if they served the same buyer.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If your indie SaaS uses email primarily for marketing automation alongside landing pages and customer journeys, Mailchimp (or modern alternatives like Customer.io). If you are building a content business or publication where the writing IS the product, Substack. Most indie SaaS founders should not be on either — modern SaaS email platforms (Loops, Resend with audiences, Kit) match the indie-SaaS workflow better than legacy Mailchimp or writer-focused Substack.",
+    },
+    faqs: [
+      {
+        q: "Why does Substack take 10% of paid subscription revenue?",
+        a: "Because Substack's value proposition includes the publication infrastructure plus the discovery network. The 10% revenue share is the rent for being inside the Substack ecosystem with cross-publication discovery and the unified app surface. Writers who do not value the discovery often migrate to Beehiiv, Kit, or self-hosted alternatives.",
+      },
+      {
+        q: "Can Mailchimp host a writer-led publication?",
+        a: "Workably for the email distribution part, awkwardly for the paid-subscription mechanics and writer-first aesthetic. Mailchimp lacks the publication-focused tooling that Substack provides natively. Writers who try Mailchimp typically miss the discovery network and paid-subscription depth.",
+      },
+      {
+        q: "Should I leave Substack for Beehiiv or Kit?",
+        a: "Depends on what you value. Substack's discovery network drives growth that Beehiiv or Kit cannot match through their own mechanics. Beehiiv's monetization stack (ads network, Boost) provides revenue streams Substack does not. Kit's marketing-email features matter for creators with product-launch sequences. The migration decision is about what revenue and audience-growth mechanisms matter most.",
+      },
+      {
+        q: "What about Constant Contact or HubSpot as Mailchimp alternatives?",
+        a: "Constant Contact is the older small-business email competitor with similar positioning to Mailchimp. HubSpot is the broader CRM and marketing automation platform that includes email as one feature among many. The Mailchimp vs Substack comparison is specifically about the legacy-marketing vs modern-publication framing; alternatives serve adjacent niches.",
+      },
+      {
+        q: "What is the Brunson lens on Mailchimp vs Substack?",
+        a: "Mailchimp owns the small-business marketing category by virtue of long-standing brand recognition. Substack is the New Opportunity move (writer-first publication with paid subscriptions and discovery network) that escapes the marketing-platform category entirely. Brunson lesson: when an incumbent owns a category, the challenger wins by claiming an adjacent category the incumbent cannot enter without abandoning its core identity.",
+      },
+    ],
+    tags: ["newsletter", "marketing-vs-publication", "legacy-vs-modern", "different-jobs"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "figma-vs-canva",
+    a: { name: "Figma", teardownSlug: "figma", url: "https://www.figma.com/" },
+    b: { name: "Canva", url: "https://www.canva.com/" },
+    category: "Design and prototyping",
+    oneLine:
+      "Figma is the professional product design tool. Canva is the everyone-can-design template platform. Different design jobs at different complexity levels.",
+    tldr:
+      "Figma and Canva both let people design visual content but at completely different complexity levels. Figma is the professional product design tool for designers building product UI, design systems, and complex prototypes. Canva is the everyone-can-design template platform for marketers, small businesses, and non-designers creating social posts, presentations, and basic marketing assets. For professional design work, Figma. For template-driven content creation by non-designers, Canva. The audiences barely overlap despite both being in 'design.'",
+    bestFor: {
+      a: "Professional designers, product teams, design system builders, anyone designing software UI or complex collaborative design work.",
+      b: "Marketers, small businesses, non-designers creating social media graphics, presentations, basic marketing assets from templates.",
+    },
+    pickAIf: [
+      "You design software product UI, complex prototypes, or design systems.",
+      "You collaborate with developers who need design specs and asset handoff.",
+      "Your work requires component-based design thinking with reusable design tokens.",
+    ],
+    pickBIf: [
+      "You are a non-designer creating social media posts, presentations, or basic marketing materials.",
+      "You value the massive template library and stock asset ecosystem.",
+      "Your work is graphic content creation, not interactive product design.",
+    ],
+    dimensions: [
+      {
+        name: "Target user",
+        a: "Professional designers and product teams.",
+        b: "Non-designers and content creators.",
+        winner: "different",
+      },
+      {
+        name: "Pricing",
+        a: "Free Starter; Professional ~$15/editor/mo; Organization ~$45/editor/mo (verified 2026-05-18).",
+        b: "Free; Pro ~$12.99/user/mo; Teams ~$30/user/mo (verified 2026-05-18).",
+        winner: "tie",
+      },
+      {
+        name: "Component-based design",
+        a: "Native — components, variants, design tokens.",
+        b: "Limited; templates and elements rather than systematic components.",
+        winner: "A",
+      },
+      {
+        name: "Template ecosystem",
+        a: "Growing community templates for product design.",
+        b: "Massive — millions of templates for social, presentations, marketing.",
+        winner: "B",
+      },
+      {
+        name: "Stock assets and AI image generation",
+        a: "Limited stock; community plugins available.",
+        b: "Native stock library plus AI image generation built in.",
+        winner: "B",
+      },
+      {
+        name: "Developer handoff",
+        a: "Dev Mode is native — inspect, copy code, export assets.",
+        b: "Not designed for developer handoff; output is finished assets.",
+        winner: "A",
+      },
+      {
+        name: "Collaboration",
+        a: "Native multiplayer with real-time editing.",
+        b: "Multi-user editing available; less optimized than Figma's design-team collaboration.",
+        winner: "A",
+      },
+      {
+        name: "Best for product UI",
+        a: "Native — Figma is the category default.",
+        b: "Not the focus; possible but awkward.",
+        winner: "A",
+      },
+      {
+        name: "Best for social media graphics",
+        a: "Possible but slow without templates.",
+        b: "Native — template-driven workflow is the core value proposition.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Figma and Canva both create visual content but at completely different complexity levels for completely different buyers. Figma is the professional design tool for designers building product UI and complex collaborative design. Canva is the everyone-can-design template platform for marketers and small businesses creating content from templates. The comparison appears in searches because both contain 'design' but the buyer profiles barely overlap. For product design teams, Figma. For non-designers creating marketing graphics, Canva. The mistake is forcing one onto a team that fits the other.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Use both for different jobs. Figma for product UI design and any complex collaborative design work. Canva for social media graphics, presentations, basic marketing assets, ad creatives. Most indie founders end up with both — Figma at the bottom of the product stack, Canva for the everyday content creation needs.",
+    },
+    faqs: [
+      {
+        q: "Can Figma replace Canva for marketing content?",
+        a: "Possible for designers but slow without Canva's template-driven workflow. Marketers without design background struggle in Figma because the tool assumes design fundamentals. Canva's template library and stock asset ecosystem compress content creation from hours to minutes for non-designers.",
+      },
+      {
+        q: "Can Canva replace Figma for product design?",
+        a: "No, materially. Canva lacks component-based design thinking, design system tooling, developer handoff features, and the prototyping depth that product design requires. Product design teams that try Canva quickly hit the structural limits.",
+      },
+      {
+        q: "Why is Canva so much more popular than Figma in raw user count?",
+        a: "Different buyer addressable market. Designers number in the millions globally; everyone who creates visual content numbers in the hundreds of millions. Canva captured the much larger non-designer market by lowering the design floor with templates; Figma captured the smaller professional designer market by raising the design ceiling with collaborative tooling.",
+      },
+      {
+        q: "What about Adobe Express as a Canva alternative?",
+        a: "Adobe Express is Adobe's answer to Canva — template-driven content creation for non-designers within the Adobe ecosystem. The Canva vs Adobe Express comparison is for non-designers choosing template platforms; the Figma vs Canva comparison is the broader designer-vs-non-designer market split.",
+      },
+      {
+        q: "What is the Brunson lens on Figma vs Canva?",
+        a: "Both companies execute precise Brunson Dream Customer naming for completely different audiences. Figma names the professional designer; Canva names the non-designer who creates content. Brunson lesson: when 'the same category' actually serves fundamentally different buyer profiles, both companies can dominate their respective audiences without zero-sum competition — and both can grow massively because they expanded the addressable market in opposite directions.",
+      },
+    ],
+    tags: ["design", "professional-vs-everyone", "different-complexity", "design-floor-vs-ceiling"],
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup.
