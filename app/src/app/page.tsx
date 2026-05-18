@@ -24,6 +24,7 @@ import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
   DefinedTermSetJsonLd,
   FaqPageJsonLd,
+  FounderVslAudioJsonLd,
   OrganizationJsonLd,
   PersonJsonLd,
 } from "@/components/seo/json-ld";
@@ -85,6 +86,10 @@ export default function FunnelHub() {
       <PersonJsonLd />
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
       <DefinedTermSetJsonLd />
+      {/* Founder VSL audio rendition — declares schema.org/AudioObject when
+          NEXT_PUBLIC_VSL_AUDIO_URL is set. Renders nothing until then
+          (Brunson Hard-Rule: no contentUrl, no declaration). */}
+      <FounderVslAudioJsonLd />
       <AbExposureBeacon />
 
       {/* ---------------- 0. TOP TAGLINE ---------------- */}

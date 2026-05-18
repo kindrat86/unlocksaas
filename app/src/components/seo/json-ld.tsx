@@ -360,6 +360,58 @@ const WEBSITE_JSON = JSON.stringify({
   // resolves as one entity, not two. Per-page Article schemas reference
   // ID.website via `isPartOf`, closing the loop.
   publisher: { "@id": ID.organization },
+  /**
+   * potentialAction[] — VEO / AEO actionable surface declarations
+   * (added 2026-05-18 to close the audit gap on the WebSite block).
+   *
+   * Two actions, both backed by real shipped surfaces:
+   *
+   *   1. SearchAction → /search?q={search_term_string}
+   *      Google "Sitelinks Search Box" enhancement. Backed by the real
+   *      server-rendered /search page (app/(marketing)/search/page.tsx)
+   *      so agents that submit the URL get a real HTML response, not 404.
+   *
+   *   2. AskAction → /diagnostic?url={url_input}
+   *      Schema.org/AskAction is the canonical "ask a question, get an
+   *      answer" action. /diagnostic IS literally that: paste a URL, get
+   *      one of three labeled answers (Wrong Person / Weak Offer / Weak
+   *      Belief). Lets voice assistants surface the diagnostic when the
+   *      query class is "ask the site to diagnose X."
+   *
+   * Brunson Hard-Rule: both URL templates resolve to real pages. A
+   * SearchAction or AskAction that 404s is the schema equivalent of a
+   * fabricated claim — Google demotes the page, AI Overviews stop
+   * citing the entity, the audit grade drops.
+   */
+  potentialAction: [
+    {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${BASE}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+    {
+      "@type": "AskAction",
+      name: "Ask Unlock SaaS to diagnose my product page",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${BASE}/diagnostic?url={url_input}`,
+        inLanguage: "en-US",
+        actionPlatform: [
+          "https://schema.org/DesktopWebPlatform",
+          "https://schema.org/MobileWebPlatform",
+        ],
+      },
+      "query-input": "required name=url_input",
+      result: {
+        "@type": "Answer",
+        text:
+          "One of three diagnoses (Wrong Person, Weak Offer, Weak Belief) plus the specific next step that fixes the labeled problem.",
+      },
+    },
+  ],
 });
 
 const DIAGNOSTIC_SERVICE_JSON = JSON.stringify({
@@ -1194,6 +1246,92 @@ export function VideoJsonLd(props: VideoSchemaInput) {
  */
 export function AudioJsonLd(props: AudioSchemaInput) {
   return <JsonLdScript json={buildAudioJson(props)} />;
+}
+
+/**
+ * Founder VSL audio rendition — env-driven AudioObject for the funnel hub.
+ *
+ * VEO uplift (2026-05-18): the founder VSL ships as video when
+ * NEXT_PUBLIC_VSL_URL is set; this component declares the audio-only
+ * rendition when NEXT_PUBLIC_VSL_AUDIO_URL is also set, which is what
+ * voice assistants (Siri Reader, Alexa, Google Assistant, ChatGPT Voice)
+ * consume directly.
+ *
+ * Brunson Hard-Rule: render nothing until a real contentUrl exists. The
+ * funnel hub's markdown mirror (/index.md) holds the same prose the VSL
+ * narrates, so transcript resolves to a real surface that mirrors the
+ * audio.
+ */
+export function FounderVslAudioJsonLd() {
+  const contentUrl = process.env.NEXT_PUBLIC_VSL_AUDIO_URL?.trim();
+  if (!contentUrl) return null;
+  const uploadDateOverride = process.env.NEXT_PUBLIC_VSL_AUDIO_UPLOAD_DATE?.trim();
+  const uploadDate =
+    uploadDateOverride && uploadDateOverride.length > 0
+      ? uploadDateOverride
+      : ORGANIZATION.foundingDate;
+  const encodingFormat =
+    process.env.NEXT_PUBLIC_VSL_AUDIO_FORMAT?.trim() || "audio/mpeg";
+  // Duration — default to VSL_SCRIPT total (matches video). Override env
+  // when the uploaded audio measurably diverges (e.g. extended music tail).
+  // Default: 110s per VSL_SCRIPT.totalDurationMs.
+  const overrideMs = Number(process.env.NEXT_PUBLIC_VSL_AUDIO_DURATION_MS);
+  const fallbackMs = 110 * 1000;
+  const ms =
+    Number.isFinite(overrideMs) && overrideMs > 0 ? overrideMs : fallbackMs;
+  const durationISO8601 = `PT${Math.max(1, Math.round(ms / 1000))}S`;
+  return (
+    <AudioJsonLd
+      name="The Playbook — in 110 seconds — audio"
+      description="Why your line is flat, what fixes it, and the 60-day promise — said out loud."
+      uploadDate={uploadDate}
+      durationISO8601={durationISO8601}
+      contentUrl={contentUrl}
+      transcriptUrl={`${BASE}/index.md`}
+      encodingFormat={encodingFormat}
+    />
+  );
+}
+
+/**
+ * PodcastSeries — env-driven, declares schema.org/PodcastSeries only when
+ * a real RSS feed exists at NEXT_PUBLIC_PODCAST_FEED_URL. Brunson Hard-Rule:
+ * no fabricated show, no aspirational "Coming soon" surface. Mount on
+ * /press (the canonical journalist + AI-summariser landing surface).
+ */
+export function PodcastSeriesJsonLd() {
+  const feedUrl = process.env.NEXT_PUBLIC_PODCAST_FEED_URL?.trim();
+  if (!feedUrl) return null;
+  const webUrl = process.env.NEXT_PUBLIC_PODCAST_WEB_URL?.trim();
+  const name =
+    process.env.NEXT_PUBLIC_PODCAST_NAME?.trim() ||
+    `${ORGANIZATION.name} Podcast`;
+  const description =
+    process.env.NEXT_PUBLIC_PODCAST_DESCRIPTION?.trim() ||
+    "Conversations with non-engineer founders shipping SaaS with AI tools, recorded by the founder of Unlock SaaS.";
+  const json = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "PodcastSeries",
+    "@id": `${BASE}/#podcast`,
+    name,
+    description,
+    inLanguage: "en-US",
+    webFeed: feedUrl,
+    url: webUrl && webUrl.length > 0 ? webUrl : feedUrl,
+    publisher: { "@id": ID.organization },
+    author: { "@id": ID.person },
+    about: [
+      {
+        "@type": "Thing",
+        name: "Post-launch pre-revenue SaaS founder activation",
+      },
+      {
+        "@type": "Thing",
+        name: "First paying customer acquisition for indie SaaS",
+      },
+    ],
+  });
+  return <JsonLdScript json={json} />;
 }
 
 // Duplicate `export function` declarations of PersonJsonLd, ArticleJsonLd,

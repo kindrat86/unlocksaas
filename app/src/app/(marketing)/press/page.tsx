@@ -5,6 +5,7 @@ import {
   OrganizationJsonLd,
   PersonJsonLd,
   BreadcrumbListJsonLd,
+  PodcastSeriesJsonLd,
 } from "@/components/seo/json-ld";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
@@ -136,6 +137,10 @@ export default function PressPage() {
       <OrganizationJsonLd />
       <PersonJsonLd />
       <BreadcrumbListJsonLd trail={TRAIL} />
+      {/* PodcastSeries — declares schema.org/PodcastSeries when a real RSS
+          feed exists at NEXT_PUBLIC_PODCAST_FEED_URL. Renders nothing until
+          then (Brunson Hard-Rule: no fabricated podcast). */}
+      <PodcastSeriesJsonLd />
 
       <article className="max-w-2xl mx-auto">
         <nav

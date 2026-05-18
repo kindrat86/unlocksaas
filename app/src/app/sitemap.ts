@@ -299,6 +299,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
       alternates: hreflang(`${base}/contact`),
     },
+    // Site-wide search — backed by app/(marketing)/search/page.tsx. Real
+    // surface the WebSite SearchAction potentialAction points at.
+    {
+      url: `${base}/search`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.3,
+      alternates: hreflang(`${base}/search`),
+    },
     {
       url: `${base}/privacy`,
       lastModified: now,

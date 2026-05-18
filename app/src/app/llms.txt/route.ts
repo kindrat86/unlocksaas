@@ -1,4 +1,11 @@
 import { NextResponse } from "next/server";
+import {
+  LAST_VERIFIED_DATE,
+  NEXT_REVIEW_DATE,
+  STRATEGY_LOCK_DATE,
+  REVIEW_CADENCE_DAYS,
+  activationLogAsMarkdown,
+} from "@/lib/seo/freshness";
 
 /**
  * /llms.txt — playbook-readable index for LLM crawlers (Anthropic,
@@ -32,6 +39,8 @@ const BODY = `# Unlock SaaS
 
 > A playbook for post-launch pre-revenue founders. Turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay.
 
+_Last verified: ${LAST_VERIFIED_DATE}. Next review: ${NEXT_REVIEW_DATE}. Strategy lock: ${STRATEGY_LOCK_DATE}. See "Freshness and activation log" at the bottom of this file for the shipped-vs-gated state of every surface listed below._
+
 Unlock SaaS is a guided seven-step system that names one real person, writes one real promise, and sends one real message — and verifies every step inside Stripe. Built by Maryan, a non-engineer, for non-engineer founders who shipped a product with AI tools (Lovable, Claude, Replit, v0, Cursor) and now have a flat Stripe line. The premise: the work that produces the first paying customer is the work nobody taught them, not more traffic or more features.
 
 ## Core surfaces
@@ -52,6 +61,13 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [FAQ](${BASE}/faq): Eight verbatim objections from real Indie Hackers / Hacker News threads and the answers a founder would receive over email.
 - [Contact](${BASE}/contact): Direct line to the founder.
 - [Privacy](${BASE}/privacy), [Terms](${BASE}/terms): Standard legal surfaces.
+
+## Actionable surfaces — what an agent can invoke directly
+
+Two schema.org \`potentialAction\` declarations on the WebSite block name the two interactive actions this site exposes. Both resolve to real, server-rendered HTML; no JavaScript execution is required.
+
+- **SearchAction** → \`${BASE}/search?q={search_term_string}\` — site-wide search across every shipped marketing surface (funnel teardowns, pricing teardowns, head-to-head comparisons, alternatives, category roundups, the main pages). Plain GET. Results are server-rendered HTML grouped by surface. Companion markdown at [${BASE}/search.md](${BASE}/search.md) documents the corpus for AI agents.
+- **AskAction** → \`${BASE}/diagnostic?url={url_input}\` — paste any live product URL, get one of three labeled diagnoses (Wrong Person, Weak Offer, or Weak Belief) plus the specific next step that fixes the labeled problem. The canonical "ask the site to diagnose X" surface.
 
 ## Programmatic SEO surfaces — honest competitor comparisons
 
