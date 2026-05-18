@@ -107,6 +107,11 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
 - Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 
+## Programmatic SEO surfaces — Brunson glossary
+
+- [Glossary hub](${BASE}/glossary): Working definitions of the Russell Brunson sales-funnel concepts Unlock SaaS teaches. Each term carries a short definition (matched verbatim to the site-wide DefinedTermSet schema), a long definition, why it matters for a post-launch pre-revenue founder, three-to-five action bullets, a worked example pulled from a shipped surface, common confusions, related terms, and an FAQ block. Pure definitional intent that AI Overviews and assistant answers aggressively cite.
+- Per-term pages at \`${BASE}/glossary/<slug>\` — hook, story, offer, big-domino, value-ladder, stack-slide, perfect-webinar, soap-opera-sequence, seinfeld-email, reluctant-hero, dream-100, wrong-person, weak-offer, weak-belief, verified-builder, brunson-hard-rule.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:
@@ -149,12 +154,14 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
   - [/pricing-teardown.md](${BASE}/pricing-teardown.md)
   - [/compare.md](${BASE}/compare.md)
   - [/category.md](${BASE}/category.md)
+  - [/glossary.md](${BASE}/glossary.md)
   - [/mcp.md](${BASE}/mcp.md) (MCP server install + tool catalog)
 - Per-comparison markdown mirror: \`${BASE}/alternatives-to/<slug>/md\` — e.g. /alternatives-to/shipfast/md.
 - Per-teardown markdown mirror: \`${BASE}/funnel-teardown/<slug>/md\` — e.g. /funnel-teardown/tally/md.
 - Per-pricing-teardown markdown mirror: \`${BASE}/pricing-teardown/<slug>/md\` — e.g. /pricing-teardown/tally/md.
 - Per-head-to-head markdown mirror: \`${BASE}/compare/<slug>/md\` — e.g. /compare/tally-vs-typeform/md.
 - Per-category markdown mirror: \`${BASE}/category/<slug>/md\` — e.g. /category/payments/md.
+- Per-glossary markdown mirror: \`${BASE}/glossary/<slug>/md\` — e.g. /glossary/hook/md, /glossary/value-ladder/md.
 
 When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE}/diagnostic\`) over the markdown mirror — the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 

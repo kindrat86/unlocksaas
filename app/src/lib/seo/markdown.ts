@@ -77,6 +77,11 @@ import {
   type PressTopic,
   getPressTopicBySlug,
 } from "@/lib/press-topics";
+import {
+  GLOSSARY,
+  type GlossaryEntry,
+  getGlossaryBySlug,
+} from "@/lib/glossary";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -761,6 +766,13 @@ ${CATEGORIES.map(
 Buyers searching "best [X] for indie SaaS" want a curated comparison landing page, not 27 individual comparisons to choose between. The category page IS the answer to that query — it lists every product analyzed in the category with links into the deep analytical content. Same data as the per-product surfaces; different access pattern.
 `;
 
+// Note: PR #33 originally defined GLOSSARY_HUB_BODY here. PR #32 had
+// already shipped GLOSSARY_BODY (above) for the same /glossary path; the
+// merge keeps PR #32's canonical hub body and PR #33 contributes the
+// per-slug rendering machinery (buildGlossaryMarkdown +
+// renderGlossaryMarkdown below) instead. One body constant, one SURFACES
+// entry — no drift between /glossary.md and the hub HTML.
+
 const COMPARE_HUB_BODY = `# Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools
 
 > Symmetric dimension-by-dimension breakdowns of the tools indie SaaS founders are mid-evaluation on. Both sides get a fair read.
@@ -1313,6 +1325,9 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
       "Curated category roundups across every SaaS tool we have analyzed, organized by category.",
     body: CATEGORY_HUB_BODY,
   },
+  // Note: /glossary SURFACES entry shipped via PR #32 (above). PR #33 does
+  // not re-register it; per-slug markdown comes from renderGlossaryMarkdown
+  // below, not from SURFACES.
 ];
 
 const SURFACES_BY_MD_PATH = new Map<string, MarkdownSurface>(
@@ -1445,6 +1460,114 @@ export function renderCategoryMarkdown(slug: string): string | undefined {
       updated: TODAY,
     }),
     buildCategoryMarkdown(cat).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
+ * Build a per-glossary-term markdown body. Generated from the GlossaryEntry
+ * the HTML page also renders so drift is impossible by construction. The
+ * short definition itself is pulled from entity.DEFINED_TERMS at module
+ * load (inside glossary.ts), so the markdown mirror, the DefinedTermSet
+ * schema on /, and the rendered detail page all read from the same string.
+ */
+function buildGlossaryMarkdown(g: GlossaryEntry): string {
+  const apply = g.howToApply.map((b) => `- ${b}`).join("\n");
+  const confusions =
+    g.commonConfusions && g.commonConfusions.length > 0
+      ? g.commonConfusions
+          .map((c) => `### Often confused with: ${c.term}\n\n${c.difference}`)
+          .join("\n\n")
+      : "_No common confusions documented._";
+  const related =
+    g.relatedTerms && g.relatedTerms.length > 0
+      ? g.relatedTerms
+          .map((slug) => {
+            const r = getGlossaryBySlug(slug);
+            if (!r) return null;
+            return `- [${r.term}](${BASE_URL}/glossary/${r.slug}) – ${r.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related terms documented._";
+  const appears =
+    g.appearsIn && g.appearsIn.length > 0
+      ? g.appearsIn
+          .map((a) => {
+            const href =
+              a.kind === "page"
+                ? a.href
+                : a.kind === "funnel-teardown"
+                  ? `/funnel-teardown/${a.slug}`
+                  : a.kind === "pricing-teardown"
+                    ? `/pricing-teardown/${a.slug}`
+                    : a.kind === "compare"
+                      ? `/compare/${a.slug}`
+                      : a.kind === "alternatives-to"
+                        ? `/alternatives-to/${a.slug}`
+                        : `/category/${a.slug}`;
+            return `- [${a.label}](${BASE_URL}${href})`;
+          })
+          .join("\n")
+      : "_No on-site references documented._";
+  const faqs = g.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# ${g.term}
+
+> ${g.shortDefinition}
+
+## What it actually means
+
+${g.longDefinition}
+
+## Why it matters for a post-launch pre-revenue founder
+
+${g.whyItMatters}
+
+## How to apply it on your page
+
+${apply}
+
+## Worked example
+
+${g.example}
+
+## Common confusions
+
+${confusions}
+
+## Where this term is applied on the site
+
+${appears}
+
+## Related terms
+
+${related}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-glossary-term markdown body wrapped in the standard
+ * front-matter + citation footer. Mirrors the shape of every other
+ * pSEO renderer.
+ */
+export function renderGlossaryMarkdown(slug: string): string | undefined {
+  const g = getGlossaryBySlug(slug);
+  if (!g) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/glossary/${g.slug}`;
+  return [
+    frontMatter({
+      title: `${g.term} – Definition for Indie SaaS Founders`,
+      summary: g.shortDefinition,
+      canonical: canonicalUrl,
+      updated: g.lastVerified,
+    }),
+    buildGlossaryMarkdown(g).trim(),
     citationFooter(canonicalUrl),
   ].join("\n");
 }

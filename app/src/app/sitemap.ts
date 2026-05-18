@@ -5,6 +5,7 @@ import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
+import { GLOSSARY_SLUGS } from "@/lib/glossary";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -158,20 +159,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/faq`),
     },
-    // Glossary surface — topical-reservoir uplift (2026-05-19). The 16
-    // Brunson terms the site teaches, each with a stable in-page anchor
-    // (#hook, #value-ladder, etc). Targets the "what is X" / "X meaning"
-    // long-tail intent class that the pSEO catalogs do not cover. Each
-    // term is rendered inside a DefinedTermSet whose @id is the page
-    // itself, so AI Overview / Perplexity / Bing Copilot citations
-    // resolve to one canonical URL per term.
-    {
-      url: `${base}/glossary`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
-      alternates: hreflang(`${base}/glossary`),
-    },
+    // Glossary entry deferred to pSEO block #6 below, which lists the hub
+    // and 16 detail-page slugs together. PR #32 originally inserted a hub-
+    // only entry here; PR #33 extended it with the [slug] detail pages, so
+    // both URLs ship from the same block at the bottom of the file.
     // ---------------------------------------------------------------------
     // Programmatic SEO block — honest named-competitor comparisons.
     // Data source: src/lib/alternatives.ts. Adding a new alternative there
@@ -276,6 +267,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.55,
       alternates: hreflang(`${base}/category/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #6 — Brunson glossary.
+    // Data source: src/lib/glossary.ts. Pure definitional intent: targets
+    // "what is X" / "X meaning" / "how do I use X" queries that LLMs and
+    // Google AI Overviews aggressively cite. DefinedTerm + Article +
+    // FAQPage + BreadcrumbList JSON-LD per detail page; CollectionPage +
+    // DefinedTermSet + Dataset on the hub. Short definitions are read
+    // from entity.DEFINED_TERMS at module load so the schema graph on `/`
+    // and the glossary surface share one source of truth.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/glossary`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/glossary`),
+    },
+    ...GLOSSARY_SLUGS.map((slug) => ({
+      url: `${base}/glossary/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/glossary/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
