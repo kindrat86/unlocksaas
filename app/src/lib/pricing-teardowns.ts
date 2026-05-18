@@ -2580,6 +2580,447 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     pricingPageUrl: "https://www.gitbook.com/pricing",
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "asana",
+    displayName: "Asana",
+    creator: "Dustin Moskovitz and Justin Rosenstein",
+    category: "Project management",
+    oneLine:
+      "Asana prices per-user with a structured tier ladder. The free 10-user cap is the mechanical upgrade trigger; Advanced tier captures the cross-functional buyer.",
+    tldr:
+      "Asana's pricing structure scales with team size through per-user tiers (Free → Starter → Advanced → Enterprise), with the free-tier 10-user cap as the mechanical upgrade trigger. Advanced tier captures the cross-functional buyer who needs Goals, Workload, and timeline depth. The lesson for indie founders: when your value scales with both team size AND coordination depth, per-user pricing with feature-tier upsells captures both axes simultaneously.",
+    productSnapshot: {
+      whatTheySell:
+        "A cross-functional project management platform with tasks, projects, portfolios, goals, timelines, and workload coordination.",
+      whoFor:
+        "Growing cross-functional teams that coordinate work across multiple departments and need structured project tracking with goal hierarchies.",
+    },
+    pricingStructure: {
+      model: "Per-user tiered subscription with structured upsell ladder",
+      tiers: [
+        {
+          name: "Personal (Free)",
+          pricePoint: "$0",
+          includes:
+            "Up to 10 users, unlimited tasks/projects, list/board/calendar views, basic search.",
+          audience: "Early-stage teams of fewer than 10 people, individuals organizing personal work.",
+        },
+        {
+          name: "Starter",
+          pricePoint: "approximately $11/user/mo billed annually (verified 2026-05-18)",
+          includes:
+            "Unlimited users, Timeline view, dashboards, custom fields, integrations, basic automation.",
+          audience: "Growing teams past the 10-user threshold needing real PM features.",
+        },
+        {
+          name: "Advanced",
+          pricePoint: "approximately $25/user/mo billed annually (verified 2026-05-18)",
+          includes:
+            "Goals, Workload, advanced automation, portfolios, advanced reporting, time tracking.",
+          audience: "Cross-functional teams coordinating across departments with goal hierarchies.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Custom integrations, SAML, audit logs, advanced security, dedicated success, custom retention.",
+          audience: "Larger organizations with procurement requirements.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount",
+      freeTrialBehavior:
+        "Free Personal tier IS the trial for small teams; paid tiers offer time-limited trials for evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Advanced tier as anchor",
+      analysis:
+        "Advanced at approximately $25/user/mo anchors the page for serious cross-functional buyers. Starter at approximately $11 reads as the natural starting tier for growing teams; Personal Free is the entry; Enterprise sits behind a sales conversation. The unusual structural element is the Goals + Workload + Timeline bundle at Advanced — these features collectively represent what makes Asana 'real' for cross-functional teams, and the pricing reflects that bundled value.",
+    },
+    upgradeTrigger: {
+      pattern: "10-user cap plus cross-functional feature need",
+      analysis:
+        "The 10-user cap on Personal Free is the structural primary trigger — teams that adopt Asana and grow past 10 users have proven team-scale need. The secondary trigger from Starter to Advanced is the cross-functional feature need (Goals, Workload, Timeline) that emerges when teams coordinate across departments. Both triggers map to mechanical team-growth and structural-complexity events.",
+    },
+    whatsWorking: [
+      "10-user cap on Free is mechanical and predictable as teams grow past early-stage scale.",
+      "Per-user pricing aligns the bill with team-scale growth, which matches how Asana usage actually scales.",
+      "Goals + Workload + Timeline bundling at Advanced creates a clear value gap from Starter, justifying the 2.3x price jump.",
+      "Enterprise tier provides procurement-driven upsell without exposing custom pricing publicly.",
+      "Multi-function case studies (marketing, ops, engineering) reinforce the cross-functional positioning that justifies the per-user pricing model.",
+      "Mature integration ecosystem (Slack, Google Workspace, Salesforce) locks in customers who built workflows around the platform.",
+    ],
+    whatToAdapt: [
+      "When value scales with both team size AND coordination depth, per-user pricing with feature-tier upsells captures both axes simultaneously.",
+      "Mechanical user-count caps (10 on Free) convert predictably as teams grow, beating feature-gate caps that create more buyer friction.",
+      "Bundling structurally-related features at the anchor tier (Goals + Workload + Timeline at Advanced) creates a defensible price jump.",
+    ],
+    whatToAvoid: [
+      "Do not adopt per-user pricing if individual users do not get clear individual value. Asana works because every cross-functional team member uses the platform; PM tools where one user per team coordinates fail per-user pricing.",
+      "Do not gate cross-functional features (Goals, Timeline) at the cheapest paid tier. The Starter tier exists because not all paying teams need cross-functional depth; pricing the deep features into Starter dilutes the Advanced upgrade path.",
+    ],
+    brunsonLens: {
+      stack: "Four-rung stack with progressive feature additions; Advanced tier is the visual anchor with structurally-related feature bundle.",
+      valueLadder: "Full Value Ladder (Free → Starter → Advanced → Enterprise) with mechanical and structural upgrade triggers at each rung.",
+      decoyOrAnchor: "Advanced tier as anchor; Starter as reasonable growth tier; Personal Free as visible adoption surface.",
+      paymentMechanics: "Per-user monthly or annual with annual discount; no usage metering on task volume or storage.",
+    },
+    faqs: [
+      {
+        q: "Why is the Free tier capped at 10 users instead of being unlimited?",
+        a: "Because 10 users is the structural team-formation threshold for cross-functional PM use cases. Teams that adopt Asana and grow past 10 users have proven they need real-team Asana use; the upgrade is mechanically predictable. A more generous free tier would dilute the conversion path and undermonetize the team-scale value.",
+      },
+      {
+        q: "Why is Advanced 2.3x the price of Starter?",
+        a: "Because Goals + Workload + Timeline + Portfolios is a structurally-related bundle that justifies the price jump. Buyers who need cross-functional depth (the Advanced audience) recognize the bundle as a different product category than basic PM. The 2.3x gap is calibrated to anchor the cross-functional buyer at Advanced while keeping Starter accessible for growing teams.",
+      },
+      {
+        q: "Should an indie SaaS price per-user with feature tiers?",
+        a: "Only when team adoption AND coordination depth both scale your value. Asana works because cross-functional teams generate both axes of value. For products where one axis dominates, single-axis pricing (per-user only or per-feature only) is usually cleaner.",
+      },
+      {
+        q: "What is the Brunson lens on Asana's pricing?",
+        a: "Four-rung Value Ladder with mechanical and structural upgrade triggers. The unusual element is the bundled-feature anchor at Advanced — Goals + Workload + Timeline collectively represent the cross-functional value proposition, and the pricing reflects the bundle rather than individual features. Brunson lesson: anchor tiers should bundle structurally-related features so the price jump represents a real product-category difference, not a feature checklist.",
+      },
+    ],
+    tags: ["per-user", "user-cap-trigger", "bundled-anchor", "cross-functional-pm"],
+    homepageUrl: "https://asana.com/",
+    pricingPageUrl: "https://asana.com/pricing",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "airtable",
+    displayName: "Airtable",
+    creator: "Howie Liu, Andrew Ofstad, Emmett Nicholas",
+    category: "Productivity and workspace",
+    oneLine:
+      "Airtable prices per-editor with the 5-editor free cap as the mechanical trigger. Automation runs and AI credits are secondary upgrade triggers.",
+    tldr:
+      "Airtable's pricing structure leans into the database-superpowers-for-non-developers positioning: 5 editors free, per-editor tiers add Interfaces, Automation runs, and AI credits. The lesson for indie founders: when your product has multiple value-capture moments (per-editor, per-automation, per-AI-call), layered triggers convert at different growth events. Single-axis pricing misses the secondary monetization paths.",
+    productSnapshot: {
+      whatTheySell:
+        "A relational database platform for non-developers with Interfaces, Automations, and AI for building no-code internal tools.",
+      whoFor:
+        "Operations-heavy teams, marketers, ops leaders, and product managers who need structured data and internal tools without engineering.",
+    },
+    pricingStructure: {
+      model: "Per-editor tiered subscription with Automation-runs and AI-credits secondary triggers",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0",
+          includes:
+            "Up to 5 editors, unlimited bases, basic views, 100 automation runs/mo, limited AI credits, 1GB attachment storage.",
+          audience: "Indie teams, ops leaders evaluating Airtable for internal-tool building.",
+        },
+        {
+          name: "Team",
+          pricePoint: "approximately $20/seat/mo billed annually (verified 2026-05-18)",
+          includes:
+            "25k records per base, 25k automation runs/mo, Interfaces, expanded AI credits, custom branding on forms.",
+          audience: "Growing teams adopting Airtable for real ops workflows.",
+        },
+        {
+          name: "Business",
+          pricePoint: "approximately $45/seat/mo billed annually (verified 2026-05-18)",
+          includes:
+            "125k records per base, 100k automation runs/mo, advanced permissions, SAML, two-way sync with other apps.",
+          audience: "Organizations scaling ops with multi-team coordination and governance needs.",
+        },
+        {
+          name: "Enterprise Scale",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "Custom records, unlimited automation runs, audit logs, advanced admin, dedicated success, custom retention.",
+          audience: "Large organizations with procurement requirements and significant scale.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount; per-editor pricing with automation runs metered separately at higher tiers",
+      freeTrialBehavior:
+        "Free tier IS the trial for small teams; paid tiers offer time-limited trials for full feature evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Business tier as anchor",
+      analysis:
+        "Business at approximately $45/seat/mo anchors the page for scaling ops teams. Team at approximately $20 reads as the natural starting tier for growing teams; Free is the entry. The unusual structural element is the multiple secondary triggers (record limits, automation runs, AI credits) — each scales independently of editor count, creating multiple paths to upgrade as ops workflows mature.",
+    },
+    upgradeTrigger: {
+      pattern: "5-editor cap plus automation-runs cap plus record cap",
+      analysis:
+        "Three triggers fire together: 5-editor cap on Free is the primary structural trigger as ops teams grow; 100 automation runs/mo cap forces teams running workflows to upgrade quickly; 100k records per base on Team forces teams with significant data to upgrade to Business. The layered triggers mean Airtable monetizes at three different growth events rather than relying on a single conversion path.",
+    },
+    whatsWorking: [
+      "5-editor free tier cap is mechanical and predictable as ops teams grow.",
+      "Per-editor pricing aligns the bill with team adoption, which matches how Airtable usage scales.",
+      "Automation runs as secondary trigger captures teams that automate workflows heavily.",
+      "Record limits as tertiary trigger captures teams with significant data volume.",
+      "AI credits as quaternary trigger captures teams adopting AI-augmented workflows.",
+      "Interfaces feature at Team tier is the canonical differentiator that makes the Free-to-Team upgrade structurally compelling.",
+    ],
+    whatToAdapt: [
+      "Layered upgrade triggers (multiple caps that scale independently) convert at different growth events and capture more revenue than single-axis pricing.",
+      "Editor-count caps + automation-runs caps + record caps map to different team-maturity stages and trigger conversion at each stage.",
+      "Anchor with a tier that has real customers (Business at $45/seat/mo for Airtable) not aspirational tiers.",
+    ],
+    whatToAvoid: [
+      "Do not adopt multi-cap pricing without monitoring which cap actually drives conversion. Sometimes one cap dominates and the others are noise; pricing complexity without conversion data wastes optimization time.",
+      "Do not adopt per-editor pricing if your value scales with viewers more than editors. Airtable's per-editor model works because editors are the value-creating role; if your viewers dominate the workflow, viewer-free + editor-paid (Figma model) is better.",
+    ],
+    brunsonLens: {
+      stack: "Four-rung stack with multiple secondary triggers; Business tier is the visual anchor.",
+      valueLadder: "Full Value Ladder with editor-count primary trigger and automation/records/AI secondary triggers.",
+      decoyOrAnchor: "Business tier as anchor; Team as reasonable growth tier; Free as ops-team adoption surface.",
+      paymentMechanics: "Per-editor monthly or annual with annual discount; automation runs and records metered at higher tiers.",
+    },
+    faqs: [
+      {
+        q: "Why does Airtable use multiple upgrade caps instead of just one?",
+        a: "Because different ops workflows hit different caps first. Teams that build many automations hit the automation-runs cap before the editor cap; teams with large data hit the record cap first. Multiple caps mean Airtable monetizes at whichever growth event happens first for each customer.",
+      },
+      {
+        q: "Should an indie SaaS use multi-cap pricing?",
+        a: "Only when your value genuinely scales on multiple axes. Adding caps without underlying value-axis differentiation creates pricing complexity that converts buyers worse. Multi-cap pricing is right when buyers can recognize each cap as a real cost driver.",
+      },
+      {
+        q: "Why is Interfaces gated at Team instead of Free?",
+        a: "Because Interfaces is the structural differentiator that makes Airtable a no-code-app platform rather than just a database. Gating Interfaces at Team forces teams that want internal-tool building to upgrade, which is the core monetization path. Putting Interfaces on Free would undermonetize the canonical use case.",
+      },
+      {
+        q: "What is the Brunson lens on Airtable's pricing?",
+        a: "Four-rung Value Ladder with layered upgrade triggers (editor count, automation runs, records, AI credits). The unusual element is the depth of secondary-trigger pricing — most SaaS use one cap; Airtable uses four because the ops use cases create four real cost drivers. Brunson lesson: pricing complexity is justified when it matches real value-axis differentiation; otherwise it costs conversion.",
+      },
+    ],
+    tags: ["per-editor", "layered-triggers", "automation-runs", "no-code-database"],
+    homepageUrl: "https://www.airtable.com/",
+    pricingPageUrl: "https://www.airtable.com/pricing",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "framer",
+    displayName: "Framer",
+    creator: "Koen Bok and Jorn van Dijk",
+    category: "Design and prototyping",
+    oneLine:
+      "Framer bifurcates pricing: per-site for publishing, per-seat for design. The two pricing axes match the two value-capture moments.",
+    tldr:
+      "Framer's pricing structure separates the publishing value-capture moment (per-site) from the design-time value-capture moment (per-seat). The bifurcation matches the actual value moments: publishing is when the design becomes live; designing is the ongoing collaborative work. The lesson for indie founders: when your product has multiple distinct value-capture moments, bifurcated pricing axes capture each axis independently — single-axis pricing leaves money on the table at the secondary value moment.",
+    productSnapshot: {
+      whatTheySell:
+        "A design-and-publish platform that lets designers ship live marketing sites and landing pages without engineering handoff.",
+      whoFor:
+        "Designers building marketing sites and landing pages who want to publish their design work directly without coding or engineering involvement.",
+    },
+    pricingStructure: {
+      model: "Bifurcated pricing: per-site for publishing + per-seat for design tier",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0",
+          includes:
+            "Unlimited free sites with framer.website subdomain, basic CMS, animations, components, 1 editor.",
+          audience: "Designers evaluating Framer or shipping non-commercial side projects.",
+        },
+        {
+          name: "Mini (per site)",
+          pricePoint: "approximately $5/site/mo (verified 2026-05-18)",
+          includes:
+            "Custom domain, removes Framer branding, basic analytics, 1000 monthly visitors.",
+          audience: "Indie founders launching small marketing sites with custom domains.",
+        },
+        {
+          name: "Basic (per site)",
+          pricePoint: "approximately $15/site/mo (verified 2026-05-18)",
+          includes:
+            "10k monthly visitors, advanced CMS, password protection, expanded asset storage.",
+          audience: "Growing indie SaaS marketing sites and landing pages with real traffic.",
+        },
+        {
+          name: "Pro (per site)",
+          pricePoint: "approximately $30/site/mo (verified 2026-05-18)",
+          includes:
+            "200k monthly visitors, advanced CMS, SEO optimization, password protection, partial site editing for clients.",
+          audience: "Established sites with significant traffic; agencies building client sites.",
+        },
+        {
+          name: "Design tier (per seat)",
+          pricePoint:
+            "approximately $15/seat/mo Pro tier for advanced design capabilities (verified 2026-05-18)",
+          includes:
+            "Advanced design features, components, design system tools, team collaboration on design files.",
+          audience: "Design teams collaborating on multiple projects simultaneously.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Custom (sales contact)",
+          includes:
+            "SLA, dedicated success, advanced security, custom contracts.",
+          audience: "Larger companies with significant publishing or design scale.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual with annual discount; per-site tiers for publishing + per-seat tiers for design",
+      freeTrialBehavior:
+        "Free tier IS the trial; sites can publish on framer.website subdomain at no cost for evaluation.",
+    },
+    anchorAnalysis: {
+      pattern: "Bifurcated pricing as anchor",
+      analysis:
+        "Framer's anchor mechanic is structural rather than tier-based. The two pricing axes (per-site for publishing, per-seat for design) anchor against the alternative (build the site in Webflow with per-site pricing only, or design in Figma and pay engineering to publish). Buyers comparing Framer recognize the bifurcation as honest — you pay for what you use on each axis. The complexity is justified by the two-distinct-value-moment structure.",
+    },
+    upgradeTrigger: {
+      pattern: "Per-site visitor cap plus design-team-scale trigger",
+      analysis:
+        "Two trigger types fire: per-site upgrades fire when sites hit the visitor cap on lower tiers (Mini at 1k/mo, Basic at 10k/mo, Pro at 200k/mo); per-seat design tier upgrades fire when design teams add collaborators. The triggers operate on independent axes — site traffic growth and design team growth are uncorrelated, so each axis monetizes separately.",
+    },
+    whatsWorking: [
+      "Bifurcated pricing axes match the two distinct value-capture moments (publishing vs designing).",
+      "Per-site visitor caps as upgrade triggers map to mechanical growth events that buyers understand intuitively.",
+      "Free tier with framer.website subdomain seeds visible-customer presence — designers see other Framer-built sites and recognize the aesthetic.",
+      "Branded subdomain (framer.website) removal at the Mini tier captures the publishing-moment willingness-to-pay spike.",
+      "Native CMS at higher tiers handles dynamic content needs without external CMS integration.",
+      "Per-seat design tier captures collaborative-design value separately from publishing value.",
+    ],
+    whatToAdapt: [
+      "When your product has multiple distinct value-capture moments, bifurcated pricing axes capture each axis independently.",
+      "Per-site (or per-unit) pricing matches publishing-style value; per-seat matches collaboration-style value. Mixing them maps to multi-axis value structures.",
+      "Visitor caps as per-site upgrade triggers match how sites actually grow — traffic is the value driver buyers recognize.",
+    ],
+    whatToAvoid: [
+      "Do not bifurcate pricing if your value-capture moments are not actually distinct. The complexity costs conversion when buyers cannot map the axes to their own workflow.",
+      "Do not gate the per-site publishing capability behind per-seat pricing. Framer works because designers can publish many sites without adding seats — bundling the axes would lose the indie-designer segment.",
+    ],
+    brunsonLens: {
+      stack: "Bifurcated stack: per-site stack for publishing + per-seat stack for design.",
+      valueLadder: "Multi-axis Value Ladder with publishing tiers and design tiers as parallel ladders.",
+      decoyOrAnchor: "Bifurcation-as-anchor; the structural distinctness of axes anchors against single-axis competitors.",
+      paymentMechanics: "Per-site monthly or annual for publishing + per-seat monthly or annual for design; visitor caps metered per site.",
+    },
+    faqs: [
+      {
+        q: "Why does Framer bifurcate pricing instead of using just per-seat?",
+        a: "Because publishing and designing are distinct value-capture moments. Per-seat pricing alone undermonetizes the publishing value (designers who publish many sites for clients would pay too little); per-site pricing alone undermonetizes the design value (large design teams collaborating on one site would pay too little). Bifurcation captures both axes.",
+      },
+      {
+        q: "Should other no-code-site builders adopt bifurcated pricing?",
+        a: "Only if their value-capture moments are genuinely distinct. Webflow's pricing is bifurcated similarly (per-site for hosting, per-workspace for design). For pure design tools (Figma) or pure hosting tools (Vercel), single-axis pricing is cleaner. Bifurcation matches multi-axis value, not all products have it.",
+      },
+      {
+        q: "Why is per-site pricing more aggressive at higher visitor caps?",
+        a: "Because traffic growth is a strong proxy for site value to the customer. Sites with 200k monthly visitors typically drive significant revenue or audience value for their owner, justifying higher Framer fees. The pricing scales with the value Framer is helping the customer create.",
+      },
+      {
+        q: "What is the Brunson lens on Framer's pricing?",
+        a: "Multi-axis Value Ladder with bifurcated pricing matching distinct value-capture moments. The unusual element is the structural honesty of the bifurcation — single-axis competitors leave money on the table by ignoring one of the two value moments. Brunson lesson: pricing structure should match value structure; when your value has multiple axes, your pricing should too.",
+      },
+    ],
+    tags: ["bifurcated-pricing", "per-site-plus-per-seat", "visitor-cap-trigger", "publish-and-design"],
+    homepageUrl: "https://www.framer.com/",
+    pricingPageUrl: "https://www.framer.com/pricing",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "substack",
+    displayName: "Substack",
+    creator: "Hamish McKenzie, Chris Best, Jairaj Sethi",
+    category: "Newsletter platform",
+    oneLine:
+      "Substack charges no upfront fee — writers join free. The 10% revenue-share on paid subscriptions captures value only when writers succeed.",
+    tldr:
+      "Substack's pricing structure is the canonical revenue-share model: writers join the platform for free and Substack takes 10% of paid subscription revenue plus Stripe fees. The model removes adoption friction at the canonical decision point and aligns Substack's incentives with writer success. The lesson for indie founders: when your platform value scales with customer revenue, revenue-share pricing removes upfront friction AND ensures you only win when customers win.",
+    productSnapshot: {
+      whatTheySell:
+        "A publication platform for writers with paid subscriptions, Notes (Twitter-style microblogging), Recommendations (cross-publication discovery), and the unified Substack app.",
+      whoFor:
+        "Writers, journalists, essayists building publications with paid subscriptions and audience growth through Substack's discovery network.",
+    },
+    pricingStructure: {
+      model: "Free platform with revenue-share on paid subscriptions",
+      tiers: [
+        {
+          name: "Free platform",
+          pricePoint: "$0 to publish",
+          includes:
+            "Unlimited free posts, unlimited free subscribers, custom domain, Notes, Recommendations, Substack app surface, full publication tooling.",
+          audience: "All writers — Substack has no paid platform tier.",
+        },
+        {
+          name: "Revenue share on paid subscriptions",
+          pricePoint:
+            "10% of paid subscription revenue + Stripe fees (~2.9% + 30¢) per transaction (verified 2026-05-18)",
+          includes:
+            "All platform features included; Substack takes 10% only when writers monetize via paid subscriptions.",
+          audience: "Writers who enable paid subscriptions and have paying subscribers.",
+        },
+        {
+          name: "Custom (publishers and partnerships)",
+          pricePoint: "Negotiated for large publishers or strategic partnerships",
+          includes:
+            "Custom terms for high-volume publishers or strategic partnerships.",
+          audience: "Large publishers or strategic partners.",
+        },
+      ],
+      paymentFrequency: "Revenue share deducted per transaction; writers receive net revenue via Stripe payouts",
+      freeTrialBehavior:
+        "Free platform IS the trial; writers can publish for years without paying anything if they do not enable paid subscriptions.",
+    },
+    anchorAnalysis: {
+      pattern: "Free-platform anchor",
+      analysis:
+        "Substack's pricing has no anchor in the traditional sense — there are no tiers to anchor between. The single anchor is the free-to-publish promise itself. Writers comparing Substack to subscription platforms (Beehiiv, Kit) see one number ($0 upfront) and recognize the no-friction adoption value. The 10% revenue share is positioned as the success-fee, not as a tier — it only fires when writers succeed.",
+    },
+    upgradeTrigger: {
+      pattern: "Paid subscription activation",
+      analysis:
+        "The only trigger is when writers enable paid subscriptions and gain paying subscribers. Substack receives revenue only at that moment. Writers who publish for years without monetizing cost Substack nothing; writers who monetize pay 10% proportionally. The trigger is binary (paid subscriptions enabled or not) and aligns with the success moment.",
+    },
+    whatsWorking: [
+      "Free platform removes adoption friction at the canonical decision point.",
+      "Revenue share aligns Substack's incentives with writer success — Substack only wins when writers win.",
+      "10% take rate is positioned as the success fee, not as a platform fee — writers do not feel the cost until they have revenue to share.",
+      "Single-line pricing eliminates evaluation complexity at the platform-comparison stage.",
+      "Network effects (Recommendations, Notes, app) compound at no marginal cost to writers, making the platform feel more valuable over time.",
+      "Custom partnerships for large publishers preserves negotiation flexibility without exposing custom rates publicly.",
+    ],
+    whatToAdapt: [
+      "When your platform value scales with customer revenue, revenue-share pricing removes upfront friction AND ensures incentive alignment.",
+      "Free-platform-plus-success-fee converts buyers who would reject subscription pricing on principle.",
+      "Position the revenue share as a success fee, not as a platform fee — the framing matters for buyer perception.",
+    ],
+    whatToAvoid: [
+      "Do not adopt revenue-share pricing if your platform cost does not scale with customer revenue. The model only works when the economics align — fixed-cost platforms with variable-revenue customers go broke on revenue share.",
+      "Do not set the take rate too high if writer margins are thin. Substack's 10% works for paid newsletter subscriptions; for higher-margin businesses 30% (Apple) works, for lower-margin businesses 5% might be the ceiling.",
+    ],
+    brunsonLens: {
+      stack: "Single-rung stack — free platform with success-fee monetization. No tier stack.",
+      valueLadder: "Single transactional rung (free + revenue share) with custom partnerships as off-ladder option.",
+      decoyOrAnchor: "Free-platform anchor; the absence of upfront pricing IS the anchor mechanism.",
+      paymentMechanics: "Revenue share per paid subscription transaction; no monthly base, no per-subscriber metering for free subscribers.",
+    },
+    faqs: [
+      {
+        q: "Why does Substack take 10% instead of charging a subscription?",
+        a: "Because revenue share removes upfront adoption friction. Writers join for free and only pay when they succeed; the model captures Substack's value at the success moment rather than at the friction-laden adoption moment. Subscription pricing would lose writers who cannot commit before they have revenue.",
+      },
+      {
+        q: "Should an indie SaaS use revenue-share pricing?",
+        a: "Only when your platform value scales with customer revenue AND your platform cost scales similarly. Software platforms that monetize through customer success (marketplaces, creator platforms, MoR providers) fit. Fixed-cost software platforms with variable-revenue customers do not — the unit economics fail at scale.",
+      },
+      {
+        q: "Is 10% the right revenue-share rate for creator platforms?",
+        a: "Substack's 10% is calibrated for paid-newsletter economics. Apple's App Store charges 30% (high-margin software); Gumroad charges 10% (similar creator economics); Polar charges ~4% (no network effects to fund). The right rate depends on platform-cost economics and the value-add the platform provides beyond infrastructure.",
+      },
+      {
+        q: "What is the Brunson lens on Substack's pricing?",
+        a: "Single-rung Value Ladder with revenue-share monetization aligned to writer success. The unusual element is the structural alignment — Substack's incentives ARE writer success, not just claim to be. Brunson lesson: when platform value depends on customer success, pricing should structure that dependency rather than divorce platform revenue from customer outcomes.",
+      },
+    ],
+    tags: ["revenue-share", "free-platform", "incentive-alignment", "success-fee"],
+    homepageUrl: "https://substack.com/",
+    pricingPageUrl: "https://substack.com/going-paid",
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access.
