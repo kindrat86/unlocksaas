@@ -1,6 +1,6 @@
 {
   "name": "@unlocksaas/seo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Honesty-first JSON-LD, llms.txt, and verification primitives for AI-discoverable websites. Extracted from unlocksaas.com.",
   "keywords": [
     "seo",

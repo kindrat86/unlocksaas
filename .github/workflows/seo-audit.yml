@@ -160,8 +160,13 @@ jobs:
           echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
           echo "http_status=$status" >> "$GITHUB_OUTPUT"
           if [ "$status" = "200" ]; then
+            # --strict treats schema-vs-rendered drift as a failure
+            # (not just honesty violations). Safe to enable as of 0.1.1
+            # after the meta-description false-positive was demoted
+            # from drift to recommendation tier. Production unlocksaas.com
+            # passes --strict across the 7 surfaces audited on 2026-05-18.
             set +e
-            node dist/cli/index.js validate-claims "$PREVIEW_URL" > /tmp/report.txt 2>&1
+            node dist/cli/index.js validate-claims "$PREVIEW_URL" --strict > /tmp/report.txt 2>&1
             code=$?
             set -e
             echo "exit_code=$code" >> "$GITHUB_OUTPUT"

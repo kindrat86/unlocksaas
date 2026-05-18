@@ -176,21 +176,72 @@ function findDriftFindings(
     }
   });
 
-  // Meta description should appear (or its tail) in either the JSON-LD or visible text.
-  const metaDesc = meta["description"];
-  if (metaDesc && metaDesc.length > 20 && !visibleContains(metaDesc.slice(0, 60))) {
-    findings.push({
-      path: "meta.description",
-      reason: `<meta name="description"> first 60 chars not found in visible body. Common cause: description hand-written and never updated to match visible H1.`,
-    });
-  }
+  // NOTE: The meta.description vs visible-body literal-prefix check was
+  // moved out of drift findings in 0.1.1. A good meta description is
+  // deliberately a different framing than the visible H1 — that's the
+  // entire purpose of the field. Surfacing it as drift (and failing
+  // --strict on it) flagged every SEO-optimized page as broken when in
+  // fact they were doing the right thing. The signal is preserved as a
+  // lower-tier "meta description shares no content words with body"
+  // recommendation in generateRecommendations() instead.
 
   return findings;
+}
+
+/**
+ * English stopword list for the meta-description-overlap check below.
+ * Intentionally short — the goal is to drop high-frequency function words
+ * that would inflate overlap scores without saying anything about topical
+ * alignment. Lowercased; the matcher lowercases input before lookup.
+ */
+const STOPWORDS = new Set([
+  "the",
+  "and",
+  "for",
+  "with",
+  "that",
+  "this",
+  "from",
+  "your",
+  "you",
+  "are",
+  "but",
+  "not",
+  "into",
+  "have",
+  "has",
+  "was",
+  "will",
+  "can",
+  "their",
+  "them",
+  "what",
+  "when",
+  "which",
+  "than",
+  "then",
+  "more",
+  "most",
+  "some",
+  "any",
+  "all",
+]);
+
+/** Extract content words (≥4 chars, not stopwords) from a string. */
+function contentWords(s: string): string[] {
+  const words: string[] = [];
+  for (const raw of s.toLowerCase().split(/[^a-z0-9]+/)) {
+    if (raw.length < 4) continue;
+    if (STOPWORDS.has(raw)) continue;
+    words.push(raw);
+  }
+  return words;
 }
 
 function generateRecommendations(
   schemaSummary: ReturnType<typeof summarizeJsonLd>,
   meta: Record<string, string>,
+  visibleText?: string,
 ): string[] {
   const recs: string[] = [];
   if (!schemaSummary.hasOrganization) {
@@ -217,6 +268,30 @@ function generateRecommendations(
   if (!meta["twitter:card"]) {
     recs.push('Missing twitter:card meta. Set to "summary_large_image" for hero-image previews.');
   }
+
+  // Soft meta-description-vs-body alignment check. Recommendation tier,
+  // not drift — a meta description SHOULD be reframed for SERP CTR, but
+  // if it shares zero content words with the body the page is probably
+  // miscategorized in indexes. Threshold: < 25% overlap (out of meta
+  // description's own content words). Skips when no description or no
+  // visible text. Replaces the brittle literal-60-char-prefix drift
+  // check that lived here through 0.1.0.
+  const metaDesc = meta["description"];
+  if (visibleText && metaDesc && metaDesc.length > 20) {
+    const metaWords = contentWords(metaDesc);
+    if (metaWords.length >= 4) {
+      const bodyWords = new Set(contentWords(visibleText));
+      const overlap = metaWords.filter((w) => bodyWords.has(w)).length;
+      const ratio = overlap / metaWords.length;
+      if (ratio < 0.25) {
+        recs.push(
+          `Meta description shares only ${Math.round(ratio * 100)}% of content words with the visible body. ` +
+            "Reframing is fine for SERP CTR, but zero topical overlap usually means the description is stale.",
+        );
+      }
+    }
+  }
+
   return recs;
 }
 
@@ -262,7 +337,11 @@ export async function validateClaims(
     extracted.meta,
     extracted.title,
   );
-  const recommendations = generateRecommendations(schemaSummary, extracted.meta);
+  const recommendations = generateRecommendations(
+    schemaSummary,
+    extracted.meta,
+    extracted.visibleText,
+  );
 
   const hasErrors =
     honestyViolations.length > 0 ||
