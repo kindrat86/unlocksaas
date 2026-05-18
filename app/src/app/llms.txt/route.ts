@@ -79,6 +79,17 @@ For MCP-aware clients (Claude Desktop, Cursor, Windsurf, mcp-inspector, Vercel M
 
 Tool payloads are sourced from the same static manifests that render the public HTML pages — no fabricated metrics, no slag, every entry carries a dated lastVerified. The diagnose_url tool returns the same Brunson-labeled diagnosis the live diagnostic engine produces, with a referrer-tagged link back to the full deep-analysis surface.
 
+## Linkable public dataset
+
+The entire pSEO catalog is also published as a public dataset under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/). Same Brunson Hard-Rule discipline (no fabricated metrics, no slag, every entry dated). License permits commercial reuse; attribution is required:
+
+- **Hub** → [${BASE}/dataset](${BASE}/dataset) — schema.org/Dataset JSON-LD, download links, license, citation snippets, sourcing methodology. Indexed for Google Dataset Search.
+- **JSON** → [${BASE}/dataset/indie-saas-teardowns.json](${BASE}/dataset/indie-saas-teardowns.json) — full typed shape, one document per catalog (alternatives, funnelTeardowns, pricingTeardowns, comparisons, categories) with a metadata header that carries license, attribution, citation, and generation timestamp.
+- **CSV** → [${BASE}/dataset/indie-saas-teardowns.csv](${BASE}/dataset/indie-saas-teardowns.csv) — long-format flat table, one row per catalog entry across all five catalogs. RFC 4180 compliant, opens cleanly in Excel / pandas / R.
+- **README** → [${BASE}/dataset/README.md](${BASE}/dataset/README.md) — provenance, schema, license, citation, sourcing methodology. The file to read first.
+
+Citation snippet (CC-BY 4.0 attribution): \`UnlockSaaS Indie SaaS Teardowns Dataset, ${BASE}/dataset, CC-BY 4.0.\`
+
 ## Programmatic SEO surfaces — honest competitor comparisons
 
 - [Alternatives hub](${BASE}/alternatives-to): Index of named-competitor comparison pages. Every entry respects the competitor's real value proposition and names the category difference, not a quality gap.

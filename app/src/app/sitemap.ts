@@ -352,6 +352,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/terms`),
     },
     // -------------------------------------------------------------------------
+    // Surface D – Linkable public dataset (off-page lift via CC-BY 4.0).
+    //
+    // /dataset is the human-readable hub with schema.org/Dataset JSON-LD,
+    // download links, license, and citation snippets. /dataset/README.md
+    // is the LLM-readable provenance + schema mirror. The JSON and CSV
+    // download URLs are intentionally not in the sitemap – they are
+    // discovered via the Dataset block's `distribution[].contentUrl`
+    // fields and via the README, which is the citation-friendly
+    // landing page for Google Dataset Search.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/dataset`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/dataset`),
+    },
+    {
+      url: `${base}/dataset/README.md`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers
     // (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI Overviews,
