@@ -245,63 +245,70 @@ SLOTS: tuple[Slot, ...] = (
         activation_doc_anchor="#other",
     ),
     # ------ Webmaster verification ------
+    # Slot names MUST match what app/src/lib/seo/verification.ts actually
+    # reads (NEXT_PUBLIC_* prefix mandatory + exact suffix). Earlier versions
+    # of this audit used bare names + BING_WEBMASTER / PINTEREST_DOMAIN
+    # spellings that drifted from the verification module — every slot
+    # reported "missing" forever, even after the operator pushed the codes,
+    # because the audit was reading non-existent env vars. Fixed 2026-05-19.
     Slot(
-        name="GOOGLE_SITE_VERIFICATION",
+        name="NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION",
         tier="webmaster",
         label="Google Search Console",
         operator_action=(
-            "Add property at search.google.com/search-console, choose meta-tag "
-            "method, paste the content= value. GSC unlocks AI Overviews "
-            "eligibility metrics."
+            "Run: python3 scripts/setup-seo-verification.py --only google. "
+            "Claim at search.google.com/search-console, meta-tag method. "
+            "GSC unlocks AI Overviews eligibility metrics."
         ),
         activation_doc_anchor="#google-search-console",
     ),
     Slot(
-        name="BING_WEBMASTER_VERIFICATION",
+        name="NEXT_PUBLIC_BING_SITE_VERIFICATION",
         tier="webmaster",
         label="Bing Webmaster",
         operator_action=(
-            "bing.com/webmasters → Add site → meta-tag method. Bing AI Copilot "
-            "answers are powered by this index."
+            "Run: python3 scripts/setup-seo-verification.py --only bing. "
+            "Claim at bing.com/webmasters. Bing AI Copilot answers are powered by this index."
         ),
         activation_doc_anchor="#bing-webmaster",
     ),
     Slot(
-        name="YANDEX_VERIFICATION",
+        name="NEXT_PUBLIC_YANDEX_VERIFICATION",
         tier="webmaster",
         label="Yandex Webmaster",
         operator_action=(
-            "webmaster.yandex.com – meta-tag method. Powers Yandex.AI + IndexNow."
+            "Run: python3 scripts/setup-seo-verification.py --only yandex. "
+            "Powers Yandex.AI + IndexNow retrieval on the Yandex side."
         ),
         activation_doc_anchor="#yandex-webmaster",
     ),
     Slot(
-        name="PINTEREST_DOMAIN_VERIFICATION",
+        name="NEXT_PUBLIC_PINTEREST_SITE_VERIFICATION",
         tier="webmaster",
         label="Pinterest",
         operator_action=(
-            "pinterest.com/business → claim website. Only worth doing if a "
-            "Pinterest content strategy ships – skippable for pre-revenue."
+            "Run: python3 scripts/setup-seo-verification.py --only pinterest. "
+            "Skippable for pre-revenue unless a Pinterest content strategy ships."
         ),
         activation_doc_anchor="#pinterest",
     ),
     Slot(
-        name="FACEBOOK_DOMAIN_VERIFICATION",
+        name="NEXT_PUBLIC_FACEBOOK_DOMAIN_VERIFICATION",
         tier="webmaster",
         label="Facebook (Meta) Business",
         operator_action=(
-            "business.facebook.com → brand safety → domains → meta-tag method. "
-            "Only required if Meta ads launch."
+            "Run: python3 scripts/setup-seo-verification.py --only facebook. "
+            "Only required if Meta ads or Instagram Shopping launch."
         ),
         activation_doc_anchor="#facebook",
     ),
     Slot(
-        name="NAVER_SITE_VERIFICATION",
+        name="NEXT_PUBLIC_NAVER_SITE_VERIFICATION",
         tier="webmaster",
         label="Naver Webmaster",
         operator_action=(
-            "searchadvisor.naver.com → 사이트 등록 → meta-tag method. Korean-market "
-            "specific – defer unless KR distribution is in scope."
+            "Run: python3 scripts/setup-seo-verification.py --only naver. "
+            "Korean-market specific – defer unless KR distribution is in scope."
         ),
         activation_doc_anchor="#naver",
     ),
@@ -602,7 +609,7 @@ def main(argv: list[str]) -> int:
     webmaster_missing = any(
         not s.local_set
         for s in states
-        if s.slot.tier == "webmaster" and s.slot.name == "GOOGLE_SITE_VERIFICATION"
+        if s.slot.tier == "webmaster" and s.slot.name == "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION"
     )
 
     if kg_missing:

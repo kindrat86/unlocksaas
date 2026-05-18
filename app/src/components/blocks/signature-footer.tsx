@@ -54,6 +54,24 @@ export function SignatureFooter() {
             >
               Press
             </Link>
+            <Link
+              href="/faq"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              FAQ
+            </Link>
+            <Link
+              href="/glossary"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Glossary
+            </Link>
+            <Link
+              href="/editorial-policy"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Editorial Policy
+            </Link>
             {/*
               Quiet polarity link. Put after Press (canonical trust columns)
               and before Verified Builder (positive-space proof) so the
