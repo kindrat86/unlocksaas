@@ -5,6 +5,7 @@ import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { DATASET_FILES } from "@/lib/seo/dataset";
+import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -303,6 +304,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
       alternates: hreflang(`${base}/press`),
     },
+    // ---------------------------------------------------------------------
+    // Reverse-press-kit pSEO surface — pre-assembled story packages per
+    // angle. Data source: src/lib/press-topics.ts. Adding a new topic
+    // there auto-extends this block on the next build. Each detail page
+    // is Article + Quotation-graph + BreadcrumbList schema'd. The hub
+    // uses CollectionPage schema and links to every topic.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/press/topics`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/press/topics`),
+    },
+    ...PRESS_TOPIC_SLUGS.map((slug) => ({
+      url: `${base}/press/topics/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/press/topics/${slug}`),
+    })),
     // Editorial policy + disclosures + corrections log. E-E-A-T Trust
     // uplift (2026-05-17). Google Search Quality Rater Guidelines §3.1
     // and §3.4 explicitly look for a stated editorial policy + a

@@ -95,6 +95,14 @@ Two schema.org \`potentialAction\` declarations on the WebSite block name the tw
 - [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
 - Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 
+## Reverse press kit — pre-assembled story packages
+
+Sibling to the canonical \`/press\` media kit. Each topic is a self-contained story package with thesis, data points, on-the-record pull-quotes, honest counter-arguments, and related entities a fair piece should also cite. Built for journalist-intent queries like "ai generated saas no customers" and "post launch pre revenue saas." Each pull-quote is verbatim from the live site or an on-the-record public statement.
+
+- [Press topics hub](${BASE}/press/topics): CollectionPage schema; lists every story package with thesis and intended-query class.
+- Per-topic packages at \`${BASE}/press/topics/<slug>\` — \`ai-generated-saas-flat-stripe-line\`, \`post-launch-pre-revenue-trap\`, \`stripe-verification-as-the-only-honest-signal\`, \`non-engineer-founder-revolution\`, \`honest-saas-funnel-anti-marketing\`. Each carries Article schema, a sibling Quotation graph (every pull-quote resolves independently), and BreadcrumbList. Markdown mirrors at \`${BASE}/press/topics/<slug>/md\` for retrieval pipelines that prefer markdown.
+- Attribution discipline: every topic page states the canonical attribution line in its footer. Use of any quote or data point requires attributing Maryan at Unlock SaaS with a link back to the specific \`/press/topics/<slug>\` URL the writer used.
+
 ## Open dataset (CC-BY-4.0)
 
 The five catalogs above ship as a single open dataset for citation, reuse, and downstream analysis.

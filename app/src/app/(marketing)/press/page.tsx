@@ -174,6 +174,43 @@ export default function PressPage() {
           </p>
         </header>
 
+        {/* ── Reverse press kit pointer ─────────────────────────────────
+            Sibling pSEO surface at /press/topics carries pre-assembled
+            story packages per angle. Surfaced ABOVE Fast facts so a
+            journalist landing on /press for the canonical kit sees the
+            per-angle packages first — they answer "what's the story"
+            before "what's the brand". Brunson Hard-Rule: every package
+            is grounded in the live site (no fabricated quotes, no
+            invented metrics, lastVerified per topic). */}
+        <section
+          aria-labelledby="topics-pointer"
+          className="mb-10 rounded-xl border border-primary/30 bg-primary/5 p-5 sm:p-6"
+        >
+          <p
+            id="topics-pointer"
+            className="text-xs uppercase tracking-widest text-muted-foreground mb-2"
+          >
+            Writing a piece? Start with a topic.
+          </p>
+          <h2 className="text-xl font-semibold leading-snug mb-2">
+            Pre-assembled story packages →{" "}
+            <Link
+              href="/press/topics"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              /press/topics
+            </Link>
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Five story angles with thesis, data points, on-the-record
+            pull-quotes, honest counter-arguments, and related entities
+            a fair piece should also cite. Copy-paste ready, attribution
+            line included. Built for journalists, podcasters, and
+            newsletter writers covering indie SaaS and AI-generated
+            products.
+          </p>
+        </section>
+
         <Separator className="my-8" />
 
         {/* ── Fast facts ────────────────────────────────────────────── */}
