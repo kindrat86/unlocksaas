@@ -70,7 +70,13 @@ export const metadata: Metadata = {
     authors: ["Maryan"],
   },
   twitter: {
-    card: "summary",
+    // summary_large_image because the polarity page now ships a per-route
+    // OG card at /dont-buy-unlock-saas/opengraph-image (1200x630). The
+    // small-card "summary" variant would crop the polarity headline to
+    // a 144px thumbnail on Twitter/X, wasting the visual real estate the
+    // off-page launch pack (strategy/launch-content/off-page-launch-pack.md
+    // §B.1) depends on for scroll-stop CTR.
+    card: "summary_large_image",
     title: "Don't buy Unlock SaaS",
     description:
       "Eight honest disqualifiers and one canonical fit profile. Said out loud, before checkout.",
