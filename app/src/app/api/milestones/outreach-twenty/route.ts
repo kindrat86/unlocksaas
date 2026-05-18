@@ -23,7 +23,7 @@ export async function POST() {
   const startedAt = Date.now();
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,

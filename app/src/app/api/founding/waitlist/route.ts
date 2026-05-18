@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
   // A/B identity variant — same cookie scheme as the rest of the site so a
   // waitlister assigned to "paid_builder" stays in the same bucket through
   // their PLE5/PLE6 emails and final purchase.
-  const identityVariant = readIdentityFromCookies();
+  const identityVariant = await readIdentityFromCookies();
 
   const supabase = createAdminClient();
 

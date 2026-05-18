@@ -16,7 +16,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const startedAt = Date.now();
 
   try {

@@ -56,11 +56,12 @@ export function generateStaticParams() {
 // ----- Per-page metadata -----------------------------------------------------
 type RouteParams = { slug: string };
 
-export function generateMetadata({
-  params,
-}: {
-  params: RouteParams;
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<RouteParams>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const alt = getAlternativeBySlug(params.slug);
   if (!alt) return {};
 
@@ -201,7 +202,8 @@ function JsonLdBlock({ json }: { json: string }) {
 
 // ----- Page ------------------------------------------------------------------
 
-export default function AlternativePage({ params }: { params: RouteParams }) {
+export default async function AlternativePage(props: { params: Promise<RouteParams> }) {
+  const params = await props.params;
   const alt = getAlternativeBySlug(params.slug);
   if (!alt) notFound();
 
@@ -226,7 +228,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
-
       {/* ----- Breadcrumb visible trail (matches BreadcrumbList JSON-LD) ----- */}
       <nav
         aria-label="Breadcrumb"
@@ -250,7 +251,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </li>
         </ol>
       </nav>
-
       {/* ----- Hero ----- */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
@@ -283,9 +283,7 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </Link>
         </p>
       </header>
-
       <Separator className="my-2" />
-
       {/* ----- Cross-pattern callouts (link-graph parity with funnel /
             pricing teardowns). Each renders only when a sister manifest
             entry matches this slug; defensive-by-design. ----- */}
@@ -312,7 +310,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </div>
         </section>
       ) : null}
-
       {hasPricing ? (
         <section
           className="max-w-3xl mx-auto px-6 py-2"
@@ -336,7 +333,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </div>
         </section>
       ) : null}
-
       {category ? (
         <section
           className="max-w-3xl mx-auto px-6 py-2"
@@ -358,7 +354,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </div>
         </section>
       ) : null}
-
       {/* ----- The two-column quick-take ----- */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -395,7 +390,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </Card>
         </div>
       </section>
-
       {/* ----- Capability comparison table ----- */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -469,7 +463,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           Stripe-verified paying customer for an already-shipped SaaS.
         </p>
       </section>
-
       {/* ----- What it is / is not ----- */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -504,7 +497,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           ))}
         </ul>
       </section>
-
       {/* ----- Who each is for ----- */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -532,7 +524,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </Card>
         </div>
       </section>
-
       {/* ----- Honest verdict ----- */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -543,7 +534,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
         </h2>
         <p className="text-base leading-relaxed">{alt.honestVerdict}</p>
       </section>
-
       {/* ----- FAQ — mirrors FAQPage JSON-LD above ----- */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
@@ -571,7 +561,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           ))}
         </div>
       </section>
-
       {/* ----- CTA ----- */}
       <section className="max-w-3xl mx-auto px-6 py-12" aria-labelledby="cta">
         <Card className="border-primary/40 bg-primary/5">
@@ -596,7 +585,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </CardContent>
         </Card>
       </section>
-
       {/* ----- Head-to-head comparisons featuring this product (internal
             linking graph; mirrors the same block on funnel/pricing teardowns) ----- */}
       {comparisons.length > 0 ? (
@@ -630,7 +618,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </ul>
         </section>
       ) : null}
-
       {/* ----- Related alternatives (closes the dead-end the SEO audit
             flagged: tag-overlap-ranked sibling pages so crawlers and
             humans both exit into more of the manifest). ----- */}
@@ -668,7 +655,6 @@ export default function AlternativePage({ params }: { params: RouteParams }) {
           </p>
         </section>
       ) : null}
-
       {/* ----- Honesty footer ----- */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>

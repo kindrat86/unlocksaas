@@ -16,7 +16,7 @@ import {
  * (Renamed to `proxy.ts` only in Next.js 16. Don't migrate until the rest of
  * the app is upgraded.)
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = await updateSession(request);
 
   // A/B: identity_label sticky variant assignment.

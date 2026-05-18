@@ -10,7 +10,7 @@
  * Variant assignment is sticky per-browser:
  *   - usaas_ab_identity cookie holds the variant string ("verified_builder" |
  *     "paid_builder"), assigned 50/50 on the first request in the root
- *     middleware (src/middleware.ts).
+ *     proxy (src/proxy.ts).
  *   - usaas_ab_subject cookie holds a stable UUID per browser, used as the
  *     subject_id in public.ab_tests so we can count distinct visitors per
  *     variant.
@@ -66,20 +66,22 @@ export const IDENTITY_LABELS: Record<
 
 /**
  * Read the variant from cookies. Defaults to verified_builder when missing —
- * matches the originally shipped copy, so SSR before the middleware writes
+ * matches the originally shipped copy, so SSR before the proxy writes
  * the cookie looks identical to the verified variant rather than flashing.
  *
- * Server-only (uses next/headers cookies()).
+ * Server-only (uses next/headers `await cookies()`).
  */
-export function readIdentityFromCookies(): IdentityVariant {
-  const raw = cookies().get(IDENTITY_COOKIE)?.value;
+export async function readIdentityFromCookies(): Promise<IdentityVariant> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(IDENTITY_COOKIE)?.value;
   return raw && VALID_VARIANTS.has(raw)
     ? (raw as IdentityVariant)
     : "verified_builder";
 }
 
-export function readSubjectFromCookies(): string | null {
-  return cookies().get(SUBJECT_COOKIE)?.value ?? null;
+export async function readSubjectFromCookies(): Promise<string | null> {
+  const cookieStore = await cookies();
+  return cookieStore.get(SUBJECT_COOKIE)?.value ?? null;
 }
 
 /**

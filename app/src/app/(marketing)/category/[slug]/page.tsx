@@ -38,11 +38,12 @@ export function generateStaticParams() {
 
 type RouteParams = { slug: string };
 
-export function generateMetadata({
-  params,
-}: {
-  params: RouteParams;
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<RouteParams>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const cat = getCategoryBySlug(params.slug);
   if (!cat) return {};
 
@@ -150,7 +151,8 @@ function JsonLdBlock({ json }: { json: string }) {
 
 // ----- Page -----------------------------------------------------------------
 
-export default function CategoryPage({ params }: { params: RouteParams }) {
+export default async function CategoryPage(props: { params: Promise<RouteParams> }) {
+  const params = await props.params;
   const cat = getCategoryBySlug(params.slug);
   if (!cat) notFound();
 

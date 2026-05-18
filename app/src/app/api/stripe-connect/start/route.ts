@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
 }
 
 async function handleStart(req: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: authData, error: authError } = await supabase.auth.getUser();
   if (authError || !authData.user) {
     const { origin } = new URL(req.url);

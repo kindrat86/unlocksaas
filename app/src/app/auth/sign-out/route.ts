@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
  * Exposed as POST to make this CSRF-resistant (forms submit POSTs).
  */
 export async function POST(request: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
     console.error("supabase.auth.signOut error:", error.message);

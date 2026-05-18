@@ -8,10 +8,10 @@ import type { Database } from "@/lib/database.types";
  *
  * Reads the session from cookies. Setting cookies works inside Route Handlers
  * and Server Actions, but is a no-op (with a try/catch swallow) in Server
- * Components — there the middleware is responsible for refreshing.
+ * Components — there the proxy is responsible for refreshing.
  */
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

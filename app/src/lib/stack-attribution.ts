@@ -10,7 +10,7 @@
  *   - Sticky cookies, set once in middleware, read everywhere
  *   - Type-safe variant enum (here: StackLayer)
  *   - Subject UUID per browser
- *   - Server-only reads via next/headers cookies()
+ *   - Server-only reads via next/headers `await cookies()`
  *
  * What this file does NOT do at launch:
  *   - Insert into public.stack_events (table is deferred until Layer 4 ships;
@@ -110,17 +110,20 @@ const AFFILIATE_SLUG_RE = /^[a-z0-9-]{2,64}$/;
  * Read the stack subject UUID. Returns null when missing; callers should treat
  * null as "first-touch, write the cookie in middleware on the next response."
  */
-export function readStackSubjectFromCookies(): string | null {
-  return cookies().get(STACK_SUBJECT_COOKIE)?.value ?? null;
+export async function readStackSubjectFromCookies(): Promise<string | null> {
+  const cookieStore = await cookies();
+  return cookieStore.get(STACK_SUBJECT_COOKIE)?.value ?? null;
 }
 
-export function readStackEntryFromCookies(): StackLayerValue | null {
-  const raw = cookies().get(STACK_ENTRY_COOKIE)?.value;
+export async function readStackEntryFromCookies(): Promise<StackLayerValue | null> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(STACK_ENTRY_COOKIE)?.value;
   return parseStackLayer(raw);
 }
 
-export function readStackCurrentFromCookies(): StackLayerValue | null {
-  const raw = cookies().get(STACK_CURRENT_COOKIE)?.value;
+export async function readStackCurrentFromCookies(): Promise<StackLayerValue | null> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(STACK_CURRENT_COOKIE)?.value;
   return parseStackLayer(raw);
 }
 
@@ -128,8 +131,9 @@ export function readStackCurrentFromCookies(): StackLayerValue | null {
  * Read the stack path as an ordered array of layer integers. Returns [] on
  * missing or malformed cookies (defensive — never throws on visitor data).
  */
-export function readStackPathFromCookies(): StackLayerValue[] {
-  const raw = cookies().get(STACK_PATH_COOKIE)?.value;
+export async function readStackPathFromCookies(): Promise<StackLayerValue[]> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(STACK_PATH_COOKIE)?.value;
   if (!raw) return [];
   try {
     const parsed: unknown = JSON.parse(raw);
@@ -143,8 +147,9 @@ export function readStackPathFromCookies(): StackLayerValue[] {
   }
 }
 
-export function readAffiliateFromCookies(): string | null {
-  const raw = cookies().get(AFFILIATE_COOKIE)?.value;
+export async function readAffiliateFromCookies(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(AFFILIATE_COOKIE)?.value;
   if (!raw || !AFFILIATE_SLUG_RE.test(raw)) return null;
   return raw;
 }

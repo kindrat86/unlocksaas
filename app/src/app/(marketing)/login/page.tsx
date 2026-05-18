@@ -7,13 +7,14 @@ export const metadata = {
   description: "Sign in to your Unlock SaaS account with a one-time email link.",
 };
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: { next?: string };
-}) {
+export default async function LoginPage(
+  props: {
+    searchParams: Promise<{ next?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   // If already signed in, skip the form and go where the user was headed.
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   if (data.user) {
     redirect(searchParams.next || "/playbook");

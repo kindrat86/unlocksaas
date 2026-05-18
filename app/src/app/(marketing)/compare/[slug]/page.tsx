@@ -50,11 +50,12 @@ export function generateStaticParams() {
 
 type RouteParams = { slug: string };
 
-export function generateMetadata({
-  params,
-}: {
-  params: RouteParams;
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<RouteParams>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const c = getComparisonBySlug(params.slug);
   if (!c) return {};
 
@@ -332,7 +333,8 @@ function WinnerIcon({
 
 // ----- Page ------------------------------------------------------------------
 
-export default function ComparePage({ params }: { params: RouteParams }) {
+export default async function ComparePage(props: { params: Promise<RouteParams> }) {
+  const params = await props.params;
   const c = getComparisonBySlug(params.slug);
   if (!c) notFound();
 
@@ -372,7 +374,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           json={json}
         />
       ))}
-
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
@@ -396,7 +397,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </li>
         </ol>
       </nav>
-
       {/* Hero */}
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
@@ -432,9 +432,7 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </Link>
         </p>
       </header>
-
       <Separator className="my-2" />
-
       {/* TL;DR */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="tldr">
         <h2 id="tldr" className="sr-only">
@@ -449,7 +447,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </CardContent>
         </Card>
       </section>
-
       {/* Best for, side by side */}
       <section
         className="max-w-3xl mx-auto px-6 py-8"
@@ -477,7 +474,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </Card>
         </div>
       </section>
-
       {/* Pick A if / Pick B if */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -519,7 +515,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </Card>
         </div>
       </section>
-
       {/* Dimensions table */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -581,7 +576,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           ))}
         </div>
       </section>
-
       {/* Honest take */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -592,7 +586,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
         </h2>
         <p className="text-base leading-relaxed">{c.honestTake}</p>
       </section>
-
       {/* Indie founder recommendation */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
@@ -612,7 +605,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </CardContent>
         </Card>
       </section>
-
       {/* Cross-pattern callouts: teardowns for either product */}
       {aFunnel || aPricing || bFunnel || bPricing ? (
         <section
@@ -669,7 +661,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </ul>
         </section>
       ) : null}
-
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
@@ -697,7 +688,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           ))}
         </div>
       </section>
-
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-12" aria-labelledby="cta">
         <Card className="border-primary/40 bg-primary/5">
@@ -722,7 +712,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           </CardContent>
         </Card>
       </section>
-
       {/* Browse more */}
       <section
         className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
@@ -752,7 +741,6 @@ export default function ComparePage({ params }: { params: RouteParams }) {
           ) : null}
         </p>
       </section>
-
       {/* Honesty footer */}
       <footer className="max-w-3xl mx-auto px-6 py-8 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
         <p>

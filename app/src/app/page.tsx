@@ -77,8 +77,8 @@ import {
  *  19. Sticky CTA        — always-visible offer bar below the hero.
  *  20. Exit-intent popup — last-chance diagnostic + newsletter offer.
  */
-export default function FunnelHub() {
-  const variant = readIdentityFromCookies();
+export default async function FunnelHub() {
+  const variant = await readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
 
   return (

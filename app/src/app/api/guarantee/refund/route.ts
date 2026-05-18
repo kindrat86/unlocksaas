@@ -30,7 +30,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const startedAt = Date.now();
-  const supabase = createClient();
+  const supabase = await createClient();
 
   try {
     const {
