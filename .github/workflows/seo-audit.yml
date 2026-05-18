@@ -1,0 +1,221 @@
+# CI dogfood loop for @unlocksaas/seo.
+#
+# Two jobs:
+#
+#  1. `package` runs on every PR that touches packages/seo/**. Builds the
+#     package and runs both fixture audits. Fails the PR if either the
+#     build breaks or the bad-fixture stops being detected as bad.
+#
+#  2. `preview-audit` runs on every PR after the Vercel preview deployment
+#     reports `success`. Builds the package, then runs `validate-claims`
+#     against the live preview URL. Posts the report as a sticky PR
+#     comment. The audit step is fail-soft (continue-on-error) so it
+#     surfaces drift without holding up the app/ PR — the package job
+#     above is the gate, this is the visibility loop.
+#
+# Activation: this file on main is enough. No secrets needed for the
+# package job. The preview-audit job uses the GitHub-supplied
+# GITHUB_TOKEN to post PR comments and the Vercel-supplied
+# `deployment_status` event to discover the preview URL.
+#
+# Tooling notes:
+# - `jq` is preinstalled on the ubuntu-latest runner image — used for
+#   pack-tarball assertions instead of inline node scripts.
+# - File content for the PR comment travels via GITHUB_OUTPUT (1 MB
+#   ceiling, easily under it for a 60 KB audit report) rather than via
+#   filesystem reads inside actions/github-script.
+
+name: SEO Audit
+
+on:
+  pull_request:
+    paths:
+      - "packages/seo/**"
+      - ".github/workflows/seo-audit.yml"
+  deployment_status:
+
+permissions:
+  contents: read
+  pull-requests: write
+  deployments: read
+
+jobs:
+  package:
+    name: Build and smoke-test the package
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/seo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/seo/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Smoke-test the bad fixture (must exit 1)
+        run: |
+          set +e
+          node dist/cli/index.js validate-claims ./examples/fixture-bad.html
+          code=$?
+          set -e
+          if [ "$code" != "1" ]; then
+            echo "::error::Bad fixture should exit 1, exited $code instead. Honesty rules regressed."
+            exit 1
+          fi
+          echo "Bad fixture correctly exited 1."
+      - name: Smoke-test the good fixture (must exit 0)
+        run: |
+          node dist/cli/index.js validate-claims ./examples/fixture-good.html
+      - name: Smoke-test init + generate-llms-txt round-trip
+        run: |
+          tmp=$(mktemp -d)
+          node dist/cli/index.js init "$tmp/site.config.json"
+          node dist/cli/index.js generate-llms-txt --config "$tmp/site.config.json" --out "$tmp/out"
+          test -f "$tmp/out/llms.txt"
+          test -f "$tmp/out/llms-feed.json"
+          # Verify the generated llms.txt declares the freshness anchor.
+          grep -q "Last verified:" "$tmp/out/llms.txt"
+          # Verify the JSON sibling round-trips through jq.
+          jq -e . "$tmp/out/llms-feed.json" > /dev/null
+          echo "init -> generate-llms-txt round-trip OK."
+      - name: npm pack (verify publish-readiness)
+        run: |
+          npm pack --dry-run --json > /tmp/pack.json
+          # Required files in the tarball. Each must be present or the
+          # publish would ship a broken package.
+          required="README.md LICENSE CHANGELOG.md dist/cli/index.js dist/index.d.ts dist/index.js"
+          for f in $required; do
+            present=$(jq -r --arg p "$f" '.[0].files | map(.path) | index($p) // empty' /tmp/pack.json)
+            if [ -z "$present" ]; then
+              echo "::error::Missing in tarball: $f"
+              exit 1
+            fi
+          done
+          size=$(jq -r '.[0].size' /tmp/pack.json)
+          count=$(jq -r '.[0].entryCount' /tmp/pack.json)
+          echo "Tarball OK: $size bytes packed, $count files."
+
+  preview-audit:
+    name: Audit Vercel preview
+    if: |
+      github.event_name == 'deployment_status' &&
+      github.event.deployment_status.state == 'success' &&
+      contains(github.event.deployment.environment, 'Preview')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/seo/package-lock.json
+      - name: Install package
+        working-directory: packages/seo
+        run: npm ci
+      - name: Build package
+        working-directory: packages/seo
+        run: npm run build
+      - name: Resolve PR number for this deployment
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = context.payload.deployment.sha;
+            const { data } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: sha,
+            });
+            const pr = data.find(p => p.state === 'open');
+            if (!pr) {
+              core.info('No open PR associated with ' + sha);
+              core.setOutput('number', '');
+              return;
+            }
+            core.setOutput('number', String(pr.number));
+      - name: Audit preview URL
+        id: audit
+        continue-on-error: true
+        env:
+          PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
+        working-directory: packages/seo
+        run: |
+          set +e
+          node dist/cli/index.js validate-claims "$PREVIEW_URL" > /tmp/report.txt 2>&1
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
+      - name: Hand the report to the comment step via GITHUB_OUTPUT
+        id: report
+        run: |
+          # Cap at 60 KB to stay well under the 1 MB GITHUB_OUTPUT limit.
+          {
+            echo "report<<EOF_REPORT_MARKER"
+            head -c 60000 /tmp/report.txt
+            echo
+            echo "EOF_REPORT_MARKER"
+          } >> "$GITHUB_OUTPUT"
+      - name: Comment on PR
+        if: steps.pr.outputs.number != ''
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          AUDIT_EXIT: ${{ steps.audit.outputs.exit_code }}
+          PREVIEW_URL: ${{ steps.audit.outputs.preview_url }}
+          REPORT_TXT: ${{ steps.report.outputs.report }}
+        with:
+          script: |
+            const exit = process.env.AUDIT_EXIT;
+            const url = process.env.PREVIEW_URL;
+            const reportTxt = process.env.REPORT_TXT || '(empty report)';
+            const status = exit === '0' ? '✅ PASS' : '⚠️ Issues found';
+            const body = [
+              `### @unlocksaas/seo · preview audit ${status}`,
+              ``,
+              `Target: ${url}`,
+              `Exit code: \`${exit}\``,
+              ``,
+              `<details><summary>Full report</summary>`,
+              ``,
+              '```',
+              reportTxt,
+              '```',
+              ``,
+              `</details>`,
+              ``,
+              `_Run by [.github/workflows/seo-audit.yml](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/.github/workflows/seo-audit.yml). The package itself eats its own dogfood._`,
+            ].join('\n');
+
+            // Sticky comment: edit if one already exists, else create.
+            const marker = '<!-- unlocksaas-seo-audit -->';
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: Number(process.env.PR_NUMBER),
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            const finalBody = `${marker}\n${body}`;
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: finalBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: Number(process.env.PR_NUMBER),
+                body: finalBody,
+              });
+            }

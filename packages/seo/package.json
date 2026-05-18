@@ -24,11 +24,12 @@
   ],
   "homepage": "https://unlocksaas.com",
   "bugs": {
-    "url": "https://github.com/unlocksaas/seo/issues"
+    "url": "https://github.com/kindrat86/unlocksaas/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unlocksaas/seo.git"
+    "url": "git+https://github.com/kindrat86/unlocksaas.git",
+    "directory": "packages/seo"
   },
   "license": "MIT",
   "author": {

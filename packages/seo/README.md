@@ -271,6 +271,6 @@ MIT — use freely. Attribution to [unlocksaas.com](https://unlocksaas.com) appr
 
 ## Contributing
 
-Issues and PRs welcome at [github.com/unlocksaas/seo](https://github.com/unlocksaas/seo).
+Issues and PRs welcome at [github.com/kindrat86/unlocksaas](https://github.com/kindrat86/unlocksaas/issues) — the package lives at `packages/seo/` in the Unlock SaaS monorepo. A standalone mirror at `github.com/unlocksaas/seo` is planned but the monorepo is the canonical source.
 
 The single non-negotiable rule: **no fabricated examples in tests or docs**. Every code sample in this README runs against the actual published API, end-to-end. If you submit a PR, the example you add must pass `npx @unlocksaas/seo validate-claims` against itself.
