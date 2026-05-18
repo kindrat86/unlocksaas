@@ -13,7 +13,9 @@ import { ImageResponse } from "next/og";
 import { createAdminClient } from "@/lib/supabase/server";
 import {
   LABEL_PUBLIC_NAME,
+  LABEL_SHARP_LINE,
   loadPublicDiagnosis,
+  refFromHostname,
 } from "@/lib/diagnostic-share";
 
 export const runtime = "nodejs";
@@ -44,9 +46,23 @@ export default async function OgImage({ params }: Props) {
   const headline = diag
     ? `${diag.hostname} got diagnosed.`
     : "Run your free diagnostic.";
-  const subline = diag
-    ? "Reluctant-Hero diagnosis. Wrong Person, Weak Offer, or Weak Belief – one of three. Run yours in 90 seconds."
+  // The single sharp line of advice: replaces the previous generic subline.
+  // Each label points at the concrete next move the Playbook would push the
+  // founder toward, restated in twelve words or fewer. Brunson Hard-Rule:
+  // identical wording to LABEL_SHARP_LINE in diagnostic-share.ts so the OG
+  // card, the share-card tweet copy, and any future Slack/LinkedIn unfurl
+  // never disagree on what the fix is.
+  const sharpLine = diag
+    ? LABEL_SHARP_LINE[diag.label]
     : "Paste your live URL. The engine labels the upstream failure mode.";
+  // Attribution slug for the watermark. The scroller who clicks through to
+  // /diagnostic carries this slug as ?ref=<slug> so PostHog can attribute
+  // the conversion back to the originating diagnosis without ever exposing
+  // the lead's email or id. refFromHostname collapses to "anon" when the
+  // diagnosis has not loaded (404 fallback path) so the watermark is still
+  // valid markup.
+  const refSlug = diag ? refFromHostname(diag.hostname) : "anon";
+  const watermark = `unlocksaas.com/diagnostic?ref=${refSlug}`;
 
   return new ImageResponse(
     (
@@ -128,16 +144,22 @@ export default async function OgImage({ params }: Props) {
             {headline}
           </div>
 
+          {/* The sharp line of advice. Rendered at 36px (up from the
+              previous 30px subline) so it reads as the second beat after
+              the headline, not as a footnote. Single sentence, no period
+              ambiguity – the value of the card is what this line says, not
+              the brand mark above it. */}
           <div
             style={{
-              fontSize: "30px",
-              lineHeight: 1.35,
-              color: "#d4d4d4",
+              fontSize: "36px",
+              lineHeight: 1.3,
+              color: "#fafafa",
               display: "flex",
               maxWidth: "1000px",
+              fontWeight: 500,
             }}
           >
-            {subline}
+            {sharpLine}
           </div>
         </div>
 
@@ -156,10 +178,25 @@ export default async function OgImage({ params }: Props) {
               someone had handed him.
             </span>
             <span style={{ fontSize: "20px" }}>
-              No card. 90 seconds. Run yours at unlocksaas.com/diagnostic
+              No card. 90 seconds. Run yours in two minutes.
             </span>
           </div>
-          <div style={{ display: "flex", fontSize: "22px" }}>unlocksaas.com</div>
+          {/* Ref-tagged watermark URL. The scroller who reads the card and
+              types the path into a new tab carries the attribution slug
+              through to /diagnostic, where DiagnosticRefAttribution fires
+              a PostHog event tagging the originating hostname. Brunson
+              attribution discipline: every off-platform impression has an
+              on-platform return path that can be measured. */}
+          <div
+            style={{
+              display: "flex",
+              fontSize: "22px",
+              fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+              color: "#fafafa",
+            }}
+          >
+            {watermark}
+          </div>
         </div>
       </div>
     ),

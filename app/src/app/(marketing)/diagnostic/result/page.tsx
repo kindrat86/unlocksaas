@@ -13,6 +13,7 @@ import {
 import { DiagnosisShareCard } from "./share-card";
 import { DeepReport, type DeepAnalysisDetail } from "./deep-report";
 import { DiagnosticResultViewedTracker } from "@/components/analytics/diagnostic-result-viewed-tracker";
+import { refFromHostname } from "@/lib/diagnostic-share";
 
 type ShareVisibility = "private" | "public" | "revoked";
 
@@ -467,6 +468,15 @@ function BridgePage({ row }: { row: LeadRow }) {
                 ? `${siteOriginFromEnv()}/diagnosis/${row.id}`
                 : null
             }
+            // Attribution slug derived server-side from the hostname the
+            // founder already chose to make public (or will, if they
+            // click Share). The hostname is the only handle the share
+            // surface knows about; the slug is a 32-char-max lowercase
+            // alphanumeric collapse of its first label. See
+            // refFromHostname in @/lib/diagnostic-share for the exact
+            // slugification rules. Lives off the row's product_url so
+            // the slug survives revoke/republish without drift.
+            refSlug={refFromHostname(host)}
           />
         </div>
       )}

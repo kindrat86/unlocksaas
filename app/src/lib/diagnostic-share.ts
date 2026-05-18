@@ -138,6 +138,100 @@ export const LABEL_PUBLIC_NAME: Record<DiagnosticLabel, string> = {
   weak_belief: "Weak Belief",
 };
 
+/**
+ * Single sharp line of advice per label. Rendered as the dominant typographic
+ * beat on the 1200x630 share card and as the body of any future deep-link
+ * snippet (Slack unfurl, LinkedIn share intent, plain-text email teaser).
+ *
+ * Brunson Hard-Rule reconciliation: every line names the SPECIFIC next move
+ * for that diagnosis. No generic "fix your funnel" placeholders, no
+ * fabricated time claims, no implied promises ("guaranteed to work"). Each
+ * line restates Step 1 or Step 2 of the Playbook in twelve words or fewer,
+ * which is what the diagnostic engine already pushes the lead toward.
+ *
+ * If a workbook changes the canonical Step 1 / Step 2 wording, update here
+ * AND in @/lib/playbook-steps in the same commit – they are the rendered
+ * source the share card promises.
+ */
+export const LABEL_SHARP_LINE: Record<DiagnosticLabel, string> = {
+  wrong_person: "Pin one real customer. Stop selling to a category.",
+  weak_offer: "Promise one specific result. Drop the feature list.",
+  weak_belief: "Name the belief they do not yet hold. Build it from scratch.",
+};
+
+/**
+ * Pre-filled tweet/post copy keyed by label. The Brunson "story first, share
+ * second" rule: the post says what HAPPENED to the founder, not what
+ * UnlockSaaS sold. The card itself carries the brand mark – the post body
+ * is the founder's voice.
+ *
+ * Used by the X share intent on the result page and by the LinkedIn share
+ * helper. Twitter caps at 280 chars and the URL eats ~23 of those after
+ * t.co wrapping, leaving ~257 for body. Each line below is well under that.
+ */
+export const LABEL_SHARE_TEXT: Record<DiagnosticLabel, string> = {
+  wrong_person:
+    "I got Wrong Person on my SaaS. The fix took 2 minutes to find.",
+  weak_offer:
+    "I got Weak Offer on my SaaS. The fix took 2 minutes to find.",
+  weak_belief:
+    "I got Weak Belief on my SaaS. The fix took 2 minutes to find.",
+};
+
+/**
+ * Derive a short, URL-safe attribution slug from a hostname.
+ *
+ *   "acme.com"           → "acme"
+ *   "www.acme.com"       → "acme"
+ *   "my-saas.co.uk"      → "my-saas"
+ *   "app.staging.acme.io"→ "app"
+ *   ""                   → "anon"
+ *
+ * Used as the `?ref=<slug>` watermark on the share card and as the referral
+ * tag on any click that lands back on /diagnostic. The slug is never
+ * cryptographically meaningful – it is human-readable attribution that
+ * Brunson Hard-Rule respects (no random IDs, no email leakage, just the
+ * hostname the founder already chose to share publicly on the diagnosis
+ * page).
+ *
+ * Slugification rules: lowercase, alphanumeric + hyphens only, collapse
+ * runs of non-allowed chars to a single hyphen, trim leading/trailing
+ * hyphens, hard cap at 32 chars so the watermark fits on the card.
+ */
+export function refFromHostname(hostname: string | null | undefined): string {
+  if (!hostname) return "anon";
+  const trimmed = hostname.trim().toLowerCase().replace(/^www\./, "");
+  if (!trimmed) return "anon";
+  // Take the first label of the hostname ("acme.com" → "acme", "app.staging
+  // .acme.io" → "app"). The first label is the most distinctive part for
+  // attribution and avoids the TLD ambiguity ("acme.co.uk" vs "acme.com"
+  // would otherwise collide on the second-to-last label).
+  const firstLabel = trimmed.split(".")[0] ?? trimmed;
+  const slug = firstLabel
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 32);
+  return slug || "anon";
+}
+
+/**
+ * Canonical attribution-tagged URL for "go run your own diagnostic." The
+ * `?ref=` query param is read by the lightweight tracker on /diagnostic and
+ * fired into PostHog as a session property, so the share loop attribution
+ * survives a cross-origin click (Twitter, LinkedIn) where document.referrer
+ * is stripped or unhelpful.
+ *
+ * Canonical declaration: /diagnostic's metadata already pins
+ * `alternates.canonical: "/diagnostic"`, so `?ref=` variants do not dilute
+ * the canonical in Google's index. The ref is a pure attribution param.
+ */
+export function diagnosticRefUrl(base: string, ref: string): string {
+  const safeBase = base.replace(/\/+$/, "");
+  const safeRef = encodeURIComponent(ref || "anon");
+  return `${safeBase}/diagnostic?ref=${safeRef}`;
+}
+
 function safeHost(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./i, "");

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
+import { LABEL_SHARE_TEXT } from "@/lib/diagnostic-share";
 
 /**
  * Brunson DCS Chapter 11 (The Best Bait) — share CTA on the result page.
@@ -42,11 +43,22 @@ export function DiagnosisShareCard({
   label,
   initialShareUrl,
   initialState,
+  refSlug,
 }: {
   leadId: string;
   label: "wrong_person" | "weak_offer" | "weak_belief";
   initialShareUrl?: string | null;
   initialState: "private" | "public" | "revoked";
+  /**
+   * Attribution slug derived from the lead's hostname via
+   * refFromHostname() in @/lib/diagnostic-share. Passed in from the
+   * server component so the client never has to know the original
+   * product URL. Used as the `?ref=` tag on the X/LinkedIn intent URLs
+   * and on the copy-to-clipboard link, so cross-origin shares carry
+   * attribution back to /diagnostic without exposing the lead's email
+   * or id.
+   */
+  refSlug: string;
 }) {
   const [state, setState] = useState<State>(() => {
     if (initialState === "public" && initialShareUrl) {
@@ -134,6 +146,7 @@ export function DiagnosisShareCard({
         leadId={leadId}
         label={label}
         shareUrl={state.shareUrl}
+        refSlug={refSlug}
         error={state.error}
         onRevoke={() => void postShare("revoke")}
       />
@@ -246,20 +259,42 @@ function PublishedPanel({
   leadId,
   label,
   shareUrl,
+  refSlug,
   error,
   onRevoke,
 }: {
   leadId: string;
   label: "wrong_person" | "weak_offer" | "weak_belief";
   shareUrl: string;
+  refSlug: string;
   error: string | null;
   onRevoke: () => void;
 }) {
   const [copied, setCopied] = useState(false);
 
+  // Attribution-tagged share URL. The canonical /diagnosis/<id> stays
+  // canonical (the page's metadata pins `alternates.canonical` so Google
+  // de-dupes), but every off-platform click rides with ?ref=<slug> so
+  // cross-origin referrers (X, LinkedIn, Slack — all of which strip or
+  // obfuscate document.referrer) can still be attributed back to the
+  // originating diagnosis on the receiving /diagnostic page. The slug is
+  // the hostname's first label, derived server-side; the lead's email
+  // and id never leave the row.
+  const taggedShareUrl = appendRef(shareUrl, refSlug);
+
+  // OG image route doubles as a direct PNG download endpoint. Next's
+  // ImageResponse already returns image/png; the <a download> attribute
+  // tells the browser to save rather than navigate. Same-origin so the
+  // `download` filename hint is honoured. LinkedIn and Instagram strip
+  // OG cards from arbitrary URLs, so the downloadable PNG is the only
+  // way to get the artifact onto those surfaces – the user posts the
+  // image natively, with a link in their own copy.
+  const pngUrl = `/diagnosis/${leadId}/opengraph-image`;
+  const pngFilename = `unlocksaas-diagnosis-${refSlug}.png`;
+
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(taggedShareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
@@ -267,10 +302,28 @@ function PublishedPanel({
     }
   }
 
-  const intentText = encodeURIComponent(
-    `My Unlock SaaS diagnosis came back: ${labelHuman(label)}. Read it: `,
-  );
-  const xIntent = `https://twitter.com/intent/tweet?text=${intentText}&url=${encodeURIComponent(shareUrl)}`;
+  // Per-label tweet body. Brunson rule: the post says what happened to
+  // THIS founder, not what UnlockSaaS sold. LABEL_SHARE_TEXT is the
+  // single source of truth – the OG image's sharp line, the tweet body,
+  // and any future LinkedIn/Slack unfurl all read from it so the
+  // founder's voice stays consistent across surfaces.
+  const tweetBody = LABEL_SHARE_TEXT[label];
+  const intentText = encodeURIComponent(tweetBody);
+  const xIntent = `https://twitter.com/intent/tweet?text=${intentText}&url=${encodeURIComponent(taggedShareUrl)}`;
+
+  // LinkedIn's share-offsite intent accepts only `url`. The OG card does
+  // the heavy lifting on the LinkedIn surface (LinkedIn re-fetches the
+  // URL's metadata, reads the per-label sharp line + ref watermark we
+  // shipped on the og card, and renders that as the unfurl).
+  const linkedinIntent = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(taggedShareUrl)}`;
+
+  function trackOutbound(surface: "x" | "linkedin" | "download_png") {
+    track(Event.DiagnosticShareClicked, {
+      lead_id: leadId,
+      label,
+      surface,
+    });
+  }
 
   return (
     <div className="rounded-lg border border-primary/40 bg-primary/5 px-5 py-5 mt-8">
@@ -282,7 +335,7 @@ function PublishedPanel({
       </p>
 
       <div className="flex flex-col sm:flex-row gap-2 mb-4">
-        <Input value={shareUrl} readOnly className="font-mono text-xs" />
+        <Input value={taggedShareUrl} readOnly className="font-mono text-xs" />
         <Button
           type="button"
           variant="secondary"
@@ -295,12 +348,46 @@ function PublishedPanel({
 
       <div className="flex flex-wrap items-center gap-3">
         <Button asChild size="sm">
-          <a href={xIntent} target="_blank" rel="noopener noreferrer">
+          <a
+            href={xIntent}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackOutbound("x")}
+          >
             Share on X
           </a>
         </Button>
-        <Button asChild variant="secondary" size="sm">
-          <Link href={shareUrl} target="_blank" rel="noopener noreferrer">
+        <Button asChild size="sm" variant="secondary">
+          <a
+            href={linkedinIntent}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackOutbound("linkedin")}
+          >
+            Share on LinkedIn
+          </a>
+        </Button>
+        {/* Native PNG download. The OG image is reusable as a square-ish
+            artifact on LinkedIn posts, Reddit posts, IndieHackers, group
+            chats – any surface where pasting a URL won't auto-render an
+            unfurl. The filename rides the ref slug so the founder's
+            download tray reads `unlocksaas-diagnosis-acme.png`, not a
+            cryptic uuid. */}
+        <Button asChild size="sm" variant="secondary">
+          <a
+            href={pngUrl}
+            download={pngFilename}
+            onClick={() => trackOutbound("download_png")}
+          >
+            Download card (PNG)
+          </a>
+        </Button>
+        <Button asChild variant="ghost" size="sm">
+          <Link
+            href={taggedShareUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Open public page
           </Link>
         </Button>
@@ -313,6 +400,13 @@ function PublishedPanel({
           Make it private again
         </button>
       </div>
+
+      {/* Preview of the tweet body – Brunson honesty: the founder sees
+          the exact copy that will pre-fill before they click. No surprise
+          phrasing once X opens. */}
+      <p className="text-xs text-muted-foreground mt-4 italic">
+        Tweet pre-fill: &ldquo;{tweetBody}&rdquo;
+      </p>
 
       {error && (
         <p role="alert" className="text-xs text-destructive mt-3">
@@ -329,10 +423,19 @@ function PublishedPanel({
   );
 }
 
-function labelHuman(
-  l: "wrong_person" | "weak_offer" | "weak_belief",
-): string {
-  if (l === "wrong_person") return "Wrong Person";
-  if (l === "weak_offer") return "Weak Offer";
-  return "Weak Belief";
+/**
+ * Append `?ref=<slug>` to a same-origin URL, preserving any existing
+ * query string. Pure string surgery – avoids constructing a URL object
+ * on the client where the receiver may be a relative path.
+ */
+function appendRef(url: string, refSlug: string): string {
+  if (!refSlug) return url;
+  const safeRef = encodeURIComponent(refSlug);
+  if (url.includes("?")) {
+    // If there's already a ref param, leave it (operator may have set
+    // one upstream). Otherwise append.
+    if (/[?&]ref=/.test(url)) return url;
+    return `${url}&ref=${safeRef}`;
+  }
+  return `${url}?ref=${safeRef}`;
 }
