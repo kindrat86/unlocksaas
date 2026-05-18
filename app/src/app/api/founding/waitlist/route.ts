@@ -2,6 +2,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { sendNextFoundingAndAdvance } from "@/lib/founding/dispatch";
 import { readIdentityFromCookies } from "@/lib/ab";
+import {
+  verifyDeliverableEmail,
+  isPreVerifiedSource,
+} from "@/lib/email-verification";
+import {
+  newConfirmationToken,
+  sendConfirmationEmail,
+} from "@/lib/double-opt-in";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -44,11 +52,25 @@ export async function POST(request: NextRequest) {
   if (!rawEmail || rawEmail.length > 255 || !EMAIL_RE.test(rawEmail)) {
     return NextResponse.json({ error: "invalid_email" }, { status: 400 });
   }
-  const email = rawEmail.toLowerCase();
+  let email = rawEmail.toLowerCase();
 
   const source = typeof body.source === "string"
     ? body.source.slice(0, 64)
     : null;
+
+  const preVerified = isPreVerifiedSource(source);
+
+  // MX gate. Skipped for Google-OAuth sources – those are already proven good.
+  if (!preVerified) {
+    const deliverability = await verifyDeliverableEmail(email);
+    if (!deliverability.ok) {
+      return NextResponse.json(
+        { error: "undeliverable_email", detail: deliverability.reason },
+        { status: 400 }
+      );
+    }
+    email = deliverability.normalized;
+  }
 
   // A/B identity variant — same cookie scheme as the rest of the site so a
   // waitlister assigned to "paid_builder" stays in the same bucket through
@@ -56,10 +78,15 @@ export async function POST(request: NextRequest) {
   const identityVariant = await readIdentityFromCookies();
 
   const supabase = createAdminClient();
+  const nowIso = new Date().toISOString();
+
+  const initialStatus = preVerified ? "active" : "pending_confirmation";
+  const confirmationToken = preVerified ? null : newConfirmationToken();
 
   // Idempotent upsert: if the email already exists, reset its sequence so
-  // PLE1 fires again. The form copy on /founding promises a confirmation
-  // email; that contract has to hold even on second submit.
+  // PLE1 fires again. For email signups we now route through a confirmation
+  // step before PLE1 – the form copy on /founding promises a confirmation
+  // email; double opt-in delivers on that explicitly.
   // Cast: founding_waitlist not yet in generated database.types.ts (migration
   // 20260518000002 lands the table; types regenerate on the next gen pass).
   const { data: row, error: upsertError } = await (supabase as unknown as { from: (t: string) => any })
@@ -73,9 +100,11 @@ export async function POST(request: NextRequest) {
         last_sent_at: null,
         next_send_at: null,
         last_error: null,
-        status: "active",
+        status: initialStatus,
         converted_to_founding_at: null,
         converted_session_id: null,
+        confirmation_token: confirmationToken,
+        confirmation_sent_at: preVerified ? null : nowIso,
       },
       { onConflict: "email" }
     )
@@ -87,8 +116,38 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "waitlist_write_failed" }, { status: 500 });
   }
 
-  // Send PLE1 inline. If it fails, the row is still in the DB and the cron
-  // will retry on its next pass.
+  // Double opt-in branch: send confirmation email, defer PLE1 until click.
+  if (!preVerified && confirmationToken) {
+    const sendResult = await sendConfirmationEmail({
+      list: "founding",
+      email: row.email,
+      token: confirmationToken,
+    });
+    if (!sendResult.ok) {
+      console.error("[founding-waitlist] confirmation_send_failed", {
+        email,
+        error: sendResult.error,
+      });
+      return NextResponse.json(
+        {
+          ok: false,
+          subscribed: true,
+          confirmation_send: "failed",
+          error: sendResult.error,
+        },
+        { status: 502 }
+      );
+    }
+    console.log("[founding-waitlist] pending_confirmation", { email });
+    return NextResponse.json({
+      ok: true,
+      subscribed: true,
+      pending_confirmation: true,
+    });
+  }
+
+  // Pre-verified path (Google OAuth): send PLE1 inline. If it fails, the row
+  // is still in the DB and the cron will retry on its next pass.
   const send = await sendNextFoundingAndAdvance({
     id: row.id,
     email: row.email,

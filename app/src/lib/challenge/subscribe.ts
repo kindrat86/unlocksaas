@@ -23,6 +23,14 @@ import {
   ALLOWED_IDENTITY_VARIANTS,
   type IdentityVariant,
 } from "../soap-opera/subscribe";
+import {
+  verifyDeliverableEmail,
+  isPreVerifiedSource,
+} from "@/lib/email-verification";
+import {
+  newConfirmationToken,
+  sendConfirmationEmail,
+} from "@/lib/double-opt-in";
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -36,17 +44,47 @@ export interface SubscribeInput {
 
 export type SubscribeOutcome =
   | { ok: true; id: string; day_0_send: "ok" }
+  | {
+      ok: true;
+      id: string;
+      day_0_send: "deferred_pending_confirmation";
+    }
   | { ok: false; reason: "invalid_email" }
+  | { ok: false; reason: "undeliverable_email"; detail?: string }
   | { ok: false; reason: "invalid_first_name" }
   | { ok: false; reason: "db_upsert_failed"; detail?: string }
-  | { ok: false; id: string; reason: "day_0_send_failed"; detail?: string };
+  | { ok: false; id: string; reason: "day_0_send_failed"; detail?: string }
+  | {
+      ok: false;
+      id: string;
+      reason: "confirmation_send_failed";
+      detail?: string;
+    };
 
 export async function subscribeToChallenge(
   input: SubscribeInput
 ): Promise<SubscribeOutcome> {
-  const emailRaw = input.email.trim().toLowerCase();
-  if (!emailRaw || !EMAIL_RE.test(emailRaw)) {
-    return { ok: false, reason: "invalid_email" };
+  const preVerified = isPreVerifiedSource(input.source);
+
+  let emailRaw: string;
+  if (preVerified) {
+    emailRaw = input.email.trim().toLowerCase();
+    if (!emailRaw || !EMAIL_RE.test(emailRaw)) {
+      return { ok: false, reason: "invalid_email" };
+    }
+  } else {
+    const check = await verifyDeliverableEmail(input.email);
+    if (!check.ok) {
+      if (check.reason === "invalid_syntax") {
+        return { ok: false, reason: "invalid_email" };
+      }
+      return {
+        ok: false,
+        reason: "undeliverable_email",
+        detail: check.reason,
+      };
+    }
+    emailRaw = check.normalized;
   }
 
   const firstName = input.first_name.trim();
@@ -62,6 +100,9 @@ export async function subscribeToChallenge(
   const supabase = createAdminClient();
   const nowIso = new Date().toISOString();
 
+  const initialStatus = preVerified ? "active" : "pending_confirmation";
+  const confirmationToken = preVerified ? null : newConfirmationToken();
+
   // `as never` casts match the dual-schema reconciliation pattern used in
   // playbook/page.tsx — the migration shipped (20260518000001) but the
   // generated database.types.ts has not been regenerated yet. Row type
@@ -75,7 +116,7 @@ export async function subscribeToChallenge(
         product_url: productUrl,
         identity_variant: input.identity_variant,
         source: input.source,
-        status: "active",
+        status: initialStatus,
         emails_sent: 0,
         subscribed_at: nowIso,
         completed_at: null,
@@ -83,6 +124,8 @@ export async function subscribeToChallenge(
         next_send_at: null,
         last_error: null,
         unsubscribed_at: null,
+        confirmation_token: confirmationToken,
+        confirmation_sent_at: preVerified ? null : nowIso,
       } as never,
       { onConflict: "email" }
     )
@@ -109,10 +152,37 @@ export async function subscribeToChallenge(
     emails_sent: number;
   };
 
-  // Send Day 0 inline. The dispatcher advances emails_sent → 1 and sets
-  // next_send_at = now + 24h on success. On failure, emails_sent stays at 0
-  // and the cron WILL NOT retry (cron filters emails_sent >= 1). The caller
-  // can re-invoke subscribeToChallenge() to retry the welcome.
+  // Double opt-in: send confirmation email, defer Day 0 until the user clicks.
+  if (!preVerified && confirmationToken) {
+    const sendResult = await sendConfirmationEmail({
+      list: "challenge",
+      email: row.email,
+      token: confirmationToken,
+      firstName: row.first_name,
+    });
+    if (!sendResult.ok) {
+      return {
+        ok: false,
+        id: row.id,
+        reason: "confirmation_send_failed",
+        detail: sendResult.error,
+      };
+    }
+    console.log("[challenge-subscribe] pending_confirmation", {
+      email: emailRaw,
+      source: input.source,
+    });
+    return {
+      ok: true,
+      id: row.id,
+      day_0_send: "deferred_pending_confirmation",
+    };
+  }
+
+  // Pre-verified path: send Day 0 inline. The dispatcher advances emails_sent
+  // → 1 and sets next_send_at = now + 24h on success. On failure, emails_sent
+  // stays at 0 and the cron WILL NOT retry (cron filters emails_sent >= 1).
+  // The caller can re-invoke subscribeToChallenge() to retry the welcome.
   const dispatch = await sendNextAndAdvance({
     id: row.id,
     email: row.email,

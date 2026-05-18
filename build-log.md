@@ -1557,3 +1557,56 @@ None. The cards ship at the next deploy and start fronting every shared pSEO URL
 ### Next coherent unit
 
 Per the same audit, the next highest-leverage SEO move is populating `Organization.sameAs` in `app/src/lib/seo/entity.ts` the moment a real X / IndieHackers / LinkedIn / YouTube profile is bidirectionally claimed for unlocksaas.com. That's an env / data flip, not a code change, and it is the single highest-leverage GEO/AIO move on the whole audit.
+
+## Email Verification + Double Opt-In + Resend Bounce Webhook
+
+**Goal.** New email signups arrive with zero verification today – anyone can type any address and start receiving marketing. For a brand-new sending domain (`unlocksaas.com`, zero send history), this is a deliverability liability: typos bounce, joe-jobs trigger complaints, and ISP reputation erodes before the list is even useful. Three layers added to defend the list from day one. Existing 34 FunnelFixer carry-over subs (`status='paused'`) are exempt – they were verified at the original FunnelFixer signup.
+
+### Code deliverables
+
+- `supabase/migrations/20260518000020_email_verification_and_double_opt_in.sql` (NEW) – Adds `pending_confirmation` + `complained` to all 4 funnel-table status enums; adds the missing `bounced` to `challenge_subscribers`; adds `confirmation_token uuid` + `confirmation_sent_at timestamptz` columns to all 4 tables; creates partial unique indexes on `confirmation_token where confirmation_token is not null`. Existing rows untouched.
+- `app/src/lib/email-verification.ts` (NEW) – Shared `verifyDeliverableEmail()` using `node:dns/promises` for MX lookup with implicit A-record fallback per RFC 5321 §5.1. Plus `isPreVerifiedSource()` that returns true for `google_oauth` and any `google_*` source (skip the verification pipeline since Google has already proven the address).
+- `app/src/lib/double-opt-in.ts` (NEW) – Shared confirmation-email helper. `newConfirmationToken()`, `buildConfirmUrl(list, token)`, and `sendConfirmationEmail()` that renders one HTML + text template parameterized by funnel slug. Canonical From/Reply-To, Resend tags `kind=double_opt_in` and `list=<funnel>` for analytics.
+- `app/src/app/api/confirm/[token]/route.ts` (NEW) – GET endpoint that looks up the token in the right table (by `?list=` query param), flips `pending_confirmation → active`, nulls the token (single-use), and triggers the funnel's real Day 0 dispatch. Renders an inline HTML success/error page so it works before any /confirm landing page is built. Seinfeld confirmations don't dispatch inline – the Mon/Wed/Fri cron picks them up.
+- `app/src/app/api/webhooks/resend/route.ts` (NEW) – Receives Svix-signed Resend events; verifies signature inline via `node:crypto` (no `svix` dependency added). Handles `email.bounced` and `email.complained`: status flip across all 4 tables for the matching email, scoped to rows currently `active|pending_confirmation|paused` so unsubscribes and completions are not clobbered. Idempotent.
+- `app/src/lib/soap-opera/subscribe.ts` (MODIFIED) – Branches on `isPreVerifiedSource(source)`. Google-OAuth path retains existing behaviour (active + Day 0 inline). Email path: MX check → upsert as `pending_confirmation` → confirmation email send → defer Day 0.
+- `app/src/lib/challenge/subscribe.ts` (MODIFIED) – Same branching as soap-opera; confirmation email includes `firstName` for tone.
+- `app/src/app/api/seinfeld/subscribe/route.ts` (MODIFIED) – `manual` source → pending_confirmation + confirmation email. `soap_opera_graduate` source (cron-only) skips verification because those subscribers already double-opted-in via the Soap Opera flow. Existing-subscriber refresh path unchanged.
+- `app/src/app/api/founding/waitlist/route.ts` (MODIFIED) – Same email/Google branching pattern; PLE1 defers to post-confirm click.
+- `app/src/app/api/diagnostic/route.ts` (MODIFIED) – Added upfront MX gate before the Anthropic deep-analyze call (Google-OAuth path skips it) so typo'd domains can't burn Claude credits. New outcome variants `undeliverable_email` and `confirmation_send_failed` from `subscribeToSoapOpera()` handled.
+- `app/src/app/api/soap-opera/subscribe/route.ts` + `app/src/app/api/challenge/subscribe/route.ts` (MODIFIED) – Surface `day_0_send: "deferred_pending_confirmation"` and a `pending_confirmation: true` flag back to the client so the UI can render "check your inbox to confirm" instead of the usual confirmation panel.
+
+### Confirmation email copy (draft – review before launch)
+
+Subject: `One click to confirm your UnlockSaaS subscription`
+
+Body opens with `Hey, You (or someone using this address) just signed up at unlocksaas.com for {label}.` followed by a primary `Confirm subscription` button and the raw URL fallback, then `If you didn't sign up, just ignore this email – you won't hear from me again.` Signs off `– Maryan / unlocksaas.com`. Single en-dash signature, no em dashes (per project hard rule).
+
+The funnel labels are: `the 5-email founder breakdown series` (soap_opera), `the UnlockSaaS nurture sequence` (seinfeld), `the 14-day Unstuck Sprint` (challenge), `the Founding Cohort waitlist` (founding).
+
+### Verification
+
+- `npx tsc --noEmit` clean across the whole `app/` workspace after the schema-cast pattern was applied to new code (matching the `as never` / `as unknown as { from: ... }` pattern already established in `challenge/subscribe.ts` and `founding/waitlist/route.ts` for migrations that haven't yet been picked up by `database.types.ts`).
+- Migration is idempotent (`drop constraint if exists`, `add column if not exists`, `create unique index if not exists`) – safe to re-apply.
+- No existing rows are altered; the FunnelFixer carry-over list stays at `status='paused'` and bypasses the new flow entirely.
+
+### Operator action items (MANUAL – required before this is live)
+
+1. **Apply the migration to prod.** `supabase/migrations/20260518000020_email_verification_and_double_opt_in.sql`. Per the Supabase-PostgREST-quirks memory, migrations don't auto-apply to prod via MCP – diff first, then `apply_migration`. Diff command: `mcp__supabase__list_migrations` against project `iihtadgnpheuwkcuumhw`.
+2. **Add `RESEND_WEBHOOK_SECRET` env var.** Vercel project `unlocksaas`, both Preview and Production. Value is the `whsec_…` string from the Resend dashboard (created when you add the webhook endpoint in step 3).
+3. **Configure the Resend webhook.** In the Resend dashboard, add an endpoint:
+   - URL: `https://unlocksaas.com/api/webhooks/resend`
+   - Subscribed events: `email.bounced`, `email.complained` (the others are ignored gracefully)
+   - Copy the signing secret into `RESEND_WEBHOOK_SECRET` (step 2)
+4. **Smoke-test before the FunnelFixer re-engagement campaign.** Use a personal Gmail + a deliberately-broken address (`maryan@gnail.com`) to confirm: (a) Gmail signup lands as `pending_confirmation` and the confirmation email arrives; (b) Click flips to `active` and Email 1 dispatches; (c) Broken-domain signup is rejected at the API edge with `undeliverable_email`. Then send the Resend `Test webhook` button from the dashboard to verify signature verification accepts a real Svix payload.
+5. **(Optional) Review the confirmation email copy** above. The default is intentionally tight ("Hey, … One click to confirm. – Maryan"). If you want to add a value prop ("here's what you'll get in Email 1: …") or a sender-photo block, edit `app/src/lib/double-opt-in.ts`.
+
+### What this does NOT do
+
+- **Doesn't re-engage the 34 FunnelFixer carry-overs.** They're still `paused` and waiting for the re-engagement campaign you'll launch separately. The new pipeline only kicks in for signups going forward.
+- **Doesn't add a polished /confirm landing page.** The route returns inline HTML – minimal but functional. A Next.js page in `app/(marketing)/confirmed/page.tsx` is a follow-up if you want richer branding.
+- **Doesn't change cron filters.** All four cron sweepers already filter `status='active'` (verified during scoping), so pending and bounced rows are naturally skipped.
+
+### Next coherent unit
+
+The matching follow-up is wiring an existing-state UI for the 34 paused carry-overs: a one-time admin endpoint that flips them to `active` and triggers their first Soap Opera email when you're ready to launch the re-engagement campaign. Until then, this PR makes new signups safer without disturbing the carry-over plan.

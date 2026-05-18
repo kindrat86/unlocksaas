@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { nextSendAt } from "@/lib/seinfeld/schedule";
+import { verifyDeliverableEmail } from "@/lib/email-verification";
+import {
+  newConfirmationToken,
+  sendConfirmationEmail,
+} from "@/lib/double-opt-in";
 
 export const runtime = "nodejs";
 
@@ -48,6 +53,22 @@ export async function POST(req: NextRequest) {
     ? (sourceRaw as Source)
     : "manual";
 
+  // 'soap_opera_graduate' is cron-only: those subscribers already confirmed
+  // via the Soap Opera double opt-in flow, so we skip re-verification.
+  // 'manual' covers admin enrolls and direct opt-in forms – those need MX +
+  // confirmation.
+  const needsVerification = source === "manual";
+
+  if (needsVerification) {
+    const deliverability = await verifyDeliverableEmail(emailRaw);
+    if (!deliverability.ok) {
+      return NextResponse.json(
+        { error: "undeliverable_email", detail: deliverability.reason },
+        { status: 400 },
+      );
+    }
+  }
+
   const supabase = createAdminClient();
 
   // Two-step so we can preserve rotation state on update. (PostgreSQL upsert
@@ -88,9 +109,24 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  // Manual signups land as pending_confirmation; soap_opera_graduate signups
+  // are already verified (the cron only enrolls subscribers who completed
+  // the Soap Opera flow, where double opt-in already happened).
+  const initialStatus = needsVerification ? "pending_confirmation" : "active";
+  const confirmationToken = needsVerification ? newConfirmationToken() : null;
+  const nowIso = new Date().toISOString();
+
+  // `as never` cast: confirmation_token / confirmation_sent_at land via
+  // migration 20260518000020; database.types.ts not regenerated yet.
   const { error: insertError } = await supabase
     .from("seinfeld_subscribers")
-    .insert({ email: emailRaw, source, status: "active" });
+    .insert({
+      email: emailRaw,
+      source,
+      status: initialStatus,
+      confirmation_token: confirmationToken,
+      confirmation_sent_at: needsVerification ? nowIso : null,
+    } as never);
 
   if (insertError) {
     console.error("[seinfeld-subscribe] db_insert_failed", {
@@ -101,6 +137,39 @@ export async function POST(req: NextRequest) {
       { error: "db_insert_failed", detail: insertError.message },
       { status: 500 },
     );
+  }
+
+  if (needsVerification && confirmationToken) {
+    const sendResult = await sendConfirmationEmail({
+      list: "seinfeld",
+      email: emailRaw,
+      token: confirmationToken,
+    });
+    if (!sendResult.ok) {
+      console.error("[seinfeld-subscribe] confirmation_send_failed", {
+        email: emailRaw,
+        error: sendResult.error,
+      });
+      return NextResponse.json(
+        {
+          ok: false,
+          subscribed: true,
+          confirmation_send: "failed",
+          error: sendResult.error,
+        },
+        { status: 502 },
+      );
+    }
+    console.log("[seinfeld-subscribe] pending_confirmation", {
+      email: emailRaw,
+      source,
+    });
+    return NextResponse.json({
+      ok: true,
+      subscribed: true,
+      created: true,
+      pending_confirmation: true,
+    });
   }
 
   console.log("[seinfeld-subscribe] created", { email: emailRaw, source });

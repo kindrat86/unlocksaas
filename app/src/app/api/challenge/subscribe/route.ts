@@ -46,12 +46,23 @@ export async function POST(req: NextRequest) {
   });
 
   if (outcome.ok) {
-    return NextResponse.json({ ok: true, subscribed: true, day_0_send: "ok" });
+    return NextResponse.json({
+      ok: true,
+      subscribed: true,
+      day_0_send: outcome.day_0_send,
+      pending_confirmation:
+        outcome.day_0_send === "deferred_pending_confirmation",
+    });
   }
 
   switch (outcome.reason) {
     case "invalid_email":
       return NextResponse.json({ error: "invalid_email" }, { status: 400 });
+    case "undeliverable_email":
+      return NextResponse.json(
+        { error: "undeliverable_email", detail: outcome.detail },
+        { status: 400 }
+      );
     case "invalid_first_name":
       return NextResponse.json(
         { error: "invalid_first_name" },
@@ -61,6 +72,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "db_upsert_failed", detail: outcome.detail },
         { status: 500 }
+      );
+    case "confirmation_send_failed":
+      return NextResponse.json(
+        {
+          ok: false,
+          subscribed: true,
+          confirmation_send: "failed",
+          error: outcome.detail,
+        },
+        { status: 502 }
       );
     case "day_0_send_failed":
       return NextResponse.json(

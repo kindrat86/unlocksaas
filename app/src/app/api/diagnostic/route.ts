@@ -17,6 +17,10 @@ import {
   type IdentityVariant,
 } from "@/lib/soap-opera/subscribe";
 import type { DiagnosticResult as SoapDiagnosis } from "@/lib/soap-opera/emails";
+import {
+  verifyDeliverableEmail,
+  isPreVerifiedSource,
+} from "@/lib/email-verification";
 
 /**
  * Free Diagnostic submission endpoint.
@@ -123,6 +127,20 @@ export async function POST(req: NextRequest) {
       { error: "Enter a real email address." },
       { status: 400 },
     );
+  }
+
+  // MX gate: catches typo'd domains (gnail.com, hotmial.com) before we spend
+  // an Anthropic call analysing their product URL. Skipped for Google OAuth
+  // sign-ins – Google has already proven the address is real.
+  if (!isPreVerifiedSource(explicitSource)) {
+    const deliverability = await verifyDeliverableEmail(email);
+    if (!deliverability.ok) {
+      const msg =
+        deliverability.reason === "invalid_syntax"
+          ? "Enter a real email address."
+          : "That domain doesn't seem to receive email. Double-check the spelling.";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
   }
 
   const parsedUrl = normalizeUrl(rawUrl);
@@ -274,6 +292,9 @@ export async function POST(req: NextRequest) {
     });
     if (outcome.ok) {
       subscriberId = outcome.id;
+      // outcome.day_0_send === 'deferred_pending_confirmation' for email signups
+      // (Google OAuth path returns 'ok' and Day 0 has already fired). Either
+      // way the row exists and the FK is valid.
     } else if (outcome.reason === "day_0_send_failed") {
       // The row exists; we just couldn't send Email 1. Set the FK so
       // diagnostic_leads links correctly, and rely on operator retry. The
@@ -283,10 +304,18 @@ export async function POST(req: NextRequest) {
         email,
         detail: outcome.detail,
       });
+    } else if (outcome.reason === "confirmation_send_failed") {
+      // Row is pending_confirmation but the confirm email didn't go out. Keep
+      // the FK so we can resend manually; user sees the diagnostic anyway.
+      subscriberId = outcome.id;
+      console.error("[diagnostic] confirmation send failed", {
+        email,
+        detail: outcome.detail,
+      });
     } else {
-      // invalid_email shouldn't happen here (we validated upstream).
-      // db_upsert_failed: don't fail the whole request — diagnostic_leads
-      // is the higher-value side.
+      // invalid_email / undeliverable_email shouldn't happen here (we
+      // validated upstream). db_upsert_failed: don't fail the whole request –
+      // diagnostic_leads is the higher-value side.
       console.error("[diagnostic] soap-opera subscribe failed", {
         reason: outcome.reason,
         detail:
