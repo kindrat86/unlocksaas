@@ -3021,6 +3021,451 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     pricingPageUrl: "https://substack.com/going-paid",
     lastVerified: "2026-05-18",
   },
+
+  {
+    slug: "confluence",
+    displayName: "Confluence",
+    creator: "Atlassian",
+    category: "Knowledge management and wiki",
+    oneLine:
+      "Confluence prices per user with bundle leverage. The pricing story is the suite, not the standalone page.",
+    tldr:
+      "Confluence runs Atlassian-style per-user tiered pricing with a generous-but-capped free tier and meaningful suite bundling. The free tier (up to 10 users) is a top-of-funnel catcher for the eventual Jira sale; paid tiers ascend through Standard, Premium, and Enterprise with feature gates calibrated for IT-led mid-market and enterprise procurement. The lesson for indie founders: per-user pricing only works when you have a buyer who already thinks in seats, and bundle leverage only works when you have a bundle.",
+    productSnapshot: {
+      whatTheySell:
+        "A team wiki and documentation platform sold standalone and as part of the Atlassian suite.",
+      whoFor:
+        "Engineering organisations, IT-led mid-market and enterprise teams, and Atlassian-suite customers needing tightly-integrated documentation.",
+    },
+    pricingStructure: {
+      model: "Per-user tiered subscription with suite-bundle discounts",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0 (up to 10 users)",
+          includes: "Core wiki and docs with basic permissions; capped at 10 users and limited apps.",
+          audience: "Small teams evaluating, or small teams that may eventually upgrade to Jira too.",
+        },
+        {
+          name: "Standard",
+          pricePoint: "~$6/user/month (verified 2026-05-18)",
+          includes: "Unlimited users, granular permissions, page versioning, more storage.",
+          audience: "Growing teams past 10 users who need basic governance.",
+        },
+        {
+          name: "Premium",
+          pricePoint: "~$11/user/month (verified 2026-05-18)",
+          includes: "Advanced analytics, sandbox, SLA, IP allowlisting, advanced auditing.",
+          audience: "Mid-market teams with security and governance requirements.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Quote (typically minimum 800 users)",
+          includes: "SSO/SAML, SCIM, data residency, dedicated support, compliance certifications.",
+          audience: "Enterprises with IT-led procurement and compliance buyers.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual; annual discount applied at checkout. Suite-bundle discounts when bought with Jira and other Atlassian products.",
+      freeTrialBehavior:
+        "Standard, Premium, and Enterprise plans offer 7-to-14-day trials with full feature access; free tier persists indefinitely at the 10-user cap.",
+    },
+    anchorAnalysis: {
+      pattern: "Premium-anchored ladder with enterprise tail",
+      analysis:
+        "Premium is the visual anchor on the pricing page — the most-feature-rich tier short of enterprise quote. The Premium tier signals 'serious teams pay roughly $11/user/month' which makes Standard read as the entry-level rather than the cheap option. Enterprise is the implicit ceiling that gives Premium social permission to feel reasonable.",
+    },
+    upgradeTrigger: {
+      pattern: "Hard caps and governance gates",
+      analysis:
+        "Upgrade from Free is triggered hard at 11 users. Upgrade from Standard to Premium is triggered when governance, analytics, or compliance becomes a procurement requirement — typically IT-led. Upgrade from Premium to Enterprise is triggered by SSO, audit, and data residency requirements that mid-market teams cannot self-serve.",
+    },
+    whatsWorking: [
+      "Per-user tiered pricing maps cleanly to how IT-led mid-market buyers think about software cost.",
+      "Free tier at 10 users is generous enough to onboard small teams without being a long-term home.",
+      "Suite-bundle leverage lets Confluence compete on price within the Atlassian ecosystem in ways standalone wikis cannot match.",
+      "Enterprise tier sits behind a quote, preserving negotiation surface and signalling 'we serve real enterprises'.",
+      "Premium-anchor positioning makes Standard feel like the entry rather than the cheap option.",
+    ],
+    whatToAdapt: [
+      "If your buyer thinks in seats, per-user pricing is structurally easier to budget than per-anything-else.",
+      "A hard user cap (not a feature cap) on the free tier is the cleanest upgrade trigger when seats are the value unit.",
+      "Quote-pricing for enterprise is the right move when contracts need negotiation; transparent pricing is wrong for that buyer.",
+    ],
+    whatToAvoid: [
+      "Do not copy per-user pricing if your buyer is a single founder — they are not budgeting in seats.",
+      "Do not rely on bundle leverage you do not have; standalone products cannot mimic suite economics.",
+      "Do not gate enterprise behind a quote unless you have actual enterprise infrastructure to deliver.",
+    ],
+    brunsonLens: {
+      stack: "Standard-Premium-Enterprise ladder with feature stacking calibrated for IT-led procurement.",
+      valueLadder: "Free wiki → Standard collaboration → Premium governance → Enterprise compliance.",
+      decoyOrAnchor: "Premium is the anchor; Enterprise is the implicit ceiling that justifies it.",
+      paymentMechanics: "Per-user monthly or annual; annual discount; bundle leverage within Atlassian suite.",
+    },
+    faqs: [
+      {
+        q: "Why does Confluence cap the free tier at 10 users?",
+        a: "Because below 10 users, retention into the Atlassian funnel is more valuable than payment. Above 10 users, the team is large enough that paying for governance and unlimited seats becomes worth it, and the Atlassian-suite cross-sell motion starts.",
+      },
+      {
+        q: "Is the suite bundle really cheaper?",
+        a: "Often yes — Atlassian bundles Confluence with Jira and other products at meaningful discount versus standalone pricing. The bundle is the entire reason Confluence's per-user numbers can compete with cheaper standalone wikis.",
+      },
+      {
+        q: "Why is Enterprise quote-pricing?",
+        a: "Because enterprise procurement expects negotiation, custom terms, and contract minimums. Transparent enterprise pricing leaves money on the table and signals the wrong buyer profile to IT departments.",
+      },
+      {
+        q: "Can an indie SaaS copy Confluence's pricing model?",
+        a: "Only if the indie SaaS has a per-user buyer (teams, not individuals) and is willing to absorb the IT-led sales motion at the top. For a single-founder buyer, per-user pricing creates the wrong friction at the wrong stage.",
+      },
+      {
+        q: "What is the Brunson lens on Confluence's pricing?",
+        a: "Per-user ladder with a premium anchor, calibrated for IT-led procurement. Brunson lesson: pricing structure should match the buyer's mental model — per-user works when the buyer thinks in headcount, fails when the buyer thinks in 'one person trying to use the product'.",
+      },
+    ],
+    tags: ["per-user", "suite-leverage", "enterprise", "knowledge-management"],
+    homepageUrl: "https://www.atlassian.com/software/confluence",
+    pricingPageUrl: "https://www.atlassian.com/software/confluence/pricing",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "savvycal",
+    displayName: "SavvyCal",
+    creator: "Derrick Reimer",
+    category: "Scheduling and meeting booking",
+    oneLine:
+      "SavvyCal prices flat per user with no tier explosion. The pricing page reinforces the craft-tool positioning the product already established.",
+    tldr:
+      "SavvyCal's pricing is a deliberate two-tier ladder: Basic for solo users, Premium for power users, with team pricing as a third quiet tier. Prices are flat-monthly with annual discount, no per-meeting fees, no enterprise quote-wall. The lesson for indie founders: when your product positions as a craft tool, the pricing page should be restrained and predictable — pricing complexity contradicts a craft positioning even when each individual tier is justified.",
+    productSnapshot: {
+      whatTheySell:
+        "A scheduling tool whose differentiator is overlaying the recipient's calendar on the booking page.",
+      whoFor:
+        "Founders, consultants, and senders who book peer-to-peer meetings and want a scheduling experience that signals respect.",
+    },
+    pricingStructure: {
+      model: "Flat per-user tiered subscription",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0",
+          includes: "One scheduling link, core overlay UX, basic integrations.",
+          audience: "Solo users sampling the overlay experience.",
+        },
+        {
+          name: "Basic",
+          pricePoint: "~$12/user/month (verified 2026-05-18)",
+          includes: "Unlimited links, calendar overlay, payment integrations, branding controls.",
+          audience: "Solo founders, consultants, and individual senders.",
+        },
+        {
+          name: "Premium",
+          pricePoint: "~$20/user/month (verified 2026-05-18)",
+          includes: "Advanced routing, automations, additional calendar accounts, premium integrations.",
+          audience: "Power users with complex scheduling workflows.",
+        },
+        {
+          name: "Team / Workspace",
+          pricePoint: "Per-user pricing with team discounts (verified 2026-05-18)",
+          includes: "Shared team scheduling, collective availability, team-level branding.",
+          audience: "Small teams running scheduling collaboratively.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual; annual discount roughly two months free.",
+      freeTrialBehavior:
+        "Free tier is a real free tier (one link forever) rather than a 14-day trial; paid tiers offer trial windows on signup.",
+    },
+    anchorAnalysis: {
+      pattern: "Premium-as-anchor with restrained ladder",
+      analysis:
+        "Premium is the anchor that makes Basic feel like the obvious entry. The ladder is deliberately short — only three real paid tiers — which reinforces the 'craft tool, not enterprise sprawl' positioning the product is built on. There is no decoy tier and no quote-wall.",
+    },
+    upgradeTrigger: {
+      pattern: "Workflow depth as upgrade driver",
+      analysis:
+        "Upgrade from Free to Basic is triggered by needing more than one scheduling link. Upgrade from Basic to Premium is triggered by routing complexity, multi-calendar accounts, or automation needs — typically the moment a solo user starts handling meaningfully more inbound bookings.",
+    },
+    whatsWorking: [
+      "Flat per-user pricing avoids the per-meeting-fee trap and matches how solo founders budget software.",
+      "Restrained 3-tier ladder reinforces craft-tool positioning consistent with the product's UX.",
+      "Premium tier is the anchor that makes Basic feel reasonable rather than expensive.",
+      "Real free tier (one link forever) lets the overlay UX be experienced before any purchase decision.",
+      "No quote-wall keeps the pricing experience honest and matches the indie buyer's preferences.",
+    ],
+    whatToAdapt: [
+      "If your product positions as a craft tool, keep the pricing page restrained — short ladder, no decoys, no quote-walls.",
+      "A real free tier (limited but unlimited-in-time) lets the differentiator be experienced; trial windows do not give the same proof.",
+      "Anchor with a Premium tier that justifies the entry-level price rather than discounting the entry-level toward the floor.",
+    ],
+    whatToAvoid: [
+      "Do not add tiers just because competitors have them — extra tiers contradict craft-tool positioning.",
+      "Do not gate the differentiating UX behind the paid tier — the free tier exists to demonstrate the wedge.",
+      "Do not introduce per-meeting fees as the product scales — the absence of per-unit pricing is part of SavvyCal's wedge.",
+    ],
+    brunsonLens: {
+      stack: "Free → Basic → Premium → Team; short, restrained, premium-anchored stack.",
+      valueLadder: "Free overlay sample → Basic for solo founders → Premium for workflow depth → Team for small groups.",
+      decoyOrAnchor: "Premium is the anchor that makes Basic feel like the right entry; no decoy.",
+      paymentMechanics: "Flat per-user monthly or annual; annual discount; no per-meeting or per-booking fees.",
+    },
+    faqs: [
+      {
+        q: "Why does SavvyCal not have a per-meeting fee?",
+        a: "Because per-meeting fees create the wrong sender behaviour — they signal that the platform extracts value per booking, which contradicts the recipient-respecting positioning. Flat per-user pricing aligns the economics with the brand.",
+      },
+      {
+        q: "Is SavvyCal more or less expensive than Calendly?",
+        a: "Roughly comparable at the indie tier; per-seat economics diverge at higher tiers because Calendly's enterprise team features scale aggressively. For one-to-five user teams, the pricing is similar enough that craft and UX preferences drive the decision.",
+      },
+      {
+        q: "Why is the free tier limited to one link?",
+        a: "Because one link is enough to experience the overlay UX with a real recipient — the entire wedge of the product. Limiting to one link forces the upgrade decision when the user has multiple use-cases, which is the natural Basic-tier trigger.",
+      },
+      {
+        q: "Can an indie SaaS copy SavvyCal's pricing model?",
+        a: "Yes, if the product genuinely supports flat-per-user economics. Flat pricing only works when marginal cost per user is low and the average customer's value is high enough to absorb it. Check the unit economics before copying the shape.",
+      },
+      {
+        q: "What is the Brunson lens on SavvyCal's pricing?",
+        a: "Restrained ladder with premium anchor and free-tier-as-experiential-proof. Brunson lesson: pricing page consistency with product positioning matters — a craft-tool product needs a craft-tool pricing page, not enterprise SaaS sprawl.",
+      },
+    ],
+    tags: ["per-user", "flat-pricing", "craft-tool", "scheduling"],
+    homepageUrl: "https://savvycal.com/",
+    pricingPageUrl: "https://savvycal.com/pricing",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "ghost",
+    displayName: "Ghost",
+    creator: "John O'Nolan",
+    category: "Newsletter and publishing platforms",
+    oneLine:
+      "Ghost's pricing is the principle — zero platform cut on subscription revenue, member-tier pricing on managed hosting. The pricing page is the proof.",
+    tldr:
+      "Ghost(Pro) prices by member count with a flat-per-tier subscription, charges zero percent on subscription revenue beyond Stripe fees, and ships self-hosting free under the open-source license. The pricing model is structural proof of the ownership positioning: at scale, Ghost is dramatically cheaper than managed creator networks. The lesson for indie founders: when your positioning depends on a principle, the pricing page should be the most concrete evidence of it.",
+    productSnapshot: {
+      whatTheySell:
+        "An open-source publishing platform for newsletters, blogs, and membership publications.",
+      whoFor:
+        "Writers, publishers, and small media companies who want a fully owned site with no platform cut on subscription revenue.",
+    },
+    pricingStructure: {
+      model: "Member-count tiered subscription (Ghost Pro) with free self-host alternative",
+      tiers: [
+        {
+          name: "Self-host (open source)",
+          pricePoint: "$0 (infrastructure cost only)",
+          includes: "Full Ghost software; you provide hosting, updates, and ops; no platform cut.",
+          audience: "Technical writers and publishers who want full ownership and can run a server.",
+        },
+        {
+          name: "Ghost Pro Starter",
+          pricePoint: "~$11/month (up to ~500 members; verified 2026-05-18)",
+          includes: "Managed hosting, automatic backups, official theme support, no platform cut on subscription revenue.",
+          audience: "New writers launching paid newsletters who want zero ops burden.",
+        },
+        {
+          name: "Ghost Pro Creator",
+          pricePoint: "~$31/month (up to ~1,000 members; verified 2026-05-18)",
+          includes: "Custom theme support, more bandwidth, integrations, more newsletters.",
+          audience: "Growing newsletter publications with active member growth.",
+        },
+        {
+          name: "Ghost Pro Team",
+          pricePoint: "~$63/month (up to ~10,000 members; verified 2026-05-18)",
+          includes: "Multi-author publications, priority support, deeper member-management tools.",
+          audience: "Multi-author publications and small media companies.",
+        },
+        {
+          name: "Ghost Pro Business",
+          pricePoint: "~$199/month (up to ~25,000 members; verified 2026-05-18) and above by quote",
+          includes: "Advanced caching, deeper SLA, dedicated infrastructure for high-volume publications.",
+          audience: "Established publications and growing media businesses.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual; annual discount; member-count-based tier triggers.",
+      freeTrialBehavior:
+        "Ghost Pro offers a 14-day free trial; self-host is permanently free open-source.",
+    },
+    anchorAnalysis: {
+      pattern: "Self-host-as-floor, member-count-as-ladder",
+      analysis:
+        "The free self-host option anchors the entire pricing page as 'this is open source, you can run it yourself'. Ghost(Pro) then prices managed hosting on member-count tiers — a usage-aligned metric that scales with the publisher's success rather than with their team or seat count. The Business tier sits as the implicit enterprise ceiling.",
+    },
+    upgradeTrigger: {
+      pattern: "Member-growth as upgrade driver",
+      analysis:
+        "Upgrade from Starter to Creator is triggered at ~500 paying members — typically when a newsletter has demonstrated real product-market fit. Subsequent tier upgrades follow member growth at fixed thresholds. The zero-revenue-cut economics mean the publisher captures the marginal revenue from growth, not the platform.",
+    },
+    whatsWorking: [
+      "Zero platform cut on subscription revenue is structurally cheaper than Substack at scale, and the math is verifiable.",
+      "Self-host option proves the open-source positioning is real, not marketing.",
+      "Member-count tiers align platform cost with publisher growth rather than team size.",
+      "Tier thresholds are publicly visible — no quote-wall, no negotiation surface needed.",
+      "Annual discount aligns publisher cashflow with annual subscription revenue patterns.",
+    ],
+    whatToAdapt: [
+      "If your positioning depends on a principle (ownership, transparency, no-lock-in), the pricing page is your most concrete evidence — make it match.",
+      "Usage-aligned pricing (member count, customer count) feels fairer to growing customers than per-seat for the same revenue.",
+      "Publishing tier thresholds publicly reinforces transparency positioning; quote-walls contradict it.",
+    ],
+    whatToAvoid: [
+      "Do not copy zero-revenue-cut economics if your platform genuinely depends on percentage revenue — the math has to work.",
+      "Do not assume open-source self-host will dominate revenue — Ghost(Pro) is the commercial engine.",
+      "Do not price below cost for the principle alone — Ghost's economics work because the marginal cost per member is low.",
+    ],
+    brunsonLens: {
+      stack: "Self-host → Starter → Creator → Team → Business; member-count-aligned stack.",
+      valueLadder: "Free self-host → Starter for new publications → Creator for growing → Team for publications → Business for scale.",
+      decoyOrAnchor: "Self-host anchors the entire ladder as principled; Business is the implicit ceiling.",
+      paymentMechanics: "Member-count tiered monthly or annual; zero platform cut on subscription revenue beyond Stripe fees.",
+    },
+    faqs: [
+      {
+        q: "Why does Ghost charge zero percent on subscription revenue?",
+        a: "Because the ownership positioning depends on it. A platform cut would contradict 'you own your audience and your economics'. The fixed-tier model captures revenue from hosting, not from publisher success.",
+      },
+      {
+        q: "Is self-hosting actually free?",
+        a: "The Ghost software is free under the open-source license. You pay only for the server you run it on (typically $5-20/month). Updates, backups, and ops are your responsibility — that is the trade-off versus Ghost Pro.",
+      },
+      {
+        q: "When should I migrate from Ghost Pro to self-host?",
+        a: "Almost never unless you have specific technical or compliance reasons. Ghost Pro is dramatically cheaper than the cost of an engineer's time to maintain self-hosting; the cost crossover happens at very large scale or when you already have ops infrastructure.",
+      },
+      {
+        q: "Is Ghost Pro cheaper than Substack?",
+        a: "At zero revenue, Substack is free vs Ghost Pro's $11/month base. At meaningful subscription revenue, Ghost Pro is dramatically cheaper because Substack takes 10% of subscriptions whereas Ghost takes nothing. Crossover happens around the first few hundred dollars of monthly subscription revenue.",
+      },
+      {
+        q: "What is the Brunson lens on Ghost's pricing?",
+        a: "Principle-aligned tiered pricing with usage-based thresholds. Brunson lesson: when your positioning is principled, the pricing page is your most-tested evidence — readers will compare your structure to your claims, and any mismatch destroys trust faster than the positioning earned it.",
+      },
+    ],
+    tags: ["principle-led", "open-source", "member-tiered", "no-platform-cut"],
+    homepageUrl: "https://ghost.org/",
+    pricingPageUrl: "https://ghost.org/pricing/",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "monday",
+    displayName: "Monday.com",
+    creator: "Roy Mann and Eran Zinman",
+    category: "Project management and work-OS platform",
+    oneLine:
+      "Monday prices per seat with minimum-seat thresholds and feature-gated tiers. The pricing page is built for trial-led conversion under paid-acquisition amplification.",
+    tldr:
+      "Monday's pricing runs per-seat through Basic, Standard, Pro, and Enterprise tiers with feature gates calibrated for non-technical team buyers. Minimum-seat thresholds on most tiers push toward team adoption rather than solo use. The free tier is capped at 2 users — explicitly a downgrade catcher, not a primary entry. The lesson for indie founders: when your acquisition is paid-trial-led, the pricing page job is to convert a trial-warm buyer to a team subscription, not to win a cold reader.",
+    productSnapshot: {
+      whatTheySell:
+        "A visual work-OS platform with vertical products (Work Management, Dev, CRM, Service).",
+      whoFor:
+        "Non-technical team leads who want a visual project management surface their team will adopt.",
+    },
+    pricingStructure: {
+      model: "Per-seat tiered subscription with minimum-seat thresholds",
+      tiers: [
+        {
+          name: "Free",
+          pricePoint: "$0 (up to 2 users)",
+          includes: "Core boards, basic dashboards, very limited integrations and automations.",
+          audience: "Solo evaluators and 2-person teams sampling the UX before paying.",
+        },
+        {
+          name: "Basic",
+          pricePoint: "~$9/seat/month with 3-seat minimum (verified 2026-05-18)",
+          includes: "Unlimited free viewers, unlimited items, basic dashboards, 5GB storage.",
+          audience: "Small teams who need core project management on a Monday-shaped surface.",
+        },
+        {
+          name: "Standard",
+          pricePoint: "~$12/seat/month with 3-seat minimum (verified 2026-05-18)",
+          includes: "Timeline and Gantt views, calendar view, guest access, automations, integrations.",
+          audience: "Growing teams who need timelines, automations, and external collaboration.",
+        },
+        {
+          name: "Pro",
+          pricePoint: "~$19/seat/month with 3-seat minimum (verified 2026-05-18)",
+          includes: "Private boards, time tracking, formula columns, advanced automations, dependency tracking.",
+          audience: "Teams running complex workflows with private boards and time tracking.",
+        },
+        {
+          name: "Enterprise",
+          pricePoint: "Quote (typically larger team minimums)",
+          includes: "Enterprise SSO, advanced security, advanced reporting, dedicated CS, governance.",
+          audience: "Mid-market and enterprise teams with security and governance requirements.",
+        },
+      ],
+      paymentFrequency: "Monthly or annual; annual discount roughly 18 percent; seat minimums on paid tiers.",
+      freeTrialBehavior:
+        "All paid tiers offer 14-day free trials with no credit card; free tier is a permanent 2-user catcher.",
+    },
+    anchorAnalysis: {
+      pattern: "Pro-as-anchor with enterprise ceiling",
+      analysis:
+        "Pro is the visual anchor and the tier most often recommended by Monday's onboarding flow. Pro makes Standard feel like the entry rather than the expensive option, and Basic feel like the bare-minimum tier that most real teams will outgrow. Enterprise is the implicit ceiling that gives Pro permission to feel reasonable.",
+    },
+    upgradeTrigger: {
+      pattern: "Feature gates calibrated to team growth",
+      analysis:
+        "Upgrade from Basic to Standard is triggered when a team needs timelines, automations, or guest access — typically within the first month of real use. Upgrade from Standard to Pro is triggered by time tracking, dependencies, or private boards — typically when the team grows past 10 people. Upgrade to Enterprise is triggered by procurement requirements (SSO, security).",
+    },
+    whatsWorking: [
+      "Per-seat pricing with 3-seat minimum pushes toward team adoption from the first paid moment.",
+      "Pro-anchor positioning makes Standard feel like the obvious entry tier for most teams.",
+      "Feature gates between tiers (timeline, automation, time tracking) map cleanly to team growth stages.",
+      "Free tier capped at 2 users is honestly positioned as evaluation, not a long-term home.",
+      "Trial-led conversion with no credit card matches the paid-acquisition funnel design.",
+      "Enterprise quote-wall preserves negotiation surface and enterprise sales motion.",
+    ],
+    whatToAdapt: [
+      "Trial-led conversion with no credit card is the right mechanic when your acquisition is paid-amplified.",
+      "Feature gates calibrated to team growth stages create natural upgrade triggers without artificial caps.",
+      "Anchor your pricing page on the tier you actually want most buyers to pick, not the cheapest one.",
+    ],
+    whatToAvoid: [
+      "Do not copy minimum-seat thresholds if your buyer is solo — minimums kill solo conversion entirely.",
+      "Do not gate enterprise behind a quote unless you have enterprise infrastructure to deliver against.",
+      "Do not assume your free tier will convert without paid acquisition amplifying the awareness — Monday spends heavily on TV and podcasts that an indie SaaS cannot replicate.",
+    ],
+    brunsonLens: {
+      stack: "Basic-Standard-Pro-Enterprise; feature-gated stack with pro as the anchor.",
+      valueLadder: "Free (2 users evaluator) → Basic core → Standard collaboration → Pro complex workflows → Enterprise governance.",
+      decoyOrAnchor: "Pro is the anchor; Basic reads as bare-minimum; Enterprise as implicit ceiling.",
+      paymentMechanics: "Per-seat monthly or annual with seat minimums; trial-led conversion with no credit card.",
+    },
+    faqs: [
+      {
+        q: "Why does Monday require a 3-seat minimum on paid tiers?",
+        a: "Because team adoption is more valuable than single-user adoption — Monday's ROI compounds with team size. The 3-seat minimum is also a deliberate filter against solo buyers who would be unprofitable on Monday's CAC.",
+      },
+      {
+        q: "Why is the free tier capped at 2 users?",
+        a: "Because 2 users is below the threshold where Monday's value compounds. The free tier is a downgrade catcher and evaluation surface, not a primary entry. Real adoption happens on the paid trial after paid-acquisition awareness.",
+      },
+      {
+        q: "Is Monday's pricing competitive versus Asana, ClickUp, Linear?",
+        a: "Comparable per-seat economics; Monday is typically more expensive than ClickUp at equivalent tiers and similar to Asana. The pricing differential is justified by Monday's heavier investment in visual UX and vertical templates, which non-technical buyers value.",
+      },
+      {
+        q: "Can a 2-person indie team use Monday on the free tier?",
+        a: "Technically yes; practically the free tier is too constrained for real production use. The integrations cap, automation cap, and dashboard limits hit quickly. A 2-person team in real use will upgrade to Basic within weeks.",
+      },
+      {
+        q: "What is the Brunson lens on Monday's pricing?",
+        a: "Per-seat tiered with feature gates and minimum-seat thresholds, calibrated for trial-led conversion under paid-acquisition amplification. Brunson lesson: pricing structure should match acquisition structure — if your awareness comes from TV ads, your pricing page job is to convert a trial-warm visitor, not to win a cold reader.",
+      },
+    ],
+    tags: ["per-seat", "seat-minimum", "trial-led", "work-os"],
+    homepageUrl: "https://monday.com/",
+    pricingPageUrl: "https://monday.com/pricing",
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access.
