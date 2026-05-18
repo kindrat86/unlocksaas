@@ -521,12 +521,24 @@ function buildPayload() {
       setUrl: `${BASE_URL}/glossary#defined-term-set`,
       hubUrl: `${BASE_URL}/glossary`,
       markdownMirror: `${BASE_URL}/glossary.md`,
-      terms: DEFINED_TERMS.map((t) => ({
-        term: t.term,
-        slug: glossaryTermSlug(t.term),
-        definition: t.definition,
-        url: `${BASE_URL}/glossary#${glossaryTermSlug(t.term)}`,
-      })),
+      // Per-term entries point at the per-slug DETAIL page added in PR #33
+      // (e.g. /glossary/hook, /glossary/value-ladder, /glossary/big-domino).
+      // The detail page is the richer citation target: long-form definition,
+      // how-to-apply, common confusions, related terms, and FAQ. The hash
+      // anchor on the hub (/glossary#<slug>) is still valid for navigation
+      // and carries the short summary, exposed as `anchorUrl` so consumers
+      // can pick either resolution.
+      terms: DEFINED_TERMS.map((t) => {
+        const slug = glossaryTermSlug(t.term);
+        return {
+          term: t.term,
+          slug,
+          definition: t.definition,
+          url: `${BASE_URL}/glossary/${slug}`,
+          anchorUrl: `${BASE_URL}/glossary#${slug}`,
+          markdownMirror: `${BASE_URL}/glossary/${slug}/md`,
+        };
+      }),
     },
     // Earned-media list. Empty until a real public mention publishes.
     // Reluctant-Hero rule: no paid placements badged as earned, no
