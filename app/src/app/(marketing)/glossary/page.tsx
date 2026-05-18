@@ -255,6 +255,27 @@ export default function GlossaryPage() {
                   <p className="text-base text-foreground/90 leading-relaxed">
                     {t.definition}
                   </p>
+                  {/*
+                    Detail-page link – PR #33 layered onto PR #32. The hub
+                    above stays as the canonical citation surface (one stable
+                    in-page anchor per term, DefinedTermSet @id resolves
+                    here); the detail page at /glossary/<slug> carries the
+                    long definition, why-it-matters paragraph, how-to-apply
+                    bullets, a worked example, common confusions, related
+                    terms, the appears-in cross-links, and a FAQ block, each
+                    with its own DefinedTerm + Article + FAQPage +
+                    BreadcrumbList JSON-LD. Readers and retrievers that want
+                    the full elaboration follow the link; readers that just
+                    want the working definition stay on this page.
+                  */}
+                  <p className="mt-3">
+                    <Link
+                      href={`/glossary/${slug}`}
+                      className="text-sm font-semibold text-primary hover:underline"
+                    >
+                      Read the full definition →
+                    </Link>
+                  </p>
                 </article>
               </CardContent>
             </Card>
