@@ -34,6 +34,11 @@ import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/server";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import {
+  BuildersCollectionJsonLd,
+  type BuilderRowForSchema,
+} from "@/components/seo/builders-collection";
+import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -97,12 +102,57 @@ function initials(name: string | null): string {
   return parts.map((p) => p[0]?.toUpperCase() ?? "").join("");
 }
 
+/**
+ * Verified Builder directory breadcrumb trail. Two-deep (Home › The
+ * Directory) so the BreadcrumbList schema matches the visible site
+ * navigation. The crumb label uses the "The Directory" eyebrow rendered
+ * in the page header – schema and DOM agree.
+ */
+const BUILDERS_BREADCRUMB = [
+  { name: "Home", url: "https://unlocksaas.com/" },
+  { name: "Verified Builders", url: "https://unlocksaas.com/builders" },
+] as const;
+
+/**
+ * Map a `builder_badges` row (snake_case, Supabase-shaped) to the
+ * camelCase shape `BuildersCollectionJsonLd` consumes. Keeps the schema
+ * component Supabase-agnostic and turns this page into the single place
+ * the row shape is translated.
+ */
+function rowToSchemaShape(row: BuilderRow): BuilderRowForSchema {
+  return {
+    slug: row.builder_slug,
+    name: row.builder_name,
+    productName: row.product_name,
+    productUrl: row.product_url,
+    firstCustomerAt: row.first_customer_at,
+  };
+}
+
 export default async function BuildersDirectoryPage() {
   const builders = await loadPublicBuilders();
   const count = builders.length;
+  const buildersForSchema = builders.map(rowToSchemaShape);
 
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
+      {/*
+        E-E-A-T proof loop schema. Two JSON-LD blocks:
+          1. CollectionPage + ItemList (when non-empty) anchors the
+             Verified Builders directory as a typed entity collection
+             linked back to ID.organization / ID.website. The single
+             highest-leverage E-E-A-T "Experience" pillar signal a
+             pre-revenue indie SaaS can claim honestly – present whether
+             or not any rows have landed yet.
+          2. BreadcrumbList mirrors the on-page navigation crumb trail
+             so retrievers resolve the page's position in the site
+             hierarchy without parsing visible HTML.
+      */}
+      <BuildersCollectionJsonLd
+        url="https://unlocksaas.com/builders"
+        builders={buildersForSchema}
+      />
+      <BreadcrumbListJsonLd trail={BUILDERS_BREADCRUMB} />
       <div className="max-w-3xl mx-auto">
         {/* ── Header ───────────────────────────────────────────────────── */}
         <header className="mb-12">
