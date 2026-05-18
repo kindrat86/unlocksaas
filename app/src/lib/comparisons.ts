@@ -5539,6 +5539,441 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["design", "professional-vs-everyone", "different-complexity", "design-floor-vs-ceiling"],
     lastVerified: "2026-05-18",
   },
+
+  {
+    slug: "notion-vs-confluence",
+    a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
+    b: { name: "Confluence", url: "https://www.atlassian.com/software/confluence" },
+    category: "Knowledge management and wiki",
+    oneLine:
+      "Notion vs Confluence is the bottom-up consumer-led workspace versus the top-down enterprise-installed wiki. Same job, opposite buyer.",
+    tldr:
+      "Notion grew bottom-up from individual users into teams and ships a flexible block-based workspace. Confluence ships as part of the Atlassian suite and is installed top-down by IT departments alongside Jira. Indie founders, small teams, and startups almost always pick Notion for flexibility and onboarding; enterprises with existing Atlassian footprints stay on Confluence for SSO, governance, and Jira integration.",
+    bestFor: {
+      a: "Indie founders, startups, and small-to-mid teams who want a flexible workspace they can shape per use-case without IT involvement.",
+      b: "Enterprises already on Atlassian (Jira, Bitbucket) who need a wiki tightly integrated with their existing engineering and project workflows.",
+    },
+    pickAIf: [
+      "You want a workspace that doubles as docs, wiki, lightweight database, and project tracker without paying for separate tools.",
+      "Your team is small enough that onboarding speed and template flexibility matter more than governance and compliance tooling.",
+      "You value the modern block-editor UX and can live without deep enterprise SSO and audit features (or are on a plan that includes them).",
+    ],
+    pickBIf: [
+      "Your engineering org already lives in Jira and you want documentation that links cleanly to issues, sprints, and pipelines.",
+      "You need enterprise-grade SSO, audit logs, retention policies, and IT governance from day one.",
+      "Your buyer is an IT department picking a knowledge platform, not individual teams choosing their workspace.",
+    ],
+    dimensions: [
+      {
+        name: "Editor and UX",
+        a: "Block-based modern editor; flexible page types, databases, and templates. Generally faster to use for new pages.",
+        b: "Traditional wiki page editor; macros for inserting tables, code blocks, Jira issues. More structured but less flexible.",
+        winner: "A",
+        note: "Notion's block model is the category standard most newer wikis copy; Confluence's editor is older but very Jira-native.",
+      },
+      {
+        name: "Atlassian / Jira integration",
+        a: "Has Jira integration via app, but it is bolted on rather than native.",
+        b: "Native — Jira issues, sprints, and pipelines render inline with one click. The integration is the whole point.",
+        winner: "B",
+      },
+      {
+        name: "Onboarding and buyer motion",
+        a: "Bottom-up product-led growth. Individuals adopt, teams follow, plans upgrade.",
+        b: "Top-down IT-installed alongside Atlassian suite. Procurement-led, not user-led.",
+        winner: "A",
+        note: "For founders evaluating themselves, Notion is dramatically faster to adopt; Confluence assumes a procurement cycle.",
+      },
+      {
+        name: "Database and structured content",
+        a: "First-class — pages can be rows in linked databases; views, filters, relations supported natively.",
+        b: "Limited — Confluence is a wiki first; structured data is via Atlassian's separate tools (Jira, Tables, third-party apps).",
+        winner: "A",
+      },
+      {
+        name: "Enterprise governance and compliance",
+        a: "Plus, Business, and Enterprise tiers add SSO, audit logs, SCIM, and advanced permissions; less depth than Atlassian's enterprise stack.",
+        b: "Mature enterprise governance: SSO, audit trails, data residency, retention policies, compliance certifications.",
+        winner: "B",
+      },
+      {
+        name: "Free tier",
+        a: "Generous free Personal plan; small teams can run real work on it for a long time.",
+        b: "Free tier exists (up to 10 users) but is positioned as an evaluation rather than a long-term home.",
+        winner: "A",
+      },
+      {
+        name: "Pricing transparency",
+        a: "Clear per-member tiered pricing published on the site.",
+        b: "Per-user pricing published; full enterprise pricing requires Atlassian quotes.",
+        winner: "A",
+      },
+      {
+        name: "Indie-founder fit",
+        a: "Built for the founder buyer; pricing, UX, and community all signal it.",
+        b: "Built for the IT-led enterprise buyer; indie founders are not the audience.",
+        winner: "A",
+      },
+    ],
+    honestTake:
+      "Notion and Confluence target the same need (a place where team knowledge lives) but were sold to completely different buyers. Notion grew through individual users sneaking it into teams; Confluence was installed by IT departments who had already bought Jira. That difference shows up in every dimension — editor flexibility, integration depth, governance, pricing transparency, and onboarding speed. For a small team picking a wiki today without Atlassian baggage, Notion is almost always the better default. For an enterprise where Jira is already the heartbeat of engineering, Confluence's native integration is hard to beat. The wrong move is forcing one side onto the wrong-shaped org.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "For a pre-revenue indie SaaS founder, Confluence's enterprise governance is overhead they will never use, and its Jira integration assumes a Jira footprint they do not have. Notion's free tier and block-editor flexibility get them shipping today with zero friction. The only case for Confluence at this stage is if the founder is already personally embedded in an Atlassian-shop day job and wants familiarity.",
+    },
+    faqs: [
+      {
+        q: "Is Notion replacing Confluence in enterprises?",
+        a: "Selectively. Notion has won many startup and mid-market wiki replacements, but Atlassian-anchored enterprises typically keep Confluence for the Jira link. The replacement pattern is real but uneven, not a wholesale category shift.",
+      },
+      {
+        q: "Can Confluence do what Notion's databases do?",
+        a: "Not natively. Confluence has tables and macros, but the linked-database model where pages are rows is a Notion-specific construct. Atlassian's structured-data answers tend to involve separate tools (Jira, Trello).",
+      },
+      {
+        q: "Which is better for a small remote team?",
+        a: "Notion, almost always. The flexibility, free tier, and adoption speed match how small remote teams actually work. Confluence wins only when the team already lives in the Atlassian suite.",
+      },
+      {
+        q: "Does Notion have enterprise SSO and audit logs?",
+        a: "Yes, on the Business and Enterprise plans. The depth is less than Atlassian's, but for most non-regulated mid-market companies it is sufficient.",
+      },
+      {
+        q: "What is the Brunson lens on Notion vs Confluence?",
+        a: "Notion ran the classic Brunson New Opportunity move: instead of competing inside the IT-installed-wiki category Confluence anchored, it created a 'flexible all-in-one workspace' category that individuals adopt and bring into the company. Confluence anchors the old game; Notion changed the game. The strategic lesson is that you do not beat an enterprise-installed incumbent by being a better version of them — you change the buyer and the buying motion.",
+      },
+    ],
+    tags: ["wiki", "knowledge-management", "bottom-up-vs-top-down", "work-os"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "calendly-vs-savvycal",
+    a: { name: "Calendly", teardownSlug: "calendly", url: "https://calendly.com/" },
+    b: { name: "SavvyCal", url: "https://savvycal.com/" },
+    category: "Scheduling and meeting booking",
+    oneLine:
+      "Calendly is the category default. SavvyCal is the recipient-respecting redesign for senders who hate sending a one-sided calendar link.",
+    tldr:
+      "Calendly invented the modern scheduling category and is the default in B2B. SavvyCal was built by Derrick Reimer specifically to fix the social asymmetry of one-sided Calendly links — its overlay-on-the-recipient's-calendar UX is a deliberate counter-design. For most B2B sales motions Calendly remains the default; for senders who care about how the request feels to the recipient (founders, consultants, customer success), SavvyCal is the considered alternative.",
+    bestFor: {
+      a: "B2B sales teams, customer success, and anyone whose audience already expects a Calendly link with no friction or commentary.",
+      b: "Founders, consultants, and senders who book meetings with peers and want a more respectful, recipient-friendly scheduling UX.",
+    },
+    pickAIf: [
+      "Your audience is conditioned to Calendly links and reads them as professional default rather than a social misstep.",
+      "You need the most mature ecosystem of integrations and routing forms for a sales team motion.",
+      "You want the category default with the broadest CRM, marketing automation, and embed compatibility.",
+    ],
+    pickBIf: [
+      "You schedule with peers and want a UI that overlays your availability on the recipient's calendar instead of demanding they pick from a one-sided list.",
+      "You value craft, polish, and a sender experience that signals respect over category dominance.",
+      "You are a solo founder or consultant whose meeting requests should feel personal, not transactional.",
+    ],
+    dimensions: [
+      {
+        name: "Recipient experience",
+        a: "Recipient picks from a one-sided list of your available slots. Functional but socially asymmetric — the recipient bends to your calendar.",
+        b: "Recipient sees their own calendar overlaid with your availability; they pick the slot that works for both. Symmetric and considered.",
+        winner: "B",
+        note: "SavvyCal's overlay is the entire reason the product exists; the UX difference is meaningful for peer-to-peer scheduling.",
+      },
+      {
+        name: "Sender brand signal",
+        a: "Reads as 'I have a sales motion' — neutral-to-negative in peer-to-peer contexts.",
+        b: "Reads as 'I respect your time' — actively positive in peer-to-peer contexts.",
+        winner: "B",
+      },
+      {
+        name: "Integration ecosystem",
+        a: "Deep — Salesforce, HubSpot, Marketo, Stripe, Zoom, Google Workspace, Microsoft 365, hundreds of native integrations.",
+        b: "Solid core integrations (Google, Microsoft, iCloud, Zoom, Stripe, HubSpot) but smaller catalogue than Calendly.",
+        winner: "A",
+      },
+      {
+        name: "Team and routing features",
+        a: "Mature: round-robin, collective scheduling, routing forms, workflows, Salesforce-grade pipelines.",
+        b: "Team features are competent but smaller in scope; better for small teams than 100-rep sales orgs.",
+        winner: "A",
+      },
+      {
+        name: "Pricing",
+        a: "Free tier; paid Standard, Teams, Enterprise per-seat plans. Standard around $10–12/month.",
+        b: "Free tier; paid Basic and Premium plans starting around $12/month per user.",
+        winner: "tie",
+        note: "Comparable per-seat economics at the indie tier; enterprise pricing diverges as Calendly's team features scale.",
+      },
+      {
+        name: "Embed and inline experiences",
+        a: "Mature inline embeds, pop-ups, routing widgets used widely on marketing sites.",
+        b: "Embeds exist but the brand emphasises the link experience over the embedded form.",
+        winner: "A",
+      },
+      {
+        name: "Onboarding and polish",
+        a: "Fast and competent; familiar to almost every B2B professional.",
+        b: "Slower curve in places but the UX is opinionated and the polish is the differentiator.",
+        winner: "different",
+      },
+      {
+        name: "Indie-founder fit",
+        a: "Works for indie founders but signals 'sales motion' rather than 'peer founder'.",
+        b: "Built for the peer-to-peer scheduling case indie founders actually have.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Calendly won the scheduling category by making the link the default — and the link is also its most-criticised social pattern. SavvyCal built an entire product around fixing that single objection: overlay the recipient's calendar so the meeting request feels mutual rather than one-sided. For B2B sales teams whose recipients expect transactional booking, Calendly's ecosystem and depth are still hard to beat. For founders and consultants whose meetings are peer-to-peer, SavvyCal's UX choices map directly to the social context that actually matters. Pick by who is reading your link, not by which tool has more integrations.",
+    forIndieFounders: {
+      pick: "B",
+      reasoning:
+        "For an indie founder, almost every meeting is peer-to-peer (other founders, early customers, advisors). SavvyCal's overlay UX makes those requests land better. Calendly is technically more capable, but the capability is built for sales teams, not for the meeting shapes a pre-revenue indie founder is actually scheduling.",
+    },
+    faqs: [
+      {
+        q: "Is SavvyCal a Calendly competitor or a Calendly add-on?",
+        a: "A competitor. SavvyCal is a standalone scheduling product; it is not built on Calendly. The product exists explicitly to challenge Calendly's UX defaults.",
+      },
+      {
+        q: "Why do people complain about Calendly links socially?",
+        a: "Because a Calendly link asks the recipient to pick from your availability without showing theirs — the asymmetry reads as 'my time matters, find a slot in it' to some recipients. SavvyCal's overlay UX was designed specifically to remove this signal.",
+      },
+      {
+        q: "Does SavvyCal integrate with my CRM?",
+        a: "It integrates with HubSpot and Salesforce via Zapier and native connections, and natively with Stripe, Google, Microsoft, and iCloud calendars. The integration breadth is narrower than Calendly's, but covers the common cases for small teams.",
+      },
+      {
+        q: "Which is cheaper for a solo founder?",
+        a: "Both have free tiers and similar paid pricing for one user (~$10–12/month). Cost is not the differentiator; the experience the sender wants to project is.",
+      },
+      {
+        q: "What is the Brunson lens on Calendly vs SavvyCal?",
+        a: "Calendly anchored the category around 'asynchronous booking'. SavvyCal ran a precise New Opportunity move: instead of competing on more features, it identified a specific objection (the one-sided link feels rude in peer contexts) and built the entire product around fixing it. The lesson is that strong incumbents create their own objections, and a wedge product that names and solves one specific objection can carve out a real niche.",
+    },
+    ],
+    tags: ["scheduling", "category-default-vs-craft", "b2b", "recipient-experience"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "substack-vs-ghost",
+    a: { name: "Substack", teardownSlug: "substack", url: "https://substack.com/" },
+    b: { name: "Ghost", url: "https://ghost.org/" },
+    category: "Newsletter and publishing platforms",
+    oneLine:
+      "Substack is the hosted creator network with paid newsletters built in. Ghost is the open-source platform you own end-to-end, with no platform tax.",
+    tldr:
+      "Substack is a managed creator network: zero setup, built-in discovery and recommendations, takes ~10% of paid-subscription revenue. Ghost is an open-source publishing platform you self-host or run on Ghost(Pro), with no revenue cut beyond Stripe fees and full ownership of design, domain, and audience. Writers who want the discovery boost and minimum-friction launch pick Substack; writers who want full control, custom branding, and zero platform tax pick Ghost.",
+    bestFor: {
+      a: "Writers who want to launch a paid newsletter in an afternoon and benefit from Substack's recommendation network for discovery.",
+      b: "Writers and small publishers who want full design and brand control, zero platform revenue cut, and a path to a fully-owned audience.",
+    },
+    pickAIf: [
+      "You are launching a new newsletter and the network effects (recommendations, leaderboards, Substack app) outweigh the 10% revenue cut.",
+      "You do not want to manage hosting, design, or platform configuration — you want to write today.",
+      "Your audience is comfortable subscribing inside the Substack ecosystem and you want the social-network surface bundled in.",
+    ],
+    pickBIf: [
+      "You want to own your domain, design, code, and audience without renting from a creator network.",
+      "Your subscription revenue at scale makes the 10% Substack cut materially expensive compared to Ghost's Stripe-fee-only model.",
+      "You want a fully customisable site that is closer to a publication than a profile on a network.",
+    ],
+    dimensions: [
+      {
+        name: "Revenue model and platform cut",
+        a: "Free to publish; Substack takes 10% of paid-subscription revenue (plus Stripe fees).",
+        b: "Self-host free; Ghost(Pro) hosting starts ~$11/month; zero revenue cut beyond Stripe fees.",
+        winner: "B",
+        note: "At meaningful subscription revenue, Ghost is dramatically cheaper. At zero revenue, Substack is free vs Ghost's hosting fee.",
+      },
+      {
+        name: "Setup and onboarding",
+        a: "Sign up and publish within minutes. Zero technical knowledge required.",
+        b: "Ghost(Pro) is also fast; self-hosting requires technical setup and ongoing maintenance.",
+        winner: "A",
+      },
+      {
+        name: "Audience ownership",
+        a: "Email list is yours and exportable, but the social layer (recommendations, follows, Notes) lives on the Substack platform.",
+        b: "Everything is yours — email list, site, design, code, audience data. No platform layer to lose access to.",
+        winner: "B",
+      },
+      {
+        name: "Discovery and network effects",
+        a: "Strong — Substack's recommendation network, leaderboards, and app drive measurable growth for many writers.",
+        b: "None — Ghost is publishing infrastructure, not a network. You are responsible for all discovery.",
+        winner: "A",
+      },
+      {
+        name: "Design and brand customisation",
+        a: "Limited — Substack newsletters look largely the same; light customisation of header, colors, fonts.",
+        b: "Full — themes are open-source, sites can be customised end-to-end; closer to a real publication than a profile.",
+        winner: "B",
+      },
+      {
+        name: "Editor and writing experience",
+        a: "Polished block editor optimised for newsletters; supports paid sections, podcast, video.",
+        b: "Polished Koenig editor; strong for long-form publishing with similar paid-tier capabilities.",
+        winner: "tie",
+      },
+      {
+        name: "Membership and tiers",
+        a: "Paid newsletter, founding-member tier, group subscriptions. Simple and shipped.",
+        b: "Multiple membership tiers, complex paid/free segmentation, native portal customisation.",
+        winner: "B",
+      },
+      {
+        name: "Platform-risk surface",
+        a: "Higher — your discoverability and the broader Substack brand decisions affect your subscribers' experience.",
+        b: "Lower — you control the stack; platform-level decisions cannot change your reader experience.",
+        winner: "B",
+      },
+      {
+        name: "Indie-founder fit",
+        a: "Best for indie writers / creators monetising via paid newsletter as the product.",
+        b: "Best for indie writers building a publication or brand they want to own long-term.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "Substack and Ghost are both excellent at what they do, but they answer different questions. Substack is the right answer when discovery is the bottleneck and you want a managed network to amplify a newsletter — the 10% cut buys real distribution. Ghost is the right answer when ownership and economics are the bottleneck — you trade the network for full control and a structurally cheaper revenue model at scale. The wrong move is paying the Substack cut at $200k ARR because you never migrated, or choosing Ghost when you have zero existing audience and no plan to drive your own discovery.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Indie founders building a newsletter AS the product (where subscriber count and discovery are the main growth lever) usually do better on Substack early, then migrate to Ghost if revenue scales. Indie founders building a newsletter as one channel for a SaaS or productized service — where audience ownership and integration with their stack matters — usually do better on Ghost from day one. The deciding factor is whether the newsletter is the product or a channel to the product.",
+    },
+    faqs: [
+      {
+        q: "Is Ghost really free?",
+        a: "Ghost the software is free and open-source. To run it as a business you either self-host (server cost only) or use Ghost(Pro) starting around $11/month. Either way there is no platform cut on subscription revenue.",
+      },
+      {
+        q: "When should I migrate from Substack to Ghost?",
+        a: "Common triggers: subscription revenue large enough that 10% is meaningful (often above $50k–100k ARR), needing custom branding or membership tiers Substack does not support, or wanting full audience ownership ahead of any platform risk.",
+      },
+      {
+        q: "Can I take my subscribers with me if I leave Substack?",
+        a: "Yes — Substack exports your email list and lets you migrate to another platform. The network effects (Substack recommendations, app subscribers) do not migrate, but the email list does.",
+      },
+      {
+        q: "Does Ghost have Substack-style recommendations?",
+        a: "Ghost has a 'Recommendations' feature where writers can recommend each other, but it is not a centralised algorithmic network like Substack's. The growth motion is fundamentally different.",
+      },
+      {
+        q: "What is the Brunson lens on Substack vs Ghost?",
+        a: "Substack ran a Dream Customer move — the writer who wants to write, not run infrastructure — and built a network that pays Substack a percentage in exchange for distribution. Ghost runs the opposite play — the writer who wants ownership and is willing to do the discovery work themselves. Both are correct for their respective dream customers; the lesson is that the same audience (newsletter writers) splits into two distinct buyer profiles, and a product that names one specific profile clearly will outperform one that hedges.",
+      },
+    ],
+    tags: ["newsletter", "publishing", "hosted-vs-self-hosted", "creator-economy"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "airtable-vs-monday",
+    a: { name: "Airtable", teardownSlug: "airtable", url: "https://www.airtable.com/" },
+    b: { name: "Monday.com", url: "https://monday.com/" },
+    category: "Work-OS and no-code data platforms",
+    oneLine:
+      "Airtable is a flexible database with workflow on top. Monday is a project-management surface with database underneath. Same overlapping space, opposite starting points.",
+    tldr:
+      "Airtable started as a spreadsheet-database hybrid and grew workflow features around the data layer. Monday started as a project-management board and grew structured data features around the workflow layer. For teams whose primary need is structuring complex data, Airtable wins. For teams whose primary need is coordinating team work with structure layered on, Monday wins. The wrong move is forcing one onto the other's strength.",
+    bestFor: {
+      a: "Teams whose primary problem is structuring relational data — CRMs, content calendars, inventory, applicant tracking — that downstream workflows reference.",
+      b: "Teams whose primary problem is coordinating team work — campaigns, projects, sprints — that benefit from structured records but are not data-first.",
+    },
+    pickAIf: [
+      "You need true relational fields, complex linked records, and views that act like a real database.",
+      "Your use-case is data-shaped first (a CRM, content calendar, ops tracker) and workflow comes second.",
+      "Your team includes power users comfortable thinking in terms of bases, tables, and relations.",
+    ],
+    pickBIf: [
+      "Your use-case is workflow-shaped first (campaigns, projects, sprints) and structured data is a secondary need.",
+      "Your team is non-technical and prefers visual boards, timelines, and Gantt views over base/table mental models.",
+      "You need an out-of-the-box project management feel with templates per department (marketing, ops, sales).",
+    ],
+    dimensions: [
+      {
+        name: "Data model",
+        a: "Relational — linked records, lookups, rollups, formulas across tables. Closer to a real database.",
+        b: "Flat per board — Monday has columns and items but linking across boards is more limited.",
+        winner: "A",
+      },
+      {
+        name: "Project-management feel",
+        a: "Available via interface and views but feels like 'database with PM bolted on'.",
+        b: "Native — boards, timelines, Gantt, sprint views are first-class.",
+        winner: "B",
+      },
+      {
+        name: "Onboarding for non-technical teams",
+        a: "Steeper — non-technical users need to learn the base/table mental model.",
+        b: "Faster — boards and visual columns map onto how non-technical teams already think about work.",
+        winner: "B",
+      },
+      {
+        name: "Automation depth",
+        a: "Native automations and scripting; Airtable Scripts and Extensions enable advanced workflows.",
+        b: "Native automations across boards, integrations, and apps — broad and easy.",
+        winner: "tie",
+      },
+      {
+        name: "Pricing model",
+        a: "Per-editor pricing with free, Team, Business, Enterprise tiers. Read-only collaborators are cheap on most plans.",
+        b: "Per-seat pricing tiered by feature; minimum seat counts on some plans can inflate cost for small teams.",
+        winner: "A",
+      },
+      {
+        name: "Templates and verticals",
+        a: "Strong template gallery; the structured-data use-cases (CRM, content calendar, applicant tracking) are mature.",
+        b: "Vertical product variants (Monday Work Management, Monday Dev, Monday CRM, Monday Service); deeper per-vertical experiences.",
+        winner: "B",
+      },
+      {
+        name: "Developer extensibility",
+        a: "Airtable Scripting, Extensions, REST API; mature platform for builders.",
+        b: "API and apps marketplace; more constrained than Airtable for custom logic.",
+        winner: "A",
+      },
+      {
+        name: "Indie-founder fit",
+        a: "Strong if the founder is technical or comfortable modeling data; CRM and ops use-cases are common.",
+        b: "Strong if the founder thinks visually and runs a small team; less useful for solo data-modelling.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "Airtable and Monday compete more by territorial drift than by direct substitution. Airtable's center of gravity is structured data; Monday's is team-coordinated work. Both expanded outward and overlap in the middle (lightweight project tracking on Airtable, structured boards on Monday) but each is most valuable at its origin. The cleanest decision rule: if the question 'how is my data shaped' is harder than 'how is my work coordinated', pick Airtable. If the opposite, pick Monday. Buyers who pick on price or templates almost always end up regretting the side that did not match their core problem.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "Most indie SaaS founders have data-shaped problems (lead tracking, content pipelines, customer ops, applicant pipelines) more than they have team-coordination problems — there is rarely a 'team' to coordinate. Airtable's pricing model (editors vs read-only collaborators) and relational depth fits those use-cases. Monday makes more sense once the team grows and project-management features become the primary draw.",
+    },
+    faqs: [
+      {
+        q: "Is Airtable a real database?",
+        a: "Closer to one than a spreadsheet, but not a replacement for a production application database. It is excellent for ops, content, and internal tools; it is not the backend you build a SaaS on top of for thousands of concurrent users.",
+      },
+      {
+        q: "Is Monday only for project management?",
+        a: "No — Monday positions itself as a Work OS with vertical products (Dev, CRM, Service). But the underlying primitives are board-and-column rather than table-and-relation, so 'project management with structured data' is its native shape.",
+      },
+      {
+        q: "Which is cheaper for a small team?",
+        a: "Depends on the editor-vs-seat ratio. Airtable's distinction between editors (paid) and read-only collaborators (free or cheap) often makes it cheaper for small teams with a few editors and many viewers. Monday's per-seat pricing scales linearly with team size.",
+      },
+      {
+        q: "Can I use both Airtable and Monday together?",
+        a: "Yes — many teams keep structured ops data in Airtable and run campaigns or sprints in Monday. Native integrations and Zapier handle the sync. The cost is real (two subscriptions) but the workflow-vs-data separation often justifies it.",
+      },
+      {
+        q: "What is the Brunson lens on Airtable vs Monday?",
+        a: "Both companies executed precise Dream Customer moves but for different buyer profiles. Airtable named the operator who thinks in data; Monday named the operator who thinks in work. Both audiences are large; both products dominate their respective center-of-gravity. The lesson is that 'work platforms' splits into multiple distinct buyers — and trying to win all of them at once almost always loses to the company that names one specific buyer clearly.",
+      },
+    ],
+    tags: ["work-os", "no-code", "database-vs-workflow", "different-strengths"],
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup.
