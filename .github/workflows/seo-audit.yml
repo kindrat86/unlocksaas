@@ -18,6 +18,30 @@
 # GITHUB_TOKEN to post PR comments and the Vercel-supplied
 # `deployment_status` event to discover the preview URL.
 #
+# OPTIONAL: VERCEL_AUTOMATION_BYPASS_SECRET. Set this as a repo
+# secret to let the preview-audit job penetrate Vercel preview
+# protection (the SSO wall that returns 401 on team-plan previews).
+# When set, the audit step:
+#   - probes the preview URL with an `x-vercel-protection-bypass`
+#     HTTP header (the recommended Vercel-documented form),
+#   - passes the bypass to the CLI via the query-parameter form
+#     `?x-vercel-protection-bypass=<secret>&x-vercel-set-bypass-cookie=true`,
+#     because the CLI's fetcher does not expose a custom-header flag,
+#   - and redacts the secret out of the audit report BEFORE it
+#     reaches GITHUB_OUTPUT or the PR comment.
+# When unset, behavior is unchanged: the audit step probes the
+# preview URL and skips with an honest "secret not configured"
+# message on any non-200 response.
+#
+# Provisioning the secret: in Vercel project settings → Deployment
+# Protection → Protection Bypass for Automation, generate a secret
+# and copy the value to GitHub repo settings → Secrets and Variables
+# → Actions → New repository secret → name `VERCEL_AUTOMATION_BYPASS_SECRET`.
+# Regenerating the secret in Vercel invalidates the prior value;
+# every previously-built preview deployment bakes the OLD value
+# into its protection layer at build time, so rotating means
+# re-deploying any preview you still want auditable.
+#
 # Tooling notes:
 # - `jq` is preinstalled on the ubuntu-latest runner image — used for
 #   pack-tarball assertions instead of inline node scripts.
@@ -146,19 +170,64 @@ jobs:
         continue-on-error: true
         env:
           PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
+          # Optional. When set, the step uses Vercel's Protection
+          # Bypass for Automation to penetrate the SSO wall on
+          # protected previews. When unset, behavior is unchanged.
+          # GitHub's default secret-masking already redacts this
+          # value out of step logs; we ALSO redact it from the
+          # audit report file before writing to GITHUB_OUTPUT.
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         working-directory: packages/seo
         run: |
           # Vercel preview-deployment protection (enabled by default on
           # team plans) gates preview URLs behind SSO and returns HTTP
-          # 401 to unauthenticated fetchers. Without this guard, the
+          # 401 to unauthenticated fetchers. Without a workaround, the
           # auditor would parse the auth-wall HTML, find no JSON-LD
-          # to lie about, and report a misleading PASS. Check the
-          # status FIRST and short-circuit on any non-2xx response.
+          # to lie about, and report a misleading PASS. Two solutions:
+          #   - Disable preview protection in Vercel project settings, or
+          #   - Use the Protection Bypass for Automation secret.
+          # This step takes path 2 when VERCEL_AUTOMATION_BYPASS_SECRET
+          # is configured as a repo secret; otherwise it falls back to
+          # the original honest-skip behavior.
+          if [ -n "$VERCEL_AUTOMATION_BYPASS_SECRET" ]; then
+            # Header form for the curl probe — the recommended Vercel
+            # mechanism, does NOT leak the secret into the URL (which
+            # would otherwise show up in step logs and audit reports).
+            CURL_HDR=(-H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET")
+            # Query-param form for the CLI URL — the documented fallback
+            # for tools that cannot set custom headers. The companion
+            # `x-vercel-set-bypass-cookie=true` param makes the bypass
+            # persist across the redirect chain that protected previews
+            # use (Set-Cookie on the redirect response). IMPORTANT: this
+            # augmented URL must never be echoed to logs or written to
+            # GITHUB_OUTPUT in raw form; the redaction sed pass below
+            # scrubs both forms from /tmp/report.txt.
+            if [[ "$PREVIEW_URL" == *"?"* ]]; then
+              AUG_URL="${PREVIEW_URL}&x-vercel-protection-bypass=${VERCEL_AUTOMATION_BYPASS_SECRET}&x-vercel-set-bypass-cookie=true"
+            else
+              AUG_URL="${PREVIEW_URL}?x-vercel-protection-bypass=${VERCEL_AUTOMATION_BYPASS_SECRET}&x-vercel-set-bypass-cookie=true"
+            fi
+            BYPASS_MODE="header+query"
+          else
+            CURL_HDR=()
+            AUG_URL="$PREVIEW_URL"
+            BYPASS_MODE="none"
+          fi
+
+          # Probe the unaugmented URL with the bypass header (when
+          # available). Header form keeps the request line clean in
+          # any HTTP debug capture.
           set +e
-          status=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 "$PREVIEW_URL")
+          status=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 15 \
+            "${CURL_HDR[@]}" "$PREVIEW_URL")
           set -e
+
+          # Output blocks: preview_url is intentionally the clean URL,
+          # never the augmented form. http_status is the probe result.
           echo "preview_url=$PREVIEW_URL" >> "$GITHUB_OUTPUT"
           echo "http_status=$status" >> "$GITHUB_OUTPUT"
+          echo "bypass_mode=$BYPASS_MODE" >> "$GITHUB_OUTPUT"
+
           if [ "$status" = "200" ]; then
             # --strict treats schema-vs-rendered drift as a failure
             # (not just honesty violations). Safe to enable as of 0.1.1
@@ -166,29 +235,60 @@ jobs:
             # from drift to recommendation tier. Production unlocksaas.com
             # passes --strict across the 7 surfaces audited on 2026-05-18.
             set +e
-            node dist/cli/index.js validate-claims "$PREVIEW_URL" --strict > /tmp/report.txt 2>&1
+            node dist/cli/index.js validate-claims "$AUG_URL" --strict > /tmp/report.txt 2>&1
             code=$?
             set -e
             echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           else
             echo "exit_code=skipped" >> "$GITHUB_OUTPUT"
+            if [ -z "$VERCEL_AUTOMATION_BYPASS_SECRET" ]; then
+              skip_reason="VERCEL_AUTOMATION_BYPASS_SECRET is not configured as a repo secret. The preview is behind Vercel deployment protection (HTTP $status) and the audit cannot reach the real page."
+            else
+              skip_reason="The bypass secret IS configured, but the preview returned HTTP $status anyway. Likely causes: the bypass secret was regenerated in Vercel after this preview was built (every preview bakes the secret value at build time, so rotating invalidates older previews), or the protection mode has been changed to one the bypass does not cover."
+            fi
             cat > /tmp/report.txt <<EOF
           Preview URL returned HTTP $status.
 
+          $skip_reason
+
           The audit was skipped because the auditor cannot validate
           schema.org claims against a response that is not the actual
-          page (most commonly Vercel preview-deployment protection,
-          which gates preview URLs behind SSO and returns 401).
+          page.
 
           To enable the preview audit on future PRs:
             1. Disable preview protection in Vercel project settings, or
-            2. Add VERCEL_AUTOMATION_BYPASS_SECRET to repo secrets and
-               wire it into the curl + validate-claims fetch headers.
+            2. Provision VERCEL_AUTOMATION_BYPASS_SECRET in Vercel project
+               settings (Deployment Protection → Protection Bypass for
+               Automation) and copy the value to the repo secret of the
+               same name. The next preview deploy will bake the new
+               value in and become auditable.
 
           This is a visibility-loop skip, not a regression in the
           package itself. The package job above is the gate, and it
           passed.
           EOF
+          fi
+
+          # Redaction pass — defense in depth. GitHub Actions already
+          # masks the secret in step logs, but the report file we hand
+          # to GITHUB_OUTPUT is written by curl/node first and only
+          # then traverses the masking boundary. Any leak path is
+          # closed by stripping both the query-param form and the
+          # literal secret from the report before it is read.
+          if [ -n "$VERCEL_AUTOMATION_BYPASS_SECRET" ] && [ -f /tmp/report.txt ]; then
+            sed -i "s|x-vercel-protection-bypass=[^&[:space:]\"']*|x-vercel-protection-bypass=[REDACTED]|g" /tmp/report.txt
+            # Belt-and-suspenders literal-string scrub in case the
+            # secret appears in any other context the CLI prints.
+            python3 -c "
+          import os, sys
+          secret = os.environ.get('VERCEL_AUTOMATION_BYPASS_SECRET', '')
+          if not secret:
+              sys.exit(0)
+          with open('/tmp/report.txt') as f:
+              body = f.read()
+          with open('/tmp/report.txt', 'w') as f:
+              f.write(body.replace(secret, '[REDACTED]'))
+          "
           fi
       - name: Hand the report to the comment step via GITHUB_OUTPUT
         id: report
@@ -208,23 +308,33 @@ jobs:
           AUDIT_EXIT: ${{ steps.audit.outputs.exit_code }}
           HTTP_STATUS: ${{ steps.audit.outputs.http_status }}
           PREVIEW_URL: ${{ steps.audit.outputs.preview_url }}
+          BYPASS_MODE: ${{ steps.audit.outputs.bypass_mode }}
           REPORT_TXT: ${{ steps.report.outputs.report }}
         with:
           script: |
             const exit = process.env.AUDIT_EXIT;
             const httpStatus = process.env.HTTP_STATUS;
             const url = process.env.PREVIEW_URL;
+            const bypassMode = process.env.BYPASS_MODE || 'none';
             const reportTxt = process.env.REPORT_TXT || '(empty report)';
             const status =
               exit === '0' ? '✅ PASS' :
               exit === 'skipped' ? `⏭️ Skipped (HTTP ${httpStatus})` :
               '⚠️ Issues found';
+            // Show the bypass mode so a future reader of the PR comment
+            // can tell at a glance whether the audit penetrated SSO
+            // protection. `none` = no secret configured; `header+query`
+            // = secret used (curl probe via header, CLI via query param).
+            const bypassLine = bypassMode === 'none'
+              ? 'Bypass: none (no VERCEL_AUTOMATION_BYPASS_SECRET configured)'
+              : `Bypass: ${bypassMode}`;
             const body = [
               `### @unlocksaas/seo · preview audit ${status}`,
               ``,
               `Target: ${url}`,
               `HTTP status: \`${httpStatus}\``,
               `Exit code: \`${exit}\``,
+              bypassLine,
               ``,
               `<details><summary>Full report</summary>`,
               ``,
