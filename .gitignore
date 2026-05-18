@@ -17,3 +17,4 @@ inbox-cache/
 .claude/settings.local.json
 .claude/worktrees/
 .vercel
+.forks/
