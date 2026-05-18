@@ -15,6 +15,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
+import { buildReviewJsonLd } from "@/lib/seo/builder-review";
 import { CheckCircle2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -42,7 +43,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      // oEmbed discovery anchor — Substack, Ghost, Notion, Medium, Discord,
+      // Slack auto-render a pasted unlocksaas.com/builder/<slug> URL as a
+      // rich card when they find this link. See src/app/builder/[slug]/oembed.json.
+      // Type-cast: Next.js Metadata.alternates types `types` as Record<string,
+      // string | URL>, which is exactly what the oembed alternate needs.
+      types: {
+        "application/json+oembed": `${url}/oembed.json`,
+      },
+    },
     openGraph: {
       title,
       description,
@@ -69,8 +80,23 @@ export default async function BuilderBadgePage(props: Props) {
     day: "numeric",
   });
 
+  // Canonical Review JSON-LD. Lives on THIS page so that any third-party
+  // site that links here with rel="me" gets a verifiable Review at the
+  // destination. The same payload ships at /builder/<slug>/review.json
+  // and inside /builder/<slug>/embed.html so the chain is consistent
+  // wherever it appears.
+  const reviewJsonLd = buildReviewJsonLd(badge);
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Inline Review JSON-LD. Server-rendered so it's present on first
+          paint for Googlebot, Bingbot, Diffbot, and LLM retrievers. */}
+      <script
+        type="application/ld+json"
+        // Schema payload is built deterministically server-side from approved
+        // profile fields; safe to set via dangerouslySetInnerHTML.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }}
+      />
       <main className="flex-1 flex items-center justify-center p-6">
         <article className="w-full max-w-2xl space-y-8">
           {/* Badge */}
@@ -92,7 +118,13 @@ export default async function BuilderBadgePage(props: Props) {
                   <a
                     href={badge.productUrl}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    // rel="me" reciprocates the founder-side rel="me" link
+                    // that the embed kit ships. Two-way rel="me" is the
+                    // IndieWeb identity-verification convention honored by
+                    // Mastodon profile verification, IndieAuth, and several
+                    // structured-data crawlers. noopener/noreferrer remain
+                    // for tab-hijack protection.
+                    rel="me external noopener noreferrer"
                     className="underline-offset-4 hover:underline"
                   >
                     {badge.productName}
