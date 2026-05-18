@@ -135,6 +135,34 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
     approvedAt: "2026-05-19",
     approvedBy: "maryan",
   },
+  // /editorial-policy – E-E-A-T anchor required by Google Quality Rater
+  // Guidelines §3.1 + §3.4 (clearly stated editorial policy + corrections
+  // policy for sites that publish opinions and comparisons). Approved
+  // 2026-05-19 after verifying chrome parity across all three locales in
+  // PAGE_CHROME_EDITORIAL_POLICY, working-policy voice (Reluctant Hero,
+  // not legal boilerplate), brand-glossary preservation (Unlock SaaS,
+  // Maryan, founder, parable, funnel teardown, pricing teardown,
+  // category roundup, byline, footer, Indie Hackers, Hacker News, Stripe,
+  // ChatGPT, canonical audience, lastVerified, datePublished,
+  // dateModified, schema.org/Article, affiliate links, paid placements,
+  // Person schema graph, self-funded, funding – all kept English), USD
+  // pricing verbatim ($1 Starter, $49/mo Playbook), corrections-log
+  // empty-state honesty preserved in both locales, footer signature
+  // signed by Maryan with locale-localized contact link.
+  {
+    path: "/editorial-policy",
+    locale: "es",
+    status: "approved",
+    approvedAt: "2026-05-19",
+    approvedBy: "maryan",
+  },
+  {
+    path: "/editorial-policy",
+    locale: "pt-BR",
+    status: "approved",
+    approvedAt: "2026-05-19",
+    approvedBy: "maryan",
+  },
 ]);
 
 export function getTranslationStatus(
