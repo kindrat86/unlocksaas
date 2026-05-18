@@ -4,6 +4,7 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import { DATASET_FILES } from "@/lib/seo/dataset";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -369,6 +370,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
+    // -------------------------------------------------------------------------
+    // Open dataset (CC-BY-4.0) — Surface A discovery anchor.
+    //
+    // /dataset is the HTML hub that ships the schema.org Dataset JSON-LD.
+    // Google Dataset Search and citation pipelines anchor on this URL.
+    // Each /dataset/<file>.json|csv endpoint is a download (served with
+    // Content-Disposition: attachment) but listing them in the sitemap
+    // tells Googlebot the URLs are intentional, current, and stable —
+    // so a citer's deep-link to e.g. /dataset/pricing-teardowns.csv
+    // does not look like a stray asset.
+    //
+    // Priority 0.5 for the hub (one rung below /faq, one above the
+    // llms surfaces — the dataset is editorial AND machine-readable);
+    // priority 0.4 per download because each is a file, not a page.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/dataset`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/dataset`),
+    },
+    ...DATASET_FILES.map((spec) => ({
+      url: `${base}/dataset/${spec.filename}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
+    })),
     // -------------------------------------------------------------------------
     // Approved locale translations (Surface A — International SEO).
     //

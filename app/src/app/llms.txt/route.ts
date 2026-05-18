@@ -94,6 +94,21 @@ Two schema.org \`potentialAction\` declarations on the WebSite block name the tw
 - [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
 - Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 
+## Open dataset (CC-BY-4.0)
+
+The five catalogs above ship as a single open dataset for citation, reuse, and downstream analysis.
+
+- [Dataset hub](${BASE}/dataset): The canonical landing page for the dataset. Carries schema.org Dataset JSON-LD with distribution URLs, license, version, attribution string, and a Person/Organization graph that resolves to the same @id anchors as the rest of the site. Indexable. Google Dataset Search discovery anchor.
+- License: Creative Commons Attribution 4.0 International (CC-BY-4.0). Share, adapt, remix, and use commercially. The only requirement is attribution: name Unlock SaaS and link \`${BASE}/dataset\`.
+- One-file citation: [\`/dataset/indie-saas.json\`](${BASE}/dataset/indie-saas.json) – every catalog wrapped under a single schema.org-Dataset envelope.
+- Per-catalog downloads (JSON + CSV) at \`${BASE}/dataset/<file>\`:
+  - \`alternatives.json\` / \`alternatives.csv\` – honest competitor comparisons.
+  - \`funnel-teardowns.json\` / \`funnel-teardowns.csv\` – Hook / Story / Offer analysis.
+  - \`pricing-teardowns.json\` / \`pricing-teardowns.csv\` – tier structure, anchors, upgrade triggers.
+  - \`comparisons.json\` / \`comparisons.csv\` – symmetric head-to-head comparisons.
+  - \`categories.json\` / \`categories.csv\` – canonical SaaS category buckets.
+- Brunson Hard-Rule discipline: every row carries a \`lastVerified\` ISO date. No fabricated metrics, no quoted copy from targets, no slag. Stale rows stay stale; we do not bump the date on export.
+
 ## JSON sibling
 
 A machine-typed JSON representation of this file lives at [\`/llms-feed.json\`](${BASE}/llms-feed.json). Same facts, structured for retrievers that prefer JSON over markdown – entity, surfaces, key facts, third-party entity mentions, defined-term glossary, earned-media list, and activation log are all addressable by JSON path. The feed carries the same \`Last verified\` and \`Next review\` dates as this file, served with \`content-type: application/json\` and the same edge-cache discipline.
