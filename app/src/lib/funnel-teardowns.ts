@@ -2577,6 +2577,342 @@ const TEARDOWNS_LIST: FunnelTeardown[] = [
     homepageUrl: "https://substack.com/",
     lastVerified: "2026-05-18",
   },
+
+  {
+    slug: "confluence",
+    displayName: "Confluence",
+    creator: "Atlassian",
+    category: "Knowledge management and wiki",
+    oneLine:
+      "Confluence sells distribution through Jira. The funnel is the Atlassian suite, not the marketing site.",
+    tldr:
+      "Confluence's primary acquisition channel is bundle and footprint, not its standalone marketing page. Atlassian sells it as part of a suite alongside Jira, and the marketing site exists to support already-in-progress procurement decisions rather than convert cold readers. The lesson for indie founders: when your true distribution is a partner ecosystem, your marketing site is a confirmation surface, not a hook surface — and that is a real strategy, just not a transferable one without a footprint.",
+    productSnapshot: {
+      whatTheySell:
+        "A team wiki and documentation platform sold standalone and as part of the Atlassian suite alongside Jira, Bitbucket, and Trello.",
+      whoFor:
+        "Engineering organisations, IT-led mid-market and enterprise teams, and any org with an existing Atlassian footprint that needs documentation tied to issues and sprints.",
+      pricingNote:
+        "Free tier up to 10 users; paid Standard, Premium, and Enterprise plans per user per month, with bundled discounts when purchased alongside other Atlassian products (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Suite anchor, not standalone hook",
+      analysis:
+        "The headline rarely tries to win a cold reader on Confluence alone — it positions Confluence as the documentation surface inside the Atlassian work platform. The implicit hook is 'you already have Jira, you need its wiki', not 'here is the best wiki on the internet'. This works because the buyer is rarely landing cold.",
+    },
+    story: {
+      pattern: "Enterprise proof and integration depth",
+      analysis:
+        "The story is told through enterprise customer logos, deep Jira-integration screenshots, and the Atlassian brand's accumulated trust. Templates and use-case galleries reinforce that this is a serious tool used by serious teams. There is no founder narrative — Atlassian is an institution at this point, not a story.",
+    },
+    offer: {
+      pattern: "Bundle close",
+      analysis:
+        "The offer is rarely 'just Confluence'. The procurement motion at scale is 'Atlassian suite for the eng org', and Confluence comes along. The standalone close exists for completeness but is not where the real revenue comes from at mid-market and above.",
+    },
+    whatsWorking: [
+      "Suite distribution: every Jira sale is a near-zero-CAC opportunity for Confluence.",
+      "Enterprise trust accumulated over two decades makes procurement-led adoption frictionless.",
+      "Integration depth with Jira (inline issues, sprint pages) is genuinely hard to replicate.",
+      "Free tier exists to capture small teams who may later upgrade or buy Jira too.",
+      "Template gallery oriented at specific work-functions (engineering docs, marketing wikis, HR handbooks) reduces cold-start friction.",
+    ],
+    whatToAdapt: [
+      "If you have an existing product with footprint, your second product's marketing site is a confirmation surface, not a hook surface — design accordingly.",
+      "Templates that map to specific job-functions reduce cold-start friction more than generic feature walkthroughs.",
+      "Integration-depth screenshots beat feature lists when your differentiator IS the integration.",
+    ],
+    whatToAvoid: [
+      "Do not copy Atlassian's restrained marketing voice unless you have their footprint — without distribution, restraint reads as silence.",
+      "Do not build for IT-led procurement if your buyer is an individual founder — the entire UX, pricing, and onboarding will fight you.",
+      "Do not depend on suite distribution if you do not have a suite — it is a powerful funnel for Atlassian and a non-starter for a single-product indie.",
+    ],
+    brunsonLens: {
+      hook: "Suite anchor (Atlassian platform) rather than standalone product hook.",
+      story:
+        "Institutional trust plus integration-depth proof rather than founder narrative.",
+      offer:
+        "Bundle close at mid-market and above; standalone close for small teams as a flywheel.",
+      valueLadderTier: "Existing-customer cross-sell funnel (Jira buyer → Confluence add).",
+    },
+    faqs: [
+      {
+        q: "Why does Confluence's marketing page not try harder to win cold readers?",
+        a: "Because most of its revenue comes from Atlassian-suite buyers, not cold readers. The marketing site is built to confirm a decision that is already in motion, not to start one. That is a deliberate choice tied to the actual distribution channel.",
+      },
+      {
+        q: "Can an indie SaaS copy Confluence's enterprise positioning?",
+        a: "Almost never. Confluence's positioning works because Atlassian owns the surrounding suite and the procurement relationship. Without that footprint, copying the restrained enterprise voice reads as bland and ungrounded.",
+      },
+      {
+        q: "What is the actual conversion mechanism on Confluence's site?",
+        a: "Mostly free-tier signup or trial start, with the real qualification happening downstream through sales for mid-market and enterprise. The marketing page's job is to remove objections, not to close.",
+      },
+      {
+        q: "Why is the Confluence free tier so generous?",
+        a: "Because small-team adoption is a top-of-funnel for the eventual Atlassian suite sale. Letting a team get used to Atlassian's surfaces (Confluence, Jira free tiers) makes the upgrade and cross-sell motion much smoother years later.",
+      },
+      {
+        q: "What is the Brunson lens on Confluence's funnel?",
+        a: "Confluence's funnel is the suite, not the site. Brunson's Value Ladder applies at the Atlassian level: Trello / free Confluence as the lead funnel, paid Confluence and Jira as the ascension, enterprise suite as the back-end. The standalone Confluence marketing page is one rung in a much larger ladder. The lesson: when your ladder is wide enough, individual rungs do not need standalone heroics.",
+      },
+    ],
+    tags: ["enterprise", "suite-distribution", "knowledge-management", "atlassian"],
+    homepageUrl: "https://www.atlassian.com/software/confluence",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "savvycal",
+    displayName: "SavvyCal",
+    creator: "Derrick Reimer",
+    category: "Scheduling and meeting booking",
+    oneLine:
+      "SavvyCal sells one specific objection: 'your Calendly link feels rude'. The entire funnel is the objection-and-resolution.",
+    tldr:
+      "SavvyCal's funnel is built around a single sharp Brunson Hook: the social asymmetry of a Calendly link. The hero, the demo, and the founder narrative all return to the same message — 'we built scheduling that respects the recipient'. The lesson for indie founders: when an incumbent owns the category, naming one specific objection and building your entire product narrative around resolving it can carve out real, defensible niche revenue.",
+    productSnapshot: {
+      whatTheySell:
+        "A scheduling tool whose differentiator is overlaying the recipient's calendar on the booking page, instead of a one-sided availability picker.",
+      whoFor:
+        "Founders, consultants, and senders who book peer-to-peer meetings and want a scheduling experience that does not signal a sales motion.",
+      pricingNote:
+        "Free tier; paid Basic and Premium plans starting around $12/month per user, with team pricing above (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Named-objection hook",
+      analysis:
+        "The hero leads with the recipient-overlay UX as the entire value proposition. The implicit hook is 'you know that thing that feels off about Calendly links? It is the asymmetry. We fixed it.' This converts a reader who has had the bad-link experience faster than any feature list could.",
+    },
+    story: {
+      pattern: "Founder craft narrative",
+      analysis:
+        "Derrick Reimer (also a co-founder of Drip and a long-time bootstrapper) is visible across the marketing — the story is 'a craft-obsessed indie founder who cared enough to redesign a default'. This is exactly the kind of founder the dream customer wants to buy from, and the narrative reinforces the product's positioning.",
+    },
+    offer: {
+      pattern: "Free tier as proof, paid tier as polish",
+      analysis:
+        "The free tier is enough to let a reader experience the overlay UX with a real recipient. The paid tier adds team features, integrations, and polish that matter once the magic moment has happened. The free tier is the demonstration, not a trial.",
+    },
+    whatsWorking: [
+      "Single-objection positioning — the entire site returns to 'recipient overlay' as the wedge.",
+      "Founder-led narrative aligns with the indie founder buyer profile in a way Calendly's enterprise tone cannot match.",
+      "Free tier lets the differentiator be experienced, not just claimed, before any payment decision.",
+      "Pricing transparency and per-seat economics that compete with Calendly without trying to undercut.",
+      "Restrained design and copy reinforce the 'craft tool' positioning the buyer is paying for.",
+    ],
+    whatToAdapt: [
+      "Identify one specific objection your category's leader creates, name it explicitly, and build your entire positioning around resolving it.",
+      "If your differentiator is UX, the free tier should be enough to feel the difference — do not gate the magic moment.",
+      "Founder-as-craftsperson narrative aligns with indie buyers; make the founder visible, not anonymous.",
+    ],
+    whatToAvoid: [
+      "Do not try to out-feature an incumbent on every dimension — pick one and own it.",
+      "Do not copy SavvyCal's restrained voice if your product does not actually have craft-tier polish to back it up.",
+      "Do not position as 'cheaper Calendly' — the differentiator is sender brand signal, not price.",
+    ],
+    brunsonLens: {
+      hook: "Named-objection hook against category default (Calendly's one-sided link).",
+      story:
+        "Founder-led craft narrative — Derrick Reimer as the visible builder.",
+      offer:
+        "Free tier as experiential proof; paid as polish and team scaling.",
+      valueLadderTier: "Front-end lead funnel (free tier as bait, paid as ascension).",
+    },
+    faqs: [
+      {
+        q: "Why does SavvyCal lead with the recipient-overlay UX instead of features?",
+        a: "Because that is their differentiator and the rest of the category is undifferentiated. Leading with the feature that matters most lets cold readers self-qualify in seconds — anyone who has felt the asymmetry of a Calendly link recognises the wedge immediately.",
+      },
+      {
+        q: "Can an indie SaaS copy SavvyCal's single-objection positioning?",
+        a: "Yes, if you actually have an objection that the incumbent meaningfully creates and that you meaningfully fix. The failure mode is naming a weak objection or claiming to fix one without the UX to back it up. SavvyCal's wedge works because the objection is real and the fix is visible.",
+      },
+      {
+        q: "Why is the SavvyCal founder so visible?",
+        a: "Because Derrick Reimer's reputation as a craft-obsessed bootstrapper aligns directly with the dream-customer buyer (other indie founders who care about craft). The founder narrative is part of the product's positioning, not a sidebar.",
+      },
+      {
+        q: "Is SavvyCal trying to beat Calendly on features?",
+        a: "No — SavvyCal is competing on a different axis. Calendly wins on integrations and enterprise depth; SavvyCal wins on the sender's brand signal in peer-to-peer scheduling. The two products serve different jobs even though they sit in the same category.",
+      },
+      {
+        q: "What is the Brunson lens on SavvyCal's funnel?",
+        a: "SavvyCal ran a precise New Opportunity move: instead of competing inside Calendly's category, it named one objection that Calendly creates and made the entire product about resolving it. Brunson Hook-Story-Offer is unusually clean here — the hook (recipient overlay), the story (craft founder), and the offer (free experiential tier) all reinforce the same wedge. The lesson: a clear wedge with one objection beats a feature-parity attack on a dominant incumbent.",
+      },
+    ],
+    tags: ["wedge", "named-objection", "founder-led", "craft-tool"],
+    homepageUrl: "https://savvycal.com/",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "ghost",
+    displayName: "Ghost",
+    creator: "John O'Nolan",
+    category: "Newsletter and publishing platforms",
+    oneLine:
+      "Ghost sells ownership as the product. The funnel is the non-profit foundation, the open-source code, and the explicit anti-Substack framing.",
+    tldr:
+      "Ghost's funnel positions the product as the principled alternative to managed creator networks: open-source, non-profit-foundation-owned, zero platform-cut on subscriptions. The marketing site, governance structure, and pricing model all reinforce the same wedge — you own the publication, the platform does not own you. The lesson for indie founders: principle-led positioning is durable when the principle maps to a real structural decision (legal entity, code license, revenue model), and it falls apart when it is just rhetoric.",
+    productSnapshot: {
+      whatTheySell:
+        "An open-source publishing platform for newsletters, blogs, and membership publications, available self-hosted free or as Ghost(Pro) managed hosting.",
+      whoFor:
+        "Writers, publishers, and small media companies who want a fully owned site, custom design, and no platform cut on subscription revenue.",
+      pricingNote:
+        "Self-hosted open-source free; Ghost(Pro) managed hosting starts around $11/month with tiered plans by member count; zero cut on subscription revenue beyond Stripe fees (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Principle-led wedge against named category",
+      analysis:
+        "The hero positions Ghost against managed creator networks (Substack the implicit reference) on principle: own your audience, own your design, own your economics. The hook works because the principle maps to a concrete structural difference (open source, non-profit foundation, no revenue cut) the buyer can verify.",
+    },
+    story: {
+      pattern: "Foundation governance as proof",
+      analysis:
+        "The story is told through the Ghost Foundation governance, public financials, and the open-source contributor community. The brand reinforces 'we are not optimising for an exit because we are structurally not built to' — which is the inverse of every VC-funded creator network.",
+    },
+    offer: {
+      pattern: "Two-track offer (self-host free, managed paid)",
+      analysis:
+        "The free open-source self-host removes the 'I will just build it myself' objection. Ghost(Pro) managed hosting is the easy path for buyers who do not want to run infrastructure. The two tracks each serve a different segment without compromising the principle.",
+    },
+    whatsWorking: [
+      "Principle maps to verifiable structure — open source, foundation governance, no revenue cut — so the marketing claim is the same as the legal reality.",
+      "Anti-incumbent framing (against managed creator networks) gives readers a side to be on.",
+      "Two-track offer captures both technical buyers (self-host) and convenience buyers (Pro).",
+      "Theme marketplace and customisation depth signal that 'own your design' is a real promise, not a slogan.",
+      "Member portal and newsletter features have closed most of the feature gap with managed alternatives.",
+    ],
+    whatToAdapt: [
+      "If you position on a principle, back it with a verifiable structural decision the buyer can audit.",
+      "Two-track offers (DIY free, managed paid) can capture both ends of a buyer spectrum without diluting the principle.",
+      "Anti-incumbent framing works when the incumbent's commercial structure is materially different from yours.",
+    ],
+    whatToAvoid: [
+      "Do not position on principle if you cannot back it with structure — readers smell rhetoric without proof.",
+      "Do not assume self-hosted will dominate revenue — Ghost(Pro) is the commercial engine, not the free tier.",
+      "Do not copy the foundation governance angle if your entity is a normal VC-backed startup — the structural truth has to match the marketing.",
+    ],
+    brunsonLens: {
+      hook: "Principle-led wedge (ownership) against managed-network incumbents.",
+      story:
+        "Foundation governance and open-source community as verifiable proof.",
+      offer:
+        "Two-track offer — free self-host as bait, managed Pro as ascension.",
+      valueLadderTier: "Front-end lead funnel (open source self-host) into managed hosting ascension.",
+    },
+    faqs: [
+      {
+        q: "Why does Ghost lead with ownership instead of features?",
+        a: "Because ownership is the structural difference no managed competitor can match without abandoning their revenue model. Features can be copied; the non-profit foundation and open-source license cannot.",
+      },
+      {
+        q: "Can an indie SaaS copy Ghost's principle-led positioning?",
+        a: "Only if the principle maps to a real structural decision. Ghost's positioning works because the open-source license, foundation governance, and zero-cut revenue model are legally real. Without that backing, principle-led copy reads as marketing.",
+      },
+      {
+        q: "Why does Ghost have both a free and a paid version?",
+        a: "Different buyers. Self-host serves technical buyers who value ownership and have the skills to maintain a server. Ghost(Pro) serves writers who want the same ownership with none of the ops burden. The two-track approach captures both without compromising either.",
+      },
+      {
+        q: "Is Ghost competing with Substack?",
+        a: "Yes, but on a different axis. Substack competes on network and discovery; Ghost competes on ownership and economics. They overlap in feature space but resolve different buyer priorities. The two will coexist because they serve different writer profiles.",
+      },
+      {
+        q: "What is the Brunson lens on Ghost's funnel?",
+        a: "Ghost ran a precise Brunson Big Domino move: 'if I believe my publication should be mine, Ghost is the only structural fit.' The hook (ownership), story (foundation governance), and offer (open-source plus managed) all reinforce a single belief. The lesson: a Big Domino positioned around a structural truth the incumbent cannot match is one of the most durable wedges available.",
+      },
+    ],
+    tags: ["open-source", "principle-led", "non-profit", "publication-platform"],
+    homepageUrl: "https://ghost.org/",
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "monday",
+    displayName: "Monday.com",
+    creator: "Roy Mann and Eran Zinman",
+    category: "Project management and work-OS platform",
+    oneLine:
+      "Monday sells visual-first work management to non-technical buyers. The funnel is templates, vertical landing pages, and aggressive paid acquisition.",
+    tldr:
+      "Monday's funnel is built for a non-technical team buyer through three levers: visual-first product design (the boards look obvious), vertical landing pages (a different homepage per use-case), and heavy paid acquisition (TV, podcast sponsorships, programmatic at scale). The lesson for indie founders: when your buyer is a non-technical team lead, the funnel is the visual demo plus a use-case-specific entry point, not feature parity with developer-shaped competitors.",
+    productSnapshot: {
+      whatTheySell:
+        "A visual work-OS platform with vertical products for project management (Work Management), engineering (Dev), CRM, and Service.",
+      whoFor:
+        "Non-technical team leads in marketing, ops, sales, customer success, and creative agencies who want a visual project management surface their team will actually use.",
+      pricingNote:
+        "Free tier capped at 2 users; paid Basic, Standard, Pro, Enterprise plans billed per seat per month with minimum-seat thresholds on some tiers (verified 2026-05-18).",
+    },
+    hook: {
+      pattern: "Visual-first demo hook",
+      analysis:
+        "The hero leads with the boards UI — colourful, obvious, easy to read at a glance. The implicit hook is 'your team will not need training to use this'. For non-technical buyers worried about adoption, the visual is the message.",
+    },
+    story: {
+      pattern: "Vertical use-case proof",
+      analysis:
+        "Monday runs different landing pages per use-case (marketing, sales, dev, HR, creative) with vertical-specific templates and case studies. Each landing page reads as if Monday was built for that one team. The story is 'this is exactly your shape', told in the buyer's own vocabulary.",
+    },
+    offer: {
+      pattern: "Aggressive trial-led close with paid amplification",
+      analysis:
+        "The offer is a free trial of the team plan, amplified by heavy paid spend across TV, podcasts, and programmatic. The funnel is built to take a cold non-technical buyer from awareness to trial in one session. The free tier (2 users) exists as a downgrade path, not a primary entry.",
+    },
+    whatsWorking: [
+      "Visual-first design lets non-technical buyers self-qualify in seconds.",
+      "Vertical landing pages collapse 'is this for me' into 'yes, look — your team is on the screenshot'.",
+      "Heavy paid spend across TV and podcasts builds top-of-funnel awareness most B2B SaaS will never afford.",
+      "Template gallery per vertical reduces cold-start friction for non-technical teams.",
+      "Aggressive trial-led conversion path with built-in onboarding nudges and dedicated CS for paid trials.",
+    ],
+    whatToAdapt: [
+      "Build a use-case-specific landing page for each vertical you serve, with the templates and language that vertical uses.",
+      "If your buyer is non-technical, the screenshot is the headline — design the hero around the product's visual obviousness.",
+      "Trial-led conversion works when the time-to-magic-moment in your product is short; design the trial to hit the magic moment within the first session.",
+    ],
+    whatToAvoid: [
+      "Do not try to match Monday's paid acquisition spend — they raised hundreds of millions for a reason.",
+      "Do not copy the vertical-landing-page pattern unless you have enough product depth that each vertical is genuinely served differently.",
+      "Do not pitch Monday's visual style to a technical buyer — devs often actively dislike the boards UI and the brand voice.",
+    ],
+    brunsonLens: {
+      hook: "Visual-first hook for non-technical team leads (boards as the message).",
+      story:
+        "Vertical use-case proof — a different landing page and template set per buyer team.",
+      offer:
+        "Trial-led close amplified by heavy paid acquisition.",
+      valueLadderTier: "Self-serve trial funnel with paid acquisition driving top-of-funnel.",
+    },
+    faqs: [
+      {
+        q: "Why does Monday run so many vertical landing pages?",
+        a: "Because non-technical buyers self-qualify on 'is this for me' before they evaluate features. A landing page per vertical (marketing, sales, dev, creative) lets each buyer see their own team on the screenshot, which converts much better than a generic homepage.",
+      },
+      {
+        q: "Can an indie SaaS copy Monday's paid acquisition playbook?",
+        a: "Not directly — Monday spends hundreds of millions per year on paid acquisition. The transferable lesson is the channel mix logic (TV and podcasts for awareness, programmatic for retargeting, paid trials for conversion), not the spend volume.",
+      },
+      {
+        q: "Why does Monday lead with visuals instead of features?",
+        a: "Because the buyer is a non-technical team lead worried about adoption. Visuals communicate 'easy to use' faster than any feature list. The boards being colourful and obvious IS the value proposition.",
+      },
+      {
+        q: "Is Monday's free tier meaningful for indie founders?",
+        a: "The 2-user free tier is mostly a downgrade catcher, not a primary entry. Real adoption happens on paid trials, often after seeing a TV or podcast ad. The free tier is too small for most real teams to live in.",
+      },
+      {
+        q: "What is the Brunson lens on Monday's funnel?",
+        a: "Monday runs Brunson Hook-Story-Offer with the buyer's vertical vocabulary at every layer. The hook is visual-first (the boards do the work), the story is vertical proof (your team on the screenshot), the offer is trial-led with paid amplification. The lesson: when your buyer is non-technical and your product is visual, the funnel design and the product design have to match — feature-list copy on a visual product is wasted effort.",
+      },
+    ],
+    tags: ["paid-acquisition", "vertical-landing-pages", "non-technical-buyer", "work-os"],
+    homepageUrl: "https://monday.com/",
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from

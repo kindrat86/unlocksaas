@@ -5543,7 +5543,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "notion-vs-confluence",
     a: { name: "Notion", teardownSlug: "notion", url: "https://www.notion.so/" },
-    b: { name: "Confluence", url: "https://www.atlassian.com/software/confluence" },
+    b: { name: "Confluence", teardownSlug: "confluence", url: "https://www.atlassian.com/software/confluence" },
     category: "Knowledge management and wiki",
     oneLine:
       "Notion vs Confluence is the bottom-up consumer-led workspace versus the top-down enterprise-installed wiki. Same job, opposite buyer.",
@@ -5651,7 +5651,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "calendly-vs-savvycal",
     a: { name: "Calendly", teardownSlug: "calendly", url: "https://calendly.com/" },
-    b: { name: "SavvyCal", url: "https://savvycal.com/" },
+    b: { name: "SavvyCal", teardownSlug: "savvycal", url: "https://savvycal.com/" },
     category: "Scheduling and meeting booking",
     oneLine:
       "Calendly is the category default. SavvyCal is the recipient-respecting redesign for senders who hate sending a one-sided calendar link.",
@@ -5759,7 +5759,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "substack-vs-ghost",
     a: { name: "Substack", teardownSlug: "substack", url: "https://substack.com/" },
-    b: { name: "Ghost", url: "https://ghost.org/" },
+    b: { name: "Ghost", teardownSlug: "ghost", url: "https://ghost.org/" },
     category: "Newsletter and publishing platforms",
     oneLine:
       "Substack is the hosted creator network with paid newsletters built in. Ghost is the open-source platform you own end-to-end, with no platform tax.",
@@ -5872,7 +5872,7 @@ const COMPARISONS_LIST: Comparison[] = [
   {
     slug: "airtable-vs-monday",
     a: { name: "Airtable", teardownSlug: "airtable", url: "https://www.airtable.com/" },
-    b: { name: "Monday.com", url: "https://monday.com/" },
+    b: { name: "Monday.com", teardownSlug: "monday", url: "https://monday.com/" },
     category: "Work-OS and no-code data platforms",
     oneLine:
       "Airtable is a flexible database with workflow on top. Monday is a project-management surface with database underneath. Same overlapping space, opposite starting points.",
