@@ -95,6 +95,15 @@ Two schema.org \`potentialAction\` declarations on the WebSite block name the tw
 - [Category hub](${BASE}/category): Curated category roundups across every SaaS tool we have analyzed, organized by category. Each category page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page.
 - Per-category pages at \`${BASE}/category/<slug>\` — payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 
+## MCP server — agent-callable read surface
+
+Sibling of the AskAction declared on the WebSite block, made real. A Model Context Protocol server at \`${BASE}/api/mcp\` (Streamable HTTP) and \`${BASE}/api/sse\` (legacy SSE) exposes every catalog as agent-callable tools. Same source-of-truth as the public site; drift impossible by construction. Read-only — the diagnostic engine is intentionally NOT exposed.
+
+- [MCP hub](${BASE}/mcp): canonical landing page with install snippets for Claude Desktop, Cursor, Cline, Goose; SoftwareApplication JSON-LD; tool catalog. The URL MCP registries should list.
+- Endpoint: \`${BASE}/api/mcp\` — Streamable HTTP.
+- Tools: \`list_funnel_teardowns\`, \`get_funnel_teardown\`, \`list_pricing_teardowns\`, \`get_pricing_teardown\`, \`list_comparisons\`, \`get_comparison\`, \`list_alternatives\`, \`get_alternative\`, \`list_categories\`, \`get_category\`, \`list_press_topics\`, \`get_press_topic\`, \`search\`, \`about\`.
+- Brunson Hard-Rule reconciliation: no tool here will fabricate a diagnostic result. The \`about\` tool's return payload explicitly redirects agents to \`${BASE}/diagnostic\` when a fresh diagnosis of a specific URL is needed.
+
 ## Reverse press kit — pre-assembled story packages
 
 Sibling to the canonical \`/press\` media kit. Each topic is a self-contained story package with thesis, data points, on-the-record pull-quotes, honest counter-arguments, and related entities a fair piece should also cite. Built for journalist-intent queries like "ai generated saas no customers" and "post launch pre revenue saas." Each pull-quote is verbatim from the live site or an on-the-record public statement.

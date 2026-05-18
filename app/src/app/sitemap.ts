@@ -427,6 +427,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
       alternates: hreflang(`${base}/dataset`),
     },
+    // MCP server discovery hub. The actual protocol endpoint at
+    // /api/mcp is disallowed in robots.txt (API surface, never
+    // indexable), but this HTML hub is the canonical URL MCP
+    // registries cite and humans paste into client config. Priority
+    // 0.5 — same rung as the dataset hub; distinct discovery class.
+    {
+      url: `${base}/mcp`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/mcp`),
+    },
     ...DATASET_FILES.map((spec) => ({
       url: `${base}/dataset/${spec.filename}`,
       lastModified: now,
