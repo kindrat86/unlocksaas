@@ -875,6 +875,250 @@ const ALTERNATIVES_LIST: Alternative[] = [
     tags: ["ai-app-builder", "browser-ide", "agent", "build-tool"],
     lastVerified: "2026-05-17",
   },
+
+  {
+    slug: "asana",
+    displayName: "Asana",
+    creator: "Asana, Inc.",
+    category: "Project management software",
+    oneLine:
+      "Asana organises your team's work. Unlock SaaS gets your product its first paying customer. Different jobs, different shelves.",
+    pricingNote:
+      "Asana has a free Personal tier and paid Starter, Advanced, and Enterprise plans billed per user per month (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A project- and work-management platform that coordinates tasks, timelines, and dependencies across a team",
+      "A workspace for shipping work in a structured way once you already know what to ship",
+      "A horizontal tool used across product, marketing, ops, and engineering",
+    ],
+    whatItIsNot: [
+      "A named first paying customer or an outreach mechanism",
+      "A diagnostic of why your already-shipped product is converting at zero",
+      "A refund tied to your Stripe ledger if no customer arrives",
+    ],
+    whoForIt:
+      "Teams (and disciplined solo operators) who already have a clear backlog and need a shared place to coordinate the work.",
+    whoNotForIt:
+      "Solo non-engineer founders whose problem is not 'we are not coordinated' but 'we shipped a product and nobody is paying for it'.",
+    honestVerdict:
+      "Asana is excellent at coordinating work that has already been scoped. Unlock SaaS is the upstream step Asana presumes: deciding what work is worth coordinating in the first place — namely, the small set of moves that produces the first paying customer. Most Unlock SaaS members do not need a project manager; they need a verdict on whether their offer page is broken, and a script to send to one named human today.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS an Asana alternative?",
+        a: "Not really. Asana is project management software for teams. Unlock SaaS is a single-founder customer-acquisition playbook with a Stripe-verified refund. If your problem is 'we are not organised', use Asana. If your problem is 'we are organised but the Stripe line is flat', use Unlock SaaS.",
+      },
+      {
+        q: "Can I use both Asana and Unlock SaaS together?",
+        a: "Yes. Unlock SaaS tells you the three moves to make this week; Asana is a perfectly fine place to track that you did them. The Playbook does not care which task tracker you use.",
+      },
+      {
+        q: "Why is Unlock SaaS only $49/month while Asana costs more per seat at higher tiers?",
+        a: "Different scope. Asana is a horizontal team platform priced per seat. Unlock SaaS is a vertical playbook for one founder solving one problem (first paying customer) with a refund-in-code if it does not work in 60 days.",
+      },
+      {
+        q: "Does Unlock SaaS replace my project management tool?",
+        a: "No. It does not try to. There is nothing in the Playbook that competes with Asana's timeline, portfolios, or workload views — and there is nothing in Asana that competes with the diagnostic, outreach loop, or Stripe-verified refund.",
+      },
+      {
+        q: "I am a solo founder. Do I need Asana before Unlock SaaS?",
+        a: "Almost never. Solo founders pre-first-customer rarely need a project manager — they need a verdict on what to do next. Unlock SaaS is that verdict. Add Asana later when you have a team and a backlog worth coordinating.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://asana.com/",
+    tags: ["project-management", "team-collaboration", "work-os", "for-teams"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "airtable",
+    displayName: "Airtable",
+    creator: "Airtable, Inc.",
+    category: "Spreadsheet-database hybrid / no-code data platform",
+    oneLine:
+      "Airtable structures the data behind your business. Unlock SaaS turns the product you already shipped into a paying customer. Different layers of the stack.",
+    pricingNote:
+      "Airtable has a free tier and paid Team, Business, and Enterprise plans billed per editor per month (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A flexible relational base that mixes spreadsheet UX with database structure",
+      "A no-code platform for building internal tools, CRMs, content calendars, and ops trackers",
+      "A horizontal tool used across product, marketing, ops, and project management",
+    ],
+    whatItIsNot: [
+      "A diagnostic of why your offer page is converting at zero",
+      "A script for the next outreach message you should send to a named human today",
+      "A Stripe-verified guarantee that a paying customer arrives in 60 days",
+    ],
+    whoForIt:
+      "Founders and teams who need a flexible structured-data layer for their workflow and prefer a no-code surface over SQL.",
+    whoNotForIt:
+      "Solo non-engineer founders whose Stripe line is flat and who do not have a data-modelling problem — they have a customer-acquisition problem.",
+    honestVerdict:
+      "Airtable is a great place to store and shape your data. Storing your data better does not produce a paying customer. Unlock SaaS exists for the upstream problem: deciding which one human you should talk to this week, what to say, and whether the offer page is even survivable. Use Airtable to track the results of the Playbook if you want; the Playbook itself is the thing that produces the result.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS an Airtable alternative?",
+        a: "No — different categories. Airtable is a structured-data platform. Unlock SaaS is a customer-acquisition playbook with a Stripe-verified refund. They do not overlap.",
+      },
+      {
+        q: "Can I track Unlock SaaS playbook steps in Airtable?",
+        a: "Absolutely. The Playbook is opinionated about what to do, not where to track it. Many Unlock SaaS members already live in Airtable for their CRM and ops, and the Playbook fits cleanly on top.",
+      },
+      {
+        q: "Should I build my SaaS on Airtable?",
+        a: "You can — many simple SaaS products use Airtable as the data layer behind a Softr or custom UI. But once you have shipped that product, Airtable cannot tell you why it is not selling. That is what Unlock SaaS is for.",
+      },
+      {
+        q: "Does Unlock SaaS need a database setup like Airtable's?",
+        a: "No. The Playbook runs against your live product URL and your Stripe account. There is no schema to design, no base to configure.",
+      },
+      {
+        q: "I love Airtable's flexibility. Will Unlock SaaS feel rigid in comparison?",
+        a: "Yes, intentionally. Airtable's value is that you can model anything. Unlock SaaS's value is the opposite: it refuses to let you reshape the playbook around your favourite reason to delay outreach.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://www.airtable.com/",
+    tags: ["no-code", "database", "spreadsheet", "work-os"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "framer",
+    displayName: "Framer",
+    creator: "Framer B.V.",
+    category: "Visual web-design and site builder",
+    oneLine:
+      "Framer builds the page. Unlock SaaS turns the page Framer built into a paying customer. Sequential, not interchangeable.",
+    pricingNote:
+      "Framer has a free tier and paid Mini, Basic, Pro plans billed per site, plus per-seat workspace pricing (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A visual website builder with CMS, animations, and design-tool ergonomics",
+      "A fast way for non-engineers to ship a polished marketing site",
+      "The page surface many Unlock SaaS members already host their offer on",
+    ],
+    whatItIsNot: [
+      "A diagnostic that labels whether the page you built actually converts",
+      "An outreach mechanism that sends one real message to one real human",
+      "A refund tied to your Stripe ledger if no customer arrives",
+    ],
+    whoForIt:
+      "Non-engineers who want to ship a beautiful marketing site fast without writing HTML or CSS.",
+    whoNotForIt:
+      "Founders who already shipped on Framer and still have a flat Stripe line — pretty is not the problem.",
+    honestVerdict:
+      "Framer is great at building the page. The page is rarely the problem once it exists. Unlock SaaS is built for the next step Framer cannot help with: deciding whether the offer is even survivable, who specifically to send it to, and what to do when 30 days of polished landing pages have produced no Stripe charges. Keep Framer for delivery; let the Playbook decide what the page should be saying.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Framer alternative?",
+        a: "No. Framer is a site builder. Unlock SaaS is a customer-acquisition playbook that wraps around the site you already built. Different jobs.",
+      },
+      {
+        q: "Can I use Unlock SaaS with a site I built on Framer?",
+        a: "Yes — that is the canonical case. Paste the URL of your Framer-hosted offer page into the diagnostic and within ninety seconds it labels what is broken about the offer (not the design).",
+      },
+      {
+        q: "Should I rebuild my Framer site before running Unlock SaaS?",
+        a: "Almost never. The Playbook does not care which tool the page is hosted on. It cares whether the page promises a specific result to a named human. If it does not, no site-builder upgrade will fix that.",
+      },
+      {
+        q: "Does Unlock SaaS replace my Framer subscription?",
+        a: "No. It does not try to. There is nothing in the Playbook that builds or hosts pages, and nothing in Framer that diagnoses offers or guarantees customers.",
+      },
+      {
+        q: "My Framer site looks great. Why is nobody buying?",
+        a: "That is exactly the question Unlock SaaS exists to answer. Almost always one of three labels — Wrong Person, Weak Offer, Weak Belief — applies, and design quality is not on the list.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://www.framer.com/",
+    tags: ["site-builder", "no-code", "design-tool", "landing-page"],
+    lastVerified: "2026-05-18",
+  },
+
+  {
+    slug: "substack",
+    displayName: "Substack",
+    creator: "Substack, Inc.",
+    category: "Newsletter publishing and paid-subscription platform",
+    oneLine:
+      "Substack helps writers run paid newsletters. Unlock SaaS helps non-engineer founders get a SaaS its first paying customer. Different products, different customer.",
+    pricingNote:
+      "Substack is free to publish; the platform takes ~10% of paid-subscription revenue (verified 2026-05-18). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A hosted newsletter platform with built-in subscriptions, payments, and discovery",
+      "A revenue model for writers who want paid readers, not a content marketing tool",
+      "A genuinely good path from 'I write' to 'people pay me to read what I write'",
+    ],
+    whatItIsNot: [
+      "A diagnostic of why your shipped SaaS product is converting at zero",
+      "A way to find and message the first specific human who would pay for your software",
+      "A refund tied to your Stripe ledger if no SaaS customer arrives in 60 days",
+    ],
+    whoForIt:
+      "Writers, journalists, and operators whose product IS a newsletter and whose revenue model IS paid subscriptions to that newsletter.",
+    whoNotForIt:
+      "Founders whose product is a SaaS and who are looking for SaaS customers, not newsletter subscribers.",
+    honestVerdict:
+      "Substack is the right answer if you are running a newsletter as the product. It is the wrong answer if you are running a SaaS and trying to grow it by 'starting a newsletter' as a distribution hack — most pre-revenue founders never reach the audience size where a Substack moves the SaaS needle. Unlock SaaS treats the direct problem instead: get the next single paying customer for the software, with the Playbook executing and the refund-in-code on the line.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Substack alternative?",
+        a: "No. Substack is for writers running paid newsletters. Unlock SaaS is for non-engineer SaaS founders trying to get their first paying customer. Different categories entirely.",
+      },
+      {
+        q: "Should I start a Substack to market my SaaS?",
+        a: "Usually no, not before first revenue. The Brunson Soap-Opera and Seinfeld sequences inside the Playbook are aimed at the small list of warm humans who could actually buy your software now — not at building a content audience that pays months from now.",
+      },
+      {
+        q: "Can I use Substack as my email tool alongside Unlock SaaS?",
+        a: "Technically yes, but Substack is built for public paid newsletters, not for the targeted Soap-Opera onboarding sequences the Playbook expects. Tools like Resend or Loops fit the Playbook better; see /funnel-teardown/resend and /funnel-teardown/loops for that side of the stack.",
+      },
+      {
+        q: "What if my SaaS audience IS newsletter writers?",
+        a: "Then Substack is the dream-customer's home turf — go where they already live. The Playbook still applies: which specific writer, what specific promise, what specific first message. Substack does not answer those questions; Unlock SaaS does.",
+      },
+      {
+        q: "I already have a Substack with subscribers. Can I use Unlock SaaS to monetise that audience differently?",
+        a: "If your audience is a fit for your SaaS — yes. The Playbook treats your existing Substack list as a warm channel: same Hook-Story-Offer logic, same named-human discipline. The diagnostic does not care where the names came from.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: false,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://substack.com/",
+    tags: ["newsletter", "publishing", "creator-economy", "paid-subscription"],
+    lastVerified: "2026-05-18",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
