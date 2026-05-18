@@ -26,7 +26,6 @@ import {
   DefinedTermSetJsonLd,
   FaqPageJsonLd,
   FounderVslAudioJsonLd,
-  OrganizationJsonLd,
   PersonJsonLd,
 } from "@/components/seo/json-ld";
 
@@ -83,7 +82,15 @@ export default async function FunnelHub() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <OrganizationJsonLd />
+      {/*
+        OrganizationJsonLd moved to app/layout.tsx on 2026-05-18 so
+        every page inherits Organization + WebSite entity anchors,
+        not just the funnel hub. Per the @unlocksaas/seo audit pass.
+        Person stays here because the funnel hub is the canonical
+        page for the founder entity (mainEntityOfPage anchor); other
+        surfaces that need the founder reference @id instead of
+        inlining the full Person block.
+      */}
       <PersonJsonLd />
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
       <DefinedTermSetJsonLd />

@@ -8,6 +8,7 @@ import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
 import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
 import { buildVerification } from "@/lib/seo/verification";
+import { OrganizationJsonLd } from "@/components/seo/json-ld";
 
 // Mobile-first viewport. `viewportFit: cover` lets the page paint under
 // iOS notches; padding then uses safe-area-inset via Tailwind utilities.
@@ -110,6 +111,18 @@ export default function RootLayout({
             stays unaffected (bundle-defer-third-party pattern).
           */}
           <WebVitalsReporter />
+          {/*
+            Organization + WebSite JSON-LD as site-wide entity anchors.
+            Lives in the root layout so every page inherits both blocks —
+            the prior placement on the homepage only meant /diagnostic,
+            /faq, /about, and every pSEO slug had a hollow entity graph
+            (Article/FAQPage/Breadcrumb but no Organization to attach to).
+            The `@unlocksaas/seo` validate-claims audit caught this on
+            2026-05-18 by flagging 6 of 7 production surfaces with
+            "Missing Organization JSON-LD" + "Missing WebSite JSON-LD".
+            Server-rendered, zero hydration cost.
+          */}
+          <OrganizationJsonLd />
           {children}
         </PostHogProvider>
       </body>
