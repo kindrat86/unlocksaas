@@ -14,6 +14,10 @@
       "schedule": "*/30 * * * *"
     },
     {
+      "path": "/api/cron/testimonial-farm-offer",
+      "schedule": "25,55 * * * *"
+    },
+    {
       "path": "/api/cron/soap-opera",
       "schedule": "0 14 * * *"
     },

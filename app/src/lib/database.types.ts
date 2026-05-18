@@ -134,8 +134,132 @@ export type Database = {
           },
         ]
       }
+      cart_abandonment_subscribers: {
+        Row: {
+          created_at: string
+          diagnostic_label: string | null
+          email: string
+          emails_sent: number
+          id: string
+          identity_variant: string | null
+          last_error: string | null
+          last_sent_at: string | null
+          next_send_at: string | null
+          price_type: string
+          recovered_at: string | null
+          recovered_session_id: string | null
+          status: string
+          stripe_session_id: string
+          unsubscribed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          diagnostic_label?: string | null
+          email: string
+          emails_sent?: number
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          price_type: string
+          recovered_at?: string | null
+          recovered_session_id?: string | null
+          status?: string
+          stripe_session_id: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          diagnostic_label?: string | null
+          email?: string
+          emails_sent?: number
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          price_type?: string
+          recovered_at?: string | null
+          recovered_session_id?: string | null
+          status?: string
+          stripe_session_id?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      challenge_subscribers: {
+        Row: {
+          completed_at: string | null
+          confirmation_sent_at: string | null
+          confirmation_token: string | null
+          created_at: string
+          email: string
+          emails_sent: number
+          first_name: string
+          id: string
+          identity_variant: string | null
+          last_error: string | null
+          last_reply_at: string | null
+          last_sent_at: string | null
+          next_send_at: string | null
+          product_url: string | null
+          source: string
+          status: string
+          subscribed_at: string
+          unsubscribed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
+          created_at?: string
+          email: string
+          emails_sent?: number
+          first_name: string
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_reply_at?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          product_url?: string | null
+          source?: string
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
+          created_at?: string
+          email?: string
+          emails_sent?: number
+          first_name?: string
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_reply_at?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          product_url?: string | null
+          source?: string
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       diagnostic_leads: {
         Row: {
+          analysis_detail: Json | null
           biggest_attempt: string | null
           bucket: string | null
           converted_session_id: string | null
@@ -153,6 +277,9 @@ export type Database = {
           next_step: string | null
           product_url: string
           recent_revenue: string | null
+          share_revoked_at: string | null
+          share_visibility: string
+          shared_at: string | null
           source: string | null
           subscriber_id: string | null
           time_since_launch: string | null
@@ -160,6 +287,7 @@ export type Database = {
           user_agent: string | null
         }
         Insert: {
+          analysis_detail?: Json | null
           biggest_attempt?: string | null
           bucket?: string | null
           converted_session_id?: string | null
@@ -177,6 +305,9 @@ export type Database = {
           next_step?: string | null
           product_url: string
           recent_revenue?: string | null
+          share_revoked_at?: string | null
+          share_visibility?: string
+          shared_at?: string | null
           source?: string | null
           subscriber_id?: string | null
           time_since_launch?: string | null
@@ -184,6 +315,7 @@ export type Database = {
           user_agent?: string | null
         }
         Update: {
+          analysis_detail?: Json | null
           biggest_attempt?: string | null
           bucket?: string | null
           converted_session_id?: string | null
@@ -201,6 +333,9 @@ export type Database = {
           next_step?: string | null
           product_url?: string
           recent_revenue?: string | null
+          share_revoked_at?: string | null
+          share_visibility?: string
+          shared_at?: string | null
           source?: string | null
           subscriber_id?: string | null
           time_since_launch?: string | null
@@ -272,6 +407,119 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      founding_cohort: {
+        Row: {
+          created_at: string
+          direct_line_expires_at: string | null
+          email: string
+          id: string
+          identity_variant: string | null
+          price_lock_committed: boolean
+          seat_claimed_at: string
+          seat_number: number
+          stripe_customer_id: string | null
+          stripe_session_id: string
+          stripe_subscription_id: string | null
+          updated_at: string
+          user_id: string | null
+          waitlist_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          direct_line_expires_at?: string | null
+          email: string
+          id?: string
+          identity_variant?: string | null
+          price_lock_committed?: boolean
+          seat_claimed_at?: string
+          seat_number: number
+          stripe_customer_id?: string | null
+          stripe_session_id: string
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          waitlist_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          direct_line_expires_at?: string | null
+          email?: string
+          id?: string
+          identity_variant?: string | null
+          price_lock_committed?: boolean
+          seat_claimed_at?: string
+          seat_number?: number
+          stripe_customer_id?: string | null
+          stripe_session_id?: string
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+          waitlist_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "founding_cohort_waitlist_id_fkey"
+            columns: ["waitlist_id"]
+            isOneToOne: false
+            referencedRelation: "founding_waitlist"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      founding_waitlist: {
+        Row: {
+          confirmation_sent_at: string | null
+          confirmation_token: string | null
+          converted_session_id: string | null
+          converted_to_founding_at: string | null
+          created_at: string
+          email: string
+          emails_sent: number
+          id: string
+          identity_variant: string | null
+          last_error: string | null
+          last_sent_at: string | null
+          next_send_at: string | null
+          source: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
+          converted_session_id?: string | null
+          converted_to_founding_at?: string | null
+          created_at?: string
+          email: string
+          emails_sent?: number
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
+          converted_session_id?: string | null
+          converted_to_founding_at?: string | null
+          created_at?: string
+          email?: string
+          emails_sent?: number
+          id?: string
+          identity_variant?: string | null
+          last_error?: string | null
+          last_sent_at?: string | null
+          next_send_at?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       milestones: {
         Row: {
@@ -542,68 +790,10 @@ export type Database = {
         }
         Relationships: []
       }
-      challenge_subscribers: {
-        Row: {
-          completed_at: string | null
-          created_at: string
-          email: string
-          emails_sent: number
-          first_name: string
-          id: string
-          identity_variant: string | null
-          last_error: string | null
-          last_reply_at: string | null
-          last_sent_at: string | null
-          next_send_at: string | null
-          product_url: string | null
-          source: string
-          status: string
-          subscribed_at: string
-          unsubscribed_at: string | null
-          updated_at: string
-        }
-        Insert: {
-          completed_at?: string | null
-          created_at?: string
-          email: string
-          emails_sent?: number
-          first_name: string
-          id?: string
-          identity_variant?: string | null
-          last_error?: string | null
-          last_reply_at?: string | null
-          last_sent_at?: string | null
-          next_send_at?: string | null
-          product_url?: string | null
-          source?: string
-          status?: string
-          subscribed_at?: string
-          unsubscribed_at?: string | null
-          updated_at?: string
-        }
-        Update: {
-          completed_at?: string | null
-          created_at?: string
-          email?: string
-          emails_sent?: number
-          first_name?: string
-          id?: string
-          identity_variant?: string | null
-          last_error?: string | null
-          last_reply_at?: string | null
-          last_sent_at?: string | null
-          next_send_at?: string | null
-          product_url?: string | null
-          source?: string
-          status?: string
-          subscribed_at?: string
-          unsubscribed_at?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       seinfeld_subscribers: {
         Row: {
+          confirmation_sent_at: string | null
+          confirmation_token: string | null
           created_at: string
           current_index: number
           email: string
@@ -618,6 +808,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
           created_at?: string
           current_index?: number
           email: string
@@ -632,6 +824,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
           created_at?: string
           current_index?: number
           email?: string
@@ -657,6 +851,8 @@ export type Database = {
       }
       soap_opera_subscribers: {
         Row: {
+          confirmation_sent_at: string | null
+          confirmation_token: string | null
           diagnostic_result: string | null
           email: string
           emails_sent: number
@@ -668,9 +864,13 @@ export type Database = {
           source: string | null
           status: string
           subscribed_at: string
+          testimonial_offer_sent_at: string | null
+          testimonial_offer_session_url: string | null
           unsubscribed_at: string | null
         }
         Insert: {
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
           diagnostic_result?: string | null
           email: string
           emails_sent?: number
@@ -682,9 +882,13 @@ export type Database = {
           source?: string | null
           status?: string
           subscribed_at?: string
+          testimonial_offer_sent_at?: string | null
+          testimonial_offer_session_url?: string | null
           unsubscribed_at?: string | null
         }
         Update: {
+          confirmation_sent_at?: string | null
+          confirmation_token?: string | null
           diagnostic_result?: string | null
           email?: string
           emails_sent?: number
@@ -696,6 +900,8 @@ export type Database = {
           source?: string | null
           status?: string
           subscribed_at?: string
+          testimonial_offer_sent_at?: string | null
+          testimonial_offer_session_url?: string | null
           unsubscribed_at?: string | null
         }
         Relationships: []

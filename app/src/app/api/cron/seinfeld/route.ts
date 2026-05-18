@@ -43,23 +43,45 @@ export async function GET(req: NextRequest) {
   // ── Phase 1: enroll Soap Opera graduates ─────────────────────────────────
   // Two-step (fetch IDs, then insert filtered set) because the Supabase JS
   // client doesn't support correlated INSERT…SELECT in a single call.
+  //
+  // FunnelFixer carry-over gate (migration 0030):
+  //   We pull `source` + `testimonial_offer_sent_at` so we can skip
+  //   funnelfixer-cohort graduates that have NOT yet received the one-shot
+  //   testimonial-farm reactivation offer (sent by
+  //   /api/cron/testimonial-farm-offer). Once that cron stamps the row, the
+  //   recipient is eligible for Seinfeld enrollment on the next tick. This
+  //   prevents the same-day double-send window where a Wednesday Seinfeld
+  //   broadcast would land in the same inbox as the testimonial-farm offer.
   let enrolled = 0;
   const { data: graduates, error: gradError } = await supabase
     .from("soap_opera_subscribers")
-    .select("id, email")
+    .select("id, email, source, testimonial_offer_sent_at")
     .eq("status", "complete")
     .limit(1000);
 
   if (gradError) {
     console.error("[seinfeld-cron] graduates_select_failed", gradError);
   } else if (graduates && graduates.length > 0) {
-    const emails = graduates.map((g) => g.email);
-    const { data: existing } = await supabase
-      .from("seinfeld_subscribers")
-      .select("email")
-      .in("email", emails);
+    // Honest gate: a funnelfixer-source graduate is held back from Seinfeld
+    // until the testimonial-farm offer has fired (or until the operator
+    // bypasses by manually stamping testimonial_offer_sent_at). Non-funnelfixer
+    // graduates flow straight through.
+    const eligible = graduates.filter((g) => {
+      const isFunnelfixer =
+        typeof g.source === "string" &&
+        g.source.startsWith("funnelfixer_");
+      if (!isFunnelfixer) return true;
+      return g.testimonial_offer_sent_at != null;
+    });
+    const emails = eligible.map((g) => g.email);
+    const { data: existing } = emails.length === 0
+      ? { data: [] as { email: string }[] }
+      : await supabase
+          .from("seinfeld_subscribers")
+          .select("email")
+          .in("email", emails);
     const existingEmails = new Set((existing ?? []).map((r) => r.email));
-    const newRows = graduates
+    const newRows = eligible
       .filter((g) => !existingEmails.has(g.email))
       .map((g) => ({
         email: g.email,
