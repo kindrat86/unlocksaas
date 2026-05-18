@@ -10,6 +10,7 @@ import {
   ORGANIZATION_SAME_AS,
   PRIMARY_AUDIENCE_TYPE,
 } from "@/lib/seo/entity";
+import { glossaryTermSlug } from "@/lib/glossary";
 import {
   ACTIVATION_LOG,
   LAST_VERIFIED_DATE,
@@ -203,6 +204,18 @@ const TRUST_SURFACES = Object.freeze([
     description:
       "Eight verbatim objections from real Indie Hackers / Hacker News threads and the answers a founder would receive over email.",
     markdownMirror: "/faq.md",
+  },
+  {
+    // Drift-close 2026-05-19: /glossary shipped in #32 and is referenced
+    // in llms.txt under the Trust block, but the JSON sibling did not
+    // mirror it. Brunson Hard-Rule: the markdown and JSON indexes are
+    // the same surface in different formats; one cannot omit what the
+    // other advertises.
+    path: "/glossary",
+    title: "Glossary",
+    description:
+      "Working definitions of the 16 Brunson sales-funnel terms Unlock SaaS teaches (Hook, Story, Offer, Big Domino, Value Ladder, Stack Slide, Perfect Webinar, Soap Opera Sequence, Seinfeld Email, Reluctant Hero, Dream 100, Wrong Person, Weak Offer, Weak Belief, Verified Builder, Brunson Hard-Rule). Each term has a stable in-page anchor (/glossary#<term-slug>) matching the DefinedTermSet JSON-LD per-term @id.",
+    markdownMirror: "/glossary.md",
   },
   {
     path: "/contact",
@@ -498,7 +511,23 @@ function buildPayload() {
     },
     facts: KEY_FACTS,
     mentions: MENTIONED_ENTITIES,
-    definedTerms: DEFINED_TERMS,
+    // Defined terms with their canonical citation URL. Each entry carries
+    // the term, the founder's working definition, and the absolute anchor
+    // URL on /glossary (`<base>/glossary#<slug>`). JSON-consuming retrievers
+    // that want a citable URL per term can read `.url` directly instead of
+    // having to derive the slug. setUrl points at the DefinedTermSet @id
+    // anchor on /glossary, matching the schema.org JSON-LD on the same page.
+    definedTerms: {
+      setUrl: `${BASE_URL}/glossary#defined-term-set`,
+      hubUrl: `${BASE_URL}/glossary`,
+      markdownMirror: `${BASE_URL}/glossary.md`,
+      terms: DEFINED_TERMS.map((t) => ({
+        term: t.term,
+        slug: glossaryTermSlug(t.term),
+        definition: t.definition,
+        url: `${BASE_URL}/glossary#${glossaryTermSlug(t.term)}`,
+      })),
+    },
     // Earned-media list. Empty until a real public mention publishes.
     // Reluctant-Hero rule: no paid placements badged as earned, no
     // homepage-only links badged as feature articles.
