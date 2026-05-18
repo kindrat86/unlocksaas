@@ -12,6 +12,7 @@ import {
 } from "@/lib/diagnostic";
 import { DiagnosisShareCard } from "./share-card";
 import { DeepReport, type DeepAnalysisDetail } from "./deep-report";
+import { DiagnosticResultViewedTracker } from "@/components/analytics/diagnostic-result-viewed-tracker";
 
 type ShareVisibility = "private" | "public" | "revoked";
 
@@ -298,6 +299,13 @@ function BridgePage({ row }: { row: LeadRow }) {
 
   return (
     <PageFrame hostLine={`Diagnosis for ${host}.`}>
+      {/* PostHog: bridge-page conversion-rate denominator. Sourced from the
+          server-resolved label so the event property matches what the
+          analyst sees in the badge. */}
+      <DiagnosticResultViewedTracker
+        label={label === "error" ? "indeterminate" : label}
+        product_url={row.product_url}
+      />
       {/* One-free-per-founder framing. Permanent link, no expiry. The bridge
           below carries the actual upsell — this banner just sets the frame so
           the visitor doesn't try to come back for a second freebie. Hidden

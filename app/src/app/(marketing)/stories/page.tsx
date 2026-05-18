@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { StoriesPageViewedTracker } from "@/components/analytics/stories-page-viewed-tracker";
 import { StoriesOptIn } from "./stories-opt-in";
 import {
   ArticleJsonLd,
@@ -189,6 +190,7 @@ export default function StoriesReverseSqueezePage() {
         speakableSelectors={[".aeo-story-a"]}
       />
       <AbExposureBeacon />
+      <StoriesPageViewedTracker />
       <article className="max-w-2xl mx-auto">
         {/* PREFACE */}
         <header className="mb-12">

@@ -2,6 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
+import { captureServer } from "@/lib/analytics/server";
+import { Event } from "@/lib/analytics/events";
 
 export type LoginState = {
   ok: boolean;
@@ -59,6 +61,20 @@ export async function sendMagicLink(
       message: "Something went wrong sending the link. Try again in a minute.",
     };
   }
+
+  // PostHog: magic-link request observed. Privacy rule (memory:
+  // project_unlocksaas_posthog.md) — raw emails stay out of PostHog. We send
+  // the email DOMAIN as a property for cohort splits (gmail vs custom-domain
+  // signups correlate with founder seriousness) and use the same domain as
+  // the distinct id so per-domain aggregates resolve cleanly. Per-user
+  // identity continuity to UserSignedIn is intentionally NOT done here — the
+  // domain id is a deliberate aggregate. Fire-and-forget; never throw out of
+  // analytics into the auth flow.
+  const emailDomain = email.split("@")[1] ?? "unknown";
+  captureServer(`email-domain:${emailDomain}`, Event.MagicLinkRequested, {
+    email_domain: emailDomain,
+    next,
+  });
 
   return {
     ok: true,

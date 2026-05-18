@@ -3,6 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
+import { DiagnosticShareReferralTracker } from "@/components/analytics/diagnostic-share-referral-tracker";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
@@ -82,6 +83,10 @@ export default async function DiagnosticSqueezePage(
       />
       {/* A/B exposure attribution lives on every funnel hub & squeeze surface. */}
       <AbExposureBeacon />
+      {/* Butterfly Marketing Loop 1, final step. Fires only when document.referrer
+          matches /diagnosis/<uuid> — i.e. a share referral arrived. Cold direct
+          visits do not fire. */}
+      <DiagnosticShareReferralTracker />
       {/* Hook variant attribution. Single-fire mount beacon, server-resolved
           variant passed in as prop so no client-side round-trip. */}
       <DiagnosticHookVariantBeacon
