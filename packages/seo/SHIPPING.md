@@ -163,3 +163,51 @@ npm deprecate @unlocksaas/seo@0.1.0 "0.1.0 deprecated, see CHANGELOG"
 - [ ] GitHub repo (monorepo or mirror) has the "About" sidebar pointing at unlocksaas.com
 - [ ] At least one awesome-list PR opened
 - [ ] Show HN posted with no fabricated claims, no "we", first-person founder voice
+
+---
+
+## 7. Publishing 0.1.1 (and future patch releases)
+
+`0.1.1` (2026-05-18 evening) is committed on this branch but unpublished. It drops the meta-description drift false-positive that was causing `validate-claims --strict` to fail against every SEO-optimized page on production. See `CHANGELOG.md` for the full reasoning.
+
+To publish:
+
+```bash
+cd packages/seo
+npm whoami                        # confirm logged in as the_data_nerd
+git pull                          # make sure you have the 0.1.1 commit
+npm version --no-git-tag-version  # confirms package.json says 0.1.1
+npm publish --access public
+# prompted for 2FA OTP — paste 6-digit code from authenticator
+# success line: + @unlocksaas/seo@0.1.1
+```
+
+Verification after publish:
+
+```bash
+npm view @unlocksaas/seo version           # should print 0.1.1
+npx -y @unlocksaas/seo@latest help         # should run from a clean shell
+npx -y @unlocksaas/seo@latest validate-claims https://unlocksaas.com/ --strict
+# Expected: PASS (exit 0)
+```
+
+What 0.1.1 unblocks:
+
+- The CI workflow at `.github/workflows/seo-audit.yml` already passes `--strict`. With 0.1.1 deployed to npm, every PR preview audit will now report drift findings as real failures instead of swallowing them.
+- The 0.1.1 release is non-breaking — any consumer of 0.1.0 can upgrade with no code changes. The exit code is now more conservative (fewer false `--strict` failures), not less.
+
+### When to bump versions
+
+- **0.1.x patch** — bug fixes in `validate-claims` (false positives, edge cases), CLI ergonomics, README clarifications.
+- **0.2.x minor** — new JSON-LD builders, new CLI subcommands, new honesty rules.
+- **1.0.x major** — only after the package has been stable in CI on three real consumer sites for 60+ days. Don't rush to 1.0; the 0.x signal is honest.
+
+### Quick-rollback for 0.1.1
+
+If 0.1.1 breaks something nobody anticipated:
+
+```bash
+npm deprecate @unlocksaas/seo@0.1.1 "Reverted. See CHANGELOG; use 0.1.0 or 0.1.2."
+```
+
+Then fix forward to 0.1.2 — don't try to unpublish 0.1.1 once anything has installed it.
