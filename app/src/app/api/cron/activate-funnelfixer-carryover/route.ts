@@ -18,15 +18,15 @@ export const dynamic = "force-dynamic";
  *   2. Email signups next (most recent → oldest): less verification, but
  *      newer signups are more likely to be live inboxes.
  *
- * Stagger logic: each activated subscriber gets next_send_at = max(now,
- * latest existing funnelfixer next_send_at + 30 minutes). That keeps every
- * pair of FunnelFixer sends ≥30 minutes apart across the whole cohort –
- * the deliverability rule the operator set on 2026-05-18 (build-log
- * "Email verification + double opt-in + Resend bounce webhook" section).
- *
- * The actual dispatch happens in /api/cron/funnelfixer-tick (every 30 min),
- * which picks one due funnelfixer row per tick. This cron only stages the
- * schedule.
+ * Stagger logic: the new batch is staggered at 30-minute intervals starting
+ * from NOW (first sub: next_send_at = now; second: now + 30 min; ...). The
+ * 30-min spacing within the batch gives the tick cron a deterministic order
+ * to drain them. We do NOT anchor to other in-flight subs' future
+ * next_send_at — that was a bug that pushed today's Email 1 sends ~11h
+ * after activation when a previously-active sub had a far-future scheduled
+ * email. The actual 30-min-between-sends throttle across the whole cohort
+ * is already enforced by /api/cron/funnelfixer-tick (which sends one due
+ * row per tick, and the tick runs every 30 min).
  *
  * Idempotent: when no paused funnelfixer rows remain, returns
  * { ok: true, activated: 0, reason: "queue_empty" } and exits.
@@ -94,33 +94,15 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // ── 2. Find the latest existing scheduled funnelfixer send ───────────────
-  // The new batch slots in 30 minutes after whatever's already in flight.
-  const { data: scheduled, error: schedErr } = await supabase
-    .from("soap_opera_subscribers")
-    .select("next_send_at")
-    .ilike("source", "funnelfixer_%")
-    .eq("status", "active")
-    .not("next_send_at", "is", null)
-    .order("next_send_at", { ascending: false })
-    .limit(1);
-
-  if (schedErr) {
-    console.error("[activate-funnelfixer] select_scheduled_failed", schedErr);
-    return NextResponse.json(
-      { error: "select_scheduled_failed", detail: schedErr.message },
-      { status: 500 }
-    );
-  }
-
+  // ── 2. Stagger the new batch from NOW at 30-min intervals ────────────────
+  // First slot fires immediately (the next funnelfixer-tick run picks it up
+  // within ≤30 min). The 30-min spacing within the batch is only there so
+  // the tick cron has a deterministic order to drain them; the actual
+  // ≥30-min-between-sends throttle is enforced by tick cron running every
+  // 30 min and dispatching one due row per run.
   const THIRTY_MIN_MS = 30 * 60 * 1000;
   const now = Date.now();
-  const latestExisting = scheduled && scheduled.length > 0 && scheduled[0]?.next_send_at
-    ? Date.parse(scheduled[0].next_send_at as string)
-    : 0;
-
-  // First slot: max(now, latestExisting + 30 min). Subsequent slots add 30 min.
-  let nextSlot = Math.max(now, latestExisting + THIRTY_MIN_MS);
+  let nextSlot = now;
 
   // ── 3. Flip status=active with staggered next_send_at ────────────────────
   const activated: Array<{ email: string; next_send_at: string }> = [];
