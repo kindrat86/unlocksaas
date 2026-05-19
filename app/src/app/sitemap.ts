@@ -26,6 +26,9 @@ import { JOURNEY_SLUGS } from "@/lib/journeys";
 import { SKILL_SLUGS } from "@/lib/skills";
 import { EXPERIMENT_SLUGS } from "@/lib/experiments";
 import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
+import { BUSINESS_TERM_SLUGS } from "@/lib/business-terms";
+import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
+import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -763,6 +766,72 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/pricing-model/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #27 — non-Brunson SaaS business terms.
+    // Data source: src/lib/business-terms.ts. PMF, ICP, GTM, MoR, NPS,
+    // TAM/SAM/SOM, ACV, MVP. Distinct from /glossary (Brunson method
+    // terms) and /saas-metric (numerical metrics with formulas).
+    // DefinedTerm + Article + FAQPage + Breadcrumb JSON-LD; hub
+    // carries DefinedTermSet.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/business-term`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/business-term`),
+    },
+    ...BUSINESS_TERM_SLUGS.map((slug) => ({
+      url: `${base}/business-term/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/business-term/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #28 — onboarding flow patterns.
+    // Data source: src/lib/onboarding-patterns.ts. Eight SaaS
+    // onboarding design patterns (linear walkthrough, in-product
+    // checklist, sample data, just-in-time, guided setup, concierge,
+    // trial-to-paid, empty-state-as-onboarding). Article + FAQPage +
+    // Breadcrumb JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/onboarding-pattern`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.55,
+      alternates: hreflang(`${base}/onboarding-pattern`),
+    },
+    ...ONBOARDING_PATTERN_SLUGS.map((slug) => ({
+      url: `${base}/onboarding-pattern/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/onboarding-pattern/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #29 — lifecycle-stage retention tactics.
+    // Data source: src/lib/retention-tactics.ts. Eight retention
+    // tactics mapped to specific lifecycle stages (week-1, month-1,
+    // quarter-1, year-1, ongoing). Each carries target metric,
+    // specific actions, failure modes, and when to retire. Article +
+    // FAQPage + Breadcrumb JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/retention-tactic`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/retention-tactic`),
+    },
+    ...RETENTION_TACTIC_SLUGS.map((slug) => ({
+      url: `${base}/retention-tactic/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/retention-tactic/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

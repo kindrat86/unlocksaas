@@ -212,6 +212,21 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Pricing models hub](${BASE}/pricing-model): Structural analyses of the eight indie SaaS pricing models — flat-rate, per-seat, usage-based, freemium, tiered, hybrid, pay-what-you-want, lifetime deal. Each page covers how the model works, best-fit and worst-fit conditions, unit-economics implications, common implementation mistakes, and the positioning trap each model often hides. Distinct from /pricing-teardown (specific products applying the models). Article + FAQPage + BreadcrumbList JSON-LD per detail page.
 - Per-model pages at \`${BASE}/pricing-model/<slug>\` — flat-rate-pricing, per-seat-pricing, usage-based-pricing, freemium-pricing, tiered-pricing, hybrid-pricing, pay-what-you-want-pricing, lifetime-deal-pricing.
 
+## Programmatic SEO surfaces — SaaS business term glossary
+
+- [Business terms hub](${BASE}/business-term): Canonical definitions for the non-Brunson, non-formula SaaS terminology indie founders run into — PMF, ICP, GTM, MoR, NPS, TAM/SAM/SOM, ACV, MVP. Each page covers the short citation-ready definition, the longer context, how to operationalize the concept, the common misuse, and what good looks like for indie SaaS. Distinct from /glossary (Brunson method terms) and /saas-metric (numerical metrics). DefinedTerm + Article + FAQPage + BreadcrumbList JSON-LD per detail page; hub carries DefinedTermSet.
+- Per-term pages at \`${BASE}/business-term/<slug>\` — product-market-fit, ideal-customer-profile, go-to-market, merchant-of-record, net-promoter-score, tam-sam-som, annual-contract-value, minimum-viable-product.
+
+## Programmatic SEO surfaces — onboarding flow patterns
+
+- [Onboarding patterns hub](${BASE}/onboarding-pattern): Eight structural onboarding design patterns for indie SaaS — linear walkthrough, in-product checklist, sample data pre-population, just-in-time, guided setup wizard, concierge, trial-to-paid, empty-state-as-onboarding. Each page covers how the pattern works, best-fit and worst-fit conditions, the activation metric, implementation considerations, common mistakes, and variations. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-pattern pages at \`${BASE}/onboarding-pattern/<slug>\` — linear-walkthrough-onboarding, in-product-checklist-onboarding, sample-data-onboarding, just-in-time-onboarding, guided-setup-onboarding, concierge-onboarding, trial-to-paid-onboarding, empty-state-onboarding.
+
+## Programmatic SEO surfaces — lifecycle-stage retention tactics
+
+- [Retention tactics hub](${BASE}/retention-tactic): Eight retention tactics mapped to specific lifecycle stages (week-1, month-1, quarter-1, year-1, ongoing). Each page covers what the tactic is, why this lifecycle stage requires it, the target retention metric, the specific actions to deploy, when to retire, and the common failure modes. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-tactic pages at \`${BASE}/retention-tactic/<slug>\` — personal-week-1-checkin, day-3-activation-nudge, month-1-feedback-call, milestone-celebration, quarterly-revisit-email, win-back-after-cancel, annual-renewal-prompt, feature-deprecation-notice.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

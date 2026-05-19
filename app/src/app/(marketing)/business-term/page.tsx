@@ -4,55 +4,55 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
-  SAAS_METRIC_ENTRIES,
-  METRIC_CATEGORIES,
-  METRIC_CATEGORY_LABELS,
-} from "@/lib/saas-metrics";
+  BUSINESS_TERM_ENTRIES,
+  BUSINESS_TERM_CATEGORIES,
+  BUSINESS_TERM_CATEGORY_LABELS,
+} from "@/lib/business-terms";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 export const dynamic = "force-static";
 
-const CANONICAL = "/saas-metric";
+const CANONICAL = "/business-term";
 
 export const metadata: Metadata = {
-  title: "SaaS Metric Formulas: MRR, ARR, CAC, LTV, Churn | Unlock SaaS",
+  title: "Indie SaaS Business Terms (PMF, ICP, GTM, MoR, NPS) | Unlock SaaS",
   description:
-    "Definitions and formulas for the ten core SaaS metrics — MRR, ARR, CAC, LTV, LTV:CAC, churn, ARPU, payback period, burn multiple, NRR. With worked examples.",
+    "Canonical definitions for non-Brunson, non-formula SaaS business terms — PMF, ICP, GTM, MoR, NPS, TAM/SAM/SOM, ACV, MVP. Plus how indie founders most often misuse them.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "SaaS Metric Formulas — Unlock SaaS",
+    title: "Indie SaaS Business Terms — Unlock SaaS",
     description:
-      "Canonical SaaS metric formulas with worked examples and common miscalculations.",
+      "Canonical SaaS business term definitions with common misuse and what good operationalization looks like.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SaaS Metric Formulas",
-    description: "MRR, ARR, CAC, LTV, churn, ARPU, payback, burn multiple, NRR — canonical formulas with worked examples.",
+    title: "Indie SaaS Business Terms",
+    description: "PMF, ICP, GTM, MoR, NPS, TAM/SAM/SOM, ACV, MVP.",
   },
 };
 
 const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "SaaS Metric Formulas and How to Calculate Them",
-  url: `${BASE_URL}/saas-metric`,
+  name: "Indie SaaS Business Terms Glossary",
+  url: `${BASE_URL}/business-term`,
   description:
-    "Definitions, formulas, worked examples, and common miscalculations for the ten core SaaS metrics.",
+    "Canonical definitions for SaaS business terms beyond Brunson-method funnel terminology and SaaS metrics.",
   isPartOf: { "@id": ID.website },
   inLanguage: "en-US",
   mainEntity: {
     "@type": "ItemList",
-    numberOfItems: SAAS_METRIC_ENTRIES.length,
-    itemListElement: SAAS_METRIC_ENTRIES.map((e, i) => ({
+    numberOfItems: BUSINESS_TERM_ENTRIES.length,
+    itemListElement: BUSINESS_TERM_ENTRIES.map((e, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: e.displayName,
-      url: `${BASE_URL}/saas-metric/${e.slug}`,
+      url: `${BASE_URL}/business-term/${e.slug}`,
       description: e.shortDefinition,
     })),
   },
@@ -66,8 +66,8 @@ const BREADCRUMB_JSON = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
-      name: "SaaS metrics",
-      item: `${BASE_URL}/saas-metric`,
+      name: "Business terms",
+      item: `${BASE_URL}/business-term`,
     },
   ],
 });
@@ -75,19 +75,19 @@ const BREADCRUMB_JSON = JSON.stringify({
 const DEFINED_TERM_SET_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "DefinedTermSet",
-  name: "SaaS metric glossary",
-  url: `${BASE_URL}/saas-metric`,
-  hasDefinedTerm: SAAS_METRIC_ENTRIES.map((e) => ({
+  name: "Indie SaaS business-term glossary",
+  url: `${BASE_URL}/business-term`,
+  hasDefinedTerm: BUSINESS_TERM_ENTRIES.map((e) => ({
     "@type": "DefinedTerm",
-    name: e.metricName,
+    name: e.termName,
     alternateName: e.abbreviation,
     description: e.shortDefinition,
-    url: `${BASE_URL}/saas-metric/${e.slug}`,
-    inDefinedTermSet: `${BASE_URL}/saas-metric`,
+    url: `${BASE_URL}/business-term/${e.slug}`,
+    inDefinedTermSet: `${BASE_URL}/business-term`,
   })),
 });
 
-export default function SaasMetricHubPage() {
+export default function BusinessTermHubPage() {
   return (
     <main className="min-h-screen">
       <script
@@ -115,43 +115,44 @@ export default function SaasMetricHubPage() {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-foreground">
-            SaaS metrics
+            Business terms
           </li>
         </ol>
       </nav>
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Formulas, not feel-good
+          Definitional, citation-ready
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          SaaS metric formulas and how to calculate them.
+          Indie SaaS business-term glossary.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Canonical formulas for the ten core SaaS metrics — MRR, ARR, CAC,
-          LTV, LTV:CAC, churn rate, ARPU, CAC payback period, burn multiple,
-          NRR. Each page covers the formula, a worked example, what the
-          metric tells you, what it does NOT tell you, and the common
-          miscalculations indie SaaS founders make.
+          Canonical definitions for the non-Brunson, non-formula SaaS
+          terminology indie founders run into — PMF, ICP, GTM, MoR, NPS,
+          TAM/SAM/SOM, ACV, MVP. Each page covers the short definition,
+          the longer context, how to operationalize the concept, the
+          common misuse, and what good looks like for indie SaaS.
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed mt-4">
           Distinct from{" "}
           <Link href="/glossary" className="text-primary hover:underline">
             /glossary
           </Link>{" "}
-          (Brunson-method terms — Hook, Story, Offer) and{" "}
-          <Link href="/benchmarks" className="text-primary hover:underline">
-            /benchmarks
+          (Brunson-method funnel terminology) and{" "}
+          <Link href="/saas-metric" className="text-primary hover:underline">
+            /saas-metric
           </Link>{" "}
-          (directional ranges — &ldquo;what is a good X&rdquo;). Saas-metric
-          is the &ldquo;what IS X and how do I calculate it&rdquo; surface.
+          (numerical metrics with formulas).
         </p>
       </header>
 
       <Separator className="my-2" />
 
-      {METRIC_CATEGORIES.map((category) => {
-        const items = SAAS_METRIC_ENTRIES.filter((e) => e.category === category);
+      {BUSINESS_TERM_CATEGORIES.map((category) => {
+        const items = BUSINESS_TERM_ENTRIES.filter(
+          (e) => e.category === category,
+        );
         if (items.length === 0) return null;
         return (
           <section
@@ -163,17 +164,17 @@ export default function SaasMetricHubPage() {
               id={`cat-${category}`}
               className="text-xl font-bold mb-3 leading-tight"
             >
-              {METRIC_CATEGORY_LABELS[category]}
+              {BUSINESS_TERM_CATEGORY_LABELS[category]}
             </h2>
             <ul className="space-y-2">
               {items.map((e) => (
                 <li key={e.slug}>
                   <Link
-                    href={`/saas-metric/${e.slug}`}
+                    href={`/business-term/${e.slug}`}
                     className="block py-1 hover:underline"
                   >
                     <span className="text-primary font-semibold">
-                      {e.abbreviation}
+                      {e.abbreviation ?? e.termName}
                     </span>{" "}
                     <span className="text-muted-foreground text-sm">
                       — {e.shortDefinition}
@@ -195,26 +196,18 @@ export default function SaasMetricHubPage() {
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Pair definitions with directional ranges
+              Pair definitions with the metric pages
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              Each metric page that has a matching{" "}
-              <Link
-                href="/benchmarks"
-                className="text-primary hover:underline"
-              >
-                benchmark
-              </Link>{" "}
-              cross-links to its directional range. Use this hub for
-              definitions and formulas; use the benchmarks hub for the
-              &ldquo;is this number good?&rdquo; question.
+              Many terms here connect to specific metrics with formulas.
+              The cross-links from each detail page resolve there.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
-                <Link href="/benchmarks">Benchmarks hub</Link>
+                <Link href="/saas-metric">SaaS metric formulas</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/business-term">Business term glossary</Link>
+                <Link href="/glossary">Brunson glossary</Link>
               </Button>
             </div>
           </CardContent>

@@ -44,6 +44,9 @@ import { JOURNEY_SLUGS } from "@/lib/journeys";
 import { SKILL_SLUGS } from "@/lib/skills";
 import { EXPERIMENT_SLUGS } from "@/lib/experiments";
 import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
+import { BUSINESS_TERM_SLUGS } from "@/lib/business-terms";
+import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
+import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -146,6 +149,9 @@ const PSEO_COUNTS = Object.freeze({
   skill: SKILL_SLUGS.length,
   experiment: EXPERIMENT_SLUGS.length,
   pricingModel: PRICING_MODEL_SLUGS.length,
+  businessTerm: BUSINESS_TERM_SLUGS.length,
+  onboardingPattern: ONBOARDING_PATTERN_SLUGS.length,
+  retentionTactic: RETENTION_TACTIC_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -173,7 +179,10 @@ const PSEO_TOTAL =
   PSEO_COUNTS.journey +
   PSEO_COUNTS.skill +
   PSEO_COUNTS.experiment +
-  PSEO_COUNTS.pricingModel;
+  PSEO_COUNTS.pricingModel +
+  PSEO_COUNTS.businessTerm +
+  PSEO_COUNTS.onboardingPattern +
+  PSEO_COUNTS.retentionTactic;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -528,6 +537,33 @@ const PSEO_CATALOGS = Object.freeze({
       "Structural analyses of the eight indie SaaS pricing models (flat-rate, per-seat, usage-based, freemium, tiered, hybrid, pay-what-you-want, lifetime deal). Each entry covers how the model works, best-fit and worst-fit conditions, unit-economics implications, common implementation mistakes, and the positioning trap each model often hides. Distinct from /pricing-teardown (specific products applying the models).",
     slugs: PRICING_MODEL_SLUGS,
     count: PSEO_COUNTS.pricingModel,
+  },
+  businessTerm: {
+    hub: "/business-term",
+    slugPattern: "/business-term/{slug}",
+    markdownPattern: null,
+    description:
+      "Canonical definitions for the non-Brunson, non-formula SaaS terminology indie founders run into: PMF, ICP, GTM, MoR, NPS, TAM/SAM/SOM, ACV, MVP. Each page covers short citation-ready definition, longer context, how to operationalize, common misuse, and what good looks like for indie SaaS. Distinct from /glossary (Brunson terms) and /saas-metric (numerical metrics).",
+    slugs: BUSINESS_TERM_SLUGS,
+    count: PSEO_COUNTS.businessTerm,
+  },
+  onboardingPattern: {
+    hub: "/onboarding-pattern",
+    slugPattern: "/onboarding-pattern/{slug}",
+    markdownPattern: null,
+    description:
+      "Eight structural onboarding design patterns for indie SaaS: linear walkthrough, in-product checklist, sample-data pre-population, just-in-time, guided setup wizard, concierge, trial-to-paid, empty-state-as-onboarding. Each covers how the pattern works, best/worst fit, activation metric, implementation, mistakes, and variations.",
+    slugs: ONBOARDING_PATTERN_SLUGS,
+    count: PSEO_COUNTS.onboardingPattern,
+  },
+  retentionTactic: {
+    hub: "/retention-tactic",
+    slugPattern: "/retention-tactic/{slug}",
+    markdownPattern: null,
+    description:
+      "Eight retention tactics mapped to specific lifecycle stages (week-1, month-1, quarter-1, year-1, ongoing): personal week-1 check-in, day-3 activation nudge, month-1 feedback call, milestone celebration, quarterly revisit email, win-back after cancel, annual renewal prompt, feature deprecation notice. Each carries target metric, actions, failure modes, and when to retire.",
+    slugs: RETENTION_TACTIC_SLUGS,
+    count: PSEO_COUNTS.retentionTactic,
   },
 });
 
