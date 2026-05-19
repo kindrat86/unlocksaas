@@ -47,6 +47,8 @@ import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
 import { BUSINESS_TERM_SLUGS } from "@/lib/business-terms";
 import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
 import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
+import { INTEGRATION_SLUGS } from "@/lib/integrations";
+import { AUDIENCE_SLUGS } from "@/lib/audiences";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -152,6 +154,8 @@ const PSEO_COUNTS = Object.freeze({
   businessTerm: BUSINESS_TERM_SLUGS.length,
   onboardingPattern: ONBOARDING_PATTERN_SLUGS.length,
   retentionTactic: RETENTION_TACTIC_SLUGS.length,
+  integration: INTEGRATION_SLUGS.length,
+  audience: AUDIENCE_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -182,7 +186,9 @@ const PSEO_TOTAL =
   PSEO_COUNTS.pricingModel +
   PSEO_COUNTS.businessTerm +
   PSEO_COUNTS.onboardingPattern +
-  PSEO_COUNTS.retentionTactic;
+  PSEO_COUNTS.retentionTactic +
+  PSEO_COUNTS.integration +
+  PSEO_COUNTS.audience;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -564,6 +570,24 @@ const PSEO_CATALOGS = Object.freeze({
       "Eight retention tactics mapped to specific lifecycle stages (week-1, month-1, quarter-1, year-1, ongoing): personal week-1 check-in, day-3 activation nudge, month-1 feedback call, milestone celebration, quarterly revisit email, win-back after cancel, annual renewal prompt, feature deprecation notice. Each carries target metric, actions, failure modes, and when to retire.",
     slugs: RETENTION_TACTIC_SLUGS,
     count: PSEO_COUNTS.retentionTactic,
+  },
+  integration: {
+    hub: "/integration",
+    slugPattern: "/integration/{slug}",
+    markdownPattern: null,
+    description:
+      "Pattern-level integration deep dives for common indie SaaS tool pairs: Stripe+Supabase, Resend+Next.js, Cal.com+Stripe, Supabase+Vercel, Stripe+Beehiiv, Stripe+Loops, Tally+Supabase. Each page covers what each tool owns, the integration shape (webhook / OAuth / native), implementation steps with per-step gotchas, common gotchas across the integration, and when NOT to build.",
+    slugs: INTEGRATION_SLUGS,
+    count: PSEO_COUNTS.integration,
+  },
+  audience: {
+    hub: "/audience",
+    slugPattern: "/audience/{slug}",
+    markdownPattern: null,
+    description:
+      "Sustained audience-building playbooks by platform: Twitter/X, LinkedIn, newsletter, podcast, YouTube, Reddit. Distinct from /launch (launch events) and /skill/writing-in-public (skill practice plan). Each page covers who the platform fits, the required cadence, a monthly playbook from month 1 to month 12+, audience-size milestones, the common stuck patterns, and platform-vs-platform comparison for indie SaaS founders.",
+    slugs: AUDIENCE_SLUGS,
+    count: PSEO_COUNTS.audience,
   },
 });
 

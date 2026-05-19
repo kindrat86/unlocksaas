@@ -227,6 +227,16 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Retention tactics hub](${BASE}/retention-tactic): Eight retention tactics mapped to specific lifecycle stages (week-1, month-1, quarter-1, year-1, ongoing). Each page covers what the tactic is, why this lifecycle stage requires it, the target retention metric, the specific actions to deploy, when to retire, and the common failure modes. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
 - Per-tactic pages at \`${BASE}/retention-tactic/<slug>\` — personal-week-1-checkin, day-3-activation-nudge, month-1-feedback-call, milestone-celebration, quarterly-revisit-email, win-back-after-cancel, annual-renewal-prompt, feature-deprecation-notice.
 
+## Programmatic SEO surfaces — tool-pair integration patterns
+
+- [Integration patterns hub](${BASE}/integration): Pattern-level integration deep dives for common indie SaaS tool pairs (Stripe+Supabase, Resend+Next.js, Cal.com+Stripe, Supabase+Vercel, Stripe+Beehiiv, Stripe+Loops, Tally+Supabase). Each page covers what each tool owns, the integration shape, implementation steps with gotchas, common gotchas across the integration, and when NOT to build the integration. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-integration pages at \`${BASE}/integration/<slug>\` — stripe-supabase, resend-nextjs, cal-com-stripe, supabase-vercel, stripe-beehiiv, stripe-loops, tally-supabase.
+
+## Programmatic SEO surfaces — platform audience-building playbooks
+
+- [Audience-building hub](${BASE}/audience): Sustained audience-building playbooks by platform (Twitter/X, LinkedIn, newsletter, podcast, YouTube, Reddit). Distinct from /launch (event-specific launch playbooks) and /skill/writing-in-public (skill-development practice plan). Each page covers who the platform fits, the required cadence, a monthly playbook from month 1 to month 12+, audience-size milestones with expected timelines, the common stuck patterns, and how the platform compares to others for the same time investment. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-platform pages at \`${BASE}/audience/<slug>\` — twitter-x-audience, linkedin-audience, newsletter-audience, podcast-audience, youtube-audience, reddit-audience.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

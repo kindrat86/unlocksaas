@@ -29,6 +29,8 @@ import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
 import { BUSINESS_TERM_SLUGS } from "@/lib/business-terms";
 import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
 import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
+import { INTEGRATION_SLUGS } from "@/lib/integrations";
+import { AUDIENCE_SLUGS } from "@/lib/audiences";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -832,6 +834,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/retention-tactic/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #30 — tool-pair integration patterns.
+    // Data source: src/lib/integrations.ts. Pattern-level integration
+    // deep dives for common indie SaaS tool pairs (Stripe+Supabase,
+    // Resend+Next.js, Cal.com+Stripe, Supabase+Vercel, Stripe+Beehiiv,
+    // Stripe+Loops, Tally+Supabase). Each carries what each tool owns,
+    // the integration shape, implementation steps with gotchas, and
+    // when NOT to build. HowTo + Article + FAQPage + Breadcrumb
+    // JSON-LD. Build-time guard enforces teardown-slug integrity.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/integration`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.55,
+      alternates: hreflang(`${base}/integration`),
+    },
+    ...INTEGRATION_SLUGS.map((slug) => ({
+      url: `${base}/integration/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/integration/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #31 — platform-specific audience-building.
+    // Data source: src/lib/audiences.ts. Sustained audience-building
+    // playbooks by platform (Twitter/X, LinkedIn, newsletter, podcast,
+    // YouTube, Reddit). Distinct from /launch (event-specific) and
+    // /skill/writing-in-public (skill practice plan). Each entry
+    // covers who it fits, cadence, monthly playbook from month 1 to
+    // month 12+, milestone subscriber counts, stuck patterns, and
+    // comparison to other platforms. HowTo + Article + FAQPage +
+    // Breadcrumb JSON-LD. Build-time guard enforces niche-slug
+    // integrity.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/audience`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/audience`),
+    },
+    ...AUDIENCE_SLUGS.map((slug) => ({
+      url: `${base}/audience/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/audience/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
