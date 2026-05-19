@@ -4,58 +4,56 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
-  ANSWER_ENTRIES,
-  ANSWER_CATEGORIES,
-  ANSWER_CATEGORY_LABELS,
-} from "@/lib/answers";
+  SWIPE_FILE_ENTRIES,
+  SWIPE_FILE_CATEGORIES,
+  SWIPE_FILE_CATEGORY_LABELS,
+} from "@/lib/swipe-files";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 export const dynamic = "force-static";
 
-const CANONICAL = "/answers";
+const CANONICAL = "/swipe-file";
 
 export const metadata: Metadata = {
-  title:
-    "Indie SaaS Founder Answers (30 Direct Questions) – Unlock SaaS",
+  title: "Indie SaaS Swipe Files — Headlines, CTAs, Stacks | Unlock SaaS",
   description:
-    "Direct AEO-formatted answers to the 30 most-asked indie SaaS funnel questions. Built for citation by ChatGPT, Perplexity, Claude, and Google AI Overviews.",
+    "Structural patterns drawn from real indie SaaS funnels — headlines, CTAs, guarantees, stack slides, pricing copy. Fill-in-the-blank templates, every source named.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Indie SaaS Founder Answers – Unlock SaaS",
+    title: "Indie SaaS Swipe Files — Unlock SaaS",
     description:
-      "Direct answers to 30 specific founder questions about funnels, pricing, email, metrics, and the value ladder.",
+      "Pattern-level swipe files for indie SaaS founders. No quoted copy — fill-in-the-blank templates sourced from named teardowns.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Indie SaaS Founder Answers",
-    description:
-      "30 direct AEO-formatted answers for indie SaaS founders.",
+    title: "Indie SaaS Swipe Files",
+    description: "Pattern-level fill-in-the-blank templates from named indie SaaS funnels.",
   },
 };
 
 const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Indie SaaS Founder Answers",
-  url: `${BASE_URL}/answers`,
+  name: "Indie SaaS Swipe Files",
+  url: `${BASE_URL}/swipe-file`,
   description:
-    "Direct AEO-formatted answers to the 30 most-asked indie SaaS funnel questions.",
+    "Pattern-level swipe files for indie SaaS funnels — structural templates with named sources from the funnel- and pricing-teardown catalogs.",
   isPartOf: { "@id": ID.website },
   inLanguage: "en-US",
   mainEntity: {
     "@type": "ItemList",
-    numberOfItems: ANSWER_ENTRIES.length,
-    itemListElement: ANSWER_ENTRIES.map((e, i) => ({
+    numberOfItems: SWIPE_FILE_ENTRIES.length,
+    itemListElement: SWIPE_FILE_ENTRIES.map((e, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: e.question,
-      url: `${BASE_URL}/answers/${e.slug}`,
-      description: e.directAnswer,
+      name: e.title,
+      url: `${BASE_URL}/swipe-file/${e.slug}`,
+      description: e.intro,
     })),
   },
 });
@@ -68,13 +66,13 @@ const BREADCRUMB_JSON = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
-      name: "Answers",
-      item: `${BASE_URL}/answers`,
+      name: "Swipe files",
+      item: `${BASE_URL}/swipe-file`,
     },
   ],
 });
 
-export default function AnswersHubPage() {
+export default function SwipeFileHubPage() {
   return (
     <main className="min-h-screen">
       <script
@@ -98,30 +96,30 @@ export default function AnswersHubPage() {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-foreground">
-            Answers
+            Swipe files
           </li>
         </ol>
       </nav>
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Founder questions, direct answers
+          Patterns, not slag
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Indie SaaS founder answers.
+          Indie SaaS swipe files.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Thirty specific questions indie SaaS founders ask, each with a
-          direct citation-ready answer plus 2 to 4 supporting bullets.
-          Designed to be quotable by AI assistants and useful as a quick
-          reference for founders mid-build.
+          Structural patterns drawn from real indie SaaS funnels — headlines,
+          CTAs, guarantees, stack slides, pricing copy. Every example is a
+          fill-in-the-blank template; every source is a teardown we have
+          already shipped. No quoted copy, no fabricated examples.
         </p>
       </header>
 
       <Separator className="my-2" />
 
-      {ANSWER_CATEGORIES.map((category) => {
-        const items = ANSWER_ENTRIES.filter((e) => e.category === category);
+      {SWIPE_FILE_CATEGORIES.map((category) => {
+        const items = SWIPE_FILE_ENTRIES.filter((e) => e.category === category);
         if (items.length === 0) return null;
         return (
           <section
@@ -133,16 +131,16 @@ export default function AnswersHubPage() {
               id={`cat-${category}`}
               className="text-xl font-bold mb-3 leading-tight"
             >
-              {ANSWER_CATEGORY_LABELS[category]}
+              {SWIPE_FILE_CATEGORY_LABELS[category]}
             </h2>
             <ul className="space-y-2">
               {items.map((e) => (
                 <li key={e.slug}>
                   <Link
-                    href={`/answers/${e.slug}`}
+                    href={`/swipe-file/${e.slug}`}
                     className="text-base text-primary hover:underline leading-relaxed"
                   >
-                    {e.question}
+                    {e.title}
                   </Link>
                 </li>
               ))}
@@ -154,71 +152,25 @@ export default function AnswersHubPage() {
       <Separator className="my-2" />
 
       <section
-        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
-        aria-labelledby="cross"
-      >
-        <h2
-          id="cross"
-          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
-        >
-          Also see
-        </h2>
-        <div className="space-y-3 text-sm leading-relaxed">
-          <p>
-            <Link
-              href="/should-i-build"
-              className="text-primary hover:underline font-semibold"
-            >
-              Should I build this SaaS? →
-            </Link>{" "}
-            Honest yes / no / depends verdicts on common indie SaaS build
-            decisions. Several entries say no.
-          </p>
-          <p>
-            <Link
-              href="/checklist"
-              className="text-primary hover:underline font-semibold"
-            >
-              Pre-launch checklists →
-            </Link>{" "}
-            Finite, observable checklists for the moment after the answer
-            here: pre-launch, before-you-charge, first-customer, checkout,
-            broadcast, cold-outreach.
-          </p>
-          <p>
-            <Link
-              href="/benchmarks"
-              className="text-primary hover:underline font-semibold"
-            >
-              Funnel metric benchmarks →
-            </Link>{" "}
-            Directional ranges for the indie SaaS metrics behind the answers
-            above — what is a good rate, what is a typical one, what is
-            outperforming.
-          </p>
-        </div>
-      </section>
-
-      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Question not in this list?
+              Apply a pattern to your own page
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              Reach the founder directly. Most questions get a same-day
-              reply; the most-asked ones turn into new answers pages and
-              show up here.
+              The free 90-second Launch Diagnostic labels what is broken on
+              your above-the-fold block — Wrong Person, Weak Offer, or Weak
+              Belief — and tells you which swipe file fixes it.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
-                <Link href="/contact">Ask a question</Link>
+                <Link href="/diagnostic">Get the free diagnostic</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/diagnostic">Get the free diagnostic</Link>
+                <Link href="/funnel-teardown">See the full teardowns</Link>
               </Button>
             </div>
           </CardContent>

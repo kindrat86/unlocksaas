@@ -29,6 +29,9 @@ import { NICHE_SLUGS } from "@/lib/niches";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
+import { SHOULD_I_BUILD_SLUGS } from "@/lib/should-i-build";
+import { CHECKLIST_SLUGS } from "@/lib/checklists";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -116,6 +119,9 @@ const PSEO_COUNTS = Object.freeze({
   benchmarks: BENCHMARK_SLUGS.length,
   funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
   answers: ANSWER_SLUGS.length,
+  swipeFile: SWIPE_FILE_SLUGS.length,
+  shouldIBuild: SHOULD_I_BUILD_SLUGS.length,
+  checklist: CHECKLIST_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -128,7 +134,10 @@ const PSEO_TOTAL =
   PSEO_COUNTS.niches +
   PSEO_COUNTS.benchmarks +
   PSEO_COUNTS.funnelPlaybook +
-  PSEO_COUNTS.answers;
+  PSEO_COUNTS.answers +
+  PSEO_COUNTS.swipeFile +
+  PSEO_COUNTS.shouldIBuild +
+  PSEO_COUNTS.checklist;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -348,6 +357,33 @@ const PSEO_CATALOGS = Object.freeze({
       "Direct AEO-formatted answers to 30 specific founder questions across funnel mechanics, pricing, email, metrics, positioning, and the value ladder. Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for citation by AI assistants.",
     slugs: ANSWER_SLUGS,
     count: PSEO_COUNTS.answers,
+  },
+  swipeFile: {
+    hub: "/swipe-file",
+    slugPattern: "/swipe-file/{slug}",
+    markdownPattern: null,
+    description:
+      "Pattern-level swipe files for indie SaaS funnels. Each page collects structural templates (NOT verbatim copy) for one funnel element — headlines, CTAs, guarantees, stack slides, pricing copy — drawn from already-shipped funnel and pricing teardowns. Every pattern is a fill-in-the-blank template with named slot positions; every source is a teardown URL on this site.",
+    slugs: SWIPE_FILE_SLUGS,
+    count: PSEO_COUNTS.swipeFile,
+  },
+  shouldIBuild: {
+    hub: "/should-i-build",
+    slugPattern: "/should-i-build/{slug}",
+    markdownPattern: null,
+    description:
+      "Honest yes / no / depends verdicts on the most-asked indie SaaS build decisions: tiny niches, AI wrappers, ClickFunnels clones, friends-and-family SaaS, side-project SaaS, faceless brands, pre-selling, agency-vs-SaaS, and pre-launch builds. Several entries deliberately say no; the trust moat is that not every idea is green-lit.",
+    slugs: SHOULD_I_BUILD_SLUGS,
+    count: PSEO_COUNTS.shouldIBuild,
+  },
+  checklist: {
+    hub: "/checklist",
+    slugPattern: "/checklist/{slug}",
+    markdownPattern: null,
+    description:
+      "Finite, ordered checklists for pre-revenue indie SaaS founders: pre-launch, before-you-charge-money, first-paying-customer, landing-page-publish, first-email-broadcast, tripwire-launch, checkout-conversion, cold-outreach-message. Every step has an observable done-condition; HowTo + ItemList schema makes each page citation-friendly for AI Overviews 'checklist' queries.",
+    slugs: CHECKLIST_SLUGS,
+    count: PSEO_COUNTS.checklist,
   },
 });
 

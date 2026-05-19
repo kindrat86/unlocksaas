@@ -152,6 +152,39 @@ export default function ForHubPage() {
       <Separator className="my-2" />
 
       <section
+        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+        aria-labelledby="cross"
+      >
+        <h2
+          id="cross"
+          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
+        >
+          Also see
+        </h2>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            <Link
+              href="/should-i-build"
+              className="text-primary hover:underline font-semibold"
+            >
+              Should I build this SaaS? →
+            </Link>{" "}
+            Honest yes / no / depends verdicts before the niche-tuning starts.
+          </p>
+          <p>
+            <Link
+              href="/category"
+              className="text-primary hover:underline font-semibold"
+            >
+              Category roundups →
+            </Link>{" "}
+            The same niches viewed through the lens of the tools they
+            evaluate.
+          </p>
+        </div>
+      </section>
+
+      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >

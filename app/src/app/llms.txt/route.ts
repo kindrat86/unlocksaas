@@ -137,6 +137,21 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Answers hub](${BASE}/answers): Thirty direct AEO-formatted answers to the most-asked indie SaaS funnel questions, organized into six categories (funnel mechanics, pricing, email, metrics, positioning, value ladder). Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for AI assistant citation.
 - Per-question pages at \`${BASE}/answers/<slug>\` — how-long-should-a-vsl-be, what-is-a-good-roas-for-a-tripwire, should-i-have-an-upsell-after-a-tripwire, whats-the-difference-between-vsl-and-webinar, how-many-emails-in-a-soap-opera-sequence, should-saas-pricing-end-in-9, should-i-show-prices-on-my-saas-website, how-much-discount-for-annual-saas-plans, should-i-charge-monthly-or-annual, best-time-to-send-marketing-emails, how-often-to-email-my-list, subject-line-length-for-best-open-rate, do-emojis-help-email-open-rates, what-is-a-good-saas-conversion-rate, what-is-a-good-cart-abandonment-rate, what-is-a-good-saas-churn-rate, what-ltv-to-cac-ratio-should-i-target, how-niche-should-my-saas-be, what-is-the-attractive-character-in-brunson, what-is-the-dream-100-method, what-is-the-big-domino, what-is-the-value-ladder, how-many-rungs-should-a-value-ladder-have, do-i-need-a-tripwire, what-is-a-good-tripwire-price, is-clickfunnels-still-worth-it, should-i-build-my-own-funnel-or-use-a-tool, how-do-i-write-a-stack-slide, what-is-a-money-back-guarantee-worth.
 
+## Programmatic SEO surfaces — pattern-level swipe files
+
+- [Swipe files hub](${BASE}/swipe-file): Pattern-level swipe files for indie SaaS funnels. Each page collects structural templates (NOT verbatim copy) for one funnel element — headlines, CTAs, guarantees, stack slides, pricing copy — sourced from already-shipped funnel and pricing teardowns. Every pattern is a fill-in-the-blank template with named slot positions; every source is a teardown URL on this site. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-swipe-file pages at \`${BASE}/swipe-file/<slug>\` — outcome-time-headline-swipe-file, negation-positioning-headline-swipe-file, outcome-cta-button-swipe-file, single-testimonial-block-swipe-file, money-back-guarantee-swipe-file, stack-slide-swipe-file, pricing-page-copy-swipe-file, above-fold-hook-swipe-file.
+
+## Programmatic SEO surfaces — pre-revenue decision pages
+
+- [Should I build hub](${BASE}/should-i-build): Honest yes / no / depends verdicts on the most-asked indie SaaS build decisions. Several entries deliberately say no; the trust moat is that not every idea is green-lit. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per detail page with verdict-line speakable mark.
+- Per-decision pages at \`${BASE}/should-i-build/<slug>\` — should-i-build-a-saas-for-a-tiny-niche, should-i-build-an-ai-wrapper-around-chatgpt, should-i-build-a-clickfunnels-clone, should-i-build-a-saas-for-friends-and-family, should-i-launch-without-a-pricing-page, should-i-build-saas-as-a-second-job, should-i-build-a-faceless-saas, should-i-pre-sell-before-i-build, should-i-build-a-saas-i-have-not-launched-yet, should-i-build-saas-vs-an-agency.
+
+## Programmatic SEO surfaces — pre-launch and pre-charge checklists
+
+- [Checklists hub](${BASE}/checklist): Finite, ordered checklists for pre-revenue indie SaaS founders. Every step has an observable done-condition; no aspirational items, no fabricated benchmarks. HowTo + ItemList + Article + FAQPage + BreadcrumbList JSON-LD per detail page — HowTo is the citation-friendly schema for "checklist" queries on AI Overviews and Perplexity.
+- Per-checklist pages at \`${BASE}/checklist/<slug>\` — pre-launch-saas-checklist, before-you-charge-money-checklist, first-paying-customer-checklist, landing-page-publish-checklist, first-email-broadcast-checklist, tripwire-launch-checklist, checkout-conversion-checklist, cold-outreach-message-checklist.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

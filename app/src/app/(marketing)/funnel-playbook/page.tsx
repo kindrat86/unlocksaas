@@ -151,6 +151,51 @@ export default function FunnelPlaybookHubPage() {
       <Separator className="my-2" />
 
       <section
+        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+        aria-labelledby="cross"
+      >
+        <h2
+          id="cross"
+          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
+        >
+          Also see
+        </h2>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            <Link
+              href="/checklist"
+              className="text-primary hover:underline font-semibold"
+            >
+              Pre-launch checklists →
+            </Link>{" "}
+            Finite, observable checklists that complement each playbook —
+            pre-launch, before-you-charge, first-customer, checkout,
+            broadcast, cold-outreach.
+          </p>
+          <p>
+            <Link
+              href="/swipe-file"
+              className="text-primary hover:underline font-semibold"
+            >
+              Pattern-level swipe files →
+            </Link>{" "}
+            Fill-in-the-blank structural templates for the funnel elements
+            each playbook calls for — headlines, stack slides, guarantees.
+          </p>
+          <p>
+            <Link
+              href="/funnel-teardown"
+              className="text-primary hover:underline font-semibold"
+            >
+              Real funnel teardowns →
+            </Link>{" "}
+            Worked examples on indie SaaS funnels — the named sources each
+            swipe-file pattern was observed in.
+          </p>
+        </div>
+      </section>
+
+      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >

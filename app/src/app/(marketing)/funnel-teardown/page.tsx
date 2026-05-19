@@ -322,6 +322,16 @@ export default function FunnelTeardownHub() {
             Side-by-side breakdowns against the tools indie SaaS founders
             actually evaluate before buying.
           </p>
+          <p>
+            <Link
+              href="/swipe-file"
+              className="text-primary hover:underline font-semibold"
+            >
+              Pattern-level swipe files →
+            </Link>{" "}
+            Fill-in-the-blank structural templates for headlines, CTAs,
+            guarantees, and stack slides, drawn from the teardowns above.
+          </p>
         </div>
       </section>
 

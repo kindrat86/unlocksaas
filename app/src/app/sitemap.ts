@@ -11,6 +11,9 @@ import { NICHE_SLUGS } from "@/lib/niches";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
+import { SHOULD_I_BUILD_SLUGS } from "@/lib/should-i-build";
+import { CHECKLIST_SLUGS } from "@/lib/checklists";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -396,6 +399,70 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/answers/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #12 — pattern-level swipe files.
+    // Data source: src/lib/swipe-files.ts. Structural patterns (no
+    // quoted copy) pulled from already-shipped funnel and pricing
+    // teardowns, with fill-in-the-blank templates and named sources.
+    // Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/swipe-file`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/swipe-file`),
+    },
+    ...SWIPE_FILE_SLUGS.map((slug) => ({
+      url: `${base}/swipe-file/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/swipe-file/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #13 — pre-revenue decision pages.
+    // Data source: src/lib/should-i-build.ts. Honest yes/no/depends
+    // verdicts on "should I build a SaaS that does X" questions. Several
+    // entries deliberately say no; the trust moat is that we do not
+    // green-light every idea. QAPage + Article + FAQPage + Breadcrumb
+    // JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/should-i-build`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/should-i-build`),
+    },
+    ...SHOULD_I_BUILD_SLUGS.map((slug) => ({
+      url: `${base}/should-i-build/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/should-i-build/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #14 — pre-launch / pre-charge checklists.
+    // Data source: src/lib/checklists.ts. Finite, ordered checklists
+    // with observable done-conditions. HowTo + ItemList + Article +
+    // FAQPage + Breadcrumb JSON-LD per detail page — HowTo is the
+    // citation-friendly schema for checklist queries on AI Overviews.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/checklist`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/checklist`),
+    },
+    ...CHECKLIST_SLUGS.map((slug) => ({
+      url: `${base}/checklist/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/checklist/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
