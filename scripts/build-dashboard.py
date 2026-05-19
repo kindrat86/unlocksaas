@@ -149,6 +149,10 @@ STRIPE_STARTER = env.get("STRIPE_STARTER_PRICE_ID", "")
 STRIPE_CORE = env.get("STRIPE_MACHINE_PRICE_ID", "")  # see feedback_rename_sweeps_exclude_env_vars
 
 RESEND_KEY = env.get("RESEND_API_KEY", "")
+# The Resend account is shared with GitDealFlow (a separate project). Filter
+# `/emails` responses to UnlockSaaS sends only so the dashboard does not credit
+# other projects' deliveries against UnlockSaaS subscribers.
+RESEND_FROM_DOMAIN = "unlocksaas.com"
 
 GSC_SITE = env.get("GSC_SITE_URL", "")
 GSC_EMAIL = env.get("GSC_SERVICE_ACCOUNT_EMAIL", "")
@@ -612,22 +616,60 @@ def stripe_data() -> dict:
 # ---------------- Resend engagement ----------------
 
 def resend_engagement() -> dict:
-    """Map email -> {sent, opened, clicked}. Resend's emails API exposes per-message status."""
-    out = {}
+    """
+    Map email -> {sent, opened, clicked} for UnlockSaaS deliveries only.
+
+    Two corrections relative to the previous implementation:
+
+    1. Filter by sender domain. The Resend account is shared with GitDealFlow,
+       so the raw `/emails` list mixes both projects. We only count rows where
+       `from` is on `RESEND_FROM_DOMAIN`. Without this filter a recipient that
+       happens to overlap (e.g. a contact that GitDealFlow also emails) gets
+       credited with sends they never received from UnlockSaaS.
+
+    2. Derive engagement from `last_event`. The Resend list endpoint does NOT
+       expose `opened_at` / `clicked_at` keys; only `last_event` (the most
+       recent state in the delivery state machine). The previous code read
+       the missing keys, so open and click rates were stuck at 0.
+
+    `last_event` semantics (Resend state machine):
+      - delivered → reached the recipient mailbox (counts as sent).
+      - opened    → recipient opened (implies delivered).
+      - clicked   → recipient clicked a link (implies opened + delivered).
+      - scheduled / sent (pre-delivery) / bounced / complained / failed
+        → not counted as a delivery to the inbox.
+
+    De-dupes by Resend `id` so a paginated overlap can't double-count a
+    message.
+    """
+    out: dict[str, dict[str, int]] = {}
+    seen_ids: set[str] = set()
     for m in resend_emails_log():
+        mid = m.get("id")
+        if not mid or mid in seen_ids:
+            continue
+        seen_ids.add(mid)
+
+        from_raw = (m.get("from") or "").lower()
+        if f"@{RESEND_FROM_DOMAIN}" not in from_raw:
+            continue
+
+        last = (m.get("last_event") or "").lower()
+        if last not in {"delivered", "opened", "clicked"}:
+            continue
+
         to_list = m.get("to") or []
+        if isinstance(to_list, str):
+            to_list = [to_list]
         for addr in to_list:
-            e = (addr or "").lower()
+            e = (addr or "").strip().lower()
             if not e:
                 continue
             rec = out.setdefault(e, {"sent": 0, "opened": 0, "clicked": 0})
             rec["sent"] += 1
-            last = m.get("last_event") or ""
-            if last in ("opened", "clicked", "delivered"):
-                pass
-            if m.get("opened_at"):
+            if last in {"opened", "clicked"}:
                 rec["opened"] += 1
-            if m.get("clicked_at"):
+            if last == "clicked":
                 rec["clicked"] += 1
     return out
 
