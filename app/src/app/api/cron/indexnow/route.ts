@@ -4,6 +4,12 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import { GLOSSARY_SLUGS } from "@/lib/glossary";
+import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
+import { NICHE_SLUGS } from "@/lib/niches";
+import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
+import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
+import { ANSWER_SLUGS } from "@/lib/answers";
 
 /**
  * IndexNow ping cron — Surface A.4 (crawlability) of strategy/google-strategy.md.
@@ -80,6 +86,12 @@ const STATIC_URLS: readonly string[] = [
   "/pricing-teardown",
   "/compare",
   "/category",
+  "/glossary",
+  "/why-isnt-my",
+  "/for",
+  "/benchmarks",
+  "/funnel-playbook",
+  "/answers",
   "/about",
   "/contact",
   "/privacy",
@@ -97,6 +109,12 @@ function buildUrlList(): string[] {
     ...PRICING_TEARDOWN_SLUGS.map((s) => `/pricing-teardown/${s}`),
     ...COMPARISON_SLUGS.map((s) => `/compare/${s}`),
     ...CATEGORY_SLUGS.map((s) => `/category/${s}`),
+    ...GLOSSARY_SLUGS.map((s) => `/glossary/${s}`),
+    ...WHY_ISNT_MY_SLUGS.map((s) => `/why-isnt-my/${s}`),
+    ...NICHE_SLUGS.map((s) => `/for/${s}`),
+    ...BENCHMARK_SLUGS.map((s) => `/benchmarks/${s}`),
+    ...FUNNEL_PLAYBOOK_SLUGS.map((s) => `/funnel-playbook/${s}`),
+    ...ANSWER_SLUGS.map((s) => `/answers/${s}`),
   ];
   return [...STATIC_URLS, ...dynamic].map((p) => `${BASE}${p}`);
 }
