@@ -41,6 +41,9 @@ import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
 import { OBJECTION_SLUGS } from "@/lib/objections";
 import { SAAS_METRIC_SLUGS } from "@/lib/saas-metrics";
 import { JOURNEY_SLUGS } from "@/lib/journeys";
+import { SKILL_SLUGS } from "@/lib/skills";
+import { EXPERIMENT_SLUGS } from "@/lib/experiments";
+import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -140,6 +143,9 @@ const PSEO_COUNTS = Object.freeze({
   objection: OBJECTION_SLUGS.length,
   saasMetric: SAAS_METRIC_SLUGS.length,
   journey: JOURNEY_SLUGS.length,
+  skill: SKILL_SLUGS.length,
+  experiment: EXPERIMENT_SLUGS.length,
+  pricingModel: PRICING_MODEL_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -164,7 +170,10 @@ const PSEO_TOTAL =
   PSEO_COUNTS.founderMistake +
   PSEO_COUNTS.objection +
   PSEO_COUNTS.saasMetric +
-  PSEO_COUNTS.journey;
+  PSEO_COUNTS.journey +
+  PSEO_COUNTS.skill +
+  PSEO_COUNTS.experiment +
+  PSEO_COUNTS.pricingModel;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -492,6 +501,33 @@ const PSEO_CATALOGS = Object.freeze({
       "Pattern-based journey templates (NOT case studies) for the milestone transitions every indie SaaS founder passes through: $0-to-first-customer, $1k-to-$10k MRR, day-job-to-indie, freelancer-to-SaaS, builder-to-marketer-builder, solo-to-team, failed-launch-to-relaunch. Each template names the phases, the typical time band, what to do at each phase, what to watch for, common detours, what success looks like, and what stuck looks like.",
     slugs: JOURNEY_SLUGS,
     count: PSEO_COUNTS.journey,
+  },
+  skill: {
+    hub: "/skill",
+    slugPattern: "/skill/{slug}",
+    markdownPattern: null,
+    description:
+      "Founder-skill explainers with practice plans, failure modes, and honest time-to-functional bands for the eight skills indie SaaS founders most need to build: customer development, cold email writing, testimonial asks, pricing conversations, writing in public, customer support, running sales demos, founder content creation.",
+    slugs: SKILL_SLUGS,
+    count: PSEO_COUNTS.skill,
+  },
+  experiment: {
+    hub: "/experiment",
+    slugPattern: "/experiment/{slug}",
+    markdownPattern: null,
+    description:
+      "Honest A/B test recipes for indie SaaS with sample-size discipline: headline test, pricing test, CTA copy test, trial-length test, onboarding email test, checkout friction test, social-proof placement test, annual-vs-monthly discount test. Each carries the hypothesis structure, variant design, primary and secondary metrics, minimum sample size, procedure, self-deceptions to avoid, and success profile.",
+    slugs: EXPERIMENT_SLUGS,
+    count: PSEO_COUNTS.experiment,
+  },
+  pricingModel: {
+    hub: "/pricing-model",
+    slugPattern: "/pricing-model/{slug}",
+    markdownPattern: null,
+    description:
+      "Structural analyses of the eight indie SaaS pricing models (flat-rate, per-seat, usage-based, freemium, tiered, hybrid, pay-what-you-want, lifetime deal). Each entry covers how the model works, best-fit and worst-fit conditions, unit-economics implications, common implementation mistakes, and the positioning trap each model often hides. Distinct from /pricing-teardown (specific products applying the models).",
+    slugs: PRICING_MODEL_SLUGS,
+    count: PSEO_COUNTS.pricingModel,
   },
 });
 

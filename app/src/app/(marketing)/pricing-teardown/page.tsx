@@ -311,6 +311,17 @@ export default function PricingTeardownHub() {
             Side-by-side comparisons against the tools indie SaaS founders
             actually evaluate before buying.
           </p>
+          <p>
+            <Link
+              href="/pricing-model"
+              className="text-primary hover:underline font-semibold"
+            >
+              Pricing-model deep dives →
+            </Link>{" "}
+            Structural analysis of the eight pricing models the teardowns
+            apply — flat-rate, per-seat, usage-based, freemium, tiered,
+            hybrid, pay-what-you-want, lifetime deal.
+          </p>
         </div>
       </section>
 

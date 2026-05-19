@@ -197,6 +197,21 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Journey templates hub](${BASE}/from-x-to-y): Pattern-based journey templates (NOT case studies) for the milestone transitions every indie SaaS founder passes through. Each template names the phases, the typical time band, what to do at each phase, what to watch for, common detours, what success looks like, and what stuck looks like. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
 - Per-journey pages at \`${BASE}/from-x-to-y/<slug>\` — from-zero-to-first-paying-customer, from-day-job-to-indie-founder, from-freelancer-to-saas-founder, from-launch-to-1k-mrr, from-1k-to-10k-mrr, from-solo-to-team, from-builder-to-marketer, from-launch-fail-to-relaunch.
 
+## Programmatic SEO surfaces — founder skills
+
+- [Skills hub](${BASE}/skill): Founder-skill explainers with practice plans, failure modes when self-teaching, and honest time-to-functional bands. Each page covers customer development, cold email writing, testimonial asks, pricing conversations, writing in public, customer support, running sales demos, or founder content creation. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-skill pages at \`${BASE}/skill/<slug>\` — customer-development, cold-email-writing, asking-for-testimonials, pricing-conversation, writing-in-public, customer-support, running-a-demo, founder-content-creation.
+
+## Programmatic SEO surfaces — A/B test and experiment recipes
+
+- [Experiments hub](${BASE}/experiment): Honest A/B test recipes for indie SaaS with sample-size discipline most founders skip. Each page covers headline tests, pricing tests, CTA copy tests, trial-length tests, onboarding email tests, checkout friction tests, social-proof placement tests, and annual-vs-monthly discount tests. Hypothesis structure, variant design, primary and secondary metrics, honest minimum sample size, procedure, self-deceptions to avoid, and the success profile. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-experiment pages at \`${BASE}/experiment/<slug>\` — saas-headline-test, pricing-test, cta-copy-test, trial-length-test, onboarding-email-test, checkout-friction-test, social-proof-test, annual-vs-monthly-discount-test.
+
+## Programmatic SEO surfaces — pricing model deep dives
+
+- [Pricing models hub](${BASE}/pricing-model): Structural analyses of the eight indie SaaS pricing models — flat-rate, per-seat, usage-based, freemium, tiered, hybrid, pay-what-you-want, lifetime deal. Each page covers how the model works, best-fit and worst-fit conditions, unit-economics implications, common implementation mistakes, and the positioning trap each model often hides. Distinct from /pricing-teardown (specific products applying the models). Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-model pages at \`${BASE}/pricing-model/<slug>\` — flat-rate-pricing, per-seat-pricing, usage-based-pricing, freemium-pricing, tiered-pricing, hybrid-pricing, pay-what-you-want-pricing, lifetime-deal-pricing.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

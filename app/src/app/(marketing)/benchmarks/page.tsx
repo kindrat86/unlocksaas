@@ -178,6 +178,17 @@ export default function BenchmarksHubPage() {
             Specific founder questions with direct citation-ready answers,
             including several about metric interpretation.
           </p>
+          <p>
+            <Link
+              href="/experiment"
+              className="text-primary hover:underline font-semibold"
+            >
+              Experiment recipes →
+            </Link>{" "}
+            How to test changes against these benchmarks honestly —
+            hypothesis structure, sample-size discipline, and the
+            self-deceptions to avoid.
+          </p>
         </div>
       </section>
 

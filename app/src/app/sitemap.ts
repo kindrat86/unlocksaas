@@ -23,6 +23,9 @@ import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
 import { OBJECTION_SLUGS } from "@/lib/objections";
 import { SAAS_METRIC_SLUGS } from "@/lib/saas-metrics";
 import { JOURNEY_SLUGS } from "@/lib/journeys";
+import { SKILL_SLUGS } from "@/lib/skills";
+import { EXPERIMENT_SLUGS } from "@/lib/experiments";
+import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -688,6 +691,78 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/from-x-to-y/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #24 — founder skills.
+    // Data source: src/lib/skills.ts. Each entry covers one specific
+    // founder skill (customer development, cold email, testimonial
+    // asks, pricing conversations, writing in public, customer
+    // support, running demos, content creation) with what good looks
+    // like, a practice plan, failure modes, and time-to-functional
+    // bands. HowTo + Article + FAQPage + Breadcrumb JSON-LD.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/skill`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/skill`),
+    },
+    ...SKILL_SLUGS.map((slug) => ({
+      url: `${base}/skill/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/skill/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #25 — A/B test / experiment recipes.
+    // Data source: src/lib/experiments.ts. Honest experiment recipes
+    // for indie SaaS (headline, pricing, CTA, trial length, onboarding
+    // email, checkout friction, social proof placement, annual-vs-
+    // monthly discount). Hypothesis structure, variant design, primary
+    // and secondary metrics, honest sample-size bands, procedure, and
+    // the self-deceptions most founders fall into. HowTo + Article +
+    // FAQPage + Breadcrumb JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/experiment`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/experiment`),
+    },
+    ...EXPERIMENT_SLUGS.map((slug) => ({
+      url: `${base}/experiment/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/experiment/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #26 — pricing-model deep dives.
+    // Data source: src/lib/pricing-models.ts. Distinct from /pricing-
+    // teardown (specific products); these are structural analyses of
+    // the eight indie SaaS pricing models (flat-rate, per-seat, usage-
+    // based, freemium, tiered, hybrid, pay-what-you-want, lifetime
+    // deal). Each entry covers how the model works, best/worst fit,
+    // unit-economics implications, implementation mistakes, and the
+    // positioning trap each model often hides. Article + FAQPage +
+    // Breadcrumb JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/pricing-model`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/pricing-model`),
+    },
+    ...PRICING_MODEL_SLUGS.map((slug) => ({
+      url: `${base}/pricing-model/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/pricing-model/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

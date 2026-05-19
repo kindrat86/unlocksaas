@@ -3,52 +3,53 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { JOURNEY_ENTRIES } from "@/lib/journeys";
+import { SKILL_ENTRIES } from "@/lib/skills";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 export const dynamic = "force-static";
 
-const CANONICAL = "/from-x-to-y";
+const CANONICAL = "/skill";
 
 export const metadata: Metadata = {
-  title: "Indie SaaS Milestone Journey Templates | Unlock SaaS",
+  title: "Indie SaaS Founder Skills to Build | Unlock SaaS",
   description:
-    "Phase-by-phase journey templates for the milestone transitions every indie SaaS founder makes. $0 to first customer, $1k to $10k MRR, builder to marketer, and more.",
+    "The eight founder skills indie SaaS operators most need to build — customer development, cold email, testimonial asks, pricing conversations, writing in public, support, demos, content.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Indie SaaS Milestone Journey Templates — Unlock SaaS",
+    title: "Indie SaaS Founder Skills to Build — Unlock SaaS",
     description:
-      "Structural journey templates for the milestone transitions indie SaaS founders go through. Phases, time bands, what to do, what to watch for.",
+      "Founder-skill explainers with practice plans, failure modes, and time-to-functional bands.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Indie SaaS Milestone Journey Templates",
-    description: "Journey templates, not case studies. Phases, time bands, what to do, and the common detours.",
+    title: "Indie SaaS Founder Skills to Build",
+    description:
+      "Customer development, cold email, testimonials, pricing, writing, support, demos, content.",
   },
 };
 
 const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Indie SaaS Milestone Journey Templates",
-  url: `${BASE_URL}/from-x-to-y`,
+  name: "Indie SaaS Founder Skills to Build",
+  url: `${BASE_URL}/skill`,
   description:
-    "Phase-by-phase journey templates for the milestone transitions indie SaaS founders go through. Pattern-based, not case-study based.",
+    "Founder-skill explainers with practice plans, failure modes, and honest time-to-functional bands.",
   isPartOf: { "@id": ID.website },
   inLanguage: "en-US",
   mainEntity: {
     "@type": "ItemList",
-    numberOfItems: JOURNEY_ENTRIES.length,
-    itemListElement: JOURNEY_ENTRIES.map((e, i) => ({
+    numberOfItems: SKILL_ENTRIES.length,
+    itemListElement: SKILL_ENTRIES.map((e, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: e.displayName,
-      url: `${BASE_URL}/from-x-to-y/${e.slug}`,
+      url: `${BASE_URL}/skill/${e.slug}`,
       description: e.intro,
     })),
   },
@@ -62,13 +63,13 @@ const BREADCRUMB_JSON = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
-      name: "Journey templates",
-      item: `${BASE_URL}/from-x-to-y`,
+      name: "Skills",
+      item: `${BASE_URL}/skill`,
     },
   ],
 });
 
-export default function FromXToYHubPage() {
+export default function SkillHubPage() {
   return (
     <main className="min-h-screen">
       <script
@@ -92,31 +93,25 @@ export default function FromXToYHubPage() {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-foreground">
-            Journey templates
+            Skills
           </li>
         </ol>
       </nav>
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Phase patterns, not case studies
+          Practice plans, not aspirational advice
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Indie SaaS milestone journey templates.
+          Indie SaaS founder skills to build.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          The structural journey for each major milestone indie SaaS
-          founders pass through: $0 to first customer, $1k to $10k MRR,
-          day job to indie founder, builder to marketer-builder, failed
-          launch to relaunch. Each template names the phases, the typical
-          time bands, what to do at each phase, what to watch for, and
-          the common detours.
-        </p>
-        <p className="text-sm text-muted-foreground leading-relaxed mt-4">
-          These are templates, not case studies. The structural pattern
-          comes from observation across many founders; specific
-          attributions wait until the Verified Builders directory carries
-          real customer journeys.
+          The eight founder skills indie SaaS operators most need to
+          build — and the ones non-technical or non-marketer founders
+          most often skip. Each page covers what the skill is, why it
+          matters, what good looks like, a concrete practice plan, the
+          failure modes when self-teaching, and the honest time-to-
+          functional band.
         </p>
       </header>
 
@@ -124,17 +119,17 @@ export default function FromXToYHubPage() {
 
       <section className="max-w-3xl mx-auto px-6 py-6">
         <ul className="space-y-4">
-          {JOURNEY_ENTRIES.map((e) => (
+          {SKILL_ENTRIES.map((e) => (
             <li key={e.slug}>
               <Link
-                href={`/from-x-to-y/${e.slug}`}
+                href={`/skill/${e.slug}`}
                 className="block border border-border/40 rounded-lg p-4 hover:border-primary/40 transition-colors"
               >
                 <p className="text-base font-semibold text-primary mb-1 leading-tight">
-                  {e.displayName}
+                  {e.skillName}
                 </p>
                 <p className="text-xs text-muted-foreground mb-2">
-                  {e.from} → {e.to} · Typical: {e.typicalTimeBand}
+                  Time to functional: {e.timeToFunctionalBand}
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {e.intro}
@@ -148,60 +143,25 @@ export default function FromXToYHubPage() {
       <Separator className="my-2" />
 
       <section
-        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
-        aria-labelledby="cross"
-      >
-        <h2
-          id="cross"
-          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
-        >
-          Also see
-        </h2>
-        <div className="space-y-3 text-sm leading-relaxed">
-          <p>
-            <Link
-              href="/skill"
-              className="text-primary hover:underline font-semibold"
-            >
-              Founder skills to build →
-            </Link>{" "}
-            Each journey phase requires specific skills (customer
-            development, cold email, pricing conversations). The skill
-            pages name the practice plans.
-          </p>
-          <p>
-            <Link
-              href="/founder-mistake"
-              className="text-primary hover:underline font-semibold"
-            >
-              Strategic founder mistakes →
-            </Link>{" "}
-            The mistakes most likely to extend each journey's timeline,
-            mapped to the Brunson Hook / Story / Offer triage.
-          </p>
-        </div>
-      </section>
-
-      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Which phase are you in?
+              Which skill is blocking your funnel?
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               The free 90-second Launch Diagnostic labels which Brunson
-              failure mode your page hits — and that maps cleanly to the
-              phase of the journey you are stuck in.
+              failure mode your page hits — and that maps to the skill
+              that, when built, fixes the underlying pattern.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
                 <Link href="/diagnostic">Get the free diagnostic</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/builders">Verified builders</Link>
+                <Link href="/founder-mistake">Strategic founder mistakes</Link>
               </Button>
             </div>
           </CardContent>
