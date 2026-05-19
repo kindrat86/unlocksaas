@@ -6,6 +6,11 @@ import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
+import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
+import { NICHE_SLUGS } from "@/lib/niches";
+import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
+import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
+import { ANSWER_SLUGS } from "@/lib/answers";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -291,6 +296,106 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/glossary/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #7 — panic-mode element diagnostics.
+    // Data source: src/lib/why-isnt-my.ts. Targets "why isn't my X
+    // converting" – the highest commercial intent search the ICP makes.
+    // Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/why-isnt-my`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/why-isnt-my`),
+    },
+    ...WHY_ISNT_MY_SLUGS.map((slug) => ({
+      url: `${base}/why-isnt-my/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/why-isnt-my/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #8 — niche / cohort pages.
+    // Data source: src/lib/niches.ts. Targets "[product] for [niche]"
+    // and identity-shaped searches. Article + FAQPage + BreadcrumbList
+    // JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/for`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/for`),
+    },
+    ...NICHE_SLUGS.map((slug) => ({
+      url: `${base}/for/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/for/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #9 — directional metric benchmarks (AEO).
+    // Data source: src/lib/benchmarks.ts. Pure AEO play: each page
+    // answers "what is a good X" with a cited directional range and
+    // band breakdown. Article + FAQPage + BreadcrumbList JSON-LD.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/benchmarks`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/benchmarks`),
+    },
+    ...BENCHMARK_SLUGS.map((slug) => ({
+      url: `${base}/benchmarks/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/benchmarks/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #10 — Brunson funnel playbooks.
+    // Data source: src/lib/funnel-playbooks.ts. Targets action-intent
+    // build queries ("tripwire playbook", "perfect webinar structure").
+    // Article + HowTo + FAQPage + BreadcrumbList JSON-LD per detail.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/funnel-playbook`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/funnel-playbook`),
+    },
+    ...FUNNEL_PLAYBOOK_SLUGS.map((slug) => ({
+      url: `${base}/funnel-playbook/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/funnel-playbook/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #11 — direct-answer AEO pages.
+    // Data source: src/lib/answers.ts. Pure citation-bait: each page
+    // is a single founder-question with a 2-4 sentence direct answer
+    // plus supporting bullets. QAPage + Article + BreadcrumbList JSON-LD.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/answers`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/answers`),
+    },
+    ...ANSWER_SLUGS.map((slug) => ({
+      url: `${base}/answers/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/answers/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
