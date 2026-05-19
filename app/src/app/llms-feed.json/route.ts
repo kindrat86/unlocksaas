@@ -38,6 +38,9 @@ import { POSITIONING_SLUGS } from "@/lib/positioning";
 import { TEMPLATE_SLUGS } from "@/lib/templates";
 import { LAUNCH_SLUGS } from "@/lib/launches";
 import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
+import { OBJECTION_SLUGS } from "@/lib/objections";
+import { SAAS_METRIC_SLUGS } from "@/lib/saas-metrics";
+import { JOURNEY_SLUGS } from "@/lib/journeys";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -134,6 +137,9 @@ const PSEO_COUNTS = Object.freeze({
   template: TEMPLATE_SLUGS.length,
   launch: LAUNCH_SLUGS.length,
   founderMistake: FOUNDER_MISTAKE_SLUGS.length,
+  objection: OBJECTION_SLUGS.length,
+  saasMetric: SAAS_METRIC_SLUGS.length,
+  journey: JOURNEY_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -155,7 +161,10 @@ const PSEO_TOTAL =
   PSEO_COUNTS.positioning +
   PSEO_COUNTS.template +
   PSEO_COUNTS.launch +
-  PSEO_COUNTS.founderMistake;
+  PSEO_COUNTS.founderMistake +
+  PSEO_COUNTS.objection +
+  PSEO_COUNTS.saasMetric +
+  PSEO_COUNTS.journey;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -456,6 +465,33 @@ const PSEO_CATALOGS = Object.freeze({
       "Strategic-level founder-mistake pages complementing /why-isnt-my (element-level diagnostics). Each entry maps a mistake (built before sold, priced too low, built for everyone, feature-adder, skipped audience, treated launch as finish line, built for myself, skipped founder story) to one of the Brunson diagnoses (Wrong Person / Weak Offer / Weak Belief), names how it shows up, why it happens, the real cost, the specific fix, false fixes to avoid, and the success signal.",
     slugs: FOUNDER_MISTAKE_SLUGS,
     count: PSEO_COUNTS.founderMistake,
+  },
+  objection: {
+    hub: "/objection",
+    slugPattern: "/objection/{slug}",
+    markdownPattern: null,
+    description:
+      "Brunson-method response scripts for the most common indie SaaS sales objections. Distinct from /answers (founder questions about funnels) — these are buyer objections to the offer itself. Each entry covers when the objection is legitimate, the real concern underneath, the response script, what NOT to say, and the question that surfaces the real concern.",
+    slugs: OBJECTION_SLUGS,
+    count: PSEO_COUNTS.objection,
+  },
+  saasMetric: {
+    hub: "/saas-metric",
+    slugPattern: "/saas-metric/{slug}",
+    markdownPattern: null,
+    description:
+      "Definitions and formulas for the ten core SaaS metrics: MRR, ARR, CAC, LTV, LTV:CAC, churn rate, ARPU, CAC payback period, burn multiple, NRR. Each page covers the canonical formula, a worked example, what the metric tells you and does NOT tell you, and common miscalculations. Distinct from /glossary (Brunson terms) and /benchmarks (directional ranges).",
+    slugs: SAAS_METRIC_SLUGS,
+    count: PSEO_COUNTS.saasMetric,
+  },
+  journey: {
+    hub: "/from-x-to-y",
+    slugPattern: "/from-x-to-y/{slug}",
+    markdownPattern: null,
+    description:
+      "Pattern-based journey templates (NOT case studies) for the milestone transitions every indie SaaS founder passes through: $0-to-first-customer, $1k-to-$10k MRR, day-job-to-indie, freelancer-to-SaaS, builder-to-marketer-builder, solo-to-team, failed-launch-to-relaunch. Each template names the phases, the typical time band, what to do at each phase, what to watch for, common detours, what success looks like, and what stuck looks like.",
+    slugs: JOURNEY_SLUGS,
+    count: PSEO_COUNTS.journey,
   },
 });
 

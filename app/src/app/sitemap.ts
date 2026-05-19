@@ -20,6 +20,9 @@ import { POSITIONING_SLUGS } from "@/lib/positioning";
 import { TEMPLATE_SLUGS } from "@/lib/templates";
 import { LAUNCH_SLUGS } from "@/lib/launches";
 import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
+import { OBJECTION_SLUGS } from "@/lib/objections";
+import { SAAS_METRIC_SLUGS } from "@/lib/saas-metrics";
+import { JOURNEY_SLUGS } from "@/lib/journeys";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -611,6 +614,80 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.55,
       alternates: hreflang(`${base}/founder-mistake/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #21 — buyer-objection handling.
+    // Data source: src/lib/objections.ts. Distinct from /answers
+    // (founder questions about funnels) — these are buyer objections
+    // to the offer itself ("too expensive", "no time", "can DIY",
+    // "wrong timing", missing feature, "more info", "tried before",
+    // "need to think"). QAPage + Article + FAQPage + Breadcrumb
+    // JSON-LD per detail page. Cross-links to /template for the
+    // underlying Brunson script and to /glossary for term anchors.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/objection`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/objection`),
+    },
+    ...OBJECTION_SLUGS.map((slug) => ({
+      url: `${base}/objection/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/objection/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #22 — SaaS metric formulas.
+    // Data source: src/lib/saas-metrics.ts. Distinct from /glossary
+    // (Brunson terms) and /benchmarks (directional ranges). Each
+    // entry is the canonical formula + worked example + what-it-tells-
+    // you / what-it-does-not + common miscalculations for one core
+    // SaaS metric (MRR, ARR, CAC, LTV, LTV:CAC, churn, ARPU, payback,
+    // burn multiple, NRR). DefinedTerm + Article + FAQPage +
+    // Breadcrumb JSON-LD per detail page. Hub carries a
+    // DefinedTermSet so retrievers can self-discover all metrics.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/saas-metric`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/saas-metric`),
+    },
+    ...SAAS_METRIC_SLUGS.map((slug) => ({
+      url: `${base}/saas-metric/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/saas-metric/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #23 — milestone journey templates.
+    // Data source: src/lib/journeys.ts. Pattern-based journey
+    // templates (NOT case studies) for the milestone transitions
+    // indie SaaS founders make: $0-to-first-customer, $1k-to-$10k MRR,
+    // day-job-to-indie, freelancer-to-SaaS, builder-to-marketer,
+    // solo-to-team, failed-launch-to-relaunch. Each carries phases,
+    // time bands, what-to-do per phase, common detours, success
+    // definition, and stuck signal. HowTo + Article + FAQPage +
+    // Breadcrumb JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/from-x-to-y`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/from-x-to-y`),
+    },
+    ...JOURNEY_SLUGS.map((slug) => ({
+      url: `${base}/from-x-to-y/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/from-x-to-y/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

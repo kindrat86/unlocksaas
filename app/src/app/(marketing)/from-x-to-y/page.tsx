@@ -3,52 +3,52 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { FOUNDER_MISTAKE_ENTRIES } from "@/lib/founder-mistakes";
+import { JOURNEY_ENTRIES } from "@/lib/journeys";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 export const dynamic = "force-static";
 
-const CANONICAL = "/founder-mistake";
+const CANONICAL = "/from-x-to-y";
 
 export const metadata: Metadata = {
-  title: "Strategic Indie SaaS Founder Mistakes | Unlock SaaS",
+  title: "Indie SaaS Milestone Journey Templates | Unlock SaaS",
   description:
-    "Eight strategic-level founder mistakes post-launch pre-revenue founders make. How they show up, why they happen, the real cost, and the specific fix.",
+    "Phase-by-phase journey templates for the milestone transitions every indie SaaS founder makes. $0 to first customer, $1k to $10k MRR, builder to marketer, and more.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Strategic Indie SaaS Founder Mistakes — Unlock SaaS",
+    title: "Indie SaaS Milestone Journey Templates — Unlock SaaS",
     description:
-      "Strategic-level founder mistakes with specific fixes. Built for the post-launch pre-revenue cohort.",
+      "Structural journey templates for the milestone transitions indie SaaS founders go through. Phases, time bands, what to do, what to watch for.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Strategic Indie SaaS Founder Mistakes",
-    description: "Strategic mistakes with specific fixes, not feel-good advice.",
+    title: "Indie SaaS Milestone Journey Templates",
+    description: "Journey templates, not case studies. Phases, time bands, what to do, and the common detours.",
   },
 };
 
 const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Strategic Indie SaaS Founder Mistakes",
-  url: `${BASE_URL}/founder-mistake`,
+  name: "Indie SaaS Milestone Journey Templates",
+  url: `${BASE_URL}/from-x-to-y`,
   description:
-    "Strategic-level founder mistakes post-launch pre-revenue founders make, with specific fixes anchored on the Brunson Hook / Story / Offer triage.",
+    "Phase-by-phase journey templates for the milestone transitions indie SaaS founders go through. Pattern-based, not case-study based.",
   isPartOf: { "@id": ID.website },
   inLanguage: "en-US",
   mainEntity: {
     "@type": "ItemList",
-    numberOfItems: FOUNDER_MISTAKE_ENTRIES.length,
-    itemListElement: FOUNDER_MISTAKE_ENTRIES.map((e, i) => ({
+    numberOfItems: JOURNEY_ENTRIES.length,
+    itemListElement: JOURNEY_ENTRIES.map((e, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: e.displayName,
-      url: `${BASE_URL}/founder-mistake/${e.slug}`,
+      url: `${BASE_URL}/from-x-to-y/${e.slug}`,
       description: e.intro,
     })),
   },
@@ -62,19 +62,13 @@ const BREADCRUMB_JSON = JSON.stringify({
     {
       "@type": "ListItem",
       position: 2,
-      name: "Founder mistakes",
-      item: `${BASE_URL}/founder-mistake`,
+      name: "Journey templates",
+      item: `${BASE_URL}/from-x-to-y`,
     },
   ],
 });
 
-const LENS_LABEL = {
-  hook: "Hook (Wrong Person)",
-  story: "Story (Weak Belief)",
-  offer: "Offer (Weak Offer)",
-} as const;
-
-export default function FounderMistakeHubPage() {
+export default function FromXToYHubPage() {
   return (
     <main className="min-h-screen">
       <script
@@ -98,35 +92,31 @@ export default function FounderMistakeHubPage() {
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-foreground">
-            Founder mistakes
+            Journey templates
           </li>
         </ol>
       </nav>
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Strategic-level, not element-level
+          Phase patterns, not case studies
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Strategic indie SaaS founder mistakes.
+          Indie SaaS milestone journey templates.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Eight strategic mistakes post-launch pre-revenue founders make,
-          mapped to the Brunson Hook / Story / Offer triage. How each
-          mistake shows up, why founders make it, the real cost, the
-          specific fix, and the false-fixes that look like fixes but
-          are not.
+          The structural journey for each major milestone indie SaaS
+          founders pass through: $0 to first customer, $1k to $10k MRR,
+          day job to indie founder, builder to marketer-builder, failed
+          launch to relaunch. Each template names the phases, the typical
+          time bands, what to do at each phase, what to watch for, and
+          the common detours.
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed mt-4">
-          Complement to{" "}
-          <Link
-            href="/why-isnt-my"
-            className="text-primary hover:underline"
-          >
-            /why-isnt-my
-          </Link>{" "}
-          (element-level diagnostics) — these are the mid-build / post-
-          launch strategic mistakes that take months to surface.
+          These are templates, not case studies. The structural pattern
+          comes from observation across many founders; specific
+          attributions wait until the Verified Builders directory carries
+          real customer journeys.
         </p>
       </header>
 
@@ -134,17 +124,17 @@ export default function FounderMistakeHubPage() {
 
       <section className="max-w-3xl mx-auto px-6 py-6">
         <ul className="space-y-4">
-          {FOUNDER_MISTAKE_ENTRIES.map((e) => (
+          {JOURNEY_ENTRIES.map((e) => (
             <li key={e.slug}>
               <Link
-                href={`/founder-mistake/${e.slug}`}
+                href={`/from-x-to-y/${e.slug}`}
                 className="block border border-border/40 rounded-lg p-4 hover:border-primary/40 transition-colors"
               >
                 <p className="text-base font-semibold text-primary mb-1 leading-tight">
                   {e.displayName}
                 </p>
                 <p className="text-xs text-muted-foreground mb-2">
-                  {LENS_LABEL[e.brunsonLens]}
+                  {e.from} → {e.to} · Typical: {e.typicalTimeBand}
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {e.intro}
@@ -158,61 +148,25 @@ export default function FounderMistakeHubPage() {
       <Separator className="my-2" />
 
       <section
-        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
-        aria-labelledby="cross"
-      >
-        <h2
-          id="cross"
-          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
-        >
-          Also see
-        </h2>
-        <div className="space-y-3 text-sm leading-relaxed">
-          <p>
-            <Link
-              href="/from-x-to-y"
-              className="text-primary hover:underline font-semibold"
-            >
-              Milestone journey templates →
-            </Link>{" "}
-            Strategic mistakes manifest as stalls inside specific
-            milestone journeys. The journey templates name the phases
-            where each strategic mistake usually surfaces.
-          </p>
-          <p>
-            <Link
-              href="/objection"
-              className="text-primary hover:underline font-semibold"
-            >
-              Sales objection handling →
-            </Link>{" "}
-            Strategic mistakes upstream produce specific buyer objections
-            downstream. The objection pages give response scripts for
-            each one.
-          </p>
-        </div>
-      </section>
-
-      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              Which mistake is your funnel making?
+              Which phase are you in?
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               The free 90-second Launch Diagnostic labels which Brunson
-              failure mode your page hits — and tells you which of these
-              strategic mistakes is the most likely root cause.
+              failure mode your page hits — and that maps cleanly to the
+              phase of the journey you are stuck in.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
                 <Link href="/diagnostic">Get the free diagnostic</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/why-isnt-my">Element diagnostics</Link>
+                <Link href="/builders">Verified builders</Link>
               </Button>
             </div>
           </CardContent>

@@ -182,6 +182,21 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Founder mistakes hub](${BASE}/founder-mistake): Strategic-level mistake-fix pages complementing /why-isnt-my (element-level diagnostics). Each entry maps a mistake to one of the Brunson diagnoses (Wrong Person / Weak Offer / Weak Belief), names how it shows up, why it happens, the real cost, the specific fix, false fixes that look like fixes but are not, and the success signal. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
 - Per-mistake pages at \`${BASE}/founder-mistake/<slug>\` — built-before-sold, priced-too-low, built-for-everyone, feature-adder-not-customer-getter, skipped-the-audience-phase, treated-launch-as-finish-line, built-for-myself, skipped-the-founder-story.
 
+## Programmatic SEO surfaces — buyer objection handling
+
+- [Objection hub](${BASE}/objection): Brunson-method response scripts for the most common indie SaaS sales objections. Distinct from /answers (founder questions about funnels) — these are buyer objections to the offer itself. Each entry covers when the objection is legitimate, the real concern underneath, the response script, what NOT to say, and the question that surfaces the real concern. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-objection pages at \`${BASE}/objection/<slug>\` — its-too-expensive-objection, i-dont-have-time-objection, i-can-do-this-myself-objection, wrong-timing-objection, we-tried-something-like-this-before-objection, i-need-to-think-about-it-objection, we-need-feature-x-objection, send-me-more-info-objection.
+
+## Programmatic SEO surfaces — SaaS metric formulas
+
+- [SaaS metric hub](${BASE}/saas-metric): Definitions and formulas for the ten core SaaS metrics — MRR, ARR, CAC, LTV, LTV:CAC, churn rate, ARPU, CAC payback period, burn multiple, NRR. Each page covers the canonical formula, a worked example with specific numbers, what the metric tells you and does NOT tell you, and the common miscalculations indie SaaS founders make. Distinct from /glossary (Brunson method terms) and /benchmarks (directional ranges, "what is a good X"). DefinedTerm + Article + FAQPage + BreadcrumbList JSON-LD per detail page; hub carries a DefinedTermSet.
+- Per-metric pages at \`${BASE}/saas-metric/<slug>\` — mrr, arr, cac, ltv, ltv-to-cac, churn-rate, arpu, payback-period, burn-multiple, net-revenue-retention.
+
+## Programmatic SEO surfaces — milestone journey templates
+
+- [Journey templates hub](${BASE}/from-x-to-y): Pattern-based journey templates (NOT case studies) for the milestone transitions every indie SaaS founder passes through. Each template names the phases, the typical time band, what to do at each phase, what to watch for, common detours, what success looks like, and what stuck looks like. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-journey pages at \`${BASE}/from-x-to-y/<slug>\` — from-zero-to-first-paying-customer, from-day-job-to-indie-founder, from-freelancer-to-saas-founder, from-launch-to-1k-mrr, from-1k-to-10k-mrr, from-solo-to-team, from-builder-to-marketer, from-launch-fail-to-relaunch.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

@@ -147,6 +147,41 @@ export default function BenchmarksHubPage() {
       <Separator className="my-2" />
 
       <section
+        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+        aria-labelledby="cross"
+      >
+        <h2
+          id="cross"
+          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
+        >
+          Also see
+        </h2>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            <Link
+              href="/saas-metric"
+              className="text-primary hover:underline font-semibold"
+            >
+              SaaS metric formulas →
+            </Link>{" "}
+            The benchmarks here say what good looks like; the metric pages
+            say how to calculate each metric in the first place. MRR, ARR,
+            CAC, LTV, churn, ARPU, payback period, burn multiple, NRR.
+          </p>
+          <p>
+            <Link
+              href="/answers"
+              className="text-primary hover:underline font-semibold"
+            >
+              Direct AEO answers →
+            </Link>{" "}
+            Specific founder questions with direct citation-ready answers,
+            including several about metric interpretation.
+          </p>
+        </div>
+      </section>
+
+      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >
