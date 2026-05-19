@@ -818,14 +818,16 @@
     }
     D.recent.forEach(r => {
       const tr = document.createElement('tr');
+      const sent = r.emails_sent || 0;
+      const rateCell = (rate) => sent ? pct(rate || 0, 1) : '–';
       tr.innerHTML =
         '<td>' + (r.email || '–') + '</td>' +
         '<td><span class="pill warn">' + (r.source || '–') + '</span></td>' +
         '<td>' + (r.subscribed_at || '–') + '</td>' +
         '<td>' + statusBadge(r.status) + '</td>' +
-        '<td class="num">' + fmt(r.emails_sent || 0) + '</td>' +
-        '<td class="num">' + (r.open_rate ? pct(r.open_rate, 1) : '0') + '</td>' +
-        '<td class="num">' + (r.click_rate ? pct(r.click_rate, 1) : '0') + '</td>';
+        '<td class="num">' + fmt(sent) + '</td>' +
+        '<td class="num">' + rateCell(r.open_rate) + '</td>' +
+        '<td class="num">' + rateCell(r.click_rate) + '</td>';
       rsBody.appendChild(tr);
     });
   }
