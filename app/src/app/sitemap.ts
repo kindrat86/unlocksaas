@@ -14,6 +14,9 @@ import { ANSWER_SLUGS } from "@/lib/answers";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { SHOULD_I_BUILD_SLUGS } from "@/lib/should-i-build";
 import { CHECKLIST_SLUGS } from "@/lib/checklists";
+import { STACK_SLUGS } from "@/lib/stacks";
+import { MIGRATE_FROM_SLUGS } from "@/lib/migrate-from";
+import { POSITIONING_SLUGS } from "@/lib/positioning";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -463,6 +466,76 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/checklist/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #15 — indie SaaS stack recommendations.
+    // Data source: src/lib/stacks.ts. Named-tool stack recommendations
+    // by use case (solo-founder, AI-wrapper, agency, newsletter, no-code,
+    // marketplace, scheduling-product) and by budget. Every tool slot
+    // cross-links to a shipped teardown when one exists. HowTo +
+    // ItemList + Article + FAQPage + Breadcrumb JSON-LD per detail.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/stack`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/stack`),
+    },
+    ...STACK_SLUGS.map((slug) => ({
+      url: `${base}/stack/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/stack/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #16 — migration playbooks.
+    // Data source: src/lib/migrate-from.ts. Bottom-funnel migration
+    // guides ("I already decided, now what?"). Each entry covers
+    // ClickFunnels→Stripe stack, Kajabi→indie stack, Gumroad→Lemon
+    // Squeezy, Substack→Beehiiv, Typeform→Tally, Calendly→Cal.com,
+    // GA4→Plausible, Notion-PM→Linear. HowTo + Article + FAQPage +
+    // Breadcrumb JSON-LD per detail page. Different intent class from
+    // /alternatives-to (pre-decision) and /compare (head-to-head) —
+    // pure post-decision execution intent.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/migrate-from`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/migrate-from`),
+    },
+    ...MIGRATE_FROM_SLUGS.map((slug) => ({
+      url: `${base}/migrate-from/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/migrate-from/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #17 — category-specific positioning.
+    // Data source: src/lib/positioning.ts. April-Dunford-style
+    // positioning frameworks for indie SaaS founders building in
+    // crowded categories, anchored on the Brunson Hook overlay. Each
+    // entry cross-links to the matching /category page so the framework
+    // resolves to actual products. Article + FAQPage + Breadcrumb
+    // JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/positioning`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/positioning`),
+    },
+    ...POSITIONING_SLUGS.map((slug) => ({
+      url: `${base}/positioning/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/positioning/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

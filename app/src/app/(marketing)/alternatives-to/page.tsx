@@ -266,6 +266,16 @@ export default function AlternativesHub() {
             Symmetric dimension-by-dimension breakdowns of the tools you
             are mid-evaluation on. Both sides get a fair read.
           </p>
+          <p>
+            <Link
+              href="/migrate-from"
+              className="text-primary hover:underline font-semibold"
+            >
+              Migration playbooks →
+            </Link>{" "}
+            For when the decision is already made — step-by-step guides for
+            actually moving between tools.
+          </p>
         </div>
       </section>
 

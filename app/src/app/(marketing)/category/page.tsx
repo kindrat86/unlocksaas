@@ -257,6 +257,26 @@ export default function CategoryHub() {
             Side-by-side comparisons of Unlock SaaS against tools founders
             evaluate alongside it.
           </p>
+          <p>
+            <Link
+              href="/positioning"
+              className="text-primary hover:underline font-semibold"
+            >
+              Category-specific positioning →
+            </Link>{" "}
+            How to position an indie SaaS in each of the categories above —
+            for-whom / not-for-whom / why-hard, per category.
+          </p>
+          <p>
+            <Link
+              href="/stack"
+              className="text-primary hover:underline font-semibold"
+            >
+              Named-tool stack recommendations →
+            </Link>{" "}
+            One stack per use case, with every slot cross-linked to a
+            shipped teardown.
+          </p>
         </div>
       </section>
 

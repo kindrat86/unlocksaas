@@ -152,6 +152,21 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Checklists hub](${BASE}/checklist): Finite, ordered checklists for pre-revenue indie SaaS founders. Every step has an observable done-condition; no aspirational items, no fabricated benchmarks. HowTo + ItemList + Article + FAQPage + BreadcrumbList JSON-LD per detail page — HowTo is the citation-friendly schema for "checklist" queries on AI Overviews and Perplexity.
 - Per-checklist pages at \`${BASE}/checklist/<slug>\` — pre-launch-saas-checklist, before-you-charge-money-checklist, first-paying-customer-checklist, landing-page-publish-checklist, first-email-broadcast-checklist, tripwire-launch-checklist, checkout-conversion-checklist, cold-outreach-message-checklist.
 
+## Programmatic SEO surfaces — indie SaaS stack recommendations
+
+- [Stacks hub](${BASE}/stack): Named-tool stack recommendations for indie SaaS by use case, budget, and cohort. Every slot names exactly one tool, the role it fills, a one-line reason, an honest cost band, and a link to the shipped teardown. HowTo + ItemList + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-stack pages at \`${BASE}/stack/<slug>\` — solo-founder-saas-stack, ai-wrapper-saas-stack, saas-stack-under-100-month, newsletter-saas-stack, agency-productized-stack, no-code-saas-stack, marketplace-saas-stack, scheduling-product-stack.
+
+## Programmatic SEO surfaces — migration playbooks
+
+- [Migrate-from hub](${BASE}/migrate-from): Step-by-step migration guides for indie SaaS founders moving from one tool to another. Different intent from /alternatives-to (pre-decision) and /compare (head-to-head) — pure post-decision execution intent. Each guide carries time band, migration cost band, annualized cost delta, pitfalls per step, and when-not-to-migrate conditions. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-migration pages at \`${BASE}/migrate-from/<slug>\` — migrate-from-clickfunnels-to-stripe-stack, migrate-from-kajabi-to-indie-stack, migrate-from-gumroad-to-lemonsqueezy, migrate-from-substack-to-beehiiv, migrate-from-typeform-to-tally, migrate-from-calendly-to-cal-com, migrate-from-google-analytics-to-plausible, migrate-from-notion-to-linear-for-project-management.
+
+## Programmatic SEO surfaces — category-specific positioning
+
+- [Positioning hub](${BASE}/positioning): Category-specific positioning frameworks for indie SaaS founders building in crowded categories. April-Dunford-style for-whom / not-for-whom analysis with Brunson Hook overlay. Each entry names the market context, the buyer you can win, the single biggest positioning trap, and templated one-liner examples. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-category positioning pages at \`${BASE}/positioning/<slug>\` — how-to-position-a-payments-saas, how-to-position-a-forms-saas, how-to-position-an-analytics-saas, how-to-position-a-newsletter-saas, how-to-position-a-scheduling-saas, how-to-position-an-email-api-saas, how-to-position-a-docs-saas, how-to-position-a-testimonials-saas.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

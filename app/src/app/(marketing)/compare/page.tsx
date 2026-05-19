@@ -303,6 +303,16 @@ export default function CompareHub() {
             Side-by-side comparisons of Unlock SaaS against the tools founders
             evaluate alongside it.
           </p>
+          <p>
+            <Link
+              href="/migrate-from"
+              className="text-primary hover:underline font-semibold"
+            >
+              Migration playbooks →
+            </Link>{" "}
+            For when the comparison is over — step-by-step guides for
+            actually moving between the tools above.
+          </p>
         </div>
       </section>
 

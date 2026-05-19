@@ -32,6 +32,9 @@ import { ANSWER_SLUGS } from "@/lib/answers";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { SHOULD_I_BUILD_SLUGS } from "@/lib/should-i-build";
 import { CHECKLIST_SLUGS } from "@/lib/checklists";
+import { STACK_SLUGS } from "@/lib/stacks";
+import { MIGRATE_FROM_SLUGS } from "@/lib/migrate-from";
+import { POSITIONING_SLUGS } from "@/lib/positioning";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -122,6 +125,9 @@ const PSEO_COUNTS = Object.freeze({
   swipeFile: SWIPE_FILE_SLUGS.length,
   shouldIBuild: SHOULD_I_BUILD_SLUGS.length,
   checklist: CHECKLIST_SLUGS.length,
+  stack: STACK_SLUGS.length,
+  migrateFrom: MIGRATE_FROM_SLUGS.length,
+  positioning: POSITIONING_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -137,7 +143,10 @@ const PSEO_TOTAL =
   PSEO_COUNTS.answers +
   PSEO_COUNTS.swipeFile +
   PSEO_COUNTS.shouldIBuild +
-  PSEO_COUNTS.checklist;
+  PSEO_COUNTS.checklist +
+  PSEO_COUNTS.stack +
+  PSEO_COUNTS.migrateFrom +
+  PSEO_COUNTS.positioning;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -384,6 +393,33 @@ const PSEO_CATALOGS = Object.freeze({
       "Finite, ordered checklists for pre-revenue indie SaaS founders: pre-launch, before-you-charge-money, first-paying-customer, landing-page-publish, first-email-broadcast, tripwire-launch, checkout-conversion, cold-outreach-message. Every step has an observable done-condition; HowTo + ItemList schema makes each page citation-friendly for AI Overviews 'checklist' queries.",
     slugs: CHECKLIST_SLUGS,
     count: PSEO_COUNTS.checklist,
+  },
+  stack: {
+    hub: "/stack",
+    slugPattern: "/stack/{slug}",
+    markdownPattern: null,
+    description:
+      "Named-tool stack recommendations for indie SaaS by use case, budget, and cohort. Every slot names exactly one tool with a one-line reason, an honest cost band, and a link to the shipped teardown for that tool. HowTo + ItemList schema makes each stack citation-friendly for AI Overviews 'what stack should I use' queries.",
+    slugs: STACK_SLUGS,
+    count: PSEO_COUNTS.stack,
+  },
+  migrateFrom: {
+    hub: "/migrate-from",
+    slugPattern: "/migrate-from/{slug}",
+    markdownPattern: null,
+    description:
+      "Step-by-step migration playbooks for indie SaaS founders moving from one tool to another (ClickFunnels, Kajabi, Gumroad, Substack, Typeform, Calendly, GA4, Notion-PM). Each guide carries a time band, migration cost band, annualized cost delta, and pitfalls per step. Different intent from /alternatives-to (pre-decision) and /compare (head-to-head) — pure post-decision execution intent.",
+    slugs: MIGRATE_FROM_SLUGS,
+    count: PSEO_COUNTS.migrateFrom,
+  },
+  positioning: {
+    hub: "/positioning",
+    slugPattern: "/positioning/{slug}",
+    markdownPattern: null,
+    description:
+      "Category-specific positioning frameworks for indie SaaS founders. April-Dunford-style for-whom / not-for-whom analysis with Brunson Hook overlay. Each entry names the market context, the buyer you can win, the single biggest positioning trap, and templated one-liner examples. Covers payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials.",
+    slugs: POSITIONING_SLUGS,
+    count: PSEO_COUNTS.positioning,
   },
 });
 
