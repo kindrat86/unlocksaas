@@ -31,6 +31,7 @@ import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
 import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
 import { INTEGRATION_SLUGS } from "@/lib/integrations";
 import { AUDIENCE_SLUGS } from "@/lib/audiences";
+import { SAAS_FEATURE_PATTERN_SLUGS } from "@/lib/saas-feature-patterns";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -884,6 +885,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/audience/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #32 — SaaS growth feature patterns.
+    // Data source: src/lib/saas-feature-patterns.ts. Structural design
+    // patterns for the SaaS growth features indie founders most often
+    // build — referral programs, freemium gates, paywalls, upgrade
+    // prompts, in-app surveys, annual upgrade prompts, team invitation
+    // flows. Article + FAQPage + Breadcrumb JSON-LD per detail page.
+    // Distinct from /onboarding-pattern (onboarding-specific) and
+    // /pricing-model (pricing-structure).
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/saas-feature-pattern`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.55,
+      alternates: hreflang(`${base}/saas-feature-pattern`),
+    },
+    ...SAAS_FEATURE_PATTERN_SLUGS.map((slug) => ({
+      url: `${base}/saas-feature-pattern/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/saas-feature-pattern/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

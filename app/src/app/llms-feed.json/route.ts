@@ -49,6 +49,7 @@ import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
 import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
 import { INTEGRATION_SLUGS } from "@/lib/integrations";
 import { AUDIENCE_SLUGS } from "@/lib/audiences";
+import { SAAS_FEATURE_PATTERN_SLUGS } from "@/lib/saas-feature-patterns";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -156,6 +157,7 @@ const PSEO_COUNTS = Object.freeze({
   retentionTactic: RETENTION_TACTIC_SLUGS.length,
   integration: INTEGRATION_SLUGS.length,
   audience: AUDIENCE_SLUGS.length,
+  saasFeaturePattern: SAAS_FEATURE_PATTERN_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -188,7 +190,8 @@ const PSEO_TOTAL =
   PSEO_COUNTS.onboardingPattern +
   PSEO_COUNTS.retentionTactic +
   PSEO_COUNTS.integration +
-  PSEO_COUNTS.audience;
+  PSEO_COUNTS.audience +
+  PSEO_COUNTS.saasFeaturePattern;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -588,6 +591,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Sustained audience-building playbooks by platform: Twitter/X, LinkedIn, newsletter, podcast, YouTube, Reddit. Distinct from /launch (launch events) and /skill/writing-in-public (skill practice plan). Each page covers who the platform fits, the required cadence, a monthly playbook from month 1 to month 12+, audience-size milestones, the common stuck patterns, and platform-vs-platform comparison for indie SaaS founders.",
     slugs: AUDIENCE_SLUGS,
     count: PSEO_COUNTS.audience,
+  },
+  saasFeaturePattern: {
+    hub: "/saas-feature-pattern",
+    slugPattern: "/saas-feature-pattern/{slug}",
+    markdownPattern: null,
+    description:
+      "Structural design patterns for SaaS growth features: referral programs, freemium gates, paywalls, in-product upgrade prompts, in-app surveys, monthly-to-annual upgrade prompts, team invitation flows. Each entry covers how the pattern works, best/worst fit, target growth metric, implementation considerations, common misuses, and realistic outcome bands. Distinct from /onboarding-pattern (onboarding-specific) and /pricing-model (pricing-structure).",
+    slugs: SAAS_FEATURE_PATTERN_SLUGS,
+    count: PSEO_COUNTS.saasFeaturePattern,
   },
 });
 

@@ -237,6 +237,11 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Audience-building hub](${BASE}/audience): Sustained audience-building playbooks by platform (Twitter/X, LinkedIn, newsletter, podcast, YouTube, Reddit). Distinct from /launch (event-specific launch playbooks) and /skill/writing-in-public (skill-development practice plan). Each page covers who the platform fits, the required cadence, a monthly playbook from month 1 to month 12+, audience-size milestones with expected timelines, the common stuck patterns, and how the platform compares to others for the same time investment. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
 - Per-platform pages at \`${BASE}/audience/<slug>\` — twitter-x-audience, linkedin-audience, newsletter-audience, podcast-audience, youtube-audience, reddit-audience.
 
+## Programmatic SEO surfaces — SaaS growth feature patterns
+
+- [Feature patterns hub](${BASE}/saas-feature-pattern): Structural design patterns for the SaaS growth features indie founders most often build — referral programs, freemium gates, paywalls, in-product upgrade prompts, in-app surveys, monthly-to-annual upgrade prompts, team invitation flows. Each page covers how the pattern works, when it fits, when it fails, the target growth metric, implementation considerations, common misuses, and realistic outcome bands. Distinct from /onboarding-pattern (onboarding-specific) and /pricing-model (pricing-structure). Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-pattern pages at \`${BASE}/saas-feature-pattern/<slug>\` — referral-program-pattern, freemium-gate-pattern, paywall-pattern, upgrade-prompt-pattern, in-app-survey-pattern, annual-upgrade-prompt-pattern, team-invitation-pattern.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:
