@@ -333,6 +333,48 @@ export default function GlossaryPage() {
             </Link>{" "}
             – labels your page Wrong Person, Weak Offer, or Weak Belief.
           </li>
+          <li>
+            <Link
+              href="/funnel-playbook"
+              className="text-primary hover:underline"
+            >
+              Funnel playbooks
+            </Link>{" "}
+            – step-by-step build guides for the eight Brunson funnel archetypes
+            (tripwire, VSL, challenge, Perfect Webinar, Soap Opera, OTO,
+            Seinfeld Email, Value Ladder).
+          </li>
+          <li>
+            <Link
+              href="/why-isnt-my"
+              className="text-primary hover:underline"
+            >
+              &ldquo;Why isn&rsquo;t my X converting&rdquo; diagnostics
+            </Link>{" "}
+            – per-element triage for landing page, checkout, upsell, opt-in,
+            VSL, tripwire, webinar registration, and email open rate.
+          </li>
+          <li>
+            <Link href="/benchmarks" className="text-primary hover:underline">
+              Funnel benchmarks
+            </Link>{" "}
+            – directional ranges for 20 indie SaaS metrics with band-by-band
+            diagnosis and source attribution.
+          </li>
+          <li>
+            <Link href="/for" className="text-primary hover:underline">
+              Niche pages
+            </Link>{" "}
+            – the same triage tuned to course creators, agency owners, SaaS
+            founders, coaches, and 8 other cohorts.
+          </li>
+          <li>
+            <Link href="/answers" className="text-primary hover:underline">
+              Founder answers
+            </Link>{" "}
+            – 30 direct AEO-formatted answers to the most-asked indie SaaS
+            funnel questions.
+          </li>
         </ul>
       </section>
     </main>

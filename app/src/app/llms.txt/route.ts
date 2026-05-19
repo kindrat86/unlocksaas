@@ -112,6 +112,31 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Glossary hub](${BASE}/glossary): Working definitions of the Russell Brunson sales-funnel concepts Unlock SaaS teaches. Each term carries a short definition (matched verbatim to the site-wide DefinedTermSet schema), a long definition, why it matters for a post-launch pre-revenue founder, three-to-five action bullets, a worked example pulled from a shipped surface, common confusions, related terms, and an FAQ block. Pure definitional intent that AI Overviews and assistant answers aggressively cite.
 - Per-term pages at \`${BASE}/glossary/<slug>\` — hook, story, offer, big-domino, value-ladder, stack-slide, perfect-webinar, soap-opera-sequence, seinfeld-email, reluctant-hero, dream-100, wrong-person, weak-offer, weak-belief, verified-builder, brunson-hard-rule.
 
+## Programmatic SEO surfaces — panic-mode diagnostics
+
+- [Why isn't my funnel converting hub](${BASE}/why-isnt-my): Eight per-element diagnostic pages for indie SaaS founders. Each labels the issue as Wrong Person, Weak Offer, or Weak Belief, names the most common cause, and gives the one fix to ship this week.
+- Per-element pages at \`${BASE}/why-isnt-my/<slug>\` — landing-page, checkout, upsell, opt-in, vsl, tripwire, webinar-registration, email-open. Same Brunson Hook / Story / Offer triage that powers the free 90-second diagnostic, broken out per funnel element for high-commercial-intent search capture.
+
+## Programmatic SEO surfaces — niche / cohort pages
+
+- [Niche hub](${BASE}/for): Twelve cohort-tuned landing pages. Same Hook / Story / Offer diagnostic, applied to the vocabulary, money mechanics, and common mistakes of one specific cohort.
+- Per-niche pages at \`${BASE}/for/<slug>\` — course-creators, agency-owners, saas-founders, coaches, consultants, ecommerce, no-code-builders, indie-hackers, ai-wrappers, info-product-creators, newsletter-operators, freelancers. Each carries the cohort's specific pain, money mechanics, the mistake they most often make, and what compounds for that cohort.
+
+## Programmatic SEO surfaces — funnel metric benchmarks
+
+- [Benchmarks hub](${BASE}/benchmarks): Directional ranges for twenty of the most-asked indie SaaS funnel metrics. Each entry carries an AEO-formatted direct answer, three-band breakdown ('underperforming / typical / outperforming'), drivers in order of impact, common misreadings, and source attribution.
+- Per-metric pages at \`${BASE}/benchmarks/<slug>\` — landing-page-conversion-rate, checkout-completion-rate, tripwire-conversion-rate, email-open-rate, email-click-rate, trial-to-paid-conversion, saas-churn-rate, webinar-show-up-rate, saas-mrr-growth-rate, average-order-value, customer-acquisition-cost, lifetime-value, free-to-paid-conversion, refund-rate, cold-email-reply-rate, saas-trial-length, page-time-to-interactive, bounce-rate, first-customer-time, annual-vs-monthly-discount. Built for citation by AI assistants answering "what is a good X" queries.
+
+## Programmatic SEO surfaces — Brunson funnel playbooks
+
+- [Funnel playbook hub](${BASE}/funnel-playbook): Step-by-step playbooks for the eight Brunson funnel archetypes. Each carries when-to-use / when-not-to-use criteria, sequential build steps with HowTo JSON-LD, common implementation mistakes, and ladder-position guidance.
+- Per-archetype pages at \`${BASE}/funnel-playbook/<slug>\` — tripwire, vsl, challenge, perfect-webinar, soap-opera-sequence, oto, seinfeld-email, value-ladder. Action-intent search capture for founders mid-build.
+
+## Programmatic SEO surfaces — direct-answer AEO pages
+
+- [Answers hub](${BASE}/answers): Thirty direct AEO-formatted answers to the most-asked indie SaaS funnel questions, organized into six categories (funnel mechanics, pricing, email, metrics, positioning, value ladder). Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for AI assistant citation.
+- Per-question pages at \`${BASE}/answers/<slug>\` — how-long-should-a-vsl-be, what-is-a-good-roas-for-a-tripwire, should-i-have-an-upsell-after-a-tripwire, whats-the-difference-between-vsl-and-webinar, how-many-emails-in-a-soap-opera-sequence, should-saas-pricing-end-in-9, should-i-show-prices-on-my-saas-website, how-much-discount-for-annual-saas-plans, should-i-charge-monthly-or-annual, best-time-to-send-marketing-emails, how-often-to-email-my-list, subject-line-length-for-best-open-rate, do-emojis-help-email-open-rates, what-is-a-good-saas-conversion-rate, what-is-a-good-cart-abandonment-rate, what-is-a-good-saas-churn-rate, what-ltv-to-cac-ratio-should-i-target, how-niche-should-my-saas-be, what-is-the-attractive-character-in-brunson, what-is-the-dream-100-method, what-is-the-big-domino, what-is-the-value-ladder, how-many-rungs-should-a-value-ladder-have, do-i-need-a-tripwire, what-is-a-good-tripwire-price, is-clickfunnels-still-worth-it, should-i-build-my-own-funnel-or-use-a-tool, how-do-i-write-a-stack-slide, what-is-a-money-back-guarantee-worth.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:
