@@ -24,6 +24,11 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
+import { NICHE_SLUGS } from "@/lib/niches";
+import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
+import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
+import { ANSWER_SLUGS } from "@/lib/answers";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -106,6 +111,11 @@ const PSEO_COUNTS = Object.freeze({
   pricingTeardown: PRICING_TEARDOWN_SLUGS.length,
   compare: COMPARISON_SLUGS.length,
   category: CATEGORY_SLUGS.length,
+  whyIsntMy: WHY_ISNT_MY_SLUGS.length,
+  niches: NICHE_SLUGS.length,
+  benchmarks: BENCHMARK_SLUGS.length,
+  funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
+  answers: ANSWER_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -113,7 +123,12 @@ const PSEO_TOTAL =
   PSEO_COUNTS.funnelTeardown +
   PSEO_COUNTS.pricingTeardown +
   PSEO_COUNTS.compare +
-  PSEO_COUNTS.category;
+  PSEO_COUNTS.category +
+  PSEO_COUNTS.whyIsntMy +
+  PSEO_COUNTS.niches +
+  PSEO_COUNTS.benchmarks +
+  PSEO_COUNTS.funnelPlaybook +
+  PSEO_COUNTS.answers;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -288,6 +303,51 @@ const PSEO_CATALOGS = Object.freeze({
       "Category roundups aggregating funnel teardowns, pricing teardowns, and head-to-head comparisons into a single high-intent landing page per category.",
     slugs: CATEGORY_SLUGS,
     count: PSEO_COUNTS.category,
+  },
+  whyIsntMy: {
+    hub: "/why-isnt-my",
+    slugPattern: "/why-isnt-my/{slug}",
+    markdownPattern: null,
+    description:
+      "Panic-mode diagnostic pages: 'why isn't my landing page / checkout / upsell / opt-in / VSL / tripwire / webinar / email open rate converting'. Each page applies the Brunson Wrong Person / Weak Offer / Weak Belief triage to one funnel element.",
+    slugs: WHY_ISNT_MY_SLUGS,
+    count: PSEO_COUNTS.whyIsntMy,
+  },
+  niches: {
+    hub: "/for",
+    slugPattern: "/for/{slug}",
+    markdownPattern: null,
+    description:
+      "Niche-specific landing pages tuned to one cohort's vocabulary, money mechanics, and common mistakes. The same Hook / Story / Offer diagnostic, applied to course creators, agency owners, SaaS founders, coaches, consultants, ecommerce, no-code builders, indie hackers, AI wrapper builders, info product creators, newsletter operators, and freelancers.",
+    slugs: NICHE_SLUGS,
+    count: PSEO_COUNTS.niches,
+  },
+  benchmarks: {
+    hub: "/benchmarks",
+    slugPattern: "/benchmarks/{slug}",
+    markdownPattern: null,
+    description:
+      "Directional ranges for indie SaaS funnel metrics (conversion rate, churn, AOV, LTV:CAC, trial conversion, email open rate, webinar show-up rate, and more). Each page carries an AEO-formatted direct answer, three-band 'where you fall' breakdown, drivers in order of impact, common misreadings, and source attribution.",
+    slugs: BENCHMARK_SLUGS,
+    count: PSEO_COUNTS.benchmarks,
+  },
+  funnelPlaybook: {
+    hub: "/funnel-playbook",
+    slugPattern: "/funnel-playbook/{slug}",
+    markdownPattern: null,
+    description:
+      "Step-by-step playbooks for the eight Brunson funnel archetypes: tripwire, VSL, challenge, Perfect Webinar, Soap Opera Sequence, OTO, Seinfeld Email, and Value Ladder. Each page is an action-intent guide with when-to-use / when-not, sequential steps with HowTo JSON-LD, common implementation mistakes, and ladder-position guidance.",
+    slugs: FUNNEL_PLAYBOOK_SLUGS,
+    count: PSEO_COUNTS.funnelPlaybook,
+  },
+  answers: {
+    hub: "/answers",
+    slugPattern: "/answers/{slug}",
+    markdownPattern: null,
+    description:
+      "Direct AEO-formatted answers to 30 specific founder questions across funnel mechanics, pricing, email, metrics, positioning, and the value ladder. Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for citation by AI assistants.",
+    slugs: ANSWER_SLUGS,
+    count: PSEO_COUNTS.answers,
   },
 });
 
