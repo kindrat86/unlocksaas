@@ -167,6 +167,41 @@ export default function WhyIsntMyHubPage() {
       <Separator className="my-2" />
 
       <section
+        className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+        aria-labelledby="cross"
+      >
+        <h2
+          id="cross"
+          className="text-sm uppercase tracking-widest text-muted-foreground mb-3 font-semibold"
+        >
+          Also see
+        </h2>
+        <div className="space-y-3 text-sm leading-relaxed">
+          <p>
+            <Link
+              href="/founder-mistake"
+              className="text-primary hover:underline font-semibold"
+            >
+              Strategic founder mistakes →
+            </Link>{" "}
+            Element-level pages here name what is broken on the page;
+            founder-mistake pages name the strategic root-cause that
+            keeps producing those broken pages.
+          </p>
+          <p>
+            <Link
+              href="/checklist"
+              className="text-primary hover:underline font-semibold"
+            >
+              Pre-launch / pre-charge checklists →
+            </Link>{" "}
+            Finite checklists with observable done-conditions for the
+            elements diagnosed here.
+          </p>
+        </div>
+      </section>
+
+      <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
         aria-labelledby="cta"
       >

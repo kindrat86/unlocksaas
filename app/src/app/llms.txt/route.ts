@@ -167,6 +167,21 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Positioning hub](${BASE}/positioning): Category-specific positioning frameworks for indie SaaS founders building in crowded categories. April-Dunford-style for-whom / not-for-whom analysis with Brunson Hook overlay. Each entry names the market context, the buyer you can win, the single biggest positioning trap, and templated one-liner examples. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
 - Per-category positioning pages at \`${BASE}/positioning/<slug>\` — how-to-position-a-payments-saas, how-to-position-a-forms-saas, how-to-position-an-analytics-saas, how-to-position-a-newsletter-saas, how-to-position-a-scheduling-saas, how-to-position-an-email-api-saas, how-to-position-a-docs-saas, how-to-position-a-testimonials-saas.
 
+## Programmatic SEO surfaces — Brunson script templates
+
+- [Templates hub](${BASE}/template): Fill-in placeholders for the canonical Brunson scripts the Playbook teaches — Epiphany Bridge, Dollar Objection, Perfect Webinar arc, Stack Slide, Seinfeld email, Soap Opera Sequence, Hook-Story-Offer page, Reluctant Hero positioning. Distinct from /swipe-file (patterns observed in shipped teardowns) — these are the canonical method scripts with structural placeholders. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-template pages at \`${BASE}/template/<slug>\` — epiphany-bridge-story-template, dollar-objection-script-template, perfect-webinar-arc-template, stack-slide-script-template, seinfeld-email-template, soap-opera-sequence-template, hook-story-offer-template, reluctant-hero-positioning-template.
+
+## Programmatic SEO surfaces — launch playbooks by channel
+
+- [Launch hub](${BASE}/launch): Channel-specific launch playbooks for indie SaaS founders. Each playbook covers one channel x SaaS-type intersection — Product Hunt, Twitter/X, Hacker News, Indie Hackers, Reddit, LinkedIn, cold outreach, newsletter swap. Pre-launch build-up, launch-day cadence, post-launch follow-up, honest time bands, success/failure profiles, and channel-specific mistakes. HowTo + Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-channel pages at \`${BASE}/launch/<slug>\` — product-hunt-launch-for-indie-saas, twitter-x-launch-for-ai-tools, hacker-news-launch-for-developer-saas, indie-hackers-launch-for-solo-founders, reddit-launch-for-niche-saas, linkedin-launch-for-b2b-saas, cold-outreach-launch-for-b2b, newsletter-swap-launch.
+
+## Programmatic SEO surfaces — strategic founder mistakes
+
+- [Founder mistakes hub](${BASE}/founder-mistake): Strategic-level mistake-fix pages complementing /why-isnt-my (element-level diagnostics). Each entry maps a mistake to one of the Brunson diagnoses (Wrong Person / Weak Offer / Weak Belief), names how it shows up, why it happens, the real cost, the specific fix, false fixes that look like fixes but are not, and the success signal. Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+- Per-mistake pages at \`${BASE}/founder-mistake/<slug>\` — built-before-sold, priced-too-low, built-for-everyone, feature-adder-not-customer-getter, skipped-the-audience-phase, treated-launch-as-finish-line, built-for-myself, skipped-the-founder-story.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

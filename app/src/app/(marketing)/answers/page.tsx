@@ -196,6 +196,16 @@ export default function AnswersHubPage() {
             above — what is a good rate, what is a typical one, what is
             outperforming.
           </p>
+          <p>
+            <Link
+              href="/founder-mistake"
+              className="text-primary hover:underline font-semibold"
+            >
+              Strategic founder mistakes →
+            </Link>{" "}
+            The eight mid-build and post-launch strategic mistakes most
+            indie SaaS founders make, mapped to the Brunson diagnoses.
+          </p>
         </div>
       </section>
 

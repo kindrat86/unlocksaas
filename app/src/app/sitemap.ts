@@ -17,6 +17,9 @@ import { CHECKLIST_SLUGS } from "@/lib/checklists";
 import { STACK_SLUGS } from "@/lib/stacks";
 import { MIGRATE_FROM_SLUGS } from "@/lib/migrate-from";
 import { POSITIONING_SLUGS } from "@/lib/positioning";
+import { TEMPLATE_SLUGS } from "@/lib/templates";
+import { LAUNCH_SLUGS } from "@/lib/launches";
+import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -536,6 +539,78 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/positioning/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #18 — Brunson-method script templates.
+    // Data source: src/lib/templates.ts. Fill-in placeholders for the
+    // canonical Brunson scripts the Playbook teaches: Epiphany Bridge,
+    // Dollar Objection, Perfect Webinar arc, Stack Slide, Seinfeld
+    // email, Soap Opera Sequence, Hook-Story-Offer page, Reluctant
+    // Hero positioning. Distinct from /swipe-file (patterns observed
+    // in shipped teardowns) - these are canonical method scripts with
+    // structural placeholders. HowTo + Article + FAQPage + Breadcrumb.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/template`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/template`),
+    },
+    ...TEMPLATE_SLUGS.map((slug) => ({
+      url: `${base}/template/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/template/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #19 — launch playbooks by channel.
+    // Data source: src/lib/launches.ts. Action-intent pages covering
+    // channel x SaaS-type intersections: Product Hunt, Twitter/X,
+    // Hacker News, Indie Hackers, Reddit, LinkedIn, cold outreach,
+    // newsletter swaps. Each playbook carries pre-launch build-up,
+    // launch-day cadence, post-launch follow-up, honest time bands,
+    // success/failure profiles, and channel-specific mistakes.
+    // HowTo + Article + FAQPage + Breadcrumb JSON-LD per detail.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/launch`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/launch`),
+    },
+    ...LAUNCH_SLUGS.map((slug) => ({
+      url: `${base}/launch/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/launch/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #20 — strategic founder mistakes.
+    // Data source: src/lib/founder-mistakes.ts. Strategic-level
+    // mistake-fix pages complementing /why-isnt-my (element-level
+    // diagnostics). Each entry maps a mistake to one of the Brunson
+    // diagnoses (Wrong Person / Weak Offer / Weak Belief), names how
+    // it shows up, why it happens, the real cost, the specific fix,
+    // false fixes to avoid, and the success signal. Article +
+    // FAQPage + Breadcrumb JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/founder-mistake`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/founder-mistake`),
+    },
+    ...FOUNDER_MISTAKE_SLUGS.map((slug) => ({
+      url: `${base}/founder-mistake/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/founder-mistake/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

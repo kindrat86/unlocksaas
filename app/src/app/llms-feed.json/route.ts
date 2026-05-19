@@ -35,6 +35,9 @@ import { CHECKLIST_SLUGS } from "@/lib/checklists";
 import { STACK_SLUGS } from "@/lib/stacks";
 import { MIGRATE_FROM_SLUGS } from "@/lib/migrate-from";
 import { POSITIONING_SLUGS } from "@/lib/positioning";
+import { TEMPLATE_SLUGS } from "@/lib/templates";
+import { LAUNCH_SLUGS } from "@/lib/launches";
+import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -128,6 +131,9 @@ const PSEO_COUNTS = Object.freeze({
   stack: STACK_SLUGS.length,
   migrateFrom: MIGRATE_FROM_SLUGS.length,
   positioning: POSITIONING_SLUGS.length,
+  template: TEMPLATE_SLUGS.length,
+  launch: LAUNCH_SLUGS.length,
+  founderMistake: FOUNDER_MISTAKE_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -146,7 +152,10 @@ const PSEO_TOTAL =
   PSEO_COUNTS.checklist +
   PSEO_COUNTS.stack +
   PSEO_COUNTS.migrateFrom +
-  PSEO_COUNTS.positioning;
+  PSEO_COUNTS.positioning +
+  PSEO_COUNTS.template +
+  PSEO_COUNTS.launch +
+  PSEO_COUNTS.founderMistake;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -420,6 +429,33 @@ const PSEO_CATALOGS = Object.freeze({
       "Category-specific positioning frameworks for indie SaaS founders. April-Dunford-style for-whom / not-for-whom analysis with Brunson Hook overlay. Each entry names the market context, the buyer you can win, the single biggest positioning trap, and templated one-liner examples. Covers payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials.",
     slugs: POSITIONING_SLUGS,
     count: PSEO_COUNTS.positioning,
+  },
+  template: {
+    hub: "/template",
+    slugPattern: "/template/{slug}",
+    markdownPattern: null,
+    description:
+      "Fill-in placeholders for the canonical Brunson scripts the Playbook teaches: Epiphany Bridge, Dollar Objection, Perfect Webinar arc, Stack Slide, Seinfeld email, Soap Opera Sequence, Hook-Story-Offer page, Reluctant Hero positioning. Distinct from /swipe-file (patterns observed in shipped teardowns) — these are canonical method scripts with structural placeholders.",
+    slugs: TEMPLATE_SLUGS,
+    count: PSEO_COUNTS.template,
+  },
+  launch: {
+    hub: "/launch",
+    slugPattern: "/launch/{slug}",
+    markdownPattern: null,
+    description:
+      "Channel-specific launch playbooks for indie SaaS founders. Each playbook covers one channel x SaaS-type intersection (Product Hunt, Twitter/X, Hacker News, Indie Hackers, Reddit, LinkedIn, cold outreach, newsletter swap), with pre-launch build-up, launch-day cadence, post-launch follow-up, honest time bands, success/failure profiles, and channel-specific mistakes.",
+    slugs: LAUNCH_SLUGS,
+    count: PSEO_COUNTS.launch,
+  },
+  founderMistake: {
+    hub: "/founder-mistake",
+    slugPattern: "/founder-mistake/{slug}",
+    markdownPattern: null,
+    description:
+      "Strategic-level founder-mistake pages complementing /why-isnt-my (element-level diagnostics). Each entry maps a mistake (built before sold, priced too low, built for everyone, feature-adder, skipped audience, treated launch as finish line, built for myself, skipped founder story) to one of the Brunson diagnoses (Wrong Person / Weak Offer / Weak Belief), names how it shows up, why it happens, the real cost, the specific fix, false fixes to avoid, and the success signal.",
+    slugs: FOUNDER_MISTAKE_SLUGS,
+    count: PSEO_COUNTS.founderMistake,
   },
 });
 

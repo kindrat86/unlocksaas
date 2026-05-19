@@ -192,6 +192,27 @@ export default function FunnelPlaybookHubPage() {
             Worked examples on indie SaaS funnels — the named sources each
             swipe-file pattern was observed in.
           </p>
+          <p>
+            <Link
+              href="/template"
+              className="text-primary hover:underline font-semibold"
+            >
+              Brunson script templates →
+            </Link>{" "}
+            Fill-in placeholders for the canonical Brunson scripts each
+            playbook calls for (Epiphany Bridge, Dollar Objection, Stack
+            Slide, Perfect Webinar arc).
+          </p>
+          <p>
+            <Link
+              href="/launch"
+              className="text-primary hover:underline font-semibold"
+            >
+              Launch playbooks by channel →
+            </Link>{" "}
+            Channel-specific launch playbooks for once the funnel is
+            built — Product Hunt, Twitter, Hacker News, cold outreach.
+          </p>
         </div>
       </section>
 
