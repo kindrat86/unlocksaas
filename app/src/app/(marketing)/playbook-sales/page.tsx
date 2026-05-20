@@ -28,7 +28,6 @@ import { Event } from "@/lib/analytics/events";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
 import { createAdminClient } from "@/lib/supabase/server";
-import { cacheLife, cacheTag } from "next/cache";
 
 /**
  * Verified-builder count, cached with the `verified-builder-count` tag.
@@ -56,10 +55,10 @@ import { cacheLife, cacheTag } from "next/cache";
  * falls through to the rating-less constant — no fabricated AggregateRating
  * is ever emitted.
  */
+// Cache Components migration paused (#7cf382f) — function kept as-is so the
+// re-enable later is a one-line restore. Without `'use cache'` this just
+// runs per-request; the public count is a single COUNT(*) query, low cost.
 async function getVerifiedBadgeCount(): Promise<number> {
-  "use cache";
-  cacheLife({ revalidate: 3600 });
-  cacheTag("verified-builder-count");
   return loadPublicBadgeCount(createAdminClient());
 }
 

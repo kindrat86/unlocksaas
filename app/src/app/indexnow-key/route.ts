@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cacheLife } from "next/cache";
 
 /**
  * IndexNow key endpoint — public ownership-proof file.
@@ -50,9 +49,9 @@ import { cacheLife } from "next/cache";
  * the function takes no arguments — so the single cached value is shared
  * across all requests inside the 24h revalidate window.
  */
+// Cache Components migration paused (#7cf382f) — validation is a cheap
+// regex check against an env var; per-request execution is fine.
 async function getValidatedKey(): Promise<string | null> {
-  "use cache";
-  cacheLife({ revalidate: 86400 });
   const key = process.env.INDEXNOW_KEY;
   if (!key || key.length < 8 || !/^[a-f0-9-]+$/i.test(key)) return null;
   return key;

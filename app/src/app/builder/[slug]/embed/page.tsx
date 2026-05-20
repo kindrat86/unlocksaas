@@ -55,7 +55,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
@@ -79,10 +78,11 @@ interface Props {
  * Without the tag a builder edit would have to wait for the 1-hour
  * cacheLife window or trigger a full deploy.
  */
+// Cache Components migration paused (#7cf382f) — per-request Supabase read.
+// Re-enable later wraps this in `'use cache' + cacheTag(`builder:${slug}`)`
+// so the verified-conversion webhook can target a specific slug via
+// revalidateTag without a full deploy.
 async function getBadge(slug: string) {
-  "use cache";
-  cacheLife({ revalidate: 3600 });
-  cacheTag(`builder:${slug}`);
   return loadPublicBadge(createAdminClient(), slug);
 }
 

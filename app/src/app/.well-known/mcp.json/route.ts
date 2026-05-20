@@ -44,7 +44,6 @@
  */
 
 import { NextResponse } from "next/server";
-import { cacheLife } from "next/cache";
 
 const BASE = "https://unlocksaas.com";
 
@@ -170,9 +169,10 @@ const MANIFEST = {
  * cacheLife('max') is correct — invalidated only by the next deploy via the
  * build-id-keyed cache.
  */
+// Cache Components migration paused (#7cf382f) — MANIFEST is already a
+// module-scope constant, so cache layering was redundant. Returning it
+// directly is identical from the consumer's perspective.
 async function getManifest(): Promise<typeof MANIFEST> {
-  "use cache";
-  cacheLife("max");
   return MANIFEST;
 }
 
