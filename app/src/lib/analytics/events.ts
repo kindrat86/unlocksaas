@@ -196,6 +196,30 @@ export interface WebVitalReportedProps {
   navigation_type: string | null;
   /** Pathname when the metric fired – lets reports roll up by route. */
   route: string;
+  /**
+   * Coarse route category resolved from `route` via lib/seo/lcp-targets.
+   * Examples: "home", "conversion", "auth", "trust", "pseo-detail",
+   * "pseo-hub", "content", "podcast", "dataset", "app", "other".
+   * Lets dashboards group by category without re-parsing the pathname.
+   * Sent on every web_vital_reported event (not just LCP).
+   */
+  route_category?: string;
+  /**
+   * Per-route LCP budget in milliseconds. Pulled from the route-category
+   * table in lib/seo/lcp-targets. ONLY populated when `metric_name === "LCP"`
+   * – the other CWV metrics have global targets and don't need the per-
+   * route field. `null` on non-LCP rows.
+   */
+  lcp_target_ms?: number | null;
+  /**
+   * Classification of the LCP value against its per-route target:
+   *   sample <= target_ms * 0.6  → "good"
+   *   sample <= target_ms        → "needs-improvement"
+   *   sample >  target_ms        → "poor"
+   * Distinct from the upstream `rating` field, which uses Google's
+   * blanket 2500/4000 thresholds. `null` on non-LCP rows.
+   */
+  lcp_target_status?: "good" | "needs-improvement" | "poor" | null;
 }
 
 // Eugene Schwartz awareness mapping — Hook variant assigned by source.
@@ -283,6 +307,25 @@ export interface GscSearchQueryObservedProps {
   window_start_date: string;
   /** ISO date (YYYY-MM-DD) marking the end of the GSC window. */
   window_end_date: string;
+  /**
+   * SERP-snippet variant active for this page on this date (resolved via
+   * `getActiveSerpVariantForGsc` in lib/seo/serp-variants). Omitted when
+   * the page is not opted into the SERP A/B framework. Lets the operator
+   * group GSC rows by variant cohort and compare CTR across epochs.
+   */
+  serp_variant_id?: string;
+  /**
+   * ISO date (YYYY-MM-DD) when the active variant shipped. Lets PostHog
+   * derive "days since variant ship" without an extra lookup. Absent for
+   * always-live baseline variants.
+   */
+  serp_variant_live_from?: string;
+  /**
+   * Total variants registered for this path. `1` means no rotation in
+   * play – useful for filtering "in-test" rows from "permanent" rows in
+   * the dashboard.
+   */
+  serp_variant_count?: number;
 }
 
 export interface GscFeedbackSyncedProps {

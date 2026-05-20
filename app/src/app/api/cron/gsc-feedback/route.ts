@@ -12,6 +12,7 @@ import {
   type GscFeedbackSyncedProps,
   type GscSearchQueryObservedProps,
 } from "@/lib/analytics/events";
+import { getActiveSerpVariantForGsc } from "@/lib/seo/serp-variants";
 import { PostHog } from "posthog-node";
 
 /**
@@ -158,12 +159,32 @@ export async function GET(req: NextRequest) {
     process.env.NEXT_PUBLIC_POSTHOG_KEY && process.env.NEXT_PUBLIC_POSTHOG_HOST,
   );
 
+  // Resolve SERP-variant attribution once per unique page in the row set.
+  // The variant table is sparse (only opted-in pages appear), so most
+  // rows return null. Caching by page string avoids re-parsing the URL
+  // for every duplicate. The variant is resolved against the window's
+  // END date so a row from a date the new variant was already live gets
+  // attributed correctly even if the cron is back-filling.
+  const windowEndAsDate = new Date(`${endDate}T23:59:59Z`);
+  const variantCache = new Map<
+    string,
+    ReturnType<typeof getActiveSerpVariantForGsc>
+  >();
+  const resolveVariant = (pageUrl: string) => {
+    const cached = variantCache.get(pageUrl);
+    if (cached !== undefined) return cached;
+    const v = getActiveSerpVariantForGsc(pageUrl, windowEndAsDate);
+    variantCache.set(pageUrl, v);
+    return v;
+  };
+
   if (phConfigured) {
     for (const row of trimmed) {
       // country/device are optional in the typed surface – GSC may omit
       // either when the dimension has no value for the row (e.g. queries
       // with no geo signal). Pass through unmodified; PostHog drops
       // undefined properties.
+      const variant = resolveVariant(row.page);
       const props: GscSearchQueryObservedProps = {
         query: row.query,
         page: row.page,
@@ -175,6 +196,17 @@ export async function GET(req: NextRequest) {
         position: row.position,
         window_start_date: startDate,
         window_end_date: endDate,
+        // SERP-variant attribution. Absent when the page is not in the
+        // variant registry (the default for most pSEO surfaces). When
+        // present, the operator can group CTR by (page, variant_id) in
+        // PostHog and read epoch-over-epoch lift directly.
+        ...(variant
+          ? {
+              serp_variant_id: variant.id,
+              serp_variant_live_from: variant.live_from,
+              serp_variant_count: variant.variant_count,
+            }
+          : {}),
       };
       ph.capture({
         distinctId: GSC_DISTINCT_ID,
