@@ -4,6 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { FUNNEL_PLAYBOOK_ENTRIES } from "@/lib/funnel-playbooks";
+import {
+  FUNNEL_MATRIX_ENTRIES,
+  matrixEntriesForFunnel,
+} from "@/lib/funnel-playbook-matrix";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { HubTldr } from "@/components/seo/hub-tldr";
@@ -154,6 +158,60 @@ export default function FunnelPlaybookHubPage() {
             </CardContent>
           </Card>
         ))}
+      </section>
+
+      <Separator className="my-2" />
+
+      {/* Funnel × niche matrix grid.
+         96 combo pages synthesised from FUNNEL_PLAYBOOK_ENTRIES ×
+         NICHE_ENTRIES. Renders 8 panels (one per funnel), each
+         listing 12 cohort variants. Targets cohort-shape money
+         keywords ("tripwire for course creators", "VSL for AI
+         wrappers"). The bare-funnel pages stay the canonical surface
+         for the mechanic; the matrix combos are the long-tail
+         discoverability layer that crosslinks upward to both
+         parents. */}
+      <section
+        className="max-w-3xl mx-auto px-6 py-8"
+        aria-labelledby="matrix"
+      >
+        <h2 id="matrix" className="text-2xl font-bold mb-3 leading-tight">
+          Each funnel, applied to your cohort
+        </h2>
+        <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+          {FUNNEL_MATRIX_ENTRIES.length} combos: each playbook cross-applied
+          to a specific cohort, with fit verdict, vocabulary shift, and the
+          cohort&rsquo;s specific failure mode running this funnel.
+        </p>
+        <div className="space-y-6">
+          {FUNNEL_PLAYBOOK_ENTRIES.map((funnel) => {
+            const combos = matrixEntriesForFunnel(funnel.slug);
+            return (
+              <div key={funnel.slug}>
+                <h3 className="text-base font-semibold mb-2 leading-tight">
+                  <Link
+                    href={`/funnel-playbook/${funnel.slug}`}
+                    className="hover:underline"
+                  >
+                    {funnel.displayName}
+                  </Link>
+                </h3>
+                <ul className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
+                  {combos.map((combo) => (
+                    <li key={combo.slug}>
+                      <Link
+                        href={`/funnel-playbook/${combo.slug}`}
+                        className="text-primary hover:underline"
+                      >
+                        for {combo.niche.displayName} →
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <Separator className="my-2" />

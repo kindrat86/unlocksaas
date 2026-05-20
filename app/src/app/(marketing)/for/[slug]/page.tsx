@@ -10,6 +10,7 @@ import {
   getNicheBySlug,
   type NicheEntry,
 } from "@/lib/niches";
+import { matrixEntriesForNiche } from "@/lib/funnel-playbook-matrix";
 
 async function getCachedEntry(slug: string): Promise<NicheEntry | undefined> {
   "use cache";
@@ -313,6 +314,34 @@ export default async function ForDetailPage(props: {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Funnel × niche matrix – the 8 funnel playbooks cross-applied
+         to this specific cohort. Each combo page carries fit verdict,
+         vocabulary shift, and the cohort's specific failure mode
+         running that funnel. */}
+      <section
+        className="max-w-3xl mx-auto px-6 py-8"
+        aria-labelledby="funnel-fit"
+      >
+        <h2
+          id="funnel-fit"
+          className="text-xl font-semibold mb-4 leading-tight"
+        >
+          Funnel playbooks applied to {e.displayName}
+        </h2>
+        <ul className="space-y-2 text-sm">
+          {matrixEntriesForNiche(e.slug).map((combo) => (
+            <li key={combo.slug}>
+              <Link
+                href={`/funnel-playbook/${combo.slug}`}
+                className="text-primary hover:underline"
+              >
+                {combo.funnel.displayName} for {e.displayName} →
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {glossaryLinks.length > 0 ? (

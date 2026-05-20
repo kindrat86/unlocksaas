@@ -29,6 +29,7 @@ import { NICHE_SLUGS } from "@/lib/niches";
 import { STACK_SLUGS } from "@/lib/stacks";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
+import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
 import {
   DATASET_BUNDLE,
@@ -140,6 +141,7 @@ const PSEO_COUNTS = Object.freeze({
   stackFor: STACK_SLUGS.length,
   benchmarks: BENCHMARK_SLUGS.length,
   funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
+  funnelPlaybookMatrix: FUNNEL_MATRIX_SLUGS.length,
   answers: ANSWER_SLUGS.length,
 });
 
@@ -154,6 +156,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.stackFor +
   PSEO_COUNTS.benchmarks +
   PSEO_COUNTS.funnelPlaybook +
+  PSEO_COUNTS.funnelPlaybookMatrix +
   PSEO_COUNTS.answers;
 
 /**
@@ -374,6 +377,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Step-by-step playbooks for the eight Brunson funnel archetypes: tripwire, VSL, challenge, Perfect Webinar, Soap Opera Sequence, OTO, Seinfeld Email, and Value Ladder. Each page is an action-intent guide with when-to-use / when-not, sequential steps with HowTo JSON-LD, common implementation mistakes, and ladder-position guidance.",
     slugs: FUNNEL_PLAYBOOK_SLUGS,
     count: PSEO_COUNTS.funnelPlaybook,
+  },
+  funnelPlaybookMatrix: {
+    hub: "/funnel-playbook",
+    slugPattern: "/funnel-playbook/{funnel}-for-{niche}",
+    markdownPattern: "/funnel-playbook/{funnel}-for-{niche}/md",
+    description:
+      "Funnel × niche matrix combos: each Brunson funnel archetype cross-applied to each indie-SaaS cohort (course creators, agency owners, SaaS founders, coaches, consultants, ecommerce, no-code builders, indie hackers, AI wrappers, info product creators, newsletter operators, freelancers). Synthesised from FUNNEL_PLAYBOOK_ENTRIES × NICHE_ENTRIES. Same Article + HowTo + FAQPage + BreadcrumbList JSON-LD as the bare-funnel pages, with three combo-specific sections: fit verdict against the cohort's money mechanics, how the playbook shifts for the cohort's vocabulary, and the cohort's specific failure mode running this funnel.",
+    slugs: FUNNEL_MATRIX_SLUGS,
+    count: PSEO_COUNTS.funnelPlaybookMatrix,
   },
   answers: {
     hub: "/answers",
