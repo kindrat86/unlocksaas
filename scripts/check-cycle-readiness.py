@@ -163,9 +163,15 @@ def read_local_env() -> dict[str, set[str]]:
 
 
 def read_vercel_env() -> dict[str, set[str]]:
-    """Shell out to `vercel env ls --environment=production` and parse
-    the JSON. Requires `vercel login` and a linked project. Returns
-    {KEY: {'vercel:production'}}. Never reads values."""
+    """Shell out to `vercel env ls production --format=json` and parse the
+    JSON. Requires `vercel login` and a linked project. Returns
+    {KEY: {'vercel:production'}}. Never reads values.
+
+    Note on the flag: the Vercel CLI accepts `-F json` / `--format=json`
+    (per `vercel env ls --help`), NOT the bare `--json` flag the original
+    draft of this script tried. The format flag was added when the CLI
+    moved to a standardized table renderer.
+    """
     try:
         result = subprocess.run(
             [
@@ -173,7 +179,7 @@ def read_vercel_env() -> dict[str, set[str]]:
                 "env",
                 "ls",
                 "production",
-                "--json",
+                "--format=json",
             ],
             cwd=REPO_ROOT / "app",
             capture_output=True,
@@ -191,22 +197,37 @@ def read_vercel_env() -> dict[str, set[str]]:
         return {}
     if result.returncode != 0:
         print(
-            "warning: `vercel env ls production` failed:\n"
+            "warning: `vercel env ls production --format=json` failed:\n"
             + result.stderr.strip(),
             file=sys.stderr,
         )
         return {}
     keys: dict[str, set[str]] = {}
+    # The Vercel CLI emits one of two shapes depending on version:
+    #   (a) `{"envs": [{"key": "...", "value": "...", "type": "encrypted",
+    #        "target": ["production"], ...}, ...]}`
+    #   (b) bare list `[{"key": "..."}, ...]` (older CLI / certain commands)
+    # We never read `.value` (identity-safety). Only `.key` matters here.
     try:
         payload = json.loads(result.stdout)
     except json.JSONDecodeError:
-        print(
-            "warning: `vercel env ls --json` returned unparseable output",
-            file=sys.stderr,
-        )
-        return {}
-    # The CLI returns either a list of {key: ...} objects or a wrapped
-    # {envs: [...]} shape depending on version. Handle both.
+        # Some CLI versions prepend a status banner before the JSON body.
+        # Try to recover by locating the first JSON token.
+        try:
+            candidates = [
+                i for i in (result.stdout.find("["), result.stdout.find("{"))
+                if i != -1
+            ]
+            first_brace = min(candidates) if candidates else -1
+            if first_brace == -1:
+                raise json.JSONDecodeError("no JSON token found", result.stdout, 0)
+            payload = json.loads(result.stdout[first_brace:])
+        except (ValueError, json.JSONDecodeError):
+            print(
+                "warning: `vercel env ls --format=json` returned unparseable output",
+                file=sys.stderr,
+            )
+            return {}
     envs: Iterable[dict[str, object]]
     if isinstance(payload, list):
         envs = payload
@@ -217,7 +238,14 @@ def read_vercel_env() -> dict[str, set[str]]:
     for entry in envs:
         key = entry.get("key")
         if isinstance(key, str) and key:
-            keys.setdefault(key, set()).add("vercel:production")
+            # Only count entries whose target list includes production.
+            # If `target` isn't present (older CLI), accept the entry –
+            # we've already filtered to production in the CLI call.
+            target = entry.get("target")
+            if target is None or (
+                isinstance(target, list) and "production" in target
+            ):
+                keys.setdefault(key, set()).add("vercel:production")
     return keys
 
 
