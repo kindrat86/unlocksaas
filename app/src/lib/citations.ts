@@ -256,7 +256,12 @@ function buildDatasetCitation(): Citation {
   return {
     id,
     surface: "dataset",
-    title: `${DATASET_NAME} (v${DATASET_VERSION})`,
+    // Title carries no version – the dedicated `version` field below
+    // is the canonical source. MLA / Chicago / APA formatters append
+    // ", version X.Y.Z" / "(Version X.Y.Z)" respectively. Embedding
+    // the version inside the title too would produce duplicated
+    // "Title (v1.0.0), version 1.0.0" output in Chicago / MLA.
+    title: DATASET_NAME,
     authorName: FOUNDER.name,
     publisherName: ORGANIZATION.name,
     canonicalUrl: DATASET_URLS.landing,
