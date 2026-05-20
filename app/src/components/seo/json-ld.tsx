@@ -30,6 +30,7 @@ import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
 import {
   ALTERNATE_NAMES,
   DEFINED_TERMS,
+  FOUNDER,
   ID,
   KNOWS_ABOUT,
   MENTIONED_ENTITIES,
@@ -1026,8 +1027,15 @@ function buildPersonJson(): string {
     // Author-language signal for E-E-A-T attribution on /stories and any
     // future bylined content. Mirrors Organization.inLanguage.
     knowsLanguage: ["en-US"],
-    description:
-      "Marketer and non-engineer. Built a dozen AI products with Lovable and Claude, watched them flatline in Stripe, then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
+    // Single source of truth: FOUNDER.description in lib/seo/entity.ts.
+    // The /about page and ABOUT_BODY markdown mirror both render the same
+    // string verbatim, so changing one place updates every Person JSON-LD
+    // surface across the site. Cross-section frame (Brunson funnels +
+    // non-engineer shipper, in one head) lives in that constant; see
+    // strategy/state.json attractive_character.locked.cross_section_frame
+    // for the voice constraint that keeps it from drifting into a boast
+    // and breaking Reluctant Hero.
+    description: FOUNDER.description,
     // knowsAbout composes DEFINED_TERMS (the Brunson glossary the site
     // teaches at /glossary) + the broader KNOWS_ABOUT topical-authority
     // list + the five baseline founder skills. See FOUNDER_KNOWS_ABOUT
