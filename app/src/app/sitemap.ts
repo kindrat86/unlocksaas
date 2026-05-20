@@ -11,6 +11,7 @@ import { NICHE_SLUGS } from "@/lib/niches";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { allCitationIds } from "@/lib/citations";
 import {
@@ -79,6 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const DEDICATED_OG_HUBS: ReadonlySet<string> = new Set([
     "/glossary",
     "/dont-buy-unlock-saas",
+    "/state-of-saas",
   ]);
   const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
     /^\/alternatives-to\/[^/]+$/,
@@ -87,6 +89,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     /^\/funnel-teardown\/[^/]+$/,
     /^\/pricing-teardown\/[^/]+$/,
     /^\/press\/topics\/[^/]+$/,
+    // Annual report editions ship per-year OG cards under
+    // app/src/app/state-of-saas/[year]/opengraph-image.tsx — the card
+    // surfaces the headline figure (or cohort-progress when below
+    // MIN_REPORT_N) so a reader scrolling Twitter / LinkedIn sees the
+    // number without clicking. Pattern matches /state-of-saas/2026,
+    // /state-of-saas/2027, etc.
+    /^\/state-of-saas\/\d{4}$/,
     // /builder/[slug] + /diagnosis/[id] also carry dedicated cards but
     // they are NOT sitemap-listed (Verified Builder backlink farm
     // discovery via inbound links only; diagnosis pages are per-user
@@ -696,6 +705,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.45,
     },
+    // -------------------------------------------------------------------------
+    // Annual flagship report (Surface C – linkable asset / off-page lift).
+    //
+    // /state-of-saas is the series index; /state-of-saas/<year> is each
+    // per-edition page. Higher priority than the per-table dataset CSVs
+    // because the report is the analysis layer on top of the dataset –
+    // citable, named, and the canonical destination for year-anchored
+    // queries like "state of indie SaaS 2026" or "post-launch pre-revenue
+    // saas annual report 2026".
+    //
+    // Auto-extension: a new edition added to EDITIONS in
+    // src/lib/state-of-saas.ts appears here on the next build via the
+    // EDITION_YEARS_DESC fan-out below.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/state-of-saas`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: hreflang(`${base}/state-of-saas`),
+    },
+    ...EDITION_YEARS_DESC.map((year) => ({
+      url: `${base}/state-of-saas/${year}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
+      alternates: hreflang(`${base}/state-of-saas/${year}`),
+    })),
     // Hugging Face Datasets submission surface (2026-05-20 off-page lift).
     // The page documents the operator submission flow + Google Dataset
     // Search verification, and the /raw sibling serves the exact
