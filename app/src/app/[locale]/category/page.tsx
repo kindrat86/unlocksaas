@@ -16,6 +16,10 @@ import {
   getContentDepthForCategory,
 } from "@/lib/categories";
 import { BASE_URL } from "@/lib/seo/entity";
+import {
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "@/lib/i18n/translations";
 
 /**
  * Locale-aware /category hub – plumbing variant.
@@ -43,11 +47,10 @@ export async function generateMetadata({
   const locale = rawLocale as Exclude<Locale, "en-US">;
   const localised = localizedPath(PATH, locale);
   const approved = isApproved(PATH, locale);
+  const cluster = getPseoClusterChrome("category", locale);
 
-  const title =
-    "Categories – Best SaaS Tools by Category, Analyzed for Indie Founders";
-  const description =
-    "Curated category roundups across every SaaS tool we have analyzed: payments, forms, analytics, newsletter, scheduling, email APIs, docs, testimonials, video, workspace, project management, design, hosting.";
+  const title = cluster.seoTitle;
+  const description = cluster.seoDescription;
 
   return {
     title,
@@ -98,6 +101,8 @@ export default async function LocalizedCategoryHub({
   const localised = localizedPath(PATH, locale);
   const absoluteUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const shared = getPseoSharedChrome(locale);
+  const cluster = getPseoClusterChrome("category", locale);
 
   const breadcrumbJson = JSON.stringify({
     "@context": "https://schema.org",
@@ -156,10 +161,9 @@ export default async function LocalizedCategoryHub({
             role="note"
             className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="font-semibold mb-1">{shared.pendingBannerTitle}</p>
             <p className="leading-relaxed">
-              {row.reviewNote ??
-                "This locale-prefixed URL is in preview while the localized overlay is being finalized. Content shown reflects the canonical English source."}
+              {row.reviewNote ?? shared.pendingBannerHubBody}
             </p>
           </div>
         ) : null}
@@ -174,12 +178,12 @@ export default async function LocalizedCategoryHub({
                 href={localizedPath("/", locale)}
                 className="hover:underline"
               >
-                Home
+                {shared.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" className="text-foreground">
-              Categories
+              {cluster.breadcrumbHub}
             </li>
           </ol>
         </nav>
@@ -187,16 +191,13 @@ export default async function LocalizedCategoryHub({
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Browse by category
+          {cluster.hubEyebrow}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Best SaaS tools by category, analyzed for indie founders
+          {cluster.hubHeadline}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Every product we have analyzed, organized by the SaaS category you
-          are searching in. Each category page lists every funnel teardown,
-          pricing teardown, and head-to-head comparison available in that
-          category.
+          {cluster.hubLede}
         </p>
       </header>
 
@@ -207,7 +208,7 @@ export default async function LocalizedCategoryHub({
         aria-labelledby="list"
       >
         <h2 id="list" className="sr-only">
-          All categories
+          {cluster.hubListAriaLabel}
         </h2>
         <div className="space-y-3">
           {CATEGORIES.map((c) => {
@@ -238,7 +239,7 @@ export default async function LocalizedCategoryHub({
                     href={localizedPath(`/category/${c.slug}`, locale)}
                     className="text-sm font-semibold text-primary hover:underline"
                   >
-                    Browse the category →
+                    {cluster.hubReadMoreLabel}
                   </Link>
                 </CardContent>
               </Card>

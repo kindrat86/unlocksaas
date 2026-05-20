@@ -13,6 +13,10 @@ import {
 } from "@/lib/i18n/registry";
 import { NICHE_ENTRIES } from "@/lib/niches";
 import { BASE_URL, ID } from "@/lib/seo/entity";
+import {
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "@/lib/i18n/translations";
 
 /**
  * Locale-aware /for hub – plumbing variant.
@@ -40,11 +44,10 @@ export async function generateMetadata({
   const locale = rawLocale as Exclude<Locale, "en-US">;
   const localised = localizedPath(PATH, locale);
   const approved = isApproved(PATH, locale);
+  const cluster = getPseoClusterChrome("for", locale);
 
-  const title =
-    "Unlock SaaS for Course Creators, Agency Owners, Coaches, and 9 Other Niches";
-  const description =
-    "Twelve niche-specific landing pages. Same Hook / Story / Offer diagnostic, tuned to the vocabulary, money mechanics, and common mistakes of each cohort.";
+  const title = cluster.seoTitle;
+  const description = cluster.seoDescription;
 
   return {
     title,
@@ -95,6 +98,8 @@ export default async function LocalizedForHub({
   const localised = localizedPath(PATH, locale);
   const absoluteUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const shared = getPseoSharedChrome(locale);
+  const cluster = getPseoClusterChrome("for", locale);
 
   const breadcrumbJson = JSON.stringify({
     "@context": "https://schema.org",
@@ -154,10 +159,9 @@ export default async function LocalizedForHub({
             role="note"
             className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="font-semibold mb-1">{shared.pendingBannerTitle}</p>
             <p className="leading-relaxed">
-              {row.reviewNote ??
-                "This locale-prefixed URL is in preview while the localized overlay is being finalized. Content shown reflects the canonical English source."}
+              {row.reviewNote ?? shared.pendingBannerHubBody}
             </p>
           </div>
         ) : null}
@@ -172,12 +176,12 @@ export default async function LocalizedForHub({
                 href={localizedPath("/", locale)}
                 className="hover:underline"
               >
-                Home
+                {shared.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" className="text-foreground">
-              For
+              {cluster.breadcrumbHub}
             </li>
           </ol>
         </nav>
@@ -185,15 +189,13 @@ export default async function LocalizedForHub({
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Niche pages
+          {cluster.hubEyebrow}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Unlock SaaS, tuned to your cohort.
+          {cluster.hubHeadline}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          The same Hook / Story / Offer diagnostic, applied to the
-          vocabulary, money mechanics, and common mistakes of one specific
-          cohort.
+          {cluster.hubLede}
         </p>
       </header>
 
@@ -204,7 +206,7 @@ export default async function LocalizedForHub({
         aria-labelledby="niches"
       >
         <h2 id="niches" className="sr-only">
-          Niches
+          {cluster.hubListAriaLabel}
         </h2>
         {NICHE_ENTRIES.map((e) => (
           <Card key={e.slug} className="hover:border-primary/40 transition">
@@ -225,7 +227,7 @@ export default async function LocalizedForHub({
                 href={localizedPath(`/for/${e.slug}`, locale)}
                 className="text-sm font-semibold text-primary hover:underline"
               >
-                Open this page →
+                {cluster.hubReadMoreLabel}
               </Link>
             </CardContent>
           </Card>

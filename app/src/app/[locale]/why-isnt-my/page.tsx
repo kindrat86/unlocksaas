@@ -13,6 +13,10 @@ import {
 } from "@/lib/i18n/registry";
 import { WHY_ISNT_MY_ENTRIES } from "@/lib/why-isnt-my";
 import { BASE_URL, ID } from "@/lib/seo/entity";
+import {
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "@/lib/i18n/translations";
 
 /**
  * Locale-aware /why-isnt-my hub – plumbing variant.
@@ -40,11 +44,10 @@ export async function generateMetadata({
   const locale = rawLocale as Exclude<Locale, "en-US">;
   const localised = localizedPath(PATH, locale);
   const approved = isApproved(PATH, locale);
+  const cluster = getPseoClusterChrome("why-isnt-my", locale);
 
-  const title =
-    "Why Isn't My Funnel Converting? Eight Founder Diagnostics – Unlock SaaS";
-  const description =
-    "Panic-mode diagnostic guides for indie SaaS founders. Eight specific funnel-element pages, each labeling the issue Wrong Person, Weak Offer, or Weak Belief.";
+  const title = cluster.seoTitle;
+  const description = cluster.seoDescription;
 
   return {
     title,
@@ -95,6 +98,8 @@ export default async function LocalizedWhyIsntMyHub({
   const localised = localizedPath(PATH, locale);
   const absoluteUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const shared = getPseoSharedChrome(locale);
+  const cluster = getPseoClusterChrome("why-isnt-my", locale);
 
   const breadcrumbJson = JSON.stringify({
     "@context": "https://schema.org",
@@ -154,10 +159,9 @@ export default async function LocalizedWhyIsntMyHub({
             role="note"
             className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="font-semibold mb-1">{shared.pendingBannerTitle}</p>
             <p className="leading-relaxed">
-              {row.reviewNote ??
-                "This locale-prefixed URL is in preview while the localized overlay is being finalized. Content shown reflects the canonical English source."}
+              {row.reviewNote ?? shared.pendingBannerHubBody}
             </p>
           </div>
         ) : null}
@@ -172,12 +176,12 @@ export default async function LocalizedWhyIsntMyHub({
                 href={localizedPath("/", locale)}
                 className="hover:underline"
               >
-                Home
+                {shared.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" className="text-foreground">
-              Why isn&rsquo;t my
+              {cluster.breadcrumbHub}
             </li>
           </ol>
         </nav>
@@ -185,15 +189,13 @@ export default async function LocalizedWhyIsntMyHub({
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Panic-mode diagnostics
+          {cluster.hubEyebrow}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Why isn&rsquo;t my funnel converting?
+          {cluster.hubHeadline}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Eight per-element diagnostics for the moment your dashboard is
-          flat. Each page labels the issue as Wrong Person, Weak Offer, or
-          Weak Belief.
+          {cluster.hubLede}
         </p>
       </header>
 
@@ -204,7 +206,7 @@ export default async function LocalizedWhyIsntMyHub({
         aria-labelledby="elements-heading"
       >
         <h2 id="elements-heading" className="sr-only">
-          Per-element diagnostics
+          {cluster.hubListAriaLabel}
         </h2>
         {WHY_ISNT_MY_ENTRIES.map((e) => (
           <Card key={e.slug} className="hover:border-primary/40 transition">
@@ -225,7 +227,7 @@ export default async function LocalizedWhyIsntMyHub({
                   href={localizedPath(`/why-isnt-my/${e.slug}`, locale)}
                   className="text-sm font-semibold text-primary hover:underline"
                 >
-                  Diagnose this element →
+                  {cluster.hubReadMoreLabel}
                 </Link>
               </p>
             </CardContent>

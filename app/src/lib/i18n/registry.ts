@@ -267,6 +267,129 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
     approvedAt: "2026-05-20",
     approvedBy: "maryan",
   },
+  // 8 large pSEO clusters – locale chrome drafted autonomously 2026-05-21.
+  // Status `pending-review`: shells render with localized chrome (breadcrumb,
+  // eyebrow, h1, lede, list aria label, read-more label, English-callout
+  // title+body, detail CTA secondary, pending banner) sourced from
+  // `src/lib/i18n/translations/pseo-chrome.ts`. Slug-level data
+  // (alt.oneLine, teardown.summary, comparison oneLine, etc.) stays English
+  // until per-slug overlays exist. Founder must verify each (path, locale)
+  // pair at the live preview URL before flipping to `approved`. Until then:
+  // robots: { index: false, follow: false }, sitemap omits, no hreflang
+  // alternate advertised. The amber "Pending founder review" banner
+  // discloses the partial-localization state on every preview URL.
+  {
+    path: "/alternatives-to",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + verdict stay English until per-slug overlay ships. Verify at /es/alternatives-to before flipping to approved.",
+  },
+  {
+    path: "/alternatives-to",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + verdict stay English until per-slug overlay ships. Verify at /pt-BR/alternatives-to before flipping to approved.",
+  },
+  {
+    path: "/compare",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /es/compare before flipping to approved.",
+  },
+  {
+    path: "/compare",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /pt-BR/compare before flipping to approved.",
+  },
+  {
+    path: "/category",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level category descriptions stay English until per-slug overlay ships. Verify at /es/category before flipping to approved.",
+  },
+  {
+    path: "/category",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level category descriptions stay English until per-slug overlay ships. Verify at /pt-BR/category before flipping to approved.",
+  },
+  {
+    path: "/funnel-teardown",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level Hook/Story/Offer breakdown stays English until per-slug overlay ships. Verify at /es/funnel-teardown before flipping to approved.",
+  },
+  {
+    path: "/funnel-teardown",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level Hook/Story/Offer breakdown stays English until per-slug overlay ships. Verify at /pt-BR/funnel-teardown before flipping to approved.",
+  },
+  {
+    path: "/pricing-teardown",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level tier maps + Stack lens stay English until per-slug overlay ships. Verify at /es/pricing-teardown before flipping to approved.",
+  },
+  {
+    path: "/pricing-teardown",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level tier maps + Stack lens stay English until per-slug overlay ships. Verify at /pt-BR/pricing-teardown before flipping to approved.",
+  },
+  {
+    path: "/answers",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level question + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /es/answers before flipping to approved.",
+  },
+  {
+    path: "/answers",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level question + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /pt-BR/answers before flipping to approved.",
+  },
+  {
+    path: "/why-isnt-my",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level element triage stays English until per-slug overlay ships. Verify at /es/why-isnt-my before flipping to approved.",
+  },
+  {
+    path: "/why-isnt-my",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level element triage stays English until per-slug overlay ships. Verify at /pt-BR/why-isnt-my before flipping to approved.",
+  },
+  {
+    path: "/for",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level cohort pain + niche descriptions stay English until per-slug overlay ships. Verify at /es/for before flipping to approved.",
+  },
+  {
+    path: "/for",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level cohort pain + niche descriptions stay English until per-slug overlay ships. Verify at /pt-BR/for before flipping to approved.",
+  },
 ]);
 
 export function getTranslationStatus(
