@@ -1,0 +1,82 @@
+{
+  "_comment_about_this_file": "Paste-ready metadata for the Zenodo deposit form at https://zenodo.org/uploads/new. Each top-level field below maps to a Zenodo form field of the same name (Zenodo's form structure mirrors its REST API schema). Field-by-field copy is the recommended flow; if you prefer the REST API, this file's body can be POSTed to https://zenodo.org/api/deposit/depositions with an OAuth token. Brunson Hard-Rule: every value below is verifiable on https://unlocksaas.com/dataset – do not edit without updating the canonical source in app/src/lib/seo/dataset.ts first.",
+  "_pointer": "Step-by-step submission flow: strategy/zenodo-submission-playbook.md",
+  "_last_verified": "2026-05-20",
+
+  "metadata": {
+    "upload_type": "dataset",
+
+    "title": "Indie SaaS Teardowns Dataset",
+
+    "creators": [
+      {
+        "name": "Maryan",
+        "affiliation": "Unlock SaaS"
+      }
+    ],
+
+    "description": "Open, attribution-licensed dataset of indie SaaS landing-page, pricing, and head-to-head analyses, structured for researchers, indie founders, newsletter writers, and academics studying the post-launch pre-revenue SaaS market. The dataset bundles five tables – funnel teardowns, pricing teardowns, head-to-head comparisons, named-competitor alternatives, and category roundups – each derived from public landing pages of real indie SaaS products and analysed through Russell Brunson's Hook / Story / Offer framework. Every row carries a dated lastVerified timestamp; no fabricated metrics, no quoted copy, no slag. Distributed as a single JSON bundle, a flat denormalised CSV, and five per-table CSVs with richer table-specific columns. Canonical landing, full schema descriptions, citation metadata, and conversion recipes for Parquet/Arrow/Excel live at https://unlocksaas.com/dataset.",
+
+    "access_right": "open",
+
+    "license": "cc-by-4.0",
+
+    "keywords": [
+      "indie SaaS",
+      "SaaS landing pages",
+      "SaaS pricing",
+      "funnel analysis",
+      "Russell Brunson framework",
+      "Hook Story Offer",
+      "competitive analysis",
+      "indie founder",
+      "post-launch SaaS",
+      "pre-revenue SaaS",
+      "marketing dataset",
+      "open data"
+    ],
+
+    "version": "v1.0.0",
+
+    "language": "eng",
+
+    "related_identifiers": [
+      {
+        "relation": "isDerivedFrom",
+        "identifier": "https://unlocksaas.com/dataset",
+        "resource_type": "publication-other",
+        "scheme": "url"
+      },
+      {
+        "relation": "isAlternateIdentifier",
+        "identifier": "https://unlocksaas.com/dataset/indie-saas-teardowns.json",
+        "resource_type": "dataset",
+        "scheme": "url"
+      },
+      {
+        "relation": "isPartOf",
+        "identifier": "https://unlocksaas.com/",
+        "resource_type": "publication-other",
+        "scheme": "url"
+      }
+    ],
+
+    "communities": [
+      {
+        "identifier": "open-data"
+      }
+    ],
+
+    "notes": "Companion catalog listing on Hugging Face Datasets is published at the URL declared in the canonical Dataset.includedInDataCatalog graph on https://unlocksaas.com/dataset. The two distributions ship byte-identical artifacts; checksums match across catalogs by construction.",
+
+    "method": "Each row is hand-curated from the live public landing page of a real indie SaaS product. The analytical lens is Russell Brunson's Hook / Story / Offer framework. Editorial standards documented at https://unlocksaas.com/editorial-policy. Verification rail at packages/seo/src/cli/validate-claims runs on every commit to ensure no schema-to-rendered drift between the dataset and the canonical /dataset landing page."
+  },
+
+  "_field_notes": {
+    "creators.orcid": "Add an ORCID iD here if you have one (recommended for academic citation lineage). Format: '0000-0000-0000-0000'. Omit the field if you do not have one – Zenodo accepts creators without ORCID.",
+    "license": "Zenodo's license dropdown accepts the literal value 'cc-by-4.0'. The form will render the human-readable license name. Do NOT change this without changing the canonical license on app/src/lib/seo/dataset.ts in the same commit – the two MUST match.",
+    "version": "Bump in lockstep with DATASET_VERSION in app/src/lib/seo/dataset.ts. Zenodo records are immutable; a version bump creates a new DOI plus updates the concept DOI to point at the new version.",
+    "related_identifiers.relation": "Zenodo's 'isDerivedFrom' is the canonical relation for a dataset deposit that derives from a public web resource. 'isAlternateIdentifier' names the parallel distribution. 'isPartOf' anchors the deposit to the broader UnlockSaaS work.",
+    "communities.identifier": "Zenodo communities are optional curated buckets. 'open-data' is a broad community that increases discoverability. Add additional communities only if you have a real affiliation with them; do not paste community slugs you do not belong to."
+  }
+}
