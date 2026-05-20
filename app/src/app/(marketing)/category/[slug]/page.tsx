@@ -19,6 +19,7 @@ import {
 import { ID } from "@/lib/seo/entity";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForCategory } from "@/lib/seo/paa-questions";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 
 /**
  * pSEO #5 — Category roundup pages.
@@ -59,7 +60,12 @@ export async function generateMetadata(
   return {
     title,
     description,
-    alternates: { canonical },
+    // Self-canonical + explicit hreflang (defends against root layout's
+    // `languages: { "en-US": "/" }` inheriting onto every child page) +
+    // markdown mirror at /category/<slug>/md for AEO/GEO retrievers
+    // that prefer markdown over HTML. See markdown-alternates.ts and
+    // the SURFACES entry in src/lib/seo/markdown.ts.
+    alternates: markdownAlternate(canonical, `${canonical}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       title,

@@ -7,6 +7,7 @@ import {
   CATEGORIES,
   getContentDepthForCategory,
 } from "@/lib/categories";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 
 /**
  * Category hub — fifth pSEO surface index.
@@ -25,7 +26,11 @@ export const metadata: Metadata = {
     "Categories — Best SaaS Tools by Category, Analyzed for Indie Founders",
   description:
     "Curated category roundups across every SaaS tool we have analyzed: payments, forms, analytics, newsletter, scheduling, email APIs, docs, testimonials, video, workspace, project management, design, hosting.",
-  alternates: { canonical: "/category" },
+  // Self-canonical + explicit hreflang (defends against root layout's
+  // `languages: { "en-US": "/" }` inheriting onto every child page) +
+  // markdown mirror at /category.md for AEO/GEO retrievers that prefer
+  // markdown over HTML. See src/lib/seo/markdown-alternates.ts.
+  alternates: markdownAlternate("/category", "/category.md"),
   robots: { index: true, follow: true },
   openGraph: {
     title: "Categories — Unlock SaaS",

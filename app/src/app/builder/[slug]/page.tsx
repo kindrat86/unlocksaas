@@ -22,6 +22,7 @@ import {
   FOUNDING_COHORT_SERIAL_CAP,
 } from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
+import { selfHreflang } from "@/lib/seo/markdown-alternates";
 import { CheckCircle2 } from "lucide-react";
 
 
@@ -49,6 +50,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: url,
+      // Hreflang self-reference. Builder pages have no translated variant
+      // (each builder's first-customer story ships in the founder's own
+      // language, not a curator-translated locale) – selfHreflang returns
+      // `{ en-US: "/builder/<slug>", x-default: "/builder/<slug>" }` until
+      // any translation row is added to the registry. Defends against the
+      // root layout's `languages: { "en-US": "/" }` map being inherited by
+      // every child page, which would emit hreflang pointing at the
+      // homepage instead of the canonical builder URL.
+      languages: selfHreflang(`/builder/${badge.slug}`),
       // oEmbed discovery anchor — Substack, Ghost, Notion, Medium, Discord,
       // Slack auto-render a pasted unlocksaas.com/builder/<slug> URL as a
       // rich card when they find this link. See src/app/builder/[slug]/oembed.json.
