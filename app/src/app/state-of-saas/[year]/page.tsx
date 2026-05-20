@@ -398,6 +398,102 @@ export default async function StateOfSaasEditionPage({
           )}
         </section>
 
+        {year === 2026 ? (
+          <>
+            <Separator className="my-8" />
+
+            <section
+              className="mb-10 space-y-4 leading-relaxed"
+              aria-labelledby="macro-context"
+            >
+              <h2 id="macro-context" className="text-2xl font-bold">
+                Why this year matters: the macro context
+              </h2>
+              <p data-speakable>
+                2026 is the year the post-launch pre-revenue cohort gets
+                materially larger, not smaller. Two forces are stacking:
+                the tech-employment correction (publicly tracked at{" "}
+                <a
+                  href="https://layoffs.fyi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="underline underline-offset-4"
+                >
+                  layoffs.fyi
+                </a>
+                ) keeps pushing salaried SaaS operators out of full-time
+                roles, and the AI-tools stack (Lovable, Claude, Replit, v0,
+                Cursor, Bolt.new) keeps lowering the cost of shipping a
+                first product to roughly a weekend of evenings. The
+                predictable outcome is more people sitting on a deployed
+                URL with no paying customers – the exact cohort this report
+                describes.
+              </p>
+              <p className="text-muted-foreground">
+                Greg Isenberg has gone on record (
+                <a
+                  href="https://x.com/gregisenberg/status/2019090260697767970"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="underline underline-offset-4"
+                >
+                  X, 2026
+                </a>
+                ) with the thesis that 2026 will see 100k+ SaaS-company
+                layoffs, with a meaningful share of those workers
+                attempting a founder path next. That thesis is consistent
+                with what the diagnostic submission stream is starting to
+                show: more first-time founders, more &ldquo;shipped last
+                weekend with AI tooling&rdquo; product URLs, more &ldquo;I
+                used to work in SaaS, now I am trying to build one&rdquo;
+                framing in the qualitative fields the aggregator does not
+                read.
+              </p>
+              <p className="text-muted-foreground">
+                The {year} edition does not re-frame what the cohort needs
+                – the diagnosis vocabulary (
+                <Link
+                  href="/glossary/wrong-person"
+                  className="underline underline-offset-4"
+                >
+                  Wrong Person
+                </Link>
+                ,{" "}
+                <Link
+                  href="/glossary/weak-offer"
+                  className="underline underline-offset-4"
+                >
+                  Weak Offer
+                </Link>
+                ,{" "}
+                <Link
+                  href="/glossary/weak-belief"
+                  className="underline underline-offset-4"
+                >
+                  Weak Belief
+                </Link>
+                ) is unchanged from prior framing work, and the offer is
+                unchanged. The macro layer just predicts the COHORT will
+                grow faster than the rest of the indie-SaaS landscape, and
+                argues that the &ldquo;name one real person, make one real
+                promise, sell it before it feels ready&rdquo; playbook
+                matters more in a year where the supply of fresh founders
+                spikes than in a year where it does not.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Sources for this macro framing are public and externally
+                trackable: layoffs.fyi for the tech-employment correction,
+                Isenberg&rsquo;s X account for the founder-supply thesis,
+                and the diagnostic submission stream itself for the
+                qualitative shift. Specific layoff totals and the
+                founder-share split are not republished here because they
+                fluctuate; the citable surface for those numbers is the
+                upstream tracker, not this page.
+              </p>
+            </section>
+          </>
+        ) : null}
+
         <Separator className="my-8" />
 
         <section className="mb-10 space-y-4 leading-relaxed">

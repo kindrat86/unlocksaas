@@ -131,6 +131,43 @@ export default function StateOfSaasIndexPage() {
 
         <Separator className="my-8" />
 
+        <section
+          className="mb-10 space-y-3 leading-relaxed"
+          aria-labelledby="why-now"
+        >
+          <h2 id="why-now" className="text-2xl font-bold">
+            Why this report matters in {CURRENT_EDITION_YEAR}
+          </h2>
+          <p className="text-muted-foreground">
+            The tech-employment correction (publicly tracked at{" "}
+            <a
+              href="https://layoffs.fyi"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="underline underline-offset-4"
+            >
+              layoffs.fyi
+            </a>
+            ) keeps pushing salaried SaaS operators out of full-time roles,
+            and AI tooling keeps lowering the cost of shipping a first
+            product to roughly a weekend of evenings. The predictable
+            outcome is more people sitting on a deployed URL with no
+            paying customers – the exact cohort this report describes.
+            The {CURRENT_EDITION_YEAR} edition spells out the macro
+            framing in full.
+          </p>
+          <p className="text-sm">
+            <Link
+              href={`/state-of-saas/${CURRENT_EDITION_YEAR}#macro-context`}
+              className="font-semibold underline underline-offset-4"
+            >
+              Read the {CURRENT_EDITION_YEAR} macro context →
+            </Link>
+          </p>
+        </section>
+
+        <Separator className="my-8" />
+
         <section className="mb-10 space-y-4 leading-relaxed">
           <h2 className="text-2xl font-bold">Editions</h2>
           <p className="text-muted-foreground">
