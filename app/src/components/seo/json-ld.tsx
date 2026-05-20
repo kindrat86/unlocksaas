@@ -42,6 +42,11 @@ import {
 } from "@/lib/seo/entity";
 import { getEarnedMentions, type MediaMention } from "@/lib/media-mentions";
 import {
+  buildPodcastEpisodeJson,
+  buildPodcastSeriesJson,
+  type PodcastEpisode,
+} from "@/lib/seo/podcast";
+import {
   buildPlaybookAggregateRating,
   type PlaybookAggregateRatingNode,
 } from "@/lib/seo/review-rating";
@@ -1457,6 +1462,41 @@ export function PodcastSeriesJsonLd() {
 // that has not migrated to the schema.org-literal `BreadcrumbListJsonLd` name)
 // so renames in this file do not break consumers.
 export { BreadcrumbListJsonLd as BreadcrumbJsonLd };
+
+// ---------------------------------------------------------------------------
+// First-party podcast surface (2026-05-21) — PodcastSeries on /podcast,
+// PodcastEpisode on /podcast/[slug]. Differs from PodcastSeriesJsonLd
+// above: this variant always emits because the canonical feed lives at
+// /feed/podcast.rss (an internal, always-present route). Use the env-
+// gated PodcastSeriesJsonLd above on /press where the show is
+// announced; use the variants here on the podcast's own pages.
+// ---------------------------------------------------------------------------
+
+/**
+ * PodcastSeries JSON-LD for the canonical /podcast hub. Reads payload
+ * from src/lib/seo/podcast.ts (buildPodcastSeriesJson) so the @id, name,
+ * description, and webFeed URL stay in lockstep with the actual RSS
+ * served at /feed/podcast.rss. The @id is shared with the env-gated
+ * PodcastSeriesJsonLd above (`${BASE}/#podcast`) so the schema graph
+ * resolves both surfaces to one connected entity.
+ */
+export function PodcastSeriesCanonicalJsonLd() {
+  return <JsonLdScript json={buildPodcastSeriesJson()} />;
+}
+
+/**
+ * PodcastEpisode JSON-LD for a single episode. associatedMedia
+ * (AudioObject) is included only when the per-episode audio env var
+ * resolved at module load – the honest text-only fallback when no
+ * audio asset exists. Render once per /podcast/[slug] page.
+ */
+export function PodcastEpisodeJsonLd({
+  episode,
+}: {
+  episode: PodcastEpisode;
+}) {
+  return <JsonLdScript json={buildPodcastEpisodeJson(episode)} />;
+}
 
 // ---------------------------------------------------------------------------
 // AIO uplift (2026-05-17) — DefinedTermSet, Hub Dataset, Speakable

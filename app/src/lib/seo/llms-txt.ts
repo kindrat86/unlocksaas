@@ -149,6 +149,16 @@ The five pSEO catalogs above ship as a single open, attribution-licensed bundle 
 
 License is Creative Commons Attribution 4.0 International (CC-BY-4.0). Re-use is unrestricted; the only obligation is attribution back to ${BASE_URL}/dataset. Versioning is SemVer; downloads ship versioned filenames inside Content-Disposition headers so a cached re-use cannot silently drift.
 
+## Dataset changelog podcast
+
+The dataset ships a podcast-shaped RSS 2.0 + iTunes namespace feed that mirrors every version bump, new table, cross-catalog activation, and methodology change as a dated, attributed episode. Each episode page emits PodcastEpisode JSON-LD (anchored on the same \`#podcast\` @id as the PodcastSeries declared on /press), so a retriever walking the schema graph resolves all episodes to one connected entity.
+
+- [Podcast hub](${BASE_URL}/podcast) – subscribe URL, episode index, license.
+- [RSS feed](${BASE_URL}/feed/podcast.rss) – RSS 2.0 with iTunes namespace; paste into any podcast app or RSS reader. Aggregator-friendly (Apple Podcasts, Spotify, Overcast, Pocket Casts, AntennaPod, NewsBlur, Feedly, Inoreader).
+- Per-episode pages at \`${BASE_URL}/podcast/<slug>\` – dataset-v1-launch, hugging-face-cross-listing-flow, per-locale-og-cards-glossary-benchmarks (extends on every shipped dataset milestone).
+
+Audio enclosures are env-gated per episode (\`NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL\`). Episodes ship as show-notes-only by default – no placeholder MP3s, no silent stubs. License inherits CC-BY-4.0 from the dataset itself; quote, embed, and re-publish freely with attribution.
+
 ## JSON sibling
 
 A machine-typed JSON representation of this file lives at [\`/llms-feed.json\`](${BASE_URL}/llms-feed.json). Same facts, structured for retrievers that prefer JSON over markdown – entity, surfaces, key facts, third-party entity mentions, defined-term glossary, earned-media list, and activation log are all addressable by JSON path. The feed carries the same \`Last verified\` and \`Next review\` dates as this file, served with \`content-type: application/json\` and the same edge-cache discipline.
