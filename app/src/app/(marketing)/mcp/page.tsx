@@ -75,11 +75,14 @@ const TRAIL = [
 // rename never desynchronises the doc page.
 const MCP_URL = `${BASE_URL}/api/mcp`;
 
-// The 13 tools the server exposes, mirrored from the registration
+// The 15 tools the server exposes, mirrored from the registration
 // order in app/api/[transport]/route.ts. Kept in sync manually – the
 // MCP server is the source of truth, this list is a teaching mirror.
 // Brunson Hard-Rule: if a tool is removed from the route it MUST also
-// be removed here, and vice-versa.
+// be removed here, and vice-versa. Drift check: this list, the BODY
+// string in app/src/app/mcp.md/route.ts, and the `tools` array in
+// app/src/app/.well-known/mcp.json/route.ts must all carry the same
+// tool count and the same registration order as the route handler.
 const TOOLS: ReadonlyArray<{ name: string; description: string }> = [
   {
     name: "diagnose_url",
@@ -140,6 +143,16 @@ const TOOLS: ReadonlyArray<{ name: string; description: string }> = [
     name: "get_playbook_step",
     description:
       "One of the seven Playbook steps by number (1-7), name + canonical description.",
+  },
+  {
+    name: "list_glossary_terms",
+    description:
+      "Slug + term name for every Brunson concept UnlockSaaS teaches (Hook, Story, Offer, Value Ladder, Stack Slide, Dream 100, Reluctant Hero, Brunson Hard-Rule, Big Domino, etc.).",
+  },
+  {
+    name: "get_glossary_term",
+    description:
+      "Working definition of one Brunson term, in the founder's own words, by slug (e.g. 'hook', 'value-ladder', 'big-domino', 'brunson-hard-rule').",
   },
   {
     name: "get_faq",
