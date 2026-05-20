@@ -129,6 +129,21 @@ import {
   getNicheForStack,
   getTeardownForStackTool,
 } from "@/lib/stacks";
+import {
+  SCRIPT_ENTRIES,
+  type ScriptEntry,
+  getScriptBySlug,
+} from "@/lib/scripts";
+import {
+  PRICING_PAGE_PATTERN_ENTRIES,
+  type PricingPagePatternEntry,
+  getPricingPagePatternBySlug,
+} from "@/lib/pricing-page-examples";
+import {
+  CONVERSION_RATE_ENTRIES,
+  type ConversionRateEntry,
+  getConversionRateBySlug,
+} from "@/lib/conversion-rate";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -2199,6 +2214,232 @@ export function renderStackMarkdown(slug: string): string | undefined {
 // pruning when buildLlmsFullBody is regenerated below (used in iteration
 // for hub-level llms.txt embedding by /lib/seo/llms-txt.ts).
 void STACK_ENTRIES;
+
+// ---------------------------------------------------------------------------
+// 2026-05-21: three new pSEO surfaces — scripts, pricing-page-examples,
+// conversion-rate. Each follows the same render-then-citation-footer
+// pattern as the surfaces above. Adding a new entry to the matching data
+// file auto-extends the markdown mirror surface on the next deploy.
+// ---------------------------------------------------------------------------
+
+function buildScriptMarkdown(s: ScriptEntry): string {
+  const blocks = s.blocks
+    .map(
+      (b) =>
+        `### ${b.marker}\n\n**Intent.** ${b.intent}\n\n**Say something like.** ${b.saySomethingLike}\n\n**Founder note.** ${b.founderNote}`,
+    )
+    .join("\n\n");
+  const vars = s.variables
+    .map((v) => `- \`${v.name}\` – ${v.note}`)
+    .join("\n");
+  const mistakes = s.commonMistakes.map((m) => `- ${m}`).join("\n");
+  const faqs = s.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+  const related =
+    s.relatedGlossary.length > 0
+      ? s.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+
+  return `# ${s.displayName}
+
+> ${s.tldr}
+
+**Format.** ${s.format}
+**Target length.** ${s.targetLength}
+**When to use.** ${s.whenToUse}
+
+## The script, block by block
+
+${blocks}
+
+## Variables to fill in
+
+${vars}
+
+## Common script-level mistakes
+
+${mistakes}
+
+## Questions founders ask
+
+${faqs}
+
+## Related Brunson terms
+
+${related}
+`;
+}
+
+export function renderScriptMarkdown(slug: string): string | undefined {
+  const s = getScriptBySlug(slug);
+  if (!s) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/scripts/${s.slug}`;
+  return [
+    frontMatter({
+      title: s.displayName,
+      summary: s.tldr,
+      canonical: canonicalUrl,
+      updated: s.lastVerified,
+    }),
+    buildScriptMarkdown(s).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildPricingPagePatternMarkdown(
+  p: PricingPagePatternEntry,
+): string {
+  const examples = p.examplesInTheWild
+    .map((ex) => `- **${ex.name}.** ${ex.note}`)
+    .join("\n");
+  const mistakes = p.commonMistakes.map((m) => `- ${m}`).join("\n");
+  const faqs = p.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+  const related =
+    p.relatedGlossary.length > 0
+      ? p.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+
+  return `# ${p.displayName}
+
+> ${p.tldr}
+
+## The mechanics
+
+${p.mechanics}
+
+## Where you see this in the wild
+
+${examples}
+
+## When it works
+
+${p.whenItWorks}
+
+## When it backfires
+
+${p.whenItBackfires}
+
+## The Brunson lens
+
+${p.brunsonLens}
+
+## Common implementation mistakes
+
+${mistakes}
+
+## Questions founders ask
+
+${faqs}
+
+## Related Brunson terms
+
+${related}
+`;
+}
+
+export function renderPricingPagePatternMarkdown(
+  slug: string,
+): string | undefined {
+  const p = getPricingPagePatternBySlug(slug);
+  if (!p) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/pricing-page-examples/${p.slug}`;
+  return [
+    frontMatter({
+      title: p.displayName,
+      summary: p.tldr,
+      canonical: canonicalUrl,
+      updated: p.lastVerified,
+    }),
+    buildPricingPagePatternMarkdown(p).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildConversionRateMarkdown(c: ConversionRateEntry): string {
+  const stages = c.stages
+    .map(
+      (s) =>
+        `### ${s.stage}\n\n**Directional range.** ${s.range}\n\n${s.contextNote}`,
+    )
+    .join("\n\n");
+  const faqs = c.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+  const related =
+    c.relatedGlossary.length > 0
+      ? c.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+
+  return `# Conversion rates for ${c.displayName}
+
+> ${c.tldr}
+
+## Funnel-stage directional ranges
+
+All ranges are directional. They depend on traffic source, price point, audience warmth, and cohort tightness.
+
+${stages}
+
+## What good looks like
+
+${c.goodLooksLike}
+
+## What broken looks like
+
+${c.brokenLooksLike}
+
+## Most common Brunson diagnosis
+
+When ${c.displayName} hit the diagnostic with flat numbers, the most-common label that comes back is **${c.mostCommonDiagnosis}**. That doesn't mean every flat-rate cohort lands there – it's a directional prior worth checking first.
+
+## Questions founders ask
+
+${faqs}
+
+## Related Brunson terms
+
+${related}
+`;
+}
+
+export function renderConversionRateMarkdown(
+  slug: string,
+): string | undefined {
+  const c = getConversionRateBySlug(slug);
+  if (!c) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/conversion-rate/${c.slug}`;
+  return [
+    frontMatter({
+      title: `Conversion rate for ${c.displayName}`,
+      summary: c.tldr,
+      canonical: canonicalUrl,
+      updated: c.lastVerified,
+    }),
+    buildConversionRateMarkdown(c).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
 
 /**
  * Build the concatenated /llms-full.txt body. One canonical entity block at
