@@ -389,7 +389,7 @@ export const KNOWS_ABOUT: readonly string[] = Object.freeze([
   "Seinfeld daily email marketing",
   "Reluctant Hero attractive character archetype",
   "Dream 100 outreach strategy",
-  // Indie SaaS go-to-market – matches /alternatives-to, /compare,
+  // Indie SaaS go-to-market – matches /alternatives-to, /vs,
   // /funnel-teardown, /pricing-teardown pSEO surfaces.
   "Post-launch pre-revenue SaaS founder activation",
   "First paying customer acquisition for indie SaaS",

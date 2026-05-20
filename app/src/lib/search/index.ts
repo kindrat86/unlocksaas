@@ -249,7 +249,7 @@ const COMPARISON_RESULTS: ReadonlyArray<SearchResult> = Object.freeze(
     id: c.slug,
     title: `${c.a.name} vs ${c.b.name}`,
     description: c.oneLine,
-    url: `/compare/${c.slug}`,
+    url: `/vs/${c.slug}`,
     surface: "compare",
     category: c.category,
     terms: buildTerms([

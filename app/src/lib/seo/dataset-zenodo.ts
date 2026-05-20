@@ -229,7 +229,7 @@ function buildZenodoRelatedIdentifiers(): ReadonlyArray<ZenodoRelatedIdentifier>
   const SOURCE_HUBS: ReadonlyArray<string> = [
     `${BASE_URL}/funnel-teardown`,
     `${BASE_URL}/pricing-teardown`,
-    `${BASE_URL}/compare`,
+    `${BASE_URL}/vs`,
     `${BASE_URL}/alternatives-to`,
     `${BASE_URL}/category`,
   ];

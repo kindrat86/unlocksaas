@@ -243,7 +243,7 @@ function appearanceHref(a: GlossaryAppearance): string {
     case "pricing-teardown":
       return `/pricing-teardown/${a.slug}`;
     case "compare":
-      return `/compare/${a.slug}`;
+      return `/vs/${a.slug}`;
     case "alternatives-to":
       return `/alternatives-to/${a.slug}`;
     case "category":

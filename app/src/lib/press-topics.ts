@@ -19,7 +19,7 @@
  * ------------------------------------------------
  *   - Founder quotes are written in the founder's voice and pre-approved
  *     for verbatim re-use. Writers do not need permission.
- *   - Data points cite live, dated surfaces – /alternatives-to, /compare,
+ *   - Data points cite live, dated surfaces – /alternatives-to, /vs,
  *     /funnel-teardown, /pricing-teardown, /category, /faq. Every number
  *     is independently verifiable on the live site.
  *   - Counter-points are honest disqualifiers. "We have no verified
@@ -372,8 +372,8 @@ export const PRESS_TOPICS: ReadonlyArray<PressTopic> = Object.freeze([
       },
       {
         claim:
-          "Unlock SaaS publishes head-to-head comparison pages against the same tools and platforms indie founders evaluate – 55+ comparison pairs at the /compare hub, each dated.",
-        sourcePath: "/compare",
+          "Unlock SaaS publishes head-to-head comparison pages against the same tools and platforms indie founders evaluate – 55+ comparison pairs at the /vs hub, each dated.",
+        sourcePath: "/vs",
         verifyNote:
           "Count COMPARISONS in src/lib/comparisons.ts. Each detail page carries a lastVerified ISO.",
       },
@@ -397,7 +397,7 @@ export const PRESS_TOPICS: ReadonlyArray<PressTopic> = Object.freeze([
       },
       {
         claim:
-          "Unlock SaaS does not benchmark the tools against each other on quality. The /compare surface is symmetric (\"who is each best for\"), not adversarial.",
+          "Unlock SaaS does not benchmark the tools against each other on quality. The /vs surface is symmetric (\"who is each best for\"), not adversarial.",
         context:
           "Editorial discipline – no slag, every competitor's value prop is respected.",
       },
@@ -408,12 +408,12 @@ export const PRESS_TOPICS: ReadonlyArray<PressTopic> = Object.freeze([
       { label: "Founder", value: `${FOUNDER.name} (${FOUNDER.jobTitle})` },
       { label: "Press contact", value: FOUNDER.email },
       { label: "Named tools", value: "Lovable, Claude, Replit, v0, Cursor, Bolt.new (plus Bubble adjacent)" },
-      { label: "Comparison catalog size", value: "55+ head-to-head pairs at /compare" },
+      { label: "Comparison catalog size", value: "55+ head-to-head pairs at /vs" },
     ],
     embedHtml:
       `<blockquote cite="${BASE_URL}/press/topics/lovable-cursor-replit-founders"><p>Every founder I diagnose ships with the same six tools. They all built different products. They all have the same problem on day 30.</p><cite>&mdash; Maryan, founder, <a href="${BASE_URL}">Unlock SaaS</a></cite></blockquote>`,
     relatedSurfaces: [
-      { path: "/compare", label: "Head-to-head tool comparisons (55+ pairs)" },
+      { path: "/vs", label: "Head-to-head tool comparisons (55+ pairs)" },
       { path: "/alternatives-to", label: "Named-competitor alternatives" },
       { path: "/funnel-teardown", label: "33 indie SaaS funnel teardowns" },
       { path: "/about", label: "Founder bio (long form)" },

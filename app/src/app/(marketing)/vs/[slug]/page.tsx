@@ -63,7 +63,7 @@ export async function generateMetadata(
   const c = getComparisonBySlug(params.slug);
   if (!c) return {};
 
-  const canonical = `/compare/${c.slug}`;
+  const canonical = `/vs/${c.slug}`;
   const title = `${c.a.name} vs ${c.b.name} — Honest Head-to-Head Comparison`;
   const description = c.oneLine;
 
@@ -179,7 +179,7 @@ function buildJsonLd(
         "@type": "ListItem",
         position: 2,
         name: "Compare",
-        item: `${BASE}/compare`,
+        item: `${BASE}/vs`,
       },
       {
         "@type": "ListItem",
@@ -354,7 +354,7 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
   const c = getComparisonBySlug(params.slug);
   if (!c) notFound();
 
-  const canonicalUrl = `${BASE}/compare/${c.slug}`;
+  const canonicalUrl = `${BASE}/vs/${c.slug}`;
   // buildJsonLd returns a variable-length array: always Article, FAQPage,
   // BreadcrumbList; optionally two Review nodes (one per product) when the
   // comparison has at least one A/B/tie dimension. Iterate rather than
@@ -405,7 +405,7 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link href="/compare" className="hover:underline">
+            <Link href="/vs" className="hover:underline">
               Compare
             </Link>
           </li>
@@ -759,7 +759,7 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
         </h2>
         <p className="text-sm">
           <Link
-            href="/compare"
+            href="/vs"
             className="text-primary hover:underline font-semibold"
           >
             <ArrowRight className="h-4 w-4 inline" /> Browse every comparison

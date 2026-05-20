@@ -850,7 +850,7 @@ Every entry has a \`lastVerified\` ISO date. Products evolve; the date is the au
 
 ${COMPARISONS.map(
   (c) =>
-    `### ${c.a.name} vs ${c.b.name} (${c.category})\n\n${c.oneLine}\n\nFull comparison: ${BASE_URL}/compare/${c.slug}`,
+    `### ${c.a.name} vs ${c.b.name} (${c.category})\n\n${c.oneLine}\n\nFull comparison: ${BASE_URL}/vs/${c.slug}`,
 ).join("\n\n")}
 
 ## Why this surface exists
@@ -1069,7 +1069,7 @@ function buildCategoryMarkdown(cat: CategoryDef): string {
   const comparisonLines = comparisons
     .map(
       (c) =>
-        `### ${c.a.name} vs ${c.b.name}\n\n${c.oneLine}\n\nFull comparison: ${BASE_URL}/compare/${c.slug}`,
+        `### ${c.a.name} vs ${c.b.name}\n\n${c.oneLine}\n\nFull comparison: ${BASE_URL}/vs/${c.slug}`,
     )
     .join("\n\n");
 
@@ -1374,8 +1374,8 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     body: PRICING_TEARDOWN_HUB_BODY,
   },
   {
-    path: "/compare",
-    mdPath: "/compare.md",
+    path: "/vs",
+    mdPath: "/vs.md",
     title:
       "Compare — Honest Head-to-Head Comparisons of Indie SaaS Tools",
     summary:
@@ -1507,7 +1507,7 @@ export function renderPricingTeardownMarkdown(
 
 /**
  * Render a per-comparison markdown body. Same render contract as the
- * teardown renderers; powers /compare/<slug>/md.
+ * teardown renderers; powers /vs/<slug>/md.
  */
 /**
  * Render a per-category markdown body. Same render contract as the
@@ -1568,7 +1568,7 @@ function buildGlossaryMarkdown(g: GlossaryEntry): string {
                   : a.kind === "pricing-teardown"
                     ? `/pricing-teardown/${a.slug}`
                     : a.kind === "compare"
-                      ? `/compare/${a.slug}`
+                      ? `/vs/${a.slug}`
                       : a.kind === "alternatives-to"
                         ? `/alternatives-to/${a.slug}`
                         : `/category/${a.slug}`;
@@ -1642,7 +1642,7 @@ export function renderComparisonMarkdown(slug: string): string | undefined {
   const c = getComparisonBySlug(slug);
   if (!c) return undefined;
 
-  const canonicalUrl = `${BASE_URL}/compare/${c.slug}`;
+  const canonicalUrl = `${BASE_URL}/vs/${c.slug}`;
   return [
     frontMatter({
       title: `${c.a.name} vs ${c.b.name}`,
@@ -2291,8 +2291,8 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
   }).join("\n");
 
   const comparisons = COMPARISONS.map((c) => {
-    const canonical = `${BASE_URL}/compare/${c.slug}`;
-    const mirror = `${BASE_URL}/compare/${c.slug}/md`;
+    const canonical = `${BASE_URL}/vs/${c.slug}`;
+    const mirror = `${BASE_URL}/vs/${c.slug}/md`;
     return [
       `## ${c.a.name} vs ${c.b.name}`,
       "",

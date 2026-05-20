@@ -3,7 +3,7 @@
  *
  * Unifies the funnel-teardown and pricing-teardown catalogs into a single
  * CourtesyTarget shape so the seed + cron + template code can treat them
- * polymorphically. Adding a new catalog (e.g. /compare) means extending
+ * polymorphically. Adding a new catalog (e.g. /vs) means extending
  * the `catalog` union in BOTH this module AND the migration's
  * check constraint — kept in sync deliberately, no auto-broadening.
  *

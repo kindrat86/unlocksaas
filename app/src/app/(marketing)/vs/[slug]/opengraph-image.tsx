@@ -3,7 +3,7 @@ import { COMPARISON_SLUGS, getComparisonBySlug } from "@/lib/comparisons";
 import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
 
 /**
- * Per-slug Open Graph card for /compare/[slug].
+ * Per-slug Open Graph card for /vs/[slug].
  *
  * Closes the per-slug OG gap flagged in the 2026-05-17 SEO audit. Head-
  * to-head comparisons sit on the highest-intent SaaS-research query class

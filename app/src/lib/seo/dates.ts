@@ -27,7 +27,7 @@
  *
  * Consumers
  * ---------
- *   - src/app/(marketing)/compare/[slug]/page.tsx
+ *   - src/app/(marketing)/vs/[slug]/page.tsx
  *   - src/app/(marketing)/funnel-teardown/[slug]/page.tsx
  *   - src/app/(marketing)/pricing-teardown/[slug]/page.tsx
  *   - src/app/(marketing)/alternatives-to/[slug]/page.tsx

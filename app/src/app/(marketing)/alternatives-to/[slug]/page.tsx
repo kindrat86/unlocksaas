@@ -647,7 +647,7 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
             {comparisons.map((c) => (
               <li key={c.slug}>
                 <Link
-                  href={`/compare/${c.slug}`}
+                  href={`/vs/${c.slug}`}
                   className="group flex items-start gap-2 text-sm hover:text-primary transition"
                 >
                   <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />

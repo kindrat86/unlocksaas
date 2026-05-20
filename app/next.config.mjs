@@ -383,6 +383,32 @@ const nextConfig = {
       { source: "/machine/:path*", destination: "/playbook/:path*", permanent: true },
       { source: "/machine-sales", destination: "/playbook-sales", permanent: true },
       { source: "/machine-sales.md", destination: "/playbook-sales.md", permanent: true },
+
+      /**
+       * 308 permanent redirects for the /compare → /vs rename (2026-05-21).
+       *
+       * "[A] vs [B]" is the keyword shape Google actually serves for the
+       * head-to-head SaaS-research intent class. The route, content, and
+       * data are unchanged – only the URL prefix flips so the canonical
+       * matches what people type.
+       *
+       * Every inbound link – Google's index of /compare/tally-vs-typeform
+       * and the other 54 entries, internal anchors from the teardown and
+       * alternatives hubs (rewritten in the same change), MCP+RAG citations
+       * in the wild, llms.txt mentions on consumer LLM caches – migrates
+       * cleanly via 308. Link equity passes ~95%+ on permanent redirects
+       * so the SEO investment in the /compare hub is preserved.
+       *
+       * Keep these forever. Same compounding-quietly logic as the
+       * machine → playbook block above.
+       */
+      { source: "/compare", destination: "/vs", permanent: true },
+      { source: "/compare/:path*", destination: "/vs/:path*", permanent: true },
+      { source: "/compare.md", destination: "/vs.md", permanent: true },
+      // Locale-prefixed mirror (matches /es/compare/..., /pt-br/compare/..., etc.)
+      // Next.js path-to-regexp matches a single locale segment via :locale.
+      { source: "/:locale/compare", destination: "/:locale/vs", permanent: true },
+      { source: "/:locale/compare/:path*", destination: "/:locale/vs/:path*", permanent: true },
     ];
   },
 };

@@ -32,14 +32,14 @@ export const metadata: Metadata = {
     "Compare — Honest Head-to-Head Comparisons of the Tools Indie SaaS Founders Evaluate",
   description:
     "Symmetric head-to-head comparisons. Dimension-by-dimension verdicts, honest take, and the right pick for indie SaaS founders specifically.",
-  alternates: markdownAlternate("/compare", "/compare.md"),
+  alternates: markdownAlternate("/vs", "/vs.md"),
   robots: { index: true, follow: true },
   openGraph: {
     title: "Compare — Unlock SaaS",
     description:
       "Honest head-to-head comparisons of the tools indie SaaS founders evaluate.",
     type: "website",
-    url: "/compare",
+    url: "/vs",
     siteName: "Unlock SaaS",
   },
   twitter: {
@@ -64,7 +64,7 @@ const BREADCRUMB_JSON = JSON.stringify({
       "@type": "ListItem",
       position: 2,
       name: "Compare",
-      item: `${BASE}/compare`,
+      item: `${BASE}/vs`,
     },
   ],
 });
@@ -73,7 +73,7 @@ const COLLECTION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: "Compare — Unlock SaaS",
-  url: `${BASE}/compare`,
+  url: `${BASE}/vs`,
   inLanguage: "en-US",
   description:
     "Symmetric head-to-head comparisons of the tools indie SaaS founders evaluate. Dimension-by-dimension verdicts, honest take, indie-founder recommendation.",
@@ -89,7 +89,7 @@ const COLLECTION_JSON = JSON.stringify({
       "@type": "ListItem",
       position: i + 1,
       name: `${c.a.name} vs ${c.b.name}`,
-      url: `${BASE}/compare/${c.slug}`,
+      url: `${BASE}/vs/${c.slug}`,
     })),
   },
 });
@@ -112,8 +112,8 @@ export default function CompareHub() {
       <HubDatasetJsonLd
         name="Indie SaaS Head-to-Head Comparisons Catalog"
         description="Symmetric dimension-by-dimension comparisons of indie SaaS tools. Each entry names who each side is best for, scores six to nine dimensions, gives an honest take, and names the indie-founder pick."
-        hubPath="/compare"
-        mdPath="/compare.md"
+        hubPath="/vs"
+        mdPath="/vs.md"
         lastVerified={COMPARE_LATEST_VERIFIED}
         entries={COMPARISONS.map((c) => ({
           slug: c.slug,
@@ -218,7 +218,7 @@ export default function CompareHub() {
                     <CardContent className="pt-6">
                       <h4 className="text-lg font-semibold leading-tight mb-2">
                         <Link
-                          href={`/compare/${c.slug}`}
+                          href={`/vs/${c.slug}`}
                           className="hover:text-primary transition"
                         >
                           {c.a.name} vs {c.b.name}
@@ -229,7 +229,7 @@ export default function CompareHub() {
                       </p>
                       <div className="flex items-center justify-between gap-4">
                         <Link
-                          href={`/compare/${c.slug}`}
+                          href={`/vs/${c.slug}`}
                           className="text-sm font-semibold text-primary hover:underline"
                         >
                           Read the comparison →

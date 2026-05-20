@@ -144,7 +144,7 @@ function buildJsonLd(
           "@type": "ListItem",
           position: products.length + i + 1,
           name: `${c.a.name} vs ${c.b.name}`,
-          url: `${BASE}/compare/${c.slug}`,
+          url: `${BASE}/vs/${c.slug}`,
         })),
       ],
     },
@@ -375,7 +375,7 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
             {comparisons.map((c) => (
               <li key={c.slug}>
                 <Link
-                  href={`/compare/${c.slug}`}
+                  href={`/vs/${c.slug}`}
                   className="group flex items-start gap-2 text-sm hover:text-primary transition"
                 >
                   <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
@@ -438,7 +438,7 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
           </Link>{" "}
           —{" "}
           <Link
-            href="/compare"
+            href="/vs"
             className="text-primary hover:underline font-semibold"
           >
             Head-to-head comparisons

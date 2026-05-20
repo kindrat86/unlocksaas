@@ -114,7 +114,7 @@ function appearanceHref(a: GlossaryAppearance, locale: Locale): string {
     case "pricing-teardown":
       return localizedPath(`/pricing-teardown/${a.slug}`, locale);
     case "compare":
-      return localizedPath(`/compare/${a.slug}`, locale);
+      return localizedPath(`/vs/${a.slug}`, locale);
     case "alternatives-to":
       return localizedPath(`/alternatives-to/${a.slug}`, locale);
     case "category":

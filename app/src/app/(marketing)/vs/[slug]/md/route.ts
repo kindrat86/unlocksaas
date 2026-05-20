@@ -7,7 +7,7 @@ import {
 import { renderComparisonMarkdown } from "@/lib/seo/markdown";
 
 /**
- * /compare/<slug>/md — markdown mirror of each per-comparison pSEO page.
+ * /vs/<slug>/md — markdown mirror of each per-comparison pSEO page.
  * Mirrors funnel-teardown/[slug]/md and pricing-teardown/[slug]/md.
  * Drift-impossible by construction: body generated from the same Comparison
  * entry the HTML page renders.
@@ -45,7 +45,7 @@ export async function GET(
       "content-type": "text/markdown; charset=utf-8",
       "cache-control":
         "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
-      link: `<${BASE_URL}/compare/${c.slug}>; rel="canonical"`,
+      link: `<${BASE_URL}/vs/${c.slug}>; rel="canonical"`,
     },
   });
 }
