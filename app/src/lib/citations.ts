@@ -437,11 +437,22 @@ export function formatBibtex(c: Citation): string {
 /**
  * RIS – Research Information Systems. Recognised by Zotero, Mendeley,
  * EndNote, Citavi, and every legacy academic tool. Field reference
- * keys are 2-letter ASCII codes per the RIS spec; record type ELEC
- * (electronic citation) is the correct pick for a web page.
+ * keys are 2-letter ASCII codes per the RIS spec.
+ *
+ * Record-type selection (TY field):
+ *   - Datasets emit `TY  - DATA` (Data File). Per the RIS Reference
+ *     Manager profile, DATA is the canonical type for a downloadable
+ *     dataset; both Zotero and Mendeley map it to the "Dataset" item
+ *     type on import, which carries `version`, `license`, and `DOI`
+ *     fields cleanly. Falling back to ELEC ("Electronic Citation")
+ *     here would force the importer to coerce the record into a
+ *     generic web-page slot and drop the version/license metadata.
+ *   - Glossary + benchmark pages emit `TY  - ELEC` (Electronic
+ *     Citation), the correct pick for an online article that isn't
+ *     also published in a journal or book.
  *
  * Field guide used here:
- *   TY  - record type (ELEC = electronic citation)
+ *   TY  - record type (DATA for datasets, ELEC for web pages)
  *   ID  - record ID (our cite-permalink ID)
  *   AU  - author
  *   TI  - title
@@ -451,15 +462,26 @@ export function formatBibtex(c: Citation): string {
  *   UR  - URL
  *   AB  - abstract
  *   LA  - language (RFC 5646 tag)
+ *   M3  - type of work (only emitted for datasets; "Open dataset")
  *   CY  - place of publication
  *   ET  - edition / version
  *   AN  - accession number
+ *   N1  - notes (license attribution)
+ *   Y2  - accessed date (YYYY/MM/DD)
  *   ER  - end of record (sentinel)
  */
+const RIS_TYPE_BY_SURFACE: Readonly<Record<CitationSurface, string>> =
+  Object.freeze({
+    dataset: "DATA",
+    glossary: "ELEC",
+    benchmark: "ELEC",
+  });
+
 export function formatRis(c: Citation): string {
   const da = c.lastVerifiedIso.replace(/-/g, "/");
+  const ty = RIS_TYPE_BY_SURFACE[c.surface];
   const lines: string[] = [
-    "TY  - ELEC",
+    `TY  - ${ty}`,
     `ID  - ${c.id}`,
     `AU  - ${c.authorName}`,
     `TI  - ${c.title}`,
@@ -470,6 +492,10 @@ export function formatRis(c: Citation): string {
     `AB  - ${c.abstract}`,
     "LA  - en-US",
   ];
+  // Datasets carry a human-readable "type of work" so reference
+  // managers that surface M3 (Zotero shows it under "Extra") display
+  // "Open dataset" instead of leaving the slot blank.
+  if (c.surface === "dataset") lines.push("M3  - Open dataset");
   if (c.version) lines.push(`ET  - ${c.version}`);
   if (c.licenseSpdx) lines.push(`N1  - Licensed under ${c.licenseSpdx}.`);
   lines.push(`Y2  - ${ACCESSED_ISO.replace(/-/g, "/")}`);
