@@ -891,6 +891,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
     // -------------------------------------------------------------------------
+    // Surface B/D – Glossary audio podcast feed (VEO / AEO uplift).
+    //
+    // /glossary/podcast.xml is the RSS 2.0 + iTunes-namespace feed listing
+    // every published /glossary/[slug] audio episode. Apple Podcasts,
+    // Spotify, Google Podcasts, Pocket Casts, Overcast, and AI audio
+    // ingestion pipelines (Whisper-based crawlers, Google's audio carousel)
+    // discover it via this sitemap entry until podcast-directory submission
+    // is performed manually. Brunson Hard-Rule: empty manifest = empty
+    // <item> list. Listing the URL is honest because the channel block
+    // always renders, even with zero episodes.
+    //
+    // The square 1400×1400 cover at /glossary/podcast-cover is referenced
+    // by the feed itself (Apple submission validator requires it inside
+    // the channel block) but is not sitemap-listed: it's an image asset
+    // that the feed declares, not a discovery target. Listing it would
+    // create a duplicate path between the OG image sitemap and the
+    // podcast artwork the feed already names.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/glossary/podcast.xml`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.4,
+    },
+    // -------------------------------------------------------------------------
     // Surface C – Agent retrieval (MCP server).
     //
     // /mcp is the human-readable install + tool-catalog page. The actual

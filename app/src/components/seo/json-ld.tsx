@@ -2155,3 +2155,103 @@ export function QuotationJsonLd(props: QuotationSchemaInput) {
 // the same module that exports the React component.
 export { buildQuotationNode };
 export type { QuotationSchemaInput };
+
+// ---------------------------------------------------------------------------
+// Glossary AudioObject — per-slug TTS-rendered episode (VEO / AEO uplift)
+// ---------------------------------------------------------------------------
+
+/**
+ * Per-slug AudioObject for the glossary detail pages.
+ *
+ * Why a dedicated builder (not a generic AudioJsonLd call): the glossary
+ * audio episodes are anchored to a specific Article + DefinedTerm pair via
+ * `isPartOf` and `about` @id cross-references, declare a real measured
+ * `contentSize` (bytes) and `duration` (seconds), and carry the
+ * `accessMode: ["auditory"]` + `accessibilityFeature: ["transcript"]`
+ * signals that Apple Podcasts / Google Podcasts / Spotify / ChatGPT Voice
+ * ingest when classifying an audio source as transcript-backed. The
+ * generic AudioJsonLd lower in this file is calibrated for the founder
+ * VSL audio rendition (env-driven, possibly absent contentUrl) and cannot
+ * carry these richer signals without conditional logic that would muddy
+ * its single-purpose contract.
+ *
+ * The transcript field points at the canonical glossary detail page – the
+ * page IS the transcript by construction. Brunson Hard-Rule: every claim
+ * here is verifiable against the file the enclosure URL serves.
+ *
+ * Render contract: caller MUST gate on
+ * `getGlossaryAudio(slug)` returning non-null. The component does not
+ * defensively check – emission of this schema implies a real audio file
+ * exists at the contentUrl, and a stale claim is a Brunson Hard-Rule
+ * violation that demotes the page in Rich Results + AI Overviews.
+ */
+export type GlossaryAudioJsonLdInput = {
+  /** Term display name, e.g. "Hook". */
+  termName: string;
+  /** Short definition – the text the audio narrates verbatim. */
+  shortDefinition: string;
+  /** Absolute URL of the canonical glossary page (the transcript surface). */
+  canonicalGlossaryUrl: string;
+  /** Absolute URL of the MP3 file. */
+  audioUrl: string;
+  /** MIME type, e.g. "audio/mpeg". */
+  contentType: string;
+  /** Real duration in seconds, measured from the encoded file. */
+  durationSeconds: number;
+  /** Real byte size of the encoded file. */
+  byteSize: number;
+  /** ISO 8601 timestamp of when the audio was generated. */
+  generatedAt: string;
+  /** Locale tag, e.g. "en-US". */
+  inLanguage: string;
+};
+
+function buildGlossaryAudioJson(input: GlossaryAudioJsonLdInput): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "AudioObject",
+    "@id": `${input.canonicalGlossaryUrl}#audio`,
+    name: `${input.termName} — audio definition`,
+    description: input.shortDefinition,
+    contentUrl: input.audioUrl,
+    encodingFormat: input.contentType,
+    // Schema.org duration is ISO 8601. Whole seconds only – TTS output is
+    // generated at runtime so sub-second precision adds no signal.
+    duration: `PT${Math.max(1, Math.round(input.durationSeconds))}S`,
+    // contentSize accepts byte count as string ("12345") or with unit
+    // suffix ("12.3 KB"). Raw byte count is the honest, unambiguous form.
+    contentSize: `${input.byteSize}`,
+    uploadDate: input.generatedAt,
+    inLanguage: input.inLanguage,
+    // Anchor to the glossary detail page's Article + DefinedTerm @ids
+    // so the schema graph resolves the audio as ONE node connected to
+    // both the article body and the term itself, not a disconnected leaf.
+    // Detail page builders mint the Article @id implicitly via
+    // `mainEntityOfPage.@id = canonicalUrl`; the DefinedTerm anchors at
+    // `${canonicalUrl}#term`.
+    isPartOf: { "@id": input.canonicalGlossaryUrl },
+    about: { "@id": `${input.canonicalGlossaryUrl}#term` },
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    // Accessibility signals – the audio is fully transcript-backed. The
+    // glossary page renders the same text verbatim as on-page prose, so
+    // the canonical page URL is a valid `transcript` resolution target.
+    accessMode: ["auditory"],
+    accessModeSufficient: [
+      { "@type": "ItemList", itemListElement: ["auditory"] },
+    ],
+    accessibilityFeature: ["transcript", "captions"],
+    transcript: input.canonicalGlossaryUrl,
+    isAccessibleForFree: true,
+    license: `${BASE}/terms`,
+  });
+}
+
+/**
+ * AudioObject JSON-LD for one glossary slug. See GlossaryAudioJsonLdInput
+ * docs above for the render contract – caller MUST gate on the manifest
+ * helper before emitting this.
+ */
+export function GlossaryAudioJsonLd(props: GlossaryAudioJsonLdInput) {
+  return <JsonLdScript json={buildGlossaryAudioJson(props)} />;
+}

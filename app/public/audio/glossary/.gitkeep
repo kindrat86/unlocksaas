@@ -1,0 +1,8 @@
+Glossary audio episodes — TTS-rendered MP3 files, one per glossary slug.
+
+This directory is populated exclusively by scripts/generate-glossary-audio.py.
+The manifest at app/src/lib/seo/glossary-audio-manifest.json is the runtime
+source of truth; the script writes the MP3 + the manifest row atomically so a
+listed entry always resolves to a real file.
+
+See strategy/glossary-audio-playbook.md for the operator runbook.
