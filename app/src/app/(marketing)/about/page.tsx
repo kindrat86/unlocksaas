@@ -6,6 +6,7 @@ import {
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
 
 /**
  * About page. E-E-A-T author anchor for the whole site.
@@ -154,6 +155,54 @@ export default function AboutPage() {
             Post-launch, pre-revenue, non-engineer founders who shipped
             something real with AI tools and are now staring at a flat Stripe
             line. If that&rsquo;s you, you are exactly who I built this for.
+          </p>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* ── Body of work ─────────────────────────────────────────
+            Surfaces the founder's shipped artifacts so the bio is
+            anchored to verifiable public works, not just narrative.
+            Reads from FOUNDER_WORK_EXAMPLES (lib/seo/founder-works.ts);
+            every entry resolves to a live URL on this domain or a
+            verified off-platform mirror (Zenodo DOI, HuggingFace).
+            Same registry the Person.workExample JSON-LD emits, so the
+            rendered list and the structured data stay in sync. */}
+        <section
+          className="mb-10 prose-like space-y-4 text-base leading-relaxed"
+          aria-labelledby="body-of-work-about"
+        >
+          <h2 id="body-of-work-about" className="text-2xl font-bold">
+            What I&rsquo;ve actually shipped
+          </h2>
+          <p>
+            Not awards. Not certifications. Real public artifacts you
+            can open in a tab and read end-to-end:
+          </p>
+          <ul className="space-y-2 text-sm list-none pl-0">
+            {FOUNDER_WORK_EXAMPLES.map((w) => (
+              <li key={w.url} className="leading-relaxed">
+                <a
+                  href={w.url}
+                  className="font-medium underline underline-offset-4 hover:text-foreground"
+                  rel="bookmark"
+                >
+                  {w.name}
+                </a>
+                <span className="text-muted-foreground"> – {w.description}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted-foreground">
+            A press-kit-shaped version of the same list, plus brand
+            facts and contact details, lives on{" "}
+            <Link
+              href="/press"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              /press
+            </Link>
+            .
           </p>
         </section>
 

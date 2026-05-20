@@ -57,6 +57,15 @@ import {
   FOUNDER_SAME_AS,
 } from "@/lib/seo/founder";
 import {
+  FOUNDER_WORK_EXAMPLES,
+  toCreativeWorkNode,
+} from "@/lib/seo/founder-works";
+import {
+  FOUNDER_HAS_CREDENTIAL,
+  FOUNDER_MEMBER_OF,
+} from "@/lib/seo/founder-credentials";
+import { buildCorrectionsItemList } from "@/lib/seo/corrections-log";
+import {
   buildPlaybookAggregateRating,
   type PlaybookAggregateRatingNode,
 } from "@/lib/seo/review-rating";
@@ -124,11 +133,82 @@ export const SPEAKABLE_SELECTORS: readonly string[] = Object.freeze([
  * Pre-built SpeakableSpecification subobject. Spread into any Article /
  * WebPage / HowTo schema. Frozen at module load to keep the embedded
  * reference identity-stable across renders.
+ *
+ * Default fallback. Prefer `buildSpeakable(...)` below for pSEO templates
+ * that want page-specific `[data-speakable="<token>"]` curation – it gives
+ * voice engines precise extraction handles on the page's most
+ * citation-ready prose, instead of the generic catch-all.
  */
 export const SPEAKABLE_SPEC = Object.freeze({
   "@type": "SpeakableSpecification",
   cssSelector: SPEAKABLE_SELECTORS,
 });
+
+/**
+ * Stable global speakable handles every page can rely on – the structured
+ * TL;DR `<dl data-llm-summary>` block and the TL;DR section wrapper. These
+ * are always included by `buildSpeakable()` so per-page curation never
+ * loses the canonical TL;DR anchor that LLM retrievers and voice engines
+ * have already learned to query.
+ */
+const STABLE_SPEAKABLE_HANDLES: readonly string[] = Object.freeze([
+  "[data-llm-summary]",
+  '[aria-labelledby="tldr"]',
+]);
+
+/**
+ * Build a curated SpeakableSpecification for a single page.
+ *
+ * Combines the stable global handles (the structured TL;DR + its section
+ * wrapper) with page-specific `[data-speakable="<token>"]` selectors that
+ * point at the page's most citation-ready prose blocks – the Hook/Story/
+ * Offer paragraphs on a funnel teardown, the Direct Answer on an answers
+ * page, the verdict on a comparison page, and so on.
+ *
+ * Why curate instead of using the bare `SPEAKABLE_SPEC` default
+ * ------------------------------------------------------------
+ * The default catches `[data-speakable]` (any token), `[data-llm-summary]`
+ * (the structured TL;DR), and `[aria-labelledby="tldr"]` (its wrapper).
+ * That works, but it's generic – a voice engine has no signal which of the
+ * page's many `[data-speakable]` blocks is the canonical answer to the
+ * page's intent. A curated list of named tokens
+ * (`[data-speakable="hook"]`, `[data-speakable="story"]`,
+ * `[data-speakable="offer"]`) names the page's specific speakable surface
+ * and gives the engine a one-shot extraction path to the cited prose.
+ *
+ * Brunson Hard-Rule
+ * -----------------
+ * Every selector passed in MUST resolve to a DOM block the page actually
+ * renders. The component contract is "the JSON-LD describes the rendered
+ * HTML"; a speakable selector pointing at a non-existent attribute is the
+ * same drift class as a JSON-LD field that disagrees with rendered text –
+ * both get the page demoted in voice-answer panels and AI Overviews.
+ *
+ * Deduplication: the helper de-duplicates the merged selector list so a
+ * caller that accidentally passes a stable handle (e.g.
+ * `[data-llm-summary]`) does not produce a SpeakableSpecification with
+ * repeated entries.
+ *
+ * Usage
+ * -----
+ *   const article = {
+ *     // ...
+ *     speakable: buildSpeakable(
+ *       '[data-speakable="hook"]',
+ *       '[data-speakable="story"]',
+ *       '[data-speakable="offer"]',
+ *     ),
+ *   };
+ */
+export function buildSpeakable(...extraSelectors: readonly string[]) {
+  const dedup = Array.from(
+    new Set([...STABLE_SPEAKABLE_HANDLES, ...extraSelectors]),
+  );
+  return {
+    "@type": "SpeakableSpecification",
+    cssSelector: dedup,
+  };
+}
 
 /**
  * Accessibility / access-mode signals. `accessMode` declares the sensory
@@ -1020,7 +1100,53 @@ function buildPersonJson(): string {
         }
       : {};
   const award = FOUNDER_AWARDS.length > 0 ? { award: FOUNDER_AWARDS } : {};
-  return JSON.stringify({ ...base, ...sameAs, ...alumniOf, ...award });
+  // workExample – the founder's body of work. Always populated by the
+  // anchor artifacts (dataset, glossary, podcast, OpenAPI, MCP server,
+  // state-of-saas, four-indie essay) because each is a live, indexable
+  // surface on this domain. The env-gated Zenodo / HuggingFace mirrors
+  // layer on top once their respective deposits land. See
+  // src/lib/seo/founder-works.ts for the editorial discipline that
+  // governs which artifacts qualify.
+  const workExample =
+    FOUNDER_WORK_EXAMPLES.length > 0
+      ? { workExample: FOUNDER_WORK_EXAMPLES.map(toCreativeWorkNode) }
+      : {};
+  // hasCredential – EducationalOccupationalCredential strings the
+  // founder holds. Env-gated (NEXT_PUBLIC_FOUNDER_HAS_CREDENTIAL).
+  // Empty by default per Brunson Hard-Rule – the key is omitted
+  // entirely until the operator provides a real credential.
+  const hasCredential =
+    FOUNDER_HAS_CREDENTIAL.length > 0
+      ? {
+          hasCredential: FOUNDER_HAS_CREDENTIAL.map((name) => ({
+            "@type": "EducationalOccupationalCredential",
+            name,
+          })),
+        }
+      : {};
+  // memberOf – Organization memberships. Env-gated
+  // (NEXT_PUBLIC_FOUNDER_MEMBER_OF, pipe-delimited name|url pairs).
+  // Empty by default; the key is omitted until a real membership
+  // resolves to a verifiable Organization URL.
+  const memberOf =
+    FOUNDER_MEMBER_OF.length > 0
+      ? {
+          memberOf: FOUNDER_MEMBER_OF.map((m) => ({
+            "@type": "Organization",
+            name: m.name,
+            url: m.url,
+          })),
+        }
+      : {};
+  return JSON.stringify({
+    ...base,
+    ...sameAs,
+    ...alumniOf,
+    ...award,
+    ...workExample,
+    ...hasCredential,
+    ...memberOf,
+  });
 }
 
 const PERSON_JSON = buildPersonJson();
@@ -1323,6 +1449,67 @@ export function OrganizationJsonLd() {
       <JsonLdScript json={WEBSITE_JSON} />
     </>
   );
+}
+
+/**
+ * Editorial-policy Article schema. Render on `/editorial-policy`.
+ *
+ * Why this component exists (E-E-A-T trust uplift, 2026-05-21):
+ *   The /editorial-policy page already names a corrections workflow
+ *   and renders an honest empty-state for the corrections log. It
+ *   needed a machine-readable anchor – an Article JSON-LD declaring:
+ *     - `correctionsPolicy` URL (self-referential anchor – the page
+ *       itself is the policy document)
+ *     - `correction` ItemList when CORRECTIONS is populated (omitted
+ *       entirely while empty, per Brunson Hard-Rule – an empty
+ *       correction array is a fabrication tell to validators)
+ *     - publisher / author cross-references to the canonical
+ *       Organization and Person @ids
+ *
+ *   Schema.org/Article.correctionsPolicy is one of the strongest
+ *   E-E-A-T trust signals Google's quality raters recognise. The
+ *   declaration tells crawlers: this site publishes a corrections
+ *   policy AND links to it from every page where claims are made.
+ *
+ * Hoisting pattern: the JSON is composed at module load (same shape
+ * as PERSON_JSON, ORGANIZATION_JSON) so per-render cost is zero.
+ * The buildCorrectionsItemList() helper returns undefined when the
+ * registry is empty, so the spread is a no-op in the honest empty
+ * state.
+ */
+const EDITORIAL_POLICY_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": `${BASE}/editorial-policy`,
+  headline: "Editorial Policy — Unlock SaaS",
+  description:
+    "How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log.",
+  url: `${BASE}/editorial-policy`,
+  datePublished: "2026-05-17",
+  dateModified: "2026-05-21",
+  inLanguage: "en-US",
+  isPartOf: { "@id": ID.website },
+  publisher: { "@id": ID.organization },
+  author: { "@id": ID.person },
+  // Self-referential: this page IS the corrections policy document.
+  // Schema.org accepts a URL for both correctionsPolicy and
+  // diversityPolicy / ethicsPolicy fields.
+  correctionsPolicy: `${BASE}/editorial-policy#corrections-workflow`,
+  // Spread the corrections ItemList only when CORRECTIONS is non-empty.
+  // buildCorrectionsItemList returns undefined while empty, so spreading
+  // it is a safe no-op until the registry has entries.
+  ...(buildCorrectionsItemList() ?? {}),
+  // Knowledge Graph alignment with the existing publishingPrinciples
+  // declaration on Organization – both fields point at this same
+  // editorial-policy page, doubling the entity-confidence anchor.
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${BASE}/editorial-policy`,
+  },
+});
+
+export function EditorialPolicyArticleJsonLd() {
+  return <JsonLdScript json={EDITORIAL_POLICY_JSON} />;
 }
 
 /**

@@ -10,10 +10,14 @@ import {
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
   BASE_URL,
+  DATASET_DOI_URL,
+  DATASET_EXTERNAL_REGISTRATIONS,
   FOUNDER,
   ORGANIZATION,
+  ORGANIZATION_SAME_AS,
   ALTERNATE_NAMES,
 } from "@/lib/seo/entity";
+import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
 
 /**
  * Press / media kit page.
@@ -67,6 +71,25 @@ export const metadata: Metadata = {
 };
 
 // Pure static – no per-request inputs.
+
+/**
+ * Strip an absolute URL to its hostname (no scheme, no path). Used as
+ * the visible label for off-platform sameAs anchors in the Verified
+ * external presence section – the URL is shown verbatim below the
+ * label, so a hostname-only label keeps the row scannable.
+ *
+ * Safe fallback: if the URL constructor throws (env-gated rows are
+ * pre-validated, so this should never fire in production), return the
+ * original string so the row stays renderable rather than crashing
+ * the page render.
+ */
+function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return url;
+  }
+}
 
 const TRAIL = [
   { name: "Unlock SaaS", url: `${BASE_URL}/` },
@@ -342,6 +365,135 @@ export default function PressPage() {
             </li>
           </ul>
         </section>
+
+        <Separator className="my-8" />
+
+        {/* ── Body of work ──────────────────────────────────────────────
+            The founder's shipped artifacts – every entry is a live,
+            public URL on this domain (or a verified off-platform mirror
+            when the env-gated DOI / HF rows activate). This is the
+            honest answer to "what has the founder published?" – sourced
+            from src/lib/seo/founder-works.ts, validated at build time. */}
+        <section
+          aria-labelledby="body-of-work"
+          className="mb-10 space-y-4 text-base leading-relaxed"
+        >
+          <h2 id="body-of-work" className="text-2xl font-bold">
+            Body of work (verifiable artifacts)
+          </h2>
+          <p className="text-muted-foreground">
+            Public, citable artifacts the founder has shipped. Each one
+            resolves to a live URL with structured data attached. Use
+            these when you need to cite a primary source instead of a
+            paraphrase.
+          </p>
+          <ul className="space-y-3 text-sm">
+            {FOUNDER_WORK_EXAMPLES.map((w) => (
+              <li key={w.url} className="space-y-1">
+                <a
+                  href={w.url}
+                  className="font-medium underline underline-offset-4 hover:text-foreground"
+                  rel="bookmark"
+                >
+                  {w.name}
+                </a>
+                <p className="text-muted-foreground">{w.description}</p>
+                <p className="text-xs text-muted-foreground font-mono">
+                  {w.type} · published{" "}
+                  <time dateTime={w.datePublished}>{w.datePublished}</time>
+                  {w.doi ? ` · DOI ${w.doi}` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <Separator className="my-8" />
+
+        {/* ── Verified external presence ────────────────────────────────
+            Off-platform anchors that have already been claimed and
+            externally verified – Wikidata QID (patrol-approved), Zenodo
+            DOI (mint-confirmed), HuggingFace cross-listing (repo-live),
+            plus any populated Organization.sameAs entries.
+
+            Each row is env-gated through the existing entity.ts
+            registries. A fresh checkout with no env vars set renders the
+            honest empty-state (the same posture as the Recent coverage
+            section below). Once the operator flips an env var to a real
+            URL, the row lights up on the next redeploy. */}
+        {(() => {
+          const externalRows: Array<{
+            label: string;
+            url: string;
+            note: string;
+          }> = [];
+
+          for (const reg of DATASET_EXTERNAL_REGISTRATIONS) {
+            externalRows.push({
+              label: `${reg.name} listing`,
+              url: reg.url,
+              note: `Indie SaaS Teardowns dataset cross-listed on ${reg.name}${reg.doi ? ` (DOI ${reg.doi})` : ""}.`,
+            });
+          }
+          if (DATASET_DOI_URL) {
+            externalRows.push({
+              label: "DOI resolver (dataset)",
+              url: DATASET_DOI_URL,
+              note: "Resolvable DOI for the canonical Indie SaaS Teardowns dataset – academic-citation-ready.",
+            });
+          }
+          for (const sameAs of ORGANIZATION_SAME_AS) {
+            externalRows.push({
+              label: hostOf(sameAs),
+              url: sameAs,
+              note: "Externally claimed entity profile. Bi-directional sameAs anchor (the profile names unlocksaas.com).",
+            });
+          }
+
+          return (
+            <section
+              aria-labelledby="external-presence"
+              className="mb-10 space-y-4 text-base leading-relaxed"
+            >
+              <h2 id="external-presence" className="text-2xl font-bold">
+                Verified external presence
+              </h2>
+              {externalRows.length === 0 ? (
+                <p className="text-muted-foreground italic">
+                  No off-platform anchors active yet. When the operator
+                  activates a Wikidata QID, a Zenodo DOI, a HuggingFace
+                  cross-listing, or a verified social profile, the row
+                  appears here. No placeholder logos until that happens.
+                </p>
+              ) : (
+                <>
+                  <p className="text-muted-foreground">
+                    Each row below resolves to a real third-party-verified
+                    surface (entity registry, academic catalog, social
+                    profile) that names UnlockSaaS or the founder.
+                  </p>
+                  <ul className="space-y-3 text-sm">
+                    {externalRows.map((r) => (
+                      <li key={r.url} className="space-y-1">
+                        <a
+                          href={r.url}
+                          className="font-medium underline underline-offset-4 hover:text-foreground"
+                          rel="noopener"
+                        >
+                          {r.label}
+                        </a>
+                        <p className="text-muted-foreground">{r.note}</p>
+                        <p className="text-xs text-muted-foreground font-mono">
+                          {r.url}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </section>
+          );
+        })()}
 
         <Separator className="my-8" />
 
