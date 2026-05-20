@@ -14,9 +14,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
  * also renders – no fabricated copy lives in this route.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
-export const dynamicParams = false;
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

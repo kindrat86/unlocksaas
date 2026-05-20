@@ -15,4 +15,3 @@ export function GET() {
   return markdownResponseForPath("/editorial-policy");
 }
 
-export const dynamic = "force-static";

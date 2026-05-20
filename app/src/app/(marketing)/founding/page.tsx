@@ -13,7 +13,6 @@ import { FoundingWaitlistForm } from "./waitlist-form";
 import { FoundingClaimButton } from "./claim-button";
 import { cartWindow, seatsClaimed, FOUNDING_COHORT_CAP } from "@/lib/founding/cohort";
 
-export const dynamic = "force-dynamic";
 
 // Per-page metadata — Surface A of the Google strategy. The Founding Cohort
 // PLF is state-dependent (pre_launch / open / closed); the title/description

@@ -19,10 +19,8 @@
  */
 
 import { NextResponse } from "next/server";
+import { cacheLife } from "next/cache";
 import { BASE_URL } from "@/lib/seo/entity";
-
-export const dynamic = "force-static";
-export const revalidate = 86400;
 
 const MCP_URL = `${BASE_URL}/api/mcp`;
 
@@ -107,7 +105,9 @@ The WebSite JSON-LD on every UnlockSaaS page declares a \`potentialAction\` of t
 Maintained by Maryan (maryan@unlocksaas.com). See ${BASE_URL}/editorial-policy for sourcing standards.
 `;
 
-export function GET() {
+export async function GET() {
+  "use cache";
+  cacheLife({ revalidate: 86400 });
   return new NextResponse(BODY, {
     status: 200,
     headers: {

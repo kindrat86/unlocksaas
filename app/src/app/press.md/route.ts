@@ -9,4 +9,3 @@ export function GET() {
   return markdownResponseForPath("/press");
 }
 
-export const dynamic = "force-static";

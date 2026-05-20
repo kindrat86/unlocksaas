@@ -53,11 +53,8 @@ import {
 
 // Node.js runtime – the sitemap import pulls in module-level data from
 // every pSEO manifest, which is fine on Node but bloats an Edge bundle.
-export const runtime = "nodejs";
 
 // Submission is a side-effecting outbound call; never cache.
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 const HOST = "unlocksaas.com";
 

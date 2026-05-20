@@ -67,7 +67,6 @@ export const metadata: Metadata = {
 };
 
 // Pure static – no per-request inputs.
-export const dynamic = "force-static";
 
 const TRAIL = [
   { name: "Unlock SaaS", url: `${BASE_URL}/` },

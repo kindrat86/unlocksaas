@@ -28,7 +28,6 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/repeatable"),
 };
 
-export const dynamic = "force-dynamic";
 
 export default function RepeatablePlaceholderPage() {
   return (

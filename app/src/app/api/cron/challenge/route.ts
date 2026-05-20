@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { sendNextAndAdvance, type DueRow } from "@/lib/challenge/dispatch";
 
-export const runtime = "nodejs";
 // Challenge cron may fan out to many subscribers. Bump well past the default.
 export const maxDuration = 300;
 // Force dynamic so the cron always runs against live DB state.
-export const dynamic = "force-dynamic";
 
 /**
  * Daily cron: GET /api/cron/challenge

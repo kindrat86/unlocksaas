@@ -21,4 +21,3 @@ export function GET() {
   return markdownResponseForPath("/dont-buy-unlock-saas");
 }
 
-export const dynamic = "force-static";

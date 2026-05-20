@@ -50,4 +50,3 @@ export async function GET(
   });
 }
 
-export const dynamicParams = false;

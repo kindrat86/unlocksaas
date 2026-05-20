@@ -16,8 +16,6 @@ import {
 
 // Onboarding is a personalised, server-rendered view. Don't pre-render or
 // cache it — every render must read fresh profile + project state.
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export default async function OnboardingPage(
   props: {

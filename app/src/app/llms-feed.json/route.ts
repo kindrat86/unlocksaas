@@ -637,6 +637,13 @@ export function GET() {
       // Self-canonical so any aggregator that mirrors this feed credits
       // the origin URL.
       link: `<${BASE_URL}/llms-feed.json>; rel="canonical"`,
+      // Forward-looking opt-in signal for AI training corpora — positive
+      // complement to the "noai" / "noimageai" X-Robots-Tag values publishers
+      // use to opt out. No finalized RFC yet (IETF AI Preferences WG still
+      // drafting), but the value is consistent with the welcomedAiUserAgents
+      // array in the payload itself and the AI allow-list in /robots.txt.
+      // Mirrors the same header on /llms.txt and /llms-full.txt.
+      "training-data-attribution": "allow",
     },
   });
 }
@@ -659,8 +666,6 @@ export function OPTIONS() {
 }
 
 // Static – no per-request inputs.
-export const dynamic = "force-static";
 
 // Node.js runtime (default). Pulls module-level data from five pSEO
 // catalogs which are sized for Node, not for an Edge V8 isolate.
-export const runtime = "nodejs";

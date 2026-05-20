@@ -4,8 +4,6 @@ import { getStripe } from "@/lib/stripe";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { getOrCreateProject } from "@/lib/onboarding";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 /**
  * Stripe Connect OAuth return handler.

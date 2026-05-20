@@ -22,5 +22,3 @@ export function OPTIONS() {
   return perTableCsvOptions();
 }
 
-export const dynamic = "force-static";
-export const runtime = "nodejs";

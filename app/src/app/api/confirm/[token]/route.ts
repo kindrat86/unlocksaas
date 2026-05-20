@@ -24,7 +24,6 @@ import {
 } from "@/lib/double-opt-in";
 import type { DiagnosticResult } from "@/lib/soap-opera/emails";
 
-export const runtime = "nodejs";
 
 const VALID_LISTS = new Set<FunnelList>([
   "soap_opera",

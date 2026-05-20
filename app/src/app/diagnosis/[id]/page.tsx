@@ -38,8 +38,6 @@ import { DiagnosisShareViewBeacon } from "./share-view-beacon";
  *   strategy/workbooks/04-building-your-funnels.md §3 (Diagnostic Result)
  */
 
-export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
 
 type RouteParams = { id: string };
 

@@ -34,7 +34,6 @@ import {
 import { ShareButtons } from "./ShareButtons";
 import { updateShareSettings, simulateFirstCustomer } from "./actions";
 
-export const dynamic = "force-dynamic";
 
 interface ProfileBadgeFields {
   id: string;

@@ -47,8 +47,6 @@ import { formatVerifiedDate } from "@/lib/seo/dates";
 
 const BASE = BASE_URL;
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return PRESS_TOPIC_SLUGS.map((slug) => ({ slug }));

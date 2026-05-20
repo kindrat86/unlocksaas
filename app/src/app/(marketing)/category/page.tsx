@@ -19,7 +19,6 @@ import {
 
 const BASE = "https://unlocksaas.com";
 
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title:

@@ -11,9 +11,7 @@ import {
   sendConfirmationEmail,
 } from "@/lib/double-opt-in";
 
-export const runtime = "nodejs";
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 

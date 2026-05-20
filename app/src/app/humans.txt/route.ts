@@ -16,7 +16,6 @@ import { FOUNDER, ORGANIZATION, BASE_URL } from "@/lib/seo/entity";
  * listed is the founder.
  */
 
-export const dynamic = "force-static";
 
 export function GET() {
   const body = [

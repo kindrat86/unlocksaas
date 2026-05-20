@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { LLMS_TXT_BODY, LLMS_TXT_CACHE_CONTROL } from "@/lib/seo/llms-txt";
+import {
+  LLMS_TXT_BODY,
+  LLMS_TXT_CACHE_CONTROL,
+  LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
+} from "@/lib/seo/llms-txt";
 import { BASE_URL } from "@/lib/seo/entity";
 
 /**
@@ -48,6 +52,7 @@ export function GET() {
     headers: {
       "content-type": "text/plain; charset=utf-8",
       "cache-control": LLMS_TXT_CACHE_CONTROL,
+      "training-data-attribution": LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
       // RFC 5988 Link header pointing every consumer at the canonical
       // llmstxt.org §1 URL. Keeps caches, retrievers, and assistants
       // from treating /.well-known/llms.txt and /llms.txt as two

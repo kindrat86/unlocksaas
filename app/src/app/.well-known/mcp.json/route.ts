@@ -44,15 +44,15 @@
  */
 
 import { NextResponse } from "next/server";
+import { cacheLife } from "next/cache";
 
 const BASE = "https://unlocksaas.com";
 
 // Caching: the manifest is static (no request-time inputs). 24-hour
 // cache at the edge is the right cadence – manifest changes are tied
-// to deploys, not to runtime state. `force-static` makes Next emit the
-// route as a build-time prerender.
-export const dynamic = "force-static";
-export const revalidate = 86400;
+// to deploys, not to runtime state. Under Cache Components (Next 16+)
+// `force-static` + `revalidate = 86400` is replaced by `'use cache' +
+// cacheLife({ revalidate: 86400 })` inside the GET handler below.
 
 const MANIFEST = {
   schemaVersion: "0.1",
@@ -164,6 +164,8 @@ const MANIFEST = {
 } as const;
 
 export async function GET() {
+  "use cache";
+  cacheLife({ revalidate: 86400 });
   return NextResponse.json(MANIFEST, {
     headers: {
       // Long edge cache: manifest only changes on deploy.

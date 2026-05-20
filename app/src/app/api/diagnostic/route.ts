@@ -53,7 +53,6 @@ import {
  * maxDuration: 90 s (page fetch ≤8 s + deep Claude call ≤60 s typical + margin).
  */
 
-export const runtime = "nodejs";
 export const maxDuration = 90;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

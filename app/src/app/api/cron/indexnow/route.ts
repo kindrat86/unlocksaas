@@ -51,12 +51,10 @@ import { ANSWER_SLUGS } from "@/lib/answers";
  * rate limits (no documented hard cap; the spec recommends batching).
  */
 
-export const runtime = "nodejs";
 // IndexNow endpoint typically responds in well under a second. 60s is
 // generous headroom in case of transient slowness; we never want the cron
 // to block other deploys.
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 const BASE = "https://unlocksaas.com";
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";

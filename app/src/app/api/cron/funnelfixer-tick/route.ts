@@ -6,9 +6,7 @@ import {
 } from "@/lib/soap-opera/dispatch";
 import type { DiagnosticResult } from "@/lib/soap-opera/emails";
 
-export const runtime = "nodejs";
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 /**
  * GET /api/cron/funnelfixer-tick

@@ -89,7 +89,6 @@ export const metadata: Metadata = {
 };
 
 // Static — every value on the page derives from module-level constants.
-export const dynamic = "force-static";
 
 const TRAIL = [
   { name: ORGANIZATION.name, url: `${BASE_URL}/` },

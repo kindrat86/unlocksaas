@@ -38,7 +38,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const dynamic = "force-static";
 
 // Effective date is module-level so the build embeds a stable string; bump
 // when a substantive change ships. Format is ISO for playbook-readability.

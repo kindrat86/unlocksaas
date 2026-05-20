@@ -388,9 +388,11 @@ def posthog_metrics() -> dict:
 
     excl = exclude_clause("properties")
 
-    # All-time visitors (distinct persons) from $pageview
+    # All-time visitors (distinct persons) from $pageview.
+    # `uniq` (HyperLogLog) instead of `count(DISTINCT …)` so the unbounded scan
+    # doesn't 504 — PostHog kills count(DISTINCT) past a few seconds.
     r = ph_query(f"""
-        SELECT count(DISTINCT person_id) FROM events
+        SELECT uniq(person_id) FROM events
         WHERE event = '$pageview' AND {excl}
     """)
     rows = ph_rows(r)
@@ -913,8 +915,20 @@ def main():
         if s.get("status") in ("active", "completed") and not (s.get("source") or "").startswith("funnelfixer")
     )
 
+    # Fallback: if the all-time query failed (504/timeout, returns 0) but the
+    # bounded daily query has visitors, use sum-of-daily as a lower bound so the
+    # KPI doesn't silently flip to zero on a transient PostHog hiccup.
+    visitors_total = ph.get("visitors_total", 0)
+    daily_sum = sum(d.get("visitors", 0) for d in ph.get("daily", []))
+    if visitors_total < daily_sum:
+        print(
+            f"  visitors_total fallback: all-time={visitors_total} < daily_sum={daily_sum}, using daily_sum",
+            file=sys.stderr,
+        )
+        visitors_total = daily_sum
+
     kpis = {
-        "visitors": ph.get("visitors_total", 0),
+        "visitors": visitors_total,
         "diagnostic_submissions": ph.get("diagnostic_total", 0),
         "subs_fresh": fresh,
         "carryover": paused_carry,

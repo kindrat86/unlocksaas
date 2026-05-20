@@ -44,7 +44,6 @@ export const metadata: Metadata = {
 
 // 404 is fully static — no per-request data, no cookies, no auth gating.
 // Pre-rendered at build time and served from the CDN edge on every miss.
-export const dynamic = "force-static";
 
 export default function NotFound() {
   return (

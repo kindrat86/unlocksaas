@@ -27,8 +27,6 @@ import { isValidLeadId } from "@/lib/diagnostic-share";
  * at the bottom of the form is the only handle we have, so we use it.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

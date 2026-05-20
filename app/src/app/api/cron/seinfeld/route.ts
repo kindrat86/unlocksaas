@@ -3,12 +3,10 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { sendNextAndAdvance, type DueRow } from "@/lib/seinfeld/dispatch";
 import { isSendDay } from "@/lib/seinfeld/schedule";
 
-export const runtime = "nodejs";
 // The cron fans out one Resend send per due subscriber. With sequential
 // dispatch at ~200ms/send, 500 sends ≈ 100s. 300s is the platform default
 // and gives plenty of headroom.
 export const maxDuration = 300;
-export const dynamic = "force-dynamic";
 
 /**
  * Daily cron: GET /api/cron/seinfeld

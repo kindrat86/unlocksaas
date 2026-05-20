@@ -8,4 +8,3 @@ export function GET() {
   return markdownResponseForPath("/funnel-teardown");
 }
 
-export const dynamic = "force-static";

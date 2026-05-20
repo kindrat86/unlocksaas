@@ -33,7 +33,6 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
 
-export const dynamic = "force-dynamic";
 
 interface RouteCtx {
   params: Promise<{ slug: string }>;

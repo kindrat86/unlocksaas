@@ -18,9 +18,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
  * copy, no invented metrics.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
-export const dynamicParams = false;
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

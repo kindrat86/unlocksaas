@@ -34,7 +34,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const dynamic = "force-static";
 
 const EFFECTIVE_DATE = "2026-05-17";
 

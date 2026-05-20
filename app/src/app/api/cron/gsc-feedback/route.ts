@@ -63,11 +63,9 @@ import { PostHog } from "posthog-node";
  *   service-account permission revoked → 0 rows for a string of days).
  */
 
-export const runtime = "nodejs";
 // The search-analytics call typically resolves in 2-5s; tolerate up to
 // 60s for one bad day at Google's API. Well below the 300s platform cap.
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 /**
  * Hard ceiling on rows-per-tick. 500 is plenty for an indie SaaS

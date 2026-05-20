@@ -33,7 +33,6 @@ import { BASE_URL } from "@/lib/seo/entity";
  * anchored to the canonical @id graph in lib/seo/entity.ts.
  */
 
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title:

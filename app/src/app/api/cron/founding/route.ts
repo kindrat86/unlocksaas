@@ -3,9 +3,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { sendNextFoundingAndAdvance } from "@/lib/founding/dispatch";
 import { FOUNDING_SEQUENCE_LENGTH } from "@/lib/founding/pre-launch-emails";
 
-export const runtime = "nodejs";
 export const maxDuration = 300;
-export const dynamic = "force-dynamic";
 
 /**
  * Founding-Cohort PLF — daily pre-launch sequence dispatcher.

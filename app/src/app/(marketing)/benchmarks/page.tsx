@@ -7,7 +7,6 @@ import { BENCHMARK_ENTRIES } from "@/lib/benchmarks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
-export const dynamic = "force-static";
 
 const CANONICAL = "/benchmarks";
 

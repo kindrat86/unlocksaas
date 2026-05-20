@@ -40,8 +40,6 @@ import {
 } from "@/components/seo/builders-collection";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Verified Builders — UnlockSaaS",

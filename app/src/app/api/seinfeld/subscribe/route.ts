@@ -7,7 +7,6 @@ import {
   sendConfirmationEmail,
 } from "@/lib/double-opt-in";
 
-export const runtime = "nodejs";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ALLOWED_SOURCES = ["soap_opera_graduate", "manual"] as const;

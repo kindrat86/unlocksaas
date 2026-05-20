@@ -7,13 +7,30 @@ const nextConfig = {
   // `eslint.config.mjs` per the v16 codemod (`next-lint-to-eslint-cli`).
 
   /**
-   * SXO / CWV bundle wins (2026-05-17).
+   * Cache Components (Next 16+) — enabled 2026-05-20.
+   *
+   * Replaces the older `experimental.ppr` flag. With this on, every route is
+   * eligible for Partial Prerendering: the synchronous shell streams from the
+   * CDN immediately while dynamic regions (Suspense boundaries) stream in at
+   * request time, and async functions tagged with `'use cache'` declare
+   * per-tag invalidation via `cacheTag()`.
+   *
+   * The pSEO surfaces (alternatives-to, compare, glossary, why-isnt-my, for,
+   * benchmarks, funnel-playbook, answers, funnel-teardown, pricing-teardown,
+   * category, press/topics) wrap their body fetchers in
+   * `'use cache' + cacheTag(`<surface>:${slug}`) + cacheLife('max')` so a
+   * single content edit can be revalidated server-side via `revalidateTag()`
+   * without a full rebuild. The current data sources are frozen `.ts` arrays,
+   * so the perf gain at build is zero; the value is the per-slug invalidation
+   * API that lights up when content moves to Supabase or per-slug Markdown
+   * front-matter, and the consistent pattern for every future pSEO surface.
+   *
+   * SXO / CWV bundle wins (kept from 2026-05-17):
    *
    * 1. `optimizePackageImports` rewrites barrel imports from the listed
    *    packages into deep, tree-shakable imports at build time. Without this,
    *    `import { ArrowRight } from "lucide-react"` pulls all ~1,500 icons
-   *    into the client chunk. With it, only ArrowRight ships. Verified safe
-   *    on Next 14; stable since 14.2.
+   *    into the client chunk. With it, only ArrowRight ships.
    *
    *    - lucide-react: 23 files import from it; biggest offender by far.
    *    - @radix-ui/react-{progress,separator,slot}: smaller barrels but each
@@ -41,11 +58,8 @@ const nextConfig = {
    *   - `experimental.optimizeCss`: requires the `critters` peer dep and has
    *     been flaky on Vercel CI in past 14.x patch releases. Re-evaluate
    *     after the first verified customer cycle.
-   *   - Cache Components (`cacheComponents: true`): Next 16+ only. We are on
-   *     14.2.35. Upgrading is the right call but it crosses the middleware
-   *     -> proxy rename, async params/searchParams, and a few RSC boundary
-   *     tightenings – not a launch-window-safe autonomous change.
    */
+  cacheComponents: true,
   experimental: {
     optimizePackageImports: [
       "lucide-react",
@@ -88,17 +102,26 @@ const nextConfig = {
   trailingSlash: false,
 
   /**
-   * Content-Language HTTP header — locale-aware (2026-05-18 i18n unlock).
+   * HTTP response headers — locale + security defence-in-depth (2026-05-20).
    *
-   * Pairs with the per-locale `<div lang>` wrapper in app/[locale]/layout.tsx,
-   * the hreflang alternates in metadata + sitemap, and the `inLanguage`
-   * JSON-LD fields. The HTTP header is the canonical locale signal for
-   * crawlers and assistive tech that read response headers before parsing
-   * HTML — some bots (Bing, older Googlebot mobile, accessibility tools)
-   * prioritize it over markup.
+   * Three concerns share this function:
    *
-   * Routing order matters: more-specific patterns FIRST. Next evaluates the
-   * array top-to-bottom and stops at the first match for a given path.
+   *   1. Content-Language (per-locale, 2026-05-18 i18n unlock).
+   *   2. X-Robots-Tag noindex on private surfaces (HTTP-header tier of the
+   *      same disallow list robots.ts advertises, so an accidental metadata
+   *      misconfig on a per-user page can't leak into Google's index).
+   *   3. Baseline security headers (HSTS, CSP, Referrer-Policy,
+   *      X-Content-Type-Options, Permissions-Policy) on every response.
+   *
+   * Routing order: more-specific patterns FIRST. Next evaluates the array
+   * top-to-bottom; when multiple rules match the same path AND set the same
+   * header key, the later rule's value wins. We exploit that for the embed
+   * routes' CSP relaxation (rule placed AFTER the catch-all baseline).
+   *
+   * Content-Language pairs with the per-locale `<div lang>` wrapper in
+   * app/[locale]/layout.tsx, the hreflang alternates in metadata + sitemap,
+   * and the `inLanguage` JSON-LD fields. Some crawlers (Bing, older
+   * Googlebot mobile, accessibility tools) prioritize the header over markup.
    *
    * Brunson Hard-Rule reconciliation: declaring Content-Language es on a
    * /es/* URL is honest only because the `app/[locale]` segment 404s for
@@ -106,21 +129,177 @@ const nextConfig = {
    * generateStaticParams + dynamicParams: false). A locale header on a
    * 404 response is still honest — the response IS in that locale's format.
    *
-   * Adding a new locale: add a matcher row here at the same time as the
-   * locale is added to SUPPORTED_LOCALES in src/lib/i18n/locales.ts.
+   * Adding a new locale: add a matcher row in LOCALE_HEADERS at the same
+   * time as the locale is added to SUPPORTED_LOCALES in src/lib/i18n/locales.ts.
+   *
+   * ─── Security header rationale ─────────────────────────────────────────
+   *
+   * HSTS (`Strict-Transport-Security`):
+   *   max-age=2y, includeSubDomains, preload. Two-year max-age + preload
+   *   eligibility per hstspreload.org criteria. Submitting unlocksaas.com
+   *   to the preload list is a separate operator action (deferred until a
+   *   verified launch); the header is set now so the preload submission
+   *   is a one-step process when ready.
+   *
+   * X-Content-Type-Options: nosniff
+   *   Prevents browsers from MIME-sniffing /llms.txt as HTML, /llms-feed.json
+   *   as JS, etc. Critical given how many surfaces serve non-HTML content.
+   *
+   * Referrer-Policy: strict-origin-when-cross-origin
+   *   Sends full URL on same-origin (so internal analytics see paths), only
+   *   origin on cross-origin (so we don't leak diagnostic IDs or auth params
+   *   in Referer headers to Stripe / PostHog / Supabase).
+   *
+   * Permissions-Policy:
+   *   Disables every browser feature the site doesn't use — camera, mic,
+   *   geolocation, payment APIs (Stripe Checkout uses its own iframe origin),
+   *   FLoC / Topics (third-party cohort tracking we never want).
+   *
+   * Content-Security-Policy:
+   *   Allow-listed against the actual origins the client touches (audited
+   *   2026-05-20: Stripe.js, Supabase, PostHog EU, Mux for VSL/founding
+   *   video). `'unsafe-inline'` on script-src is currently required because:
+   *     a) every pSEO surface server-renders JSON-LD via
+   *        dangerouslySetInnerHTML (these are <script type="application/ld+json">
+   *        blocks — non-executable but still matched by script-src), and
+   *     b) Next.js RSC hydration emits inline bootstrap scripts.
+   *   Hardening path (deferred): nonce-based CSP via proxy.ts middleware on
+   *   the Next 16 upgrade, which lets us drop `'unsafe-inline'` cleanly.
+   *
+   * frame-ancestors:
+   *   Default 'none' (replaces the deprecated X-Frame-Options DENY).
+   *   Override to '*' for /builder/<slug>/embed* — those routes are designed
+   *   for cross-origin iframe embedding on verified-builder founder sites,
+   *   so blocking ancestors there would break the Verified Builder backlink
+   *   farm by design.
+   *
+   * X-Robots-Tag:
+   *   Mirrors the disallow list in robots.ts. The HTTP header is enforced
+   *   for ALL crawlers (including AI bots the marketing robots.ts allow-lists
+   *   on public surfaces) and survives misconfigurations at the per-page
+   *   metadata level. Defence-in-depth, not the primary mechanism.
    */
   async headers() {
-    // Locale-specific paths evaluated first; en-US is the catch-all
-    // default. The `app/[locale]/*` segment 404s for any locale without
-    // approved content (registry-gated via generateStaticParams +
-    // dynamicParams: false). A locale header on a 404 response is still
-    // honest — the response IS in that locale's format.
+    // ── Reusable header sets ────────────────────────────────────────────
+    //
+    // CSP origins audited 2026-05-20 against actual client-side use:
+    //   - Stripe.js script + Checkout iframe + Connect OAuth POST
+    //   - Supabase REST + Realtime (wss) + Storage
+    //   - PostHog EU ingest + asset host (same origin: eu.i.posthog.com)
+    //   - Mux video for VSL / founding (env-driven NEXT_PUBLIC_VSL_URL)
+    //   - IndexNow ping (server-side fetch only — listed defensively)
+    //
+    // 'unsafe-inline' on script-src is required for inline JSON-LD blocks
+    // and Next.js RSC hydration. 'unsafe-eval' is added in dev only for
+    // React Fast Refresh.
+    const isDev = process.env.NODE_ENV === "development";
+    const STRICT_CSP = [
+      "default-src 'self'",
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://js.stripe.com https://eu.i.posthog.com`,
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data:",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://eu.i.posthog.com https://api.stripe.com https://connect.stripe.com https://api.indexnow.org",
+      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://stream.mux.com",
+      "media-src 'self' https://stream.mux.com https://image.mux.com data: blob:",
+      "worker-src 'self' blob:",
+      "manifest-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self' https://connect.stripe.com",
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests",
+    ].join("; ");
+
+    // CSP override for /builder/<slug>/embed* — these routes MUST be
+    // iframeable from any origin (the verified-builder badge embed on
+    // founder sites). Same allow-list as STRICT_CSP minus the third-party
+    // SDK origins (the embed iframe only renders the badge + Review JSON-LD,
+    // no Stripe / PostHog / Supabase).
+    const EMBED_CSP = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https:",
+      "font-src 'self' data:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors *",
+    ].join("; ");
+
+    const BASE_SECURITY_HEADERS = [
+      {
+        key: "Strict-Transport-Security",
+        value: "max-age=63072000; includeSubDomains; preload",
+      },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      {
+        key: "Permissions-Policy",
+        value:
+          "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), interest-cohort=()",
+      },
+      { key: "Content-Security-Policy", value: STRICT_CSP },
+    ];
+
+    const NOINDEX_HEADERS = [
+      { key: "X-Robots-Tag", value: "noindex, nofollow" },
+    ];
+
+    // Private surfaces — mirror robots.ts PRIVATE_DISALLOW_CANONICAL.
+    // Each entry expands to both the bare path and the subtree variant
+    // where applicable, so e.g. /onboarding AND /onboarding/step-2 both
+    // get the header. Builder sub-routes are listed individually because
+    // they're sibling files under /builder/<slug>/, not subtrees.
+    const NOINDEX_PATHS = [
+      "/playbook",
+      "/playbook/:path*",
+      "/api/:path*",
+      "/auth/:path*",
+      "/diagnostic/result",
+      "/diagnostic/result/:path*",
+      "/onboarding",
+      "/onboarding/:path*",
+      "/welcome",
+      "/welcome/:path*",
+      "/oto",
+      "/oto/:path*",
+      "/login",
+      "/builder/:slug/embed",
+      "/builder/:slug/embed.html",
+      "/builder/:slug/badge.svg",
+      "/builder/:slug/review.json",
+      "/builder/:slug/oembed.json",
+      "/builder/:slug/opengraph-image",
+      "/builder/:slug/opengraph-image.png",
+    ];
+
     return [
+      // ── 1. Content-Language: locale-prefixed paths first ──────────────
       { source: "/es/:path*", headers: [{ key: "Content-Language", value: "es" }] },
       { source: "/es", headers: [{ key: "Content-Language", value: "es" }] },
       { source: "/pt-BR/:path*", headers: [{ key: "Content-Language", value: "pt-BR" }] },
       { source: "/pt-BR", headers: [{ key: "Content-Language", value: "pt-BR" }] },
       { source: "/:path*", headers: [{ key: "Content-Language", value: "en-US" }] },
+
+      // ── 2. X-Robots-Tag: noindex for private/transactional surfaces ──
+      ...NOINDEX_PATHS.map((source) => ({ source, headers: NOINDEX_HEADERS })),
+
+      // ── 3. Baseline security headers on every response ───────────────
+      { source: "/:path*", headers: BASE_SECURITY_HEADERS },
+
+      // ── 4. CSP override for cross-origin-embeddable builder iframes ──
+      // Placed AFTER the baseline so the later-wins ordering rule replaces
+      // the default `frame-ancestors 'none'` with `frame-ancestors *`.
+      {
+        source: "/builder/:slug/embed",
+        headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
+      },
+      {
+        source: "/builder/:slug/embed.html",
+        headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
+      },
     ];
   },
 

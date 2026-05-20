@@ -25,8 +25,6 @@ import {
   loadGuaranteeState,
 } from "@/lib/guarantee";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const startedAt = Date.now();

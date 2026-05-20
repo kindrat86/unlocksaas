@@ -23,8 +23,6 @@ import {
   loadStepOutput,
 } from "@/lib/step-outputs";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const startedAt = Date.now();

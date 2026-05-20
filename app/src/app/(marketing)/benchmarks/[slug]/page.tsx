@@ -13,8 +13,6 @@ import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return BENCHMARK_SLUGS.map((slug) => ({ slug }));
@@ -51,6 +49,35 @@ export async function generateMetadata(props: {
 }
 
 function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
+  // QAPage on the benchmark detail page. The query intent these pages
+  // target is "what's a good X" / "what's the average X" (per the
+  // catalog header comment in lib/benchmarks.ts). The aeoAnswer field
+  // is already the citation-ready 40-60 word direct answer, so it
+  // doubles as the acceptedAnswer text. Google documents QAPage as
+  // the right schema for a page whose primary purpose is one question
+  // with one accepted answer; FAQPage stays in place for the
+  // secondary founder questions further down the page.
+  const primaryQuestion = `What's a good ${e.metric}?`;
+  const qaPage = {
+    "@context": "https://schema.org",
+    "@type": "QAPage",
+    inLanguage: "en-US",
+    mainEntity: {
+      "@type": "Question",
+      name: primaryQuestion,
+      text: primaryQuestion,
+      answerCount: 1,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: e.aeoAnswer,
+        inLanguage: "en-US",
+        upvoteCount: 0,
+        author: { "@id": ID.person },
+        url: `${canonicalUrl}#answer`,
+      },
+    },
+  };
+
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -108,6 +135,7 @@ function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
   };
 
   return [
+    JSON.stringify(qaPage),
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
@@ -131,10 +159,14 @@ export default async function BenchmarkDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/benchmarks/${e.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(e, canonicalUrl);
+  const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    e,
+    canonicalUrl,
+  );
 
   return (
     <article className="min-h-screen">
+      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />

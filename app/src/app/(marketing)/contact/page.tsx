@@ -33,7 +33,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const dynamic = "force-static";
 
 const TRAIL = [
   { name: "Unlock SaaS", url: "https://unlocksaas.com/" },

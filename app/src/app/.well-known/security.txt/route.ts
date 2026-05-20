@@ -29,8 +29,6 @@ import { FOUNDER, BASE_URL } from "@/lib/seo/entity";
 
 // Re-render on each request so `Expires` is always fresh. The handler is
 // trivial – no measurable cost.
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export function GET() {
   // RFC 9116 §2.5.4: Expires SHOULD be no more than a year out. We use

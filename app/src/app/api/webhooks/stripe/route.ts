@@ -26,8 +26,6 @@ import {
 } from "@/lib/cart-recovery/subscribe";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();

@@ -83,8 +83,6 @@ export function OPTIONS() {
 }
 
 // Static — body is pre-built at module load.
-export const dynamic = "force-static";
 
 // Node.js runtime (default). Pulls module-level data from five catalogs
 // totalling ~14k lines of TS; sized for Node, not for an Edge V8 isolate.
-export const runtime = "nodejs";

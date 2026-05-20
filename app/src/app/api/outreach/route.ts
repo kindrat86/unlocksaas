@@ -18,8 +18,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { MILESTONE_KEYS, markMilestone } from "@/lib/guarantee";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 const TWENTY = 20;
 const ALLOWED_CHANNELS = [

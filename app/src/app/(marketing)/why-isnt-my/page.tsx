@@ -20,7 +20,6 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
  * triage and CTA into /diagnostic.
  */
 
-export const dynamic = "force-static";
 
 const CANONICAL = "/why-isnt-my";
 

@@ -45,8 +45,6 @@ import { DEFINED_TERMS } from "@/lib/seo/entity";
  * \`images\` entry – the framework wires it in.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
