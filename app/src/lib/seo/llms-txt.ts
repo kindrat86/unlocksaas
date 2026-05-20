@@ -76,6 +76,15 @@ For MCP-aware clients (Claude Desktop, Cursor, Windsurf, mcp-inspector, Vercel M
 
 Tool payloads are sourced from the same static manifests that render the public HTML pages – no fabricated metrics, no slag, every entry carries a dated lastVerified. The diagnose_url tool returns the same Brunson-labeled diagnosis the live diagnostic engine produces, with a referrer-tagged link back to the full deep-analysis surface.
 
+## Agent retrieval – ChatGPT Custom GPT Actions
+
+For ChatGPT Custom GPT builders (and any OpenAPI-aware agent framework: LangChain, LlamaIndex, AutoGPT, Stainless, Speakeasy), UnlockSaaS exposes the diagnostic engine and the open dataset as OpenAPI 3.1.0 operations. Same engine as the MCP \`diagnose_url\` tool above; same Brunson Hard-Rule discipline – the OpenAPI request/response schemas match the live route handler exactly.
+
+- **OpenAPI spec** → [${BASE_URL}/openapi.json](${BASE_URL}/openapi.json) – two operations: \`runDiagnostic\` (POST /api/diagnostic; email + productUrl in, diagnosis id out) and \`getIndieSaasTeardownsDataset\` (GET /dataset/indie-saas-teardowns.json; full open dataset out). Both operations have explicit operationId, request/response schemas, and example values so a Custom GPT builder can paste the URL into "Add Action → Import from URL" and self-wire the configuration.
+- **Plugin manifest** → [${BASE_URL}/.well-known/ai-plugin.json](${BASE_URL}/.well-known/ai-plugin.json) – the OpenAI ChatGPT Plugin discovery manifest (\`schema_version: "v1"\`). Auth type \`none\` – the diagnostic endpoint is intentionally unauthenticated, gated by MX deliverability and a one-free-report-per-email quota at the API edge. Independent plugin directories and agent frameworks crawl this surface for discovery.
+
+The diagnostic flow is identical across surfaces: the GPT Action calls POST /api/diagnostic with the user's email and product URL, receives a UUID, and directs the user to \`${BASE_URL}/diagnostic/result?id={id}\` for the fully-rendered teardown. Set \`source: "chatgpt-plugin"\` in the request body so the lead is attributed to the GPT channel for downstream analytics.
+
 ## Programmatic SEO surfaces – honest competitor comparisons
 
 - [Alternatives hub](${BASE_URL}/alternatives-to): Index of named-competitor comparison pages. Every entry respects the competitor's real value proposition and names the category difference, not a quality gap.
