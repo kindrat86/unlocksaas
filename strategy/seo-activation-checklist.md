@@ -265,7 +265,12 @@ Update this section as each slot lands. The log becomes the audit trail for the 
 
 | Date | Slot | Source | Notes |
 |---|---|---|---|
-| 2026-05-18 | _(awaiting first activation)_ | – | Checklist authored. |
+| 2026-05-18 | Checklist authored | – | Initial commit. |
+| 2026-05-20 | IndexNow key | `INDEXNOW_KEY` env in all envs | `curl https://unlocksaas.com/indexnow-key` returns 200 + 32-char hex (`2a4eef…fb370cd`). Bing Webmaster IndexNow page validated the key. |
+| 2026-05-20 | Google Search Console | DNS-verified via domain provider; sitemap `sitemap.xml` submitted | Status: Success, 377 pages discovered. Bogus `/diagnostic` HTML-sitemap submission removed during cleanup. |
+| 2026-05-20 | Bing Webmaster Tools | Imported from GSC (no separate verification needed); sitemap inherited | Status: Success, 198 URLs discovered. Delta vs GSC's 377 closes over the next 1-2 weeks as Bing's crawler walks the sitemap. |
+| 2026-05-20 | Hugging Face dataset cross-listing | `NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL` env in all envs | Production live: `curl https://unlocksaas.com/dataset` then `grep -c "Hugging Face"` returns `3`. URL anchors at `https://huggingface.co/datasets/unlocksaas/indie-saas-teardowns`. |
+| 2026-05-20 | Zenodo DOI cross-listing | `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL` = `https://doi.org/10.5281/zenodo.20315741` (concept DOI – auto-promotes across versions). Version DOI: `10.5281/zenodo.20315742`. Record page: <https://zenodo.org/records/20315742>. | Production live: `curl https://unlocksaas.com/dataset` then `grep -c Zenodo` returns `2`. Deploy `EoCis9Rvj` (production redeploy of commit `f8e2517` with fresh env, 1m 20s build, `unlocksaas.com` serves the new build). Submission flow: see [strategy/zenodo-submission-playbook.md](./zenodo-submission-playbook.md). |
 
 ---
 
