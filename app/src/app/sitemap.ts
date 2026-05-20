@@ -129,6 +129,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/glossary",
     "/benchmarks",
   ];
+  /**
+   * Hubs whose approved-locale detail slugs ship dedicated per-locale
+   * per-slug OG cards under `app/src/app/[locale]/<hub>/[slug]/opengraph-image.tsx`.
+   *
+   * Keep this set in lockstep with the on-disk inventory of locale
+   * opengraph-image.tsx routes. Adding a new (hub, locale) approval
+   * pair to the translation registry does NOT automatically extend
+   * this set — the matching route file must be shipped first. Listing
+   * a hub here without the route would emit `image:loc` URLs in the
+   * sitemap that 404, demoting Google Images discovery for the rest of
+   * the batch.
+   *
+   * Activation log: 2026-05-20 audit fix #16 closed the per-locale
+   * per-slug card gap for the two highest-AEO-intent approved-locale
+   * subtrees (/es/glossary, /pt-BR/glossary, /es/benchmarks,
+   * /pt-BR/benchmarks). Canonical (en-US) /benchmarks/[slug] does
+   * NOT yet ship its own dedicated card and is tracked separately —
+   * the post-pass at the bottom of this file routes en-US benchmark
+   * detail rows through DEDICATED_OG_DETAIL_PATTERNS, which omits
+   * /benchmarks until a card exists.
+   */
+  const HUBS_WITH_PER_LOCALE_DETAIL_OG: ReadonlySet<string> = new Set([
+    "/glossary",
+    "/benchmarks",
+  ]);
   const localesForPath = (path: string) => {
     const exact = approvedLocalesForPath(path);
     if (exact.length > 0) return exact;
@@ -669,6 +694,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.45,
     },
+    // Hugging Face Datasets submission surface (2026-05-20 off-page lift).
+    // The page documents the operator submission flow + Google Dataset
+    // Search verification, and the /raw sibling serves the exact
+    // README.md the operator uploads to the HF dataset repo. Both URLs
+    // are indexable, carry BreadcrumbList JSON-LD on the page form, and
+    // resolve to a self-canonical Link header on the raw form.
+    //
+    // Why list both. /dataset/huggingface is the human-readable
+    // canonical the catalog crawler should treat as the cross-listing
+    // anchor. /dataset/huggingface/raw is the machine artifact – it
+    // serves text/markdown with Content-Disposition: attachment so a
+    // curl downloader saves it as README.md. Listing the raw URL in
+    // the sitemap makes it crawler-discoverable without needing the
+    // operator to advertise it from the HF Hub. Priorities mirror the
+    // dataset cluster above (page slightly above the raw artifact).
+    {
+      url: `${base}/dataset/huggingface`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${base}/dataset/huggingface/raw`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers
@@ -802,10 +854,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     //
     // For each (hub, locale) approval pair, fan out across the hub's slug
     // catalog. lastModified inherits the row's approvedAt so each detail
-    // URL carries the locale freshness signal. OG image falls back to the
-    // canonical (root) card for now — the per-locale dedicated cards
-    // listed in PER_LOCALE_OG_PATHS above are hub-only; per-locale per-slug
-    // cards are not generated.
+    // URL carries the locale freshness signal.
+    //
+    // OG image (2026-05-20 audit fix): paths in HUBS_WITH_PER_LOCALE_DETAIL_OG
+    // ship dedicated per-locale per-slug cards under
+    // app/src/app/[locale]/<hub>/[slug]/opengraph-image.tsx, so the
+    // `images[]` entry points at that route-derived URL — e.g.
+    // /es/glossary/big-domino → /es/glossary/big-domino/opengraph-image.
+    // Hubs without per-slug locale cards fall back to the root card via
+    // the post-processing pass at the bottom of this file.
     // -------------------------------------------------------------------------
     ...allApprovedTranslations().flatMap((row) => {
       let slugs: readonly string[] = [];
@@ -813,10 +870,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       if (row.path === "/benchmarks") slugs = BENCHMARK_SLUGS;
       if (slugs.length === 0) return [];
       const hubLocales = approvedLocalesForPath(row.path);
+      const hasPerLocaleDetailOg =
+        HUBS_WITH_PER_LOCALE_DETAIL_OG.has(row.path);
       return slugs.map((slug) => {
         const childPath = `${row.path}/${slug}`;
         const localised = `${base}${localizedPath(childPath, row.locale)}`;
         const canonicalUrl = `${base}${childPath}`;
+        const ogUrl = hasPerLocaleDetailOg
+          ? `${localised}/opengraph-image`
+          : rootOg;
         return {
           url: localised,
           lastModified: row.approvedAt ? new Date(row.approvedAt) : now,
@@ -834,7 +896,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
               ),
             },
           },
-          images: [rootOg],
+          images: [ogUrl],
         };
       });
     }),
