@@ -48,6 +48,61 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   /**
+   * Image sitemap helper – returns the best OG image URL for a path.
+   *
+   * Next.js file-based metadata convention (app/<route>/opengraph-image.tsx)
+   * auto-generates a PNG route at `<base>/<route>/opengraph-image`. The
+   * MetadataRoute.Sitemap `images?: string[]` field on each entry then
+   * emits `<image:image><image:loc>…</image:loc></image:image>` blocks
+   * per Google's image sitemap spec, which lifts Google Images discovery
+   * (audit gap: 2026-05-20 SEO/pSEO audit, "no image sitemap").
+   *
+   * Routes WITH a dedicated opengraph-image.tsx serve that route's own
+   * card; routes WITHOUT one inherit the root card via Next.js's nearest-
+   * ancestor resolution, but the dedicated URL only exists when the file
+   * exists – so for non-dedicated routes we must point image:loc at the
+   * root `/opengraph-image` instead of fabricating a per-path URL that
+   * would 404.
+   *
+   * Keep this list in sync with the on-disk inventory of
+   * `opengraph-image.tsx` files. Adding a new dedicated card = add the
+   * matching pattern below in the same commit.
+   *
+   * Per-locale dedicated cards under `/{locale}/{path}/opengraph-image`
+   * (added 2026-05-20 for /faq, /contact, /repeatable, /editorial-policy
+   * × es, pt-BR) are wired in the approvedTranslations block at the
+   * bottom of the sitemap, not here – this helper handles canonical
+   * (en-US) routes only.
+   */
+  const DEDICATED_OG_HUBS: ReadonlySet<string> = new Set([
+    "/glossary",
+    "/dont-buy-unlock-saas",
+  ]);
+  const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
+    /^\/alternatives-to\/[^/]+$/,
+    /^\/compare\/[^/]+$/,
+    /^\/glossary\/[^/]+$/,
+    /^\/funnel-teardown\/[^/]+$/,
+    /^\/pricing-teardown\/[^/]+$/,
+    /^\/press\/topics\/[^/]+$/,
+    // /builder/[slug] + /diagnosis/[id] also carry dedicated cards but
+    // they are NOT sitemap-listed (Verified Builder backlink farm
+    // discovery via inbound links only; diagnosis pages are per-user
+    // and noindex). Patterns omitted from this list intentionally.
+  ];
+  const rootOg = `${base}/opengraph-image`;
+  const ogImageFor = (urlPath: string): string => {
+    if (urlPath === "/") return rootOg;
+    if (DEDICATED_OG_HUBS.has(urlPath)) {
+      return `${base}${urlPath}/opengraph-image`;
+    }
+    if (DEDICATED_OG_DETAIL_PATTERNS.some((re) => re.test(urlPath))) {
+      return `${base}${urlPath}/opengraph-image`;
+    }
+    return rootOg;
+  };
+
+  /**
    * Per-URL hreflang map, READ FROM THE TRANSLATION REGISTRY.
    *
    * Brunson Hard-Rule (no fabricated claims) requires that hreflang
@@ -75,7 +130,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return { languages };
   };
 
-  return [
+  const entries: MetadataRoute.Sitemap = [
     // Funnel Hub — highest priority, brand-canonical entry point.
     {
       url: `${base}/`,
@@ -664,11 +719,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     //
     // `lastModified` reads from the approvedAt timestamp so locale URLs
     // carry their own freshness signal, not the build time.
+    //
+    // Image sitemap (2026-05-20 uplift): four translated paths now ship
+    // per-locale opengraph-image.tsx routes under app/src/app/[locale]/…
+    // The image URL listed here is the route-derived URL of that
+    // dedicated card – e.g. /es/faq → /es/faq/opengraph-image – which
+    // gives Spanish / Brazilian-Portuguese threads a locale-correct
+    // social preview AND a distinct entry in Google Images for the
+    // translated surface. Paths without a per-locale card (none today;
+    // this set is closed) fall back to the root /opengraph-image via
+    // the post-processing pass below.
     // -------------------------------------------------------------------------
     ...allApprovedTranslations().map((row) => {
       const localised = `${base}${localizedPath(row.path, row.locale)}`;
       const canonical =
         row.path === "/" ? `${base}/` : `${base}${row.path}`;
+      const PER_LOCALE_OG_PATHS: ReadonlySet<string> = new Set([
+        "/faq",
+        "/contact",
+        "/repeatable",
+        "/editorial-policy",
+      ]);
+      const ogUrl = PER_LOCALE_OG_PATHS.has(row.path)
+        ? `${localised}/opengraph-image`
+        : rootOg;
       return {
         url: localised,
         lastModified: row.approvedAt ? new Date(row.approvedAt) : now,
@@ -686,7 +760,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
             ),
           },
         },
+        images: [ogUrl],
       };
     }),
   ];
+
+  /**
+   * Image sitemap post-pass.
+   *
+   * Walk every entry above and attach `images: [ogImageFor(path)]` to
+   * the HTML-page routes that don't already carry one (the
+   * approvedTranslations block sets its own per-locale images). Raw
+   * asset routes (.json, .csv, .txt, .well-known/*) are NOT pages and
+   * do not get image entries – an image:image tag on a JSON download
+   * URL would lie about what crawlers find at that loc.
+   *
+   * Listing one image per page in the sitemap is the canonical Google
+   * Images discovery channel (developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps).
+   * Per-page Open Graph meta tags remain authoritative for social
+   * scrapers; this just adds the parallel discovery anchor for image
+   * search.
+   */
+  const RAW_ASSET_RE = /\.(?:json|csv|txt)$/;
+  return entries.map((entry) => {
+    if (entry.images && entry.images.length > 0) return entry;
+    const urlString = typeof entry.url === "string" ? entry.url : "";
+    const pathOnly = urlString.startsWith(base)
+      ? urlString.slice(base.length) || "/"
+      : urlString;
+    const isRawAsset =
+      RAW_ASSET_RE.test(pathOnly) || pathOnly.startsWith("/.well-known/");
+    if (isRawAsset) return entry;
+    return { ...entry, images: [ogImageFor(pathOnly)] };
+  });
 }
