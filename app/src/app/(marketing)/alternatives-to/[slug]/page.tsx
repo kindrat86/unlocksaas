@@ -20,6 +20,7 @@ import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -297,6 +298,21 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
         </p>
       </header>
       <Separator className="my-2" />
+      <TldrSummary
+        headingLabel={`${alt.displayName} key facts`}
+        items={[
+          { term: "Tool", definition: alt.displayName },
+          { term: "Category", definition: alt.category },
+          { term: "Pricing", definition: alt.pricingNote },
+          { term: "Best for", definition: alt.whoForIt },
+          { term: "Not for", definition: alt.whoNotForIt },
+          { term: "Honest verdict", definition: alt.honestVerdict },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(alt.lastVerified),
+          },
+        ]}
+      />
       {/* ----- Cross-pattern callouts (link-graph parity with funnel /
             pricing teardowns). Each renders only when a sister manifest
             entry matches this slug; defensive-by-design. ----- */}

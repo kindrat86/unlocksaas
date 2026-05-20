@@ -27,6 +27,7 @@ import {
   mergePaaIntoFaqs,
   paaHeadingForLocale,
 } from "@/lib/seo/paa-questions";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 /**
  * Locale-aware /benchmarks/[slug] detail – mirrors the canonical
@@ -353,6 +354,35 @@ export default async function LocalizedBenchmarkDetail({
           </CardContent>
         </Card>
       </section>
+
+      {/* TL;DR – structured key/value summary for AI summarizers + voice engines.
+          Key labels in English (schema-style); values stay in the page locale. */}
+      <TldrSummary
+        headingLabel={`${e.metric} key facts`}
+        items={[
+          { term: "Metric", definition: e.metric },
+          {
+            term: "Typical range",
+            definition:
+              e.bands.find((b) => b.label === "Typical range")?.range ?? "",
+          },
+          {
+            term: "Underperforming",
+            definition:
+              e.bands.find((b) => b.label === "Underperforming")?.range ?? "",
+          },
+          {
+            term: "Outperforming",
+            definition:
+              e.bands.find((b) => b.label === "Outperforming")?.range ?? "",
+          },
+          { term: "Top driver", definition: e.drivers[0] ?? "" },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(e.lastVerified),
+          },
+        ]}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"

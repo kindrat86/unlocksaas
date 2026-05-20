@@ -18,6 +18,7 @@ import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -298,23 +299,22 @@ export default async function FunnelTeardownPage(
         </p>
       </header>
       <Separator className="my-2" />
-      {/* TL;DR — explicit citation block for LLMs */}
-      <section
-        className="max-w-3xl mx-auto px-6 py-8"
-        aria-labelledby="tldr"
-      >
-        <h2 id="tldr" className="sr-only">
-          TL;DR
-        </h2>
-        <Card className="border-primary/30 bg-primary/5">
-          <CardContent className="pt-6">
-            <p className="text-xs uppercase tracking-widest text-primary mb-3">
-              TL;DR
-            </p>
-            <p className="text-base leading-relaxed">{t.tldr}</p>
-          </CardContent>
-        </Card>
-      </section>
+      {/* TL;DR – structured key/value summary for AI summarizers + voice engines */}
+      <TldrSummary
+        headingLabel={`${t.displayName} funnel teardown TL;DR`}
+        items={[
+          { term: "Company", definition: t.displayName },
+          { term: "Category", definition: t.category },
+          { term: "TL;DR", definition: t.tldr },
+          { term: "Hook pattern", definition: t.hook.pattern },
+          { term: "Story pattern", definition: t.story.pattern },
+          { term: "Offer pattern", definition: t.offer.pattern },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(t.lastVerified),
+          },
+        ]}
+      />
       {/* Cross-pattern callout to pricing teardown when both exist */}
       {hasPricing ? (
         <section

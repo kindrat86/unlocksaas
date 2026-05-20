@@ -20,6 +20,7 @@ import {
 import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 import { CitationBlock } from "@/components/seo/citation-block";
 import { getCitationForBenchmark } from "@/lib/citations";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 
 export function generateStaticParams() {
@@ -267,6 +268,33 @@ export default async function BenchmarkDetailPage(props: {
           </CardContent>
         </Card>
       </section>
+
+      <TldrSummary
+        headingLabel={`${e.metric} key facts`}
+        items={[
+          { term: "Metric", definition: e.metric },
+          {
+            term: "Typical range",
+            definition:
+              e.bands.find((b) => b.label === "Typical range")?.range ?? "",
+          },
+          {
+            term: "Underperforming",
+            definition:
+              e.bands.find((b) => b.label === "Underperforming")?.range ?? "",
+          },
+          {
+            term: "Outperforming",
+            definition:
+              e.bands.find((b) => b.label === "Outperforming")?.range ?? "",
+          },
+          { term: "Top driver", definition: e.drivers[0] ?? "" },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(e.lastVerified),
+          },
+        ]}
+      />
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="bands">
         <h2 id="bands" className="text-2xl font-bold mb-4 leading-tight">

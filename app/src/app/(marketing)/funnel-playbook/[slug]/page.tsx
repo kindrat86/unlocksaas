@@ -13,6 +13,7 @@ import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -245,6 +246,21 @@ export default async function FunnelPlaybookDetailPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      <TldrSummary
+        headingLabel={`${e.displayName} funnel playbook TL;DR`}
+        items={[
+          { term: "Funnel", definition: e.displayName },
+          { term: "TL;DR", definition: e.tldr },
+          { term: "When to use", definition: e.whenToUse },
+          { term: "When NOT to use", definition: e.whenNotToUse },
+          { term: "Ladder position", definition: e.ladderPosition },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(e.lastVerified),
+          },
+        ]}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-4"

@@ -18,6 +18,7 @@ import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { deriveComparisonRatings } from "@/lib/seo/review-rating";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -442,20 +443,28 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
         </p>
       </header>
       <Separator className="my-2" />
-      {/* TL;DR */}
-      <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="tldr">
-        <h2 id="tldr" className="sr-only">
-          TL;DR
-        </h2>
-        <Card className="border-primary/30 bg-primary/5">
-          <CardContent className="pt-6">
-            <p className="text-xs uppercase tracking-widest text-primary mb-3">
-              TL;DR
-            </p>
-            <p className="text-base leading-relaxed">{c.tldr}</p>
-          </CardContent>
-        </Card>
-      </section>
+      {/* TL;DR – structured key/value summary for AI summarizers + voice engines */}
+      <TldrSummary
+        headingLabel={`${c.a.name} vs ${c.b.name} TL;DR`}
+        items={[
+          { term: "Compared", definition: `${c.a.name} vs ${c.b.name}` },
+          { term: "Category", definition: c.category },
+          { term: "TL;DR", definition: c.tldr },
+          { term: `${c.a.name} best for`, definition: c.bestFor.a },
+          { term: `${c.b.name} best for`, definition: c.bestFor.b },
+          {
+            term: "Indie founder pick",
+            definition:
+              c.forIndieFounders.pick === "depends"
+                ? `Depends — ${c.forIndieFounders.reasoning}`
+                : `${c.forIndieFounders.pick === "A" ? c.a.name : c.b.name} — ${c.forIndieFounders.reasoning}`,
+          },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(c.lastVerified),
+          },
+        ]}
+      />
       {/* Best for, side by side */}
       <section
         className="max-w-3xl mx-auto px-6 py-8"
