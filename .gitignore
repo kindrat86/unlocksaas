@@ -21,3 +21,4 @@ monitoring/dashboard.html
 .claude/worktrees/
 .vercel
 .forks/
+.env*.local

@@ -69,10 +69,10 @@ BENCHMARK_ROWS = [
 CHANNELS = {
     "social": [
         {"name": "Reddit", "stat": "Daily teardown-courtesy outreach", "status": "live"},
-        {"name": "Twitter / X", "stat": "Sender identity: maryan@unlocksaas.com", "status": "not_created"},
+        {"name": "Twitter / X", "stat": "Profile live: x.com/unlocksaas", "status": "live"},
         {"name": "LinkedIn", "stat": "Personal profile only", "status": "not_created"},
         {"name": "Product Hunt", "stat": "Launch pending", "status": "not_created"},
-        {"name": "IndieHackers", "stat": "Profile pending", "status": "not_created"},
+        {"name": "IndieHackers", "stat": "Product page: indiehackers.com/product/unlock-saas", "status": "live"},
         {"name": "Hacker News", "stat": "Account pending", "status": "not_created"},
     ],
     "content": [
@@ -86,7 +86,7 @@ CHANNELS = {
         {"name": "SaaSHub", "category": "Software", "status": "not_created", "as_of": ""},
         {"name": "Crunchbase", "category": "Business", "status": "not_created", "as_of": ""},
         {"name": "AlternativeTo", "category": "Software", "status": "not_created", "as_of": ""},
-        {"name": "IndieHackers Products", "category": "Startup", "status": "not_created", "as_of": ""},
+        {"name": "IndieHackers Products", "category": "Startup", "status": "live", "as_of": "20-05-2026"},
     ],
     "dev": [
         {"name": "Google Search Console", "info": "Verified", "status": "live"},
