@@ -8,6 +8,7 @@ import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
+import { STACK_SLUGS } from "@/lib/stacks";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
@@ -453,6 +454,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/for/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #8b — cohort-tuned indie SaaS stacks.
+    // Data source: src/lib/stacks.ts. Companion to NICHE_SLUGS above:
+    // /stack-for/<slug> mirrors /for/<slug> 1:1, carrying the 6-8 tool
+    // roster for that cohort, with each tool cross-linked into its
+    // /pricing-teardown/<slug>. Article + ItemList + FAQPage +
+    // BreadcrumbList JSON-LD per detail page; CollectionPage +
+    // ItemList on the hub. Internal-link graph win: each tool in
+    // pricing-teardowns.ts now has +12 inbound links from the stacks
+    // that include it, without requiring reciprocal-link bookkeeping.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/stack-for`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/stack-for`),
+    },
+    ...STACK_SLUGS.map((slug) => ({
+      url: `${base}/stack-for/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/stack-for/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #9 — directional metric benchmarks (AEO).

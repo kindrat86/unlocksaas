@@ -122,6 +122,13 @@ import {
   type NicheEntry,
   getNicheBySlug,
 } from "@/lib/niches";
+import {
+  STACK_ENTRIES,
+  type StackEntry,
+  getStackBySlug,
+  getNicheForStack,
+  getTeardownForStackTool,
+} from "@/lib/stacks";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -2089,6 +2096,103 @@ export function renderNicheMarkdown(slug: string): string | undefined {
     citationFooter(canonicalUrl),
   ].join("\n");
 }
+
+// --- Stack-for markdown ---------------------------------------------------
+// Companion to NicheEntry. Renders the cohort-tuned indie SaaS stack at
+// /stack-for/<slug>/md. Mirrors the buildNicheMarkdown shape so retrievers
+// crawling the /for/ and /stack-for/ surfaces see the same prose conventions.
+
+function buildStackMarkdown(s: StackEntry): string {
+  const niche = getNicheForStack(s);
+  const cohort = niche?.displayName ?? s.slug;
+
+  const toolLines = s.tools
+    .map((t, i) => {
+      const teardown = getTeardownForStackTool(t);
+      if (!teardown) return null;
+      const ordinal = String(i + 1).padStart(2, "0");
+      const head =
+        `### ${ordinal}. ${teardown.displayName} – ${t.role}\n\n` +
+        `Category: ${teardown.category}. ` +
+        `[Pricing teardown](${BASE_URL}/pricing-teardown/${teardown.slug}).`;
+      const why = `\n\n${t.why}`;
+      const swap = t.swapNotes ? `\n\n*Swap notes: ${t.swapNotes}*` : "";
+      return `${head}${why}${swap}`;
+    })
+    .filter((line): line is string => line !== null)
+    .join("\n\n");
+
+  const faqs = s.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  const relatedNiche = niche
+    ? `- [Funnel diagnostic for ${cohort}](${BASE_URL}/for/${niche.slug}) – the cohort-tuned Hook / Story / Offer triage.`
+    : "";
+  const relatedHub = `- [All niche stacks](${BASE_URL}/stack-for) – other cohort-tuned tool rosters.`;
+  const relatedTeardowns = `- [All pricing teardowns](${BASE_URL}/pricing-teardown) – every tool in this stack has a full pricing analysis.`;
+  const relatedBlock = [relatedNiche, relatedHub, relatedTeardowns]
+    .filter(Boolean)
+    .join("\n");
+
+  return `# Indie SaaS stack for ${cohort}
+
+> ${s.heroSubhead}
+
+## TL;DR
+
+${s.tldr}
+
+## Why this shape of stack
+
+${s.whyThisStack}
+
+## The stack, in funnel order
+
+${toolLines}
+
+## What to build first
+
+${s.whatToBuildFirst}
+
+## The mistake this cohort most often makes with stack-building
+
+${s.commonMistake}
+
+## Related surfaces
+
+${relatedBlock}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-cohort stack markdown body. Powers /stack-for/<slug>/md.
+ */
+export function renderStackMarkdown(slug: string): string | undefined {
+  const s = getStackBySlug(slug);
+  if (!s) return undefined;
+
+  const niche = getNicheForStack(s);
+  const cohort = niche?.displayName ?? s.slug;
+  const canonicalUrl = `${BASE_URL}/stack-for/${s.slug}`;
+  return [
+    frontMatter({
+      title: `Indie SaaS stack for ${cohort}`,
+      summary: s.heroSubhead,
+      canonical: canonicalUrl,
+      updated: s.lastVerified,
+    }),
+    buildStackMarkdown(s).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+// Make module reference STACK_ENTRIES so the import survives unused-import
+// pruning when buildLlmsFullBody is regenerated below (used in iteration
+// for hub-level llms.txt embedding by /lib/seo/llms-txt.ts).
+void STACK_ENTRIES;
 
 /**
  * Build the concatenated /llms-full.txt body. One canonical entity block at

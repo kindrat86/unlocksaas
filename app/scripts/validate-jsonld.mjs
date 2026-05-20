@@ -84,6 +84,7 @@ const URLS = [
   "/pricing-teardown",
   "/category",
   "/for",
+  "/stack-for",
   "/benchmarks",
   "/funnel-playbook",
   "/answers",
@@ -93,6 +94,7 @@ const URLS = [
   // ── pSEO detail samples (one per cluster) ──────────────────────────
   "/glossary/hook",
   "/benchmarks/landing-page-conversion-rate",
+  "/stack-for/saas-founders",
 
   // ── GEO / AIO surfaces ─────────────────────────────────────────────
   "/state-of-saas",

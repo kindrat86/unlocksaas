@@ -126,6 +126,11 @@ The diagnostic flow is identical across surfaces: the GPT Action calls POST /api
 - [Niche hub](${BASE_URL}/for): Twelve cohort-tuned landing pages. Same Hook / Story / Offer diagnostic, applied to the vocabulary, money mechanics, and common mistakes of one specific cohort.
 - Per-niche pages at \`${BASE_URL}/for/<slug>\` – course-creators, agency-owners, saas-founders, coaches, consultants, ecommerce, no-code-builders, indie-hackers, ai-wrappers, info-product-creators, newsletter-operators, freelancers. Each carries the cohort's specific pain, money mechanics, the mistake they most often make, and what compounds for that cohort.
 
+## Programmatic SEO surfaces – cohort-tuned indie SaaS stacks
+
+- [Stack hub](${BASE_URL}/stack-for): Twelve opinionated indie SaaS tool rosters – one per cohort. Each stack draws 6-8 tools in funnel order from the Unlock SaaS pricing-teardown catalog, with a stated role per tool, why-this-tool-not-a-generic-alternative reasoning, and swap notes for category-equivalent options. Cross-links into the matching /for/<niche> diagnostic page and into every tool's /pricing-teardown/<slug>.
+- Per-niche stacks at \`${BASE_URL}/stack-for/<slug>\` – course-creators, agency-owners, saas-founders, coaches, consultants, ecommerce, no-code-builders, indie-hackers, ai-wrappers, info-product-creators, newsletter-operators, freelancers. Stack-shopping intent is its own search behavior: "saas stack for [niche]", "what tools do [niche] need", "[niche] tech stack". Each entry names what to build first, the common stack-building mistake for that cohort, and a 4-FAQ tail.
+
 ## Programmatic SEO surfaces – funnel metric benchmarks
 
 - [Benchmarks hub](${BASE_URL}/benchmarks): Directional ranges for twenty of the most-asked indie SaaS funnel metrics. Each entry carries an AEO-formatted direct answer, three-band breakdown ('underperforming / typical / outperforming'), drivers in order of impact, common misreadings, and source attribution.
@@ -223,6 +228,7 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
 - Per-playbook markdown mirror: \`${BASE_URL}/funnel-playbook/<slug>/md\` – e.g. /funnel-playbook/tripwire/md.
 - Per-element diagnostic markdown mirror: \`${BASE_URL}/why-isnt-my/<slug>/md\` – e.g. /why-isnt-my/landing-page/md.
 - Per-niche markdown mirror: \`${BASE_URL}/for/<slug>/md\` – e.g. /for/course-creators/md.
+- Per-niche stack markdown mirror: \`${BASE_URL}/stack-for/<slug>/md\` – e.g. /stack-for/course-creators/md.
 
 Content negotiation: every HTML page on this site also serves its markdown twin via \`?format=md\` or \`Accept: text/markdown\`. AI agents that don't know the mirror URL shape can request the canonical HTML URL with either signal and get the corresponding markdown back.
 
