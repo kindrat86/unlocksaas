@@ -1909,12 +1909,19 @@ function buildPublicDatasetJson(input: PublicDatasetInput): string {
   // registrations resolved at module load. The DOI URL (when set)
   // is appended LAST so it appears as the canonical persistent
   // identifier alongside the volatile catalog URLs.
+  // De-duped because the operator may legitimately set the Zenodo URL
+  // env var to the `https://doi.org/<doi>` form (the strongest catalog
+  // listing form) – in which case the env-driven row and the auto-
+  // built DOI URL collapse to the same value. A schema.org sameAs with
+  // duplicates is parseable but looks fabricated to strict validators.
   const doiUrl = input.doi ? `https://doi.org/${input.doi}` : undefined;
-  const sameAs: string[] = [
-    input.landingUrl,
-    ...(input.externalRegistrations ?? []).map((r) => r.url),
-    ...(doiUrl ? [doiUrl] : []),
-  ];
+  const sameAs: string[] = Array.from(
+    new Set([
+      input.landingUrl,
+      ...(input.externalRegistrations ?? []).map((r) => r.url),
+      ...(doiUrl ? [doiUrl] : []),
+    ]),
+  );
 
   // includedInDataCatalog – one DataCatalog node per off-platform
   // catalog where the dataset is also hosted. Dataset Search treats
