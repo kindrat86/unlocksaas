@@ -15,8 +15,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 const TIMEOUT_MS = 8000;
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:"]);

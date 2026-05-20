@@ -6,8 +6,6 @@ import {
 } from "@/lib/teardown-courtesy/targets";
 import { buildCourtesyEmail } from "@/lib/teardown-courtesy/template";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 /**
  * Operator-triggered preview: GET /api/teardown-courtesy/preview

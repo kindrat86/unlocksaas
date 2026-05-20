@@ -8,4 +8,3 @@ export function GET() {
   return markdownResponseForPath("/compare");
 }
 
-export const dynamic = "force-static";

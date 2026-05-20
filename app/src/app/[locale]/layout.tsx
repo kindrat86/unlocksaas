@@ -69,5 +69,3 @@ export default async function LocaleLayout({
   return <div lang={locale}>{children}</div>;
 }
 
-export const dynamic = "force-static";
-export const dynamicParams = false;

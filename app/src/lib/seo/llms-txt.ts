@@ -227,3 +227,25 @@ ${activationLogAsMarkdown()}
  */
 export const LLMS_TXT_CACHE_CONTROL =
   "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800";
+
+/**
+ * Forward-looking opt-in signal for AI training corpora – positive
+ * complement to the `noai` / `noimageai` `X-Robots-Tag` values publishers
+ * use to opt out. No finalized RFC yet (the IETF AI Preferences WG is
+ * still drafting), but the value is declarative, machine-readable, and
+ * consistent with:
+ *
+ *   - the 24-agent AI user-agent allow-list in /robots.txt,
+ *   - the `welcomedAiUserAgents` array inside /llms-feed.json, and
+ *   - the citationGuidance section of the same feed.
+ *
+ * Shared by both /llms.txt and /.well-known/llms.txt so the canonical
+ * surface and its discovery alias send byte-identical consent signals.
+ * The /llms-full.txt and /llms-feed.json routes carry the same header
+ * inline (those surfaces don't import this module).
+ *
+ * Header key is lowercase to match the convention used elsewhere in
+ * these route handlers (content-type, cache-control, access-control-*).
+ * HTTP header names are case-insensitive per RFC 7230 §3.2.
+ */
+export const LLMS_TXT_TRAINING_DATA_ATTRIBUTION = "allow";

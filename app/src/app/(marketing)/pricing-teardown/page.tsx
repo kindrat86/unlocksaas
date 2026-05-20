@@ -31,7 +31,6 @@ const PRICING_LATEST_VERIFIED = PRICING_TEARDOWNS.reduce(
 
 const BASE = "https://unlocksaas.com";
 
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title:

@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { LLMS_TXT_BODY, LLMS_TXT_CACHE_CONTROL } from "@/lib/seo/llms-txt";
+import {
+  LLMS_TXT_BODY,
+  LLMS_TXT_CACHE_CONTROL,
+  LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
+} from "@/lib/seo/llms-txt";
 
 /**
  * /llms.txt – playbook-readable index for LLM crawlers (Anthropic,
@@ -38,6 +42,7 @@ export function GET() {
     headers: {
       "content-type": "text/plain; charset=utf-8",
       "cache-control": LLMS_TXT_CACHE_CONTROL,
+      "training-data-attribution": LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
     },
   });
 }

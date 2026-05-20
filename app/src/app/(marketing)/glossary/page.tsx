@@ -48,7 +48,6 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
  *     /mcp follow.
  */
 
-export const dynamic = "force-static";
 
 const CANONICAL = "/glossary";
 const MD_PATH = "/glossary.md";

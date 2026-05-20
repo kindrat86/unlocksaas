@@ -38,8 +38,6 @@ import crypto from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/server";
 import { FUNNEL_TABLES } from "@/lib/double-opt-in";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 /** Tolerate up to 5 minutes of clock skew between Resend and us. */
 const MAX_TIMESTAMP_SKEW_S = 5 * 60;

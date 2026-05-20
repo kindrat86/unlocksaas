@@ -5,7 +5,6 @@ import {
   coerceIdentityVariant,
 } from "@/lib/soap-opera/subscribe";
 
-export const runtime = "nodejs";
 
 interface SubscribeBody {
   email?: unknown;

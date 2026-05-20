@@ -19,9 +19,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
  * routes render as one visual fleet; this file stays a thin route handler.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
-export const dynamicParams = false;
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

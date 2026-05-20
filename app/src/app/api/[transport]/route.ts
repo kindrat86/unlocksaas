@@ -87,7 +87,6 @@ import { z } from "zod";
  * diagnose_url path: ≤ 8 s page fetch + ≤ 60 s Claude classify +
  * serialisation/transport margin.
  */
-export const runtime = "nodejs";
 export const maxDuration = 90;
 
 import {

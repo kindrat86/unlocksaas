@@ -49,8 +49,6 @@ import {
 
 const BASE = "https://unlocksaas.com";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return PRICING_TEARDOWN_SLUGS.map((slug) => ({ slug }));

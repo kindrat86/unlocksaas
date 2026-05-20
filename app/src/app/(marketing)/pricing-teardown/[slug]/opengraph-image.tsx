@@ -21,9 +21,6 @@ import { OG_CONTENT_TYPE, OG_SIZE, buildOgCard } from "@/lib/seo/og-card";
  * Stack/Anchor/Mechanics lens. No fabricated price points on the card.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
-export const dynamicParams = false;
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

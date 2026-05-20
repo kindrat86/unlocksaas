@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cacheLife } from "next/cache";
 
 /**
  * IndexNow key endpoint — public ownership-proof file.
@@ -31,15 +32,19 @@ import { NextResponse } from "next/server";
  * a one-way proof that the owner of the domain set up the integration.
  * Loss of the key just forces a rotation; loss of value is zero.
  *
- * Cache: long-lived. The key rotates rarely (annual at most). Edge
- * cache is fine.
+ * Cache: long-lived (24h). The key rotates rarely (annual at most). Under
+ * Cache Components (Next 16+) the route-segment `revalidate = 86400`
+ * is gone; the equivalent is `'use cache' + cacheLife({ revalidate: 86400 })`
+ * inside the GET handler. Same behaviour: cache write at first GET, served
+ * from edge for 24h, then a background revalidate refreshes from process.env.
+ * If the operator rotates INDEXNOW_KEY without redeploying, the new value
+ * propagates within 24h (same as the previous ISR behaviour).
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
-export const revalidate = 86400; // 24h; key changes via env rotation only.
+export async function GET() {
+  "use cache";
+  cacheLife({ revalidate: 86400 });
 
-export function GET() {
   const key = process.env.INDEXNOW_KEY;
   if (!key || key.length < 8 || !/^[a-f0-9-]+$/i.test(key)) {
     // 503 not 404: the route exists, the integration is configured but

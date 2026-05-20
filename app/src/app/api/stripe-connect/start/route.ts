@@ -4,8 +4,6 @@ import { createClient } from "@/lib/supabase/server";
 
 // Node runtime is required for `crypto` HMAC. (The Edge runtime exposes a
 // subset of Web Crypto that needs different glue code — keep this on Node.)
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 /**
  * Kick off Stripe Connect OAuth (Standard accounts, read-only scope).

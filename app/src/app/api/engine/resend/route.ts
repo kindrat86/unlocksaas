@@ -22,8 +22,6 @@ import {
 } from "@/lib/step-outputs";
 import { sendStepDeliverableEmail } from "@/lib/deliverable-email";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 export async function POST(req: NextRequest) {

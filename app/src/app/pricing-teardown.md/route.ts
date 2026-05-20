@@ -8,4 +8,3 @@ export function GET() {
   return markdownResponseForPath("/pricing-teardown");
 }
 
-export const dynamic = "force-static";

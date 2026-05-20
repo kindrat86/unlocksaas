@@ -14,4 +14,3 @@ export function GET() {
   return markdownResponseForPath("/");
 }
 
-export const dynamic = "force-static";

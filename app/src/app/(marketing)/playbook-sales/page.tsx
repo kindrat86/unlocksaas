@@ -28,6 +28,40 @@ import { Event } from "@/lib/analytics/events";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
 import { createAdminClient } from "@/lib/supabase/server";
+import { cacheLife, cacheTag } from "next/cache";
+
+/**
+ * Verified-builder count, cached with the `verified-builder-count` tag.
+ *
+ * Under Cache Components (Next 16+) the old `export const revalidate = 3600`
+ * is replaced by this `'use cache' + cacheLife + cacheTag` triplet:
+ *
+ *   1. `cacheLife({ revalidate: 3600 })` — 1-hour background revalidation as
+ *      the freshness ceiling, identical TTL to the previous ISR window.
+ *   2. `cacheTag('verified-builder-count')` — forward-looking invalidation
+ *      hook. In Next 16 `revalidateTag(tag, profile)` is restricted to
+ *      Server Actions (read-your-own-writes semantics), so a future Server
+ *      Action that updates a verified_conversion can call
+ *      `revalidateTag('verified-builder-count', 'max')` to instantly refresh
+ *      every surface that reads the count.
+ *   3. The existing Supabase webhook at `/api/webhooks/revalidate-badges`
+ *      continues to call `revalidatePath` for `/playbook-sales`, `/`, and
+ *      `/builders` — path-level invalidation works from a Route Handler
+ *      where tag-level does not. The 1-hour ISR fallback still catches
+ *      drift if the webhook misfires.
+ *
+ * Brunson Hard-Rule: returns whatever the canonical view returns. Zero is
+ * honest until the first verified builder ships; the downstream
+ * `buildPlaybookAggregateRating(0)` returns null and the Product schema
+ * falls through to the rating-less constant — no fabricated AggregateRating
+ * is ever emitted.
+ */
+async function getVerifiedBadgeCount(): Promise<number> {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag("verified-builder-count");
+  return loadPublicBadgeCount(createAdminClient());
+}
 
 /**
  * Per-page metadata. Surface A of strategy/google-strategy.md — this page is
@@ -59,27 +93,6 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
 };
-
-/**
- * ISR revalidation window for the badge-count read.
- *
- * The page reads `loadPublicBadgeCount()` to fold a Stripe-verified
- * AggregateRating into the SoftwareApplication schema. A new verified
- * cycle (and therefore a count bump) lands at most a few times per
- * week, so a 1-hour window is generous on freshness and avoids burning
- * the page into a per-request dynamic render.
- *
- * Without this directive the `await loadPublicBadgeCount()` call would
- * push the route to dynamic rendering, costing a Supabase round-trip
- * per request for a number that changes ~weekly.
- *
- * Operator follow-up: wire a Supabase webhook on insert into
- * verified_conversions to POST `/api/revalidate` with the canonical paths
- * `/playbook-sales`, `/`, `/builders` for sub-second propagation. The
- * 1-hour ISR window then becomes a fallback heartbeat, not the primary
- * propagation channel.
- */
-export const revalidate = 3600;
 
 /**
  * Long-form $49 Playbook sales page.
@@ -125,7 +138,10 @@ export default async function PlaybookSalesPage() {
   // Brunson Hard-Rule: buildPlaybookAggregateRating returns null when
   // count <= 0. Passing `null` to <PlaybookProductJsonLd> falls through
   // to the rating-less constant — no fabricated rating is ever emitted.
-  const verifiedBadgeCount = await loadPublicBadgeCount(createAdminClient());
+  //
+  // Cached + tagged by `verified-builder-count`; see getVerifiedBadgeCount
+  // above for the revalidation contract.
+  const verifiedBadgeCount = await getVerifiedBadgeCount();
   const playbookAggregateRating = buildPlaybookAggregateRating(
     verifiedBadgeCount
   );

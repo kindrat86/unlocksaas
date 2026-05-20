@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getAllFunnelTargets } from "@/lib/teardown-courtesy/targets";
 
-export const runtime = "nodejs";
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 /**
  * Operator-triggered seeder: POST /api/teardown-courtesy/seed

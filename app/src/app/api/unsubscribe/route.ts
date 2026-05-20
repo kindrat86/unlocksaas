@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { verifyUnsubscribeToken } from "@/lib/soap-opera/tokens";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 /**
  * GET /api/unsubscribe?email=<addr>&token=<hmac>

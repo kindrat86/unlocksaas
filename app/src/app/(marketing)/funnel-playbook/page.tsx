@@ -7,7 +7,6 @@ import { FUNNEL_PLAYBOOK_ENTRIES } from "@/lib/funnel-playbooks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
-export const dynamic = "force-static";
 
 const CANONICAL = "/funnel-playbook";
 

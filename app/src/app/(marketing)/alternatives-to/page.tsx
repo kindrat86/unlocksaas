@@ -30,7 +30,6 @@ const ALTERNATIVES_LATEST_VERIFIED = ALTERNATIVES.reduce(
 
 const BASE = "https://unlocksaas.com";
 
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Honest Alternatives to Unlock SaaS — and Why Most Are Different Products",

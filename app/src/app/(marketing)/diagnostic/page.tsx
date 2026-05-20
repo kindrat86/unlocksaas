@@ -48,7 +48,6 @@ export const metadata: Metadata = {
 };
 
 // Squeeze must always be live; do not cache.
-export const dynamic = "force-dynamic";
 
 export default async function DiagnosticSqueezePage(
   props: {

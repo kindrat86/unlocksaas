@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { sendTestimonialFarmOffer } from "@/lib/testimonial-farm/dispatch";
 
-export const runtime = "nodejs";
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 /**
  * GET /api/cron/testimonial-farm-offer

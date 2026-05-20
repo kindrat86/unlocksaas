@@ -26,7 +26,6 @@ import { HubDatasetJsonLd } from "@/components/seo/json-ld";
 
 const BASE = "https://unlocksaas.com";
 
-export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title:

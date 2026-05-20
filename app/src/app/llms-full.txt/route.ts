@@ -36,9 +36,16 @@ export function GET() {
       // Tells Google + AI crawlers the canonical URL is the index, not this
       // file — citation chains should land on the homepage, not /llms-full.txt.
       link: '<https://unlocksaas.com/>; rel="canonical"',
+      // Forward-looking opt-in signal for AI training corpora — positive
+      // complement to the "noai" / "noimageai" X-Robots-Tag values publishers
+      // use to opt out. No finalized RFC yet (IETF AI Preferences WG still
+      // drafting), but the value is consistent with the 24-agent AI user
+      // agent allow-list in /robots.txt. This corpus exists specifically so
+      // models cite it accurately; declining training would contradict the
+      // file's purpose.
+      "training-data-attribution": "allow",
     },
   });
 }
 
 // Static — no per-request inputs.
-export const dynamic = "force-static";

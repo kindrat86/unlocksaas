@@ -9,9 +9,7 @@ import type {
   DiagnosticLabel,
 } from "@/lib/cart-recovery/emails";
 
-export const runtime = "nodejs";
 export const maxDuration = 300;
-export const dynamic = "force-dynamic";
 
 /**
  * Daily cron: GET /api/cron/cart-recovery

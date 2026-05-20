@@ -39,8 +39,6 @@ import { DISQUALIFIERS } from "@/lib/dont-buy";
  * the route group. Same shape as the press-topics card.
  */
 
-export const runtime = "nodejs";
-export const dynamic = "force-static";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { dispatchNext } from "@/lib/teardown-courtesy/dispatch";
 
-export const runtime = "nodejs";
 // Single Resend send per tick. Generous timeout in case Resend is slow.
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
 
 /**
  * Weekday cron: GET /api/cron/teardown-courtesy

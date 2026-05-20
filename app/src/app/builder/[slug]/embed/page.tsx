@@ -61,8 +61,6 @@ import { ArrowLeft, CheckCircle2, Code2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { CopyButton } from "@/components/copy-button";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 const BASE = "https://unlocksaas.com";
 

@@ -52,7 +52,6 @@ export const metadata: Metadata = {
 
 // Pure static surface — no per-request data, no cookies, no auth gating.
 // Pre-rendered at build time, served from the CDN edge.
-export const dynamic = "force-static";
 
 const TRAIL = [
   { name: "Unlock SaaS", url: "https://unlocksaas.com/" },

@@ -18,8 +18,6 @@ import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
 import { CheckCircle2 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 interface Props {
   params: Promise<{ slug: string }>;

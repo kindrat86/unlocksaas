@@ -12,8 +12,6 @@ import { ImageResponse } from "next/og";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge } from "@/lib/builder-badge";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 // Static alt is intentional even though the page is force-dynamic: per-
 // slug alt would force a third loadPublicBadge call per OG fetch (the
 // page already calls it in generateMetadata + the page render). The card's

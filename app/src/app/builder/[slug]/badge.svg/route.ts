@@ -37,7 +37,6 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge } from "@/lib/builder-badge";
 import { renderBadgeSvg } from "@/lib/seo/builder-review";
 
-export const dynamic = "force-dynamic";
 // We still set Cache-Control headers below; the edge respects them.
 
 interface RouteCtx {

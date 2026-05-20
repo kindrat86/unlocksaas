@@ -90,7 +90,6 @@ export const metadata: Metadata = {
 };
 
 // Marketing page can be statically generated; the form is a client island.
-export const dynamic = "force-static";
 
 /**
  * The Reverse Squeeze (DotCom Secrets Secret 14, reverse variant).

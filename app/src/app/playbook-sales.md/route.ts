@@ -8,4 +8,3 @@ export function GET() {
   return markdownResponseForPath("/playbook-sales");
 }
 
-export const dynamic = "force-static";

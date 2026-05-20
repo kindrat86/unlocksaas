@@ -3,13 +3,11 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { sendNextAndAdvance, type DueRow } from "@/lib/soap-opera/dispatch";
 import type { DiagnosticResult } from "@/lib/soap-opera/emails";
 
-export const runtime = "nodejs";
 // Soap Opera cron may need to fan out to many subscribers. Bump well past the
 // default to be safe — most days this returns in seconds.
 export const maxDuration = 300;
 // Force dynamic so the cron always runs against live DB state instead of
 // being statically rendered at build time.
-export const dynamic = "force-dynamic";
 
 /**
  * Daily cron: GET /api/cron/soap-opera

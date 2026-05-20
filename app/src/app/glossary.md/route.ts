@@ -8,4 +8,3 @@ export function GET() {
   return markdownResponseForPath("/glossary");
 }
 
-export const dynamic = "force-static";

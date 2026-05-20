@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
 
 export default async function PlaybookDashboard() {
   // The layout already enforces auth + tier gating. Here we only need the

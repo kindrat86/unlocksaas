@@ -64,8 +64,6 @@ import { revalidatePath } from "next/cache";
 
 // Node runtime: revalidatePath is supported on Fluid Compute under Node.
 // Force-dynamic because the route's whole job is to escape cache.
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
 /**
  * Paths whose HTML embeds data sourced from the `builder_badges` view.

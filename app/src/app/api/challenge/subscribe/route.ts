@@ -4,7 +4,6 @@ import {
   coerceIdentityVariant,
 } from "@/lib/challenge/subscribe";
 
-export const runtime = "nodejs";
 
 interface SubscribeBody {
   email?: unknown;

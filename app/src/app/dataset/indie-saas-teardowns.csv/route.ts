@@ -71,5 +71,3 @@ export function OPTIONS() {
   });
 }
 
-export const dynamic = "force-static";
-export const runtime = "nodejs";

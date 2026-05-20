@@ -14,8 +14,6 @@ import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return FUNNEL_PLAYBOOK_SLUGS.map((slug) => ({ slug }));

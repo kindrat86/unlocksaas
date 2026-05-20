@@ -16,8 +16,6 @@ import {
   loadPublicDiagnosis,
 } from "@/lib/diagnostic-share";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 // Static alt is intentional even though the page is force-dynamic: per-id
 // alt would force a second loadPublicDiagnosis call per OG fetch (the page
 // already calls it twice – once in generateMetadata, once in the default

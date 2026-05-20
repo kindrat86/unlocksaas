@@ -22,7 +22,6 @@ import { ImageResponse } from "next/og";
  * boring — every prop here is a tested-safe subset.
  */
 
-export const runtime = "nodejs";
 export const alt = "Unlock SaaS — Your first paying customer in 60 days, or you do not pay.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

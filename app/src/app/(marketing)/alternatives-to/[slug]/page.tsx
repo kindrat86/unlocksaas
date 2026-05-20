@@ -46,8 +46,6 @@ const BASE = "https://unlocksaas.com";
 // Prerender all known alternatives at build. Unknown slugs return 404 (instead
 // of being lazily generated at request time) so the surface stays tight and
 // crawlers cannot discover phantom URLs.
-export const dynamic = "force-static";
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return ALTERNATIVE_SLUGS.map((slug) => ({ slug }));

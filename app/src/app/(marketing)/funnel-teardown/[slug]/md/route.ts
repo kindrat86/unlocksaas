@@ -55,4 +55,3 @@ export async function GET(
 }
 
 // Pre-render every teardown at build time. No request-time inputs.
-export const dynamicParams = false;
