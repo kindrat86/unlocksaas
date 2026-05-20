@@ -79,6 +79,20 @@ These are the highest-leverage anchors in the entire schema graph. The first two
 
 ### Wikidata <a id="wikidata"></a>
 
+**Status:** ✅ Live. Q-URL `https://www.wikidata.org/wiki/Q139863921`. Activated 21-05-2026 01:13:00 Europe/Athens.
+
+**Calibration note:** This submission used the structured-data-reference scaffold (canonical site + `/.well-known/entity.jsonld` + `/dataset` + `/llms-feed.json` declared via P973) rather than the three-mention earned-media bar listed as a prerequisite below. The calibration mirrors what survived patrol on Q139376302 (VC Deal Flow Signal, same operator account, prior submission whose companion dataset Q139493250 carried Zenodo DOI + SSRN abstract via P973). `MEDIA_MENTIONS` remained empty at activation; the bar still lights up the funnel-hub "As seen in" surface once it accumulates the three real mentions, independent of the Q-ID activation.
+
+**Submission method:** QuickStatements V1 via the URL-parameter form (`#/v1=...`) rather than the `Special:NewItem` UI documented below. The URL-parameter form is the only reliable path that survives tab-corruption in the textarea paste of mixed-content rows (P1813 monolingual text, P973 string URLs alongside P31/P407 item-IDs). See [`strategy/wikidata-application/quickstatements.txt`](./wikidata-application/quickstatements.txt) v2 for the exact statement set applied.
+
+**Statements applied:** P31=Q47535984 (online service), P856 (official website), P571 (inception 2026-05-17), P407 × 3 (en/es/pt-br languages of work), P1813 (short name en:UnlockSaaS), P973 × 3 (entity.jsonld, /dataset, /llms-feed.json). Labels + descriptions in en/es/pt-br, aliases UnlockSaaS / Unlock-SaaS / unlocksaas.com.
+
+**Verification:** `Organization.sameAs` and `Person.sameAs` on `https://unlocksaas.com/.well-known/entity.jsonld` include the Q-URL. Same for the homepage Organization JSON-LD and `/llms-feed.json`. Tested 21-05-2026 01:13 against production deployment `unlocksaas-1p3am4wws-sales-3429s-projects.vercel.app` (commit `67c35e5`, build duration 1m).
+
+**Patrol watch:** Wikidata patrollers typically review new items within 24-72h. If Q139863921 is flagged for AfD or notability review, escalate to the operator before any rollback – the env var stays unless the item is actually deleted. The operator's MEDIA_MENTIONS-empty calibration is defensible (Q139376302 precedent), but if patrol disagrees the remedy is to add references to each statement via the UI rather than to delete the env var.
+
+The original action steps below are retained as the re-activation runbook in case the Q-item ever needs to be re-issued.
+
 **Prerequisite:** at least one of:
 - A live Wikipedia article about Unlock SaaS (preferred path)
 - Three independent earned-media articles that name Unlock SaaS as the subject (not roundups)
@@ -560,7 +574,7 @@ The script `python3 scripts/seo-activation-check.py` will print this as a number
 15. **Founder personal `sameAs` slots** – `NEXT_PUBLIC_FOUNDER_SAMEAS_*`, claimed in parallel with the Organization slots above (personal LinkedIn, Twitter, GitHub, Crunchbase person, Product Hunt maker, personal Wellfound). Each ships independently the moment the round-trip claim is in place.
 16. **Founder `alumniOf` / `award`** – only when the underlying institution / award actually exists.
 17. **(gated)** Three real earned mentions logged in `MEDIA_MENTIONS`.
-18. **(gated, post-step-17)** Wikidata Q-ID.
+18. ~~**(gated, post-step-17)** Wikidata Q-ID.~~ ✅ Activated 21-05-2026 as Q139863921 via the structured-data-reference scaffold (Q139376302 precedent); did not wait for step 17. See the Wikidata section above for full activation record and patrol-watch protocol.
 19. **(gated, post-step-17)** Wikipedia article submission.
 
 Re-run the audit script after each step to see the cumulative effect.
@@ -569,8 +583,10 @@ Re-run the audit script after each step to see the cumulative effect.
 
 ## Status footer
 
-- **Document version:** 1.0
+- **Document version:** 1.1
 - **Created:** 2026-05-18
+- **Last updated:** 21-05-2026 (Wikidata Q139863921 activation recorded)
 - **Owner:** Maryan (founder, operator)
 - **Tool:** `python3 scripts/seo-activation-check.py`
 - **Re-audit cadence:** after every redeploy that adds or removes an env slot
+- **Patrol watch:** Q139863921 → monitor through 24-05-2026 for AfD or notability-review flags (72h post-submission window)
