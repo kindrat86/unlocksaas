@@ -13,7 +13,9 @@ import {
   PODCAST_EPISODE_SLUGS,
   PODCAST_SHOW_NAME,
   PODCAST_URLS,
+  episodeTranscriptMdUrl,
   getEpisodeBySlug,
+  podcastAudioDisclosure,
 } from "@/lib/seo/podcast";
 
 /**
@@ -98,6 +100,7 @@ export async function generateMetadata(props: {
     alternates: {
       types: {
         "application/rss+xml": PODCAST_URLS.rss,
+        "text/markdown": episodeTranscriptMdUrl(episode.slug),
       },
     },
   };
@@ -194,8 +197,31 @@ export default async function PodcastEpisodePage(props: {
               </a>
               .
             </audio>
+            <p className="text-xs text-muted-foreground mt-3">
+              {podcastAudioDisclosure()}{" "}
+              <Link
+                href={`/podcast/${episode.slug}/transcript`}
+                className="underline underline-offset-4"
+              >
+                Read the full transcript
+              </Link>
+              .
+            </p>
           </section>
-        ) : null}
+        ) : (
+          <section className="mb-8" aria-label="Episode transcript link">
+            <p className="text-sm text-muted-foreground">
+              No audio enclosure for this episode yet.{" "}
+              <Link
+                href={`/podcast/${episode.slug}/transcript`}
+                className="underline underline-offset-4"
+              >
+                Read the transcript
+              </Link>
+              .
+            </p>
+          </section>
+        )}
 
         <Separator className="my-8" />
 

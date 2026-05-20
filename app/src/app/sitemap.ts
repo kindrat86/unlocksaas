@@ -841,11 +841,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.45,
       alternates: hreflang(`${base}/podcast/${slug}`),
     })),
+    // Per-episode transcript pages (VEO uplift landing 2026-05-21).
+    // Schema.org PodcastEpisode.transcript points at these URLs; AI
+    // summarisers and Apple Podcast Transcripts follow them to extract
+    // verbatim text instead of re-transcribing the audio. Priority 0.42
+    // just below the episode page (0.45) – the episode page remains the
+    // canonical destination; the transcript is a sibling surface.
+    ...PODCAST_EPISODE_SLUGS.map((slug) => ({
+      url: `${base}/podcast/${slug}/transcript`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.42,
+      alternates: hreflang(`${base}/podcast/${slug}/transcript`),
+    })),
     {
       url: `${base}/feed/podcast.rss`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.4,
+    },
+    // Alexa Flash Briefing JSON feed (VEO uplift landing 2026-05-21).
+    // Documented at strategy/voice-assistants-playbook.md. Listed in
+    // the sitemap so retrievers discover it without depending on the
+    // Amazon developer console submission step.
+    {
+      url: `${base}/feed/alexa-flash-briefing.json`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.35,
     },
     // -------------------------------------------------------------------------
     // Citation permalinks (Surface B – GEO/AEO/AIO uplift).

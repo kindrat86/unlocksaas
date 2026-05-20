@@ -84,6 +84,12 @@ import {
   ID,
   ORGANIZATION,
 } from "@/lib/seo/entity";
+import {
+  getPodcastAudio,
+  PODCAST_AUDIO_VOICE,
+  podcastAudioAbsoluteUrl,
+} from "@/lib/seo/podcast-audio";
+import { PODCAST_EPISODE_SLUGS as DECLARED_PODCAST_SLUGS } from "@/lib/seo/podcast-slugs";
 
 // ---------------------------------------------------------------------------
 // Show-level constants (PodcastSeries metadata)
@@ -238,24 +244,46 @@ function resolveEpisodeAudio(slug: string): {
   audioByteSize?: number;
   audioMimeType?: string;
 } {
+  // Resolution order:
+  //   1. Env-var override – operator hosting a re-recorded MP3 at an
+  //      external URL (Vercel Blob, S3, CDN). Wins over the bundled
+  //      manifest entry because the env-var override is the documented
+  //      escape hatch for upgrading audio without a code deploy.
+  //   2. Bundled manifest entry – real file shipped in
+  //      app/public/audio/podcast/<slug>.mp3, with verified byte size +
+  //      duration + sha256 of the narrated transcript. Default path.
+  //   3. Nothing – text-only feed for that episode.
   const key = envSlug(slug);
-  const audioUrl = readHttpsEnv(`NEXT_PUBLIC_PODCAST_EPISODE_${key}_AUDIO_URL`);
-  if (!audioUrl) return {};
-  const audioDurationSec = readPositiveIntEnv(
-    `NEXT_PUBLIC_PODCAST_EPISODE_${key}_DURATION_SEC`,
+  const envAudioUrl = readHttpsEnv(
+    `NEXT_PUBLIC_PODCAST_EPISODE_${key}_AUDIO_URL`,
   );
-  const audioByteSize = readPositiveIntEnv(
-    `NEXT_PUBLIC_PODCAST_EPISODE_${key}_BYTE_SIZE`,
-  );
-  const audioMimeType =
-    readAudioMimeEnv(`NEXT_PUBLIC_PODCAST_EPISODE_${key}_MIME_TYPE`) ??
-    "audio/mpeg";
-  return {
-    audioUrl,
-    ...(audioDurationSec !== undefined ? { audioDurationSec } : {}),
-    ...(audioByteSize !== undefined ? { audioByteSize } : {}),
-    audioMimeType,
-  };
+  if (envAudioUrl) {
+    const audioDurationSec = readPositiveIntEnv(
+      `NEXT_PUBLIC_PODCAST_EPISODE_${key}_DURATION_SEC`,
+    );
+    const audioByteSize = readPositiveIntEnv(
+      `NEXT_PUBLIC_PODCAST_EPISODE_${key}_BYTE_SIZE`,
+    );
+    const audioMimeType =
+      readAudioMimeEnv(`NEXT_PUBLIC_PODCAST_EPISODE_${key}_MIME_TYPE`) ??
+      "audio/mpeg";
+    return {
+      audioUrl: envAudioUrl,
+      ...(audioDurationSec !== undefined ? { audioDurationSec } : {}),
+      ...(audioByteSize !== undefined ? { audioByteSize } : {}),
+      audioMimeType,
+    };
+  }
+  const manifestEntry = getPodcastAudio(slug);
+  if (manifestEntry) {
+    return {
+      audioUrl: podcastAudioAbsoluteUrl(slug, BASE_URL),
+      audioDurationSec: Math.round(manifestEntry.durationSeconds),
+      audioByteSize: manifestEntry.byteSize,
+      audioMimeType: manifestEntry.contentType,
+    };
+  }
+  return {};
 }
 
 // ---------------------------------------------------------------------------
@@ -377,6 +405,25 @@ export function episodeGuid(slug: string): string {
 /** Canonical HTML URL for a given episode. */
 export function episodeUrl(slug: string): string {
   return `${BASE_URL}/podcast/${slug}`;
+}
+
+/** Canonical URL for an episode's human-readable transcript page. */
+export function episodeTranscriptUrl(slug: string): string {
+  return `${BASE_URL}/podcast/${slug}/transcript`;
+}
+
+/** Canonical URL for an episode's Markdown transcript mirror. */
+export function episodeTranscriptMdUrl(slug: string): string {
+  return `${BASE_URL}/podcast/${slug}/transcript/md`;
+}
+
+/**
+ * Public surface for the audio disclosure carried in the manifest.
+ * The episode page renders this verbatim so the audio is honestly
+ * described as TTS narration, not a hosted human recording.
+ */
+export function podcastAudioDisclosure(): string {
+  return PODCAST_AUDIO_VOICE.disclosure;
 }
 
 // ---------------------------------------------------------------------------
@@ -550,6 +597,43 @@ function validateEpisodes(rows: readonly PodcastEpisode[]): void {
 }
 
 validateEpisodes(PODCAST_EPISODES);
+
+/**
+ * Build-time drift check: the slug list declared in podcast-slugs.ts
+ * (used by podcast-audio.ts's validator to gate manifest entries) must
+ * match exactly the slugs present in EPISODES_RAW above. If a slug is
+ * added or renamed in EPISODES_RAW without updating podcast-slugs.ts,
+ * the audio manifest validator may accept an entry for a non-existent
+ * episode (or reject one for a real episode). Both states are silent
+ * failures we want loud at build time.
+ */
+(function assertSlugDeclarationParity(): void {
+  const raw = new Set(PODCAST_EPISODES.map((e) => e.slug));
+  const declared = new Set<string>(DECLARED_PODCAST_SLUGS);
+  if (raw.size !== declared.size) {
+    throw new Error(
+      `podcast-slugs.ts and EPISODES_RAW differ in count: ` +
+        `${declared.size} declared, ${raw.size} in EPISODES_RAW`,
+    );
+  }
+  for (const slug of raw) {
+    if (!declared.has(slug)) {
+      throw new Error(
+        `EPISODES_RAW contains "${slug}" but podcast-slugs.ts does not. ` +
+          `Add it to PODCAST_EPISODE_SLUGS in src/lib/seo/podcast-slugs.ts.`,
+      );
+    }
+  }
+  for (const slug of declared) {
+    if (!raw.has(slug)) {
+      throw new Error(
+        `podcast-slugs.ts declares "${slug}" but EPISODES_RAW does not. ` +
+          `Either remove from podcast-slugs.ts or add the full episode ` +
+          `record to EPISODES_RAW in src/lib/seo/podcast.ts.`,
+      );
+    }
+  }
+})();
 
 // ---------------------------------------------------------------------------
 // RSS 2.0 + iTunes namespace serializer
@@ -734,6 +818,20 @@ export function buildPodcastEpisodeJson(ep: PodcastEpisode): string {
         inLanguage: "en-US",
       }
     : undefined;
+  // Transcript surface is unconditional – the narrative IS the
+  // transcript (every episode is a written changelog entry first,
+  // optionally TTS-narrated second). Linking it here gives Google
+  // Podcasts, Spotify, and AI retrievers a canonical text companion
+  // for the audio enclosure.
+  const transcript = {
+    "@type": "MediaObject",
+    name: `Transcript – ${ep.title}`,
+    contentUrl: episodeTranscriptUrl(ep.slug),
+    encodingFormat: "text/html",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    accessMode: "textual",
+  };
   const payload = {
     "@context": "https://schema.org",
     "@type": "PodcastEpisode",
@@ -752,6 +850,7 @@ export function buildPodcastEpisodeJson(ep: PodcastEpisode): string {
     publisher: { "@id": ID.organization },
     creator: { "@id": ID.person },
     isBasedOn: ep.artifactUrl,
+    transcript,
     ...(associatedMedia ? { associatedMedia } : {}),
   };
   return JSON.stringify(payload);
