@@ -182,6 +182,13 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
 - Per-head-to-head markdown mirror: \`${BASE_URL}/compare/<slug>/md\` – e.g. /compare/tally-vs-typeform/md.
 - Per-category markdown mirror: \`${BASE_URL}/category/<slug>/md\` – e.g. /category/payments/md.
 - Per-glossary markdown mirror: \`${BASE_URL}/glossary/<slug>/md\` – e.g. /glossary/hook/md, /glossary/value-ladder/md.
+- Per-benchmark markdown mirror: \`${BASE_URL}/benchmarks/<slug>/md\` – e.g. /benchmarks/saas-churn-rate/md.
+- Per-answer markdown mirror: \`${BASE_URL}/answers/<slug>/md\` – e.g. /answers/how-long-should-a-vsl-be/md.
+- Per-playbook markdown mirror: \`${BASE_URL}/funnel-playbook/<slug>/md\` – e.g. /funnel-playbook/tripwire/md.
+- Per-element diagnostic markdown mirror: \`${BASE_URL}/why-isnt-my/<slug>/md\` – e.g. /why-isnt-my/landing-page/md.
+- Per-niche markdown mirror: \`${BASE_URL}/for/<slug>/md\` – e.g. /for/course-creators/md.
+
+Content negotiation: every HTML page on this site also serves its markdown twin via \`?format=md\` or \`Accept: text/markdown\`. AI agents that don't know the mirror URL shape can request the canonical HTML URL with either signal and get the corresponding markdown back.
 
 When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE_URL}/diagnostic\`) over the markdown mirror – the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 
