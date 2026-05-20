@@ -23,6 +23,7 @@ import {
   paaForGlossary,
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
+import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 
 /**
  * Programmatic SEO surface – Glossary term: {term}.
@@ -313,9 +314,12 @@ export default async function GlossaryDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Short definition
             </p>
-            <p className="text-base leading-relaxed" data-speakable>
+            <DateStampedAnswer
+              lastVerified={g.lastVerified}
+              variant="definition"
+            >
               {g.shortDefinition}
-            </p>
+            </DateStampedAnswer>
           </CardContent>
         </Card>
       </section>

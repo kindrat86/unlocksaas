@@ -22,6 +22,7 @@ import {
   paaForWhyIsntMy,
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
+import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 
 
 export function generateStaticParams() {
@@ -203,12 +204,13 @@ export default async function WhyIsntMyDetailPage(props: {
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
           Why isn&rsquo;t my {e.element} converting?
         </h1>
-        <p
-          className="text-lg text-muted-foreground leading-relaxed"
-          data-speakable
+        <DateStampedAnswer
+          lastVerified={e.lastVerified}
+          variant="diagnosis"
+          className="text-lg text-muted-foreground"
         >
           {e.tldr}
-        </p>
+        </DateStampedAnswer>
         <p className="mt-4 text-xs text-muted-foreground">
           Verified{" "}
           <time dateTime={e.lastVerified}>
