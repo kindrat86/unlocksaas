@@ -122,7 +122,7 @@ export function StoriesOptIn({ placement, ctaLabel, trustLine }: Props) {
       onSubmit={handleSubmit}
       className="space-y-3"
       noValidate
-      aria-label={`Subscribe — ${placement.replace("_", " ")}`}
+      aria-label={`Subscribe – ${placement.replace("_", " ")}`}
     >
       <div className="space-y-1.5">
         <label

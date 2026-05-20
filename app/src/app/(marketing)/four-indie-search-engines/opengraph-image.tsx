@@ -45,7 +45,7 @@ export function generateImageMetadata() {
   return [
     {
       id: "card",
-      alt: "I shipped UnlockSaaS to four search engines under 1 percent market share each — Unlock SaaS",
+      alt: "I shipped UnlockSaaS to four search engines under 1 percent market share each – Unlock SaaS",
       size: OG_SIZE,
       contentType: OG_CONTENT_TYPE,
     },

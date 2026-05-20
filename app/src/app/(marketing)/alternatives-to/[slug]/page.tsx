@@ -457,12 +457,12 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
                         {us ? (
                           <Check
                             className="h-5 w-5 text-primary mx-auto"
-                            aria-label={`Unlock SaaS: yes — ${row.label}`}
+                            aria-label={`Unlock SaaS: yes – ${row.label}`}
                           />
                         ) : (
                           <X
                             className="h-5 w-5 text-muted-foreground/50 mx-auto"
-                            aria-label={`Unlock SaaS: no — ${row.label}`}
+                            aria-label={`Unlock SaaS: no – ${row.label}`}
                           />
                         )}
                       </td>
@@ -470,12 +470,12 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
                         {them ? (
                           <Check
                             className="h-5 w-5 text-primary mx-auto"
-                            aria-label={`${alt.displayName}: yes — ${row.label}`}
+                            aria-label={`${alt.displayName}: yes – ${row.label}`}
                           />
                         ) : (
                           <X
                             className="h-5 w-5 text-muted-foreground/50 mx-auto"
-                            aria-label={`${alt.displayName}: no — ${row.label}`}
+                            aria-label={`${alt.displayName}: no – ${row.label}`}
                           />
                         )}
                       </td>
