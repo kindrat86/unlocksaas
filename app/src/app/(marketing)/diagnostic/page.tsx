@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
 import {
   DiagnosticJsonLd,
+  DiagnosticWalkthroughVideoJsonLd,
   BreadcrumbListJsonLd,
   SpeakableJsonLd,
 } from "@/components/seo/json-ld";
@@ -20,6 +21,7 @@ import {
 import { DiagnosticHookVariantBeacon } from "@/components/diagnostic/hook-variant-beacon";
 import { DiagnosticPublicCounter } from "@/components/diagnostic/public-counter";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DIAGNOSTIC_WALKTHROUGH } from "@/lib/diagnostic-walkthrough";
 
 // Brunson spec source:
 // - workbook 02 §2 (Free Diagnostic Lead Funnel)
@@ -91,6 +93,13 @@ async function DiagnosticSqueezePageBody(
           SpeakableSpecification directly; this page-level WebPage
           companion gives voice assistants a second surface to walk. */}
       <DiagnosticJsonLd />
+      {/* VEO uplift (2026-05-20) – VideoObject JSON-LD with inline
+          transcript text. Env-gated on NEXT_PUBLIC_DIAGNOSTIC_VIDEO_URL +
+          NEXT_PUBLIC_DIAGNOSTIC_VIDEO_THUMBNAIL_URL; emits nothing until
+          a real recording ships. The visible <section> below ALWAYS
+          renders the transcript so AI summarisers and voice engines can
+          cite the walkthrough verbatim even with no video recorded. */}
+      <DiagnosticWalkthroughVideoJsonLd />
       <SpeakableJsonLd url="https://unlocksaas.com/diagnostic" />
       <BreadcrumbListJsonLd
         trail={[
@@ -195,6 +204,54 @@ async function DiagnosticSqueezePageBody(
               do not yet believe.
             </li>
           </ul>
+        </section>
+
+        {/* VEO uplift (2026-05-20) – 90-second walkthrough transcript.
+            Imported from src/lib/diagnostic-walkthrough.ts so the same
+            verbatim text feeds (a) this visible <section> for human +
+            crawler reads, (b) the VideoObject JSON-LD `transcript` field
+            mounted near the top of this body via
+            DiagnosticWalkthroughVideoJsonLd, and (c) any future Clip
+            schema once a video lands. Class `.aeo-diagnostic-walkthrough`
+            is the speakable selector for voice engines; the [data-speakable]
+            attributes opt individual prose nodes into the page-level
+            SpeakableJsonLd's WebPage emission. */}
+        <section
+          className="aeo-diagnostic-walkthrough mb-10"
+          aria-labelledby="walkthrough-heading"
+        >
+          <h2
+            id="walkthrough-heading"
+            className="text-lg font-bold mb-2"
+          >
+            How the diagnostic works, in 90 seconds
+          </h2>
+          <p className="text-xs text-muted-foreground mb-4">
+            The transcript below is the script for the walkthrough video.
+            Same words I would say if you were sitting across from me.
+          </p>
+          <ol className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+            {DIAGNOSTIC_WALKTHROUGH.map((segment) => {
+              const minutes = Math.floor(segment.start / 60);
+              const seconds = segment.start % 60;
+              const stamp = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+              return (
+                <li
+                  key={segment.start}
+                  className="flex gap-3"
+                  data-speakable={`walkthrough-${segment.start}`}
+                >
+                  <span
+                    className="shrink-0 font-mono text-xs text-muted-foreground/70 tabular-nums pt-0.5"
+                    aria-hidden="true"
+                  >
+                    {stamp}
+                  </span>
+                  <span className="block">{segment.text}</span>
+                </li>
+              );
+            })}
+          </ol>
         </section>
 
         {/* Polarity — AGAINST line as disqualifier. Workbook 01 §6 Beat 5.

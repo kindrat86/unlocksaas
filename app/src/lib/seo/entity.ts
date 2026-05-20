@@ -50,6 +50,13 @@ export const ID = {
   product: `${BASE_URL}/#product-playbook`,
   diagnosticService: `${BASE_URL}/#service-diagnostic`,
   diagnosticHowTo: `${BASE_URL}/#howto-diagnostic`,
+  /**
+   * VideoObject @id for the planned 90-second walkthrough on /diagnostic.
+   * Stable across env states (set or unset) so any future Article /
+   * WebPage cross-references resolve to the same node once the recording
+   * ships and DiagnosticWalkthroughVideoJsonLd starts emitting it.
+   */
+  diagnosticWalkthroughVideo: `${BASE_URL}/diagnostic#walkthrough-video`,
 } as const;
 
 // ---------------------------------------------------------------------------
