@@ -145,6 +145,7 @@ The five pSEO catalogs above ship as a single open, attribution-licensed bundle 
   - [Alternatives](${BASE_URL}/dataset/tables/alternatives.csv) – whatItIs / whatItIsNot, audience fit, honest verdict, capability count.
   - [Categories](${BASE_URL}/dataset/tables/categories.csv) – canonical buckets, AEO intent paragraphs, raw category matcher strings.
 - [Markdown summary](${BASE_URL}/dataset.md): plain-text overview of the bundle for retrieval pipelines.
+- [Hugging Face submission flow](${BASE_URL}/dataset/huggingface): canonical handoff surface for mirroring the dataset to Hugging Face Datasets. Pre-built dataset card (YAML frontmatter + body) at [${BASE_URL}/dataset/huggingface/raw](${BASE_URL}/dataset/huggingface/raw) is served with Content-Disposition: attachment so curl saves it as \`README.md\` ready to upload to a HF repo root. The five per-table CSVs at ${BASE_URL}/dataset/tables/ become the data files; HF Datasets Server auto-derives Parquet. Activation: set NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL on Vercel after the HF repo exists; the canonical Dataset JSON-LD then declares the cross-listing as \`includedInDataCatalog\` for Google Dataset Search.
 
 License is Creative Commons Attribution 4.0 International (CC-BY-4.0). Re-use is unrestricted; the only obligation is attribution back to ${BASE_URL}/dataset. Versioning is SemVer; downloads ship versioned filenames inside Content-Disposition headers so a cached re-use cannot silently drift.
 

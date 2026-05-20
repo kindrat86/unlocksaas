@@ -131,6 +131,43 @@ export const DATASET_URLS = Object.freeze({
 });
 
 /**
+ * Alternate dataset names – includes the slug, the slug as Hugging Face
+ * would render it (`unlocksaas/indie-saas-teardowns`), and a short form.
+ * Schema.org `Dataset.alternateName` is a recognised cross-catalog
+ * resolution key – Dataset Search and HF both treat alternate names as
+ * additional retrieval anchors.
+ */
+export const DATASET_ALTERNATE_NAMES: readonly string[] = Object.freeze([
+  DATASET_SLUG,
+  `unlocksaas/${DATASET_SLUG}`,
+  "Indie SaaS Teardowns",
+]);
+
+/**
+ * Measurement technique – Dataset Search's recommended methodology field.
+ * Plain-English description of how the rows were produced. Mirrors the
+ * "How this was built" section on the /dataset landing page and the
+ * editorial-policy anchor so a crawler that walks the schema graph never
+ * sees a methodology claim absent from the rendered HTML.
+ *
+ * Brunson Hard-Rule reconciliation: the editorial method is the moat. A
+ * dataset with a documented, dated, corrections-tracked editorial method
+ * is a fundamentally different artifact from a scrape – and stating that
+ * method in machine-readable form is how Dataset Search disambiguates.
+ */
+export const DATASET_MEASUREMENT_TECHNIQUE =
+  "Editorial corpus. Every row is a re-projection of a published page on unlocksaas.com. Each source page is authored by the founder, dated with an ISO lastVerified field, and reviewed against the public editorial policy at https://unlocksaas.com/editorial-policy before publication. No scraping, no inferred metrics, no fabricated review counts. Corrections are logged publicly in the editorial-policy corrections log." as const;
+
+/**
+ * Schema.org `Dataset.identifier` – stable, version-pinned identifier for
+ * the bundle. Includes the canonical URL so a downstream crawler that
+ * walks the identifier resolves to the landing page. Used in addition to
+ * any external DOI / HF repo slug (added at runtime when the env vars are
+ * set – see `DATASET_EXTERNAL_REGISTRATIONS`).
+ */
+export const DATASET_PRIMARY_IDENTIFIER = `${BASE_URL}/dataset#${DATASET_SLUG}-v${DATASET_VERSION}` as const;
+
+/**
  * Top-level keywords for `Dataset.keywords` JSON-LD. Each is a real
  * search class addressed by at least one row in the bundle. No keyword
  * stuffing — every term below is also present in the body copy of one

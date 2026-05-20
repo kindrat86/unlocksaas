@@ -150,6 +150,104 @@ export const ORGANIZATION_MAIN_ENTITY_OF_PAGE: string | undefined =
   readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL");
 
 // ---------------------------------------------------------------------------
+// External dataset catalog registrations (env-driven, empty until activated)
+// ---------------------------------------------------------------------------
+
+/**
+ * Off-platform dataset catalog where the Indie SaaS Teardowns dataset is
+ * also hosted. Each entry is a real registration on a real catalog;
+ * env-driven empty slots stay omitted, never fabricated.
+ *
+ * Why this matters
+ * ----------------
+ * Google Dataset Search ranks a dataset higher when it appears in a
+ * recognized DataCatalog (Hugging Face Datasets, Kaggle, Zenodo, figshare,
+ * DataCite). The schema.org `includedInDataCatalog` + `sameAs` pair is
+ * how a dataset declares "this same artifact is also at <URL>" — and the
+ * crawler then walks that URL to confirm the catalog hosts it. The
+ * confirmed cross-listing lifts the canonical page's Dataset Search
+ * ranking and unlocks Hugging Face's own search surface as a second
+ * acquisition channel.
+ *
+ * Operator workflow
+ * -----------------
+ *   1. Create the Hugging Face dataset repo: huggingface.co/new-dataset.
+ *      Repo name: `unlocksaas/indie-saas-teardowns` (lowercase, dashed).
+ *   2. Download the canonical dataset card at
+ *      https://unlocksaas.com/dataset/huggingface/raw and upload it as
+ *      `README.md` on the HF repo.
+ *   3. Upload the five per-table CSVs from
+ *      https://unlocksaas.com/dataset/tables/ to the HF repo root.
+ *   4. Set `NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL` on Vercel
+ *      to the canonical HF dataset URL (e.g.
+ *      https://huggingface.co/datasets/unlocksaas/indie-saas-teardowns).
+ *   5. Redeploy. The Dataset JSON-LD on /dataset now declares the HF
+ *      catalog cross-listing; Google Dataset Search picks it up on the
+ *      next crawl.
+ *
+ * The Kaggle and Zenodo slots are reserved for the same pattern. Kaggle
+ * mirrors the HF upload flow (CSV files + dataset card); Zenodo issues a
+ * DOI on submission and Google Dataset Search treats DOIs as the
+ * strongest dataset identifier class. All three are optional.
+ *
+ * Brunson Hard-Rule reconciliation: a row only appears in the output when
+ * the env var is set to a valid https URL. A malformed value or unset env
+ * skips the catalog entirely – we never advertise a dataset listing that
+ * the operator has not actually created.
+ */
+export interface DatasetCatalogRegistration {
+  /** Schema.org DataCatalog.name – the human-readable catalog identifier. */
+  readonly name: string;
+  /** Canonical URL of the dataset listing on that catalog. */
+  readonly url: string;
+  /** Catalog homepage URL – schema.org DataCatalog.url. */
+  readonly catalogUrl: string;
+}
+
+function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration[] {
+  const rows: DatasetCatalogRegistration[] = [];
+
+  const hf = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL");
+  if (hf) {
+    rows.push({
+      name: "Hugging Face Datasets",
+      url: hf,
+      catalogUrl: "https://huggingface.co/datasets",
+    });
+  }
+
+  const kaggle = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_KAGGLE_DATASET_URL");
+  if (kaggle) {
+    rows.push({
+      name: "Kaggle Datasets",
+      url: kaggle,
+      catalogUrl: "https://www.kaggle.com/datasets",
+    });
+  }
+
+  const zenodo = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL");
+  if (zenodo) {
+    rows.push({
+      name: "Zenodo",
+      url: zenodo,
+      catalogUrl: "https://zenodo.org/",
+    });
+  }
+
+  return Object.freeze(rows);
+}
+
+/**
+ * Frozen at module load. Re-evaluated only on cold start when the
+ * env-driven URLs might change (Vercel env updates are picked up at
+ * deploy time, not at request time). Defaults to a frozen empty array
+ * in a fresh checkout – that is honest: no env vars set = no cross-
+ * listings claimed.
+ */
+export const DATASET_EXTERNAL_REGISTRATIONS: readonly DatasetCatalogRegistration[] =
+  buildDatasetCatalogRegistrations();
+
+// ---------------------------------------------------------------------------
 // Topical authority — knowsAbout
 // ---------------------------------------------------------------------------
 

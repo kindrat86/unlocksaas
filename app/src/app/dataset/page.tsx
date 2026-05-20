@@ -6,8 +6,14 @@ import {
   PublicDatasetJsonLd,
 } from "@/components/seo/json-ld";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
-import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
 import {
+  BASE_URL,
+  DATASET_EXTERNAL_REGISTRATIONS,
+  FOUNDER,
+  ORGANIZATION,
+} from "@/lib/seo/entity";
+import {
+  DATASET_ALTERNATE_NAMES,
   DATASET_ATTRIBUTION,
   DATASET_BIBTEX,
   DATASET_BUNDLE,
@@ -16,9 +22,11 @@ import {
   DATASET_KEYWORDS,
   DATASET_LICENSE_SPDX,
   DATASET_LICENSE_URL,
+  DATASET_MEASUREMENT_TECHNIQUE,
   DATASET_NAME,
   DATASET_PER_TABLE_CSV,
   DATASET_PER_TABLE_SLUGS,
+  DATASET_PRIMARY_IDENTIFIER,
   DATASET_SLUG,
   DATASET_URLS,
   DATASET_VERSION,
@@ -147,6 +155,10 @@ export default function DatasetPage() {
         keywords={DATASET_KEYWORDS}
         variableMeasured={TABLE_ROWS.map((t) => t.label)}
         totalRows={DATASET_BUNDLE.counts.total_rows}
+        primaryIdentifier={DATASET_PRIMARY_IDENTIFIER}
+        alternateNames={DATASET_ALTERNATE_NAMES}
+        measurementTechnique={DATASET_MEASUREMENT_TECHNIQUE}
+        externalRegistrations={DATASET_EXTERNAL_REGISTRATIONS}
         perTableDistributions={DATASET_PER_TABLE_SLUGS.map((slug) => ({
           name: DATASET_PER_TABLE_CSV[slug].displayName,
           url: perTableCsvUrl(slug),
@@ -407,6 +419,80 @@ export default function DatasetPage() {
               >
                 /dataset.md
               </Link>
+            </li>
+          </ul>
+        </section>
+
+        <Separator className="my-8" />
+
+        <section className="mb-10 space-y-4 leading-relaxed">
+          <h2 className="text-2xl font-bold">
+            Catalog mirrors
+          </h2>
+          <p className="text-muted-foreground">
+            The dataset is mirrored on recognised DataCatalogs so a
+            researcher already searching one catalog finds the same
+            corpus without leaving their tool. Each mirror is the same
+            CC-BY-4.0 content under a parallel URL; the canonical
+            citation always resolves back to{" "}
+            <Link href="/dataset" className="underline underline-offset-4">
+              {BASE_URL}/dataset
+            </Link>
+            .
+          </p>
+          <ul className="space-y-3">
+            <li className="border border-border rounded-lg px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold">
+                    Hugging Face Datasets
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    Pre-built dataset card + per-table CSV upload list.
+                    Auto-converts to Parquet via HF Datasets Server.
+                  </div>
+                </div>
+                <Link
+                  href="/dataset/huggingface"
+                  className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground shrink-0"
+                >
+                  Submission flow
+                </Link>
+              </div>
+              {DATASET_EXTERNAL_REGISTRATIONS.some(
+                (r) => r.name === "Hugging Face Datasets",
+              ) ? (
+                <div className="mt-2 text-xs">
+                  Live at{" "}
+                  <a
+                    href={
+                      DATASET_EXTERNAL_REGISTRATIONS.find(
+                        (r) => r.name === "Hugging Face Datasets",
+                      )?.url
+                    }
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="underline underline-offset-4"
+                  >
+                    {
+                      DATASET_EXTERNAL_REGISTRATIONS.find(
+                        (r) => r.name === "Hugging Face Datasets",
+                      )?.url
+                    }
+                  </a>
+                </div>
+              ) : (
+                <div className="mt-2 text-xs text-muted-foreground">
+                  Submission scheduled. Operator activation flow at{" "}
+                  <Link
+                    href="/dataset/huggingface"
+                    className="underline underline-offset-4"
+                  >
+                    /dataset/huggingface
+                  </Link>
+                  .
+                </div>
+              )}
             </li>
           </ul>
         </section>

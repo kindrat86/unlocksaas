@@ -1628,6 +1628,40 @@ export type PublicDatasetInput = {
   /** Total row count across all tables. */
   totalRows: number;
   /**
+   * Stable, version-pinned dataset identifier. Becomes
+   * `Dataset.identifier`. Crawlers use this as the persistent ID across
+   * version bumps; cross-listings (HF, Kaggle) carry their own catalog
+   * identifiers via the `externalRegistrations` field below.
+   */
+  primaryIdentifier?: string;
+  /**
+   * Alternate dataset names – includes the slug, the HF-style
+   * `<org>/<repo>` form, and any short forms. Schema.org
+   * `Dataset.alternateName` is a cross-catalog retrieval anchor.
+   */
+  alternateNames?: ReadonlyArray<string>;
+  /**
+   * Plain-English description of how the rows were produced. Maps to
+   * `Dataset.measurementTechnique` – one of Google Dataset Search's
+   * recommended methodology fields. Mirrors the editorial method
+   * documented at /editorial-policy.
+   */
+  measurementTechnique?: string;
+  /**
+   * External DataCatalog registrations (Hugging Face, Kaggle, Zenodo).
+   * Each becomes a `Dataset.includedInDataCatalog` row and contributes
+   * to `Dataset.sameAs`. Env-driven empty by default – Brunson Hard-
+   * Rule: only declared when the catalog listing actually exists.
+   */
+  externalRegistrations?: ReadonlyArray<{
+    /** Schema.org DataCatalog.name. */
+    name: string;
+    /** Canonical URL of the listing on that catalog. */
+    url: string;
+    /** Catalog homepage URL. */
+    catalogUrl: string;
+  }>;
+  /**
    * Per-table CSV distributions. Each becomes an additional
    * `Dataset.distribution` entry so Google Dataset Search and any
    * structured-data crawler can index the per-table slices as distinct
@@ -1642,16 +1676,46 @@ export type PublicDatasetInput = {
 };
 
 function buildPublicDatasetJson(input: PublicDatasetInput): string {
+  // sameAs is an array of external canonical URLs for the dataset.
+  // Schema.org expects either a single URL or an array; arrays are
+  // honoured by Google Dataset Search and the HF / Kaggle ingestion
+  // crawlers. The landing URL is always present; external catalog URLs
+  // (HF, Kaggle, Zenodo) are appended when the env-driven registrations
+  // resolved at module load.
+  const sameAs: string[] = [
+    input.landingUrl,
+    ...(input.externalRegistrations ?? []).map((r) => r.url),
+  ];
+
+  // includedInDataCatalog – one DataCatalog node per off-platform
+  // catalog where the dataset is also hosted. Dataset Search treats
+  // this as the strongest cross-catalog signal: a confirmed listing on
+  // a recognised catalog (HF, Kaggle, Zenodo, figshare, DataCite) lifts
+  // the canonical page's Dataset Search ranking and unlocks the
+  // catalog's own search surface as a second acquisition channel.
+  const includedInDataCatalog =
+    (input.externalRegistrations ?? []).length > 0
+      ? (input.externalRegistrations ?? []).map((r) => ({
+          "@type": "DataCatalog" as const,
+          name: r.name,
+          url: r.catalogUrl,
+        }))
+      : undefined;
+
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Dataset",
     "@id": `${input.landingUrl}#dataset`,
     name: input.name,
-    alternateName: input.slug,
+    // alternateName accepts a single string OR an array of strings;
+    // the array form is the modern shape and Dataset Search resolves
+    // each as an independent retrieval anchor. Fall back to the slug
+    // when no alternate-name list is passed for older callers.
+    alternateName: input.alternateNames ?? input.slug,
     description: input.description,
     url: input.landingUrl,
-    sameAs: input.landingUrl,
-    identifier: `${input.slug}-v${input.version}`,
+    sameAs,
+    identifier: input.primaryIdentifier ?? `${input.slug}-v${input.version}`,
     version: input.version,
     inLanguage: "en-US",
     isAccessibleForFree: true,
@@ -1664,6 +1728,16 @@ function buildPublicDatasetJson(input: PublicDatasetInput): string {
     variableMeasured: input.variableMeasured,
     dateModified: input.lastVerified,
     datePublished: input.lastVerified,
+    // Methodology – Dataset Search's recommended field for documenting
+    // how a corpus was produced. Omitted when no value passed so the
+    // schema validator does not see a null methodology claim.
+    ...(input.measurementTechnique
+      ? { measurementTechnique: input.measurementTechnique }
+      : {}),
+    // Cross-catalog listings. Omitted when none are configured – an
+    // empty includedInDataCatalog array would look like a fabricated
+    // listing to a structured-data validator.
+    ...(includedInDataCatalog ? { includedInDataCatalog } : {}),
     // schema.org Dataset has no native `generatedAt`; use the
     // additional-properties pattern so the deployment timestamp is
     // still machine-readable.
