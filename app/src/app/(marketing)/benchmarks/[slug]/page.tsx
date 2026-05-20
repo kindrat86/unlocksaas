@@ -17,6 +17,7 @@ import {
   paaForBenchmark,
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
+import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 
 
 export function generateStaticParams() {
@@ -239,9 +240,12 @@ export default async function BenchmarkDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Direct answer
             </p>
-            <p className="text-base leading-relaxed" data-speakable>
+            <DateStampedAnswer
+              lastVerified={e.lastVerified}
+              variant="benchmark"
+            >
               {e.aeoAnswer}
-            </p>
+            </DateStampedAnswer>
           </CardContent>
         </Card>
       </section>

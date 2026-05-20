@@ -16,6 +16,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForAnswer } from "@/lib/seo/paa-questions";
+import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 
 
 export function generateStaticParams() {
@@ -243,9 +244,12 @@ export default async function AnswerDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Direct answer
             </p>
-            <p className="text-base leading-relaxed" data-speakable>
+            <DateStampedAnswer
+              lastVerified={e.lastVerified}
+              variant="answer"
+            >
               {e.directAnswer}
-            </p>
+            </DateStampedAnswer>
           </CardContent>
         </Card>
       </section>
