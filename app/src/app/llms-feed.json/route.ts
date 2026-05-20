@@ -44,6 +44,13 @@ import {
   DATASET_VERSION,
   perTableCsvUrl,
 } from "@/lib/seo/dataset";
+import {
+  PODCAST_EPISODES,
+  PODCAST_SHOW_DESCRIPTION,
+  PODCAST_SHOW_NAME,
+  PODCAST_URLS,
+  episodeUrl,
+} from "@/lib/seo/podcast";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -567,6 +574,33 @@ function buildPayload() {
         url: perTableCsvUrl(slug),
         rowCount: DATASET_PER_TABLE_CSV[slug].rowCount,
         columns: DATASET_PER_TABLE_CSV[slug].columns,
+      })),
+    },
+    /**
+     * Dataset changelog podcast (Surface D). RSS 2.0 + iTunes namespace
+     * feed at /feed/podcast.rss mirrors every dataset milestone as a
+     * dated, attributed episode. Surfaced here so JSON-first retrievers
+     * see the feed without having to scrape /llms.txt or /podcast HTML.
+     * Per-episode `audioUrl` is omitted when the env-gated audio URL is
+     * unset – honest text-only feed by default, no fabricated enclosures.
+     */
+    podcast: {
+      name: PODCAST_SHOW_NAME,
+      description: PODCAST_SHOW_DESCRIPTION,
+      landingUrl: PODCAST_URLS.landing,
+      rssUrl: PODCAST_URLS.rss,
+      schemaSeriesId: `${BASE_URL}/#podcast`,
+      episodeCount: PODCAST_EPISODES.length,
+      episodes: PODCAST_EPISODES.map((ep) => ({
+        slug: ep.slug,
+        episodeNumber: ep.episodeNumber,
+        title: ep.title,
+        summary: ep.summary,
+        publishedAt: ep.publishedAt,
+        url: episodeUrl(ep.slug),
+        artifactUrl: ep.artifactUrl,
+        keywords: ep.keywords,
+        ...(ep.audioUrl ? { audioUrl: ep.audioUrl } : {}),
       })),
     },
     facts: KEY_FACTS,
