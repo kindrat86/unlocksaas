@@ -116,6 +116,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * Honest-monolingual fallback: when no translation is approved, output
    * is byte-identical to the previous {"en-US": url, "x-default": url} map.
    */
+  /**
+   * Hubs whose approval applies to every detail slug under them. Detail
+   * paths (`/glossary/big-domino`, `/benchmarks/saas-churn-rate`, …)
+   * have no exact registry row; the founder approved the hub once and
+   * the underlying translation file (glossary.es.ts, benchmarks.es.ts)
+   * carries every slug. Keep this list aligned with the constant of
+   * the same intent in src/lib/seo/markdown-alternates.ts so the
+   * sitemap hreflang map matches the canonical-page hreflang map.
+   */
+  const HUBS_WITH_DETAIL_LOCALE_INHERITANCE: readonly string[] = [
+    "/glossary",
+    "/benchmarks",
+  ];
+  const localesForPath = (path: string) => {
+    const exact = approvedLocalesForPath(path);
+    if (exact.length > 0) return exact;
+    for (const hub of HUBS_WITH_DETAIL_LOCALE_INHERITANCE) {
+      if (path.startsWith(`${hub}/`)) {
+        return approvedLocalesForPath(hub);
+      }
+    }
+    return exact;
+  };
+
   const hreflang = (absUrl: string) => {
     const path = absUrl.startsWith(base)
       ? absUrl.slice(base.length) || "/"
@@ -124,7 +148,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "en-US": absUrl,
       "x-default": absUrl,
     };
-    for (const locale of approvedLocalesForPath(path)) {
+    for (const locale of localesForPath(path)) {
       languages[locale] = `${base}${localizedPath(path, locale)}`;
     }
     return { languages };
@@ -762,6 +786,57 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         images: [ogUrl],
       };
+    }),
+
+    // -------------------------------------------------------------------------
+    // Approved locale DETAIL pages (hub→detail inheritance — see
+    // HUBS_WITH_DETAIL_LOCALE_INHERITANCE above).
+    //
+    // The hub `/glossary` and `/benchmarks` registry rows authorise every
+    // child slug under them in the same locale. Without this block, the
+    // sitemap would list /es/glossary (the hub) but not /es/glossary/hook,
+    // /es/glossary/big-domino, … (the 16 detail slugs × 2 locales = 32
+    // missing URLs for glossary; +40 for benchmarks). Search Console
+    // would also flag the canonical /glossary/big-domino's hreflang
+    // alternate to /es/glossary/big-domino as a missing return-tag.
+    //
+    // For each (hub, locale) approval pair, fan out across the hub's slug
+    // catalog. lastModified inherits the row's approvedAt so each detail
+    // URL carries the locale freshness signal. OG image falls back to the
+    // canonical (root) card for now — the per-locale dedicated cards
+    // listed in PER_LOCALE_OG_PATHS above are hub-only; per-locale per-slug
+    // cards are not generated.
+    // -------------------------------------------------------------------------
+    ...allApprovedTranslations().flatMap((row) => {
+      let slugs: readonly string[] = [];
+      if (row.path === "/glossary") slugs = GLOSSARY_SLUGS;
+      if (row.path === "/benchmarks") slugs = BENCHMARK_SLUGS;
+      if (slugs.length === 0) return [];
+      const hubLocales = approvedLocalesForPath(row.path);
+      return slugs.map((slug) => {
+        const childPath = `${row.path}/${slug}`;
+        const localised = `${base}${localizedPath(childPath, row.locale)}`;
+        const canonicalUrl = `${base}${childPath}`;
+        return {
+          url: localised,
+          lastModified: row.approvedAt ? new Date(row.approvedAt) : now,
+          changeFrequency: "monthly" as const,
+          priority: 0.5,
+          alternates: {
+            languages: {
+              "en-US": canonicalUrl,
+              "x-default": canonicalUrl,
+              ...Object.fromEntries(
+                hubLocales.map((loc) => [
+                  loc,
+                  `${base}${localizedPath(childPath, loc)}`,
+                ]),
+              ),
+            },
+          },
+          images: [rootOg],
+        };
+      });
     }),
   ];
 

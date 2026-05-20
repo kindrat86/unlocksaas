@@ -42,6 +42,60 @@ import { localizedPath } from "@/lib/i18n/locales";
 type AlternatesFragment = NonNullable<Metadata["alternates"]>;
 
 /**
+ * Hub paths whose APPROVAL applies to every detail slug under them.
+ *
+ * The registry stores one row per `(hubPath, locale)`; the underlying
+ * translation files (e.g. glossary.es.ts, benchmarks.es.ts) carry the
+ * full set of slug translations. When the founder approves the hub for
+ * a locale, that approval covers the entire tree (every slug under the
+ * hub was reviewed as a set against the shared translation file).
+ *
+ * This list lets `buildHreflangMap()` resolve hreflang for detail paths
+ * like `/glossary/big-domino` by walking up to the hub `/glossary` and
+ * reading its approval state. Without this, every detail-page canonical
+ * would emit only `en-US` + `x-default` (because no exact registry row
+ * exists for the detail path), even though the locale-prefixed detail
+ * URL is shipped and indexable.
+ *
+ * Add a hub here when:
+ *   - Its registry row is at the hub level (one row, not one-per-slug).
+ *   - The underlying translation file carries every child slug.
+ *   - The detail-page locale routes already exist under
+ *     app/src/app/[locale]/<hub>/[slug]/page.tsx.
+ */
+const HUBS_WITH_DETAIL_LOCALE_INHERITANCE: readonly string[] = [
+  "/glossary",
+  "/benchmarks",
+];
+
+/**
+ * Resolve approved locales for a canonical path, with hub→detail
+ * inheritance.
+ *
+ *   - Exact-match registry row → return its approved locales.
+ *   - Detail path under an inheriting hub → return the hub's locales.
+ *   - Anything else → empty (honest monolingual).
+ *
+ * Brunson Hard-Rule reconciliation: inheritance is registry-driven and
+ * gated by `HUBS_WITH_DETAIL_LOCALE_INHERITANCE`. A hub does NOT inherit
+ * by default; adding one to the list is a deliberate editorial decision
+ * that the slug translations are reviewed as a unit. The exact-match
+ * lookup still wins when both apply.
+ */
+function localesForPathWithHubFallback(
+  canonical: string,
+): ReadonlyArray<ReturnType<typeof approvedLocalesForPath>[number]> {
+  const exact = approvedLocalesForPath(canonical);
+  if (exact.length > 0) return exact;
+  for (const hub of HUBS_WITH_DETAIL_LOCALE_INHERITANCE) {
+    if (canonical.startsWith(`${hub}/`)) {
+      return approvedLocalesForPath(hub);
+    }
+  }
+  return [];
+}
+
+/**
  * Build the per-URL hreflang `languages` map for a given source path.
  *
  * Reads from the translation registry at module load. The honest contract:
@@ -50,6 +104,10 @@ type AlternatesFragment = NonNullable<Metadata["alternates"]>;
  *   - `x-default` points at the en-US canonical.
  *   - Pending or archived translations are silently skipped. Brunson
  *     Hard-Rule: never advertise alternates that aren't approved.
+ *   - Detail pages under hub-level-approved surfaces (see
+ *     HUBS_WITH_DETAIL_LOCALE_INHERITANCE) inherit the hub's approved
+ *     locales so the canonical /glossary/<slug> declares its
+ *     /es/glossary/<slug> and /pt-BR/glossary/<slug> siblings.
  *
  * Until any translation is approved, output is byte-identical to the
  * previous monolingual self-referencing map.
@@ -64,7 +122,7 @@ export function buildHreflangMap(
     "en-US": wrap(canonical),
     "x-default": wrap(canonical),
   };
-  for (const locale of approvedLocalesForPath(canonical)) {
+  for (const locale of localesForPathWithHubFallback(canonical)) {
     map[locale] = wrap(localizedPath(canonical, locale));
   }
   return map;
