@@ -75,8 +75,8 @@ async function DiagnosticSqueezePageBody(
   await connection();
   const searchParams = await props.searchParams;
   // Eugene Schwartz awareness-to-hook mapping. Resolved server-side from
-  // ?utm_source / ?source / ?h plus the Referer header. The await is
-  // forward-compatible with Next 15+/16 and a no-op in Next 14.2.35.
+  // ?utm_source / ?source / ?h plus the Referer header. `headers()` is the
+  // async runtime API from next/headers (Next 16) — the await is required.
   const hdrs = await headers();
   const referer = hdrs.get("referer");
   const variantProps = resolveHookVariant({ searchParams, referer });

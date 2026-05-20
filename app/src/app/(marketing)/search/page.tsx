@@ -19,10 +19,9 @@
  * honest: an AI agent submitting `/search?q=…` gets the same HTML response
  * a JS-less human gets.
  *
- * Note on Next.js version: this project is on Next 14.2.35, so
- * `searchParams` arrives as a sync object (Next 15+ migrated to a Promise).
- * The migration plan at strategy/next-16-migration-plan.md tracks the
- * upgrade; until then this signature is correct.
+ * Note on Next.js conventions: under Next 16 (app/package.json: ^16.2.6),
+ * `searchParams` is a Promise — every Server Component that reads it must
+ * `await` it. The signature on `SearchPageProps` below reflects that.
  *
  * Brunson Hard-Rule reconciliation
  * --------------------------------
@@ -67,8 +66,8 @@ export const metadata: Metadata = {
 };
 
 interface SearchPageProps {
-  // Next 14 sync searchParams. Migrate to Promise<…> when the Next 16
-  // upgrade ships per strategy/next-16-migration-plan.md.
+  // Next 16 searchParams contract: a Promise that resolves to the parsed
+  // query object. Consumers must `await` it before reading members.
   searchParams?: Promise<{ q?: string | string[] }>;
 }
 

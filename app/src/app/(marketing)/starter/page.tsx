@@ -113,8 +113,9 @@ function DiagnosticHandoffBanner() {
 
 export default function StarterSalesPage() {
   return (
-    // Suspense boundary required by Next 14 when useSearchParams reads inside
-    // a client component that may be prerendered. The shell still streams.
+    // Suspense boundary required when useSearchParams reads inside a client
+    // component that may be prerendered (the rule is unchanged in Next 16).
+    // The shell still streams.
     <Suspense fallback={null}>
       <StarterSalesPageInner />
     </Suspense>

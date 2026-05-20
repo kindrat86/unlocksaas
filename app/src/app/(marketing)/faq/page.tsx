@@ -64,9 +64,9 @@ export const metadata: Metadata = {
   },
 };
 
-// Static. The FAQ array is module-level and the page does no I/O — flag this
-// to Next 14 so the route is built once and served from CDN. Matches the
-// pattern on /stories, which is also reverse-squeeze static content.
+// Static. The FAQ array is module-level and the page does no I/O, so under
+// Next 16 it's prerendered once at build and served from the CDN — same SSG
+// pattern as /stories, which is also reverse-squeeze static content.
 
 const BREADCRUMB_TRAIL = [
   { name: "Home", url: "https://unlocksaas.com/" },
