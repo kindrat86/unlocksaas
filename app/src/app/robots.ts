@@ -6,7 +6,7 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  *
  * Source: strategy/google-strategy.md §A.4 (crawl) and §B.1 (AI-crawler policy).
  *
- * Three rule groups:
+ * Four rule groups:
  *   1. `*`           — every crawler (Google, Bing, Yandex, etc.). Public
  *                      marketing surfaces allowed; private/auth/api blocked.
  *   2. AI training   — explicit Allow for the AI crawlers UnlockSaaS WANTS
@@ -15,7 +15,11 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  *                      DuckAssist, Amazon, Mistral). Distribution > scrape
  *                      protection for a pre-revenue founder-tools SaaS where
  *                      AI-answer citation IS the channel.
- *   3. Bad-actor     — block the scrapers that take content without driving
+ *   3. Indie search  — explicit Allow for Brave, Mojeek, Marginalia, Kagi.
+ *                      Tiny absolute share, but the demographic they index
+ *                      for matches the UnlockSaaS buyer profile (founders
+ *                      who deliberately use Google alternatives).
+ *   4. Bad-actor     — block the scrapers that take content without driving
  *                      any retrieval traffic (legacy CCBot already covered
  *                      by allow above; future bad-actor entries land here).
  *
@@ -99,6 +103,34 @@ export default function robots(): MetadataRoute.Robots {
     ),
   ];
 
+  // Indie / non-Google search engines. Tiny share each, but the demographic
+  // they index for — technically-literate solo founders, indie-hacker /
+  // small-web sensibility, deliberate Google-alternative usage — is exactly
+  // the UnlockSaaS buyer profile. Allow-listing them costs nothing on
+  // crawl-budget terms (each crawls at very low frequency) and converts a
+  // slice of traffic that Google's index will never surface for us.
+  //
+  // Verified bot tokens — each traced to the engine's own robots.txt /
+  // crawler help page, 2026-05-21:
+  //   - Bravebot              search.brave.com/help/brave-search-crawler
+  //   - MojeekBot             www.mojeek.com/bot.html
+  //   - search.marginalia.nu  about.marginalia-search.com/article/crawler/
+  //   - Kagibot               kagi.com/bot (runs own crawler; falls back to
+  //                           Googlebot directives if no Kagibot rule given)
+  //
+  // None of these four participate in IndexNow as of 2026-05-21. Discovery
+  // is passive (sitemap-driven for Mojeek + Brave; manual PR for Marginalia
+  // via MarginaliaSearch/submit-site-to-marginalia-search; manual form for
+  // Brave at search.brave.com/submit-url). Kagi Small Web does NOT accept
+  // commercial SaaS — UnlockSaaS is ineligible by their stated criteria and
+  // we do not submit there. See strategy/indie-search-submission-playbook.md.
+  const INDIE_SEARCH_USER_AGENTS = [
+    "Bravebot",
+    "MojeekBot",
+    "search.marginalia.nu",
+    "Kagibot",
+  ];
+
   // AI crawlers we explicitly welcome. Each one either powers a citation
   // surface (ChatGPT / Claude / Perplexity / Gemini / Apple Intelligence /
   // DuckAssist / Bing Copilot) or feeds a training corpus that compounds
@@ -159,6 +191,14 @@ export default function robots(): MetadataRoute.Robots {
       // Disallow mirrors PRIVATE_DISALLOW — we welcome the AI crawlers on
       // public marketing, not on the authenticated/transactional surface.
       ...AI_USER_AGENTS.map((ua) => ({
+        userAgent: ua,
+        allow: "/",
+        disallow: PRIVATE_DISALLOW,
+      })),
+      // ─── Indie-search explicit allow-list ────────────────────────────────
+      // Brave, Mojeek, Marginalia, Kagi. Same Allow/Disallow shape as the
+      // AI block — public marketing yes, authenticated/transactional no.
+      ...INDIE_SEARCH_USER_AGENTS.map((ua) => ({
         userAgent: ua,
         allow: "/",
         disallow: PRIVATE_DISALLOW,
