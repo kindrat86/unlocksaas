@@ -84,6 +84,10 @@ import {
 import { PLAYBOOK_STEPS } from "@/lib/playbook-steps";
 import { DISQUALIFIERS, FIT_CRITERIA } from "@/lib/dont-buy";
 import {
+  FOUR_INDIE_MARKDOWN_BODY,
+  FOUR_INDIE_TITLE,
+} from "@/lib/four-indie-search-engines";
+import {
   PRESS_TOPICS,
   type PressTopic,
   getPressTopicBySlug,
@@ -1269,6 +1273,19 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     summary:
       "Eight honest disqualifiers and one canonical fit profile. Said out loud, before checkout.",
     body: DONT_BUY_BODY,
+  },
+  {
+    // Brunson "the technical artifact becomes the marketing" essay
+    // shipped alongside the indie-search robots.txt allow-list of
+    // 21-05-2026. Companion to PR #57 (merge 506325e). The HTML page
+    // renders the same FOUR_INDIE_SECTIONS this body is built from, so
+    // AI retrievers reading either surface get byte-identical prose.
+    path: "/four-indie-search-engines",
+    mdPath: "/four-indie-search-engines.md",
+    title: FOUR_INDIE_TITLE,
+    summary:
+      "Why shipping UnlockSaaS to Brave + Mojeek + Marginalia + Kagi — four search engines with under 1 percent market share each — is the smartest distribution move of the quarter. By buyer-density math, not share-axis math.",
+    body: FOUR_INDIE_MARKDOWN_BODY,
   },
   {
     path: "/diagnostic",

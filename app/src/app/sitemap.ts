@@ -80,6 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const DEDICATED_OG_HUBS: ReadonlySet<string> = new Set([
     "/glossary",
     "/dont-buy-unlock-saas",
+    "/four-indie-search-engines",
     "/state-of-saas",
   ]);
   const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
@@ -588,6 +589,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
       alternates: hreflang(`${base}/dont-buy-unlock-saas`),
+    },
+    // The indie-search companion essay shipped 21-05-2026 as the public
+    // companion to the robots.txt allow-list (PR #57, merge 506325e).
+    // Brunson "the technical artifact becomes the marketing" play —
+    // built specifically to be linked from X / Bluesky / Indie Hackers /
+    // Show HN. Crawl priority 0.5 (same as /dont-buy-unlock-saas):
+    // the page is intended to attract inbound links + AI citations,
+    // not to rank on a head term of its own. changeFrequency monthly
+    // matches the lastReviewed cadence the essay declares in JSON-LD.
+    {
+      url: `${base}/four-indie-search-engines`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/four-indie-search-engines`),
     },
     {
       url: `${base}/contact`,
