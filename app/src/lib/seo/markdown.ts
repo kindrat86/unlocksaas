@@ -315,6 +315,12 @@ Topical expertise (verifiable against shipped strategy documents and workbooks):
 - Dream 100 outreach strategy
 - Money-back guarantee mechanics for digital products
 
+## The weird mix
+
+I am not a marketer who picked up code, and I am not an engineer who learned marketing. I am a marketer who spent fifteen years inside Brunson-style funnels, and the day Lovable and Claude let me ship without an engineer, I did.
+
+In the post-launch pre-revenue non-engineer niche, that combination is almost nobody. It is the only reason this playbook reads different from one written by someone who never shipped a product, and different from build-in-public threads written by people who never wrote a real offer. If you are a non-engineer who shipped something real and is now staring at a flat Stripe line, I have stood exactly where you are standing, with one foot in each world.
+
 Contact: ${FOUNDER.email}. Direct, no gatekeeping.
 
 ## The company

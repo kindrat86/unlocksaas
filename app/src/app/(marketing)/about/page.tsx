@@ -27,9 +27,9 @@ import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
  * BreadcrumbList.
  */
 export const metadata: Metadata = {
-  title: "About Maryan — Unlock SaaS",
+  title: "About Maryan – Unlock SaaS",
   description:
-    "I'm a marketer. I have never written a line of production code. I shipped a dozen AI products and watched them flatline in Stripe — then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
+    "I'm a marketer. I never wrote a line of production code. Then Lovable and Claude let me ship – and now I have fifteen years of Brunson-style funnels plus a real shipped product in one head. Almost nobody in the post-launch pre-revenue niche has both.",
   // markdownAlternate emits canonical + per-page hreflang + the
   // `text/markdown` content-type alternate pointing at /about.md (the
   // playbook-readable mirror for retrieval pipelines that prefer markdown
@@ -37,16 +37,16 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/about", "/about.md"),
   openGraph: {
     type: "profile",
-    title: "About Maryan — Unlock SaaS",
+    title: "About Maryan – Unlock SaaS",
     description:
-      "The founder behind Unlock SaaS. Marketer, non-engineer, post-launch pre-revenue veteran.",
+      "Funnel marketer + non-engineer who shipped a real AI product. Almost nobody in the post-launch pre-revenue niche has both, in one head.",
     url: "/about",
   },
   twitter: {
     card: "summary",
-    title: "About Maryan — Unlock SaaS",
+    title: "About Maryan – Unlock SaaS",
     description:
-      "Marketer, non-engineer, post-launch pre-revenue veteran. Builder of Unlock SaaS.",
+      "Funnel marketer + non-engineer who shipped a real AI product. Builder of Unlock SaaS.",
   },
   robots: { index: true, follow: true },
 };
@@ -130,6 +130,38 @@ export default function AboutPage() {
             and found nothing on the page. I&rsquo;d been building beautiful
             things for no one in particular and acting surprised when no one
             paid.
+          </p>
+        </section>
+
+        {/* ── The weird mix ───────────────────────────────────────
+            Cross-section frame (Greg Isenberg's "weird mix of skills
+            is your moat" overlay applied to the locked Reluctant Hero
+            backstory). Surfaces the Brunson-funnels + vibe-coded-product
+            combination as the actual credibility wedge, in
+            Reluctant Hero voice (confess the combination, never boast
+            it). Voice and constraints recorded in
+            strategy/state.json attractive_character.locked.cross_section_frame
+            and mirrored in strategy/founder-vsl-script.md Beat 3.5. */}
+        <section className="mb-10 prose-like space-y-4 text-base leading-relaxed">
+          <h2 className="text-2xl font-bold">The weird mix</h2>
+          <p>
+            I&rsquo;m not a marketer who picked up code. I&rsquo;m not an
+            engineer who learned marketing. I&rsquo;m a marketer who spent
+            fifteen years inside Brunson-style funnels – and the day Lovable
+            and Claude let me ship without an engineer, I did.
+          </p>
+          <p>
+            In the post-launch pre-revenue non-engineer niche, that
+            combination is almost nobody. I am not saying that to brag. I am
+            saying it because it is the only reason the work I&rsquo;m about
+            to put in front of you reads different from playbooks written by
+            people who never shipped a product, and different from
+            build-in-public threads by people who never wrote a real offer.
+          </p>
+          <p>
+            If you are a non-engineer who shipped something real with AI
+            tools and is now staring at a flat Stripe line, I have stood
+            exactly where you are standing, with one foot in each world.
           </p>
         </section>
 

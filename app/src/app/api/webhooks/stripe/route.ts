@@ -24,6 +24,10 @@ import {
   recordCartAbandonment,
   maybeShortCircuitRecovery,
 } from "@/lib/cart-recovery/subscribe";
+import {
+  scheduleGrantForCheckout,
+  scheduleRevokeForCustomer,
+} from "@/lib/community";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
 
@@ -93,7 +97,10 @@ export async function POST(req: NextRequest) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
         // BILLING: upsert profile, record Starter payment, send magic link.
-        await handleCheckoutSessionCompleted(session);
+        // Also schedules the Verified Builders community grant (Core only) via
+        // after() so the 200 OK to Stripe is not held by Resend / Supabase
+        // round-trips for the community email.
+        await handleCheckoutSessionCompleted(session, event.id);
         // ATTRIBUTION + ANALYTICS side-channels (preserved unchanged).
         await recordIdentityAbConversion(session);
         await recordDiagnosticAttribution(session);
@@ -119,7 +126,9 @@ export async function POST(req: NextRequest) {
       case "invoice.payment_succeeded": {
         const invoice = event.data.object as Stripe.Invoice;
         // BILLING: open 60-day clock on first sub invoice; record payment.
-        await handleInvoicePaymentSucceeded(invoice);
+        // Also schedules a safety-net community grant when this is the first
+        // subscription invoice (catches checkout.session.completed drops).
+        await handleInvoicePaymentSucceeded(invoice, event.id);
         await captureInvoiceEvent(invoice, Event.InvoicePaymentSucceeded);
         break;
       }
@@ -139,7 +148,9 @@ export async function POST(req: NextRequest) {
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription;
         // BILLING: revoke Core tier per "drop to starter if owned, else none".
-        await handleSubscriptionDeleted(sub);
+        // Also schedules the Verified Builders community revoke (records audit
+        // row; manual operator removal from Discord/Skool is the v1 contract).
+        await handleSubscriptionDeleted(sub, event.id);
         await captureServerAndFlush(
           stripeDistinctId(
             typeof sub.customer === "string" ? sub.customer : sub.customer?.id,
@@ -203,7 +214,10 @@ export async function POST(req: NextRequest) {
 //      clock starts, because that's when money actually moves).
 //   3. Send a magic link via inviteOrSignIn() so the user can sign into
 //      /playbook without ever choosing a password (Reluctant Hero: no friction).
-async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
+async function handleCheckoutSessionCompleted(
+  session: Stripe.Checkout.Session,
+  eventId: string,
+) {
   const email =
     session.customer_details?.email ??
     session.customer_email ??
@@ -265,6 +279,19 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   const next = isCore ? "/onboarding" : "/playbook";
   const redirectTo = `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`;
   await inviteOrSignIn({ email, redirectTo });
+
+  // VERIFIED BUILDERS ROOM: Core only. Scheduled via after() so the email +
+  // audit writes don't hold the 200 OK to Stripe. Idempotent at the helper
+  // level – safe if invoice.payment_succeeded later re-triggers the grant.
+  if (isCore) {
+    scheduleGrantForCheckout({
+      profileId: profile.id,
+      email: profile.email,
+      stripeCustomerId,
+      stripeEventId: eventId,
+      source: "stripe_webhook",
+    });
+  }
 }
 
 // ── invoice.payment_succeeded ────────────────────────────────────────────────
@@ -276,7 +303,10 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
 // Per Hard Rule #4 of strategy/BUILD-PROMPT-CLAUDE-CODE.md: the guarantee is
 // playbook-verifiable. profile.guarantee_expires_at is the single source of
 // truth for refund eligibility windows (lib/guarantee.ts reads it).
-async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
+async function handleInvoicePaymentSucceeded(
+  invoice: Stripe.Invoice,
+  eventId: string,
+) {
   const customerId =
     typeof invoice.customer === "string"
       ? invoice.customer
@@ -351,6 +381,20 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
     status: "paid",
     paid_at: new Date(paidAtUnix * 1000).toISOString(),
   });
+
+  // VERIFIED BUILDERS ROOM: safety-net grant on first paid invoice. The grant
+  // helper is idempotent, so if checkout.session.completed already fired the
+  // grant this is a no-op. If the checkout event was dropped (Stripe retry
+  // failure, network hiccup), this catches it.
+  if (isFirstSubInvoice) {
+    scheduleGrantForCheckout({
+      profileId: ensuredProfile.id,
+      email: ensuredProfile.email,
+      stripeCustomerId: customerId,
+      stripeEventId: eventId,
+      source: "stripe_webhook",
+    });
+  }
 }
 
 // ── invoice.payment_failed ───────────────────────────────────────────────────
@@ -422,11 +466,22 @@ async function handleSubscriptionUpserted(sub: Stripe.Subscription) {
 // Final cancellation. applySubscriptionCanceled() drops tier from 'core' to
 // 'starter' if the user ever bought the Starter, else 'none' — per workbook 02
 // value ladder where $1 Starter unlocks Steps 1+2 permanently.
-async function handleSubscriptionDeleted(sub: Stripe.Subscription) {
+async function handleSubscriptionDeleted(
+  sub: Stripe.Subscription,
+  eventId: string,
+) {
   const customerId =
     typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null;
   if (!customerId) return;
   await applySubscriptionCanceled(customerId);
+
+  // VERIFIED BUILDERS ROOM: schedule revoke (audit + profile stamp). Manual
+  // platform removal from Discord/Skool is the operator's job per v1 contract.
+  scheduleRevokeForCustomer({
+    stripeCustomerId: customerId,
+    stripeEventId: eventId,
+    source: "stripe_webhook",
+  });
 }
 
 // ── charge.refunded ──────────────────────────────────────────────────────────

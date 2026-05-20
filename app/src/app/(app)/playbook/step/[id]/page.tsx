@@ -11,6 +11,7 @@ import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 import { OutreachLog } from "./outreach-log";
 import { ConversionVerifier } from "./conversion-verifier";
+import { OfferScorerPanel, PageRewriterPanel } from "./agent-panels";
 
 type Message = {
   role: "engine" | "user";
@@ -523,6 +524,13 @@ function GuidedConversation({ stepId }: { stepId: string }) {
               </p>
             </CardContent>
           </Card>
+
+          {/* Isenberg overlay: vertical agent on the boring pain. Steps 2
+              and 4 each get an "engine does it" panel — score the offer on
+              Step 2, rewrite the live landing page on Step 4. Step 6 has
+              its own per-action drafter in OutreachLog. */}
+          {stepId === "2" && <OfferScorerPanel />}
+          {stepId === "4" && <PageRewriterPanel />}
 
           {/* "Yours to keep" — Brunson Results-in-Advance affordances:
               email the deliverable to inbox (re-trigger original send) and

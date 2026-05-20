@@ -2,7 +2,7 @@
   "meta": {
     "version": "2.0",
     "created_at": "2026-05-16T13:45:25.032666",
-    "last_updated": "2026-05-21T00:00:00Z",
+    "last_updated": "2026-05-21T12:00:00Z",
     "project_slug": "unlocksaas",
     "business_name": "Unlock SaaS",
     "domain": "unlocksaas.com",
@@ -303,6 +303,20 @@
           "one_line_bio": "Marketer, non-engineer, built a dozen AI products that nobody paid for. Then I figured out why.",
           "three_line_about_opener": "I'm a marketer. I have never written a line of production code. In 2026, Lovable and Claude opened the door and I shipped real AI products in weeks, watched them flatline in Stripe, and ran from the truth into SEO tactics for almost a year. What broke me out was sitting with more than ten other founders telling my own story back to me. So I built the playbook I wish someone had handed me.",
           "six_line_intro": "I'm a marketer and an operator. I have never written a line of production code. For most of my life that closed a door. Then in 2026, Lovable and Claude opened it and I shipped real AI products in weeks. The shipping part felt like magic. What came after did not. I would launch, open Stripe, and watch a line lie flat. I told myself it was the product. I told myself it was the funnel. I went embarrassingly deep into SEO and optimization, and the truth is that was just a respectable way of not looking at the flat line. What finally broke me was talking to more than ten other founders and hearing my own story back, every single time. So I sat down to write the offer for this product, and I found nothing there. No promise, no specific person. That was the moment. I had been building beautiful things for no one in particular. I stopped fixing products and started fixing the order, the work I had been taught to skip. The playbook in this workbook is what I built. I run it on myself first. Now I am putting it in front of you."
+        },
+        "cross_section_frame": {
+          "added": "2026-05-21",
+          "source": "Greg Isenberg playbook overlay ('weird mix of skills is the moat') applied to the locked Reluctant Hero backstory. Memory: project_unlocksaas_isenberg_playbook.md.",
+          "rule": "Backstory must surface that the founder is BOTH a Brunson-trained funnel marketer (fifteen years) AND a non-engineer who shipped real AI products with Lovable + Claude. The combination, not either side alone, is the credibility wedge. Almost nobody in the post-launch pre-revenue non-engineer niche has both in one head.",
+          "voice_constraint": "Always confess the combination ('by accident', 'in one head', 'I happen to be'). Never boast it. Reluctant Hero rule still binding - the cross-section is a footnote spoken aloud, not a credential block. Phrases that REGISTER as a boast ('I am uniquely positioned', 'I am the only one who') are disqualified.",
+          "surfaces_updated_2026_05_21": [
+            "/about page - new section 'The weird mix' between The break and What I'm building (app/src/app/(marketing)/about/page.tsx)",
+            "/about.md mirror - new '## The weird mix' subsection in ABOUT_BODY (app/src/lib/seo/markdown.ts)",
+            "FOUNDER.description in lib/seo/entity.ts - upgraded to surface the 15-years-funnels + non-engineer-shipper combination as one sentence (single source of truth for Person JSON-LD across the site)",
+            "strategy/founder-vsl-script.md - new Beat 3.5 ('quiet addendum to the break', ~15 seconds, half-mumble, by accident)",
+            "/about metadata description, OG description, Twitter description - all rewritten to lead with the cross-section frame"
+          ],
+          "not_changed": "Locked Reluctant Hero identity, locked backstory authority_vehicle, locked parables, locked flaws, locked polarity, locked offer/avatar/price/value-ladder/channels. This is a backstory framing overlay, not a re-litigation of any locked Brunson decision."
         },
         "parables": [
           {
@@ -2731,6 +2745,23 @@
       "files": [
         "strategy/decisions/quantum-value-pricing.md",
         "strategy/state.json"
+      ]
+    },
+    {
+      "date": "2026-05-21",
+      "scope": "attractive_character backstory - cross-section overlay added per Isenberg playbook",
+      "change": "Layered Greg Isenberg's 'weird mix of skills is the moat' frame on top of the locked Reluctant Hero backstory. The locked backstory already had both facts (marketer + non-engineer who shipped with Lovable/Claude) but treated them as parallel credentials. Isenberg's frame says the COMBINATION is the wedge - fifteen years of Brunson-style funnels in one head AND a real product shipped by a non-engineer is almost nobody in the post-launch pre-revenue niche. (1) Added attractive_character.locked.cross_section_frame block (source, rule, voice_constraint, surfaces_updated_2026_05_21, not_changed). (2) Updated /about page (app/src/app/(marketing)/about/page.tsx): inserted new section 'The weird mix' between 'The break' and 'What I'm building', rewrote metadata description + OG description + Twitter description to lead with the cross-section. (3) Updated /about.md mirror (app/src/lib/seo/markdown.ts ABOUT_BODY): added '## The weird mix' subsection after the topical-expertise list so the markdown retrieval surface stays parallel to the HTML page. (4) Upgraded FOUNDER.description in app/src/lib/seo/entity.ts to surface the 15-years-funnels + non-engineer-shipper combination as one sentence - this is the single source of truth for Person JSON-LD across the site, so every page picks it up. (5) Added Beat 3.5 to strategy/founder-vsl-script.md ('quiet addendum to the break', ~15 seconds, half-mumble, by-accident, in-one-head) - the cross-section gets spoken aloud as a footnote, never as a brag.",
+      "rationale": "Per project_unlocksaas_isenberg_playbook.md memory: Isenberg's 'cross-section is your moat' frame is the one Isenberg item we can implement without disturbing any locked Brunson decision. Offer/avatar/price/value-ladder/channels are untouched. The Reluctant Hero identity is preserved (voice_constraint enforces 'by accident' and 'I happen to be' phrasings - confession not credential). Cross-section becomes a backstory overlay that strengthens the existing five-beat AC, not a new identity. Pre-launch ceiling: a meaningful E-E-A-T uplift for LLM-retrieval pipelines because the new FOUNDER.description ships across every Person JSON-LD on the site, not just /about. Voice constraint is the only thing that prevents this from breaking Reluctant Hero - written into the cross_section_frame block as a hard rule for future revision passes.",
+      "files_touched": [
+        "strategy/state.json (attractive_character.locked.cross_section_frame added; revision_history entry - this one; meta.last_updated bumped)",
+        "strategy/founder-vsl-script.md (Beat 3.5 inserted between Beat 3 and Beat 4)",
+        "app/src/app/(marketing)/about/page.tsx (The weird mix section + metadata/OG/Twitter description rewrites)",
+        "app/src/lib/seo/markdown.ts (ABOUT_BODY: ## The weird mix subsection added)",
+        "app/src/lib/seo/entity.ts (FOUNDER.description upgraded to surface the cross-section as one sentence)"
+      ],
+      "follow_ups": [
+        "Founder re-records VSL Beat 3.5 next shoot day (15 seconds, same setup as Beat 3, eyes off camera, half-mumble). Until then, edit Beat 3.5 into existing VSL as a still-frame plus voiceover OR leave the master VSL untouched and ship Beat 3.5 only as a standalone X/IH cut.",
+        "Verify the cross-section phrasing on /about does not regress in any future global rename sweep (Brunson Hard Rule on honest claims still binds: 'fifteen years inside Brunson-style funnels' must be defensible - if the founder ever publicly says it's shorter, this copy follows down, not the other way around)."
       ]
     }
   ],

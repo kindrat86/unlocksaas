@@ -67,6 +67,13 @@ export const Event = {
   PlaybookEnginePushback: "playbook_engine_pushback",
   PlaybookStepCompleted: "playbook_step_completed",
   MilestoneEarned: "milestone_earned",
+  // Isenberg overlay: agentic execution inside The Machine. Fires when a
+  // founder invokes one of the vertical agents (offer scorer, outreach
+  // drafter, page rewriter) and again when the agent returns a result.
+  // The "Invoked → Completed" funnel tells us which agents Marco actually
+  // uses vs. clicks once and abandons.
+  PlaybookAgentInvoked: "playbook_agent_invoked",
+  PlaybookAgentCompleted: "playbook_agent_completed",
 
   // Conversion (server-side, Stripe webhook is source of truth)
   CheckoutSessionCreated: "checkout_session_created",
