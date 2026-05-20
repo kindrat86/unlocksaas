@@ -10,8 +10,13 @@ import {
   type BenchmarkEntry,
 } from "@/lib/benchmarks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
-import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForBenchmark,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 
 export function generateStaticParams() {
@@ -31,7 +36,7 @@ export async function generateMetadata(props: {
   return {
     title: e.metaTitle,
     description: e.metaDescription,
-    alternates: pageAlternates(canonical),
+    alternates: markdownAlternate(canonical, `${canonical}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       type: "article",
@@ -48,7 +53,11 @@ export async function generateMetadata(props: {
   };
 }
 
-function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
+function buildJsonLd(
+  e: BenchmarkEntry,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // QAPage on the benchmark detail page. The query intent these pages
   // target is "what's a good X" / "what's the average X" (per the
   // catalog header comment in lib/benchmarks.ts). The aeoAnswer field
@@ -103,7 +112,7 @@ function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    mainEntity: e.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -159,9 +168,12 @@ export default async function BenchmarkDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/benchmarks/${e.slug}`;
+  const paaPairs = paaForBenchmark(e);
+  const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
   const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
+    mergedFaqs,
   );
 
   return (
@@ -286,6 +298,10 @@ export default async function BenchmarkDetailPage(props: {
           ))}
         </ul>
       </section>
+
+      {/* People Also Ask – canonical PAA phrasings sourced from this
+          benchmark's bands and drivers. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-4 leading-tight">

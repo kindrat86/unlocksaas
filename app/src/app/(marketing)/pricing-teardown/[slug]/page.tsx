@@ -22,6 +22,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForPricingTeardown,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Programmatic SEO surface — Pricing teardown: {Company}.
@@ -92,7 +97,11 @@ export async function generateMetadata(
 
 // ----- JSON-LD --------------------------------------------------------------
 
-function buildJsonLd(t: PricingTeardown, canonicalUrl: string): string[] {
+function buildJsonLd(
+  t: PricingTeardown,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // Subject-entity for `about` and `mentions`. Pricing teardowns prefer
   // the pricingPageUrl when available (it's the literal subject of the
   // article); fall back to homepageUrl, then to a bare name string.
@@ -145,7 +154,7 @@ function buildJsonLd(t: PricingTeardown, canonicalUrl: string): string[] {
     inLanguage: "en-US",
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: t.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -209,7 +218,13 @@ export default async function PricingTeardownPage(
   if (!t) notFound();
 
   const canonicalUrl = `${BASE}/pricing-teardown/${t.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(t, canonicalUrl);
+  const paaPairs = paaForPricingTeardown(t);
+  const mergedFaqs = mergePaaIntoFaqs(t.faqs, paaPairs);
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    t,
+    canonicalUrl,
+    mergedFaqs,
+  );
   const related = getRelatedPricingTeardowns(t.slug, 4);
   // Cross-pattern: does this company also have a funnel teardown?
   const hasFunnelTeardown = Boolean(getFunnelTeardownBySlug(t.slug));
@@ -601,10 +616,13 @@ export default async function PricingTeardownPage(
           </CardContent>
         </Card>
       </section>
+      {/* People Also Ask – PAA H3s sourced from this teardown's tldr,
+          pricing model, tier list, and free-trial behavior. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
-          {t.displayName} pricing — FAQ
+          {t.displayName} pricing – FAQ
         </h2>
         <div className="space-y-3">
           {t.faqs.map((f) => (

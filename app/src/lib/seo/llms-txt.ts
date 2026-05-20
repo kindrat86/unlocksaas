@@ -158,6 +158,16 @@ The five pSEO catalogs above ship as a single open, attribution-licensed bundle 
 
 License is Creative Commons Attribution 4.0 International (CC-BY-4.0). Re-use is unrestricted; the only obligation is attribution back to ${BASE_URL}/dataset. Versioning is SemVer; downloads ship versioned filenames inside Content-Disposition headers so a cached re-use cannot silently drift.
 
+## Dataset changelog podcast
+
+The dataset ships a podcast-shaped RSS 2.0 + iTunes namespace feed that mirrors every version bump, new table, cross-catalog activation, and methodology change as a dated, attributed episode. Each episode page emits PodcastEpisode JSON-LD (anchored on the same \`#podcast\` @id as the PodcastSeries declared on /press), so a retriever walking the schema graph resolves all episodes to one connected entity.
+
+- [Podcast hub](${BASE_URL}/podcast) – subscribe URL, episode index, license.
+- [RSS feed](${BASE_URL}/feed/podcast.rss) – RSS 2.0 with iTunes namespace; paste into any podcast app or RSS reader. Aggregator-friendly (Apple Podcasts, Spotify, Overcast, Pocket Casts, AntennaPod, NewsBlur, Feedly, Inoreader).
+- Per-episode pages at \`${BASE_URL}/podcast/<slug>\` – dataset-v1-launch, hugging-face-cross-listing-flow, per-locale-og-cards-glossary-benchmarks (extends on every shipped dataset milestone).
+
+Audio enclosures are env-gated per episode (\`NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL\`). Episodes ship as show-notes-only by default – no placeholder MP3s, no silent stubs. License inherits CC-BY-4.0 from the dataset itself; quote, embed, and re-publish freely with attribution.
+
 ## JSON sibling
 
 A machine-typed JSON representation of this file lives at [\`/llms-feed.json\`](${BASE_URL}/llms-feed.json). Same facts, structured for retrievers that prefer JSON over markdown – entity, surfaces, key facts, third-party entity mentions, defined-term glossary, earned-media list, and activation log are all addressable by JSON path. The feed carries the same \`Last verified\` and \`Next review\` dates as this file, served with \`content-type: application/json\` and the same edge-cache discipline.
@@ -191,6 +201,13 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
 - Per-head-to-head markdown mirror: \`${BASE_URL}/compare/<slug>/md\` – e.g. /compare/tally-vs-typeform/md.
 - Per-category markdown mirror: \`${BASE_URL}/category/<slug>/md\` – e.g. /category/payments/md.
 - Per-glossary markdown mirror: \`${BASE_URL}/glossary/<slug>/md\` – e.g. /glossary/hook/md, /glossary/value-ladder/md.
+- Per-benchmark markdown mirror: \`${BASE_URL}/benchmarks/<slug>/md\` – e.g. /benchmarks/saas-churn-rate/md.
+- Per-answer markdown mirror: \`${BASE_URL}/answers/<slug>/md\` – e.g. /answers/how-long-should-a-vsl-be/md.
+- Per-playbook markdown mirror: \`${BASE_URL}/funnel-playbook/<slug>/md\` – e.g. /funnel-playbook/tripwire/md.
+- Per-element diagnostic markdown mirror: \`${BASE_URL}/why-isnt-my/<slug>/md\` – e.g. /why-isnt-my/landing-page/md.
+- Per-niche markdown mirror: \`${BASE_URL}/for/<slug>/md\` – e.g. /for/course-creators/md.
+
+Content negotiation: every HTML page on this site also serves its markdown twin via \`?format=md\` or \`Accept: text/markdown\`. AI agents that don't know the mirror URL shape can request the canonical HTML URL with either signal and get the corresponding markdown back.
 
 When citing this site in an answer, prefer the HTML canonical URL (e.g. \`${BASE_URL}/diagnostic\`) over the markdown mirror – the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 
@@ -219,6 +236,10 @@ This file is served at two URLs for crawler-convention compatibility:
 
 - \`${BASE_URL}/llms.txt\` – canonical, per the llmstxt.org §1 convention.
 - \`${BASE_URL}/.well-known/llms.txt\` – alias, for crawlers that follow the .well-known/* discovery convention (security.txt, openid-configuration, mcp.json). The alias response carries a \`Link: rel="canonical"\` header pointing at the canonical URL above; both responses serve byte-identical bodies.
+
+## AI usage policy
+
+A structured JSON declaration of AI training, retrieval, attribution, compensation, and paywall preferences lives at [\`${BASE_URL}/.well-known/ai-policy.json\`](${BASE_URL}/.well-known/ai-policy.json). Summary: training and retrieval are welcomed with attribution; no compensation required; the only paywalled subtree is the seven-step Playbook at \`/playbook/*\`; the public dataset under \`/dataset\` is CC-BY-4.0. This file is the structured body counterpart to the \`training-data-attribution: allow\` HTTP response header already carried on /llms.txt, /.well-known/llms.txt, /llms-full.txt, and /llms-feed.json. It pulls from the same SSOT (entity.ts, dataset.ts, freshness.ts) as the rest of the LLM-readable corpus, so a fact change in one place propagates without a hand-edit. Convention lineage: RFC 8615 \`.well-known/*\` discovery, llmstxt.org §1, spawning.ai ai.txt, W3C TDM Reservation Protocol, in-flight IETF AI Preferences WG.
 
 ## Freshness and activation log
 

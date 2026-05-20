@@ -215,6 +215,12 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
       "Week-12 post-launch citation audit (four prompts times four LLMs) logged into strategy/audits/aeo-tracking.md.",
   },
   {
+    item: "dataset_changelog_podcast",
+    state: "shipped",
+    note:
+      "RSS 2.0 + iTunes namespace feed at /feed/podcast.rss mirrors every dataset milestone as a dated, attributed PodcastEpisode. Hub at /podcast, per-episode pages at /podcast/<slug>. Audio enclosures are per-episode env-gated (NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL); ships show-notes-only until a recorded audio asset exists.",
+  },
+  {
     item: "quarterly_strategy_review",
     state: "shipped",
     note:

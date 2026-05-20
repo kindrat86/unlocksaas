@@ -10,7 +10,7 @@
 
 The SEO/GEO/AIO audit identified one cluster as the single highest-leverage missing signal: the `sameAs` / `mainEntityOfPage` / `subjectOf` arrays on the Organization + Person JSON-LD are empty. Every supporting piece of code is shipped:
 
-- [src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) reads 13 env-driven URL slots
+- [src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) reads 15 env-driven URL slots
 - [src/components/seo/json-ld.tsx](../app/src/components/seo/json-ld.tsx) wires them into Organization + Person `sameAs` and Organization `mainEntityOfPage`
 - [src/lib/media-mentions.ts](../app/src/lib/media-mentions.ts) supplies the `subjectOf` Article anchors
 
@@ -245,6 +245,51 @@ vercel env add NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL production preview
 # paste: https://www.producthunt.com/products/unlock-saas
 ```
 
+### OpenCorporates <a id="opencorporates"></a>
+
+OpenCorporates is the world's largest open database of company entities, sourced from government filings (SEC, Companies House UK, EU national registries, US state SoS offices). Google's Knowledge Graph treats OpenCorporates as a primary entity-resolution feed for the `Organization` type – the lift is closer to Crunchbase than to a generic social profile.
+
+**Prerequisite:** UnlockSaaS must be incorporated as a legal entity in a jurisdiction OpenCorporates indexes. Most US states (Delaware, Wyoming, California, etc.), the UK, and EU member states are ingested automatically within days to weeks of the filing. Sole-proprietor / unregistered operations are NOT eligible – there is no entity row to point at, and fabricating one would violate the Brunson Hard-Rule.
+
+**Action:**
+1. Confirm UnlockSaaS is incorporated (Delaware LLC, UK Ltd, etc.) and the filing is public.
+2. Search at https://opencorporates.com/ for the entity name (e.g. `unlock saas`) – the row typically appears within 2-6 weeks of incorporation in fast-ingest jurisdictions.
+3. Copy the canonical URL (format: `https://opencorporates.com/companies/<jurisdiction>/<id>`).
+4. Optional: create an OpenCorporates account and claim the company entry so future corrections are operator-controlled (free, no verification fee for non-data-consumers).
+5. Push:
+   ```bash
+   vercel env add NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL production preview
+   # paste: https://opencorporates.com/companies/<jurisdiction>/<id>
+   ```
+
+**Why bidirectional matters here:** unlike a social profile, OpenCorporates doesn't have a "bio" field where unlocksaas.com is named – the record is government-sourced data (registered name, address, officers, filing dates). The bidirectional claim resolves via two corroborating facts: (a) the OpenCorporates entity name matches the `legalName` UnlockSaaS publishes in its Organization JSON-LD, and (b) the registered website field (where the filing form allowed it, e.g. UK Companies House) matches `unlocksaas.com`. Both sides verify the same legal entity without either side relying on free-text bio prose.
+
+**Brunson Hard-Rule reconciliation:** the empty state is the honest state until the company is actually incorporated AND OpenCorporates has the row. Until then, leaving the env var unset is the correct posture – the schema simply omits the row, no claim is made.
+
+### Wellfound (formerly AngelList) <a id="wellfound"></a>
+
+AngelList Talent rebranded to **Wellfound** in February 2022; AngelList Venture continues for VCs / syndicates. Founder + startup profiles live on wellfound.com now. Legacy angel.co URLs 301 to wellfound.com but should not be pasted into the env var – use the canonical wellfound.com URL.
+
+**Action:**
+1. Visit https://wellfound.com/recruit and create the company profile.
+2. Fields:
+   - **Company name:** Unlock SaaS
+   - **Website:** `https://unlocksaas.com`
+   - **About (300 chars):** `Unlock SaaS is a playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder is refunded. Built for non-engineer founders shipping with AI tools (Lovable, Claude, Replit, v0, Cursor). https://unlocksaas.com`
+   - **Stage:** Pre-revenue / Seed
+   - **Team size:** 1
+3. Verify the company is live (search wellfound.com for `Unlock SaaS`) – usually instant once profile is published.
+
+**Confirm bidirectional:** the Wellfound company About panel renders `https://unlocksaas.com` as a hyperlink AND lists it as the canonical Website. Both surfaces must be filled – Wellfound separates the structured Website field from prose About copy, and KG walks the structured field with higher confidence.
+
+**Push:**
+```bash
+vercel env add NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL production preview
+# paste: https://wellfound.com/company/unlock-saas (the canonical company-page URL, NOT a founder profile URL)
+```
+
+**Why this beats the legacy AngelList profile pattern:** Wellfound's company schema is post-2022 redesigned with explicit structured fields for Website, Funding, Team, and About. Pre-2022 AngelList profiles encoded all of this in free-text, which AI crawlers parse with lower confidence. The current Wellfound surface is one of the cleanest founder-startup `sameAs` anchors available.
+
 ### G2 <a id="g2"></a>
 
 Software-directory anchor. Google's Knowledge Graph indexes G2 as an authoritative `SoftwareApplication` node. Even with no reviews yet, claiming the listing earns the entity-resolution lift, and the lift compounds as reviews land.
@@ -414,12 +459,14 @@ The script `python3 scripts/seo-activation-check.py` will print this as a number
 7. **GitHub** – 2 min (just edit existing profile).
 8. **LinkedIn** – 15 min (three-field round-trip).
 9. **Crunchbase** – 20 min + 1-7 day wait for review.
-10. **G2** + **Capterra** – 20 min each + 1-3 day vendor verification.
-11. **YouTube** – only when first video ships.
-12. **Product Hunt** – only when ready to launch.
-13. **(gated)** Three real earned mentions logged in `MEDIA_MENTIONS`.
-14. **(gated, post-step-13)** Wikidata Q-ID.
-15. **(gated, post-step-13)** Wikipedia article submission.
+10. **Wellfound** – 15 min (post-2022 redesign: structured Website + About fields).
+11. **G2** + **Capterra** – 20 min each + 1-3 day vendor verification.
+12. **YouTube** – only when first video ships.
+13. **Product Hunt** – only when ready to launch.
+14. **(gated on incorporation)** OpenCorporates – appears automatically 2-6 weeks after the legal-entity filing lands; primary KG feed weight when populated.
+15. **(gated)** Three real earned mentions logged in `MEDIA_MENTIONS`.
+16. **(gated, post-step-15)** Wikidata Q-ID.
+17. **(gated, post-step-15)** Wikipedia article submission.
 
 Re-run the audit script after each step to see the cumulative effect.
 

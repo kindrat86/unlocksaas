@@ -22,6 +22,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForComparison,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Programmatic SEO surface — Compare: {Product A} vs {Product B}.
@@ -83,7 +88,11 @@ export async function generateMetadata(
 
 // ----- JSON-LD --------------------------------------------------------------
 
-function buildJsonLd(c: Comparison, canonicalUrl: string): string[] {
+function buildJsonLd(
+  c: Comparison,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // Comparison pages have TWO subject entities by construction (A vs B).
   // Build each as a real Organization when the manifest carries a URL,
   // otherwise fall back to a bare name. `about` and `mentions` both carry
@@ -136,7 +145,7 @@ function buildJsonLd(c: Comparison, canonicalUrl: string): string[] {
     inLanguage: "en-US",
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: c.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -341,7 +350,9 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
   // BreadcrumbList; optionally two Review nodes (one per product) when the
   // comparison has at least one A/B/tie dimension. Iterate rather than
   // destructure so the optional tail is not silently dropped.
-  const jsonLdBlocks = buildJsonLd(c, canonicalUrl);
+  const paaPairs = paaForComparison(c);
+  const mergedFaqs = mergePaaIntoFaqs(c.faqs, paaPairs);
+  const jsonLdBlocks = buildJsonLd(c, canonicalUrl, mergedFaqs);
 
   const aFunnel =
     c.a.teardownSlug && getFunnelTeardownBySlug(c.a.teardownSlug);
@@ -659,10 +670,13 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
           </ul>
         </section>
       ) : null}
+      {/* People Also Ask – canonical PAA phrasings for [A] vs [B]
+          queries, sourced from this comparison's tldr + bestFor. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
-          {c.a.name} vs {c.b.name} — FAQ
+          {c.a.name} vs {c.b.name} – FAQ
         </h2>
         <div className="space-y-3">
           {c.faqs.map((f) => (

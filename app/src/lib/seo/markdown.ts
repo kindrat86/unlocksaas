@@ -30,6 +30,17 @@
  *   - app/<page>.md/route.ts                           (per-surface route handlers)
  *   - app/alternatives-to/[slug]/md/route.ts           (per-pSEO mirrors, batch 1)
  *   - app/funnel-teardown/[slug]/md/route.ts           (per-pSEO mirrors, batch 2)
+ *   - app/(marketing)/benchmarks/[slug]/md/route.ts    (per-pSEO mirrors, batch 3)
+ *   - app/(marketing)/answers/[slug]/md/route.ts       (per-pSEO mirrors, batch 3)
+ *   - app/(marketing)/funnel-playbook/[slug]/md/route.ts (per-pSEO mirrors, batch 3)
+ *   - app/(marketing)/why-isnt-my/[slug]/md/route.ts   (per-pSEO mirrors, batch 3)
+ *   - app/(marketing)/for/[slug]/md/route.ts           (per-pSEO mirrors, batch 3)
+ *
+ * Content negotiation (added with batch 3): src/proxy.ts rewrites any
+ * HTML request carrying `?format=md` or `Accept: text/markdown` to the
+ * page's markdown mirror via `src/lib/seo/markdown-path.ts`. AI agents
+ * that don't know the mirror URL shape can request the canonical HTML
+ * URL with either signal and get the corresponding markdown back.
  */
 
 import {
@@ -82,6 +93,31 @@ import {
   type GlossaryEntry,
   getGlossaryBySlug,
 } from "@/lib/glossary";
+import {
+  BENCHMARK_ENTRIES,
+  type BenchmarkEntry,
+  getBenchmarkBySlug,
+} from "@/lib/benchmarks";
+import {
+  ANSWER_ENTRIES,
+  type AnswerEntry,
+  getAnswerBySlug,
+} from "@/lib/answers";
+import {
+  FUNNEL_PLAYBOOK_ENTRIES,
+  type FunnelPlaybookEntry,
+  getFunnelPlaybookBySlug,
+} from "@/lib/funnel-playbooks";
+import {
+  WHY_ISNT_MY_ENTRIES,
+  type WhyIsntMyEntry,
+  getWhyIsntMyBySlug,
+} from "@/lib/why-isnt-my";
+import {
+  NICHE_ENTRIES,
+  type NicheEntry,
+  getNicheBySlug,
+} from "@/lib/niches";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -1708,6 +1744,335 @@ export function renderPressTopicMarkdown(
   ].join("\n");
 }
 
+// --- Benchmark / Answer / Funnel-Playbook / Why-Isn't-My / Niche mirrors --
+//
+// Same Brunson Hard-Rule discipline as the other pSEO mirrors: each markdown
+// body is generated from the same catalog entry the HTML page renders.
+// Drift is impossible by construction — the catalog is the single source of
+// truth for both surfaces.
+
+function buildBenchmarkMarkdown(b: BenchmarkEntry): string {
+  const bands = b.bands
+    .map(
+      (band) =>
+        `### ${band.label}: ${band.range}\n\n${band.diagnosis}`,
+    )
+    .join("\n\n");
+  const drivers = b.drivers.map((d) => `- ${d}`).join("\n");
+  const misreadings = b.misreadings.map((m) => `- ${m}`).join("\n");
+  const faqs = b.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# ${b.metric} – directional benchmark
+
+> ${b.aeoAnswer}
+
+## Bands
+
+${bands}
+
+## What this metric is influenced by (ordered by magnitude)
+
+${drivers}
+
+## Common founder misreadings
+
+${misreadings}
+
+## Source
+
+${b.sourceNote}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-benchmark markdown body. Powers /benchmarks/<slug>/md.
+ */
+export function renderBenchmarkMarkdown(slug: string): string | undefined {
+  const b = getBenchmarkBySlug(slug);
+  if (!b) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/benchmarks/${b.slug}`;
+  return [
+    frontMatter({
+      title: `${b.metric} – directional benchmark`,
+      summary: b.aeoAnswer,
+      canonical: canonicalUrl,
+      updated: b.lastVerified,
+    }),
+    buildBenchmarkMarkdown(b).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildAnswerMarkdown(a: AnswerEntry): string {
+  const supporting = a.supporting.map((s) => `- ${s}`).join("\n");
+  const related =
+    a.relatedGlossary.length > 0
+      ? a.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+
+  return `# ${a.question}
+
+> ${a.directAnswer}
+
+## Supporting points
+
+${supporting}
+
+## Related terms
+
+${related}
+`;
+}
+
+/**
+ * Render a per-answer markdown body. Powers /answers/<slug>/md.
+ */
+export function renderAnswerMarkdown(slug: string): string | undefined {
+  const a = getAnswerBySlug(slug);
+  if (!a) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/answers/${a.slug}`;
+  return [
+    frontMatter({
+      title: a.question,
+      summary: a.directAnswer,
+      canonical: canonicalUrl,
+      updated: a.lastVerified,
+    }),
+    buildAnswerMarkdown(a).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildFunnelPlaybookMarkdown(p: FunnelPlaybookEntry): string {
+  const steps = p.steps
+    .map(
+      (s, i) =>
+        `### Step ${i + 1}. ${s.title}\n\n${s.description}`,
+    )
+    .join("\n\n");
+  const mistakes = p.commonMistakes.map((m) => `- ${m}`).join("\n");
+  const related =
+    p.relatedGlossary.length > 0
+      ? p.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+  const faqs = p.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# ${p.displayName} playbook
+
+> ${p.tldr}
+
+## When to use this funnel
+
+${p.whenToUse}
+
+## When NOT to use this funnel
+
+${p.whenNotToUse}
+
+## Where it sits in the value ladder
+
+${p.ladderPosition}
+
+## Step-by-step structure
+
+${steps}
+
+## Common implementation mistakes
+
+${mistakes}
+
+## Related terms
+
+${related}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-funnel-playbook markdown body. Powers /funnel-playbook/<slug>/md.
+ */
+export function renderFunnelPlaybookMarkdown(
+  slug: string,
+): string | undefined {
+  const p = getFunnelPlaybookBySlug(slug);
+  if (!p) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/funnel-playbook/${p.slug}`;
+  return [
+    frontMatter({
+      title: `${p.displayName} playbook`,
+      summary: p.tldr,
+      canonical: canonicalUrl,
+      updated: p.lastVerified,
+    }),
+    buildFunnelPlaybookMarkdown(p).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildWhyIsntMyMarkdown(w: WhyIsntMyEntry): string {
+  const diagnoses = w.diagnoses
+    .map(
+      (d) =>
+        `### ${d.label}: how it shows up\n\n${d.appearance}\n\n**This week's fix.** ${d.fix}`,
+    )
+    .join("\n\n");
+  const checklist = w.checklist.map((c) => `- ${c}`).join("\n");
+  const related =
+    w.relatedGlossary.length > 0
+      ? w.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+  const faqs = w.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# Why isn't my ${w.element} converting?
+
+> ${w.tldr}
+
+## Three diagnoses
+
+${diagnoses}
+
+## Directional range
+
+${w.directionalRange.range}
+
+${w.directionalRange.note}
+
+## Five steps you can run today
+
+${checklist}
+
+## Related terms
+
+${related}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-why-isnt-my markdown body. Powers /why-isnt-my/<slug>/md.
+ */
+export function renderWhyIsntMyMarkdown(
+  slug: string,
+): string | undefined {
+  const w = getWhyIsntMyBySlug(slug);
+  if (!w) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/why-isnt-my/${w.slug}`;
+  return [
+    frontMatter({
+      title: `Why isn't my ${w.element} converting?`,
+      summary: w.tldr,
+      canonical: canonicalUrl,
+      updated: w.lastVerified,
+    }),
+    buildWhyIsntMyMarkdown(w).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildNicheMarkdown(n: NicheEntry): string {
+  const vocab = n.vocabulary.map((v) => `- ${v}`).join("\n");
+  const related =
+    n.relatedGlossary.length > 0
+      ? n.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+  const faqs = n.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# Unlock SaaS for ${n.displayName}
+
+> ${n.heroSubhead}
+
+## What a flat Stripe line looks like for this cohort
+
+${n.cohortPain}
+
+## The vocabulary this cohort actually uses
+
+${vocab}
+
+## Money mechanics
+
+${n.moneyMechanics}
+
+## The Brunson move this cohort most often gets wrong
+
+${n.commonMistake}
+
+## What compounds for this cohort
+
+${n.whatCompounds}
+
+## Related terms
+
+${related}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-niche markdown body. Powers /for/<slug>/md.
+ */
+export function renderNicheMarkdown(slug: string): string | undefined {
+  const n = getNicheBySlug(slug);
+  if (!n) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/for/${n.slug}`;
+  return [
+    frontMatter({
+      title: `Unlock SaaS for ${n.displayName}`,
+      summary: n.heroSubhead,
+      canonical: canonicalUrl,
+      updated: n.lastVerified,
+    }),
+    buildNicheMarkdown(n).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
 /**
  * Build the concatenated /llms-full.txt body. One canonical entity block at
  * the top, then every surface in order, then every alternative comparison.
@@ -1843,6 +2208,81 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const benchmarks = BENCHMARK_ENTRIES.map((b) => {
+    const canonical = `${BASE_URL}/benchmarks/${b.slug}`;
+    const mirror = `${BASE_URL}/benchmarks/${b.slug}/md`;
+    return [
+      `## ${b.metric} – directional benchmark`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildBenchmarkMarkdown(b).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
+  const answers = ANSWER_ENTRIES.map((a) => {
+    const canonical = `${BASE_URL}/answers/${a.slug}`;
+    const mirror = `${BASE_URL}/answers/${a.slug}/md`;
+    return [
+      `## ${a.question}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildAnswerMarkdown(a).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
+  const funnelPlaybooks = FUNNEL_PLAYBOOK_ENTRIES.map((p) => {
+    const canonical = `${BASE_URL}/funnel-playbook/${p.slug}`;
+    const mirror = `${BASE_URL}/funnel-playbook/${p.slug}/md`;
+    return [
+      `## ${p.displayName} playbook`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildFunnelPlaybookMarkdown(p).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
+  const whyIsntMy = WHY_ISNT_MY_ENTRIES.map((w) => {
+    const canonical = `${BASE_URL}/why-isnt-my/${w.slug}`;
+    const mirror = `${BASE_URL}/why-isnt-my/${w.slug}/md`;
+    return [
+      `## Why isn't my ${w.element} converting?`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildWhyIsntMyMarkdown(w).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
+  const niches = NICHE_ENTRIES.map((n) => {
+    const canonical = `${BASE_URL}/for/${n.slug}`;
+    const mirror = `${BASE_URL}/for/${n.slug}/md`;
+    return [
+      `## Unlock SaaS for ${n.displayName}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildNicheMarkdown(n).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -1870,6 +2310,26 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Press Topics — Pre-Assembled Story Packages for Journalists and AI Summarisers",
     "",
     pressTopics,
+    "",
+    "# Benchmarks — Directional Ranges for Indie SaaS Funnel Metrics",
+    "",
+    benchmarks,
+    "",
+    "# Answers — Direct AEO Answers to Founder Questions",
+    "",
+    answers,
+    "",
+    "# Funnel Playbooks — Step-by-Step Brunson Funnel Archetypes",
+    "",
+    funnelPlaybooks,
+    "",
+    "# Why Isn't My — Panic-Mode Diagnostic Reads",
+    "",
+    whyIsntMy,
+    "",
+    "# Unlock SaaS for [Cohort] — Niche-Specific Landing Pages",
+    "",
+    niches,
     "",
     citationFooter(BASE_URL),
   ].join("\n");

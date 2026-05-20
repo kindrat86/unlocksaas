@@ -40,7 +40,16 @@ import {
   WORLDWIDE_AREA_SERVED,
   WORLDWIDE_PLACE,
 } from "@/lib/seo/entity";
+import {
+  DIAGNOSTIC_WALKTHROUGH_DURATION_SEC,
+  DIAGNOSTIC_WALKTHROUGH_TRANSCRIPT_TEXT,
+} from "@/lib/diagnostic-walkthrough";
 import { getEarnedMentions, type MediaMention } from "@/lib/media-mentions";
+import {
+  buildPodcastEpisodeJson,
+  buildPodcastSeriesJson,
+  type PodcastEpisode,
+} from "@/lib/seo/podcast";
 import {
   buildPlaybookAggregateRating,
   type PlaybookAggregateRatingNode,
@@ -154,14 +163,16 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
  *
  * Env vars consulted (see entity.ts buildSameAs), in suggested fill order
  * by GEO / AIO impact per effort:
- *   1. NEXT_PUBLIC_UNLOCKSAAS_X_URL             (Twitter / X)
- *   2. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL (Indie Hackers)
- *   3. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL      (LinkedIn personal)
- *   4. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL        (GitHub)
- *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL       (YouTube)
- *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL    (Crunchbase company)
- *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL  (Product Hunt)
- *   8. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL         (Wikidata Q-number or ad-hoc)
+ *   1. NEXT_PUBLIC_UNLOCKSAAS_X_URL              (Twitter / X)
+ *   2. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL  (Indie Hackers)
+ *   3. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL       (LinkedIn personal)
+ *   4. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL         (GitHub)
+ *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL        (YouTube)
+ *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL     (Crunchbase company)
+ *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL   (Product Hunt)
+ *   8. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
+ *   9. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
+ *  10. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
  *
  * Defaults to a frozen empty array in a fresh checkout. That is honest:
  * no env vars set = no off-platform anchors claimed. strategy/google-
@@ -1106,23 +1117,41 @@ export type VideoSchemaInput = {
   durationISO8601?: string; // e.g. "PT4M30S"
   contentUrl?: string;
   embedUrl?: string;
+  /** URL of a transcript document. Honored only when `transcriptText`
+   *  is unset – inline text takes precedence because it is what voice
+   *  engines and AI summarisers cite verbatim. */
   transcriptUrl?: string;
-};
+  /** Inline verbatim transcript text. Schema.org permits Text on the
+   *  `VideoObject.transcript` field (alongside URL and MediaObject), and
+   *  inline text is the strongest signal for AI Overview citations and
+   *  voice-engine readouts because it removes the second-hop fetch. */
+  transcriptText?: string;
+  /** Optional stable @id anchor so other schemas (Article, WebPage,
+   *  Service) can cross-reference this VideoObject as a connected node
+   *  in the entity graph. See src/lib/seo/entity.ts ID constants. */
+  id?: string;
+  /** Optional caller-supplied creator anchor. Defaults to the
+   *  organization @id; pass `ID.person` on founder-narrated assets. */
+  creatorId?: string;
+}
 
 function buildVideoJson(input: VideoSchemaInput): string {
+  const transcript = input.transcriptText ?? input.transcriptUrl;
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "VideoObject",
+    ...(input.id ? { "@id": input.id } : {}),
     name: input.name,
     description: input.description,
     uploadDate: input.uploadDate,
     thumbnailUrl: [input.thumbnailUrl],
     inLanguage: "en-US",
     publisher: { "@id": ID.organization },
+    creator: { "@id": input.creatorId ?? ID.organization },
     ...(input.durationISO8601 ? { duration: input.durationISO8601 } : {}),
     ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
     ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
-    ...(input.transcriptUrl ? { transcript: input.transcriptUrl } : {}),
+    ...(transcript ? { transcript } : {}),
   });
 }
 
@@ -1345,6 +1374,74 @@ export function VideoJsonLd(props: VideoSchemaInput) {
 }
 
 /**
+ * Diagnostic walkthrough VideoObject – env-driven VEO/AEO uplift
+ * (2026-05-20).
+ *
+ * Pairs with the visible 90-second walkthrough <section> rendered on
+ * /diagnostic. The verbatim transcript ships in the DOM regardless of
+ * env state (it is canonical textual content describing how the
+ * diagnostic works). This component layers a VideoObject JSON-LD on top
+ * the moment a real recording lands at DIAGNOSTIC_VIDEO_URL.
+ *
+ * Brunson Hard-Rule: render nothing until a real `contentUrl` exists.
+ * Until then, the visible transcript section is the only emission –
+ * which is honest: there is content on the page describing the flow,
+ * but no claim of a hosted video. The instant the URL lands in Vercel
+ * env, this component starts emitting the VideoObject node with the
+ * same transcript inline, the schema↔DOM contract intact.
+ *
+ * Env contract (NEXT_PUBLIC_ prefix so the value is visible in the
+ * rendered HTML for crawlers; values are URLs, not secrets):
+ *
+ *   - NEXT_PUBLIC_DIAGNOSTIC_VIDEO_URL          (required to emit)
+ *   - NEXT_PUBLIC_DIAGNOSTIC_VIDEO_THUMBNAIL_URL (required to emit)
+ *   - NEXT_PUBLIC_DIAGNOSTIC_VIDEO_UPLOAD_DATE  (optional ISO date,
+ *                                                defaults to org founding)
+ *   - NEXT_PUBLIC_DIAGNOSTIC_VIDEO_EMBED_URL    (optional iframe URL)
+ *   - NEXT_PUBLIC_DIAGNOSTIC_VIDEO_DURATION_MS  (optional override;
+ *                                                default 95s from the
+ *                                                walkthrough script)
+ */
+export function DiagnosticWalkthroughVideoJsonLd() {
+  const contentUrl = process.env.NEXT_PUBLIC_DIAGNOSTIC_VIDEO_URL?.trim();
+  const thumbnailUrl =
+    process.env.NEXT_PUBLIC_DIAGNOSTIC_VIDEO_THUMBNAIL_URL?.trim();
+  // Both video URL and thumbnail are required – Google Rich Results
+  // eligibility for VideoObject demands a thumbnail, and emitting a
+  // node without one tanks the page's structured-data score for the
+  // benefit of zero gain. Honest zero-state until both ship.
+  if (!contentUrl || !thumbnailUrl) return null;
+  const embedUrl = process.env.NEXT_PUBLIC_DIAGNOSTIC_VIDEO_EMBED_URL?.trim();
+  const uploadDateOverride =
+    process.env.NEXT_PUBLIC_DIAGNOSTIC_VIDEO_UPLOAD_DATE?.trim();
+  const uploadDate =
+    uploadDateOverride && uploadDateOverride.length > 0
+      ? uploadDateOverride
+      : ORGANIZATION.foundingDate;
+  const overrideMs = Number(
+    process.env.NEXT_PUBLIC_DIAGNOSTIC_VIDEO_DURATION_MS,
+  );
+  const fallbackMs = DIAGNOSTIC_WALKTHROUGH_DURATION_SEC * 1000;
+  const ms =
+    Number.isFinite(overrideMs) && overrideMs > 0 ? overrideMs : fallbackMs;
+  const durationISO8601 = `PT${Math.max(1, Math.round(ms / 1000))}S`;
+  return (
+    <VideoJsonLd
+      id={ID.diagnosticWalkthroughVideo}
+      name="The Free Diagnostic – in 90 seconds"
+      description="A founder-narrated walkthrough of the free Unlock SaaS launch diagnostic: what you paste, what I read on your page, and which of three labels (Wrong Person, Weak Offer, Weak Belief) you get back."
+      uploadDate={uploadDate}
+      thumbnailUrl={thumbnailUrl}
+      durationISO8601={durationISO8601}
+      contentUrl={contentUrl}
+      {...(embedUrl ? { embedUrl } : {})}
+      transcriptText={DIAGNOSTIC_WALKTHROUGH_TRANSCRIPT_TEXT}
+      creatorId={ID.person}
+    />
+  );
+}
+
+/**
  * AudioObject schema. Render on any page hosting a hosted audio asset
  * (founder narration, podcast episode, audio version of an essay) — and
  * also on any page that publishes a transcript that an audio asset would
@@ -1455,6 +1552,41 @@ export function PodcastSeriesJsonLd() {
 // that has not migrated to the schema.org-literal `BreadcrumbListJsonLd` name)
 // so renames in this file do not break consumers.
 export { BreadcrumbListJsonLd as BreadcrumbJsonLd };
+
+// ---------------------------------------------------------------------------
+// First-party podcast surface (2026-05-21) — PodcastSeries on /podcast,
+// PodcastEpisode on /podcast/[slug]. Differs from PodcastSeriesJsonLd
+// above: this variant always emits because the canonical feed lives at
+// /feed/podcast.rss (an internal, always-present route). Use the env-
+// gated PodcastSeriesJsonLd above on /press where the show is
+// announced; use the variants here on the podcast's own pages.
+// ---------------------------------------------------------------------------
+
+/**
+ * PodcastSeries JSON-LD for the canonical /podcast hub. Reads payload
+ * from src/lib/seo/podcast.ts (buildPodcastSeriesJson) so the @id, name,
+ * description, and webFeed URL stay in lockstep with the actual RSS
+ * served at /feed/podcast.rss. The @id is shared with the env-gated
+ * PodcastSeriesJsonLd above (`${BASE}/#podcast`) so the schema graph
+ * resolves both surfaces to one connected entity.
+ */
+export function PodcastSeriesCanonicalJsonLd() {
+  return <JsonLdScript json={buildPodcastSeriesJson()} />;
+}
+
+/**
+ * PodcastEpisode JSON-LD for a single episode. associatedMedia
+ * (AudioObject) is included only when the per-episode audio env var
+ * resolved at module load – the honest text-only fallback when no
+ * audio asset exists. Render once per /podcast/[slug] page.
+ */
+export function PodcastEpisodeJsonLd({
+  episode,
+}: {
+  episode: PodcastEpisode;
+}) {
+  return <JsonLdScript json={buildPodcastEpisodeJson(episode)} />;
+}
 
 // ---------------------------------------------------------------------------
 // AIO uplift (2026-05-17) — DefinedTermSet, Hub Dataset, Speakable

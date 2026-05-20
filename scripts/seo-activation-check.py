@@ -212,6 +212,34 @@ SLOTS: tuple[Slot, ...] = (
         activation_doc_anchor="#product-hunt",
     ),
     Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL",
+        tier="social",
+        label="OpenCorporates legal entity",
+        operator_action=(
+            "Find or claim the entity at opencorporates.com once UnlockSaaS is "
+            "incorporated in a jurisdiction OpenCorporates indexes (most US "
+            "states, UK, EU member states ingest within weeks of filing). "
+            "OpenCorporates is a primary Knowledge-Graph feed for company "
+            "entities – the lift is closer to Crunchbase than to a social. "
+            "Do NOT set this slot before the entity is actually registered "
+            "and OpenCorporates has the row visible at a stable URL."
+        ),
+        activation_doc_anchor="#opencorporates",
+    ),
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL",
+        tier="social",
+        label="Wellfound (formerly AngelList)",
+        operator_action=(
+            "Create the startup profile at wellfound.com/recruit (AngelList "
+            "Talent rebranded to Wellfound in Feb 2022; legacy angel.co URLs "
+            "now 301 to wellfound.com). Company About section MUST link "
+            "unlocksaas.com. Bidirectional bar = the Wellfound About page "
+            "shows the unlocksaas.com link before the env var is set."
+        ),
+        activation_doc_anchor="#wellfound",
+    ),
+    Slot(
         name="NEXT_PUBLIC_UNLOCKSAAS_G2_URL",
         tier="social",
         label="G2 software listing",

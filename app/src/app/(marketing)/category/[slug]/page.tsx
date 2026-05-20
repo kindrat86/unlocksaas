@@ -17,6 +17,8 @@ import {
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { ID } from "@/lib/seo/entity";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import { paaForCategory } from "@/lib/seo/paa-questions";
 
 /**
  * pSEO #5 — Category roundup pages.
@@ -76,7 +78,11 @@ export async function generateMetadata(
 
 // ----- JSON-LD --------------------------------------------------------------
 
-function buildJsonLd(cat: CategoryDef, canonicalUrl: string): string[] {
+function buildJsonLd(
+  cat: CategoryDef,
+  canonicalUrl: string,
+  paaPairs: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   const products = getProductRosterForCategory(cat.slug);
   const comparisons = getComparisonsInCategory(cat.slug);
 
@@ -162,7 +168,31 @@ function buildJsonLd(cat: CategoryDef, canonicalUrl: string): string[] {
     ],
   };
 
-  return [JSON.stringify(collection), JSON.stringify(breadcrumbs)];
+  // FAQPage: the PAA H3s rendered on the page also feed FAQPage
+  // rich-result eligibility. Category roundup pages did not previously
+  // emit FAQPage — the PAA pattern unlocks it. Drift-free by
+  // construction: the same `paaPairs` array feeds both the visible H3s
+  // and the schema mainEntity.
+  const faqPage = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: "en-US",
+    mainEntity: paaPairs.map((p) => ({
+      "@type": "Question",
+      name: p.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: p.a,
+        inLanguage: "en-US",
+      },
+    })),
+  };
+
+  return [
+    JSON.stringify(collection),
+    JSON.stringify(faqPage),
+    JSON.stringify(breadcrumbs),
+  ];
 }
 
 function JsonLdBlock({ json }: { json: string }) {
@@ -182,13 +212,19 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
   if (!cat) notFound();
 
   const canonicalUrl = `${BASE}/category/${cat.slug}`;
-  const [collectionJson, breadcrumbJson] = buildJsonLd(cat, canonicalUrl);
+  const paaPairs = paaForCategory(cat);
+  const [collectionJson, faqJson, breadcrumbJson] = buildJsonLd(
+    cat,
+    canonicalUrl,
+    paaPairs,
+  );
   const products = getProductRosterForCategory(cat.slug);
   const comparisons = getComparisonsInCategory(cat.slug);
 
   return (
     <main className="min-h-screen">
       <JsonLdBlock json={collectionJson} />
+      <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
 
       {/* Breadcrumb */}
@@ -246,6 +282,11 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
           </CardContent>
         </Card>
       </section>
+
+      {/* People Also Ask – PAA H3s sourced from this category's
+          oneLine + intent paragraph. Captures "what is X" / "why does
+          X matter" queries that cluster around category roundups. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       {/* Products in this category */}
       {products.length > 0 ? (

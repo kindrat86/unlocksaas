@@ -12,6 +12,7 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
+import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -759,6 +760,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
     // -------------------------------------------------------------------------
+    // Dataset changelog podcast (Surface D – GEO/AEO discovery
+    // diversification, landed 2026-05-21).
+    //
+    // The podcast feed at /feed/podcast.rss is an RSS 2.0 + iTunes
+    // namespace distribution of the dataset version history. Each
+    // episode = one dated dataset milestone (version bump, table
+    // addition, cross-catalog activation, methodology change).
+    //
+    // Sitemap entries:
+    //   - /podcast: human-readable hub page with PodcastSeries JSON-LD
+    //     and episode index.
+    //   - /podcast/<slug>: per-episode page with PodcastEpisode +
+    //     Article JSON-LD. generateStaticParams enumerates
+    //     PODCAST_EPISODE_SLUGS so appending a new episode auto-extends
+    //     this block on next deploy.
+    //   - /feed/podcast.rss: the RSS XML itself, listed as a raw asset
+    //     (no images, no hreflang – it is a machine artifact).
+    //
+    // Priority alignment:
+    //   - /podcast at 0.5 matches /press and /dataset/huggingface – a
+    //     legitimate discovery surface that exists primarily for
+    //     subscription, not for ranking on broad queries.
+    //   - /podcast/<slug> at 0.45 just below /press/topics/<slug>.
+    //   - /feed/podcast.rss at 0.4 above /llms.txt (0.3) because the
+    //     RSS feed is a real, citable distribution artifact – not
+    //     crawler bait. Below /dataset (0.7) because the dataset is
+    //     the primary linkable asset; the podcast is the changelog
+    //     mirror of that asset.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/podcast`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/podcast`),
+    },
+    ...PODCAST_EPISODE_SLUGS.map((slug) => ({
+      url: `${base}/podcast/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/podcast/${slug}`),
+    })),
+    {
+      url: `${base}/feed/podcast.rss`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.4,
+    },
+    // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers
     // (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI Overviews,
@@ -955,7 +1006,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * scrapers; this just adds the parallel discovery anchor for image
    * search.
    */
-  const RAW_ASSET_RE = /\.(?:json|csv|txt)$/;
+  const RAW_ASSET_RE = /\.(?:json|csv|txt|rss|xml)$/;
   return entries.map((entry) => {
     if (entry.images && entry.images.length > 0) return entry;
     const urlString = typeof entry.url === "string" ? entry.url : "";

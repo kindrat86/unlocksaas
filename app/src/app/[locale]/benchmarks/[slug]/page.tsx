@@ -21,6 +21,12 @@ import {
 } from "@/lib/benchmarks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForBenchmark,
+  mergePaaIntoFaqs,
+  paaHeadingForLocale,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Locale-aware /benchmarks/[slug] detail – mirrors the canonical
@@ -121,6 +127,7 @@ function buildJsonLd(
   inLanguage: string,
   locale: Locale,
   chrome: ReturnType<typeof getBenchmarksChrome>,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
 ): string[] {
   const q = primaryQuestion(e.metric, locale);
   const qaPage = {
@@ -167,7 +174,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage,
-    mainEntity: e.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -255,12 +262,15 @@ export default async function LocalizedBenchmarkDetail({
   const canonicalUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
 
+  const paaPairs = paaForBenchmark(e, locale);
+  const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
   const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
     inLanguage,
     locale,
     chrome,
+    mergedFaqs,
   );
 
   return (
@@ -416,6 +426,14 @@ export default async function LocalizedBenchmarkDetail({
           ))}
         </ul>
       </section>
+
+      {/* People Also Ask – localized PAA H3s for the benchmark
+          intent class ("¿Cuál es una buena ...?" / "Qual é uma boa
+          ...?"). Sourced from this locale's entry overlay. */}
+      <PeopleAlsoAsk
+        pairs={paaPairs}
+        heading={paaHeadingForLocale(locale)}
+      />
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-4 leading-tight">
