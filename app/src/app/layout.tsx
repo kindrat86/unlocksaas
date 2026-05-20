@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
 import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { buildVerification } from "@/lib/seo/verification";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
 
@@ -179,6 +180,28 @@ export default function RootLayout({
             stays unaffected (bundle-defer-third-party pattern).
           */}
           <WebVitalsReporter />
+          {/*
+            Vercel Speed Insights – second sink for the same CWV metrics
+            (LCP, INP, CLS, FCP, TTFB) but routed to Vercel's native
+            dashboard instead of PostHog. The two sinks are complementary,
+            not redundant:
+              – WebVitalsReporter → PostHog: per-distinct_id correlation
+                with funnel events, retention cohorts, feature flags.
+                Useful for "did this LCP regression cost us conversions?"
+              – SpeedInsights → Vercel dashboard: per-route p75 with
+                Google's CrUX field-data baseline as comparison line.
+                Useful for "is this route fast enough to win SERP /
+                AI Overview eligibility?"
+            CWV is a hard Google ranking factor; without measurement we
+            cannot tell whether the connection-hint optimization above,
+            the next/font preload, or any future change actually moved
+            the p75 needle. The `route` prop is auto-set by the framework
+            import (@vercel/speed-insights/next) so dynamic routes like
+            /glossary/[slug] aggregate correctly. Brunson Hard-Rule note:
+            this ships data only when the operator enables Speed Insights
+            in the Vercel dashboard – no enable, no script load, no data.
+          */}
+          <SpeedInsights />
           {/*
             Organization + WebSite JSON-LD as site-wide entity anchors.
             Lives in the root layout so every page inherits both blocks —
