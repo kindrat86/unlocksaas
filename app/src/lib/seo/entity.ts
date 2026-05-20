@@ -113,6 +113,18 @@ function buildSameAs(): readonly string[] {
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL"),
+    // Company-entity registry anchors – fed directly into Google's
+    // Knowledge Graph as primary entity sources. Heavier weight than
+    // generic social profiles. OpenCorporates is a public registry of
+    // legal entities sourced from government filings (only set once
+    // UnlockSaaS is incorporated and OpenCorporates has indexed the
+    // jurisdiction; for many small jurisdictions this is automatic
+    // within weeks of incorporation). Wellfound (formerly AngelList
+    // Talent) is the canonical startup profile registry – the URL the
+    // operator pastes resolves under wellfound.com, not the legacy
+    // angel.co domain.
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL"),
     // Generic "other" slot – for one ad-hoc profile without a dedicated
     // env var. Lower priority than Wikidata/Wikipedia above.

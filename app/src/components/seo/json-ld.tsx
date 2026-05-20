@@ -154,14 +154,16 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
  *
  * Env vars consulted (see entity.ts buildSameAs), in suggested fill order
  * by GEO / AIO impact per effort:
- *   1. NEXT_PUBLIC_UNLOCKSAAS_X_URL             (Twitter / X)
- *   2. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL (Indie Hackers)
- *   3. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL      (LinkedIn personal)
- *   4. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL        (GitHub)
- *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL       (YouTube)
- *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL    (Crunchbase company)
- *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL  (Product Hunt)
- *   8. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL         (Wikidata Q-number or ad-hoc)
+ *   1. NEXT_PUBLIC_UNLOCKSAAS_X_URL              (Twitter / X)
+ *   2. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL  (Indie Hackers)
+ *   3. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL       (LinkedIn personal)
+ *   4. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL         (GitHub)
+ *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL        (YouTube)
+ *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL     (Crunchbase company)
+ *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL   (Product Hunt)
+ *   8. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
+ *   9. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
+ *  10. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
  *
  * Defaults to a frozen empty array in a fresh checkout. That is honest:
  * no env vars set = no off-platform anchors claimed. strategy/google-
