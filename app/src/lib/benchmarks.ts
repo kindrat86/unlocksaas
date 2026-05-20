@@ -158,8 +158,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on Baymard Institute's cart-abandonment research and the founder's observed range across 41 indie SaaS teardowns. Baymard publishes the universal average; the indie SaaS subset runs 5 to 10 points higher than ecommerce baseline due to higher-intent traffic.",
-    lastVerified: "2026-05-19",
+      "Range based on Baymard Institute's cart-abandonment research, OpenView Partners' SaaS pricing-page benchmarks, and the founder's observed range across 41 indie SaaS teardowns. Baymard publishes the universal ecommerce average; the indie SaaS subset runs 5 to 10 points higher than the ecommerce baseline due to higher-intent traffic.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "tripwire-conversion-rate",
@@ -216,8 +216,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on founder's observed data across 41 indie SaaS teardowns and validated against the Brunson tripwire patterns documented in DotCom Secrets. Use as directional anchor for indie SaaS specifically; ecommerce tripwires (physical product trial) run different baselines.",
-    lastVerified: "2026-05-19",
+      "Range based on ConvertKit's creator-commerce benchmarks for low-ticket digital products, OpenView Partners' pricing-tier and value-ladder research, and the founder's observed data across 41 indie SaaS teardowns. Cross-checked against the Brunson tripwire patterns documented in DotCom Secrets. Use as directional anchor for indie SaaS specifically; ecommerce tripwires (physical product trial) run different baselines.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "email-open-rate",
@@ -274,8 +274,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on ConvertKit's 2024 indie creator benchmarks and validated against the founder's observed data across personal newsletter operations. Excludes Apple Mail Privacy Protection inflation where possible.",
-    lastVerified: "2026-05-19",
+      "Range based on ConvertKit's 2024 indie creator benchmarks, Lenny Rachitsky's creator-and-founder email survey, and the founder's observed data across personal newsletter operations. Excludes Apple Mail Privacy Protection inflation where possible.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "email-click-rate",
@@ -332,8 +332,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on ConvertKit's 2024 indie operator benchmarks for creators with 1,000 to 25,000 subscribers. Validated against the founder's Soap Opera Sequence and Seinfeld Email observed data.",
-    lastVerified: "2026-05-19",
+      "Range based on ConvertKit's 2024 indie operator benchmarks for creators with 1,000 to 25,000 subscribers, Lenny Rachitsky's creator-and-founder email survey, and the founder's Soap Opera Sequence and Seinfeld Email observed data.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "trial-to-paid-conversion",
@@ -506,8 +506,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on Brunson Perfect Webinar implementations and the founder's observed range across high-ticket coaching webinars. Free-webinar bands assume the registration is genuinely free (no email gating beyond the form).",
-    lastVerified: "2026-05-19",
+      "Range based on Lenny Rachitsky's launch-and-demo survey, OpenView Partners' demo-funnel research for product-led SaaS, the Brunson Perfect Webinar implementation pattern, and the founder's observed range across high-ticket coaching webinars. Free-webinar bands assume the registration is genuinely free (no email gating beyond the form).",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "saas-mrr-growth-rate",
@@ -750,8 +750,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on ProfitWell's 2024 SaaS retention research and the founder's observed range across teardowns. Cohort-based LTV calculations recommended over flat 1/churn projections.",
-    lastVerified: "2026-05-19",
+      "Range based on ProfitWell's 2024 SaaS retention research, OpenView Partners' annual SaaS benchmark report, Lenny Rachitsky's retention survey, and the founder's observed range across teardowns. Cohort-based LTV calculations recommended over flat 1/churn projections.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "free-to-paid-conversion",
@@ -869,8 +869,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on ProfitWell refund research and observed indie SaaS data across 41 teardowns. Heavily moderated by guarantee window length and product category.",
-    lastVerified: "2026-05-19",
+      "Range based on ProfitWell refund research, ConvertKit's creator-commerce refund benchmarks, OpenView Partners' annual SaaS report, and observed indie SaaS data across 41 teardowns. Heavily moderated by guarantee window length and product category.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "cold-email-reply-rate",
@@ -1167,8 +1167,8 @@ export const BENCHMARK_ENTRIES: ReadonlyArray<BenchmarkEntry> = [
       },
     ],
     sourceNote:
-      "Range based on observed indie SaaS launches across the founder's teardown dataset and validated against IndieHackers public timeline data.",
-    lastVerified: "2026-05-19",
+      "Range based on observed indie SaaS launches across the founder's teardown dataset, Lenny Rachitsky's 0-to-1 founder survey, OpenView Partners' early-stage SaaS report, and IndieHackers public timeline data.",
+    lastVerified: "2026-05-20",
   },
   {
     slug: "annual-vs-monthly-discount",
