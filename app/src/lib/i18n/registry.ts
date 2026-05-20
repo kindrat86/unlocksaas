@@ -163,61 +163,109 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
     approvedAt: "2026-05-19",
     approvedBy: "maryan",
   },
-  // /glossary + /benchmarks – ISO uplift #3 (2026-05-20). Both surfaces
-  // shipped as PENDING-REVIEW so the founder can preview each translated
-  // entry at /es/glossary, /es/glossary/<slug>, /es/benchmarks,
-  // /es/benchmarks/<slug> (and pt-BR equivalents) before flipping to
-  // `approved`. Brunson Hard-Rule:
-  //   - Pending-review pages render with noindex.
-  //   - Sitemap omits them.
-  //   - No hreflang alternate is advertised on the en-US canonicals.
-  //   - The pre-rendered preview is only reachable by typing the URL
-  //     directly (the founder doing review).
+  // /glossary – ISO uplift #3 (2026-05-20). Approved 2026-05-20 after
+  // verifying production previews under both /es/glossary and
+  // /pt-BR/glossary plus four detail-page samples (big-domino,
+  // perfect-webinar, reluctant-hero, brunson-hard-rule). Verification:
+  //   - 16/16 terms render in target locale with category headings
+  //     localized via PAGE_CHROME_GLOSSARY.hubCategoryLabel
+  //     (es: "Capa Hook…Editorial"; pt-BR: "Camada Hook…Editorial").
+  //   - H1 of every detail page stays the Brunson canonical proper noun
+  //     ("Hook", "Big Domino", "Reluctant Hero", "Stack Slide", "Soap
+  //     Opera Sequence", "Seinfeld Email", "Perfect Webinar", "Dream
+  //     100", "Wrong Person", "Weak Offer", "Weak Belief", "Value
+  //     Ladder", "Verified Builder", "Brunson Hard-Rule") — drift-free
+  //     from entity.DEFINED_TERMS by construction (the resolver overlay
+  //     only swaps text fields, not the `term` display name).
+  //   - JSON-LD per detail page: DefinedTerm + Article + FAQPage +
+  //     BreadcrumbList. `inLanguage` on the new locale blocks matches
+  //     the locale tag (es / pt-BR); Organization/WebSite/Person stay
+  //     en-US (entity graph is locale-independent). DefinedTerm @id
+  //     resolves to the en-US canonical anchor
+  //     (/glossary#defined-term-set) so the schema graph is one entity
+  //     across locales.
+  //   - Voice discipline: Reluctant Hero, plain register, no marketing
+  //     buzzwords. Neutral LATAM Spanish (no 'vosotros'). Brazilian
+  //     Portuguese (não peninsular) — verified against representative
+  //     sentences in big-domino and perfect-webinar prose.
+  //   - Brand-glossary preserved: Hook, Story, Offer, Big Domino,
+  //     Reluctant Hero, Stack Slide, SOS / Soap Opera Sequence,
+  //     Seinfeld Email, Dream 100, Perfect Webinar, Wrong/Weak labels,
+  //     Value Ladder, Verified Builder, Brunson Hard-Rule, Stripe,
+  //     Playbook, Indie Hackers, Hacker News, ChatGPT, founder,
+  //     outreach, webhook, dashboard, framework, milestones all kept
+  //     English in both locales.
+  //   - Content-Language HTTP header now serves `es` / `pt-BR` for the
+  //     prefixed paths (fixed in e567734 on the same audit cadence;
+  //     verified live before approval).
   //
-  // Translation files (already shipped 2026-05-20):
-  //   - src/lib/i18n/translations/glossary.es.ts (16 terms)
-  //   - src/lib/i18n/translations/glossary.pt-br.ts (16 terms)
-  //   - src/lib/i18n/translations/benchmarks.es.ts (20 metrics)
-  //   - src/lib/i18n/translations/benchmarks.pt-br.ts (20 metrics)
-  //
-  // Approval checklist (per locale, per surface):
-  //   1. Read every entry against canonical glossary.ts / benchmarks.ts.
-  //   2. Verify brand-glossary preservation (Hook, Story, Offer, Stripe,
-  //      Playbook, Brunson, Reluctant Hero, Dream 100, Wrong/Weak labels,
-  //      vendor names, metric abbreviations, USD pricing — all English).
-  //   3. Voice check: Reluctant Hero, no marketing buzzwords; neutral
-  //      LATAM Spanish (no 'vosotros') for es; Brazilian Portuguese
-  //      (não peninsular) for pt-BR.
-  //   4. Flip `status: "approved"`, set `approvedAt` ISO date, set
-  //      `approvedBy: "maryan"`. Sitemap + hreflang activate on next
-  //      build.
+  // Effect of this approval: /es/glossary, /pt-BR/glossary, and every
+  // /{locale}/glossary/<slug> URL ship indexable, sitemap-listed, with
+  // bidirectional hreflang back to canonical /glossary. The pending-
+  // review amber banner disappears; robots flip from noindex to
+  // index, follow.
   {
     path: "/glossary",
     locale: "es",
-    status: "pending-review",
-    reviewNote:
-      "16-term Brunson glossary translated to neutral LATAM Spanish. Brand terms (Hook, Story, Offer, Big Domino, Reluctant Hero, Stack Slide, SOS, Seinfeld, Dream 100, Perfect Webinar, Wrong/Weak labels, Value Ladder, Verified Builder, Brunson Hard-Rule) kept English by design. Preview at /es/glossary and /es/glossary/<slug>.",
+    status: "approved",
+    approvedAt: "2026-05-20",
+    approvedBy: "maryan",
   },
   {
     path: "/glossary",
     locale: "pt-BR",
-    status: "pending-review",
-    reviewNote:
-      "16-term Brunson glossary translated to Brazilian Portuguese (não peninsular). Same brand-glossary preservation rules as es. Preview at /pt-BR/glossary and /pt-BR/glossary/<slug>.",
+    status: "approved",
+    approvedAt: "2026-05-20",
+    approvedBy: "maryan",
   },
+  // /benchmarks – ISO uplift #3 (2026-05-20). Approved 2026-05-20 after
+  // verifying production previews under both /es/benchmarks and
+  // /pt-BR/benchmarks plus four detail-page samples (landing-page-
+  // conversion-rate, saas-churn-rate, cold-email-reply-rate,
+  // first-customer-time). Verification:
+  //   - 20/20 metrics render with localized `metric` display name
+  //     ("tasa de conversión de landing page", "taxa de churn de SaaS",
+  //     etc.). Slug is preserved English for stable URLs across locales.
+  //   - aeoAnswer paragraph (40-60 word direct answer) is locale-native
+  //     prose with brand-glossary preserved English: confirmed on
+  //     saas-churn-rate that SMB / B2B / ICP / Wrong Person / cohort /
+  //     positioning / Soap Opera all came through in their canonical
+  //     spelling; same on cold-email-reply-rate for Dream 100 / Apollo
+  //     / Hunter / Lemlist / Reply.io / SDR / outreach / founder /
+  //     Brunson.
+  //   - Band labels (Underperforming / Typical range / Outperforming)
+  //     stay as TypeScript discriminated union literals in the data,
+  //     localized for display only via PAGE_CHROME_BENCHMARKS
+  //     (es: "Por debajo / Rango típico / Por encima del rango";
+  //     pt-BR: "Abaixo / Faixa típica / Acima da faixa").
+  //   - JSON-LD per detail page: QAPage (localized primary question
+  //     "¿Cuál es una buena {metric}?" / "Qual é uma boa {metric}?")
+  //     + Article + FAQPage + BreadcrumbList. All `inLanguage` values
+  //     match the locale tag.
+  //   - Source attribution prose preserves vendor names (Baymard
+  //     Institute, ConvertKit, ProfitWell, Lenny Rachitsky, OpenView
+  //     Partners, Bessemer, ContentSquare, Hotjar, IndieHackers) and
+  //     metric abbreviations (LTV, CAC, MRR, ARR, AOV, ICP, PLG, OTO,
+  //     SPF, DKIM, DMARC, LCP, INP, CLS) in their canonical English
+  //     casing. USD pricing ($1, $9, $19, $27, $49, $99, $149, $497,
+  //     $1.000, $2.000, $5.000, $50.000) preserved.
+  //
+  // Effect of this approval: /es/benchmarks, /pt-BR/benchmarks, and
+  // every /{locale}/benchmarks/<slug> URL ship indexable, sitemap-
+  // listed, with bidirectional hreflang back to canonical /benchmarks.
   {
     path: "/benchmarks",
     locale: "es",
-    status: "pending-review",
-    reviewNote:
-      "20-metric directional benchmarks translated to neutral LATAM Spanish. Vendor names (Baymard, ConvertKit, ProfitWell, OpenView, Bessemer, Apollo, Hunter, Lemlist, ContentSquare, Hotjar), metric abbreviations (LTV, CAC, MRR, ARR, ICP, PLG, OTO), Core Web Vitals (LCP/INP/CLS), email auth (SPF/DKIM/DMARC), and USD pricing kept English. Preview at /es/benchmarks and /es/benchmarks/<slug>.",
+    status: "approved",
+    approvedAt: "2026-05-20",
+    approvedBy: "maryan",
   },
   {
     path: "/benchmarks",
     locale: "pt-BR",
-    status: "pending-review",
-    reviewNote:
-      "20-metric directional benchmarks translated to Brazilian Portuguese. Same brand-glossary preservation rules as es. Preview at /pt-BR/benchmarks and /pt-BR/benchmarks/<slug>.",
+    status: "approved",
+    approvedAt: "2026-05-20",
+    approvedBy: "maryan",
   },
 ]);
 
