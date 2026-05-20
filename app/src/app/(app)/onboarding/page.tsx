@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getOnboardingStatus, type OnboardingStatus } from "@/lib/onboarding";
 import { Badge } from "@/components/ui/badge";
@@ -16,13 +18,48 @@ import {
 
 // Onboarding is a personalised, server-rendered view. Don't pre-render or
 // cache it — every render must read fresh profile + project state.
+//
+// Under Cache Components (Next 16+) the old `export const dynamic = "force-dynamic"`
+// route segment no longer exists. Replacement pattern: the top-level page
+// renders a static skeleton wrapped in `<Suspense>`, and the auth + Supabase
+// reads happen in a child component that calls `await connection()` to defer
+// to request time. The Suspense fallback ships from the CDN immediately; the
+// personalized content streams in once auth + profile resolve.
 
-export default async function OnboardingPage(
+export default function OnboardingPage(
   props: {
     searchParams: Promise<{ session_id?: string; connect?: string; error?: string }>;
   }
 ) {
-  const searchParams = await props.searchParams;
+  return (
+    <Suspense fallback={<OnboardingSkeleton />}>
+      <OnboardingBody searchParams={props.searchParams} />
+    </Suspense>
+  );
+}
+
+function OnboardingSkeleton() {
+  return (
+    <div className="space-y-8">
+      <header>
+        <h1 className="text-3xl font-bold leading-tight">
+          Welcome to the Playbook.
+        </h1>
+        <p className="text-muted-foreground mt-2 leading-relaxed">
+          Loading your onboarding state…
+        </p>
+      </header>
+    </div>
+  );
+}
+
+async function OnboardingBody({
+  searchParams: searchParamsP,
+}: {
+  searchParams: Promise<{ session_id?: string; connect?: string; error?: string }>;
+}) {
+  await connection();
+  const searchParams = await searchParamsP;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
