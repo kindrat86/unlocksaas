@@ -11,7 +11,7 @@ import {
 } from "@/lib/funnel-playbooks";
 import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
-import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
@@ -36,7 +36,7 @@ export async function generateMetadata(props: {
   return {
     title: e.metaTitle,
     description: e.metaDescription,
-    alternates: pageAlternates(canonical),
+    alternates: markdownAlternate(canonical, `${canonical}/md`),
     robots: { index: true, follow: true },
     openGraph: {
       type: "article",
