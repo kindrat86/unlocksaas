@@ -28,6 +28,15 @@ import {
   scheduleGrantForCheckout,
   scheduleRevokeForCustomer,
 } from "@/lib/community";
+import {
+  attachReferralFromSession,
+  findReferralByCustomerId,
+  markReferralChurned,
+  recordCommissionForInvoice,
+  recordCommissionForStarter,
+  voidCommissionsForCharge,
+} from "@/lib/affiliate";
+import { sendAffiliateCommissionEmail } from "@/lib/affiliate-email";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
 
@@ -105,6 +114,10 @@ export async function POST(req: NextRequest) {
         await recordIdentityAbConversion(session);
         await recordDiagnosticAttribution(session);
         await recordFoundingSeat(session);
+        // AFFILIATE: attribute the visitor to a referrer (if metadata.ref_code
+        // is present). For Starter (mode=payment) we also issue the one-shot
+        // commission here, because no invoice will fire for the $1 OTO.
+        await handleAffiliateAttribution(session);
         await capturePurchase(session);
         // FOLLOW-UP: short-circuit any active Cart Abandonment Recovery row
         // for this email so the cron stops chasing a paid customer.
@@ -129,6 +142,9 @@ export async function POST(req: NextRequest) {
         // Also schedules a safety-net community grant when this is the first
         // subscription invoice (catches checkout.session.completed drops).
         await handleInvoicePaymentSucceeded(invoice, event.id);
+        // AFFILIATE: recurring rev-share. Resolves the referral by customer
+        // id and writes a 50%-of-amount_paid commission row.
+        await handleAffiliateCommissionForInvoice(invoice);
         await captureInvoiceEvent(invoice, Event.InvoicePaymentSucceeded);
         break;
       }
@@ -151,6 +167,11 @@ export async function POST(req: NextRequest) {
         // Also schedules the Verified Builders community revoke (records audit
         // row; manual operator removal from Discord/Skool is the v1 contract).
         await handleSubscriptionDeleted(sub, event.id);
+        // AFFILIATE: stamp the referral as churned (kills the recurring rail).
+        // Existing payable/paid commissions are NOT clawed back.
+        const subCustomerId =
+          typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null;
+        if (subCustomerId) await markReferralChurned(subCustomerId);
         await captureServerAndFlush(
           stripeDistinctId(
             typeof sub.customer === "string" ? sub.customer : sub.customer?.id,
@@ -168,6 +189,10 @@ export async function POST(req: NextRequest) {
         const charge = event.data.object as Stripe.Charge;
         // BILLING: mark billing_payments refund + stamp profiles.refunded_at.
         await handleChargeRefunded(charge);
+        // AFFILIATE: void any pending/payable commissions tied to this charge.
+        // Already-paid commissions are NOT clawed back automatically – Maryan
+        // reconciles those manually via the dashboard if needed.
+        if (charge.id) await voidCommissionsForCharge(charge.id);
         await captureServerAndFlush(
           stripeDistinctId(
             typeof charge.customer === "string"
@@ -917,4 +942,150 @@ async function recordFoundingSeat(session: Stripe.Checkout.Session) {
   console.log(
     `[founding-cohort] granted seat ${seatNumber} to ${email} (session ${session.id})`
   );
+}
+
+// ── Affiliate program: attribution + commissions ─────────────────────────────
+//
+// When session.metadata.ref_code is present, attribute the referral and (for
+// Starter checkouts only) issue the one-shot commission. Core checkouts get
+// their commission rows on the recurring invoice.payment_succeeded event so
+// month-over-month rev share works without any extra plumbing.
+//
+// All errors are logged + swallowed. An affiliate-tracking miss must never
+// block the billing webhook from returning 200 to Stripe.
+async function handleAffiliateAttribution(session: Stripe.Checkout.Session) {
+  try {
+    const result = await attachReferralFromSession(session);
+    if (!result) return;
+
+    // Starter (mode=payment) gets its commission here — there's no invoice
+    // event for the $1 OTO. Core checkouts wait for invoice.payment_succeeded
+    // (where billing_reason='subscription_create' fires the same flow as
+    // monthly renewals).
+    if (session.mode !== "payment") return;
+
+    // Resolve the affiliate's snapshot percentage for this commission. We
+    // re-read it here (vs. plumbing it through) so the snapshot reflects the
+    // value at commission-issue time, not at referral-create time.
+    const admin = createAdminClient();
+    const looseAdmin = admin as unknown as { from: (t: string) => any };
+    const { data: affRow } = await looseAdmin
+      .from("affiliates")
+      .select("rev_share_pct,rev_share_floor_pct")
+      .eq("id", result.affiliateId)
+      .maybeSingle();
+    const pct = (affRow?.rev_share_pct as number | undefined) ?? 50;
+
+    const inserted = await recordCommissionForStarter({
+      session,
+      referralId: result.referralId,
+      affiliateId: result.affiliateId,
+      revSharePctSnapshot: pct,
+    });
+
+    if (inserted) {
+      await notifyAffiliateOfCommission(result.affiliateId, {
+        kind: "starter",
+        gross_amount_cents: session.amount_total ?? 0,
+        commission_cents: Math.round(
+          ((session.amount_total ?? 0) * pct) / 100,
+        ),
+      });
+    }
+  } catch (err) {
+    console.error(
+      `[affiliate] attribution failed for session ${session.id}:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
+}
+
+async function handleAffiliateCommissionForInvoice(invoice: Stripe.Invoice) {
+  try {
+    const customerId =
+      typeof invoice.customer === "string"
+        ? invoice.customer
+        : invoice.customer?.id ?? null;
+    if (!customerId) return;
+
+    const referral = await findReferralByCustomerId(customerId);
+    if (!referral) return;
+    // 'churned' referrals shouldn't generate new commissions — they still
+    // see historical earnings on the dashboard, but no new rows accrue.
+    if (referral.status === "churned") return;
+
+    const pct = referral.rev_share_pct;
+    const inserted = await recordCommissionForInvoice({
+      invoice,
+      referralId: referral.id,
+      affiliateId: referral.affiliate_id,
+      revSharePctSnapshot: pct,
+    });
+
+    if (inserted && invoice.amount_paid && invoice.amount_paid > 0) {
+      await notifyAffiliateOfCommission(referral.affiliate_id, {
+        kind:
+          invoice.billing_reason === "subscription_create"
+            ? "core_initial"
+            : "core_renewal",
+        gross_amount_cents: invoice.amount_paid,
+        commission_cents: Math.round((invoice.amount_paid * pct) / 100),
+      });
+    }
+  } catch (err) {
+    console.error(
+      `[affiliate] commission failed for invoice ${invoice.id}:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
+}
+
+/**
+ * Fire the "you just earned $X" email. Best-effort: a Resend failure is
+ * logged but never bubbled up – the commission is already in the DB.
+ *
+ * Throttled to first commission of the day (cheap on-Resend; we deduplicate
+ * via affiliate_clicks + commission count). For v1 we send every time
+ * (Maryan can mute via Resend audience preferences). Tighten later if noisy.
+ */
+async function notifyAffiliateOfCommission(
+  affiliateId: string,
+  commission: {
+    kind: "starter" | "core_initial" | "core_renewal" | "other";
+    gross_amount_cents: number;
+    commission_cents: number;
+  },
+) {
+  try {
+    const admin = createAdminClient();
+    const looseAdmin = admin as unknown as { from: (t: string) => any };
+    const { data: row } = await looseAdmin
+      .from("affiliates")
+      .select(
+        `id,payout_email,
+         profile:profiles!inner(email,builder_name)`,
+      )
+      .eq("id", affiliateId)
+      .maybeSingle();
+
+    if (!row) return;
+    const profile = row.profile as { email?: string; builder_name?: string | null };
+    const to =
+      (row.payout_email as string | null) ??
+      (profile?.email ?? null);
+    if (!to) return;
+
+    await sendAffiliateCommissionEmail({
+      to,
+      builderName: profile?.builder_name ?? null,
+      kind: commission.kind,
+      grossAmountCents: commission.gross_amount_cents,
+      commissionCents: commission.commission_cents,
+    });
+  } catch (err) {
+    console.error(
+      `[affiliate] notify email failed for ${affiliateId}:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
 }

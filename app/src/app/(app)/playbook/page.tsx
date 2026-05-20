@@ -105,6 +105,24 @@ async function PlaybookDashboardBody() {
           </Button>
         </CardContent>
       </Card>
+
+      <Card className="border-dashed">
+        <CardHeader>
+          <CardTitle className="text-base">
+            Refer a builder, keep 50% – lifetime.
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-muted-foreground space-y-3">
+          <p>
+            Verified Builders get a referral link the day they sign in. If
+            someone you send subscribes, you keep half of what they pay –
+            every month, as long as they stay.
+          </p>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/affiliate">Open your referral dashboard</Link>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
