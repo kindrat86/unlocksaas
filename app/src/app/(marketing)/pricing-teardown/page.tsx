@@ -9,6 +9,7 @@ import {
 } from "@/lib/pricing-teardowns";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 // Latest lastVerified across the manifest – feeds Dataset.dateModified.
 const PRICING_LATEST_VERIFIED = PRICING_TEARDOWNS.reduce(
@@ -163,6 +164,14 @@ export default function PricingTeardownHub() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Pricing teardown hub TL;DR"
+        cluster="Pricing teardowns"
+        count={`${PRICING_TEARDOWNS.length} indie SaaS pricing teardowns`}
+        intent="Indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics – the same four levers the Playbook applies to your own pricing page."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + BreadcrumbList"
+      />
 
       {/* How to read */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="lens">

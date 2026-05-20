@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { DEFINED_TERMS, BASE_URL, ID } from "@/lib/seo/entity";
 import { glossaryTermSlug } from "@/lib/glossary";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
  * /glossary – the indexable surface for the Brunson glossary the site
@@ -192,6 +193,14 @@ export default function GlossaryPage() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Brunson glossary hub TL;DR"
+        cluster="Brunson glossary"
+        count={`${DEFINED_TERMS.length} Brunson sales-funnel terms`}
+        intent="Working definitions of the Russell Brunson sales-funnel concepts Unlock SaaS teaches. Each term has a stable @id anchor plus a long-form per-term page with action bullets, worked example, common confusions, related terms, and FAQ."
+        schema="DefinedTermSet + per-term DefinedTerm + Article + FAQPage + BreadcrumbList"
+      />
 
       {/* Table of contents – every term as a same-page link. Pure HTML
           anchor list so it works without JavaScript and gives crawlers a

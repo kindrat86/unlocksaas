@@ -9,6 +9,7 @@ import {
 } from "@/lib/comparisons";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 // Latest lastVerified across the manifest – feeds Dataset.dateModified.
 const COMPARE_LATEST_VERIFIED = COMPARISONS.reduce(
@@ -155,6 +156,14 @@ export default function CompareHub() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Compare hub TL;DR"
+        cluster="Head-to-head comparisons"
+        count={`${COMPARISONS.length} symmetric head-to-head comparisons`}
+        intent="Symmetric head-to-head comparisons of the tools indie SaaS founders are mid-evaluation on. Dimension-by-dimension scoring with an honest indie-founder verdict."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + Review + BreadcrumbList"
+      />
 
       {/* How to read */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="lens">

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ALTERNATIVES } from "@/lib/alternatives";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 // Latest lastVerified across the manifest – feeds Dataset.dateModified.
 const ALTERNATIVES_LATEST_VERIFIED = ALTERNATIVES.reduce(
@@ -163,6 +164,14 @@ export default function AlternativesHub() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Alternatives hub TL;DR"
+        cluster="Alternatives"
+        count={`${ALTERNATIVES.length} named-competitor honest comparisons`}
+        intent="Named-competitor comparison pages. Every entry respects the competitor's real value proposition and names the category difference, not a quality gap."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + BreadcrumbList"
+      />
 
       {/* The list */}
       <section

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BENCHMARK_ENTRIES } from "@/lib/benchmarks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 
 const CANONICAL = "/benchmarks";
@@ -115,6 +116,14 @@ export default function BenchmarksHubPage() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Benchmarks hub TL;DR"
+        cluster="Funnel metric benchmarks"
+        count={`${BENCHMARK_ENTRIES.length} directional metric ranges`}
+        intent="Directional ranges for the most-asked indie SaaS funnel metrics, with AEO-formatted direct answers, three-band breakdown ('underperforming / typical / outperforming'), drivers in order of impact, common misreadings, and source attribution."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + BreadcrumbList"
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-4"
