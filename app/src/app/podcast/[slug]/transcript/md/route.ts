@@ -36,7 +36,10 @@ export function generateStaticParams() {
   return PODCAST_EPISODE_SLUGS.map((slug) => ({ slug }));
 }
 
-export const dynamicParams = false;
+// dynamicParams = false removed in #78: Cache Components (cacheComponents:
+// true) rejects route-segment configs at compile time. The GET handler
+// below already short-circuits unknown slugs with a 404 response, so
+// removal is behaviour-neutral.
 
 export async function GET(
   _request: Request,

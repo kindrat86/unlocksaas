@@ -63,7 +63,11 @@ export function generateStaticParams() {
   return PODCAST_EPISODE_SLUGS.map((slug) => ({ slug }));
 }
 
-export const dynamicParams = false;
+// dynamicParams = false removed in #78: Cache Components (cacheComponents:
+// true) rejects route-segment configs at compile time. Unknown slugs still
+// 404 cleanly via the notFound() call in the page body below — the registry
+// is a closed set, so any /podcast/<unknown>/transcript hit lands on the
+// generic not-found.tsx the same way it did under dynamicParams: false.
 
 type RouteParams = { slug: string };
 
