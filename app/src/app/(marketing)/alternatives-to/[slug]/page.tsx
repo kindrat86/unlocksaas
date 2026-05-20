@@ -24,6 +24,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForAlternative,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Programmatic SEO surface — Unlock SaaS vs {Alternative}.
@@ -93,7 +98,11 @@ export async function generateMetadata(
  * Pure data → JSON string. Called once per render of a prerendered page,
  * so this runs at build time. Safe to keep simple; no user input flows in.
  */
-function buildJsonLd(alt: Alternative, canonicalUrl: string): string[] {
+function buildJsonLd(
+  alt: Alternative,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // Subject-entity for `about` and `mentions`. If the manifest carries a
   // homepageUrl we name the competitor as a real Organization with a URL
   // Google's Knowledge Graph and LLM retrievers can walk; otherwise we
@@ -145,7 +154,7 @@ function buildJsonLd(alt: Alternative, canonicalUrl: string): string[] {
     inLanguage: "en-US",
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: alt.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -206,7 +215,13 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
   if (!alt) notFound();
 
   const canonicalUrl = `${BASE}/alternatives-to/${alt.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(alt, canonicalUrl);
+  const paaPairs = paaForAlternative(alt);
+  const mergedFaqs = mergePaaIntoFaqs(alt.faqs, paaPairs);
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    alt,
+    canonicalUrl,
+    mergedFaqs,
+  );
 
   // ----- Cross-link lookups (closes the 2026-05-17 link-graph dead-end) ------
   // Each is defensive: if no matching entity exists in the sister manifests
@@ -532,6 +547,9 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
         </h2>
         <p className="text-base leading-relaxed">{alt.honestVerdict}</p>
       </section>
+      {/* ----- People Also Ask — canonical PAA phrasings sourced from
+          this alternative's whatItIs / honestVerdict / whoForIt / pricing. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
       {/* ----- FAQ — mirrors FAQPage JSON-LD above ----- */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">

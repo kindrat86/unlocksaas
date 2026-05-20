@@ -18,6 +18,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForGlossary,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Programmatic SEO surface – Glossary term: {term}.
@@ -85,7 +90,11 @@ export async function generateMetadata(props: {
 
 // ----- JSON-LD (per-slug) ----------------------------------------------------
 
-function buildJsonLd(g: GlossaryEntry, canonicalUrl: string): string[] {
+function buildJsonLd(
+  g: GlossaryEntry,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // DefinedTerm: matches the entry inside the site-wide DefinedTermSet
   // (id: #brunson-glossary) so a single canonical glossary node lives in
   // the schema graph. `name` and `description` mirror the short
@@ -139,7 +148,7 @@ function buildJsonLd(g: GlossaryEntry, canonicalUrl: string): string[] {
     inLanguage: "en-US",
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: g.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -217,9 +226,12 @@ export default async function GlossaryDetailPage(props: {
   if (!g) notFound();
 
   const canonicalUrl = `${BASE}/glossary/${g.slug}`;
+  const paaPairs = paaForGlossary(g);
+  const mergedFaqs = mergePaaIntoFaqs(g.faqs, paaPairs);
   const [termJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     g,
     canonicalUrl,
+    mergedFaqs,
   );
 
   // Resolve related terms once at render time (sibling lookups are O(1)).
@@ -450,6 +462,10 @@ export default async function GlossaryDetailPage(props: {
           </div>
         </section>
       ) : null}
+
+      {/* People Also Ask – question-form H3s matched to canonical PAA
+          phrasings, sourced from this entry's curated fields. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       {/* FAQ */}
       <section

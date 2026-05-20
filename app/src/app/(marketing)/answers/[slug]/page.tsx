@@ -14,6 +14,8 @@ import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import { paaForAnswer } from "@/lib/seo/paa-questions";
 
 
 export function generateStaticParams() {
@@ -50,7 +52,11 @@ export async function generateMetadata(props: {
   };
 }
 
-function buildJsonLd(e: AnswerEntry, canonicalUrl: string): string[] {
+function buildJsonLd(
+  e: AnswerEntry,
+  canonicalUrl: string,
+  paaPairs: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // QAPage is the right schema for a direct-answer page (Q + accepted answer).
   // Google's structured-data team explicitly documents QAPage as the
   // citation-friendly format for single-question pages.
@@ -108,9 +114,30 @@ function buildJsonLd(e: AnswerEntry, canonicalUrl: string): string[] {
     ],
   };
 
+  // FAQPage emitted alongside QAPage: the PAA H3s rendered on the page
+  // (the primary question + the supporting-point follow-ups) feed
+  // FAQPage rich-result eligibility. QAPage handles the canonical "one
+  // question, one accepted answer" intent; FAQPage handles the
+  // multi-question PAA-style nuance.
+  const faqPage = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: "en-US",
+    mainEntity: paaPairs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.a,
+        inLanguage: "en-US",
+      },
+    })),
+  };
+
   return [
     JSON.stringify(qaPage),
     JSON.stringify(article),
+    JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
   ];
 }
@@ -132,7 +159,12 @@ export default async function AnswerDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/answers/${e.slug}`;
-  const [qaJson, articleJson, breadcrumbJson] = buildJsonLd(e, canonicalUrl);
+  const paaPairs = paaForAnswer(e);
+  const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    e,
+    canonicalUrl,
+    paaPairs,
+  );
 
   const glossaryLinks = e.relatedGlossary
     .map((termSlug) => {
@@ -149,6 +181,7 @@ export default async function AnswerDetailPage(props: {
     <article className="min-h-screen">
       <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
+      <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
 
       <nav
@@ -216,6 +249,11 @@ export default async function AnswerDetailPage(props: {
           </CardContent>
         </Card>
       </section>
+
+      {/* People Also Ask – PAA H3s sourced from this entry's
+          supporting points; the entry's question + directAnswer is the
+          QAPage primary, and these are the nuance follow-ups. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"

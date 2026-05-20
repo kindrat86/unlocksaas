@@ -17,6 +17,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForNiche,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 
 export function generateStaticParams() {
@@ -53,7 +58,11 @@ export async function generateMetadata(props: {
   };
 }
 
-function buildJsonLd(e: NicheEntry, canonicalUrl: string): string[] {
+function buildJsonLd(
+  e: NicheEntry,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -91,7 +100,7 @@ function buildJsonLd(e: NicheEntry, canonicalUrl: string): string[] {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    mainEntity: e.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -146,7 +155,13 @@ export default async function ForDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/for/${e.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(e, canonicalUrl);
+  const paaPairs = paaForNiche(e);
+  const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    e,
+    canonicalUrl,
+    mergedFaqs,
+  );
 
   const glossaryLinks = e.relatedGlossary
     .map((termSlug) => {
@@ -250,6 +265,10 @@ export default async function ForDetailPage(props: {
         </h2>
         <p className="text-base leading-relaxed">{e.whatCompounds}</p>
       </section>
+
+      {/* People Also Ask – cohort-tuned PAA H3s sourced from this
+          niche's heroSubhead, commonMistake, and whatCompounds. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-4 leading-tight">

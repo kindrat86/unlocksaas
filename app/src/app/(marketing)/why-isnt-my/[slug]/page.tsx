@@ -17,6 +17,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForWhyIsntMy,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 
 export function generateStaticParams() {
@@ -53,7 +58,11 @@ export async function generateMetadata(props: {
   };
 }
 
-function buildJsonLd(e: WhyIsntMyEntry, canonicalUrl: string): string[] {
+function buildJsonLd(
+  e: WhyIsntMyEntry,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   const article = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -88,7 +97,7 @@ function buildJsonLd(e: WhyIsntMyEntry, canonicalUrl: string): string[] {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    mainEntity: e.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -143,7 +152,13 @@ export default async function WhyIsntMyDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/why-isnt-my/${e.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(e, canonicalUrl);
+  const paaPairs = paaForWhyIsntMy(e);
+  const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    e,
+    canonicalUrl,
+    mergedFaqs,
+  );
 
   const glossaryLinks = e.relatedGlossary
     .map((termSlug) => {
@@ -267,6 +282,10 @@ export default async function WhyIsntMyDetailPage(props: {
           ))}
         </ol>
       </section>
+
+      {/* People Also Ask – canonical "Why isn't my X" PAA H3s sourced
+          from this entry's tldr, directional range, and checklist. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"
