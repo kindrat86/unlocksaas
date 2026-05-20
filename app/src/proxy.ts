@@ -10,6 +10,13 @@ import {
 import { toMarkdownPath, wantsMarkdown } from "@/lib/seo/markdown-path";
 import { BASE_URL } from "@/lib/seo/entity";
 
+// Affiliate program (see lib/affiliate.ts). Re-declared here to avoid importing
+// the full lib (which transitively pulls Supabase + crypto) into the proxy
+// bundle. The full constants live in lib/affiliate.ts and must stay in sync.
+const REF_COOKIE = "unlocksaas_ref";
+const REF_COOKIE_MAX_AGE = 60 * 60 * 24 * 90; // 90 days
+const REF_CODE_RE = /^[a-z0-9]{6,16}$/i; // permissive: matches lib/affiliate's CODE_ALPHABET
+
 /**
  * Emit an explicit `Link: <…>; rel="canonical"` HTTP header on every proxied
  * response (2026-05-21 SEO audit fix).
@@ -97,6 +104,33 @@ export async function proxy(request: NextRequest) {
   }
 
   const response = await updateSession(request);
+
+  // Affiliate attribution: persist `?ref=<code>` query into a 90-day cookie
+  // so a Verified Builder posting `unlocksaas.com/?ref=marco_x` on social gets
+  // the same first-touch attribution as the canonical /r/<code> deeplink.
+  //
+  // The cookie is read by /api/checkout and stamped onto Stripe metadata.
+  // We do NOT validate the code against the DB here – the proxy must stay
+  // free of Supabase calls (it runs on every request, including static
+  // assets). The webhook does the affiliate lookup before crediting; an
+  // unknown code in a cookie is harmless.
+  //
+  // Self-overwrite policy: first-touch wins. Don't overwrite an existing
+  // cookie – otherwise a competing referrer in the same browser session
+  // could steal the attribution mid-funnel.
+  const refParam = request.nextUrl.searchParams.get("ref");
+  if (refParam && REF_CODE_RE.test(refParam)) {
+    const normalised = refParam.toLowerCase();
+    const existingRef = request.cookies.get(REF_COOKIE)?.value;
+    if (!existingRef) {
+      request.cookies.set(REF_COOKIE, normalised);
+      response.cookies.set(REF_COOKIE, normalised, {
+        maxAge: REF_COOKIE_MAX_AGE,
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+  }
 
   // A/B: identity_label sticky variant assignment.
   // Verified Builders (current ship) vs Paid Builders (the polar alternative)

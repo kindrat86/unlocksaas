@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { getStripe } from "@/lib/stripe";
 import {
   IDENTITY_AB_KEY,
   readIdentityFromCookies,
   readSubjectFromCookies,
 } from "@/lib/ab";
+import { REF_COOKIE } from "@/lib/affiliate";
 import { captureServer } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
 
@@ -55,6 +57,26 @@ export async function POST(req: NextRequest) {
   if (diagnosticBucket) abMetadata.diagnostic_bucket = diagnosticBucket;
   if (diagnosticLeadId && /^[0-9a-f-]{36}$/i.test(diagnosticLeadId)) {
     abMetadata.diagnostic_lead_id = diagnosticLeadId;
+  }
+
+  // Affiliate attribution: read the unlocksaas_ref cookie set by /r/<code> (or
+  // the proxy's ?ref= capture). The webhook's checkout.session.completed
+  // handler looks for metadata.ref_code, resolves the affiliate, and writes
+  // the affiliate_referrals + affiliate_commissions rows. Validation is
+  // permissive – the webhook is the source of truth and silently ignores
+  // unknown codes.
+  try {
+    const cookieStore = await cookies();
+    const refCookie = cookieStore.get(REF_COOKIE)?.value;
+    if (refCookie && /^[a-z0-9]{6,16}$/i.test(refCookie)) {
+      abMetadata.ref_code = refCookie.toLowerCase();
+    }
+  } catch (err) {
+    // Cookie read failure is non-fatal – proceed with the checkout.
+    console.warn(
+      "[checkout] could not read ref cookie:",
+      err instanceof Error ? err.message : err,
+    );
   }
   // Price type stamped in Stripe metadata so the Cart Abandonment Recovery
   // cadence can branch its copy on `checkout.session.expired` events. See
