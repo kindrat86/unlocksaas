@@ -26,6 +26,7 @@ import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
+  buildQuotationNode,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import {
@@ -155,7 +156,12 @@ function buildJsonLd(
     inLanguage,
   };
 
-  const article = {
+  // Article.citation: schema.org Quotation chain for verbatim external
+  // sources. Bound to the parent Article (not as a detached @graph node)
+  // so the citation graph stays connected to the article it supports.
+  // Brunson Hard-Rule: empty when no verbatim quotes are curated; module
+  // load already ran validateQuotations(). See @/lib/seo/quotation.
+  const article: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${g.term} ${chrome.detailSeoTitleSuffix}`,
@@ -174,6 +180,9 @@ function buildJsonLd(
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
   };
+  if (g.quotations && g.quotations.length > 0) {
+    article.citation = g.quotations.map(buildQuotationNode);
+  }
 
   const faqPage = {
     "@context": "https://schema.org",

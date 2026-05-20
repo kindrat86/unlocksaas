@@ -60,6 +60,10 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
+import {
+  validateQuotations,
+  type QuotationSchemaInput,
+} from "@/lib/seo/quotation";
 
 /** Where the term shows up in the shipped product surface. */
 export type GlossaryAppearance =
@@ -141,6 +145,23 @@ export interface GlossaryRow {
   appearsIn?: readonly GlossaryAppearance[];
   /** FAQ pairs for FAQPage JSON-LD + on-page accordion. */
   faqs: readonly GlossaryFaq[];
+  /**
+   * Verbatim external quotations this entry cites. Emitted on the
+   * /glossary/[slug] page as `Article.citation` – a chain of
+   * schema.org Quotation nodes attached to the parent Article. Each
+   * entry is an E-E-A-T signal AND a knowledge-graph backlink to the
+   * creator + source.
+   *
+   * Brunson Hard-Rule: `text` MUST be character-verbatim from the
+   * named source. No paraphrases. Module load (validate() below)
+   * runs validateQuotations() and fails the build on any entry that
+   * does not clear the honesty gate.
+   *
+   * Empty / omitted is the honest default. Populate per entry only
+   * when verbatim text from a named source has been curated. See
+   * `@/lib/seo/quotation` for the contract.
+   */
+  quotations?: readonly QuotationSchemaInput[];
   /** Audit date – last time the entry was re-read against strategy/ + product. */
   lastVerified: string;
 }
@@ -838,6 +859,16 @@ function validate() {
           `glossary.ts: entry "${g.slug}" relatedTerms references unknown slug "${rel}"`,
         );
       }
+    }
+    // Quotations honesty gate. Brunson Hard-Rule: a Quotation block
+    // is an E-E-A-T signal precisely because Google can de-duplicate
+    // its `text` against the cited source. A malformed Quotation
+    // would publish a citation graph that does not parse cleanly –
+    // worse than emitting no citation at all. validateQuotations
+    // throws on the first violation; empty quotations array is a
+    // no-op.
+    if (g.quotations && g.quotations.length > 0) {
+      validateQuotations(g.quotations, `glossary.ts:${g.slug}.quotations`);
     }
   }
 }

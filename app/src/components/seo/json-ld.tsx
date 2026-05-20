@@ -60,6 +60,10 @@ import {
   buildPlaybookAggregateRating,
   type PlaybookAggregateRatingNode,
 } from "@/lib/seo/review-rating";
+import {
+  buildQuotationNode,
+  type QuotationSchemaInput,
+} from "@/lib/seo/quotation";
 
 const BASE = "https://unlocksaas.com";
 
@@ -1097,6 +1101,19 @@ export type ArticleSchemaInput = {
    * editorial is centered on named concepts (frameworks, methods, products).
    */
   about?: ReadonlyArray<{ name: string; sameAs?: string }>;
+  /**
+   * Verbatim externally-sourced quotations the article quotes. Emitted as
+   * schema.org Article.citation – an array of Quotation nodes bound to
+   * the parent Article. Each entry signals an external source to E-E-A-T
+   * crawlers AND back-links the article into the knowledge graph via the
+   * creator + source URLs.
+   *
+   * Brunson Hard-Rule: `text` MUST be character-verbatim from the named
+   * source. No paraphrases. See QuotationSchemaInput docs in
+   * @/lib/seo/quotation. Validation runs at module load via
+   * `validateQuotations` from the same module.
+   */
+  quotations?: ReadonlyArray<QuotationSchemaInput>;
 };
 
 function buildArticleJson(input: ArticleSchemaInput): string {
@@ -1151,6 +1168,12 @@ function buildArticleJson(input: ArticleSchemaInput): string {
             ...(thing.sameAs ? { sameAs: thing.sameAs } : {}),
           })),
         }
+      : {}),
+    // Article.citation — array of Quotation nodes for verbatim external
+    // sources. Brunson Hard-Rule: empty / omitted when no verbatim quotes
+    // exist. See QuotationSchemaInput docs.
+    ...(input.quotations && input.quotations.length > 0
+      ? { citation: input.quotations.map(buildQuotationNode) }
       : {}),
   });
 }
@@ -2041,3 +2064,35 @@ function buildSpeakableJson(input: SpeakableInput): string {
 export function SpeakableJsonLd(props: SpeakableInput) {
   return <JsonLdScript json={buildSpeakableJson(props)} />;
 }
+
+/**
+ * Quotation — schema.org/Quotation block for verbatim external citations.
+ *
+ * The common case is to attach Quotation nodes inline on a parent Article
+ * via `ArticleSchemaInput.quotations`; that keeps the citation chain bound
+ * to the article in the structured-data graph. Use this STANDALONE block
+ * only when the quotation is itself the primary entity of a dedicated page
+ * (rare – for example a single-quote landing page or a press-quote index).
+ *
+ * Both the type and the node builder live in `@/lib/seo/quotation` so pure
+ * data modules can import them without a React dependency. This file
+ * re-exports them for components that already import from json-ld.tsx.
+ *
+ * Brunson Hard-Rule: NEVER emit a Quotation without character-verbatim
+ * `text` from the named source. See QuotationSchemaInput docs.
+ */
+function buildStandaloneQuotationJson(input: QuotationSchemaInput): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    ...buildQuotationNode(input),
+  });
+}
+
+export function QuotationJsonLd(props: QuotationSchemaInput) {
+  return <JsonLdScript json={buildStandaloneQuotationJson(props)} />;
+}
+
+// Re-export so component-facing imports get the type + node helper from
+// the same module that exports the React component.
+export { buildQuotationNode };
+export type { QuotationSchemaInput };
