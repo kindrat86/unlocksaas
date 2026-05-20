@@ -65,6 +65,7 @@ import {
   PODCAST_URLS,
   episodeUrl,
 } from "@/lib/seo/podcast";
+import { PODCAST_AUDIO_VOICE } from "@/lib/seo/podcast-audio";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -639,7 +640,22 @@ function buildPayload() {
       description: PODCAST_SHOW_DESCRIPTION,
       landingUrl: PODCAST_URLS.landing,
       rssUrl: PODCAST_URLS.rss,
+      // Alexa Flash Briefing JSON feed (VEO uplift 2026-05-21). Same
+      // episodes as the RSS feed, projected into the Amazon Alexa
+      // Flash Briefing schema (uid/updateDate/titleText/mainText/
+      // streamUrl/redirectionUrl). Documented at
+      // strategy/voice-assistants-playbook.md.
+      alexaFlashBriefingUrl: `${BASE_URL}/feed/alexa-flash-briefing.json`,
       schemaSeriesId: `${BASE_URL}/#podcast`,
+      // VEO uplift: synthesized-narration disclosure surfaced verbatim
+      // so JSON-consuming retrievers do not cite the audio as a hosted
+      // human recording.
+      audioDisclosure: PODCAST_AUDIO_VOICE.disclosure,
+      audioVoice: {
+        provider: PODCAST_AUDIO_VOICE.provider,
+        voiceId: PODCAST_AUDIO_VOICE.voiceId,
+        languageCode: PODCAST_AUDIO_VOICE.languageCode,
+      },
       episodeCount: PODCAST_EPISODES.length,
       episodes: PODCAST_EPISODES.map((ep) => ({
         slug: ep.slug,
@@ -648,9 +664,14 @@ function buildPayload() {
         summary: ep.summary,
         publishedAt: ep.publishedAt,
         url: episodeUrl(ep.slug),
+        transcriptUrl: `${BASE_URL}/podcast/${ep.slug}/transcript`,
+        transcriptMarkdownUrl: `${BASE_URL}/podcast/${ep.slug}/transcript/md`,
         artifactUrl: ep.artifactUrl,
         keywords: ep.keywords,
         ...(ep.audioUrl ? { audioUrl: ep.audioUrl } : {}),
+        ...(ep.audioDurationSec !== undefined
+          ? { audioDurationSec: ep.audioDurationSec }
+          : {}),
       })),
     },
     facts: KEY_FACTS,

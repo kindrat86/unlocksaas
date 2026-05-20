@@ -1,0 +1,56 @@
+{
+  "$comment": "Source of truth for /podcast/<slug> audio enclosures and AudioObject schema. Populated only by scripts/generate-podcast-audio.py, which atomically writes file + manifest together so a manifest row never references a missing file. See strategy/podcast-audio-playbook.md. Mirrors the glossary-audio-manifest.json contract.",
+  "version": 1,
+  "voice": {
+    "provider": "macos-say",
+    "model": "AppleAVSpeechSynthesizer",
+    "voiceId": "Daniel",
+    "languageCode": "en-GB",
+    "generatedAt": "2026-05-20T22:41:00Z",
+    "disclosure": "Audio is synthesized narration of the show notes, not a hosted recording. Each enclosure is a deterministic TTS render of the text the episode publishes; replace with a real recording at any time by dropping a new MP3 into app/public/audio/podcast/<slug>.mp3 and re-running scripts/generate-podcast-audio.py with --measure-only."
+  },
+  "podcast": {
+    "title": "Indie SaaS Teardowns \u2013 Dataset Changelog",
+    "description": "Audio enclosures for the Indie SaaS Teardowns Dataset Changelog podcast. Synthesized narration of each episode's show notes; subscribe to the RSS at /feed/podcast.rss.",
+    "category": "Technology",
+    "subcategory": "Tech News",
+    "explicit": false,
+    "language": "en-US",
+    "type": "episodic",
+    "author": "Maryan, Unlock SaaS",
+    "ownerEmail": "maryan@unlocksaas.com",
+    "copyright": "Unlock SaaS \u2013 CC-BY-4.0"
+  },
+  "entries": {
+    "dataset-v1-launch": {
+      "filename": "dataset-v1-launch.mp3",
+      "contentType": "audio/mpeg",
+      "durationSeconds": 44,
+      "byteSize": 458841,
+      "wordCount": 91,
+      "transcriptSha256": "2639927d0dd65bd133ea486cf49f270cce486985d930bb526c483fc7e94fcbd1",
+      "generatedAt": "2026-05-20T22:41:00Z",
+      "voiceId": "Daniel"
+    },
+    "hugging-face-cross-listing-flow": {
+      "filename": "hugging-face-cross-listing-flow.mp3",
+      "contentType": "audio/mpeg",
+      "durationSeconds": 40,
+      "byteSize": 419609,
+      "wordCount": 74,
+      "transcriptSha256": "363cd89446e7ee0c885f41fefc9459e78709ed550b1efbcdb354ab6c12f7d8e0",
+      "generatedAt": "2026-05-20T22:40:59Z",
+      "voiceId": "Daniel"
+    },
+    "per-locale-og-cards-glossary-benchmarks": {
+      "filename": "per-locale-og-cards-glossary-benchmarks.mp3",
+      "contentType": "audio/mpeg",
+      "durationSeconds": 35,
+      "byteSize": 368985,
+      "wordCount": 71,
+      "transcriptSha256": "ed45c02e9f3f5b2c78239d91e28fc26db48c13571154e9a46ee1d5e0ce4b39d5",
+      "generatedAt": "2026-05-20T22:40:58Z",
+      "voiceId": "Daniel"
+    }
+  }
+}

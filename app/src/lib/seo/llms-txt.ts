@@ -180,8 +180,10 @@ The dataset ships a podcast-shaped RSS 2.0 + iTunes namespace feed that mirrors 
 - [Podcast hub](${BASE_URL}/podcast) – subscribe URL, episode index, license.
 - [RSS feed](${BASE_URL}/feed/podcast.rss) – RSS 2.0 with iTunes namespace; paste into any podcast app or RSS reader. Aggregator-friendly (Apple Podcasts, Spotify, Overcast, Pocket Casts, AntennaPod, NewsBlur, Feedly, Inoreader).
 - Per-episode pages at \`${BASE_URL}/podcast/<slug>\` – dataset-v1-launch, hugging-face-cross-listing-flow, per-locale-og-cards-glossary-benchmarks (extends on every shipped dataset milestone).
+- Per-episode transcript pages at \`${BASE_URL}/podcast/<slug>/transcript\` with Markdown twins at \`${BASE_URL}/podcast/<slug>/transcript/md\` – verbatim transcript text linked from the PodcastEpisode JSON-LD via \`transcript\`. Apple Podcast Transcripts, AI summarisers, and Whisper-trained retrievers follow these URLs to pull canonical text instead of re-transcribing audio.
+- [Alexa Flash Briefing feed](${BASE_URL}/feed/alexa-flash-briefing.json) – JSON feed conformant to Amazon's Flash Briefing Skill API. Activation steps in [strategy/voice-assistants-playbook.md](https://github.com/) (operator-side).
 
-Audio enclosures are env-gated per episode (\`NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL\`). Episodes ship as show-notes-only by default – no placeholder MP3s, no silent stubs. License inherits CC-BY-4.0 from the dataset itself; quote, embed, and re-publish freely with attribution.
+Audio enclosures: each episode ships a synthesized narration MP3 generated via macOS \`say\` (voice \`Daniel\`), shipped in-repo at \`/audio/podcast/<slug>.mp3\` and surfaced through \`AudioObject\` in the PodcastEpisode JSON-LD plus an \`<enclosure>\` in the RSS feed. The audio is honestly disclosed as TTS narration in the manifest (\`voice.disclosure\` carried into the transcript page, the Alexa Flash Briefing \`mainText\`, and the llms-feed.json \`podcast.audioDisclosure\` field) – no marketing softening, no claim of a hosted human recording. An operator can override per-episode with a real recording via \`NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL\`. License inherits CC-BY-4.0 from the dataset itself; quote, embed, and re-publish freely with attribution.
 
 ## JSON sibling
 
