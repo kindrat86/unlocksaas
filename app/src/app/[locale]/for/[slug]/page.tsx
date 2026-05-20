@@ -16,6 +16,10 @@ import {
   getNicheBySlug,
 } from "@/lib/niches";
 import { BASE_URL, ID } from "@/lib/seo/entity";
+import {
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "@/lib/i18n/translations";
 
 /**
  * Locale-aware /for/[slug] detail – plumbing variant.
@@ -111,6 +115,8 @@ export default async function LocalizedForDetail({
   const canonicalUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
   const enCanonicalUrl = `${BASE_URL}${path}`;
+  const shared = getPseoSharedChrome(locale);
+  const cluster = getPseoClusterChrome("for", locale);
 
   const breadcrumbJson = JSON.stringify({
     "@context": "https://schema.org",
@@ -166,10 +172,9 @@ export default async function LocalizedForDetail({
             role="note"
             className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="font-semibold mb-1">{shared.pendingBannerTitle}</p>
             <p className="leading-relaxed">
-              {row.reviewNote ??
-                "This locale-prefixed URL is in preview while the localized overlay is being finalized. The complete English niche page is published at the canonical link below."}
+              {row.reviewNote ?? shared.pendingBannerDetailBody}
             </p>
           </div>
         ) : null}
@@ -184,7 +189,7 @@ export default async function LocalizedForDetail({
                 href={localizedPath("/", locale)}
                 className="hover:underline"
               >
-                Home
+                {shared.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
@@ -193,7 +198,7 @@ export default async function LocalizedForDetail({
                 href={localizedPath(PATH, locale)}
                 className="hover:underline"
               >
-                For
+                {cluster.breadcrumbHub}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
@@ -218,9 +223,11 @@ export default async function LocalizedForDetail({
       <section className="max-w-3xl mx-auto px-6 py-8">
         <Card>
           <CardContent className="pt-6">
+            <p className="text-sm font-semibold leading-relaxed mb-2">
+              {cluster.detailEnglishCalloutTitle}
+            </p>
             <p className="text-sm leading-relaxed mb-4">
-              The full niche page – cohort pain, vocabulary, money mechanics,
-              common mistakes – is published in English at the canonical URL:
+              {cluster.detailEnglishCalloutBody}
             </p>
             <p>
               <a
@@ -231,8 +238,7 @@ export default async function LocalizedForDetail({
               </a>
             </p>
             <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
-              When the localized overlay for this slug ships, the full niche
-              page renders here in {inLanguage}.
+              {shared.detailEnglishCalloutSuffix}
             </p>
           </CardContent>
         </Card>
@@ -257,7 +263,9 @@ export default async function LocalizedForDetail({
                 </Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href={localizedPath(PATH, locale)}>All niches</Link>
+                <Link href={localizedPath(PATH, locale)}>
+                  {cluster.detailCtaSecondary}
+                </Link>
               </Button>
             </div>
           </CardContent>

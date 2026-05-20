@@ -16,6 +16,10 @@ import {
   groupPricingTeardownsByCategory,
 } from "@/lib/pricing-teardowns";
 import { BASE_URL } from "@/lib/seo/entity";
+import {
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "@/lib/i18n/translations";
 
 /**
  * Locale-aware /pricing-teardown hub – plumbing variant.
@@ -43,11 +47,10 @@ export async function generateMetadata({
   const locale = rawLocale as Exclude<Locale, "en-US">;
   const localised = localizedPath(PATH, locale);
   const approved = isApproved(PATH, locale);
+  const cluster = getPseoClusterChrome("pricing-teardown", locale);
 
-  const title =
-    "Pricing Teardowns – How Indie SaaS Actually Price Their Products";
-  const description =
-    "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens.";
+  const title = cluster.seoTitle;
+  const description = cluster.seoDescription;
 
   return {
     title,
@@ -99,6 +102,8 @@ export default async function LocalizedPricingTeardownHub({
   const absoluteUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
   const groups = groupPricingTeardownsByCategory();
+  const shared = getPseoSharedChrome(locale);
+  const cluster = getPseoClusterChrome("pricing-teardown", locale);
 
   const breadcrumbJson = JSON.stringify({
     "@context": "https://schema.org",
@@ -157,10 +162,9 @@ export default async function LocalizedPricingTeardownHub({
             role="note"
             className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="font-semibold mb-1">{shared.pendingBannerTitle}</p>
             <p className="leading-relaxed">
-              {row.reviewNote ??
-                "This locale-prefixed URL is in preview while the localized overlay is being finalized. Content shown reflects the canonical English source."}
+              {row.reviewNote ?? shared.pendingBannerHubBody}
             </p>
           </div>
         ) : null}
@@ -175,12 +179,12 @@ export default async function LocalizedPricingTeardownHub({
                 href={localizedPath("/", locale)}
                 className="hover:underline"
               >
-                Home
+                {shared.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" className="text-foreground">
-              Pricing teardowns
+              {cluster.breadcrumbHub}
             </li>
           </ol>
         </nav>
@@ -188,14 +192,13 @@ export default async function LocalizedPricingTeardownHub({
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Pricing teardowns
+          {cluster.hubEyebrow}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          How indie SaaS pricing actually works
+          {cluster.hubHeadline}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Tier structure, anchor mechanics, upgrade triggers, and payment
-          model – read through the Brunson Stack and Value Ladder lens.
+          {cluster.hubLede}
         </p>
       </header>
 
@@ -203,7 +206,7 @@ export default async function LocalizedPricingTeardownHub({
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="list">
         <h2 id="list" className="sr-only">
-          All pricing teardowns
+          {cluster.hubListAriaLabel}
         </h2>
         <div className="space-y-10">
           {groups.map((group) => (
@@ -240,7 +243,7 @@ export default async function LocalizedPricingTeardownHub({
                           )}
                           className="text-sm font-semibold text-primary hover:underline"
                         >
-                          Read the teardown →
+                          {cluster.hubReadMoreLabel}
                         </Link>
                         <span className="text-xs text-muted-foreground">
                           Verified {t.lastVerified}

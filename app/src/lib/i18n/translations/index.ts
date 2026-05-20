@@ -1213,3 +1213,19 @@ export const PAGE_CHROME_BENCHMARKS: Record<Locale, PageChromeBenchmarks> = {
 export function getBenchmarksChrome(locale: Locale): PageChromeBenchmarks {
   return PAGE_CHROME_BENCHMARKS[locale] ?? PAGE_CHROME_BENCHMARKS["en-US"];
 }
+
+// ---------------------------------------------------------------------------
+// pSEO cluster chrome – 8 large pSEO surfaces (alternatives-to, compare,
+// category, funnel-teardown, pricing-teardown, answers, why-isnt-my, for).
+// Re-exported from `./pseo-chrome.ts` to keep this file from ballooning.
+// See header in pseo-chrome.ts for editorial standard + brand-glossary notes.
+// ---------------------------------------------------------------------------
+export {
+  type PageChromePseoShared,
+  type PageChromePseoCluster,
+  type ClusterKey as PseoClusterKey,
+  PAGE_CHROME_PSEO_SHARED,
+  PAGE_CHROME_PSEO,
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "./pseo-chrome";

@@ -17,6 +17,10 @@ import {
   ANSWER_CATEGORY_LABELS,
 } from "@/lib/answers";
 import { BASE_URL, ID } from "@/lib/seo/entity";
+import {
+  getPseoSharedChrome,
+  getPseoClusterChrome,
+} from "@/lib/i18n/translations";
 
 /**
  * Locale-aware /answers hub – plumbing variant.
@@ -44,11 +48,10 @@ export async function generateMetadata({
   const locale = rawLocale as Exclude<Locale, "en-US">;
   const localised = localizedPath(PATH, locale);
   const approved = isApproved(PATH, locale);
+  const cluster = getPseoClusterChrome("answers", locale);
 
-  const title =
-    "Indie SaaS Founder Answers (30 Direct Questions) – Unlock SaaS";
-  const description =
-    "Direct AEO-formatted answers to the 30 most-asked indie SaaS funnel questions. Built for citation by ChatGPT, Perplexity, Claude, and Google AI Overviews.";
+  const title = cluster.seoTitle;
+  const description = cluster.seoDescription;
 
   return {
     title,
@@ -99,6 +102,8 @@ export default async function LocalizedAnswersHub({
   const localised = localizedPath(PATH, locale);
   const absoluteUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const shared = getPseoSharedChrome(locale);
+  const cluster = getPseoClusterChrome("answers", locale);
 
   const breadcrumbJson = JSON.stringify({
     "@context": "https://schema.org",
@@ -158,10 +163,9 @@ export default async function LocalizedAnswersHub({
             role="note"
             className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="font-semibold mb-1">{shared.pendingBannerTitle}</p>
             <p className="leading-relaxed">
-              {row.reviewNote ??
-                "This locale-prefixed URL is in preview while the localized overlay is being finalized. Content shown reflects the canonical English source."}
+              {row.reviewNote ?? shared.pendingBannerHubBody}
             </p>
           </div>
         ) : null}
@@ -176,12 +180,12 @@ export default async function LocalizedAnswersHub({
                 href={localizedPath("/", locale)}
                 className="hover:underline"
               >
-                Home
+                {shared.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" className="text-foreground">
-              Answers
+              {cluster.breadcrumbHub}
             </li>
           </ol>
         </nav>
@@ -189,14 +193,13 @@ export default async function LocalizedAnswersHub({
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Founder questions, direct answers
+          {cluster.hubEyebrow}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          Indie SaaS founder answers.
+          {cluster.hubHeadline}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Thirty specific questions indie SaaS founders ask, each with a
-          direct citation-ready answer plus 2 to 4 supporting bullets.
+          {cluster.hubLede}
         </p>
       </header>
 
