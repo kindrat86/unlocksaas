@@ -8,6 +8,8 @@ import {
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
   BASE_URL,
+  DATASET_DOI,
+  DATASET_DOI_URL,
   DATASET_EXTERNAL_REGISTRATIONS,
   FOUNDER,
   ORGANIZATION,
@@ -159,6 +161,7 @@ export default function DatasetPage() {
         alternateNames={DATASET_ALTERNATE_NAMES}
         measurementTechnique={DATASET_MEASUREMENT_TECHNIQUE}
         externalRegistrations={DATASET_EXTERNAL_REGISTRATIONS}
+        doi={DATASET_DOI}
         perTableDistributions={DATASET_PER_TABLE_SLUGS.map((slug) => ({
           name: DATASET_PER_TABLE_CSV[slug].displayName,
           url: perTableCsvUrl(slug),
@@ -491,6 +494,76 @@ export default function DatasetPage() {
                     /dataset/huggingface
                   </Link>
                   .
+                </div>
+              )}
+            </li>
+            <li className="border border-border rounded-lg px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold">
+                    Zenodo (CERN open-research repository)
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    Mints a persistent DOI on deposit. DOIs are the
+                    strongest dataset identifier class Google Dataset
+                    Search recognises, and the canonical citation form
+                    every academic reference manager pivots on.
+                  </div>
+                </div>
+                <Link
+                  href="/dataset/zenodo"
+                  className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground shrink-0"
+                >
+                  Submission flow
+                </Link>
+              </div>
+              {DATASET_DOI_URL ? (
+                <div className="mt-2 text-xs">
+                  DOI:{" "}
+                  <a
+                    href={DATASET_DOI_URL}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="underline underline-offset-4 font-mono"
+                  >
+                    {DATASET_DOI}
+                  </a>
+                  {DATASET_EXTERNAL_REGISTRATIONS.some(
+                    (r) => r.name === "Zenodo",
+                  ) ? (
+                    <>
+                      {" "}· Live at{" "}
+                      <a
+                        href={
+                          DATASET_EXTERNAL_REGISTRATIONS.find(
+                            (r) => r.name === "Zenodo",
+                          )?.url
+                        }
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        className="underline underline-offset-4"
+                      >
+                        {
+                          DATASET_EXTERNAL_REGISTRATIONS.find(
+                            (r) => r.name === "Zenodo",
+                          )?.url
+                        }
+                      </a>
+                    </>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="mt-2 text-xs text-muted-foreground">
+                  Deposit scheduled. Operator activation flow at{" "}
+                  <Link
+                    href="/dataset/zenodo"
+                    className="underline underline-offset-4"
+                  >
+                    /dataset/zenodo
+                  </Link>
+                  . On publication the DOI propagates into the canonical
+                  Dataset JSON-LD, BibTeX, citation string, and HF
+                  dataset card automatically.
                 </div>
               )}
             </li>

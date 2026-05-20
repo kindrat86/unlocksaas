@@ -170,7 +170,7 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
     item: "dataset_external_catalogs",
     state: "operator",
     note:
-      "Hugging Face / Kaggle / Zenodo cross-listing slots ship empty; canonical Dataset JSON-LD auto-declares includedInDataCatalog when NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL (or the Kaggle/Zenodo equivalents) lands on Vercel. Pre-built HF README + submission flow at /dataset/huggingface.",
+      "Hugging Face / Kaggle / Zenodo / OSF cross-listing slots ship empty; canonical Dataset JSON-LD auto-declares includedInDataCatalog when NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL (or the Kaggle/Zenodo/OSF equivalents) lands on Vercel. Pre-built HF README + submission flow at /dataset/huggingface. Pre-built Zenodo deposition JSON + API-driven operator CLI (scripts/mint-zenodo-deposit.py) + submission flow at /dataset/zenodo. When the Zenodo deposit publishes and NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI lands, the DOI propagates into Dataset JSON-LD as a PropertyValue identifier, into BibTeX as a doi field, into the citation string, and into the HF dataset card YAML frontmatter automatically.",
   },
   {
     item: "founders_proof_pages",

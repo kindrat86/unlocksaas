@@ -75,7 +75,13 @@ import {
 import { COMPARISONS, type Comparison } from "@/lib/comparisons";
 import { ALTERNATIVES, type Alternative } from "@/lib/alternatives";
 import { CATEGORIES, type CategoryDef } from "@/lib/categories";
-import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
+import {
+  BASE_URL,
+  DATASET_DOI,
+  DATASET_DOI_URL,
+  FOUNDER,
+  ORGANIZATION,
+} from "@/lib/seo/entity";
 import {
   LAST_VERIFIED_DATE,
   NEXT_REVIEW_DATE,
@@ -110,24 +116,66 @@ export const DATASET_LICENSE_URL =
  */
 export const DATASET_ATTRIBUTION = `Source: ${ORGANIZATION.name} — Indie SaaS Teardowns Dataset (${BASE_URL}/dataset). Licensed under ${DATASET_LICENSE_SPDX}.` as const;
 
-/** Plain-text citation for academic / newsletter footnote use. */
-export const DATASET_CITATION = `${FOUNDER.name} (${LAST_VERIFIED_DATE}). ${DATASET_NAME}, v${DATASET_VERSION}. ${ORGANIZATION.name}. ${BASE_URL}/dataset. ${DATASET_LICENSE_SPDX}.` as const;
+/**
+ * Plain-text citation for academic / newsletter footnote use.
+ *
+ * DOI is appended only when DATASET_DOI is set – the Zenodo deposit
+ * publishes a real DOI and the operator pastes it on Vercel. Until
+ * then the citation resolves via the canonical landing URL (still
+ * citable, but without the DOI's redirect-stability guarantee).
+ *
+ * Brunson Hard-Rule: the DOI substring never appears when the bare
+ * DOI does not resolve. A consumer copying the citation always gets
+ * exactly the identifiers the dataset publishes.
+ */
+export const DATASET_CITATION: string = (() => {
+  const base = `${FOUNDER.name} (${LAST_VERIFIED_DATE}). ${DATASET_NAME}, v${DATASET_VERSION}. ${ORGANIZATION.name}. ${BASE_URL}/dataset. ${DATASET_LICENSE_SPDX}.`;
+  return DATASET_DOI_URL ? `${base} DOI: ${DATASET_DOI_URL}.` : base;
+})();
 
-/** BibTeX entry for academic re-use. */
-export const DATASET_BIBTEX = `@misc{unlocksaas_indie_saas_teardowns_${DATASET_VERSION.replace(/\./g, "_")},
-  author       = {${FOUNDER.name}},
-  title        = {{${DATASET_NAME}}},
-  howpublished = {\\url{${BASE_URL}/dataset}},
-  year         = {${LAST_VERIFIED_DATE.slice(0, 4)}},
-  note         = {Version ${DATASET_VERSION}. Licensed under ${DATASET_LICENSE_SPDX}.}
-}` as const;
+/**
+ * BibTeX entry for academic re-use. When DATASET_DOI is set the entry
+ * carries the canonical `doi = {...}` field – the single most-cited
+ * BibTeX key in academic literature, and the field every reference
+ * manager (Zotero, Mendeley, EndNote) prefers over `howpublished`.
+ */
+export const DATASET_BIBTEX: string = (() => {
+  const versionSlug = DATASET_VERSION.replace(/\./g, "_");
+  const lines: string[] = [
+    `@misc{unlocksaas_indie_saas_teardowns_${versionSlug},`,
+    `  author       = {${FOUNDER.name}},`,
+    `  title        = {{${DATASET_NAME}}},`,
+    `  howpublished = {\\url{${BASE_URL}/dataset}},`,
+    `  year         = {${LAST_VERIFIED_DATE.slice(0, 4)}},`,
+  ];
+  if (DATASET_DOI) {
+    lines.push(`  doi          = {${DATASET_DOI}},`);
+  }
+  lines.push(
+    `  note         = {Version ${DATASET_VERSION}. Licensed under ${DATASET_LICENSE_SPDX}.}`,
+    `}`,
+  );
+  return lines.join("\n");
+})();
 
-/** Canonical URLs for the three download surfaces and the landing page. */
-export const DATASET_URLS = Object.freeze({
+/**
+ * Canonical URLs for the download surfaces and the landing page. The
+ * `doi` slot resolves to `https://doi.org/<bare-doi>` when the Zenodo
+ * deposit is live, otherwise it stays undefined. Consumers that render
+ * the citation block branch on its presence.
+ */
+export const DATASET_URLS: Readonly<{
+  landing: string;
+  json: string;
+  csv: string;
+  markdown: string;
+  doi: string | undefined;
+}> = Object.freeze({
   landing: `${BASE_URL}/dataset`,
   json: `${BASE_URL}/dataset/${DATASET_SLUG}.json`,
   csv: `${BASE_URL}/dataset/${DATASET_SLUG}.csv`,
   markdown: `${BASE_URL}/dataset.md`,
+  doi: DATASET_DOI_URL,
 });
 
 /**
@@ -253,6 +301,19 @@ export interface DatasetBundle {
   generatedAt: string;
   lastVerified: typeof LAST_VERIFIED_DATE;
   nextReview: typeof NEXT_REVIEW_DATE;
+  /**
+   * Bare DOI in `10.<registrant>/<suffix>` form when the Zenodo deposit
+   * is live. Omitted when undefined so JSON.stringify drops it from the
+   * downloaded bundle – a consumer that finds the field MUST be able
+   * to resolve it via `https://doi.org/<doi>`.
+   */
+  doi?: string;
+  /**
+   * Resolvable DOI URL (`https://doi.org/<bare-doi>`) when DOI is set.
+   * Omitted when undefined. Mirrors DATASET_URLS.doi for downstream
+   * consumers that prefer URL fields over identifier fields.
+   */
+  doiUrl?: string;
   license: {
     spdx: typeof DATASET_LICENSE_SPDX;
     url: typeof DATASET_LICENSE_URL;
@@ -309,6 +370,11 @@ function assembleDatasetBundle(): DatasetBundle {
     generatedAt: new Date().toISOString(),
     lastVerified: LAST_VERIFIED_DATE,
     nextReview: NEXT_REVIEW_DATE,
+    // DOI fields ship only when the Zenodo deposit is live. JSON.stringify
+    // omits undefined keys from objects, so the downloaded bundle stays
+    // honest – no `"doi": null` artifact, no fabricated identifier.
+    ...(DATASET_DOI ? { doi: DATASET_DOI } : {}),
+    ...(DATASET_DOI_URL ? { doiUrl: DATASET_DOI_URL } : {}),
     license: {
       spdx: DATASET_LICENSE_SPDX,
       url: DATASET_LICENSE_URL,

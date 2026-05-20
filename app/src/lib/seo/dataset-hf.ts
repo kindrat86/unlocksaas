@@ -55,7 +55,13 @@ import {
   perTableCsvUrl,
   type DatasetPerTableSlug,
 } from "@/lib/seo/dataset";
-import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
+import {
+  BASE_URL,
+  DATASET_DOI,
+  DATASET_DOI_URL,
+  FOUNDER,
+  ORGANIZATION,
+} from "@/lib/seo/entity";
 
 // ---------------------------------------------------------------------------
 // HF taxonomy values
@@ -200,6 +206,14 @@ function buildHfFrontmatter(): string {
   );
   lines.push(`tags:\n${yamlStringList(HF_TAGS, "  ")}`);
   lines.push(`source_datasets:\n  - original`);
+  // DOI badge field – when the Zenodo (or OSF) deposit is live and the
+  // operator pastes the bare DOI on Vercel, HF renders a clickable DOI
+  // badge on the dataset card and the DOI propagates into HF's own
+  // citation export. Brunson Hard-Rule: omitted when undefined so a
+  // fresh HF re-upload never advertises a fabricated identifier.
+  if (DATASET_DOI) {
+    lines.push(`doi: ${yamlScalar(DATASET_DOI)}`);
+  }
   lines.push(buildHfConfigs());
 
   return lines.join("\n");
@@ -235,13 +249,20 @@ function buildHfBody(): string {
       `- \`${DATASET_PER_TABLE_CSV[slug].sourceTable}\` – [${DATASET_PER_TABLE_CSV[slug].displayName}](${perTableCsvUrl(slug)})`,
   ).join("\n");
 
+  // DOI block – rendered only when the Zenodo deposit is live. Inserted
+  // immediately under the version row so a researcher landing on the HF
+  // card sees the canonical persistent identifier before scrolling.
+  const doiRow = DATASET_DOI_URL
+    ? `\n| DOI | [\`${DATASET_DOI}\`](${DATASET_DOI_URL}) |`
+    : "";
+
   return `# ${DATASET_NAME}
 
 > An open editorial dataset of ${counts.total_rows} indie SaaS marketing analyses. Every row is a re-projection of a published page on [${BASE_URL.replace(/^https?:\/\//, "")}](${BASE_URL}) and carries a dated \`last_verified\` field.
 
 | | |
 | --- | --- |
-| Version | \`${DATASET_VERSION}\` |
+| Version | \`${DATASET_VERSION}\` |${doiRow}
 | License | \`${DATASET_LICENSE_SPDX}\` – ${DATASET_LICENSE_URL} |
 | Last verified | ${DATASET_BUNDLE.lastVerified} |
 | Next editorial review | ${DATASET_BUNDLE.nextReview} |

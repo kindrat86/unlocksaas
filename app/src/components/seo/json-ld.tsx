@@ -1853,10 +1853,14 @@ export type PublicDatasetInput = {
    */
   measurementTechnique?: string;
   /**
-   * External DataCatalog registrations (Hugging Face, Kaggle, Zenodo).
-   * Each becomes a `Dataset.includedInDataCatalog` row and contributes
-   * to `Dataset.sameAs`. Env-driven empty by default – Brunson Hard-
-   * Rule: only declared when the catalog listing actually exists.
+   * External DataCatalog registrations (Hugging Face, Kaggle, Zenodo,
+   * OSF). Each becomes a `Dataset.includedInDataCatalog` row and
+   * contributes to `Dataset.sameAs`. Env-driven empty by default –
+   * Brunson Hard-Rule: only declared when the catalog listing actually
+   * exists. The optional `doi` field is populated for DOI-minting
+   * catalogs (Zenodo, OSF) – it does not turn into a separate Dataset
+   * field by itself, but the top-level `doi` prop below is the canonical
+   * surface for it.
    */
   externalRegistrations?: ReadonlyArray<{
     /** Schema.org DataCatalog.name. */
@@ -1865,7 +1869,23 @@ export type PublicDatasetInput = {
     url: string;
     /** Catalog homepage URL. */
     catalogUrl: string;
+    /** Bare DOI in `10.<registrant>/<suffix>` form when the catalog
+     *  mints one. Undefined for non-DOI catalogs (HF, Kaggle). */
+    doi?: string;
   }>;
+  /**
+   * Bare DOI for the dataset (e.g. `10.5281/zenodo.12345678`) when the
+   * Zenodo or OSF deposit is live. Surfaced as a schema.org
+   * PropertyValue with `propertyID: "DOI"` on the Dataset block, and
+   * appended to `sameAs` as `https://doi.org/<doi>`. Brunson Hard-Rule:
+   * undefined when the operator has not pasted a real DOI on Vercel,
+   * so the Dataset schema never advertises an identifier it cannot
+   * resolve. DOI is the strongest dataset identifier class Google
+   * Dataset Search recognises and the form every academic citation
+   * pipeline pivots on – populating it lifts the canonical page above
+   * non-DOI mirrors of the same corpus.
+   */
+  doi?: string;
   /**
    * Per-table CSV distributions. Each becomes an additional
    * `Dataset.distribution` entry so Google Dataset Search and any
@@ -1885,18 +1905,22 @@ function buildPublicDatasetJson(input: PublicDatasetInput): string {
   // Schema.org expects either a single URL or an array; arrays are
   // honoured by Google Dataset Search and the HF / Kaggle ingestion
   // crawlers. The landing URL is always present; external catalog URLs
-  // (HF, Kaggle, Zenodo) are appended when the env-driven registrations
-  // resolved at module load.
+  // (HF, Kaggle, Zenodo, OSF) are appended when the env-driven
+  // registrations resolved at module load. The DOI URL (when set)
+  // is appended LAST so it appears as the canonical persistent
+  // identifier alongside the volatile catalog URLs.
+  const doiUrl = input.doi ? `https://doi.org/${input.doi}` : undefined;
   const sameAs: string[] = [
     input.landingUrl,
     ...(input.externalRegistrations ?? []).map((r) => r.url),
+    ...(doiUrl ? [doiUrl] : []),
   ];
 
   // includedInDataCatalog – one DataCatalog node per off-platform
   // catalog where the dataset is also hosted. Dataset Search treats
   // this as the strongest cross-catalog signal: a confirmed listing on
-  // a recognised catalog (HF, Kaggle, Zenodo, figshare, DataCite) lifts
-  // the canonical page's Dataset Search ranking and unlocks the
+  // a recognised catalog (HF, Kaggle, Zenodo, figshare, DataCite, OSF)
+  // lifts the canonical page's Dataset Search ranking and unlocks the
   // catalog's own search surface as a second acquisition channel.
   const includedInDataCatalog =
     (input.externalRegistrations ?? []).length > 0
@@ -1906,6 +1930,33 @@ function buildPublicDatasetJson(input: PublicDatasetInput): string {
           url: r.catalogUrl,
         }))
       : undefined;
+
+  // identifier – schema.org accepts either a string, a PropertyValue,
+  // or an array mixing both. The single-string form (slug-version) is
+  // the legacy local identifier; when a DOI is present we promote
+  // identifier to an array with the DOI as a typed PropertyValue first
+  // (Google Dataset Search reads the first element preferentially for
+  // citation rendering), followed by the local slug-version string.
+  //
+  // Why PropertyValue not just a string. Google Dataset Search treats
+  // DOI as a first-class persistent identifier class only when it is
+  // wrapped in a PropertyValue with `propertyID: "doi"`. A bare DOI
+  // string in the identifier slot is parsed but ranked below the
+  // typed form. Academic citation pipelines (Zotero, Mendeley) also
+  // prefer the typed form for round-tripping into BibTeX `doi = {}`.
+  const localIdentifier =
+    input.primaryIdentifier ?? `${input.slug}-v${input.version}`;
+  const identifier = input.doi
+    ? [
+        {
+          "@type": "PropertyValue" as const,
+          propertyID: "DOI" as const,
+          value: input.doi,
+          url: `https://doi.org/${input.doi}`,
+        },
+        localIdentifier,
+      ]
+    : localIdentifier;
 
   return JSON.stringify({
     "@context": "https://schema.org",
@@ -1920,7 +1971,7 @@ function buildPublicDatasetJson(input: PublicDatasetInput): string {
     description: input.description,
     url: input.landingUrl,
     sameAs,
-    identifier: input.primaryIdentifier ?? `${input.slug}-v${input.version}`,
+    identifier,
     version: input.version,
     inLanguage: "en-US",
     isAccessibleForFree: true,

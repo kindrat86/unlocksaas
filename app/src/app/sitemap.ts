@@ -722,6 +722,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
+    // Zenodo submission surface (2026-05-20 DOI uplift). Parallel to the
+    // Hugging Face pair above: /dataset/zenodo is the human-readable
+    // canonical, /dataset/zenodo/raw is the machine artifact (the JSON
+    // deposition metadata payload, served with Content-Disposition:
+    // attachment so the operator CLI curls it directly). Listing both
+    // makes the raw artifact crawler-discoverable so a Zenodo-side
+    // catalog walker can resolve the deposit payload without needing
+    // the operator to advertise it from the Zenodo record.
+    {
+      url: `${base}/dataset/zenodo`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${base}/dataset/zenodo/raw`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
     // -------------------------------------------------------------------------
     // Dataset changelog podcast (Surface D – GEO/AEO discovery
     // diversification, landed 2026-05-21).
