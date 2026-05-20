@@ -354,3 +354,47 @@ export function localesWithRenderableContent(): ReadonlyArray<
   }
   return Array.from(seen);
 }
+
+/**
+ * pSEO surface plumbing extension – 2026-05-21
+ * --------------------------------------------
+ * Locale-aware `/[locale]/{route}/page.tsx` + `/[locale]/{route}/[slug]/page.tsx`
+ * shells now exist for the eight pSEO surfaces that previously lacked
+ * locale variants:
+ *
+ *   - /alternatives-to
+ *   - /compare
+ *   - /category
+ *   - /funnel-teardown
+ *   - /pricing-teardown
+ *   - /answers
+ *   - /why-isnt-my
+ *   - /for
+ *
+ * The shells read this registry (`renderableLocalesForPath` +
+ * `getTranslationStatus`) and 404 when no row exists for (path, locale).
+ * No TRANSLATIONS row was added in the same change set – Brunson Hard-Rule:
+ * nothing ships publicly until the founder approves an actual translation
+ * for each (path, locale) pair.
+ *
+ * To ship a Spanish /alternatives-to in the future:
+ *   1. Author `src/lib/i18n/translations/alternatives.es.ts` overlay file
+ *      with translated `oneLine` + `verdict` per `ALTERNATIVE_SLUGS`.
+ *   2. Add overlay getter to `src/lib/i18n/translations/index.ts`.
+ *   3. Swap the canonical `ALTERNATIVES` import inside
+ *      `app/src/app/[locale]/alternatives-to/page.tsx` and
+ *      `app/src/app/[locale]/alternatives-to/[slug]/page.tsx` for the
+ *      overlay getter (mirroring the `getGlossaryEntries(locale)` pattern).
+ *   4. Optional: add a `PAGE_CHROME_ALTERNATIVES` record and swap the
+ *      inline English chrome strings for `chrome.*` references.
+ *   5. Add a TRANSLATIONS row for the path here:
+ *      - `pending-review` → page renders with amber banner + noindex for
+ *        founder preview.
+ *      - `approved` → page goes indexable, sitemap + hreflang +
+ *        Content-Language pick it up automatically.
+ *
+ * The detail pages are minimal shells today (breadcrumb + h1 + summary +
+ * pending banner + link back to canonical English version). Full canonical-
+ * equivalent layouts get authored alongside the per-locale translation
+ * overlay, when there is real translated content to render.
+ */
