@@ -78,6 +78,7 @@ npx @modelcontextprotocol/inspector ${MCP_URL}
 ## Tools
 
 - \`diagnose_url\` — read a live public SaaS landing page, label it as Wrong Person / Weak Offer / Weak Belief, return the next concrete step. Takes ~30 seconds.
+- \`deep_diagnose_url\` — read a live public SaaS landing page and return the FULL UnlockSaaS V2 teardown: three-axis scorecard (each axis 1-10 with diagnosis + evidence quotes), hero/CTA/value-prop rewrites (3 alternates each), four-week 30-day plan, two same-category competitor pulls, 2-3 item strengths list. Takes ~30-45 seconds.
 - \`list_funnel_teardowns\` — slug + display name + category for every indie-SaaS funnel teardown.
 - \`get_funnel_teardown\` — Hook / Story / Offer breakdown and Brunson lens for a single product.
 - \`list_pricing_teardowns\` — slug + display name + category for every indie-SaaS pricing teardown.
@@ -88,10 +89,12 @@ npx @modelcontextprotocol/inspector ${MCP_URL}
 - \`find_alternative_to\` — resolve a free-text product name to the matching UnlockSaaS-vs-X entry.
 - \`list_categories\` — slug + display name + one-line summary for every category roundup.
 - \`get_category\` — category roundup with intent paragraph plus every funnel teardown, pricing teardown, and comparison in that category.
+- \`list_playbook_steps\` — step number + short imperative name for every Playbook step (the seven-step system).
 - \`get_playbook_step\` — one of the seven Playbook steps by number (1-7).
 - \`list_glossary_terms\` – slug + term name for every Brunson concept UnlockSaaS teaches (Hook, Story, Offer, Value Ladder, Stack Slide, Dream 100, Reluctant Hero, Brunson Hard-Rule, Big Domino, etc.).
 - \`get_glossary_term\` – working definition of one Brunson term in the founder's own words, by slug.
 - \`get_faq\` — search or list UnlockSaaS FAQ entries (objection answers, guarantee mechanics).
+- \`get_offer\` — canonical UnlockSaaS offer in one call: who it is for, three-rung value ladder (free Diagnostic → $1 Starter → $49/mo Playbook with 60-day guarantee), guarantee mechanics (window length, refund cap, required milestones), and clickable URLs.
 
 ## What it will not do
 
