@@ -131,10 +131,17 @@ const nextConfig = {
    *   3. Baseline security headers (HSTS, CSP, Referrer-Policy,
    *      X-Content-Type-Options, Permissions-Policy) on every response.
    *
-   * Routing order: more-specific patterns FIRST. Next evaluates the array
-   * top-to-bottom; when multiple rules match the same path AND set the same
-   * header key, the later rule's value wins. We exploit that for the embed
-   * routes' CSP relaxation (rule placed AFTER the catch-all baseline).
+   * Routing order: catch-all patterns FIRST, more-specific overrides AFTER.
+   * Next evaluates the array top-to-bottom; when multiple rules match the
+   * same path AND set the same header key, the later rule's value wins. We
+   * exploit that twice:
+   *   - The en-US Content-Language catch-all is placed BEFORE the locale-
+   *     specific /es/* and /pt-BR/* rules so the locale rules win for their
+   *     prefixes (verified 2026-05-20: previously /es/faq served en-US
+   *     because the catch-all came after).
+   *   - The embed-route CSP override is placed AFTER the baseline security
+   *     headers so it replaces `frame-ancestors 'none'` with the wide-open
+   *     value the cross-origin iframe needs.
    *
    * Content-Language pairs with the per-locale `<div lang>` wrapper in
    * app/[locale]/layout.tsx, the hreflang alternates in metadata + sitemap,
@@ -294,12 +301,18 @@ const nextConfig = {
     ];
 
     return [
-      // ── 1. Content-Language: locale-prefixed paths first ──────────────
+      // ── 1. Content-Language: catch-all en-US FIRST, locale overrides AFTER
+      // Next's header merging applies later-wins for matching rules with the
+      // same header key. By placing the catch-all en-US rule before the
+      // locale-specific rules, requests to /es/* and /pt-BR/* get their
+      // locale value overriding en-US. (Verified live 2026-05-20: the prior
+      // order had the catch-all last, so /es/faq served Content-Language:
+      // en-US in production for every locale-prefixed URL.)
+      { source: "/:path*", headers: [{ key: "Content-Language", value: "en-US" }] },
       { source: "/es/:path*", headers: [{ key: "Content-Language", value: "es" }] },
       { source: "/es", headers: [{ key: "Content-Language", value: "es" }] },
       { source: "/pt-BR/:path*", headers: [{ key: "Content-Language", value: "pt-BR" }] },
       { source: "/pt-BR", headers: [{ key: "Content-Language", value: "pt-BR" }] },
-      { source: "/:path*", headers: [{ key: "Content-Language", value: "en-US" }] },
 
       // ── 2. X-Robots-Tag: noindex for private/transactional surfaces ──
       ...NOINDEX_PATHS.map((source) => ({ source, headers: NOINDEX_HEADERS })),
