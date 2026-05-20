@@ -16,6 +16,7 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { ID } from "@/lib/seo/entity";
 
 /**
  * pSEO #5 — Category roundup pages.
@@ -82,6 +83,11 @@ function buildJsonLd(cat: CategoryDef, canonicalUrl: string): string[] {
   const collection = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    // Stable @id so cross-page schemas (BreadcrumbList lists, internal
+    // links from /category hub) can resolve this page as one node in
+    // the entity graph. Matches the discipline shipped on glossary/
+    // funnel-teardown / pricing-teardown / compare / etc. detail pages.
+    "@id": canonicalUrl,
     name: `${cat.displayName} — Indie SaaS Roundup`,
     description: cat.oneLine,
     abstract: cat.intent,
@@ -100,11 +106,15 @@ function buildJsonLd(cat: CategoryDef, canonicalUrl: string): string[] {
     // images carry meaning).
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    isPartOf: {
-      "@type": "WebSite",
-      name: "Unlock SaaS",
-      url: BASE,
-    },
+    // @id cross-references resolve to the canonical Organization /
+    // WebSite nodes rendered by OrganizationJsonLd in the root layout.
+    // Without these, Google's structured-data graph and the LLM
+    // retrieval pipelines see this CollectionPage as a disconnected
+    // node – the publisher / parent-website signal is lost. Pattern
+    // is the same one already shipped on every other pSEO detail
+    // surface (see glossary/[slug]/page.tsx for the canonical example).
+    isPartOf: { "@id": ID.website },
+    publisher: { "@id": ID.organization },
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: products.length + comparisons.length,
