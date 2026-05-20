@@ -66,7 +66,7 @@ export const ID = {
 /**
  * Reads a candidate social-anchor URL from env. Returns undefined if the
  * env var is unset, empty, or doesn't look like an absolute URL. Bad URLs
- * are silently dropped — we never want to ship a malformed sameAs entry
+ * are silently dropped – we never want to ship a malformed sameAs entry
  * because it tanks Knowledge Graph eligibility for the whole block.
  *
  * URL validation is intentionally strict: must start with https:// and pass
@@ -86,6 +86,32 @@ function readSocialEnv(key: string): string | undefined {
   } catch {
     return undefined;
   }
+}
+
+/**
+ * DOI shape validator. A DOI is `10.<registrant>/<suffix>`:
+ *   - registrant is a numeric prefix assigned by the DOI registration
+ *     agency (Zenodo is `10.5281`, CrossRef registrants start with
+ *     `10.1000`+, DataCite mints in the same `10.<digits>/...` shape).
+ *   - suffix is any non-whitespace string after the slash.
+ *
+ * Returns the trimmed DOI when the value matches, otherwise undefined.
+ * Bare strings only – no `doi:` prefix, no `https://doi.org/` prefix.
+ * Brunson Hard-Rule: a malformed DOI silently drops so the canonical
+ * Dataset JSON-LD never carries a fabricated identifier.
+ */
+const DOI_PATTERN = /^10\.\d{4,}(?:\.\d+)*\/\S+$/;
+
+function readDoiEnv(key: string): string | undefined {
+  const raw = process.env[key];
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+  // Strip a leading `doi:` if the operator pasted it that way. Both
+  // forms are common in Zenodo's UI; we normalize to the bare DOI.
+  const candidate = trimmed.replace(/^doi:/i, "").trim();
+  if (!DOI_PATTERN.test(candidate)) return undefined;
+  return candidate;
 }
 
 /**
@@ -221,7 +247,47 @@ export interface DatasetCatalogRegistration {
   readonly url: string;
   /** Catalog homepage URL – schema.org DataCatalog.url. */
   readonly catalogUrl: string;
+  /**
+   * Bare DOI in `10.<registrant>/<suffix>` form when the catalog mints
+   * one (Zenodo, figshare, DataCite, OSF). HF and Kaggle do not mint
+   * DOIs, so this field stays undefined for those catalogs. Used by
+   * the canonical Dataset JSON-LD to emit `Dataset.identifier` as a
+   * PropertyValue with `propertyID: "doi"` – the strongest dataset
+   * identifier class Google Dataset Search recognises, and the form
+   * every academic citation pipeline pivots on.
+   */
+  readonly doi?: string;
 }
+
+/**
+ * The bare DOI for the Indie SaaS Teardowns dataset (e.g.
+ * `10.5281/zenodo.12345678`), resolved from
+ * `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI` at module load. Undefined until
+ * the operator mints a Zenodo deposit and pastes the resulting DOI on
+ * Vercel.
+ *
+ * Why this lives at module scope (not derived per-call from the catalog
+ * registrations): consumers other than the Dataset JSON-LD also need
+ * the DOI directly – the BibTeX `doi = {...}` field, the citation
+ * string, the HF dataset card YAML frontmatter, the markdown mirror.
+ * Hoisting it once keeps the source of truth single.
+ *
+ * Brunson Hard-Rule: a malformed value silently drops via DOI_PATTERN
+ * validation. The dataset never advertises a DOI it does not actually
+ * resolve.
+ */
+export const DATASET_DOI: string | undefined = readDoiEnv(
+  "NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI",
+);
+
+/**
+ * Resolvable `https://doi.org/...` URL form of DATASET_DOI. Undefined
+ * when the DOI is unset. Used as a `sameAs` entry on the Dataset
+ * schema and as the citation link target.
+ */
+export const DATASET_DOI_URL: string | undefined = DATASET_DOI
+  ? `https://doi.org/${DATASET_DOI}`
+  : undefined;
 
 function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration[] {
   const rows: DatasetCatalogRegistration[] = [];
@@ -250,6 +316,29 @@ function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration
       name: "Zenodo",
       url: zenodo,
       catalogUrl: "https://zenodo.org/",
+      // Pair the catalog URL with the bare DOI when set. The DOI is
+      // the identifier the canonical Dataset JSON-LD surfaces as a
+      // PropertyValue; the URL is what `includedInDataCatalog` walks.
+      // Both shipped together so a downstream crawler does not have
+      // to derive one from the other.
+      ...(DATASET_DOI ? { doi: DATASET_DOI } : {}),
+    });
+  }
+
+  // OSF.io – Open Science Framework, also a DOI-minting catalog. Lower
+  // priority than Zenodo because Zenodo is the academic default and
+  // already has a sandbox environment; OSF is the secondary mirror for
+  // datasets that want presence in the open-science research community.
+  // Operator activates by depositing the same artifacts on osf.io,
+  // requesting a DOI, and pasting both URL + DOI here.
+  const osf = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_OSF_DATASET_URL");
+  if (osf) {
+    const osfDoi = readDoiEnv("NEXT_PUBLIC_UNLOCKSAAS_OSF_DOI");
+    rows.push({
+      name: "OSF",
+      url: osf,
+      catalogUrl: "https://osf.io/",
+      ...(osfDoi ? { doi: osfDoi } : {}),
     });
   }
 

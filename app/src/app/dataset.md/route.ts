@@ -15,7 +15,13 @@ import {
   DATASET_VERSION,
   perTableCsvUrl,
 } from "@/lib/seo/dataset";
-import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
+import {
+  BASE_URL,
+  DATASET_DOI,
+  DATASET_DOI_URL,
+  FOUNDER,
+  ORGANIZATION,
+} from "@/lib/seo/entity";
 
 /**
  * /dataset.md — markdown mirror of /dataset for AI crawlers and agents.
@@ -78,6 +84,10 @@ const TABLE_ROWS: ReadonlyArray<{
  * `server-hoist-static-io` pattern — built once at module load, the
  * route handler just writes the string with the right headers.
  */
+const DOI_FRONTMATTER_LINES = DATASET_DOI_URL
+  ? `doi: ${DATASET_DOI}\ndoiUrl: ${DATASET_DOI_URL}\n`
+  : "";
+
 const MARKDOWN_BODY = `---
 title: ${DATASET_NAME}
 canonical: ${DATASET_URLS.landing}
@@ -93,7 +103,7 @@ publisherUrl: ${ORGANIZATION.url}
 creator: ${FOUNDER.name}
 creatorUrl: ${BASE_URL}/about
 totalRows: ${DATASET_BUNDLE.counts.total_rows}
----
+${DOI_FRONTMATTER_LINES}---
 
 # ${DATASET_NAME}
 
@@ -101,6 +111,7 @@ totalRows: ${DATASET_BUNDLE.counts.total_rows}
 
 **Downloads.** ${DATASET_BUNDLE.counts.total_rows} editorially verified rows of indie SaaS marketing analysis. Free, CC-BY-4.0, attribution required.
 
+${DATASET_DOI_URL ? `**Persistent DOI.** [\`${DATASET_DOI}\`](${DATASET_DOI_URL}). Resolves via doi.org to the Zenodo deposit. Use this in academic citations and reference managers.\n` : ""}
 - **JSON bundle (all tables):** [${DATASET_URLS.json}](${DATASET_URLS.json})
 - **CSV (flat, all tables, 14 universal columns):** [${DATASET_URLS.csv}](${DATASET_URLS.csv})
 - **HTML landing:** [${DATASET_URLS.landing}](${DATASET_URLS.landing})

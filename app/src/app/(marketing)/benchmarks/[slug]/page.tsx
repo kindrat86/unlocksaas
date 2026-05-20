@@ -17,6 +17,9 @@ import {
   paaForBenchmark,
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
+import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
+import { CitationBlock } from "@/components/seo/citation-block";
+import { getCitationForBenchmark } from "@/lib/citations";
 
 
 export function generateStaticParams() {
@@ -106,6 +109,16 @@ function buildJsonLd(
       "indie SaaS",
     ].join(", "),
     inLanguage: "en-US",
+    // `citation` points at the stable /cite/benchmark-<slug> permalink
+    // so the bidirectional citation graph (article→permalink, permalink
+    // →article) is machine-discoverable for any retriever walking the
+    // schema graph.
+    citation: {
+      "@type": "CreativeWork",
+      "@id": `${BASE_URL}/cite/benchmark-${e.slug}`,
+      url: `${BASE_URL}/cite/benchmark-${e.slug}`,
+      name: `Stable citation permalink for ${e.metric}`,
+    },
   };
 
   const faqPage = {
@@ -176,6 +189,12 @@ export default async function BenchmarkDetailPage(props: {
     mergedFaqs,
   );
 
+  // Resolve the citation record. citations.ts registers one row per
+  // BENCHMARK_ENTRIES slug at module load – returns undefined only
+  // when the citation library drifts from the benchmark catalog, in
+  // which case CitationBlock no-ops without breaking the page.
+  const citation = getCitationForBenchmark(e.slug);
+
   return (
     <article className="min-h-screen">
       <JsonLdBlock json={qaJson} />
@@ -239,9 +258,12 @@ export default async function BenchmarkDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Direct answer
             </p>
-            <p className="text-base leading-relaxed" data-speakable>
+            <DateStampedAnswer
+              lastVerified={e.lastVerified}
+              variant="benchmark"
+            >
               {e.aeoAnswer}
-            </p>
+            </DateStampedAnswer>
           </CardContent>
         </Card>
       </section>
@@ -329,6 +351,11 @@ export default async function BenchmarkDetailPage(props: {
         <p className="text-sm text-muted-foreground leading-relaxed">
           {e.sourceNote}
         </p>
+      </section>
+
+      {/* Citation – formal citation strings for academic / agent re-use. */}
+      <section className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40">
+        <CitationBlock citation={citation} headingLevel="h2" />
       </section>
 
       <section

@@ -10,9 +10,10 @@
 
 The SEO/GEO/AIO audit identified one cluster as the single highest-leverage missing signal: the `sameAs` / `mainEntityOfPage` / `subjectOf` arrays on the Organization + Person JSON-LD are empty. Every supporting piece of code is shipped:
 
-- [src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) reads 15 env-driven URL slots
-- [src/components/seo/json-ld.tsx](../app/src/components/seo/json-ld.tsx) wires them into Organization + Person `sameAs` and Organization `mainEntityOfPage`
-- [src/lib/media-mentions.ts](../app/src/lib/media-mentions.ts) supplies the `subjectOf` Article anchors
+- [src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) reads 15 env-driven URL slots for Organization-level anchors
+- [src/lib/seo/founder.ts](../app/src/lib/seo/founder.ts) reads the Person-level slots (founder `sameAs`, `alumniOf`, `award`)
+- [src/components/seo/json-ld.tsx](../app/src/components/seo/json-ld.tsx) wires them into Organization + Person `sameAs`, Person `alumniOf` / `award`, and Organization `mainEntityOfPage`
+- [src/lib/media-mentions.ts](../app/src/lib/media-mentions.ts) supplies the `subjectOf` Article anchors for both Organization and Person
 
 The schema graph activates the moment an operator fills the env vars on Vercel and pushes a redeploy. No code change required.
 
@@ -414,6 +415,98 @@ Optional follow-up: wire a Vercel Deploy Hook that also POSTs to `/api/indexnow`
 
 ---
 
+## Tier 2.5 – Founder (Person) `sameAs` slots
+
+These slots sit on the Person JSON-LD (Maryan), distinct from the Organization-level slots above. The Organization slots (`NEXT_PUBLIC_UNLOCKSAAS_*_URL`) describe the company's off-platform anchors; the founder slots (`NEXT_PUBLIC_FOUNDER_SAMEAS_*`) describe the human's personal profiles. KG treats Organization.sameAs and Person.sameAs as separate edges on the entity graph – both anchors compound.
+
+Wired by [src/lib/seo/founder.ts](../app/src/lib/seo/founder.ts) and consumed by the `Person` block in [src/components/seo/json-ld.tsx](../app/src/components/seo/json-ld.tsx). Empty values are filtered; the `sameAs` key is omitted entirely from the emitted JSON when no slots are set – no `[]` placeholder ships.
+
+The same bidirectional rule applies: only set an env var once the linked profile is public and its bio names unlocksaas.com (the round-trip claim).
+
+### LinkedIn (Person) <a id="founder-linkedin"></a>
+
+The personal LinkedIn profile, distinct from any company page declared at `NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL`. Same three-surface round-trip rule documented in the Organization LinkedIn section above (headline + about + experience).
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_SAMEAS_LINKEDIN production preview
+# paste: https://www.linkedin.com/in/<your-slug>
+```
+
+### Twitter / X (Person) <a id="founder-twitter"></a>
+
+Personal X handle. Bio line must contain `unlocksaas.com` verbatim.
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_SAMEAS_TWITTER production preview
+# paste: https://x.com/<handle>
+```
+
+### GitHub (Person) <a id="founder-github"></a>
+
+Personal GitHub profile. Set the structured `website` field to `https://unlocksaas.com` (crawlers prefer that field over bio prose).
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_SAMEAS_GITHUB production preview
+# paste: https://github.com/<handle>
+```
+
+### Crunchbase (Person) <a id="founder-crunchbase"></a>
+
+The Person profile on Crunchbase, distinct from the Unlock SaaS Organization entry. Crunchbase auto-creates a People record when you submit the Organization with a founder named; claim that record and link it back.
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_SAMEAS_CRUNCHBASE production preview
+# paste: https://www.crunchbase.com/person/<slug>
+```
+
+### Product Hunt (Person) <a id="founder-product-hunt"></a>
+
+Maker profile (not the product page). Bio must contain unlocksaas.com.
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_SAMEAS_PRODUCT_HUNT production preview
+# paste: https://www.producthunt.com/@<handle>
+```
+
+### AngelList / Wellfound (Person) <a id="founder-angellist"></a>
+
+Founder profile on Wellfound (formerly AngelList Talent). About section must link to unlocksaas.com.
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_SAMEAS_ANGELLIST production preview
+# paste: https://wellfound.com/u/<slug>
+```
+
+---
+
+## Tier 2.6 – Founder credentials (alumniOf, award)
+
+These are factual claims about Maryan's background. They are operator-gated and ship empty by default because the codebase has no source-of-truth bio for either field – the founder can choose to publish them once verifiable.
+
+### alumniOf <a id="founder-alumni-of"></a>
+
+Comma-separated list of `EducationalOrganization` names the founder is an alumnus of. Each entry becomes one `Person.alumniOf` row.
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_ALUMNI_OF production preview
+# paste: Acme University, Bravo Bootcamp
+```
+
+Honesty floor: only list institutions where the founder actually completed (or is currently enrolled in) a credentialed program. A weekend workshop is not alumni.
+
+### award <a id="founder-awards"></a>
+
+Comma-separated list of award strings. Each becomes a plain-string `Person.award` entry.
+
+```bash
+vercel env add NEXT_PUBLIC_FOUNDER_AWARDS production preview
+# paste: Indie Hackers Featured Maker 2025, ProductHunt #1 Product of the Day
+```
+
+Honesty floor: only list awards the founder actually received from a third party. No self-conferred titles.
+
+---
+
 ## MEDIA_MENTIONS – earned media `subjectOf` anchors
 
 When a real earned mention lands (a podcast episode, IH feature, X thread with significant reach, an article in a real publication), it gets logged in [app/src/lib/media-mentions.ts](../app/src/lib/media-mentions.ts). Each row simultaneously:
@@ -464,9 +557,11 @@ The script `python3 scripts/seo-activation-check.py` will print this as a number
 12. **YouTube** – only when first video ships.
 13. **Product Hunt** – only when ready to launch.
 14. **(gated on incorporation)** OpenCorporates – appears automatically 2-6 weeks after the legal-entity filing lands; primary KG feed weight when populated.
-15. **(gated)** Three real earned mentions logged in `MEDIA_MENTIONS`.
-16. **(gated, post-step-15)** Wikidata Q-ID.
-17. **(gated, post-step-15)** Wikipedia article submission.
+15. **Founder personal `sameAs` slots** – `NEXT_PUBLIC_FOUNDER_SAMEAS_*`, claimed in parallel with the Organization slots above (personal LinkedIn, Twitter, GitHub, Crunchbase person, Product Hunt maker, personal Wellfound). Each ships independently the moment the round-trip claim is in place.
+16. **Founder `alumniOf` / `award`** – only when the underlying institution / award actually exists.
+17. **(gated)** Three real earned mentions logged in `MEDIA_MENTIONS`.
+18. **(gated, post-step-17)** Wikidata Q-ID.
+19. **(gated, post-step-17)** Wikipedia article submission.
 
 Re-run the audit script after each step to see the cumulative effect.
 

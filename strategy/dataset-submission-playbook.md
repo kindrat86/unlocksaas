@@ -156,36 +156,154 @@ Everything else (the dataset card, the YAML frontmatter, the per-table
 CSVs, the cross-catalog JSON-LD, the sitemap entries, the activation-log
 mirror) is shipped and lives on https://unlocksaas.com.
 
-## Kaggle and Zenodo – future optional mirrors
+## Zenodo – persistent DOI mirror (shipped 2026-05-21)
 
-The same env-driven cross-listing slots are reserved for two additional
-catalogs:
+Zenodo is the CERN-hosted open-research repository that mints persistent
+DOIs on deposit. DOIs are the strongest dataset identifier class Google
+Dataset Search recognises, the canonical citation form every academic
+reference manager (Zotero, Mendeley, EndNote, RefWorks) pivots on, and
+a persistent identifier that survives URL churn forever.
+
+Code is in place. Operator activation gates the DOI.
+
+### What ships with the canonical site
+
+| Component | State | Notes |
+| --- | --- | --- |
+| Canonical landing at /dataset | shipped | DOI propagates into Dataset JSON-LD, BibTeX, citation when env vars set |
+| Zenodo submission surface at /dataset/zenodo | shipped | Pre-built deposition payload + six-step playbook + OSF.io alternative |
+| Raw deposition JSON at /dataset/zenodo/raw | shipped | curl-downloadable as `zenodo-deposition.json`, build-time constant |
+| Sitemap entries | shipped | Both URLs listed, crawler-discoverable |
+| Operator CLI at scripts/mint-zenodo-deposit.py | shipped | API-driven: creates deposit, uploads files, publishes. `--sandbox` for rehearsal, default is dry-run |
+| Zenodo account + token | **operator** | Free registration at zenodo.org/signup |
+| `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI` (bare DOI) | **operator** | Set on Vercel after the deposit publishes |
+| `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL` (record URL) | **operator** | Set on Vercel after the deposit publishes |
+
+### Six-minute mint flow
+
+1. **Create a Zenodo account.** https://zenodo.org/signup/. Free,
+   ORCID-linkable. Generate a personal access token under Account ->
+   Applications -> Personal access tokens with scopes `deposit:write`
+   and `deposit:actions`.
+
+2. **Dry-run the CLI first.**
+
+   ```bash
+   python3 scripts/mint-zenodo-deposit.py
+   ```
+
+   The default mode fetches the canonical payload, resolves the file
+   list, and prints the planned API calls without contacting Zenodo.
+   Eyeball the file list and the metadata fields.
+
+3. **Rehearse against the sandbox.**
+
+   ```bash
+   export ZENODO_API_TOKEN="<sandbox-token>"
+   python3 scripts/mint-zenodo-deposit.py --sandbox --confirm
+   ```
+
+   Targets sandbox.zenodo.org. The deposit is real but the DOI is
+   sandbox-scoped (non-resolvable). End-to-end test of the create-upload-
+   publish chain.
+
+4. **Mint the production DOI.**
+
+   ```bash
+   export ZENODO_API_TOKEN="<production-token>"
+   python3 scripts/mint-zenodo-deposit.py --confirm
+   ```
+
+   The CLI prints the bare DOI + the Zenodo record URL on success.
+   The deposit is now public on Zenodo; the DOI is permanent and
+   resolvable.
+
+5. **Set both env vars on Vercel.**
+
+   ```bash
+   vercel env add NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI production
+   # Paste the bare DOI, e.g. 10.5281/zenodo.12345678
+
+   vercel env add NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL production
+   # Paste the record URL, e.g. https://zenodo.org/records/12345678
+   ```
+
+6. **Redeploy and verify.** Any commit to main triggers a redeploy.
+   On the next deploy:
+
+   - Canonical Dataset JSON-LD at /dataset declares the DOI as a typed
+     `PropertyValue identifier` (`propertyID: "DOI"`), appends
+     `https://doi.org/<doi>` to `sameAs`, and adds the Zenodo catalog
+     row to `includedInDataCatalog`.
+   - BibTeX entry gets a `doi = {...}` field. Citation string gets a
+     `DOI: ...` suffix. The downloaded JSON bundle gets `doi` and
+     `doiUrl` fields.
+   - HF dataset card YAML frontmatter gets a `doi:` line; the card
+     body gets a DOI table row.
+
+   Verify with the Google Rich Results Test against /dataset – the
+   Dataset node's `identifier` should be an array with the DOI
+   PropertyValue first.
+
+### Why this isn't fully autonomous
+
+Two steps require a human:
+
+1. **Creating the Zenodo account.** Email verification + ORCID linking
+   are intentionally human-in-the-loop. Brunson Hard-Rule explicitly
+   forbids fabricated accounts.
+
+2. **The access token is a secret.** The token grants permission to
+   publish on the operator's behalf. It must stay in the operator's
+   environment (or a CI secret store), never in the codebase.
+
+Everything else – the metadata payload, the file list, the API calls,
+the verification – is automated by `scripts/mint-zenodo-deposit.py`.
+
+### OSF.io alternative
+
+Open Science Framework also mints DOIs and is a recognised
+`DataCatalog`. The same dataset can be deposited on OSF instead of
+(or in addition to) Zenodo. Reserved env vars:
+
+- `NEXT_PUBLIC_UNLOCKSAAS_OSF_DATASET_URL` – the OSF project URL
+- `NEXT_PUBLIC_UNLOCKSAAS_OSF_DOI` – the bare OSF DOI
+
+Submission via the OSF web UI (no API parallel to the Zenodo CLI yet).
+OSF and Zenodo deposits are additive – the canonical Dataset JSON-LD
+declares both `includedInDataCatalog` rows simultaneously when both
+env-var pairs land.
+
+## Kaggle – optional mirror
 
 - `NEXT_PUBLIC_UNLOCKSAAS_KAGGLE_DATASET_URL` – Kaggle Datasets.
   Submission flow mirrors HF: create a Kaggle dataset, upload the same
   five CSVs, set the env var, redeploy. The Dataset JSON-LD picks up
   the Kaggle cross-listing on the next deploy.
 
-- `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL` – Zenodo. Zenodo issues a DOI
-  on submission, and DOIs are the strongest dataset identifier class
-  Google Dataset Search recognises. Submission flow: register an
-  account, upload the JSON bundle + the five per-table CSVs + the
-  README.md, request a DOI, set the env var with the DOI landing URL.
-
-All three slots are optional and additive. Each adds one more
-`includedInDataCatalog` row to the canonical Dataset schema and one
-more `sameAs` URL. Until the env var is set, the slot is silently
-omitted – Brunson Hard-Rule: never advertise a listing that does not
-exist.
+Kaggle does not mint DOIs, so it surfaces only as
+`includedInDataCatalog` and `sameAs` – not as a DOI identifier.
 
 ## Source of truth
 
-- `app/src/lib/seo/dataset.ts` – canonical dataset metadata.
-- `app/src/lib/seo/dataset-hf.ts` – HF dataset card builder.
-- `app/src/lib/seo/entity.ts` – env-driven `DATASET_EXTERNAL_REGISTRATIONS`.
-- `app/src/components/seo/json-ld.tsx` – `PublicDatasetJsonLd` builder.
-- `app/src/app/dataset/page.tsx` – canonical landing.
+- `app/src/lib/seo/dataset.ts` – canonical dataset metadata; DOI threads
+  through DATASET_CITATION, DATASET_BIBTEX, DATASET_URLS.doi.
+- `app/src/lib/seo/dataset-hf.ts` – HF dataset card builder; injects
+  `doi:` into YAML frontmatter when DATASET_DOI is set.
+- `app/src/lib/seo/dataset-zenodo.ts` – Zenodo Deposition API metadata
+  builder; mirrors dataset-hf.ts pattern.
+- `app/src/lib/seo/entity.ts` – env-driven `DATASET_EXTERNAL_REGISTRATIONS`,
+  `DATASET_DOI`, `DATASET_DOI_URL`.
+- `app/src/components/seo/json-ld.tsx` – `PublicDatasetJsonLd` builder;
+  accepts `doi` prop, emits PropertyValue identifier.
+- `app/src/app/dataset/page.tsx` – canonical landing; renders Zenodo
+  catalog mirror entry.
 - `app/src/app/dataset/huggingface/page.tsx` – HF submission surface.
 - `app/src/app/dataset/huggingface/raw/route.ts` – raw README.md route.
+- `app/src/app/dataset/zenodo/page.tsx` – Zenodo submission surface.
+- `app/src/app/dataset/zenodo/raw/route.ts` – raw deposition JSON route.
+- `app/src/app/dataset.md/route.ts` – markdown mirror; includes DOI
+  frontmatter + a persistent-DOI line in the body when set.
 - `app/src/lib/seo/freshness.ts` – activation-log entry.
 - `app/src/lib/seo/llms-txt.ts` – LLM-readable mirror of the surfaces.
+- `scripts/mint-zenodo-deposit.py` – operator CLI for the Zenodo API.
