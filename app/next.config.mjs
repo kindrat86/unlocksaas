@@ -69,9 +69,13 @@ const nextConfig = {
    *    header – pure hygiene, no perf impact, smaller response by ~22 bytes.
    *
    * NOT enabled here, deliberately:
-   *   - `experimental.optimizeCss`: requires the `critters` peer dep and has
-   *     been flaky on Vercel CI in past 14.x patch releases. Re-evaluate
-   *     after the first verified customer cycle.
+   *   - `experimental.optimizeCss`: requires the `critters` peer dep, which
+   *     has had a history of CI flakiness (multiple 14.x patch cycles). Next
+   *     16's CSS pipeline already inlines critical CSS via the Turbopack
+   *     graph for app/ routes, so the marginal lift from optimizeCss is
+   *     small on this codebase. Re-evaluate together with the cacheComponents
+   *     re-enable above, not before — adding a second experimental during a
+   *     paused migration would muddy attribution if a build regresses.
    */
   cacheComponents: false,
   experimental: {
