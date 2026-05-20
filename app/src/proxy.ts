@@ -12,9 +12,11 @@ import {
  * Refreshes the Supabase auth session cookie on every (non-static) request,
  * then assigns the sticky A/B identity variant + subject id on first visit.
  *
- * Filename is `middleware.ts` — correct for Next.js 14.2.x.
- * (Renamed to `proxy.ts` only in Next.js 16. Don't migrate until the rest of
- * the app is upgraded.)
+ * Filename is `proxy.ts` – the Next.js 16+ convention for the network-boundary
+ * request interceptor that used to live at `middleware.ts` in Next 14/15. The
+ * exported function is `proxy` to match (Next 16 renamed it from `middleware`,
+ * partly motivated by CVE-2025-29927). Next 16 still accepts the old filename
+ * but logs a deprecation warning and will remove it in a future version.
  */
 export async function proxy(request: NextRequest) {
   const response = await updateSession(request);
