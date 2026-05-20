@@ -163,6 +163,62 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
     approvedAt: "2026-05-19",
     approvedBy: "maryan",
   },
+  // /glossary + /benchmarks – ISO uplift #3 (2026-05-20). Both surfaces
+  // shipped as PENDING-REVIEW so the founder can preview each translated
+  // entry at /es/glossary, /es/glossary/<slug>, /es/benchmarks,
+  // /es/benchmarks/<slug> (and pt-BR equivalents) before flipping to
+  // `approved`. Brunson Hard-Rule:
+  //   - Pending-review pages render with noindex.
+  //   - Sitemap omits them.
+  //   - No hreflang alternate is advertised on the en-US canonicals.
+  //   - The pre-rendered preview is only reachable by typing the URL
+  //     directly (the founder doing review).
+  //
+  // Translation files (already shipped 2026-05-20):
+  //   - src/lib/i18n/translations/glossary.es.ts (16 terms)
+  //   - src/lib/i18n/translations/glossary.pt-br.ts (16 terms)
+  //   - src/lib/i18n/translations/benchmarks.es.ts (20 metrics)
+  //   - src/lib/i18n/translations/benchmarks.pt-br.ts (20 metrics)
+  //
+  // Approval checklist (per locale, per surface):
+  //   1. Read every entry against canonical glossary.ts / benchmarks.ts.
+  //   2. Verify brand-glossary preservation (Hook, Story, Offer, Stripe,
+  //      Playbook, Brunson, Reluctant Hero, Dream 100, Wrong/Weak labels,
+  //      vendor names, metric abbreviations, USD pricing — all English).
+  //   3. Voice check: Reluctant Hero, no marketing buzzwords; neutral
+  //      LATAM Spanish (no 'vosotros') for es; Brazilian Portuguese
+  //      (não peninsular) for pt-BR.
+  //   4. Flip `status: "approved"`, set `approvedAt` ISO date, set
+  //      `approvedBy: "maryan"`. Sitemap + hreflang activate on next
+  //      build.
+  {
+    path: "/glossary",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "16-term Brunson glossary translated to neutral LATAM Spanish. Brand terms (Hook, Story, Offer, Big Domino, Reluctant Hero, Stack Slide, SOS, Seinfeld, Dream 100, Perfect Webinar, Wrong/Weak labels, Value Ladder, Verified Builder, Brunson Hard-Rule) kept English by design. Preview at /es/glossary and /es/glossary/<slug>.",
+  },
+  {
+    path: "/glossary",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "16-term Brunson glossary translated to Brazilian Portuguese (não peninsular). Same brand-glossary preservation rules as es. Preview at /pt-BR/glossary and /pt-BR/glossary/<slug>.",
+  },
+  {
+    path: "/benchmarks",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "20-metric directional benchmarks translated to neutral LATAM Spanish. Vendor names (Baymard, ConvertKit, ProfitWell, OpenView, Bessemer, Apollo, Hunter, Lemlist, ContentSquare, Hotjar), metric abbreviations (LTV, CAC, MRR, ARR, ICP, PLG, OTO), Core Web Vitals (LCP/INP/CLS), email auth (SPF/DKIM/DMARC), and USD pricing kept English. Preview at /es/benchmarks and /es/benchmarks/<slug>.",
+  },
+  {
+    path: "/benchmarks",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "20-metric directional benchmarks translated to Brazilian Portuguese. Same brand-glossary preservation rules as es. Preview at /pt-BR/benchmarks and /pt-BR/benchmarks/<slug>.",
+  },
 ]);
 
 export function getTranslationStatus(
