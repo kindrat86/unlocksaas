@@ -2,7 +2,7 @@
   "meta": {
     "version": "2.0",
     "created_at": "2026-05-16T13:45:25.032666",
-    "last_updated": "2026-05-17T15:34:58Z",
+    "last_updated": "2026-05-21T00:00:00Z",
     "project_slug": "unlocksaas",
     "business_name": "Unlock SaaS",
     "domain": "unlocksaas.com",
@@ -2722,6 +2722,16 @@
         "Push CRON_SECRET to Vercel env (already required by soap-opera; founding cron uses same secret)",
         "Add /founding-members public credit page once first cohort lands (Brunson public-proof loop)"
       ]
+    },
+    {
+      "date": "2026-05-21",
+      "scope": "Parked decision: quantum / value pricing (Isenberg 2026 overlay) – not under consideration until Phase 3 trigger",
+      "change": "Added strategy/decisions/quantum-value-pricing.md and state.json parked_decisions.quantum_value_pricing. Lists five candidate variants (success pricing, stepped, usage-based, value share, per-congregation), enumerates why the locked flat $49/mo is the correct answer at n=0 paying Core, names the three-condition trigger (50+ paying Core + 8 verified-success + 1 unprompted ask), and itemises the pre-trigger instrumentation owed so the eventual decision will be data-driven not speculative.",
+      "rationale": "Greg Isenberg's playbook proposes quantum pricing as a 2026 distribution move. The frame is real but wrong for UnlockSaaS pre-PMF: n=0 means experimentation is guessing, the Brunson workbook chain locked $49/mo for reasons that still hold, dynamic pricing pre-PMF contradicts the Reluctant Hero brand promise, and Isenberg's own framing targets $100B-incumbent competitors not micro-SaaS pre-revenue. Parking this with a hard trigger + instrumentation owed prevents premature optimisation while preserving the option to revisit on real evidence. Follows the lean-stance pattern that lifted youtube-channel-stance.md and seven-phases-coverage.md.",
+      "files": [
+        "strategy/decisions/quantum-value-pricing.md",
+        "strategy/state.json"
+      ]
     }
   ],
   "notes": {
@@ -2781,5 +2791,26 @@
   },
   "design_principles": [
     "Framework into the engine, not onto the user: every Brunson concept added to the product goes in as engine intelligence, not as another task/form for Marco. The product's value is that it KNOWS the framework so the avoidant founder does not have to."
-  ]
+  ],
+  "parked_decisions": {
+    "quantum_value_pricing": {
+      "status": "parked",
+      "parked_on": "2026-05-21",
+      "current_rule": "$49/mo flat locked per workbook 01 §2 + dotcom_secrets.offer_stack.price + dotcom_secrets.value_ladder.tiers.rung_1_core.price",
+      "source": "Greg Isenberg 2026 distribution playbook overlay (project_unlocksaas_isenberg_playbook memory)",
+      "decision_file": "strategy/decisions/quantum-value-pricing.md",
+      "trigger_to_revisit_all_three_required": [
+        "50+ paying Core customers active",
+        "At least 8 of those 50 have completed full Playbook loop to First Paying Customer Verified",
+        "At least 1 unprompted customer ask for an alternative pricing shape (price-point complaints do NOT count)"
+      ],
+      "pre_trigger_instrumentation_owed": [
+        "Per-channel conversion attribution (already covered by Fill Your Funnel manifest)",
+        "tt_first_customer_days property on each Core customer (Supabase column or PostHog property)",
+        "Engine action counts per customer in PostHog (outreach drafts, Dream 100 enrichments, Stripe-screenshot uploads)",
+        "60-day-window refund rate from first guarantee-window cohort"
+      ],
+      "do_not": "Do not test, spec, or build quantum pricing variants until all three trigger conditions hold simultaneously. Do not re-litigate the $49/mo lock without a Brunson Revision Mode pass on workbook 01 §2."
+    }
+  }
 }
