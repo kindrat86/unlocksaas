@@ -46,6 +46,32 @@ The implementation consequence: **never paste a URL into an env var before the t
 
 ---
 
+## Tier 0 – Self-published canonical entity manifest (shipped)
+
+**Status:** ✅ Live. No operator action required. Activated 2026-05-20.
+
+The single Knowledge Graph signal the codebase can ship without operator authority on an external platform: a content-negotiated, dereferenceable JSON-LD entity description at the `.well-known` discovery path.
+
+- **URL:** [`https://unlocksaas.com/.well-known/entity.jsonld`](https://unlocksaas.com/.well-known/entity.jsonld)
+- **Route source:** [app/.well-known/entity.jsonld/route.ts](../app/src/app/.well-known/entity.jsonld/route.ts)
+- **Content type:** `application/ld+json` (IANA-registered JSON-LD media type).
+- **Body:** the full `Organization + Person + WebSite` `@graph`, cross-referenced via `@id`, sourced from [entity.ts](../app/src/lib/seo/entity.ts) (single source of truth, no drift).
+- **Wired:** referenced from the homepage `Organization.subjectOf[]` as a Dataset entry, so KG / AIO / LLM-retrieval pipelines that walk subjectOf find it on first traversal.
+- **Identifiers:** the Organization `identifier[]` array carries PropertyValue rows (`domain`, `foundingDate`, `canonical-manifest`) – stable machine IDs the KG card can be keyed to.
+
+What this does:
+- Acts as the closest self-published analogue to a Wikidata Q-URL: a stable URL whose sole purpose is to return the canonical machine-readable description of the entity.
+- Corroborates the homepage Organization JSON-LD with a second, content-negotiated copy at a discovery-convention path.
+- Pairs with the existing `/.well-known/llms.txt`, `/.well-known/mcp.json`, `/.well-known/security.txt` surfaces – every machine-readable signal lives under one canonical directory.
+
+What this does NOT do:
+- It is NOT a replacement for a real Wikidata Q-ID. Google's Knowledge Graph awards full confidence weight to off-platform, bidirectionally-claimed anchors. A self-published manifest is a corroborating signal, not the external anchor itself.
+- It is NOT a `sameAs` row. `sameAs` requires off-platform URLs (Tier 1 / Tier 2 below). The manifest URL is declared as `subjectOf` Dataset + `identifier` PropertyValue instead, which are the schema.org-correct slots for a self-published canonical description.
+
+The Tier 1 / Tier 2 anchors below remain the high-leverage moves once the operator can claim them. This manifest is the floor, not the ceiling.
+
+---
+
 ## Tier 1 – Knowledge Graph anchors
 
 These are the highest-leverage anchors in the entire schema graph. The first two (Wikidata, Wikipedia) are gated on prerequisites and require the earned-media bar to land first. The third (SameAs.org) is operator-actionable today.
@@ -378,6 +404,7 @@ Commit message: `media: log <publication> mention (<date>)`. The next deploy aut
 
 The script `python3 scripts/seo-activation-check.py` will print this as a numbered list. The cheat-sheet order:
 
+0. **Self-published canonical entity manifest** – ✅ shipped 2026-05-20, no operator action.
 1. **Google Search Console** – mandatory. 10 min.
 2. **Bing Webmaster** – mandatory if you want Bing Copilot citation tracking. 10 min.
 3. **IndexNow key** – run `python3 scripts/setup-indexnow-key.py`. 2 min.

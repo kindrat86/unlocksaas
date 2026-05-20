@@ -239,6 +239,27 @@ const SUBJECT_OF_LLM_CORPUS = Object.freeze([
     license: `${BASE}/terms`,
     creator: { "@id": ID.organization },
   },
+  // Canonical self-published entity manifest at /.well-known/entity.jsonld.
+  // Tier 1 Knowledge Graph anchors (Wikidata, Wikipedia, SameAs.org) are
+  // operator-gated; the Brunson Hard-Rule bars fabricating them. The
+  // autonomous complement is to publish a stable, content-negotiated,
+  // dereferenceable JSON-LD description of the entity and reference it
+  // here so KG and LLM retrieval pipelines that walk subjectOf find the
+  // canonical machine-readable description on their first traversal.
+  // The manifest body is byte-stable across requests; only deploys
+  // change it. See app/.well-known/entity.jsonld/route.ts for the source.
+  {
+    "@type": "Dataset",
+    name: "Unlock SaaS – canonical entity manifest",
+    description:
+      "JSON-LD description of the Unlock SaaS Organization + Founder + WebSite entity graph, served at the .well-known discovery path for machine-readable entity resolution.",
+    url: `${BASE}/.well-known/entity.jsonld`,
+    encodingFormat: "application/ld+json",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: `${BASE}/terms`,
+    creator: { "@id": ID.organization },
+  },
 ] as const);
 
 /**
@@ -350,6 +371,30 @@ const ORGANIZATION_JSON = JSON.stringify({
     // aggregate across the entity. Normalized 2026-05-17.
     availableLanguage: ["en-US"],
   },
+  // Machine-readable internal identifiers. PropertyValue is the schema.org
+  // pattern for stable IDs that are not URLs. Knowledge Graph and LLM
+  // retrieval pipelines walk Organization.identifier[] to confirm an
+  // entity card is keyed to the same domain / founding date / canonical
+  // manifest URL the body content names. Mirrors the identifier array on
+  // /.well-known/entity.jsonld so both surfaces declare the same machine
+  // IDs for the entity.
+  identifier: [
+    {
+      "@type": "PropertyValue",
+      propertyID: "domain",
+      value: "unlocksaas.com",
+    },
+    {
+      "@type": "PropertyValue",
+      propertyID: "foundingDate",
+      value: ORGANIZATION.foundingDate,
+    },
+    {
+      "@type": "PropertyValue",
+      propertyID: "canonical-manifest",
+      value: `${BASE}/.well-known/entity.jsonld`,
+    },
+  ],
   sameAs: SAME_AS,
 });
 
