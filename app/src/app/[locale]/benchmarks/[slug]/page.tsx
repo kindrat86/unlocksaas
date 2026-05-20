@@ -42,7 +42,6 @@ import { TldrSummary } from "@/components/seo/tldr-summary";
  * {metric}?") matching the LLM citation intent in the target language.
  */
 
-export const dynamic = "force-static";
 
 type RouteParams = { locale: string; slug: string };
 

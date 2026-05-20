@@ -78,11 +78,9 @@ import { loadEditionFindings } from "@/lib/state-of-saas-data";
 
 // ISR — the cohort changes a few times a day at most. Hourly rebuild
 // catches new submissions without churning the build queue.
-export const revalidate = 3600;
 
 // Lock known years only — generateStaticParams returns one entry per
 // edition. Unknown years 404 via the notFound() in the page body.
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return editionStaticParams();

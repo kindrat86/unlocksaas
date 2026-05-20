@@ -37,6 +37,7 @@
  */
 
 import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
 import { CURRENT_EDITION_YEAR, MIN_REPORT_N } from "@/lib/state-of-saas";
 
@@ -161,6 +162,10 @@ function roundPercent(fraction: number): number {
 export async function loadEditionFindings(
   year: number,
 ): Promise<EditionFindings> {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag(`state-of-saas:${year}`);
+  cacheTag("diagnostic_leads_aggregate");
   const rows = await fetchYearRows(year);
   const valid = rows.filter((r) => publicLabel(r.label) !== null);
   const total = valid.length;

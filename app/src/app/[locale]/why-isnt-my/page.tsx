@@ -9,7 +9,7 @@ import {
   getTranslationStatus,
   isApproved,
   localesWithApprovedContent,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 import { WHY_ISNT_MY_ENTRIES } from "@/lib/why-isnt-my";
 import { BASE_URL, ID } from "@/lib/seo/entity";
@@ -27,10 +27,9 @@ import {
 
 const PATH = "/why-isnt-my";
 
-export const dynamic = "force-static";
 
 export function generateStaticParams() {
-  return renderableLocalesForPath(PATH).map((locale) => ({ locale }));
+  return renderableLocalesForPathOrStub(PATH).map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({

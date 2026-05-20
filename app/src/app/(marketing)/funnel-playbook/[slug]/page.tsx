@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,14 @@ import {
   getFunnelPlaybookBySlug,
   type FunnelPlaybookEntry,
 } from "@/lib/funnel-playbooks";
+
+async function getCachedEntry(slug: string): Promise<FunnelPlaybookEntry | undefined> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(`funnel-playbook:${slug}`);
+  return getFunnelPlaybookBySlug(slug);
+}
+
 import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
@@ -35,7 +44,7 @@ export async function generateMetadata(props: {
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const e = getFunnelPlaybookBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) return {};
 
   const canonical = `/funnel-playbook/${e.slug}`;
@@ -168,7 +177,7 @@ export default async function FunnelPlaybookDetailPage(props: {
   params: Promise<RouteParams>;
 }) {
   const params = await props.params;
-  const e = getFunnelPlaybookBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/funnel-playbook/${e.slug}`;

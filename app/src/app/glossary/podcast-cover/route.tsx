@@ -30,7 +30,6 @@ import { glossaryAudioEpisodeCount } from "@/lib/seo/glossary-audio";
  * Episode count is logged in `runtime` for observability only.
  */
 
-export const runtime = "nodejs";
 
 const SIZE = { width: 1400, height: 1400 } as const;
 const BG = "#0a0a0a";

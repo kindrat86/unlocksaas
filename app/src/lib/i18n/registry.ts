@@ -453,6 +453,35 @@ export function renderableLocalesForPath(
 }
 
 /**
+ * Cache Components (Next 16+) requires `generateStaticParams` to return at
+ * least one result; an empty array crashes the build with
+ * `EmptyGenerateStaticParamsError`. For locale-shell pSEO routes whose path
+ * has no approved or pending-review translation rows (the eight shells
+ * /alternatives-to, /answers, /category, /compare, /for, /funnel-teardown,
+ * /pricing-teardown, /why-isnt-my as of 2026-05-21), `renderableLocalesForPath`
+ * returns [] – the route exists as plumbing for when translations ship, but
+ * has no content today.
+ *
+ * This helper wraps that: real list when non-empty, or a single-locale stub
+ * (`["es"]`) when empty. The stub page renders noindex (`isApproved()` is
+ * false → robots: { index: false, follow: false }), is excluded from the
+ * sitemap + hreflang map, and the page body calls `notFound()` for any
+ * locale not in the registry. So the stub is unreachable in practice –
+ * a typed-URL visitor sees a 404 – but the build constraint is satisfied.
+ *
+ * Brunson Hard-Rule reconciliation: a stub static param does NOT advertise
+ * a translation that does not exist. The sitemap omits it, hreflang omits
+ * it, the rendered page is noindex. No fabricated locale alternate ships.
+ */
+export function renderableLocalesForPathOrStub(
+  path: string,
+): ReadonlyArray<Exclude<Locale, "en-US">> {
+  const real = renderableLocalesForPath(path);
+  if (real.length > 0) return real;
+  return ["es"] as const;
+}
+
+/**
  * Every locale with ANY renderable row (approved OR pending-review)
  * across all paths. Used by the `app/[locale]/layout.tsx`
  * `generateStaticParams` so the locale SHELL pre-renders even when all

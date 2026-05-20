@@ -9,7 +9,7 @@ import {
   getTranslationStatus,
   isApproved,
   localesWithApprovedContent,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 import {
   ALTERNATIVE_SLUGS,
@@ -34,13 +34,12 @@ import {
 
 const PATH = "/alternatives-to";
 
-export const dynamic = "force-static";
 
 type RouteParams = { locale: string; slug: string };
 
 export function generateStaticParams() {
   const params: { locale: string; slug: string }[] = [];
-  for (const locale of renderableLocalesForPath(PATH)) {
+  for (const locale of renderableLocalesForPathOrStub(PATH)) {
     for (const slug of ALTERNATIVE_SLUGS) {
       params.push({ locale, slug });
     }

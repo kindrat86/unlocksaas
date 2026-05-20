@@ -63,7 +63,6 @@ export function generateStaticParams() {
   return PODCAST_EPISODE_SLUGS.map((slug) => ({ slug }));
 }
 
-export const dynamicParams = false;
 
 type RouteParams = { slug: string };
 

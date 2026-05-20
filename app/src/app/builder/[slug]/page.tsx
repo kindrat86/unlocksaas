@@ -10,9 +10,11 @@
  * to UnlockSaaS — gently, in voice — but the badge is about the founder,
  * not about us. The proof is the message.
  */
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
 import {
   loadPublicBadge,
@@ -30,9 +32,22 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/**
+ * Cached badge lookup tagged `builder:<slug>`. Service-role Supabase reads
+ * (no cookies/headers) are safe inside `'use cache'`. Tag enables
+ * `revalidateTag('builder:<slug>', 'max')` from a Server Action when
+ * a verified-conversion row updates a single builder's record.
+ */
+async function getBadge(slug: string) {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag(`builder:${slug}`);
+  return loadPublicBadge(createAdminClient(), slug);
+}
+
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
-  const badge = await loadPublicBadge(createAdminClient(), params.slug);
+  const badge = await getBadge(params.slug);
   if (!badge) {
     return {
       title: "Verified Builder",
@@ -83,10 +98,18 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   };
 }
 
-export default async function BuilderBadgePage(props: Props) {
-  const params = await props.params;
+export default function BuilderBadgePage(props: Props) {
+  return (
+    <Suspense fallback={null}>
+      <BuilderBadgeBody params={props.params} />
+    </Suspense>
+  );
+}
+
+async function BuilderBadgeBody({ params: paramsP }: { params: Props["params"] }) {
+  const params = await paramsP;
   const adminClient = createAdminClient();
-  const badge = await loadPublicBadge(adminClient, params.slug);
+  const badge = await getBadge(params.slug);
   if (!badge) notFound();
 
   // Founding-cohort serial. Computed via a head-only count query against
@@ -207,7 +230,7 @@ export default async function BuilderBadgePage(props: Props) {
             </Link>
             <span>·</span>
             <Link
-              href={`/builder/${badge.slug}/embed`}
+              href={`/builder/${badge.slug}/snippets`}
               className="underline-offset-4 hover:underline"
               prefetch={false}
             >

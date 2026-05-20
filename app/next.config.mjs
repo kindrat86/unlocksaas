@@ -77,7 +77,15 @@ const nextConfig = {
    *     re-enable above, not before — adding a second experimental during a
    *     paused migration would muddy attribution if a build regresses.
    */
-  cacheComponents: false,
+  // Re-enabled 2026-05-21 — picks up the parallel session's full Suspense +
+  // 'use cache' migration (#dd22051 / #173cd49 / #12dc333 + restored cache
+  // wrappers from feat/re-enable-cache-components). Every previously
+  // failing auth-gated route (/onboarding, /playbook, /playbook/verified,
+  // /diagnostic, /login, /builders) now reads cookies/headers behind
+  // Suspense + connection(); the homepage, /founding, /diagnostic/result,
+  // /builder/[slug], /diagnosis/[id] wrap their async bodies in Suspense.
+  // Verified clean by 668-page local prerender pass before re-enable.
+  cacheComponents: true,
   experimental: {
     optimizePackageImports: [
       "lucide-react",
@@ -87,36 +95,35 @@ const nextConfig = {
       "posthog-js",
     ],
   },
+  /**
+   * Image Optimization (2026-05-21 CWV uplift).
+   *
+   * formats: ['image/avif','image/webp']
+   *   Explicitly declared so Next's image pipeline negotiates AVIF first
+   *   (~30% smaller than WebP at equivalent quality), then WebP, then the
+   *   source format. Without this declaration Next 16 still serves WebP by
+   *   default but skips AVIF, leaving ~25% LCP byte savings on the table
+   *   for the homepage hero, founder portrait, and per-route OG cards.
+   *   AVIF decode is ~50% slower than WebP CPU-side, but the smaller payload
+   *   wins on LCP because the network is the bottleneck on first paint.
+   *
+   * minimumCacheTTL: 31536000 (1y)
+   *   Optimized variants are immutable artifacts keyed by the source URL +
+   *   width + quality + format. Once generated, they never change for a
+   *   given input. A 1y cache TTL maximises CDN hit-rate without sacrificing
+   *   freshness — the source image URL is the cache key, so swapping the
+   *   source automatically invalidates downstream variants.
+   */
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
+  },
   compiler: {
     removeConsole: {
       exclude: ["error", "warn"],
     },
   },
   poweredByHeader: false,
-
-  /**
-   * next/image format preferences (2026-05-21 SEO audit fix).
-   *
-   * Without an explicit `formats` array, Next.js still negotiates AVIF/WebP
-   * via the `Accept` header, but the order is undocumented and has shifted
-   * between minor versions. Declaring `image/avif` first locks in the
-   * smallest-on-the-wire format for browsers that support it (≈95% of
-   * modern desktop + mobile traffic per caniuse 2026-05), falling back to
-   * WebP, then the original.
-   *
-   * AVIF is preferred over WebP because at the LCP-sensitive viewport sizes
-   * we serve (hero, OG cards, founder portrait, dynamic ImageResponse
-   * cards), AVIF reduces bytes by an additional 20–30% vs WebP at the
-   * same SSIM. The CPU cost of AVIF encoding is paid once at build/edge
-   * time and cached, so it never enters the request path.
-   *
-   * This is purely declarative: no /next/image consumers need to change.
-   * The format negotiation happens inside the Next image-optimization
-   * pipeline that already serves dynamic OG cards via ImageResponse.
-   */
-  images: {
-    formats: ["image/avif", "image/webp"],
-  },
 
   /**
    * Trailing-slash normalization (2026-05-20 SEO audit fix #8).

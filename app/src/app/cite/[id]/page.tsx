@@ -53,7 +53,6 @@ import {
 } from "@/lib/seo/entity";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   return allCitationIds().map((id) => ({ id }));

@@ -39,7 +39,6 @@ import {
   type CitationFormat,
 } from "@/lib/citations";
 
-export const dynamicParams = false;
 
 export function generateStaticParams() {
   // Cross-product of every registered ID and every format. Each entry

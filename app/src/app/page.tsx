@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
@@ -78,7 +79,22 @@ import { createAdminClient } from "@/lib/supabase/server";
  *  19. Sticky CTA        — always-visible offer bar below the hero.
  *  20. Exit-intent popup — last-chance diagnostic + newsletter offer.
  */
-export default async function FunnelHub() {
+async function getVerifiedBadgeCount(): Promise<number> {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag("verified-builder-count");
+  return loadPublicBadgeCount(createAdminClient());
+}
+
+export default function FunnelHub() {
+  return (
+    <Suspense fallback={null}>
+      <FunnelHubBody />
+    </Suspense>
+  );
+}
+
+async function FunnelHubBody() {
   const variant = await readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
   // Stripe-verified Verified Builder count. Powers the visible
@@ -90,7 +106,7 @@ export default async function FunnelHub() {
   // Brunson Hard-Rule: SocialProofBar's `verifiedCount` prop falls back
   // to the conversation-corpus copy when the count is 0 — no "0
   // Verified Builders" line ever ships.
-  const verifiedBadgeCount = await loadPublicBadgeCount(createAdminClient());
+  const verifiedBadgeCount = await getVerifiedBadgeCount();
 
   return (
     <div className="min-h-screen flex flex-col">
