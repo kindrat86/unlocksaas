@@ -44,6 +44,20 @@ import {
   DATASET_VERSION,
   perTableCsvUrl,
 } from "@/lib/seo/dataset";
+import {
+  EDITIONS,
+  MIN_REPORT_N,
+  STATE_OF_SAAS_INDEX_URL,
+  STATE_OF_SAAS_LICENSE_SPDX,
+  STATE_OF_SAAS_LICENSE_URL,
+  editionApa,
+  editionBibtex,
+  editionChicago,
+  editionCitation,
+  editionKeywords,
+  editionMla,
+  editionUrl,
+} from "@/lib/state-of-saas";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -567,6 +581,42 @@ function buildPayload() {
         url: perTableCsvUrl(slug),
         rowCount: DATASET_PER_TABLE_CSV[slug].rowCount,
         columns: DATASET_PER_TABLE_CSV[slug].columns,
+      })),
+    },
+    /**
+     * Annual report descriptor (State of Post-Launch Pre-Revenue SaaS).
+     * One entry per edition in the EDITIONS registry; new editions
+     * auto-extend this block on the next build. The headline finding
+     * itself is NOT emitted here – it lives on the edition page so a
+     * cohort-progress change does not have to invalidate this feed's
+     * edge cache. JSON consumers that want the live counts read the
+     * Report + Dataset JSON-LD on the edition page directly.
+     */
+    annualReport: {
+      seriesUrl: STATE_OF_SAAS_INDEX_URL,
+      description:
+        "Annual report on the cohort no other indie SaaS publisher writes about: founders who already shipped but have not yet earned their first paying customer. One edition per calendar year. Headline finding: diagnostic-label distribution (Wrong Person vs Weak Offer vs Weak Belief) across real founder URLs submitted to the free Launch Diagnostic.",
+      license: {
+        spdx: STATE_OF_SAAS_LICENSE_SPDX,
+        url: STATE_OF_SAAS_LICENSE_URL,
+      },
+      cohortMinSubmissions: MIN_REPORT_N,
+      editions: EDITIONS.map((e) => ({
+        year: e.year,
+        url: editionUrl(e.year),
+        title: e.displayTitle,
+        tagline: e.tagline,
+        state: e.state,
+        window: { start: e.windowStart, end: e.windowEnd },
+        lastVerified: e.lastVerified,
+        keywords: editionKeywords(e),
+        citations: {
+          plain: editionCitation(e),
+          bibtex: editionBibtex(e),
+          apa: editionApa(e),
+          mla: editionMla(e),
+          chicago: editionChicago(e),
+        },
       })),
     },
     facts: KEY_FACTS,

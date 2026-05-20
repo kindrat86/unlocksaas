@@ -179,6 +179,12 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
       "Per-builder /founders/[slug] indexed proof pages activate at the first Verified Builder who opts public.",
   },
   {
+    item: "state_of_saas_annual_report",
+    state: "operator",
+    note:
+      "Annual flagship report (State of Post-Launch Pre-Revenue SaaS) live at /state-of-saas and /state-of-saas/<year>. The 2026 edition page renders an honest enrollment-open shell until the diagnostic_leads cohort reaches MIN_REPORT_N=30 submissions; methodology, license, citation framework, and Report JSON-LD ship now. Numbers publish on the next deploy after the cohort crosses threshold – no manual edit required.",
+  },
+  {
     item: "case_studies",
     state: "gated",
     note:

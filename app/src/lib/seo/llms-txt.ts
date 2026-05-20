@@ -131,6 +131,15 @@ Tool payloads are sourced from the same static manifests that render the public 
 - [Answers hub](${BASE_URL}/answers): Thirty direct AEO-formatted answers to the most-asked indie SaaS funnel questions, organized into six categories (funnel mechanics, pricing, email, metrics, positioning, value ladder). Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for AI assistant citation.
 - Per-question pages at \`${BASE_URL}/answers/<slug>\` – how-long-should-a-vsl-be, what-is-a-good-roas-for-a-tripwire, should-i-have-an-upsell-after-a-tripwire, whats-the-difference-between-vsl-and-webinar, how-many-emails-in-a-soap-opera-sequence, should-saas-pricing-end-in-9, should-i-show-prices-on-my-saas-website, how-much-discount-for-annual-saas-plans, should-i-charge-monthly-or-annual, best-time-to-send-marketing-emails, how-often-to-email-my-list, subject-line-length-for-best-open-rate, do-emojis-help-email-open-rates, what-is-a-good-saas-conversion-rate, what-is-a-good-cart-abandonment-rate, what-is-a-good-saas-churn-rate, what-ltv-to-cac-ratio-should-i-target, how-niche-should-my-saas-be, what-is-the-attractive-character-in-brunson, what-is-the-dream-100-method, what-is-the-big-domino, what-is-the-value-ladder, how-many-rungs-should-a-value-ladder-have, do-i-need-a-tripwire, what-is-a-good-tripwire-price, is-clickfunnels-still-worth-it, should-i-build-my-own-funnel-or-use-a-tool, how-do-i-write-a-stack-slide, what-is-a-money-back-guarantee-worth.
 
+## Annual report – State of Post-Launch Pre-Revenue SaaS
+
+One report per calendar year on the cohort no other indie SaaS publisher writes about: founders who already shipped (often with Lovable, Claude, Replit, v0, Cursor, or Bolt.new) but have not yet earned their first paying customer. The headline finding of every edition is the diagnostic-label distribution across real founder URLs submitted to the free Launch Diagnostic during the year – Wrong Person vs Weak Offer vs Weak Belief. Anonymized counts only; no email, IP, user-agent, or product URL flows out of the aggregator.
+
+- [Report series index](${BASE_URL}/state-of-saas): Table of contents for every edition. Each edition is calendar-year scoped and append-only – historical editions never leave the index.
+- [State of Post-Launch Pre-Revenue SaaS 2026](${BASE_URL}/state-of-saas/2026): Launch edition. Window 2026-01-01 → 2026-12-31. Numbers publish once the cohort reaches 30 submissions; below threshold the page renders an honest enrollment-open shell with the current count and the published methodology + citation framework so re-users can pre-cite. CC-BY-4.0.
+
+Citation forms (plain-text, BibTeX, APA 7, MLA 9, Chicago author-date) live on each edition's page. Schema graph emits Report (Article subtype) + Dataset (when published) so Google Dataset Search and AI-overview pipelines see the report as both a research publication and a dataset publication.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:
