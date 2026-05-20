@@ -23,6 +23,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
+import { OutreachDrafterPanel } from "./agent-panels";
 
 const LS_KEY = "unlocksaas.outreach.actions.v1";
 const TARGET = 20;
@@ -163,6 +164,16 @@ export function OutreachLog() {
                 }
                 placeholder="What you sent (or a 1-line summary)"
                 className="min-h-[60px]"
+              />
+              {/* Isenberg overlay: let the engine draft the message for this
+                  specific target + channel using locked WHO/WHAT/VOICE. The
+                  draft fills the textarea above so the founder can tweak +
+                  log it in one motion. */}
+              <OutreachDrafterPanel
+                channel={draft.channel}
+                target={draft.target}
+                notes={draft.message || undefined}
+                onDraft={(text) => setDraft((d) => ({ ...d, message: text }))}
               />
               <Input
                 value={draft.publicLink ?? ""}

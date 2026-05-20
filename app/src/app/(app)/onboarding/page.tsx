@@ -4,6 +4,10 @@ import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getOnboardingStatus, type OnboardingStatus } from "@/lib/onboarding";
+import {
+  getCommunityCardState,
+  type CommunityCardState,
+} from "@/lib/community";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +18,7 @@ import {
   Link as LinkIcon,
   CheckCircle2,
   AlertCircle,
+  Users,
 } from "lucide-react";
 
 // Onboarding is a personalised, server-rendered view. Don't pre-render or
@@ -56,7 +61,12 @@ function OnboardingSkeleton() {
 async function OnboardingBody({
   searchParams: searchParamsP,
 }: {
-  searchParams: Promise<{ session_id?: string; connect?: string; error?: string }>;
+  searchParams: Promise<{
+    session_id?: string;
+    connect?: string;
+    error?: string;
+    community?: string;
+  }>;
 }) {
   await connection();
   const searchParams = await searchParamsP;
@@ -70,6 +80,12 @@ async function OnboardingBody({
     userId: data.user.id,
     email: data.user.email ?? "",
   });
+
+  // Community card state is fetched only when we have a profile id. Defaults
+  // are safe (unconfigured + no grant) for pre-Core users.
+  const community: CommunityCardState | null = status.profile?.id
+    ? await getCommunityCardState(status.profile.id)
+    : null;
 
   // If the user has no Core tier at all, kindly redirect them back to the
   // sales flow rather than leave them looking at a half-empty onboarding.
@@ -124,9 +140,24 @@ async function OnboardingBody({
         />
       ) : null}
 
+      {searchParams.community === "resent" ? (
+        <FlashBanner
+          tone="success"
+          message="Invite re-sent. Check your inbox – it should arrive in under a minute."
+        />
+      ) : null}
+
+      {searchParams.community === "resend_failed" ? (
+        <FlashBanner
+          tone="error"
+          message="The invite resend did not go through. Reply to the welcome email and Maryan will send it manually."
+        />
+      ) : null}
+
       <ClockCard status={status} />
       <CarryoverCard status={status} />
       <ConnectCard status={status} />
+      <CommunityCard status={status} community={community} />
 
       <Separator />
 
@@ -333,6 +364,100 @@ function ConnectCard({ status }: { status: OnboardingStatus }) {
               <span className="font-medium text-foreground">read_only</span>{" "}
               (charges + customers). No write access.
             </p>
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function CommunityCard({
+  status,
+  community,
+}: {
+  status: OnboardingStatus;
+  community: CommunityCardState | null;
+}) {
+  const isCore = status.profile?.tier === "core";
+  const label = community?.platformLabel ?? "the community room";
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Users className="h-5 w-5" />
+          4. Step into the Verified Builders room
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {!isCore ? (
+          <p className="text-sm text-muted-foreground">
+            The room is for Core members. Upgrade to $49/mo Core and your
+            invite to {label} lands the same minute.
+          </p>
+        ) : !community?.configured ? (
+          <>
+            <p className="text-sm text-muted-foreground">
+              The room is opening shortly. Maryan will email your invite the
+              moment {label.startsWith("the ") ? label : `the ${label} link`}{" "}
+              goes live – usually within 24 hours of your first Core invoice.
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Your seat is reserved. There is nothing for you to do here.
+            </p>
+          </>
+        ) : community.hasLiveAccess && community.inviteUrl ? (
+          <>
+            <div className="flex items-center gap-2 text-sm">
+              <CheckCircle2 className="h-4 w-4 text-foreground" />
+              <span className="font-medium">
+                Your seat is live on {label}.
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Founders working the same Playbook are inside. One welcome
+              channel, one &quot;what is working&quot; channel. No spectators.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button asChild>
+                <a
+                  href={community.inviteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open {label} →
+                </a>
+              </Button>
+              <form action="/api/community/resend-invite" method="post">
+                <Button type="submit" variant="outline" size="sm">
+                  Re-send invite email
+                </Button>
+              </form>
+            </div>
+            {community.inviteSentAt ? (
+              <p className="text-xs text-muted-foreground">
+                Last invite emailed{" "}
+                <time dateTime={community.inviteSentAt}>
+                  {formatDate(new Date(community.inviteSentAt))}
+                </time>
+                {community.inviteSentCount > 1 ? (
+                  <span> ({community.inviteSentCount} sends total)</span>
+                ) : null}
+                .
+              </p>
+            ) : null}
+          </>
+        ) : (
+          <>
+            <p className="text-sm text-muted-foreground">
+              We sent your {label} invite to the email on file. If it has not
+              arrived, re-send below.
+            </p>
+            <form action="/api/community/resend-invite" method="post">
+              <Button type="submit" variant="outline" size="sm">
+                Re-send invite email
+              </Button>
+            </form>
           </>
         )}
       </CardContent>
