@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { connection } from "next/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -219,11 +221,24 @@ const LABEL_BADGE: Record<DiagnosticLabel | "error", string> = {
 
 type SearchParams = { id?: string | string[] };
 
-export default async function DiagnosticResultPage(
+export default function DiagnosticResultPage(
   props: {
     searchParams: Promise<SearchParams>;
   }
 ) {
+  return (
+    <Suspense fallback={null}>
+      <DiagnosticResultBody searchParams={props.searchParams} />
+    </Suspense>
+  );
+}
+
+async function DiagnosticResultBody(
+  props: {
+    searchParams: Promise<SearchParams>;
+  }
+) {
+  await connection();
   const searchParams = await props.searchParams;
   const raw = searchParams?.id;
   const id = Array.isArray(raw) ? raw[0] : raw;

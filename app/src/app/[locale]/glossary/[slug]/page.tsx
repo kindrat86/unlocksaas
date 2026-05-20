@@ -49,7 +49,6 @@ import { TldrSummary } from "@/components/seo/tldr-summary";
  * FAQPage + BreadcrumbList, all with inLanguage matching the locale.
  */
 
-export const dynamic = "force-static";
 
 type RouteParams = { locale: string; slug: string };
 

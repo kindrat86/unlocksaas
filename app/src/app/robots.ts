@@ -79,7 +79,12 @@ export default function robots(): MetadataRoute.Robots {
     "/auth/",
     "/diagnostic/result",
     // Verified-Builder tool sub-routes — not the canonical /builder/<slug>.
-    "/builder/*/embed",
+    // /snippets replaces /embed (2026-05-21 cacheComponents re-enable: the
+    // /embed/page.tsx and /embed.html/route.ts paths collided at static
+    // export step — Next wrote /embed.html/index.html and the route handler
+    // tried to write /embed.html as a file. Renaming the helper page
+    // resolves the conflict; the iframe HTML at /embed.html stays).
+    "/builder/*/snippets",
     "/builder/*/embed.html",
     "/builder/*/badge.svg",
     "/builder/*/review.json",

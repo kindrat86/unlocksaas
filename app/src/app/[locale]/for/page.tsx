@@ -9,7 +9,7 @@ import {
   getTranslationStatus,
   isApproved,
   localesWithApprovedContent,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 import { NICHE_ENTRIES } from "@/lib/niches";
 import { BASE_URL, ID } from "@/lib/seo/entity";
@@ -23,10 +23,9 @@ import { BASE_URL, ID } from "@/lib/seo/entity";
 
 const PATH = "/for";
 
-export const dynamic = "force-static";
 
 export function generateStaticParams() {
-  return renderableLocalesForPath(PATH).map((locale) => ({ locale }));
+  return renderableLocalesForPathOrStub(PATH).map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({

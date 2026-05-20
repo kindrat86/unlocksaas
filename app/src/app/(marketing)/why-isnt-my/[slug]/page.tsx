@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,23 @@ import {
   getWhyIsntMyBySlug,
   type WhyIsntMyEntry,
 } from "@/lib/why-isnt-my";
+
+/**
+ * Per-slug cached entry lookup. Source is a frozen `.ts` array so the cache
+ * has nothing to invalidate today, but the `why-isnt-my:<slug>` tag is in
+ * place for the future move to Supabase/Markdown — at that point a Server
+ * Action that updates a single entry can call
+ * `revalidateTag('why-isnt-my:${slug}', 'max')` to refresh just that page.
+ * `cacheLife('max')` is correct for the current build-time data: invalidated
+ * only by the next deploy (build-id keyed).
+ */
+async function getCachedEntry(slug: string): Promise<WhyIsntMyEntry | undefined> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(`why-isnt-my:${slug}`);
+  return getWhyIsntMyBySlug(slug);
+}
+
 import { glossaryTermSlug, getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
@@ -36,7 +54,7 @@ export async function generateMetadata(props: {
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const e = getWhyIsntMyBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) return {};
 
   const canonical = `/why-isnt-my/${e.slug}`;
@@ -150,7 +168,7 @@ export default async function WhyIsntMyDetailPage(props: {
   params: Promise<RouteParams>;
 }) {
   const params = await props.params;
-  const e = getWhyIsntMyBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/why-isnt-my/${e.slug}`;

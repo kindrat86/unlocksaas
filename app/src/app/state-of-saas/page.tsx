@@ -67,7 +67,6 @@ export const metadata: Metadata = {
 // ISR — page is the same for everyone, but the EDITIONS registry is a
 // module constant so the only thing that can change is when a future
 // edition is added. Hourly rebuild is generous; daily would also be safe.
-export const revalidate = 3600;
 
 const TRAIL = [
   { name: ORGANIZATION.name, url: `${BASE_URL}/` },

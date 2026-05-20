@@ -19,6 +19,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { cacheLife } from "next/cache";
 import { BASE_URL } from "@/lib/seo/entity";
 
 const MCP_URL = `${BASE_URL}/api/mcp`;
@@ -113,9 +114,9 @@ Maintained by Maryan (maryan@unlocksaas.com). See ${BASE_URL}/editorial-policy f
  * already a build-time constant, so cacheLife('max') is fine — the cached
  * payload is valid until the next deploy invalidates the build-id-keyed cache.
  */
-// Cache Components migration paused (#7cf382f) — BODY is a module-scope
-// template literal evaluated once at import; cache layering was redundant.
 async function getBody(): Promise<string> {
+  "use cache";
+  cacheLife("max");
   return BODY;
 }
 

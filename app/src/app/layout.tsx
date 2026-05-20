@@ -1,5 +1,21 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
+/**
+ * Geist Sans + Geist Mono via `geist/font` (v1.7.0). Audited 2026-05-21:
+ * `geist/dist/sans.js` and `geist/dist/mono.js` call `next/font/local`
+ * without overriding `display`, which means both fonts inherit Next.js's
+ * default `display: 'swap'`. font-display:swap = browsers paint fallback
+ * text immediately while the woff2 downloads, then swap to Geist with no
+ * invisible-text flash (FOIT). This is the LCP-correct default for a
+ * text-led marketing surface where the H1 IS the LCP element; we keep
+ * the upstream default rather than overriding so a future geist@2.x
+ * configuration change propagates without manual sync.
+ *
+ * The variable-axis woff2 (Geist-Variable.woff2 / GeistMono-Variable.woff2,
+ * weight 100-900) is self-hosted from /public via next/font, so there is
+ * no third-party CDN fetch and no extra DNS lookup on the LCP critical
+ * path.
+ */
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,14 @@ import {
   getBenchmarkBySlug,
   type BenchmarkEntry,
 } from "@/lib/benchmarks";
+
+async function getCachedEntry(slug: string): Promise<BenchmarkEntry | undefined> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(`benchmarks:${slug}`);
+  return getBenchmarkBySlug(slug);
+}
+
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
@@ -33,7 +42,7 @@ export async function generateMetadata(props: {
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const e = getBenchmarkBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) return {};
 
   const canonical = `/benchmarks/${e.slug}`;
@@ -178,7 +187,7 @@ export default async function BenchmarkDetailPage(props: {
   params: Promise<RouteParams>;
 }) {
   const params = await props.params;
-  const e = getBenchmarkBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/benchmarks/${e.slug}`;

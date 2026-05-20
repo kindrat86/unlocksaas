@@ -9,7 +9,7 @@ import {
   getTranslationStatus,
   isApproved,
   localesWithApprovedContent,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 import { ALTERNATIVES } from "@/lib/alternatives";
 import { BASE_URL } from "@/lib/seo/entity";
@@ -39,10 +39,9 @@ import { BASE_URL } from "@/lib/seo/entity";
 
 const PATH = "/alternatives-to";
 
-export const dynamic = "force-static";
 
 export function generateStaticParams() {
-  return renderableLocalesForPath(PATH).map((locale) => ({ locale }));
+  return renderableLocalesForPathOrStub(PATH).map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({

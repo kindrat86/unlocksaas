@@ -9,7 +9,7 @@ import {
   getTranslationStatus,
   isApproved,
   localesWithApprovedContent,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 import {
   WHY_ISNT_MY_SLUGS,
@@ -24,13 +24,12 @@ import { BASE_URL, ID } from "@/lib/seo/entity";
 
 const PATH = "/why-isnt-my";
 
-export const dynamic = "force-static";
 
 type RouteParams = { locale: string; slug: string };
 
 export function generateStaticParams() {
   const params: { locale: string; slug: string }[] = [];
-  for (const locale of renderableLocalesForPath(PATH)) {
+  for (const locale of renderableLocalesForPathOrStub(PATH)) {
     for (const slug of WHY_ISNT_MY_SLUGS) {
       params.push({ locale, slug });
     }
