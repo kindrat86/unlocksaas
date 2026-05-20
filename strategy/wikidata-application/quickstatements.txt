@@ -3,6 +3,22 @@
 # Paste this entire body into <https://quickstatements.toolforge.org/#/batch>
 # after authenticating via Wikimedia OAuth.
 #
+# ─── Version history ───
+# v1 (initial):
+#   Base block – labels en/es/pt-br, descriptions, aliases, P31, P856, P571,
+#   P407 × 3.
+# v2 (2026-05-21, submitted as Q139863921):
+#   + P1813 (short name) en:"UnlockSaaS" – formal short-name slot, distinct
+#     from aliases.
+#   + P973 (described at URL) × 3 – canonical machine-readable artifacts:
+#     /.well-known/entity.jsonld, /dataset, /llms-feed.json.
+#   The enriched reference scaffold mirrors the pattern used on Q139376302
+#   (VC Deal Flow Signal), which survived patrol with academic-grade
+#   references (Zenodo DOI + SSRN abstract via P973 on the companion dataset
+#   Q139493250). Same operator (TheDataNerd), same calibration of the WD:N
+#   bar via structured-data references rather than relying solely on the
+#   3-mention earned-media bar (MEDIA_MENTIONS still empty as of submission).
+#
 # Editorial discipline (Brunson Hard-Rule):
 #   - Every statement below is independently verifiable on the live site
 #     (https://unlocksaas.com) or in the canonical entity manifest
@@ -20,9 +36,12 @@
 #   P856  = official website       (https://www.wikidata.org/wiki/Property:P856)
 #   P571  = inception              (https://www.wikidata.org/wiki/Property:P571)
 #   P407  = language of work       (https://www.wikidata.org/wiki/Property:P407)
+#   P1813 = short name             (https://www.wikidata.org/wiki/Property:P1813)
+#   P973  = described at URL       (https://www.wikidata.org/wiki/Property:P973)
 #   P1581 = official blog          (N/A – no blog ships yet)
 #   P127  = owned by               (N/A – sole proprietor, no Founder Q-ID)
 #   P112  = founded by             (N/A – no Founder Q-ID yet; add later)
+#   P2088 = Crunchbase organization ID (N/A – listing does not exist yet)
 #
 # Item-type reference:
 #   Q47535984 = online service
@@ -32,6 +51,16 @@
 #
 # Submission format reference:
 #   https://www.wikidata.org/wiki/Help:QuickStatements
+#
+# Paste-path note (lesson learned 2026-05-21):
+#   The textarea expects literal TAB separators between columns. The `|` / `||`
+#   pipe-substitution syntax documented under the textarea is NOT supported
+#   in the textarea itself – it only works via the URL-parameter form:
+#   `https://quickstatements.toolforge.org/#/v1=<pipe-encoded-commands>`.
+#   If you paste this file into the textarea and the parser reports "No valid
+#   commands found", tabs were lost in transit; either re-copy from a known-
+#   tab-preserving source or use the URL-parameter form with `Q<id>` instead
+#   of `LAST` in each row.
 #
 # ─────────────────────────────────────────────────────────────────────────
 
@@ -51,11 +80,17 @@ LAST	P571	+2026-05-17T00:00:00Z/11
 LAST	P407	Q1860
 LAST	P407	Q1321
 LAST	P407	Q56781
+LAST	P1813	en:"UnlockSaaS"
+LAST	P973	"https://unlocksaas.com/.well-known/entity.jsonld"
+LAST	P973	"https://unlocksaas.com/dataset"
+LAST	P973	"https://unlocksaas.com/llms-feed.json"
 
-# After QuickStatements assigns the new Q-ID, copy the resulting URL
-# (https://www.wikidata.org/wiki/Q<number>) and set it on Vercel:
-#
-#   vercel env add NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL production
-#   vercel env add NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL preview
-#
-# The next deploy picks it up via app/src/lib/seo/entity.ts → ORGANIZATION_SAME_AS.
+# Optional 20th line, only if HF_DATASET_ID is set on Vercel
+# (per commit f8e2517, Hugging Face cross-listing activation):
+# LAST	P973	"https://huggingface.co/datasets/<HF_DATASET_ID>"
+
+# ─── Submission record ───
+# Submitted: 2026-05-21 by TheDataNerd (Wikidata user, autoconfirmed since 2026-04-15).
+# Q-URL:     https://www.wikidata.org/wiki/Q139863921
+# Activated via env: NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL (consumed by
+#           app/src/lib/seo/entity.ts → ORGANIZATION_SAME_AS).
