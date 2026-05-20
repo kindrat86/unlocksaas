@@ -211,6 +211,10 @@ This file is served at two URLs for crawler-convention compatibility:
 - \`${BASE_URL}/llms.txt\` – canonical, per the llmstxt.org §1 convention.
 - \`${BASE_URL}/.well-known/llms.txt\` – alias, for crawlers that follow the .well-known/* discovery convention (security.txt, openid-configuration, mcp.json). The alias response carries a \`Link: rel="canonical"\` header pointing at the canonical URL above; both responses serve byte-identical bodies.
 
+## AI usage policy
+
+A structured JSON declaration of AI training, retrieval, attribution, compensation, and paywall preferences lives at [\`${BASE_URL}/.well-known/ai-policy.json\`](${BASE_URL}/.well-known/ai-policy.json). Summary: training and retrieval are welcomed with attribution; no compensation required; the only paywalled subtree is the seven-step Playbook at \`/playbook/*\`; the public dataset under \`/dataset\` is CC-BY-4.0. This file is the structured body counterpart to the \`training-data-attribution: allow\` HTTP response header already carried on /llms.txt, /.well-known/llms.txt, /llms-full.txt, and /llms-feed.json. It pulls from the same SSOT (entity.ts, dataset.ts, freshness.ts) as the rest of the LLM-readable corpus, so a fact change in one place propagates without a hand-edit. Convention lineage: RFC 8615 \`.well-known/*\` discovery, llmstxt.org §1, spawning.ai ai.txt, W3C TDM Reservation Protocol, in-flight IETF AI Preferences WG.
+
 ## Freshness and activation log
 
 This file was last verified end-to-end against the live HTML, the strategy documents under \`/strategy\`, and the locked workbook decisions on **${LAST_VERIFIED_DATE}**. The next scheduled review is **${NEXT_REVIEW_DATE}** (every ${REVIEW_CADENCE_DAYS} days). The strategy itself was locked on **${STRATEGY_LOCK_DATE}** when the ten Brunson workbooks completed.
