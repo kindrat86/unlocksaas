@@ -27,6 +27,7 @@ import {
 import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 import { CitationBlock } from "@/components/seo/citation-block";
 import { getCitationForGlossary } from "@/lib/citations";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 /**
  * Programmatic SEO surface – Glossary term: {term}.
@@ -330,7 +331,8 @@ export default async function GlossaryDetailPage(props: {
 
       <Separator className="my-2" />
 
-      {/* TL;DR – speakable anchor for voice engines */}
+      {/* TL;DR – speakable anchor for voice engines (DateStampedAnswer
+          adds the "As of YYYY-MM-DD" prefix for AEO freshness signal). */}
       <section
         className="max-w-3xl mx-auto px-6 py-8"
         aria-labelledby="tldr"
@@ -352,6 +354,24 @@ export default async function GlossaryDetailPage(props: {
           </CardContent>
         </Card>
       </section>
+
+      {/* TL;DR – structured key/value summary for AI summarizers. Companion
+          to the speakable card above; data-llm-summary on the inner dl is
+          a one-shot extraction handle for ChatGPT / Claude / Perplexity. */}
+      <TldrSummary
+        headingId="key-facts"
+        headingLabel={`${g.term} key facts`}
+        items={[
+          { term: "Term", definition: g.term },
+          { term: "Definition", definition: g.shortDefinition },
+          { term: "Layer", definition: `${g.category} layer of the Brunson funnel` },
+          { term: "For", definition: "Post-launch pre-revenue indie SaaS founders" },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(g.lastVerified),
+          },
+        ]}
+      />
 
       {/* Long definition */}
       <section

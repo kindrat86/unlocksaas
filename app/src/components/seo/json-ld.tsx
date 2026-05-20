@@ -115,6 +115,7 @@ function speakableSpec(selectors: SpeakableSelectors) {
  */
 export const SPEAKABLE_SELECTORS: readonly string[] = Object.freeze([
   "[data-speakable]",
+  "[data-llm-summary]",
   '[aria-labelledby="tldr"]',
   '[aria-labelledby="quick-take"]',
 ]);

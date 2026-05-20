@@ -19,6 +19,7 @@ import {
 import { ID, BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 /**
  * Pre-assembled press story package – /press/topics/[slug].
@@ -241,6 +242,19 @@ export default async function PressTopicPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      <TldrSummary
+        headingLabel={`${t.displayName} press topic TL;DR`}
+        items={[
+          { term: "Topic", definition: t.displayName },
+          { term: "Thesis", definition: t.thesis },
+          { term: "Fits for", definition: t.fitsFor.join(", ") },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(t.lastVerified),
+          },
+        ]}
+      />
 
       {/* Fits-for box. Helps the writer self-qualify in two seconds. */}
       <section

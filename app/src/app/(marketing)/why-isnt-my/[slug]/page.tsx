@@ -13,6 +13,7 @@ import { glossaryTermSlug, getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -227,6 +228,26 @@ export default async function WhyIsntMyDetailPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      <TldrSummary
+        headingLabel={`Why isn't my ${e.element} converting key facts`}
+        items={[
+          { term: "Element", definition: e.element },
+          { term: "Most common cause", definition: e.tldr },
+          {
+            term: "Directional range",
+            definition: `${e.directionalRange.range} – ${e.directionalRange.note}`,
+          },
+          ...e.diagnoses.map((d) => ({
+            term: d.label,
+            definition: d.appearance,
+          })),
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(e.lastVerified),
+          },
+        ]}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"

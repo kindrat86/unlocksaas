@@ -34,6 +34,7 @@ import {
   mergePaaIntoFaqs,
   paaHeadingForLocale,
 } from "@/lib/seo/paa-questions";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 /**
  * Locale-aware /glossary/[slug] detail – mirrors the canonical
@@ -340,24 +341,22 @@ export default async function LocalizedGlossaryDetail({
 
       <Separator className="my-2" />
 
-      <section
-        className="max-w-3xl mx-auto px-6 py-8"
-        aria-labelledby="tldr"
-      >
-        <h2 id="tldr" className="sr-only">
-          {chrome.detailShortDefinitionLabel}
-        </h2>
-        <Card className="border-primary/30 bg-primary/5">
-          <CardContent className="pt-6">
-            <p className="text-xs uppercase tracking-widest text-primary mb-3">
-              {chrome.detailShortDefinitionLabel}
-            </p>
-            <p className="text-base leading-relaxed" data-speakable>
-              {g.shortDefinition}
-            </p>
-          </CardContent>
-        </Card>
-      </section>
+      {/* TL;DR – structured key/value summary for AI summarizers + voice engines.
+          Schema.org key labels stay in English (property-name convention); the
+          values come from the locale-aware glossary entries. */}
+      <TldrSummary
+        headingLabel={chrome.detailShortDefinitionLabel}
+        eyebrow={chrome.detailShortDefinitionLabel}
+        items={[
+          { term: "Term", definition: g.term },
+          { term: "Definition", definition: g.shortDefinition },
+          { term: "Layer", definition: chrome.hubCategoryLabel(g.category) },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(g.lastVerified),
+          },
+        ]}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"

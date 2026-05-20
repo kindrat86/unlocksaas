@@ -13,6 +13,7 @@ import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -228,6 +229,25 @@ export default async function ForDetailPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      <TldrSummary
+        headingLabel={`Key facts for ${e.displayName}`}
+        items={[
+          { term: "Cohort", definition: e.displayName },
+          { term: "Summary", definition: e.heroSubhead },
+          { term: "Cohort pain", definition: e.cohortPain },
+          { term: "Common mistake", definition: e.commonMistake },
+          { term: "What compounds", definition: e.whatCompounds },
+          {
+            term: "Money mechanics",
+            definition: e.moneyMechanics,
+          },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(e.lastVerified),
+          },
+        ]}
+      />
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="pain">
         <h2 id="pain" className="text-2xl font-bold mb-4 leading-tight">

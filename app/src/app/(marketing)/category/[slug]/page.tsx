@@ -20,6 +20,7 @@ import { ID } from "@/lib/seo/entity";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForCategory } from "@/lib/seo/paa-questions";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 /**
  * pSEO #5 — Category roundup pages.
@@ -271,6 +272,20 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
       </header>
 
       <Separator className="my-2" />
+
+      <TldrSummary
+        headingLabel={`${cat.displayName} category overview`}
+        items={[
+          { term: "Category", definition: cat.displayName },
+          { term: "Summary", definition: cat.oneLine },
+          { term: "Intent", definition: cat.intent },
+          { term: "Products listed", definition: String(products.length) },
+          {
+            term: "Comparisons",
+            definition: String(comparisons.length),
+          },
+        ]}
+      />
 
       {/* Intent / AEO citation block */}
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="intent">

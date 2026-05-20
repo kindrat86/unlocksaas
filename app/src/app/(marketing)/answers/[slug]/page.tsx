@@ -17,6 +17,7 @@ import { formatVerifiedDate } from "@/lib/seo/dates";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForAnswer } from "@/lib/seo/paa-questions";
 import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
+import { TldrSummary } from "@/components/seo/tldr-summary";
 
 
 export function generateStaticParams() {
@@ -231,6 +232,19 @@ export default async function AnswerDetailPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      <TldrSummary
+        headingLabel={`Answer key facts`}
+        items={[
+          { term: "Question", definition: e.question },
+          { term: "Direct answer", definition: e.directAnswer },
+          { term: "Category", definition: e.category.replace(/-/g, " ") },
+          {
+            term: "Last verified",
+            definition: formatVerifiedDate(e.lastVerified),
+          },
+        ]}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"
