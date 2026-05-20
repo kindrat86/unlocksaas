@@ -1,0 +1,24 @@
+{
+  "$comment": "Source of truth for /glossary/[slug] audio episodes. Empty `entries` = honest zero-state: no AudioObject schema, no podcast episodes, no inline player. Populated only by scripts/generate-glossary-audio.py, which atomically writes file + manifest together so a manifest row never references a missing file. See strategy/glossary-audio-playbook.md.",
+  "version": 1,
+  "voice": {
+    "provider": "none",
+    "model": "none",
+    "voiceId": "none",
+    "languageCode": "en-US",
+    "generatedAt": "1970-01-01T00:00:00Z"
+  },
+  "podcast": {
+    "title": "Unlock SaaS Glossary",
+    "description": "Audio definitions of every term in the Brunson framework as Unlock SaaS applies them to indie SaaS. The playbook-readable hub lives at unlocksaas.com/glossary.",
+    "category": "Business",
+    "subcategory": "Entrepreneurship",
+    "explicit": false,
+    "language": "en-US",
+    "type": "serial",
+    "author": "Maryan, Unlock SaaS",
+    "ownerEmail": "maryan@unlocksaas.com",
+    "copyright": "Unlock SaaS"
+  },
+  "entries": {}
+}

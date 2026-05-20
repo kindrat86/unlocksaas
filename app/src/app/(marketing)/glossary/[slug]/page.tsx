@@ -18,6 +18,7 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
   buildQuotationNode,
+  GlossaryAudioJsonLd,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import {
@@ -28,6 +29,11 @@ import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 import { CitationBlock } from "@/components/seo/citation-block";
 import { getCitationForGlossary } from "@/lib/citations";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import {
+  getGlossaryAudio,
+  glossaryAudioAbsoluteUrl,
+} from "@/lib/seo/glossary-audio";
+import { GlossaryAudioPlayer } from "@/components/glossary/glossary-audio-player";
 
 /**
  * Programmatic SEO surface – Glossary term: {term}.
@@ -272,12 +278,32 @@ export default async function GlossaryDetailPage(props: {
   // a row – CitationBlock no-ops gracefully in that case.
   const citation = getCitationForGlossary(g.slug);
 
+  // Audio episode for this slug. `getGlossaryAudio` returns null when no
+  // TTS-rendered MP3 has been published yet — honest zero-state. When non-
+  // null, the entry has been validated at module load against the on-disk
+  // file by scripts/generate-glossary-audio.py's atomic-write contract.
+  const audio = getGlossaryAudio(g.slug);
+  const audioUrl = audio ? glossaryAudioAbsoluteUrl(g.slug, BASE) : null;
+
   return (
     <article className="min-h-screen">
       <JsonLdBlock json={termJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
+      {audio && audioUrl ? (
+        <GlossaryAudioJsonLd
+          termName={g.term}
+          shortDefinition={g.shortDefinition}
+          canonicalGlossaryUrl={canonicalUrl}
+          audioUrl={audioUrl}
+          contentType={audio.contentType}
+          durationSeconds={audio.durationSeconds}
+          byteSize={audio.byteSize}
+          generatedAt={audio.generatedAt}
+          inLanguage="en-US"
+        />
+      ) : null}
 
       {/* Breadcrumb */}
       <nav
@@ -372,6 +398,25 @@ export default async function GlossaryDetailPage(props: {
           },
         ]}
       />
+
+      {/* Audio version – TTS-rendered narration of the short definition.
+          Renders only when scripts/generate-glossary-audio.py has shipped
+          a real MP3 for this slug; absent until then (Brunson Hard-Rule). */}
+      {audio && audioUrl ? (
+        <section
+          className="max-w-3xl mx-auto px-6 pb-8"
+          aria-labelledby="audio"
+        >
+          <h2 id="audio" className="sr-only">
+            Audio definition
+          </h2>
+          <GlossaryAudioPlayer
+            audioUrl={audioUrl}
+            durationSeconds={audio.durationSeconds}
+            termName={g.term}
+          />
+        </section>
+      ) : null}
 
       {/* Long definition */}
       <section
