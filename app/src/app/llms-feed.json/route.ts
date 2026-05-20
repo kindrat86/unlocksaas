@@ -26,6 +26,7 @@ import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
+import { STACK_SLUGS } from "@/lib/stacks";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
@@ -135,6 +136,7 @@ const PSEO_COUNTS = Object.freeze({
   category: CATEGORY_SLUGS.length,
   whyIsntMy: WHY_ISNT_MY_SLUGS.length,
   niches: NICHE_SLUGS.length,
+  stackFor: STACK_SLUGS.length,
   benchmarks: BENCHMARK_SLUGS.length,
   funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
   answers: ANSWER_SLUGS.length,
@@ -148,6 +150,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.category +
   PSEO_COUNTS.whyIsntMy +
   PSEO_COUNTS.niches +
+  PSEO_COUNTS.stackFor +
   PSEO_COUNTS.benchmarks +
   PSEO_COUNTS.funnelPlaybook +
   PSEO_COUNTS.answers;
@@ -343,6 +346,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Niche-specific landing pages tuned to one cohort's vocabulary, money mechanics, and common mistakes. The same Hook / Story / Offer diagnostic, applied to course creators, agency owners, SaaS founders, coaches, consultants, ecommerce, no-code builders, indie hackers, AI wrapper builders, info product creators, newsletter operators, and freelancers.",
     slugs: NICHE_SLUGS,
     count: PSEO_COUNTS.niches,
+  },
+  stackFor: {
+    hub: "/stack-for",
+    slugPattern: "/stack-for/{slug}",
+    markdownPattern: "/stack-for/{slug}/md",
+    description:
+      "Cohort-tuned indie SaaS tool rosters. Each entry draws 6-8 tools in funnel order from the Unlock SaaS pricing-teardown catalog, with a stated role per tool, why-this-tool reasoning, and swap notes for category-equivalent options. Stack-shopping intent class: 'saas stack for [niche]', 'what tools do [niche] need', '[niche] tech stack'. Each detail page cross-links into the matching /for/<slug> diagnostic and every tool's /pricing-teardown/<slug>.",
+    slugs: STACK_SLUGS,
+    count: PSEO_COUNTS.stackFor,
   },
   benchmarks: {
     hub: "/benchmarks",
