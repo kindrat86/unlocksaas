@@ -1,0 +1,271 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import {
+  getTranslationStatus,
+  isApproved,
+  localesWithApprovedContent,
+  renderableLocalesForPath,
+} from "@/lib/i18n/registry";
+import {
+  WHY_ISNT_MY_SLUGS,
+  getWhyIsntMyBySlug,
+} from "@/lib/why-isnt-my";
+import { BASE_URL, ID } from "@/lib/seo/entity";
+
+/**
+ * Locale-aware /why-isnt-my/[slug] detail – plumbing variant.
+ * See /[locale]/alternatives-to/[slug]/page.tsx for the rollout pattern.
+ */
+
+const PATH = "/why-isnt-my";
+
+export const dynamic = "force-static";
+
+type RouteParams = { locale: string; slug: string };
+
+export function generateStaticParams() {
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of renderableLocalesForPath(PATH)) {
+    for (const slug of WHY_ISNT_MY_SLUGS) {
+      params.push({ locale, slug });
+    }
+  }
+  return params;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<RouteParams>;
+}): Promise<Metadata> {
+  const { locale: rawLocale, slug } = await params;
+  if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
+
+  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const e = getWhyIsntMyBySlug(slug);
+  if (!e) return {};
+
+  const path = `${PATH}/${slug}`;
+  const localised = localizedPath(path, locale);
+  const approved = isApproved(PATH, locale);
+
+  const title = `Why isn't my ${e.element} converting? – Indie SaaS Diagnostic`;
+  const description = e.tldr;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: localised,
+      languages: {
+        "en-US": path,
+        "x-default": path,
+        ...(approved
+          ? Object.fromEntries(
+              localesWithApprovedContent().map((loc) => [
+                loc,
+                localizedPath(path, loc),
+              ]),
+            )
+          : {}),
+      },
+    },
+    robots: approved
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url: localised,
+      siteName: "Unlock SaaS",
+      locale:
+        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+    },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
+
+export default async function LocalizedWhyIsntMyDetail({
+  params,
+}: {
+  params: Promise<RouteParams>;
+}) {
+  const { locale: rawLocale, slug } = await params;
+  if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
+
+  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const row = getTranslationStatus(PATH, locale);
+  if (!row || row.status === "archived") notFound();
+
+  const e = getWhyIsntMyBySlug(slug);
+  if (!e) notFound();
+
+  const path = `${PATH}/${slug}`;
+  const localised = localizedPath(path, locale);
+  const canonicalUrl = `${BASE_URL}${localised}`;
+  const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const enCanonicalUrl = `${BASE_URL}${path}`;
+
+  const breadcrumbJson = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${BASE_URL}${localizedPath("/", locale)}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Why isn't my",
+        item: `${BASE_URL}${localizedPath(PATH, locale)}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `Why isn't my ${e.element}`,
+        item: canonicalUrl,
+      },
+    ],
+  });
+
+  const articleJson = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `Why isn't my ${e.element} converting? – Indie SaaS Diagnostic`,
+    description: e.tldr,
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    isPartOf: { "@id": ID.website },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+    inLanguage,
+  });
+
+  return (
+    <article className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJson }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: articleJson }}
+      />
+
+      <div className="max-w-3xl mx-auto px-6 pt-10">
+        {row.status === "pending-review" ? (
+          <div
+            role="note"
+            className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+          >
+            <p className="font-semibold mb-1">Pending founder review</p>
+            <p className="leading-relaxed">
+              {row.reviewNote ??
+                "This locale-prefixed URL is in preview while the localized overlay is being finalized. The complete English diagnostic is published at the canonical link below."}
+            </p>
+          </div>
+        ) : null}
+
+        <nav
+          aria-label="Breadcrumb"
+          className="text-xs text-muted-foreground"
+        >
+          <ol className="flex items-center gap-2 flex-wrap">
+            <li>
+              <Link
+                href={localizedPath("/", locale)}
+                className="hover:underline"
+              >
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link
+                href={localizedPath(PATH, locale)}
+                className="hover:underline"
+              >
+                Why isn&rsquo;t my
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-foreground">
+              {e.element}
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
+        <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
+          Why isn&rsquo;t my {e.element} converting?
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          {e.tldr}
+        </p>
+      </header>
+
+      <Separator className="my-2" />
+
+      <section className="max-w-3xl mx-auto px-6 py-8">
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-sm leading-relaxed mb-4">
+              The full diagnostic – Wrong Person / Weak Offer / Weak Belief
+              triage, common causes, the fix to ship this week – is published
+              in English at the canonical URL:
+            </p>
+            <p>
+              <a
+                href={enCanonicalUrl}
+                className="text-sm font-semibold text-primary hover:underline break-all"
+              >
+                {enCanonicalUrl} →
+              </a>
+            </p>
+            <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
+              When the localized overlay for this slug ships, the full
+              diagnostic renders here in {inLanguage}.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section
+        className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
+        aria-labelledby="cta"
+      >
+        <Card className="border-primary/40 bg-primary/5">
+          <CardContent className="pt-6 pb-6">
+            <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
+              Or just diagnose the whole page in 90 seconds
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+              Paste your live product URL into the free Launch Diagnostic.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button asChild>
+                <Link href={localizedPath("/diagnostic", locale)}>
+                  Get the free diagnostic
+                </Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href={localizedPath(PATH, locale)}>
+                  All element diagnostics
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+    </article>
+  );
+}
