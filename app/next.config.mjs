@@ -77,7 +77,12 @@ const nextConfig = {
    *     re-enable above, not before — adding a second experimental during a
    *     paused migration would muddy attribution if a build regresses.
    */
-  cacheComponents: false,
+  // Re-enabled 2026-05-20 after parallel work in #dd22051 wrapped the
+  // remaining personalised routes (/diagnostic, /login, /playbook,
+  // /playbook/verified, /builders) in Suspense + connection(). Re-add
+  // 'use cache' to the previously paused functions so per-tag invalidation
+  // becomes available again on the pSEO surfaces.
+  cacheComponents: true,
   experimental: {
     optimizePackageImports: [
       "lucide-react",

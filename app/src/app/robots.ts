@@ -75,7 +75,7 @@ export default function robots(): MetadataRoute.Robots {
     "/auth/",
     "/diagnostic/result",
     // Verified-Builder tool sub-routes — not the canonical /builder/<slug>.
-    "/builder/*/embed",
+    "/builder/*/snippets",
     "/builder/*/embed.html",
     "/builder/*/badge.svg",
     "/builder/*/review.json",

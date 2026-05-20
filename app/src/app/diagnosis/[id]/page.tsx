@@ -6,12 +6,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
 import {
   LABEL_PUBLIC_NAME,
   isValidLeadId,
   loadPublicDiagnosis,
 } from "@/lib/diagnostic-share";
+
+async function getDiagnosis(id: string) {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag(`diagnosis:${id}`);
+  return loadPublicDiagnosis(createAdminClient(), id);
+}
 import { DiagnosisShareViewBeacon } from "./share-view-beacon";
 
 /**
@@ -52,7 +60,7 @@ export async function generateMetadata(
     return { robots: { index: false, follow: false } };
   }
 
-  const diag = await loadPublicDiagnosis(createAdminClient(), id);
+  const diag = await getDiagnosis(id);
   if (!diag) {
     return { robots: { index: false, follow: false } };
   }
@@ -84,16 +92,28 @@ export async function generateMetadata(
   };
 }
 
-export default async function PublicDiagnosisPage(
+export default function PublicDiagnosisPage(
   props: {
     params: Promise<RouteParams>;
   }
 ) {
-  const params = await props.params;
+  return (
+    <Suspense fallback={null}>
+      <PublicDiagnosisBody params={props.params} />
+    </Suspense>
+  );
+}
+
+async function PublicDiagnosisBody({
+  params: paramsP,
+}: {
+  params: Promise<RouteParams>;
+}) {
+  const params = await paramsP;
   const { id } = params;
   if (!isValidLeadId(id)) notFound();
 
-  const diag = await loadPublicDiagnosis(createAdminClient(), id);
+  const diag = await getDiagnosis(id);
   if (!diag) notFound();
 
   const labelName = LABEL_PUBLIC_NAME[diag.label];

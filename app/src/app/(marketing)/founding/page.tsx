@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { connection } from "next/server";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -43,7 +44,16 @@ export const metadata: Metadata = {
  *   2. open        — cart-open. Stripe checkout button is the primary CTA.
  *   3. closed (cap or window) — door-closed message; Starter as fallback.
  */
-export default async function FoundingPage() {
+export default function FoundingPage() {
+  return (
+    <Suspense fallback={null}>
+      <FoundingPageBody />
+    </Suspense>
+  );
+}
+
+async function FoundingPageBody() {
+  await connection();
   const window = cartWindow();
   const claimed = await seatsClaimed();
   const remaining = Math.max(0, FOUNDING_COHORT_CAP - claimed);

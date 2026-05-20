@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,18 @@ import {
   getAnswerBySlug,
   type AnswerEntry,
 } from "@/lib/answers";
+
+/**
+ * Per-slug cached entry. Tagged `answers:<slug>` for future Server Action
+ * `revalidateTag('answers:${slug}', 'max')` invalidation when content moves
+ * off the frozen `.ts` array.
+ */
+async function getCachedEntry(slug: string): Promise<AnswerEntry | undefined> {
+  "use cache";
+  cacheLife("max");
+  cacheTag(`answers:${slug}`);
+  return getAnswerBySlug(slug);
+}
 import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
@@ -26,7 +39,7 @@ export async function generateMetadata(props: {
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const e = getAnswerBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) return {};
 
   const canonical = `/answers/${e.slug}`;
@@ -128,7 +141,7 @@ export default async function AnswerDetailPage(props: {
   params: Promise<RouteParams>;
 }) {
   const params = await props.params;
-  const e = getAnswerBySlug(params.slug);
+  const e = await getCachedEntry(params.slug);
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/answers/${e.slug}`;

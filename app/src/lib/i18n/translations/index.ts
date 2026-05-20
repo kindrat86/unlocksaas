@@ -16,6 +16,22 @@ import type { Locale } from "@/lib/i18n/locales";
 import { FAQ_ENTRIES, type FaqEntry } from "@/lib/faq-data";
 import { FAQ_ENTRIES_ES } from "./faq.es";
 import { FAQ_ENTRIES_PT_BR } from "./faq.pt-br";
+import {
+  GLOSSARY,
+  type GlossaryEntry,
+  type GlossaryRow,
+} from "@/lib/glossary";
+import { GLOSSARY_ES, type GlossaryTranslation } from "./glossary.es";
+import { GLOSSARY_PT_BR } from "./glossary.pt-br";
+import {
+  BENCHMARK_ENTRIES,
+  type BenchmarkEntry,
+} from "@/lib/benchmarks";
+import {
+  BENCHMARK_ENTRIES_ES,
+  type BenchmarkTranslation,
+} from "./benchmarks.es";
+import { BENCHMARK_ENTRIES_PT_BR } from "./benchmarks.pt-br";
 
 export function getFaqEntries(locale: Locale): FaqEntry[] {
   switch (locale) {
@@ -26,6 +42,102 @@ export function getFaqEntries(locale: Locale): FaqEntry[] {
     case "en-US":
     default:
       return FAQ_ENTRIES;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Glossary resolver – overlays text translations onto the canonical entries
+// ---------------------------------------------------------------------------
+//
+// The canonical GLOSSARY array (src/lib/glossary.ts) carries the structural
+// fields (slug, category, relatedTerms, appearsIn cross-link refs) that must
+// stay in sync across locales. The per-locale files (glossary.es.ts,
+// glossary.pt-br.ts) carry only the textual fields. This resolver splices
+// the two so the locale page sees one read-only array shaped identically to
+// the canonical, but with translated text.
+//
+// Brunson Hard-Rule: when a locale file is missing a slug present in the
+// canonical (e.g., a new term added without its translation yet), the
+// resolver falls back to the en-US text for that slug. The locale page
+// is still gated by the registry's approval state — a partial translation
+// renders with noindex until the founder reviews + approves.
+
+function overlayGlossary(
+  canonical: ReadonlyArray<GlossaryEntry>,
+  translations: ReadonlyArray<GlossaryTranslation>,
+): ReadonlyArray<GlossaryEntry> {
+  const byTSlug = new Map(translations.map((t) => [t.slug, t]));
+  return canonical.map((c) => {
+    const t = byTSlug.get(c.slug);
+    if (!t) return c; // fall back to en-US for missing slugs
+    const row: GlossaryRow = {
+      ...c,
+      longDefinition: t.longDefinition,
+      whyItMatters: t.whyItMatters,
+      howToApply: t.howToApply,
+      example: t.example,
+      commonConfusions: t.commonConfusions ?? c.commonConfusions,
+      faqs: t.faqs,
+    };
+    return {
+      ...row,
+      shortDefinition: t.shortDefinition,
+    };
+  });
+}
+
+export function getGlossaryEntries(
+  locale: Locale,
+): ReadonlyArray<GlossaryEntry> {
+  switch (locale) {
+    case "es":
+      return overlayGlossary(GLOSSARY, GLOSSARY_ES);
+    case "pt-BR":
+      return overlayGlossary(GLOSSARY, GLOSSARY_PT_BR);
+    case "en-US":
+    default:
+      return GLOSSARY;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Benchmarks resolver – same overlay pattern
+// ---------------------------------------------------------------------------
+
+function overlayBenchmarks(
+  canonical: ReadonlyArray<BenchmarkEntry>,
+  translations: ReadonlyArray<BenchmarkTranslation>,
+): ReadonlyArray<BenchmarkEntry> {
+  const byTSlug = new Map(translations.map((t) => [t.slug, t]));
+  return canonical.map((c) => {
+    const t = byTSlug.get(c.slug);
+    if (!t) return c;
+    return {
+      ...c,
+      metric: t.metric,
+      metaTitle: t.metaTitle,
+      metaDescription: t.metaDescription,
+      aeoAnswer: t.aeoAnswer,
+      bands: t.bands,
+      drivers: t.drivers,
+      misreadings: t.misreadings,
+      faqs: t.faqs,
+      sourceNote: t.sourceNote,
+    };
+  });
+}
+
+export function getBenchmarkEntries(
+  locale: Locale,
+): ReadonlyArray<BenchmarkEntry> {
+  switch (locale) {
+    case "es":
+      return overlayBenchmarks(BENCHMARK_ENTRIES, BENCHMARK_ENTRIES_ES);
+    case "pt-BR":
+      return overlayBenchmarks(BENCHMARK_ENTRIES, BENCHMARK_ENTRIES_PT_BR);
+    case "en-US":
+    default:
+      return BENCHMARK_ENTRIES;
   }
 }
 
@@ -792,4 +904,325 @@ export function getEditorialPolicyChrome(
     PAGE_CHROME_EDITORIAL_POLICY[locale] ??
     PAGE_CHROME_EDITORIAL_POLICY["en-US"]
   );
+}
+
+/**
+ * Per-locale page chrome strings for /glossary (hub + detail).
+ *
+ * Brand-glossary preservation rules from glossary.es.ts / glossary.pt-br.ts
+ * apply verbatim. Display names of glossary terms (Hook, Story, Offer, Big
+ * Domino, Reluctant Hero, Stack Slide, etc.) stay English – they are
+ * Brunson canonical proper nouns. The localized prose surrounds them.
+ */
+export interface PageChromeGlossary {
+  hubSeoTitle: string;
+  hubSeoDescription: string;
+  hubBreadcrumbHome: string;
+  hubBreadcrumbGlossary: string;
+  hubLabel: string;
+  hubHeadline: string;
+  hubLede: string;
+  hubLastVerifiedLabel: string;
+  hubCategoryLabel: (layer: string) => string;
+  hubReadMoreLabel: string;
+  detailSeoTitleSuffix: string;
+  detailBreadcrumbGlossary: string;
+  detailLabelPrefix: string;
+  detailShortDefinitionLabel: string;
+  detailLongDefinitionHeading: string;
+  detailWhyItMattersHeading: string;
+  detailHowToApplyHeading: string;
+  detailExampleHeading: string;
+  detailCommonConfusionsHeading: string;
+  detailAppearsInHeading: string;
+  detailRelatedTermsHeading: string;
+  detailFaqHeading: (term: string) => string;
+  detailVerifiedLabel: string;
+  detailEditorialPolicyLabel: string;
+  detailCtaHeading: (term: string) => string;
+  detailCtaBody: string;
+  detailCtaPrimary: string;
+  detailCtaSecondary: string;
+  detailHonestyFooter: string;
+  pendingReviewBannerTitle: string;
+  pendingReviewBannerBody: string;
+}
+
+export const PAGE_CHROME_GLOSSARY: Record<Locale, PageChromeGlossary> = {
+  "en-US": {
+    hubSeoTitle: "Glossary – 16 Brunson Terms for Indie SaaS Founders",
+    hubSeoDescription:
+      "Plain-English Brunson glossary: Hook, Story, Offer, Big Domino, Reluctant Hero, Stack Slide, and 11 more terms post-launch pre-revenue founders need on their page.",
+    hubBreadcrumbHome: "Home",
+    hubBreadcrumbGlossary: "Glossary",
+    hubLabel: "Glossary",
+    hubHeadline:
+      "The 16 Brunson terms an indie SaaS page lives or dies on.",
+    hubLede:
+      "Every term below is the founder's own working definition, the worked example from a shipped surface, the common confusions, and a link to where the term shows up on the live product.",
+    hubLastVerifiedLabel: "Last verified",
+    hubCategoryLabel: (layer) => `${layer} layer`,
+    hubReadMoreLabel: "Read the full entry →",
+    detailSeoTitleSuffix: "– Definition for Indie SaaS Founders",
+    detailBreadcrumbGlossary: "Glossary",
+    detailLabelPrefix: "Glossary ·",
+    detailShortDefinitionLabel: "Short definition",
+    detailLongDefinitionHeading: "What it actually means",
+    detailWhyItMattersHeading:
+      "Why it matters for a post-launch pre-revenue founder",
+    detailHowToApplyHeading: "How to apply it on your page",
+    detailExampleHeading: "Example",
+    detailCommonConfusionsHeading: "Often confused with",
+    detailAppearsInHeading: "Where this term is applied on the site",
+    detailRelatedTermsHeading: "Related terms",
+    detailFaqHeading: (term) => `Questions founders ask about ${term}`,
+    detailVerifiedLabel: "Verified",
+    detailEditorialPolicyLabel: "editorial policy",
+    detailCtaHeading: (term) => `See ${term} applied to your page`,
+    detailCtaBody:
+      "The free 90-second diagnostic applies the Hook / Story / Offer framework to your live product page and labels what is broken: Wrong Person, Weak Offer, or Weak Belief.",
+    detailCtaPrimary: "Get the free diagnostic",
+    detailCtaSecondary: "Back to the glossary",
+    detailHonestyFooter:
+      "Every definition on this page is in the founder's own words and appears on a shipped surface. Russell Brunson's frameworks are the underlying source. If anything reads off, email maryan@unlocksaas.com and the entry gets a corrections-log row in /editorial-policy.",
+    pendingReviewBannerTitle: "Pending review – not indexed yet",
+    pendingReviewBannerBody:
+      "Translation is in review. The page renders but is noindex; sitemap omits it; no hreflang alternate is advertised.",
+  },
+  es: {
+    hubSeoTitle: "Glosario – 16 términos Brunson para founders indie de SaaS",
+    hubSeoDescription:
+      "Glosario Brunson en lenguaje claro: Hook, Story, Offer, Big Domino, Reluctant Hero, Stack Slide y 11 términos más que los founders post-launch que aún no facturan necesitan en su página.",
+    hubBreadcrumbHome: "Inicio",
+    hubBreadcrumbGlossary: "Glosario",
+    hubLabel: "Glosario",
+    hubHeadline:
+      "Los 16 términos Brunson sobre los que una página de indie SaaS vive o muere.",
+    hubLede:
+      "Cada término de abajo es la definición de trabajo del propio founder, el ejemplo aplicado desde una surface en producción, las confusiones comunes y un link a dónde aparece el término en el producto en vivo.",
+    hubLastVerifiedLabel: "Última verificación",
+    hubCategoryLabel: (layer) => `Capa ${layer}`,
+    hubReadMoreLabel: "Leer la entrada completa →",
+    detailSeoTitleSuffix: "– Definición para founders indie de SaaS",
+    detailBreadcrumbGlossary: "Glosario",
+    detailLabelPrefix: "Glosario ·",
+    detailShortDefinitionLabel: "Definición corta",
+    detailLongDefinitionHeading: "Qué significa realmente",
+    detailWhyItMattersHeading:
+      "Por qué le importa a un founder post-launch que aún no factura",
+    detailHowToApplyHeading: "Cómo aplicarlo en tu página",
+    detailExampleHeading: "Ejemplo",
+    detailCommonConfusionsHeading: "Suele confundirse con",
+    detailAppearsInHeading: "Dónde aplica este término en el sitio",
+    detailRelatedTermsHeading: "Términos relacionados",
+    detailFaqHeading: (term) =>
+      `Preguntas que los founders hacen sobre ${term}`,
+    detailVerifiedLabel: "Verificado",
+    detailEditorialPolicyLabel: "política editorial",
+    detailCtaHeading: (term) => `Mirá ${term} aplicado a tu página`,
+    detailCtaBody:
+      "El diagnóstico gratuito de 90 segundos aplica el framework Hook / Story / Offer a la página en vivo de tu producto y etiqueta qué está roto: Wrong Person, Weak Offer o Weak Belief.",
+    detailCtaPrimary: "Hacer el diagnóstico gratis",
+    detailCtaSecondary: "Volver al glosario",
+    detailHonestyFooter:
+      "Cada definición en esta página está en las propias palabras del founder y aparece en una surface en producción. Los frameworks de Russell Brunson son la fuente subyacente. Si algo se lee raro, escribí a maryan@unlocksaas.com y la entrada recibe una fila en el corrections-log de /editorial-policy.",
+    pendingReviewBannerTitle: "En revisión – todavía no indexado",
+    pendingReviewBannerBody:
+      "La traducción está en revisión. La página renderiza pero es noindex; el sitemap la omite; no se anuncia un hreflang alternate.",
+  },
+  "pt-BR": {
+    hubSeoTitle: "Glossário – 16 termos Brunson para founders indie de SaaS",
+    hubSeoDescription:
+      "Glossário Brunson em linguagem clara: Hook, Story, Offer, Big Domino, Reluctant Hero, Stack Slide e mais 11 termos que founders pós-launch sem receita precisam ter na página.",
+    hubBreadcrumbHome: "Início",
+    hubBreadcrumbGlossary: "Glossário",
+    hubLabel: "Glossário",
+    hubHeadline:
+      "Os 16 termos Brunson dos quais uma página de indie SaaS vive ou morre.",
+    hubLede:
+      "Cada termo abaixo é a definição de trabalho do próprio founder, o exemplo aplicado de uma surface no ar, as confusões comuns e um link pra onde o termo aparece no produto ao vivo.",
+    hubLastVerifiedLabel: "Última verificação",
+    hubCategoryLabel: (layer) => `Camada ${layer}`,
+    hubReadMoreLabel: "Ler a entrada completa →",
+    detailSeoTitleSuffix: "– Definição pra founders indie de SaaS",
+    detailBreadcrumbGlossary: "Glossário",
+    detailLabelPrefix: "Glossário ·",
+    detailShortDefinitionLabel: "Definição curta",
+    detailLongDefinitionHeading: "O que de fato significa",
+    detailWhyItMattersHeading:
+      "Por que importa pra um founder pós-launch sem receita",
+    detailHowToApplyHeading: "Como aplicar na sua página",
+    detailExampleHeading: "Exemplo",
+    detailCommonConfusionsHeading: "Costuma ser confundido com",
+    detailAppearsInHeading: "Onde esse termo é aplicado no site",
+    detailRelatedTermsHeading: "Termos relacionados",
+    detailFaqHeading: (term) => `Perguntas que founders fazem sobre ${term}`,
+    detailVerifiedLabel: "Verificado",
+    detailEditorialPolicyLabel: "política editorial",
+    detailCtaHeading: (term) => `Veja ${term} aplicado na sua página`,
+    detailCtaBody:
+      "O diagnóstico gratuito de 90 segundos aplica o framework Hook / Story / Offer na página ao vivo do seu produto e rotula o que está quebrado: Wrong Person, Weak Offer ou Weak Belief.",
+    detailCtaPrimary: "Fazer o diagnóstico gratuito",
+    detailCtaSecondary: "Voltar ao glossário",
+    detailHonestyFooter:
+      "Cada definição nessa página está nas palavras do próprio founder e aparece numa surface no ar. Os frameworks do Russell Brunson são a fonte subjacente. Se alguma coisa estiver estranha, escreva pra maryan@unlocksaas.com e a entrada ganha uma linha no corrections-log em /editorial-policy.",
+    pendingReviewBannerTitle: "Em revisão – ainda não indexado",
+    pendingReviewBannerBody:
+      "A tradução está em revisão. A página renderiza mas é noindex; o sitemap a omite; nenhum hreflang alternate é anunciado.",
+  },
+} as const;
+
+export function getGlossaryChrome(locale: Locale): PageChromeGlossary {
+  return PAGE_CHROME_GLOSSARY[locale] ?? PAGE_CHROME_GLOSSARY["en-US"];
+}
+
+/**
+ * Per-locale page chrome strings for /benchmarks (hub + detail).
+ *
+ * Band labels (Underperforming, Typical range, Outperforming) stay
+ * verbatim in the data as TypeScript discriminated union literals; the
+ * chrome here provides the localized DISPLAY labels for those bands.
+ */
+export interface PageChromeBenchmarks {
+  hubSeoTitle: string;
+  hubSeoDescription: string;
+  hubBreadcrumbHome: string;
+  hubBreadcrumbBenchmarks: string;
+  hubLabel: string;
+  hubHeadline: string;
+  hubLede: string;
+  hubLastVerifiedLabel: string;
+  hubReadMoreLabel: string;
+  detailBreadcrumbBenchmarks: string;
+  detailLabel: string;
+  detailDirectAnswerLabel: string;
+  detailBandsHeading: string;
+  detailDriversHeading: string;
+  detailMisreadingsHeading: string;
+  detailFaqHeading: string;
+  detailSourceHeading: string;
+  detailVerifiedLabel: string;
+  detailEditorialPolicyLabel: string;
+  detailCtaHeading: string;
+  detailCtaBody: string;
+  detailCtaPrimary: string;
+  detailCtaSecondary: string;
+  bandUnderperforming: string;
+  bandTypicalRange: string;
+  bandOutperforming: string;
+  pendingReviewBannerTitle: string;
+  pendingReviewBannerBody: string;
+}
+
+export const PAGE_CHROME_BENCHMARKS: Record<Locale, PageChromeBenchmarks> = {
+  "en-US": {
+    hubSeoTitle: "Indie SaaS Benchmarks – Directional Ranges for 20 Metrics",
+    hubSeoDescription:
+      "Directional ranges for 20 indie SaaS funnel metrics: landing page conversion, checkout completion, email open rate, churn, LTV, CAC, MRR growth, refund rate, and more.",
+    hubBreadcrumbHome: "Home",
+    hubBreadcrumbBenchmarks: "Benchmarks",
+    hubLabel: "Benchmarks",
+    hubHeadline: "Directional ranges for 20 indie SaaS funnel metrics.",
+    hubLede:
+      "Every range below is sourced, dated, and labeled as directional – not as the universal industry average. The CTA on every page is the free diagnostic: paste your live URL and see where your page actually falls.",
+    hubLastVerifiedLabel: "Last verified",
+    hubReadMoreLabel: "Read the full benchmark →",
+    detailBreadcrumbBenchmarks: "Benchmarks",
+    detailLabel: "Benchmark",
+    detailDirectAnswerLabel: "Direct answer",
+    detailBandsHeading: "Where you fall",
+    detailDriversHeading: "What drives this metric (in order)",
+    detailMisreadingsHeading: "Common misreadings",
+    detailFaqHeading: "Questions founders ask",
+    detailSourceHeading: "Source attribution",
+    detailVerifiedLabel: "Verified",
+    detailEditorialPolicyLabel: "editorial policy",
+    detailCtaHeading: "See where your page falls on this metric",
+    detailCtaBody:
+      "The free 90-second Launch Diagnostic applies the same triage to your actual page and tells you which band you're in plus what to fix first.",
+    detailCtaPrimary: "Get the free diagnostic",
+    detailCtaSecondary: "All benchmarks",
+    bandUnderperforming: "Underperforming",
+    bandTypicalRange: "Typical range",
+    bandOutperforming: "Outperforming",
+    pendingReviewBannerTitle: "Pending review – not indexed yet",
+    pendingReviewBannerBody:
+      "Translation is in review. The page renders but is noindex; sitemap omits it; no hreflang alternate is advertised.",
+  },
+  es: {
+    hubSeoTitle:
+      "Benchmarks de Indie SaaS – Rangos direccionales de 20 métricas",
+    hubSeoDescription:
+      "Rangos direccionales para 20 métricas de funnel de indie SaaS: conversión de landing page, finalización de checkout, tasa de apertura de email, churn, LTV, CAC, crecimiento de MRR, tasa de reembolso y más.",
+    hubBreadcrumbHome: "Inicio",
+    hubBreadcrumbBenchmarks: "Benchmarks",
+    hubLabel: "Benchmarks",
+    hubHeadline:
+      "Rangos direccionales para 20 métricas de funnel de indie SaaS.",
+    hubLede:
+      "Cada rango de abajo está fuenteado, fechado y etiquetado como direccional — no como el promedio universal de la industria. El CTA en cada página es el diagnóstico gratis: pegá tu URL en vivo y mirá dónde cae realmente tu página.",
+    hubLastVerifiedLabel: "Última verificación",
+    hubReadMoreLabel: "Leer el benchmark completo →",
+    detailBreadcrumbBenchmarks: "Benchmarks",
+    detailLabel: "Benchmark",
+    detailDirectAnswerLabel: "Respuesta directa",
+    detailBandsHeading: "Dónde caés",
+    detailDriversHeading: "Qué impulsa esta métrica (en orden)",
+    detailMisreadingsHeading: "Lecturas equivocadas comunes",
+    detailFaqHeading: "Preguntas que los founders hacen",
+    detailSourceHeading: "Atribución de la fuente",
+    detailVerifiedLabel: "Verificado",
+    detailEditorialPolicyLabel: "política editorial",
+    detailCtaHeading: "Mirá dónde cae tu página en esta métrica",
+    detailCtaBody:
+      "El Launch Diagnostic gratis de 90 segundos aplica la misma triage a tu página real y te dice en qué banda estás más qué arreglar primero.",
+    detailCtaPrimary: "Hacer el diagnóstico gratis",
+    detailCtaSecondary: "Todos los benchmarks",
+    bandUnderperforming: "Por debajo del rango",
+    bandTypicalRange: "Rango típico",
+    bandOutperforming: "Por encima del rango",
+    pendingReviewBannerTitle: "En revisión – todavía no indexado",
+    pendingReviewBannerBody:
+      "La traducción está en revisión. La página renderiza pero es noindex; el sitemap la omite; no se anuncia un hreflang alternate.",
+  },
+  "pt-BR": {
+    hubSeoTitle:
+      "Benchmarks de Indie SaaS – Faixas direcionais de 20 métricas",
+    hubSeoDescription:
+      "Faixas direcionais pra 20 métricas de funnel de indie SaaS: conversão de landing page, conclusão de checkout, taxa de abertura de email, churn, LTV, CAC, crescimento de MRR, taxa de reembolso e mais.",
+    hubBreadcrumbHome: "Início",
+    hubBreadcrumbBenchmarks: "Benchmarks",
+    hubLabel: "Benchmarks",
+    hubHeadline:
+      "Faixas direcionais pra 20 métricas de funnel de indie SaaS.",
+    hubLede:
+      "Cada faixa abaixo é com fonte, datada e rotulada como direcional — não como a média universal da indústria. O CTA em cada página é o diagnóstico gratuito: cola sua URL ao vivo e veja onde sua página de fato cai.",
+    hubLastVerifiedLabel: "Última verificação",
+    hubReadMoreLabel: "Ler o benchmark completo →",
+    detailBreadcrumbBenchmarks: "Benchmarks",
+    detailLabel: "Benchmark",
+    detailDirectAnswerLabel: "Resposta direta",
+    detailBandsHeading: "Onde você cai",
+    detailDriversHeading: "O que impulsiona essa métrica (em ordem)",
+    detailMisreadingsHeading: "Leituras erradas comuns",
+    detailFaqHeading: "Perguntas que founders fazem",
+    detailSourceHeading: "Atribuição da fonte",
+    detailVerifiedLabel: "Verificado",
+    detailEditorialPolicyLabel: "política editorial",
+    detailCtaHeading: "Veja onde sua página cai nessa métrica",
+    detailCtaBody:
+      "O Launch Diagnostic gratuito de 90 segundos aplica a mesma triagem à sua página real e te diz em qual faixa você está mais o que consertar primeiro.",
+    detailCtaPrimary: "Fazer o diagnóstico gratuito",
+    detailCtaSecondary: "Todos os benchmarks",
+    bandUnderperforming: "Abaixo da faixa",
+    bandTypicalRange: "Faixa típica",
+    bandOutperforming: "Acima da faixa",
+    pendingReviewBannerTitle: "Em revisão – ainda não indexado",
+    pendingReviewBannerBody:
+      "A tradução está em revisão. A página renderiza mas é noindex; nenhum hreflang alternate é anunciado.",
+  },
+} as const;
+
+export function getBenchmarksChrome(locale: Locale): PageChromeBenchmarks {
+  return PAGE_CHROME_BENCHMARKS[locale] ?? PAGE_CHROME_BENCHMARKS["en-US"];
 }

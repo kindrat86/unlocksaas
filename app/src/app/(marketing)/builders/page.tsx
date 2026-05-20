@@ -33,6 +33,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/server";
+import { cacheLife, cacheTag } from "next/cache";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import {
   BuildersCollectionJsonLd,
@@ -74,11 +75,10 @@ interface BuilderRow {
  * The 1h revalidate window is the safety net if the webhook misses; cache
  * key is empty (no arguments) so all requests share one value.
  */
-// Cache Components migration paused (#7cf382f) — per-request Supabase read.
-// Re-enable later restores `'use cache' + cacheTag("builder_badges")` so
-// the Stripe Connect verified-conversion webhook can invalidate the
-// directory the moment a new builder flips to public.
 async function loadPublicBuilders(): Promise<BuilderRow[]> {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag("builder_badges");
   const supabase = createAdminClient();
   // `builder_badges` view filters to share_visibility='public' + non-null
   // slug + non-null first_customer_at. Ordered most-recent first.

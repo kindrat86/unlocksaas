@@ -1,52 +1,111 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cacheLife, cacheTag } from "next/cache";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import {
+  getTranslationStatus,
+  isApproved,
+  localesWithApprovedContent,
+  renderableLocalesForPath,
+} from "@/lib/i18n/registry";
+import {
+  getBenchmarkEntries,
+  getBenchmarksChrome,
+} from "@/lib/i18n/translations";
 import {
   BENCHMARK_SLUGS,
-  getBenchmarkBySlug,
   type BenchmarkEntry,
 } from "@/lib/benchmarks";
-
-async function getCachedEntry(slug: string): Promise<BenchmarkEntry | undefined> {
-  "use cache";
-  cacheLife("max");
-  cacheTag(`benchmarks:${slug}`);
-  return getBenchmarkBySlug(slug);
-}
 import { BASE_URL, ID } from "@/lib/seo/entity";
-import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 
+/**
+ * Locale-aware /benchmarks/[slug] detail – mirrors the canonical
+ * (marketing)/benchmarks/[slug]/page.tsx with locale-swapped chrome and
+ * overlay data via getBenchmarkEntries(locale).
+ *
+ * Cross-product generateStaticParams: renderableLocalesForPath('/benchmarks')
+ * × BENCHMARK_SLUGS.
+ *
+ * JSON-LD: QAPage + Article + FAQPage + BreadcrumbList. The QAPage primary
+ * question is localized (e.g., "¿Cuál es una buena {metric}?" for es),
+ * matching the LLM citation intent for "what's a good X" queries in the
+ * target language.
+ */
+
+
+type RouteParams = { locale: string; slug: string };
 
 export function generateStaticParams() {
-  return BENCHMARK_SLUGS.map((slug) => ({ slug }));
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of renderableLocalesForPath("/benchmarks")) {
+    for (const slug of BENCHMARK_SLUGS) {
+      params.push({ locale, slug });
+    }
+  }
+  return params;
 }
 
-type RouteParams = { slug: string };
+function primaryQuestion(metric: string, locale: Locale): string {
+  switch (locale) {
+    case "es":
+      return `¿Cuál es una buena ${metric}?`;
+    case "pt-BR":
+      return `Qual é uma boa ${metric}?`;
+    default:
+      return `What's a good ${metric}?`;
+  }
+}
 
-export async function generateMetadata(props: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const e = await getCachedEntry(params.slug);
+  const { locale: rawLocale, slug } = await params;
+  if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
+
+  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const entries = getBenchmarkEntries(locale);
+  const e = entries.find((x) => x.slug === slug);
   if (!e) return {};
 
-  const canonical = `/benchmarks/${e.slug}`;
+  const path = `/benchmarks/${slug}`;
+  const localised = localizedPath(path, locale);
+  const approved = isApproved("/benchmarks", locale);
+
   return {
     title: e.metaTitle,
     description: e.metaDescription,
-    alternates: pageAlternates(canonical),
-    robots: { index: true, follow: true },
+    alternates: {
+      canonical: localised,
+      languages: {
+        "en-US": path,
+        "x-default": path,
+        ...(approved
+          ? Object.fromEntries(
+              localesWithApprovedContent().map((loc) => [
+                loc,
+                localizedPath(path, loc),
+              ]),
+            )
+          : {}),
+      },
+    },
+    robots: approved
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
     openGraph: {
       type: "article",
       title: e.metaTitle,
       description: e.metaDescription,
-      url: canonical,
+      url: localised,
       siteName: "Unlock SaaS",
+      locale:
+        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
     },
     twitter: {
       card: "summary_large_image",
@@ -56,29 +115,27 @@ export async function generateMetadata(props: {
   };
 }
 
-function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
-  // QAPage on the benchmark detail page. The query intent these pages
-  // target is "what's a good X" / "what's the average X" (per the
-  // catalog header comment in lib/benchmarks.ts). The aeoAnswer field
-  // is already the citation-ready 40-60 word direct answer, so it
-  // doubles as the acceptedAnswer text. Google documents QAPage as
-  // the right schema for a page whose primary purpose is one question
-  // with one accepted answer; FAQPage stays in place for the
-  // secondary founder questions further down the page.
-  const primaryQuestion = `What's a good ${e.metric}?`;
+function buildJsonLd(
+  e: BenchmarkEntry,
+  canonicalUrl: string,
+  inLanguage: string,
+  locale: Locale,
+  chrome: ReturnType<typeof getBenchmarksChrome>,
+): string[] {
+  const q = primaryQuestion(e.metric, locale);
   const qaPage = {
     "@context": "https://schema.org",
     "@type": "QAPage",
-    inLanguage: "en-US",
+    inLanguage,
     mainEntity: {
       "@type": "Question",
-      name: primaryQuestion,
-      text: primaryQuestion,
+      name: q,
+      text: q,
       answerCount: 1,
       acceptedAnswer: {
         "@type": "Answer",
         text: e.aeoAnswer,
-        inLanguage: "en-US",
+        inLanguage,
         upvoteCount: 0,
         author: { "@id": ID.person },
         url: `${canonicalUrl}#answer`,
@@ -100,24 +157,23 @@ function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     keywords: [
       `${e.metric} benchmark`,
-      `average ${e.metric}`,
-      `good ${e.metric}`,
+      `${chrome.detailLabel} ${e.metric}`,
       "indie SaaS",
     ].join(", "),
-    inLanguage: "en-US",
+    inLanguage,
   };
 
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    inLanguage: "en-US",
+    inLanguage,
     mainEntity: e.faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
-        inLanguage: "en-US",
+        inLanguage,
       },
     })),
   };
@@ -126,11 +182,16 @@ function buildJsonLd(e: BenchmarkEntry, canonicalUrl: string): string[] {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${BASE_URL}/` },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: chrome.hubBreadcrumbHome,
+        item: `${BASE_URL}/`,
+      },
       {
         "@type": "ListItem",
         position: 2,
-        name: "Benchmarks",
+        name: chrome.hubBreadcrumbBenchmarks,
         item: `${BASE_URL}/benchmarks`,
       },
       {
@@ -159,17 +220,47 @@ function JsonLdBlock({ json }: { json: string }) {
   );
 }
 
-export default async function BenchmarkDetailPage(props: {
+function localizedBandLabel(
+  label: BenchmarkEntry["bands"][number]["label"],
+  chrome: ReturnType<typeof getBenchmarksChrome>,
+): string {
+  switch (label) {
+    case "Underperforming":
+      return chrome.bandUnderperforming;
+    case "Typical range":
+      return chrome.bandTypicalRange;
+    case "Outperforming":
+      return chrome.bandOutperforming;
+  }
+}
+
+export default async function LocalizedBenchmarkDetail({
+  params,
+}: {
   params: Promise<RouteParams>;
 }) {
-  const params = await props.params;
-  const e = await getCachedEntry(params.slug);
+  const { locale: rawLocale, slug } = await params;
+  if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
+
+  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const row = getTranslationStatus("/benchmarks", locale);
+  if (!row || row.status === "archived") notFound();
+
+  const entries = getBenchmarkEntries(locale);
+  const e = entries.find((x) => x.slug === slug);
   if (!e) notFound();
 
-  const canonicalUrl = `${BASE_URL}/benchmarks/${e.slug}`;
+  const chrome = getBenchmarksChrome(locale);
+  const localised = localizedPath(`/benchmarks/${slug}`, locale);
+  const canonicalUrl = `${BASE_URL}${localised}`;
+  const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+
   const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
+    inLanguage,
+    locale,
+    chrome,
   );
 
   return (
@@ -179,61 +270,86 @@ export default async function BenchmarkDetailPage(props: {
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
 
-      <nav
-        aria-label="Breadcrumb"
-        className="max-w-3xl mx-auto px-6 pt-10 text-xs text-muted-foreground"
-      >
-        <ol className="flex items-center gap-2">
-          <li>
-            <Link href="/" className="hover:underline">
-              Home
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link href="/benchmarks" className="hover:underline">
-              Benchmarks
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-foreground capitalize">
-            {e.metric}
-          </li>
-        </ol>
-      </nav>
+      <div className="max-w-3xl mx-auto px-6 pt-10">
+        {row.status === "pending-review" ? (
+          <div
+            role="note"
+            className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+          >
+            <p className="font-semibold mb-1">
+              {chrome.pendingReviewBannerTitle}
+            </p>
+            <p className="leading-relaxed">
+              {row.reviewNote ?? chrome.pendingReviewBannerBody}
+            </p>
+          </div>
+        ) : null}
+
+        <nav
+          aria-label="Breadcrumb"
+          className="text-xs text-muted-foreground"
+        >
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link
+                href={localizedPath("/", locale)}
+                className="hover:underline"
+              >
+                {chrome.hubBreadcrumbHome}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <Link
+                href={localizedPath("/benchmarks", locale)}
+                className="hover:underline"
+              >
+                {chrome.detailBreadcrumbBenchmarks}
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-foreground capitalize">
+              {e.metric}
+            </li>
+          </ol>
+        </nav>
+      </div>
 
       <header className="max-w-3xl mx-auto px-6 pt-8 pb-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Benchmark
+          {chrome.detailLabel}
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4 capitalize">
           {e.metric}
         </h1>
         <p className="mt-4 text-xs text-muted-foreground">
-          Verified{" "}
+          {chrome.detailVerifiedLabel}{" "}
           <time dateTime={e.lastVerified}>
             {formatVerifiedDate(e.lastVerified)}
           </time>
           {" · "}
           <Link
-            href="/editorial-policy"
+            href={localizedPath("/editorial-policy", locale)}
             className="underline hover:text-foreground"
           >
-            editorial policy
+            {chrome.detailEditorialPolicyLabel}
           </Link>
         </p>
       </header>
 
       <Separator className="my-2" />
 
-      <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="answer">
+      <section
+        className="max-w-3xl mx-auto px-6 py-8"
+        aria-labelledby="answer"
+      >
         <h2 id="answer" className="sr-only">
-          Direct answer
+          {chrome.detailDirectAnswerLabel}
         </h2>
         <Card className="border-primary/30 bg-primary/5">
           <CardContent className="pt-6">
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
-              Direct answer
+              {chrome.detailDirectAnswerLabel}
             </p>
             <p className="text-base leading-relaxed" data-speakable>
               {e.aeoAnswer}
@@ -242,16 +358,19 @@ export default async function BenchmarkDetailPage(props: {
         </Card>
       </section>
 
-      <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="bands">
+      <section
+        className="max-w-3xl mx-auto px-6 py-8"
+        aria-labelledby="bands"
+      >
         <h2 id="bands" className="text-2xl font-bold mb-4 leading-tight">
-          Where you fall
+          {chrome.detailBandsHeading}
         </h2>
         <div className="space-y-4">
           {e.bands.map((b) => (
             <Card key={b.label}>
               <CardContent className="pt-6">
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-                  {b.label}
+                  {localizedBandLabel(b.label, chrome)}
                 </p>
                 <p className="text-2xl font-bold mb-3">{b.range}</p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
@@ -268,7 +387,7 @@ export default async function BenchmarkDetailPage(props: {
         aria-labelledby="drivers"
       >
         <h2 id="drivers" className="text-2xl font-bold mb-4 leading-tight">
-          What drives this metric (in order)
+          {chrome.detailDriversHeading}
         </h2>
         <ol className="space-y-2 list-decimal list-inside">
           {e.drivers.map((d) => (
@@ -283,8 +402,11 @@ export default async function BenchmarkDetailPage(props: {
         className="max-w-3xl mx-auto px-6 py-8"
         aria-labelledby="misreadings"
       >
-        <h2 id="misreadings" className="text-2xl font-bold mb-4 leading-tight">
-          Common misreadings
+        <h2
+          id="misreadings"
+          className="text-2xl font-bold mb-4 leading-tight"
+        >
+          {chrome.detailMisreadingsHeading}
         </h2>
         <ul className="space-y-2 list-disc list-inside">
           {e.misreadings.map((m) => (
@@ -297,7 +419,7 @@ export default async function BenchmarkDetailPage(props: {
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-4 leading-tight">
-          Questions founders ask
+          {chrome.detailFaqHeading}
         </h2>
         <div className="space-y-4">
           {e.faqs.map((f) => (
@@ -315,8 +437,11 @@ export default async function BenchmarkDetailPage(props: {
         className="max-w-3xl mx-auto px-6 py-8"
         aria-labelledby="source"
       >
-        <h2 id="source" className="text-base font-semibold mb-3 leading-tight">
-          Source attribution
+        <h2
+          id="source"
+          className="text-base font-semibold mb-3 leading-tight"
+        >
+          {chrome.detailSourceHeading}
         </h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {e.sourceNote}
@@ -330,19 +455,21 @@ export default async function BenchmarkDetailPage(props: {
         <Card className="border-primary/40 bg-primary/5">
           <CardContent className="pt-6 pb-6">
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
-              See where your page falls on this metric
+              {chrome.detailCtaHeading}
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              The free 90-second Launch Diagnostic applies the same triage to
-              your actual page and tells you which band you&rsquo;re in plus
-              what to fix first.
+              {chrome.detailCtaBody}
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
-                <Link href="/diagnostic">Get the free diagnostic</Link>
+                <Link href={localizedPath("/diagnostic", locale)}>
+                  {chrome.detailCtaPrimary}
+                </Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/benchmarks">All benchmarks</Link>
+                <Link href={localizedPath("/benchmarks", locale)}>
+                  {chrome.detailCtaSecondary}
+                </Link>
               </Button>
             </div>
           </CardContent>
