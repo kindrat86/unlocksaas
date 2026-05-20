@@ -47,7 +47,7 @@ import { cn } from "@/lib/utils";
  *   definition – "/glossary/[slug]" short-definition cards
  *   benchmark  – "/benchmarks/[slug]" benchmark direct-answer cards
  *   diagnosis  – "/why-isnt-my/[slug]" TL;DR diagnosis lead
- *   verdict    – "/compare/[slug]", "/alternatives-to/[slug]" verdicts
+ *   verdict    – "/vs/[slug]", "/alternatives-to/[slug]" verdicts
  */
 export type DateStampedVariant =
   | "answer"

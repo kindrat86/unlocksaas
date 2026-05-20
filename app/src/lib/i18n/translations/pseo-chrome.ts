@@ -3,7 +3,10 @@
  * `app/[locale]/{cluster}/page.tsx` and `app/[locale]/{cluster}/[slug]/page.tsx`:
  *
  *   - /alternatives-to
- *   - /compare
+ *   - /vs (cluster key is still `compare` internally – the URL hub was
+ *         renamed 2026-05-21 to match Google's `[A] vs [B]` keyword shape,
+ *         but the translation lookup key stays stable so existing rows
+ *         don't need re-translation)
  *   - /category
  *   - /funnel-teardown
  *   - /pricing-teardown
@@ -220,7 +223,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
     },
   },
   // -------------------------------------------------------------------------
-  // /compare
+  // /vs (cluster key `compare` retained internally – see header comment)
   // -------------------------------------------------------------------------
   compare: {
     "en-US": {

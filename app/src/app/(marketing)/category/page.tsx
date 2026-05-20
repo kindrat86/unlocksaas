@@ -252,7 +252,7 @@ export default function CategoryHub() {
           </p>
           <p>
             <Link
-              href="/compare"
+              href="/vs"
               className="text-primary hover:underline font-semibold"
             >
               Head-to-head comparisons →

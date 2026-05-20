@@ -439,8 +439,8 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
       value: COMPARISON_SLUGS.length,
       unit: "pages",
       description:
-        "Symmetric A-vs-B comparison pages under /compare. Each scores both sides on six to nine dimensions and names a verdict for the indie SaaS founder cohort.",
-      sourceUrl: `${BASE_URL}/compare`,
+        "Symmetric A-vs-B comparison pages under /vs. Each scores both sides on six to nine dimensions and names a verdict for the indie SaaS founder cohort.",
+      sourceUrl: `${BASE_URL}/vs`,
       asOf: COMPARISON_AS_OF,
     },
     {

@@ -22,13 +22,13 @@ import {
 } from "@/lib/i18n/translations";
 
 /**
- * Locale-aware /compare hub – plumbing variant.
+ * Locale-aware /vs hub – plumbing variant.
  *
  * See /[locale]/alternatives-to/page.tsx for the translation rollout
  * workflow. Same shape; different canonical dataset.
  */
 
-const PATH = "/compare";
+const PATH = "/vs";
 
 
 export function generateStaticParams() {
@@ -139,7 +139,7 @@ export default async function LocalizedCompareHub({
         "@type": "ListItem",
         position: i + 1,
         name: `${c.a.name} vs ${c.b.name}`,
-        url: `${BASE_URL}${localizedPath(`/compare/${c.slug}`, locale)}`,
+        url: `${BASE_URL}${localizedPath(`/vs/${c.slug}`, locale)}`,
       })),
     },
   });
@@ -223,7 +223,7 @@ export default async function LocalizedCompareHub({
                       <h4 className="text-lg font-semibold leading-tight mb-2">
                         <Link
                           href={localizedPath(
-                            `/compare/${c.slug}`,
+                            `/vs/${c.slug}`,
                             locale,
                           )}
                           className="hover:text-primary transition"
@@ -237,7 +237,7 @@ export default async function LocalizedCompareHub({
                       <div className="flex items-center justify-between gap-4">
                         <Link
                           href={localizedPath(
-                            `/compare/${c.slug}`,
+                            `/vs/${c.slug}`,
                             locale,
                           )}
                           className="text-sm font-semibold text-primary hover:underline"

@@ -4,7 +4,7 @@
  * Why this module exists
  * ----------------------
  * The SEO audit (composite 89/100, 2026-05-18) flagged that the
- * /compare/[slug] surface uses `Article` + `FAQPage` + `BreadcrumbList`
+ * /vs/[slug] surface uses `Article` + `FAQPage` + `BreadcrumbList`
  * JSON-LD but not `Review` + `ReviewRating`. Google's Review Rich Result
  * eligibility requires a `Review` node with `reviewRating.ratingValue`.
  * Without one, the page can rank but cannot earn a star-rating snippet
@@ -60,7 +60,7 @@
  *
  * Consumer
  * --------
- *   - src/app/(marketing)/compare/[slug]/page.tsx — buildJsonLd()
+ *   - src/app/(marketing)/vs/[slug]/page.tsx — buildJsonLd()
  *     emits two Review nodes per comparison, one per product, each
  *     carrying the derived ratingValue. The dimensions section on the
  *     same page renders the wins-per-side counter so the reader can

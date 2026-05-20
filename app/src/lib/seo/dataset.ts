@@ -266,7 +266,7 @@ const TABLE_DESCRIPTIONS = Object.freeze({
   comparisons: {
     description:
       "Symmetric head-to-head 'A vs B' comparisons. Each row carries best-for fields, pick-A-if / pick-B-if lists, six to nine evaluated dimensions, an honest take, and a recommendation tailored for indie SaaS founders.",
-    canonicalUrlPattern: `${BASE_URL}/compare/{slug}`,
+    canonicalUrlPattern: `${BASE_URL}/vs/{slug}`,
     sourceCatalog: "src/lib/comparisons.ts",
   },
   alternatives: {
@@ -552,8 +552,8 @@ function projectComparison(row: Comparison): DatasetCsvRow {
     homepage_url_b: row.b.url ?? "",
     tags: row.tags.join("|"),
     last_verified: row.lastVerified,
-    canonical_url: `${BASE_URL}/compare/${row.slug}`,
-    markdown_url: `${BASE_URL}/compare/${row.slug}/md`,
+    canonical_url: `${BASE_URL}/vs/${row.slug}`,
+    markdown_url: `${BASE_URL}/vs/${row.slug}/md`,
   };
 }
 
@@ -866,8 +866,8 @@ function projectComparisonRich(row: Comparison): Record<ComparisonCol, string> {
     for_indie_founders_reasoning: row.forIndieFounders.reasoning,
     tags: row.tags.join(LIST_JOIN),
     last_verified: row.lastVerified,
-    canonical_url: `${BASE_URL}/compare/${row.slug}`,
-    markdown_url: `${BASE_URL}/compare/${row.slug}/md`,
+    canonical_url: `${BASE_URL}/vs/${row.slug}`,
+    markdown_url: `${BASE_URL}/vs/${row.slug}/md`,
   };
 }
 

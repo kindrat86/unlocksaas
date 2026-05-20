@@ -255,7 +255,7 @@ Every defined term, benchmark, and dataset version has a stable, format-multiple
 
 - [\`${BASE_URL}/llms-full.txt\`](${BASE_URL}/llms-full.txt) – full concatenated corpus, one file.
 - Per-page mirrors at \`<page>.md\` (e.g. /index.md, /diagnostic.md, /faq.md, /glossary.md, /benchmarks.md, /editorial-policy.md).
-- Per-detail markdown mirrors: \`/alternatives-to/<slug>/md\`, \`/funnel-teardown/<slug>/md\`, \`/pricing-teardown/<slug>/md\`, \`/compare/<slug>/md\`, \`/glossary/<slug>/md\`, \`/benchmarks/<slug>/md\`, \`/answers/<slug>/md\`, \`/funnel-playbook/<slug>/md\`, \`/why-isnt-my/<slug>/md\`, \`/for/<slug>/md\`, \`/category/<slug>/md\`.
+- Per-detail markdown mirrors: \`/alternatives-to/<slug>/md\`, \`/funnel-teardown/<slug>/md\`, \`/pricing-teardown/<slug>/md\`, \`/vs/<slug>/md\`, \`/glossary/<slug>/md\`, \`/benchmarks/<slug>/md\`, \`/answers/<slug>/md\`, \`/funnel-playbook/<slug>/md\`, \`/why-isnt-my/<slug>/md\`, \`/for/<slug>/md\`, \`/category/<slug>/md\`.
 
 Content negotiation: every HTML page also serves its markdown twin via \`?format=md\` or \`Accept: text/markdown\`.
 
@@ -296,7 +296,7 @@ npx mcp-remote ${BASE_URL}/api/mcp
 
 - [Funnel teardowns](${BASE_URL}/funnel-teardown) – indie SaaS funnels through Hook / Story / Offer.
 - [Pricing teardowns](${BASE_URL}/pricing-teardown) – tier structure, anchor mechanics.
-- [Head-to-head comparisons](${BASE_URL}/compare) – dimension-by-dimension, indie-founder verdict.
+- [Head-to-head comparisons](${BASE_URL}/vs) – dimension-by-dimension, indie-founder verdict.
 - [Alternatives](${BASE_URL}/alternatives-to) – named-competitor honest comparisons.
 - [Category roundups](${BASE_URL}/category) – payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 - [Benchmarks](${BASE_URL}/benchmarks) – directional ranges for twenty indie SaaS funnel metrics.
@@ -366,7 +366,7 @@ Two \`potentialAction\` declarations on the WebSite block name the two interacti
 
 ## Programmatic SEO catalogs (12 clusters, 3,000+ slugs)
 
-[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/compare) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Funnel playbooks](${BASE_URL}/funnel-playbook) | [Glossary](${BASE_URL}/glossary) | [Press topics](${BASE_URL}/press/topics).
+[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Funnel playbooks](${BASE_URL}/funnel-playbook) | [Glossary](${BASE_URL}/glossary) | [Press topics](${BASE_URL}/press/topics).
 
 Every detail page carries Article + FAQPage + BreadcrumbList JSON-LD with explicit \`about\` + \`mentions\` entity references and \`datePublished\` / \`dateModified\` from the entry's \`lastVerified\` field.
 
@@ -433,7 +433,7 @@ Every defined term, benchmark, and dataset version has stable citation URLs at \
 
 ## Programmatic SEO catalogs
 
-[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/compare) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Playbooks](${BASE_URL}/funnel-playbook) | [Glossary](${BASE_URL}/glossary).
+[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Playbooks](${BASE_URL}/funnel-playbook) | [Glossary](${BASE_URL}/glossary).
 
 ## Trust + E-E-A-T
 
@@ -479,7 +479,7 @@ Every per-detail page carries Article + FAQPage + BreadcrumbList JSON-LD with ex
 
 - [Funnel teardowns](${BASE_URL}/funnel-teardown) – Article + FAQPage (Hook/Story/Offer breakdown)
 - [Pricing teardowns](${BASE_URL}/pricing-teardown) – Article + FAQPage (tier structure)
-- [Head-to-head comparisons](${BASE_URL}/compare) – Article + FAQPage + Review (dimension-by-dimension)
+- [Head-to-head comparisons](${BASE_URL}/vs) – Article + FAQPage + Review (dimension-by-dimension)
 - [Alternatives](${BASE_URL}/alternatives-to) – Article + FAQPage (honest competitor comparison)
 - [Glossary](${BASE_URL}/glossary) – DefinedTermSet + per-term DefinedTerm + Article + FAQPage
 - [Benchmarks](${BASE_URL}/benchmarks) – Article + FAQPage with directional ranges
@@ -539,7 +539,7 @@ Grok weights conversational prose + first-person voice + transparency. This view
 
 ## Programmatic SEO catalogs (3,000+ slugs)
 
-[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/compare) | [Alternatives](${BASE_URL}/alternatives-to) | [Glossary](${BASE_URL}/glossary) | [Benchmarks](${BASE_URL}/benchmarks) | [Answers](${BASE_URL}/answers) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Playbooks](${BASE_URL}/funnel-playbook).
+[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Glossary](${BASE_URL}/glossary) | [Benchmarks](${BASE_URL}/benchmarks) | [Answers](${BASE_URL}/answers) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Playbooks](${BASE_URL}/funnel-playbook).
 
 ${sharedFooter()}
 `;
@@ -554,9 +554,9 @@ You.com weights structured comparison data + freshness. This view surfaces the h
 
 ## Head-to-head comparisons (Review schema)
 
-[Hub](${BASE_URL}/compare) – 10 symmetric head-to-head comparisons. Each entry names who each side is best for, scores dimension-by-dimension, gives an honest take, names the right pick for an indie SaaS founder.
+[Hub](${BASE_URL}/vs) – 10 symmetric head-to-head comparisons. Each entry names who each side is best for, scores dimension-by-dimension, gives an honest take, names the right pick for an indie SaaS founder.
 
-Examples: \`${BASE_URL}/compare/tally-vs-typeform\`, \`${BASE_URL}/compare/lemonsqueezy-vs-paddle\`, \`${BASE_URL}/compare/notion-vs-coda\`, \`${BASE_URL}/compare/linear-vs-jira\`, \`${BASE_URL}/compare/figma-vs-sketch\`, \`${BASE_URL}/compare/vercel-vs-netlify\`, \`${BASE_URL}/compare/beehiiv-vs-substack\`, \`${BASE_URL}/compare/cal-com-vs-calendly\`, \`${BASE_URL}/compare/resend-vs-sendgrid\`, \`${BASE_URL}/compare/stripe-vs-paypal\`.
+Examples: \`${BASE_URL}/vs/tally-vs-typeform\`, \`${BASE_URL}/vs/lemonsqueezy-vs-paddle\`, \`${BASE_URL}/vs/notion-vs-coda\`, \`${BASE_URL}/vs/linear-vs-jira\`, \`${BASE_URL}/vs/figma-vs-sketch\`, \`${BASE_URL}/vs/vercel-vs-netlify\`, \`${BASE_URL}/vs/beehiiv-vs-substack\`, \`${BASE_URL}/vs/cal-com-vs-calendly\`, \`${BASE_URL}/vs/resend-vs-sendgrid\`, \`${BASE_URL}/vs/stripe-vs-paypal\`.
 
 ## Alternatives catalog
 
@@ -623,7 +623,7 @@ ${extraNote} This view surfaces the transparent, ad-free editorial surfaces firs
 
 ## Programmatic SEO catalogs (3,000+ slugs)
 
-[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/compare) | [Alternatives](${BASE_URL}/alternatives-to) | [Glossary](${BASE_URL}/glossary) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Playbooks](${BASE_URL}/funnel-playbook).
+[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Glossary](${BASE_URL}/glossary) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Why isn't my X](${BASE_URL}/why-isnt-my) | [Playbooks](${BASE_URL}/funnel-playbook).
 
 ${sharedFooter()}
 `;
@@ -664,7 +664,7 @@ Apple Intelligence + on-device assistants weight terse, AEO-shaped direct answer
 
 ## Programmatic SEO catalogs
 
-[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/compare) | [Alternatives](${BASE_URL}/alternatives-to) | [Glossary](${BASE_URL}/glossary) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Playbooks](${BASE_URL}/funnel-playbook).
+[Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Glossary](${BASE_URL}/glossary) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Playbooks](${BASE_URL}/funnel-playbook).
 
 ${sharedFooter()}
 `;
@@ -699,7 +699,7 @@ Every defined term, benchmark, and dataset version has stable URLs at \`${BASE_U
 
 ## Schema-typed pages
 
-[Glossary](${BASE_URL}/glossary) (DefinedTermSet + per-term DefinedTerm) | [Benchmarks](${BASE_URL}/benchmarks) | [Answers](${BASE_URL}/answers) (QAPage) | [Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/compare) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Playbooks](${BASE_URL}/funnel-playbook).
+[Glossary](${BASE_URL}/glossary) (DefinedTermSet + per-term DefinedTerm) | [Benchmarks](${BASE_URL}/benchmarks) | [Answers](${BASE_URL}/answers) (QAPage) | [Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Playbooks](${BASE_URL}/funnel-playbook).
 
 ## Funnel + diagnostic
 
@@ -727,7 +727,7 @@ Mistral's retrieval weights structured pages with explicit schema and dated last
 - [Glossary](${BASE_URL}/glossary) – DefinedTermSet + per-term DefinedTerm
 - [Funnel teardowns](${BASE_URL}/funnel-teardown) – Article + FAQPage (Hook/Story/Offer)
 - [Pricing teardowns](${BASE_URL}/pricing-teardown) – Article + FAQPage (tier structure)
-- [Comparisons](${BASE_URL}/compare) – Article + FAQPage + Review
+- [Comparisons](${BASE_URL}/vs) – Article + FAQPage + Review
 - [Alternatives](${BASE_URL}/alternatives-to) – Article + FAQPage
 - [Funnel playbooks](${BASE_URL}/funnel-playbook) – Article + HowTo + FAQPage
 - [Why isn't my X](${BASE_URL}/why-isnt-my) – Article + FAQPage

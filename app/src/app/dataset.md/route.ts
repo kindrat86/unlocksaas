@@ -65,7 +65,7 @@ const TABLE_ROWS: ReadonlyArray<{
   {
     label: "Head-to-head comparisons",
     count: DATASET_BUNDLE.counts.comparisons,
-    url: `${BASE_URL}/compare`,
+    url: `${BASE_URL}/vs`,
   },
   {
     label: "Named-competitor alternatives",

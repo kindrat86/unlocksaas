@@ -22,11 +22,11 @@ import {
 } from "@/lib/i18n/translations";
 
 /**
- * Locale-aware /compare/[slug] detail – plumbing variant.
+ * Locale-aware /vs/[slug] detail – plumbing variant.
  * See /[locale]/alternatives-to/[slug]/page.tsx for the rollout pattern.
  */
 
-const PATH = "/compare";
+const PATH = "/vs";
 
 
 type RouteParams = { locale: string; slug: string };

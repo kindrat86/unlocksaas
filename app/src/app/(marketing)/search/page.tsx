@@ -310,7 +310,7 @@ function EmptyState({ query }: { query: string }) {
           </Link>
         </li>
         <li>
-          <Link href="/compare" className="underline underline-offset-2">
+          <Link href="/vs" className="underline underline-offset-2">
             All head-to-head comparisons
           </Link>
         </li>

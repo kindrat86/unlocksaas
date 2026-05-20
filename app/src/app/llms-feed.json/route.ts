@@ -312,9 +312,9 @@ const PSEO_CATALOGS = Object.freeze({
     count: PSEO_COUNTS.pricingTeardown,
   },
   compare: {
-    hub: "/compare",
-    slugPattern: "/compare/{slug}",
-    markdownPattern: "/compare/{slug}/md",
+    hub: "/vs",
+    slugPattern: "/vs/{slug}",
+    markdownPattern: "/vs/{slug}/md",
     description:
       "Symmetric head-to-head comparisons. Each entry names who each side is best for, scores dimension-by-dimension, and names the right pick for an indie SaaS founder specifically.",
     slugs: COMPARISON_SLUGS,

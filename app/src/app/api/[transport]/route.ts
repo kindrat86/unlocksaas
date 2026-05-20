@@ -322,8 +322,8 @@ function renderComparison(c: Comparison, tool: string): string {
     "",
     `Last verified: ${c.lastVerified}.`,
     "",
-    `Full page: ${withRef(`/compare/${c.slug}`, tool)}`,
-    `Markdown mirror: ${withRef(`/compare/${c.slug}/md`, tool)}`,
+    `Full page: ${withRef(`/vs/${c.slug}`, tool)}`,
+    `Markdown mirror: ${withRef(`/vs/${c.slug}/md`, tool)}`,
   ].join("\n");
 }
 
@@ -336,7 +336,7 @@ function renderCategory(cat: CategoryDef, tool: string): string {
     (t) => `- ${t.displayName} (/pricing-teardown/${t.slug})`,
   );
   const compares = getComparisonsInCategory(cat.slug).map(
-    (c) => `- ${c.a.name} vs ${c.b.name} (/compare/${c.slug})`,
+    (c) => `- ${c.a.name} vs ${c.b.name} (/vs/${c.slug})`,
   );
   return [
     `# ${cat.displayName}`,
@@ -737,7 +737,7 @@ const handler = createMcpHandler(
                 "",
                 ...lines,
                 "",
-                `Hub: ${withRef("/compare", "list_comparisons")}`,
+                `Hub: ${withRef("/vs", "list_comparisons")}`,
               ].join("\n"),
             },
           ],

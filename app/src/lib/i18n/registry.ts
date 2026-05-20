@@ -293,18 +293,18 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + verdict stay English until per-slug overlay ships. Verify at /pt-BR/alternatives-to before flipping to approved.",
   },
   {
-    path: "/compare",
+    path: "/vs",
     locale: "es",
     status: "pending-review",
     reviewNote:
-      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /es/compare before flipping to approved.",
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /es/vs before flipping to approved. (Hub renamed from /compare to /vs same day – i18n entries follow.)",
   },
   {
-    path: "/compare",
+    path: "/vs",
     locale: "pt-BR",
     status: "pending-review",
     reviewNote:
-      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /pt-BR/compare before flipping to approved.",
+      "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /pt-BR/vs before flipping to approved. (Hub renamed from /compare to /vs same day – i18n entries follow.)",
   },
   {
     path: "/category",
@@ -457,7 +457,7 @@ export function renderableLocalesForPath(
  * least one result; an empty array crashes the build with
  * `EmptyGenerateStaticParamsError`. For locale-shell pSEO routes whose path
  * has no approved or pending-review translation rows (the eight shells
- * /alternatives-to, /answers, /category, /compare, /for, /funnel-teardown,
+ * /alternatives-to, /answers, /category, /vs, /for, /funnel-teardown,
  * /pricing-teardown, /why-isnt-my as of 2026-05-21), `renderableLocalesForPath`
  * returns [] – the route exists as plumbing for when translations ship, but
  * has no content today.
@@ -515,7 +515,7 @@ export function localesWithRenderableContent(): ReadonlyArray<
  * locale variants:
  *
  *   - /alternatives-to
- *   - /compare
+ *   - /vs
  *   - /category
  *   - /funnel-teardown
  *   - /pricing-teardown

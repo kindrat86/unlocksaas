@@ -87,7 +87,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]);
   const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
     /^\/alternatives-to\/[^/]+$/,
-    /^\/compare\/[^/]+$/,
+    /^\/vs\/[^/]+$/,
     /^\/glossary\/[^/]+$/,
     /^\/funnel-teardown\/[^/]+$/,
     /^\/pricing-teardown\/[^/]+$/,
@@ -357,18 +357,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // JSON-LD per detail page. CollectionPage on the hub.
     // ---------------------------------------------------------------------
     {
-      url: `${base}/compare`,
+      url: `${base}/vs`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
-      alternates: hreflang(`${base}/compare`),
+      alternates: hreflang(`${base}/vs`),
     },
     ...COMPARISON_SLUGS.map((slug) => ({
-      url: `${base}/compare/${slug}`,
+      url: `${base}/vs/${slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.5,
-      alternates: hreflang(`${base}/compare/${slug}`),
+      alternates: hreflang(`${base}/vs/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #5 — category roundup pages.
