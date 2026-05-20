@@ -22,6 +22,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForFunnelTeardown,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Programmatic SEO surface — Funnel teardown: {Company}.
@@ -95,7 +100,11 @@ export async function generateMetadata(
 
 // ----- JSON-LD (per-slug, inlined for static-render simplicity) --------------
 
-function buildJsonLd(t: FunnelTeardown, canonicalUrl: string): string[] {
+function buildJsonLd(
+  t: FunnelTeardown,
+  canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
+): string[] {
   // Subject-entity reference for both `about` and `mentions`. When the
   // manifest provides a homepageUrl we name the subject as a real
   // Organization with a URL Google's Knowledge Graph can walk back to.
@@ -151,7 +160,7 @@ function buildJsonLd(t: FunnelTeardown, canonicalUrl: string): string[] {
     inLanguage: "en-US",
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: t.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -215,7 +224,13 @@ export default async function FunnelTeardownPage(
   if (!t) notFound();
 
   const canonicalUrl = `${BASE}/funnel-teardown/${t.slug}`;
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(t, canonicalUrl);
+  const paaPairs = paaForFunnelTeardown(t);
+  const mergedFaqs = mergePaaIntoFaqs(t.faqs, paaPairs);
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+    t,
+    canonicalUrl,
+    mergedFaqs,
+  );
   const related = getRelatedTeardowns(t.slug, 4);
   const hasPricing = hasPricingTeardown(t.slug);
   const hasAlt = hasAlternative(t.slug);
@@ -555,10 +570,13 @@ export default async function FunnelTeardownPage(
           </CardContent>
         </Card>
       </section>
+      {/* People Also Ask – PAA H3s sourced from this teardown's tldr,
+          hook/story/offer patterns, and product snapshot. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-6 py-10" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-6 leading-tight">
-          {t.displayName} funnel — FAQ
+          {t.displayName} funnel – FAQ
         </h2>
         <div className="space-y-3">
           {t.faqs.map((f) => (

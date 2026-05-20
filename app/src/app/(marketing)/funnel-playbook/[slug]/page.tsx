@@ -17,6 +17,11 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForFunnelPlaybook,
+  mergePaaIntoFaqs,
+} from "@/lib/seo/paa-questions";
 
 
 export function generateStaticParams() {
@@ -56,6 +61,7 @@ export async function generateMetadata(props: {
 function buildJsonLd(
   e: FunnelPlaybookEntry,
   canonicalUrl: string,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
 ): string[] {
   const howTo = {
     "@context": "https://schema.org",
@@ -109,7 +115,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    mainEntity: e.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -165,9 +171,12 @@ export default async function FunnelPlaybookDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/funnel-playbook/${e.slug}`;
+  const paaPairs = paaForFunnelPlaybook(e);
+  const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
   const [articleJson, howToJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
+    mergedFaqs,
   );
 
   const glossaryLinks = e.relatedGlossary
@@ -314,6 +323,10 @@ export default async function FunnelPlaybookDetailPage(props: {
           {e.ladderPosition}
         </p>
       </section>
+
+      {/* People Also Ask – PAA H3s sourced from this playbook's tldr,
+          whenToUse, whenNotToUse, and ladder position. */}
+      <PeopleAlsoAsk pairs={paaPairs} />
 
       <section className="max-w-3xl mx-auto px-6 py-8" aria-labelledby="faq">
         <h2 id="faq" className="text-2xl font-bold mb-4 leading-tight">

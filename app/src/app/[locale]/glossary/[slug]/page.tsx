@@ -27,6 +27,12 @@ import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
+import {
+  paaForGlossary,
+  mergePaaIntoFaqs,
+  paaHeadingForLocale,
+} from "@/lib/seo/paa-questions";
 
 /**
  * Locale-aware /glossary/[slug] detail – mirrors the canonical
@@ -136,6 +142,7 @@ function buildJsonLd(
   canonicalUrl: string,
   inLanguage: string,
   chrome: ReturnType<typeof getGlossaryChrome>,
+  faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
 ): string[] {
   const definedTerm = {
     "@context": "https://schema.org",
@@ -174,7 +181,7 @@ function buildJsonLd(
     inLanguage,
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: g.faqs.map((f) => ({
+    mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
@@ -243,11 +250,14 @@ export default async function LocalizedGlossaryDetail({
   const canonicalUrl = `${BASE_URL}${localised}`;
   const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
 
+  const paaPairs = paaForGlossary(g, locale);
+  const mergedFaqs = mergePaaIntoFaqs(g.faqs, paaPairs);
   const [termJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     g,
     canonicalUrl,
     inLanguage,
     chrome,
+    mergedFaqs,
   );
 
   const related = (g.relatedTerms ?? [])
@@ -495,6 +505,14 @@ export default async function LocalizedGlossaryDetail({
           </div>
         </section>
       ) : null}
+
+      {/* People Also Ask – localized PAA H3s sourced from this
+          locale's entry overlay; question stems are translated for
+          the target locale. */}
+      <PeopleAlsoAsk
+        pairs={paaPairs}
+        heading={paaHeadingForLocale(locale)}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"
