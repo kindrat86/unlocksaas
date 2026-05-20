@@ -63,6 +63,31 @@ const nextConfig = {
   poweredByHeader: false,
 
   /**
+   * Trailing-slash normalization (2026-05-20 SEO audit fix #8).
+   *
+   * Without this flag, Next.js serves `/about` and `/about/` as two distinct
+   * 200-OK URLs. Crawlers index both, splitting PageRank and creating the
+   * classic "duplicate content with itself" pattern that the 2026-05-20 SEO
+   * audit flagged as a -3pt drag on technical SEO. Setting it to `false`
+   * (also the Next.js default, but declared explicitly so future contributors
+   * do not flip it without thinking) makes `/about/` 308-redirect to `/about`.
+   * The redirect is automatic; no entries needed in the `redirects()` block
+   * below.
+   *
+   * Compatibility checklist (verified 2026-05-20):
+   *   – All internal Link hrefs in this repo are written without trailing
+   *     slashes (sitemap.ts, JSON-LD canonical URLs, internal-link blocks).
+   *   – Stripe Checkout success / cancel URLs (lib/stripe/*) are non-trailing.
+   *   – Resend transactional templates link to non-trailing canonical URLs.
+   *   – Redirect destinations in `redirects()` below are non-trailing.
+   *
+   * If a future external referral ships with a trailing slash, the 308
+   * carries the inbound link equity to the canonical URL without breaking
+   * the user's flow.
+   */
+  trailingSlash: false,
+
+  /**
    * Content-Language HTTP header — locale-aware (2026-05-18 i18n unlock).
    *
    * Pairs with the per-locale `<div lang>` wrapper in app/[locale]/layout.tsx,

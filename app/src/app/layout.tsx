@@ -10,6 +10,56 @@ import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
 import { buildVerification } from "@/lib/seo/verification";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
 
+/**
+ * Third-party connection hints (2026-05-20 SEO audit fix #8 / CWV +5).
+ *
+ * Parsed once at module load (server-side), per the React server-side
+ * `server-hoist-static-io` rule – no per-request URL parsing. Each entry
+ * resolves to a clean origin (scheme + host + port, no path / query) so
+ * the preconnect / dns-prefetch hint matches what the browser actually
+ * opens when it later fetches Stripe.js, hits Supabase auth, or warms
+ * PostHog ingest.
+ *
+ * Choice of hint per origin:
+ *   – Stripe.js: `preconnect`. Loaded eagerly by `loadStripe()` on the
+ *     /playbook-sales and /starter checkout paths; saving the TLS+TCP
+ *     handshake (~120-180ms on a cold mobile network) pays off on the
+ *     very next interaction.
+ *   – Supabase: `preconnect` with `crossOrigin="anonymous"`. The auth /
+ *     query client opens an anonymous CORS fetch (Authorization header,
+ *     no cookie credentials), so the warmed socket has to match.
+ *   – PostHog: `dns-prefetch`, not preconnect. The SDK is dynamic-imported
+ *     AFTER first paint (lib/analytics/client.ts), so a full TLS handshake
+ *     held open during LCP would waste a connection slot. DNS resolution
+ *     is the cheap, useful half of preconnect for a deferred origin.
+ *
+ * Resend is intentionally absent: it's server-side only (sent from
+ * /api/* via the Node SDK). The browser never opens a socket to
+ * api.resend.com, so a preconnect there would burn a connection slot
+ * for zero benefit.
+ *
+ * Brunson Hard-Rule reconciliation: any origin whose env var is unset
+ * or unparseable resolves to `null` and renders nothing – no fabricated
+ * hints, no placeholder hosts. Stripe is the only hardcoded constant
+ * because js.stripe.com is the documented public CDN for Stripe.js and
+ * does not vary per deployment.
+ */
+function parseOrigin(url: string | undefined | null): string | null {
+  if (!url) return null;
+  try {
+    return new URL(url).origin;
+  } catch {
+    return null;
+  }
+}
+const THIRD_PARTY_ORIGINS = {
+  stripe: "https://js.stripe.com",
+  supabase: parseOrigin(process.env.NEXT_PUBLIC_SUPABASE_URL),
+  posthog: parseOrigin(
+    process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://eu.i.posthog.com",
+  ),
+} as const;
+
 // Mobile-first viewport. `viewportFit: cover` lets the page paint under
 // iOS notches; padding then uses safe-area-inset via Tailwind utilities.
 // `maximumScale: 5` (not 1) preserves accessibility — Marco's avatar
@@ -95,6 +145,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-US" className={cn(GeistSans.variable, GeistMono.variable)}>
+      <head>
+        {/*
+          Connection hints – see THIRD_PARTY_ORIGINS at the top of this file
+          for the per-origin rationale (preconnect vs dns-prefetch, why
+          Resend is excluded, Brunson Hard-Rule on env-driven hosts).
+        */}
+        <link rel="preconnect" href={THIRD_PARTY_ORIGINS.stripe} />
+        {THIRD_PARTY_ORIGINS.supabase ? (
+          <link
+            rel="preconnect"
+            href={THIRD_PARTY_ORIGINS.supabase}
+            crossOrigin="anonymous"
+          />
+        ) : null}
+        {THIRD_PARTY_ORIGINS.posthog ? (
+          <link rel="dns-prefetch" href={THIRD_PARTY_ORIGINS.posthog} />
+        ) : null}
+      </head>
       <body className="antialiased bg-background text-foreground">
         <PostHogProvider>
           {/* PageView lives in Suspense because useSearchParams forces CSR. */}
