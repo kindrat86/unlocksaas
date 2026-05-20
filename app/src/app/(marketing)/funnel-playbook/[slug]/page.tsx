@@ -13,6 +13,10 @@ import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 
 export function generateStaticParams() {
@@ -86,6 +90,19 @@ function buildJsonLd(
       "indie SaaS",
     ].join(", "),
     inLanguage: "en-US",
+    // Speakable + access-mode: the TL;DR paragraph (matching the
+    // `abstract: e.tldr` field above) is the canonical voice
+    // answer for "what is the {archetype} playbook" voice queries.
+    // Marked `data-speakable` in the rendered DOM, matching the
+    // [data-speakable] selector in SPEAKABLE_SELECTORS.
+    // ACCESS_MODE_TEXTUAL declares the page is fully consumable as
+    // text — safe for voice readout without missing meaning
+    // carried by images/video. The HowTo block below intentionally
+    // does NOT carry Speakable: stepwise instructions are read in
+    // the dedicated /diagnostic and onboarding voice surfaces, not
+    // as a single read-aloud block on the marketing page.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
@@ -197,7 +214,12 @@ export default async function FunnelPlaybookDetailPage(props: {
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
           {e.displayName}
         </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">{e.tldr}</p>
+        <p
+          className="text-lg text-muted-foreground leading-relaxed"
+          data-speakable
+        >
+          {e.tldr}
+        </p>
         <p className="mt-4 text-xs text-muted-foreground">
           Verified{" "}
           <time dateTime={e.lastVerified}>

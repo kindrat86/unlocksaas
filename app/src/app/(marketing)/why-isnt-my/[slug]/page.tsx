@@ -13,6 +13,10 @@ import { glossaryTermSlug, getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 
 export function generateStaticParams() {
@@ -69,6 +73,15 @@ function buildJsonLd(e: WhyIsntMyEntry, canonicalUrl: string): string[] {
       "Brunson",
     ].join(", "),
     inLanguage: "en-US",
+    // Speakable + access-mode: the TL;DR paragraph (marked
+    // `data-speakable` in the rendered DOM, matching the
+    // [data-speakable] selector in SPEAKABLE_SELECTORS) is the
+    // canonical voice-readable answer for "why isn't my <element>
+    // converting" voice queries. ACCESS_MODE_TEXTUAL declares the
+    // page is fully consumable as text — safe to read aloud
+    // without missing meaning carried by images/video.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
@@ -175,7 +188,12 @@ export default async function WhyIsntMyDetailPage(props: {
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
           Why isn&rsquo;t my {e.element} converting?
         </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">{e.tldr}</p>
+        <p
+          className="text-lg text-muted-foreground leading-relaxed"
+          data-speakable
+        >
+          {e.tldr}
+        </p>
         <p className="mt-4 text-xs text-muted-foreground">
           Verified{" "}
           <time dateTime={e.lastVerified}>

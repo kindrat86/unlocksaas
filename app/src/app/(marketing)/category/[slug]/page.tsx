@@ -12,6 +12,10 @@ import {
   getComparisonsInCategory,
   type CategoryDef,
 } from "@/lib/categories";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 /**
  * pSEO #5 — Category roundup pages.
@@ -83,6 +87,19 @@ function buildJsonLd(cat: CategoryDef, canonicalUrl: string): string[] {
     abstract: cat.intent,
     url: canonicalUrl,
     inLanguage: "en-US",
+    // Speakable + access-mode: the "Category overview" intent
+    // paragraph (matching the `abstract: cat.intent` field above)
+    // is the canonical voice answer for "best {category} for indie
+    // SaaS" voice queries. Marked `data-speakable` in the rendered
+    // DOM, matching the [data-speakable] selector in
+    // SPEAKABLE_SELECTORS. CollectionPage carries Speakable per
+    // schema.org — the type is a subclass of WebPage, which is the
+    // documented domain for SpeakableSpecification.
+    // ACCESS_MODE_TEXTUAL declares the roundup is fully consumable
+    // as text (the product/comparison lists are text-link rows, no
+    // images carry meaning).
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
     isPartOf: {
       "@type": "WebSite",
       name: "Unlock SaaS",
@@ -213,7 +230,9 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Category overview
             </p>
-            <p className="text-base leading-relaxed">{cat.intent}</p>
+            <p className="text-base leading-relaxed" data-speakable>
+              {cat.intent}
+            </p>
           </CardContent>
         </Card>
       </section>

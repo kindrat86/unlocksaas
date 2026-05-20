@@ -13,6 +13,10 @@ import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import {
+  SPEAKABLE_SPEC,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 
 export function generateStaticParams() {
@@ -73,6 +77,14 @@ function buildJsonLd(e: NicheEntry, canonicalUrl: string): string[] {
       "Brunson",
     ].join(", "),
     inLanguage: "en-US",
+    // Speakable + access-mode: the hero subhead (matching the
+    // `abstract: e.heroSubhead` field above) is the canonical
+    // cohort-tuned voice answer. Marked `data-speakable` in the
+    // rendered DOM, matching the [data-speakable] selector in
+    // SPEAKABLE_SELECTORS. ACCESS_MODE_TEXTUAL declares the page
+    // is fully consumable as text — safe for voice readout.
+    speakable: SPEAKABLE_SPEC,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const faqPage = {
@@ -179,7 +191,10 @@ export default async function ForDetailPage(props: {
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4 capitalize">
           Unlock SaaS for {e.displayName}.
         </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">
+        <p
+          className="text-lg text-muted-foreground leading-relaxed"
+          data-speakable
+        >
           {e.heroSubhead}
         </p>
         <p className="mt-4 text-xs text-muted-foreground">
