@@ -17,6 +17,7 @@ import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
+  buildQuotationNode,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import {
@@ -122,7 +123,14 @@ function buildJsonLd(
   // and the worked example. Same @id discipline as the funnel teardown
   // articles – author and publisher resolve to the site-wide
   // Person and Organization nodes.
-  const article = {
+  //
+  // Article.citation: schema.org Quotation chain for verbatim external
+  // sources. Bound here (not as a detached @graph node) so the citation
+  // graph stays connected to the article it supports. Brunson Hard-Rule:
+  // empty when no verbatim quotes are curated for this entry – module
+  // load already ran validateQuotations() so any entry that ships here
+  // is honesty-gated. See @/lib/seo/quotation.
+  const article: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${g.term} – Definition for Indie SaaS Founders`,
@@ -154,6 +162,9 @@ function buildJsonLd(
       name: `Stable citation permalink for ${g.term}`,
     },
   };
+  if (g.quotations && g.quotations.length > 0) {
+    article.citation = g.quotations.map(buildQuotationNode);
+  }
 
   const faqPage = {
     "@context": "https://schema.org",
