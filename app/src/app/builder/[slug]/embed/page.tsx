@@ -152,7 +152,7 @@ ${reviewJsonPretty}
 </script>`;
 
   // ── Snippet 2: iframe variant ───────────────────────────────────────────
-  const iframeSnippet = `<iframe src="${embedHtmlUrl}" title="${escapeAttr(badge.builderName)} — Verified Builder" width="360" height="140" frameborder="0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;max-width:100%"></iframe>`;
+  const iframeSnippet = `<iframe src="${embedHtmlUrl}" title="${escapeAttr(badge.builderName)} – Verified Builder" width="360" height="140" frameborder="0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;max-width:100%"></iframe>`;
 
   // ── Snippet 3: card badge inline-styled (legacy from prior version) ─────
   const cardSnippet = `<a href="${badgeUrl}" rel="me external" style="display:inline-block;text-decoration:none;color:inherit;font:14px/1.4 system-ui,sans-serif;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;background:#fff;max-width:320px">

@@ -82,7 +82,7 @@ export async function GET(req: Request, ctx: RouteCtx) {
 
   // The HTML payload that the host inlines. Most hosts iframe sandbox this,
   // so it must be a complete, self-contained iframe element.
-  const html = `<iframe src="${embedSrc}" title="${escapeAttr(badge.builderName)} — Verified Builder" width="${maxwidth}" height="${maxheight}" frameborder="0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;max-width:100%"></iframe>`;
+  const html = `<iframe src="${embedSrc}" title="${escapeAttr(badge.builderName)} – Verified Builder" width="${maxwidth}" height="${maxheight}" frameborder="0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="border:0;max-width:100%"></iframe>`;
 
   const payload = {
     version: "1.0",

@@ -8,7 +8,7 @@
  *   fields, Ghost), the founder can paste:
  *
  *     <iframe src="https://unlocksaas.com/builder/marco/embed.html"
- *             title="Marco — Verified Builder badge"
+ *             title="Marco – Verified Builder badge"
  *             width="360" height="120"
  *             frameborder="0" loading="lazy"
  *             referrerpolicy="no-referrer-when-downgrade"
