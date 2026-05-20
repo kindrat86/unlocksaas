@@ -66,6 +66,27 @@ type AlternatesFragment = NonNullable<Metadata["alternates"]>;
 const HUBS_WITH_DETAIL_LOCALE_INHERITANCE: readonly string[] = [
   "/glossary",
   "/benchmarks",
+  // 2026-05-21 audit fix #3 – plumbing-only expansion. The other ten
+  // pSEO hubs satisfy the "detail-page locale routes exist" criterion
+  // (see the per-hub "pSEO surface plumbing extension" log in
+  // src/lib/i18n/registry.ts). They do NOT yet satisfy the
+  // "underlying translation file carries every child slug" criterion –
+  // the registry has no rows for these paths, so
+  // approvedLocalesForPath() returns [] and the helper below emits
+  // en-US + x-default only. Listing the hubs here is forward-
+  // compatibility: when a real translation overlay ships, per-slug
+  // hreflang resolution needs zero further wiring. Keep in lockstep
+  // with the same constant in app/src/app/sitemap.ts.
+  "/alternatives-to",
+  "/compare",
+  "/funnel-teardown",
+  "/pricing-teardown",
+  "/category",
+  "/for",
+  "/funnel-playbook",
+  "/answers",
+  "/why-isnt-my",
+  "/press/topics",
 ];
 
 /**
