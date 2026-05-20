@@ -10,9 +10,9 @@ import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
 import {
   getTranslationStatus,
   isApproved,
-  localesWithApprovedContent,
   renderableLocalesForPath,
 } from "@/lib/i18n/registry";
+import { localeAlternates } from "@/lib/seo/markdown-alternates";
 import { getFaqChrome, getFaqEntries } from "@/lib/i18n/translations";
 
 /**
@@ -46,21 +46,7 @@ export async function generateMetadata({
   return {
     title: chrome.seoTitle,
     description: chrome.seoDescription,
-    alternates: {
-      canonical: localised,
-      languages: {
-        "en-US": path,
-        "x-default": path,
-        ...(approved
-          ? Object.fromEntries(
-              localesWithApprovedContent().map((loc) => [
-                loc,
-                localizedPath(path, loc),
-              ]),
-            )
-          : {}),
-      },
-    },
+    alternates: localeAlternates(path, locale),
     robots: approved
       ? { index: true, follow: true }
       : { index: false, follow: false },

@@ -33,7 +33,7 @@
 import type { Metadata } from "next";
 import { BASE_URL } from "./entity";
 import { approvedLocalesForPath } from "@/lib/i18n/registry";
-import { localizedPath } from "@/lib/i18n/locales";
+import { localizedPath, type Locale } from "@/lib/i18n/locales";
 
 /**
  * Shape of the `alternates` fragment we return. Narrowed to the keys
@@ -141,6 +141,28 @@ export function selfHreflang(canonical: string): Record<string, string> {
 }
 
 /**
+ * Predicate: is `(canonical, locale)` approved, honoring hub→detail
+ * inheritance?
+ *
+ * Exposed so locale-routed pages (`app/[locale]/.../page.tsx`) can drive
+ * their `robots` flag and `alternates` shape without re-implementing the
+ * lookup logic that `buildHreflangMap` already encapsulates.
+ *
+ * Hub→detail inheritance: `/glossary/big-domino` returns `true` for any
+ * locale where the `/glossary` hub is approved – the founder reviews the
+ * hub + its slug catalog as a unit (see `HUBS_WITH_DETAIL_LOCALE_INHERITANCE`).
+ *
+ * Brunson Hard-Rule reconciliation: this is a pure read of the registry.
+ * Approval state cannot be inferred from anything outside `registry.ts`.
+ */
+export function isLocaleApprovedForPath(
+  canonical: string,
+  locale: Exclude<Locale, "en-US">,
+): boolean {
+  return localesForPathWithHubFallback(canonical).some((l) => l === locale);
+}
+
+/**
  * Build a per-page alternates fragment with canonical + self-referencing
  * hreflang.
  *
@@ -227,4 +249,64 @@ export function markdownAlternate(
   }
 
   return fragment;
+}
+
+/**
+ * Per-locale alternates fragment for routes under `app/[locale]/...`.
+ *
+ * Returns:
+ *   - `canonical`: self-canonical at the LOCALIZED URL (`/es/faq`,
+ *     `/pt-BR/glossary/big-domino`, …).
+ *   - `languages`: the full hreflang cluster (en-US canonical +
+ *     x-default + every approved sibling locale) WHEN the (path,
+ *     locale) pair is approved – directly or via hub→detail
+ *     inheritance.
+ *
+ * Approval gate
+ * -------------
+ * If the (canonical, locale) pair is NOT approved (status
+ * `pending-review`, founder still in the loop), the `languages` map is
+ * OMITTED. A noindex page that emits hreflang siblings would pollute
+ * the cluster with an asymmetric edge (Search Console expects every
+ * member of an hreflang cluster to be indexable); self-canonical-only
+ * is the honest signal for "this URL exists for founder preview but
+ * does not participate in the international SEO graph yet."
+ *
+ * The previous inline pattern across `app/[locale]/.../page.tsx` used
+ * `localesWithApprovedContent()` (global – every locale that has ANY
+ * approved row anywhere), which over-claimed by listing locales that
+ * had no approved row for THIS path. This helper instead routes
+ * through `localesForPathWithHubFallback()` which is per-path with
+ * hub inheritance – byte-correct hreflang clusters.
+ *
+ * Drop-in usage
+ * -------------
+ *   import { localeAlternates } from "@/lib/seo/markdown-alternates";
+ *   ...
+ *   return {
+ *     title,
+ *     description,
+ *     alternates: localeAlternates("/faq", locale),
+ *     robots: isLocaleApprovedForPath("/faq", locale)
+ *       ? { index: true, follow: true }
+ *       : { index: false, follow: false },
+ *     ...
+ *   };
+ */
+export function localeAlternates(
+  canonical: string,
+  locale: Exclude<Locale, "en-US">,
+): AlternatesFragment {
+  const localised = localizedPath(canonical, locale);
+  if (!isLocaleApprovedForPath(canonical, locale)) {
+    // Pending-review: noindex page, self-canonical only. Don't
+    // pollute the hreflang cluster from a non-indexable surface –
+    // Search Console flags clusters with non-indexable members as
+    // "hreflang errors: alternate page is no-index."
+    return { canonical: localised };
+  }
+  return {
+    canonical: localised,
+    languages: selfHreflang(canonical),
+  };
 }
