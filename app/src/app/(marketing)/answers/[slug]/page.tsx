@@ -18,6 +18,10 @@ import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForAnswer } from "@/lib/seo/paa-questions";
 import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import {
+  buildSpeakable,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 
 export function generateStaticParams() {
@@ -62,10 +66,23 @@ function buildJsonLd(
   // QAPage is the right schema for a direct-answer page (Q + accepted answer).
   // Google's structured-data team explicitly documents QAPage as the
   // citation-friendly format for single-question pages.
+  //
+  // SpeakableSpecification curated per-page so voice engines (Google
+  // Assistant, ChatGPT Voice, Perplexity voice) extract exactly the
+  // question + direct answer + supporting bullets, not nav or CTA.
+  // Stable [data-llm-summary] handle is auto-included by buildSpeakable.
+  const speakable = buildSpeakable(
+    '[data-speakable="question"]',
+    '[data-speakable="direct-answer"]',
+    '[data-speakable="supporting"]',
+  );
+
   const qaPage = {
     "@context": "https://schema.org",
     "@type": "QAPage",
     inLanguage: "en-US",
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: {
       "@type": "Question",
       name: e.question,
@@ -94,6 +111,8 @@ function buildJsonLd(
     dateModified: e.lastVerified,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
     inLanguage: "en-US",
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
   };
 
   const breadcrumbs = {
@@ -213,7 +232,10 @@ export default async function AnswerDetailPage(props: {
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           Answer
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
+        <h1
+          className="text-3xl sm:text-4xl font-bold leading-tight mb-4"
+          data-speakable="question"
+        >
           {e.question}
         </h1>
         <p className="mt-4 text-xs text-muted-foreground">
@@ -258,12 +280,14 @@ export default async function AnswerDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Direct answer
             </p>
-            <DateStampedAnswer
-              lastVerified={e.lastVerified}
-              variant="answer"
-            >
-              {e.directAnswer}
-            </DateStampedAnswer>
+            <div data-speakable="direct-answer">
+              <DateStampedAnswer
+                lastVerified={e.lastVerified}
+                variant="answer"
+              >
+                {e.directAnswer}
+              </DateStampedAnswer>
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -280,7 +304,10 @@ export default async function AnswerDetailPage(props: {
         <h2 id="supporting" className="text-xl font-semibold mb-4 leading-tight">
           Supporting points
         </h2>
-        <ul className="space-y-3 list-disc list-inside">
+        <ul
+          className="space-y-3 list-disc list-inside"
+          data-speakable="supporting"
+        >
           {e.supporting.map((s) => (
             <li key={s} className="text-base leading-relaxed">
               {s}

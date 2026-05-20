@@ -15,7 +15,7 @@ import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
   buildQuotationNode,
   GlossaryAudioJsonLd,
@@ -156,7 +156,10 @@ function buildJsonLd(
     mentions: [{ "@id": `${canonicalUrl}#term` }],
     keywords: [g.term, g.category, "Brunson", "indie SaaS"].join(", "),
     inLanguage: "en-US",
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="definition"]',
+      '[data-speakable="why-it-matters"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     // `citation` field points at the stable /cite/[id] permalink.
     // The permalink view itself emits a WebPage schema with
@@ -177,7 +180,10 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="definition"]',
+      '[data-speakable="why-it-matters"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
@@ -371,12 +377,14 @@ export default async function GlossaryDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Short definition
             </p>
-            <DateStampedAnswer
-              lastVerified={g.lastVerified}
-              variant="definition"
-            >
-              {g.shortDefinition}
-            </DateStampedAnswer>
+            <div data-speakable="definition">
+              <DateStampedAnswer
+                lastVerified={g.lastVerified}
+                variant="definition"
+              >
+                {g.shortDefinition}
+              </DateStampedAnswer>
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -439,7 +447,10 @@ export default async function GlossaryDetailPage(props: {
         <h2 id="why" className="text-2xl font-bold mb-4 leading-tight">
           Why it matters for a post-launch pre-revenue founder
         </h2>
-        <p className="text-base leading-relaxed whitespace-pre-line">
+        <p
+          className="text-base leading-relaxed whitespace-pre-line"
+          data-speakable="why-it-matters"
+        >
           {g.whyItMatters}
         </p>
       </section>

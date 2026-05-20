@@ -24,7 +24,7 @@ import {
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
   buildQuotationNode,
 } from "@/components/seo/json-ld";
@@ -164,7 +164,10 @@ function buildJsonLd(
     mentions: [{ "@id": `${canonicalUrl}#term` }],
     keywords: [g.term, g.category, "Brunson", "indie SaaS"].join(", "),
     inLanguage,
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="definition"]',
+      '[data-speakable="why-it-matters"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
   if (g.quotations && g.quotations.length > 0) {
@@ -175,7 +178,10 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage,
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="definition"]',
+      '[data-speakable="why-it-matters"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
@@ -321,7 +327,10 @@ export default async function LocalizedGlossaryDetail({
         <h1 className="text-3xl sm:text-4xl font-bold leading-tight mb-4">
           {g.term}
         </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">
+        <p
+          className="text-lg text-muted-foreground leading-relaxed"
+          data-speakable="definition"
+        >
           {g.shortDefinition}
         </p>
         <p className="mt-4 text-xs text-muted-foreground">
@@ -377,7 +386,10 @@ export default async function LocalizedGlossaryDetail({
         <h2 id="why" className="text-2xl font-bold mb-4 leading-tight">
           {chrome.detailWhyItMattersHeading}
         </h2>
-        <p className="text-base leading-relaxed whitespace-pre-line">
+        <p
+          className="text-base leading-relaxed whitespace-pre-line"
+          data-speakable="why-it-matters"
+        >
           {g.whyItMatters}
         </p>
       </section>

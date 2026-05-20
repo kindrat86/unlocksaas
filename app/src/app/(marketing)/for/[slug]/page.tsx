@@ -15,7 +15,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -93,7 +93,7 @@ function buildJsonLd(
     // rendered DOM, matching the [data-speakable] selector in
     // SPEAKABLE_SELECTORS. ACCESS_MODE_TEXTUAL declares the page
     // is fully consumable as text — safe for voice readout.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable('[data-speakable="lede"]'),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -209,7 +209,7 @@ export default async function ForDetailPage(props: {
         </h1>
         <p
           className="text-lg text-muted-foreground leading-relaxed"
-          data-speakable
+          data-speakable="lede"
         >
           {e.heroSubhead}
         </p>

@@ -13,7 +13,7 @@ import {
   OrganizationJsonLd,
   PersonJsonLd,
   BreadcrumbListJsonLd,
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { ID, BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
@@ -112,7 +112,12 @@ function buildJsonLd(t: PressTopic, canonicalUrl: string): string[] {
     })),
     // Lede + quotes are explicitly voice-safe – speakable selectors below
     // resolve to the lede paragraph and each quote blockquote.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="headline"]',
+      '[data-speakable="thesis"]',
+      '[data-speakable="lede"]',
+      '[data-speakable="quote"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -213,7 +218,7 @@ export default async function PressTopicPage(props: {
         </p>
         <h1
           id="topic-headline"
-          data-speakable
+          data-speakable="headline"
           className="text-3xl sm:text-4xl font-bold leading-tight mb-4"
         >
           {t.displayName}
@@ -221,7 +226,7 @@ export default async function PressTopicPage(props: {
         <p
           id="topic-thesis"
           aria-labelledby="topic-headline"
-          data-speakable
+          data-speakable="thesis"
           className="text-lg text-muted-foreground leading-relaxed"
         >
           {t.thesis}
@@ -288,7 +293,7 @@ export default async function PressTopicPage(props: {
           Paste verbatim as the opening paragraph, or rewrite in your voice.
         </p>
         <blockquote
-          data-speakable
+          data-speakable="lede"
           aria-labelledby="lede"
           className="rounded-md border bg-muted/40 p-4 text-base leading-relaxed"
         >
@@ -314,7 +319,7 @@ export default async function PressTopicPage(props: {
           {t.quotes.map((q, i) => (
             <li key={i} className="space-y-2">
               <blockquote
-                data-speakable
+                data-speakable="quote"
                 className="rounded-md border bg-muted/40 p-4 text-base leading-relaxed"
               >
                 &ldquo;{q.text}&rdquo;

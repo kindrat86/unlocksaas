@@ -20,7 +20,7 @@ import { formatVerifiedDate } from "@/lib/seo/dates";
 import { deriveComparisonRatings } from "@/lib/seo/review-rating";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -136,7 +136,11 @@ function buildJsonLd(
     // VEO — TL;DR block wraps in `aria-labelledby="tldr"`, matched by
     // SPEAKABLE_SELECTORS. Voice modes read the head-to-head summary
     // aloud first.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="recommendation"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -144,7 +148,11 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="recommendation"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
@@ -602,7 +610,12 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
         <h2 id="honest" className="text-2xl font-bold mb-4 leading-tight">
           Honest take
         </h2>
-        <p className="text-base leading-relaxed">{c.honestTake}</p>
+        <p
+          className="text-base leading-relaxed"
+          data-speakable="recommendation"
+        >
+          {c.honestTake}
+        </p>
       </section>
       {/* Indie founder recommendation */}
       <section
@@ -617,7 +630,10 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
             <p className="text-xs uppercase tracking-widest text-primary mb-2">
               {indieRec ? `Pick ${indieRec}` : "It depends"}
             </p>
-            <p className="text-sm leading-relaxed">
+            <p
+              className="text-sm leading-relaxed"
+              data-speakable="recommendation"
+            >
               {c.forIndieFounders.reasoning}
             </p>
           </CardContent>

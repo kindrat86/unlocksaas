@@ -15,7 +15,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -91,7 +91,10 @@ function buildJsonLd(
     // converting" voice queries. ACCESS_MODE_TEXTUAL declares the
     // page is fully consumable as text — safe to read aloud
     // without missing meaning carried by images/video.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="diagnosis"]',
+      '[data-speakable="fix"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -264,9 +267,19 @@ export default async function WhyIsntMyDetailPage(props: {
                   {d.label}
                 </p>
                 <p className="text-sm font-semibold mb-2">What it looks like</p>
-                <p className="text-base leading-relaxed mb-4">{d.appearance}</p>
+                <p
+                  className="text-base leading-relaxed mb-4"
+                  data-speakable="diagnosis"
+                >
+                  {d.appearance}
+                </p>
                 <p className="text-sm font-semibold mb-2">The fix</p>
-                <p className="text-base leading-relaxed">{d.fix}</p>
+                <p
+                  className="text-base leading-relaxed"
+                  data-speakable="fix"
+                >
+                  {d.fix}
+                </p>
               </CardContent>
             </Card>
           ))}

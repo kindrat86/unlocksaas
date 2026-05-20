@@ -124,11 +124,82 @@ export const SPEAKABLE_SELECTORS: readonly string[] = Object.freeze([
  * Pre-built SpeakableSpecification subobject. Spread into any Article /
  * WebPage / HowTo schema. Frozen at module load to keep the embedded
  * reference identity-stable across renders.
+ *
+ * Default fallback. Prefer `buildSpeakable(...)` below for pSEO templates
+ * that want page-specific `[data-speakable="<token>"]` curation – it gives
+ * voice engines precise extraction handles on the page's most
+ * citation-ready prose, instead of the generic catch-all.
  */
 export const SPEAKABLE_SPEC = Object.freeze({
   "@type": "SpeakableSpecification",
   cssSelector: SPEAKABLE_SELECTORS,
 });
+
+/**
+ * Stable global speakable handles every page can rely on – the structured
+ * TL;DR `<dl data-llm-summary>` block and the TL;DR section wrapper. These
+ * are always included by `buildSpeakable()` so per-page curation never
+ * loses the canonical TL;DR anchor that LLM retrievers and voice engines
+ * have already learned to query.
+ */
+const STABLE_SPEAKABLE_HANDLES: readonly string[] = Object.freeze([
+  "[data-llm-summary]",
+  '[aria-labelledby="tldr"]',
+]);
+
+/**
+ * Build a curated SpeakableSpecification for a single page.
+ *
+ * Combines the stable global handles (the structured TL;DR + its section
+ * wrapper) with page-specific `[data-speakable="<token>"]` selectors that
+ * point at the page's most citation-ready prose blocks – the Hook/Story/
+ * Offer paragraphs on a funnel teardown, the Direct Answer on an answers
+ * page, the verdict on a comparison page, and so on.
+ *
+ * Why curate instead of using the bare `SPEAKABLE_SPEC` default
+ * ------------------------------------------------------------
+ * The default catches `[data-speakable]` (any token), `[data-llm-summary]`
+ * (the structured TL;DR), and `[aria-labelledby="tldr"]` (its wrapper).
+ * That works, but it's generic – a voice engine has no signal which of the
+ * page's many `[data-speakable]` blocks is the canonical answer to the
+ * page's intent. A curated list of named tokens
+ * (`[data-speakable="hook"]`, `[data-speakable="story"]`,
+ * `[data-speakable="offer"]`) names the page's specific speakable surface
+ * and gives the engine a one-shot extraction path to the cited prose.
+ *
+ * Brunson Hard-Rule
+ * -----------------
+ * Every selector passed in MUST resolve to a DOM block the page actually
+ * renders. The component contract is "the JSON-LD describes the rendered
+ * HTML"; a speakable selector pointing at a non-existent attribute is the
+ * same drift class as a JSON-LD field that disagrees with rendered text –
+ * both get the page demoted in voice-answer panels and AI Overviews.
+ *
+ * Deduplication: the helper de-duplicates the merged selector list so a
+ * caller that accidentally passes a stable handle (e.g.
+ * `[data-llm-summary]`) does not produce a SpeakableSpecification with
+ * repeated entries.
+ *
+ * Usage
+ * -----
+ *   const article = {
+ *     // ...
+ *     speakable: buildSpeakable(
+ *       '[data-speakable="hook"]',
+ *       '[data-speakable="story"]',
+ *       '[data-speakable="offer"]',
+ *     ),
+ *   };
+ */
+export function buildSpeakable(...extraSelectors: readonly string[]) {
+  const dedup = Array.from(
+    new Set([...STABLE_SPEAKABLE_HANDLES, ...extraSelectors]),
+  );
+  return {
+    "@type": "SpeakableSpecification",
+    cssSelector: dedup,
+  };
+}
 
 /**
  * Accessibility / access-mode signals. `accessMode` declares the sensory
