@@ -1,0 +1,61 @@
+# QuickStatements V1 submission for Unlock SaaS
+#
+# Paste this entire body into <https://quickstatements.toolforge.org/#/batch>
+# after authenticating via Wikimedia OAuth.
+#
+# Editorial discipline (Brunson Hard-Rule):
+#   - Every statement below is independently verifiable on the live site
+#     (https://unlocksaas.com) or in the canonical entity manifest
+#     (https://unlocksaas.com/.well-known/entity.jsonld).
+#   - No paid-placement claims, no audience-count claims, no aggregateRating.
+#   - aliases match `ALTERNATE_NAMES` in app/src/lib/seo/entity.ts.
+#   - inception (P571) is the strategy lock date (2026-05-17), documented in
+#     strategy/state.json and exposed as ORGANIZATION.foundingDate. If the
+#     Wikidata patroller objects to this date for lacking a public source,
+#     delete the `LAST	P571` line and resubmit – the rest of the item
+#     stands without it.
+#
+# Property reference (Wikidata):
+#   P31   = instance of            (https://www.wikidata.org/wiki/Property:P31)
+#   P856  = official website       (https://www.wikidata.org/wiki/Property:P856)
+#   P571  = inception              (https://www.wikidata.org/wiki/Property:P571)
+#   P407  = language of work       (https://www.wikidata.org/wiki/Property:P407)
+#   P1581 = official blog          (N/A – no blog ships yet)
+#   P127  = owned by               (N/A – sole proprietor, no Founder Q-ID)
+#   P112  = founded by             (N/A – no Founder Q-ID yet; add later)
+#
+# Item-type reference:
+#   Q47535984 = online service
+#   Q1860     = English language
+#   Q1321     = Spanish language
+#   Q56781    = Brazilian Portuguese
+#
+# Submission format reference:
+#   https://www.wikidata.org/wiki/Help:QuickStatements
+#
+# ─────────────────────────────────────────────────────────────────────────
+
+CREATE
+LAST	Len	"Unlock SaaS"
+LAST	Les	"Unlock SaaS"
+LAST	Lpt-br	"Unlock SaaS"
+LAST	Den	"Online service publishing a playbook for post-launch pre-revenue SaaS founders to acquire a first verified paying customer."
+LAST	Des	"Servicio en línea que publica un manual para fundadores SaaS post-lanzamiento sin ingresos para conseguir su primer cliente pagante verificado."
+LAST	Dpt-br	"Serviço online que publica um playbook para fundadores SaaS pós-lançamento sem receita conseguirem seu primeiro cliente pagante verificado."
+LAST	Aen	"UnlockSaaS"
+LAST	Aen	"Unlock-SaaS"
+LAST	Aen	"unlocksaas.com"
+LAST	P31	Q47535984
+LAST	P856	"https://unlocksaas.com"
+LAST	P571	+2026-05-17T00:00:00Z/11
+LAST	P407	Q1860
+LAST	P407	Q1321
+LAST	P407	Q56781
+
+# After QuickStatements assigns the new Q-ID, copy the resulting URL
+# (https://www.wikidata.org/wiki/Q<number>) and set it on Vercel:
+#
+#   vercel env add NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL production
+#   vercel env add NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL preview
+#
+# The next deploy picks it up via app/src/lib/seo/entity.ts → ORGANIZATION_SAME_AS.
