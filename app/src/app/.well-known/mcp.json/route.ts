@@ -163,10 +163,22 @@ const MANIFEST = {
   documentation: `${BASE}/mcp`,
 } as const;
 
-export async function GET() {
+/**
+ * Cached manifest payload. `'use cache'` requires a serializable return value,
+ * so we cache the plain MANIFEST object and let GET wrap it fresh in a
+ * NextResponse.json on every call. MANIFEST is a build-time constant, so
+ * cacheLife('max') is correct — invalidated only by the next deploy via the
+ * build-id-keyed cache.
+ */
+async function getManifest(): Promise<typeof MANIFEST> {
   "use cache";
-  cacheLife({ revalidate: 86400 });
-  return NextResponse.json(MANIFEST, {
+  cacheLife("max");
+  return MANIFEST;
+}
+
+export async function GET() {
+  const manifest = await getManifest();
+  return NextResponse.json(manifest, {
     headers: {
       // Long edge cache: manifest only changes on deploy.
       "cache-control": "public, max-age=86400, stale-while-revalidate=604800",

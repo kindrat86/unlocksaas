@@ -48,4 +48,5 @@ export function GET() {
   });
 }
 
-// Static — no per-request inputs.
+// Static — no per-request inputs. Cache Components handles static rendering
+// via the `'use cache'` directive in the payload builder above.

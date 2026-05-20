@@ -105,10 +105,22 @@ The WebSite JSON-LD on every UnlockSaaS page declares a \`potentialAction\` of t
 Maintained by Maryan (maryan@unlocksaas.com). See ${BASE_URL}/editorial-policy for sourcing standards.
 `;
 
-export async function GET() {
+/**
+ * Cached body builder. `'use cache'` requires a serializable return value, so
+ * we cache the BODY string (deterministic, derived from BASE_URL at module
+ * load) and let GET wrap it fresh in a NextResponse on every call. BODY is
+ * already a build-time constant, so cacheLife('max') is fine — the cached
+ * payload is valid until the next deploy invalidates the build-id-keyed cache.
+ */
+async function getBody(): Promise<string> {
   "use cache";
-  cacheLife({ revalidate: 86400 });
-  return new NextResponse(BODY, {
+  cacheLife("max");
+  return BODY;
+}
+
+export async function GET() {
+  const body = await getBody();
+  return new NextResponse(body, {
     status: 200,
     headers: {
       "content-type": "text/markdown; charset=utf-8",

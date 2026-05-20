@@ -41,12 +41,26 @@ import { cacheLife } from "next/cache";
  * propagates within 24h (same as the previous ISR behaviour).
  */
 
-export async function GET() {
+/**
+ * Cached validation of process.env.INDEXNOW_KEY.
+ *
+ * `'use cache'` only accepts a serializable return value, so we cache the
+ * validated string (or null on misconfiguration) and let the GET handler
+ * construct the NextResponse fresh each call. The cache key here is empty —
+ * the function takes no arguments — so the single cached value is shared
+ * across all requests inside the 24h revalidate window.
+ */
+async function getValidatedKey(): Promise<string | null> {
   "use cache";
   cacheLife({ revalidate: 86400 });
-
   const key = process.env.INDEXNOW_KEY;
-  if (!key || key.length < 8 || !/^[a-f0-9-]+$/i.test(key)) {
+  if (!key || key.length < 8 || !/^[a-f0-9-]+$/i.test(key)) return null;
+  return key;
+}
+
+export async function GET() {
+  const key = await getValidatedKey();
+  if (!key) {
     // 503 not 404: the route exists, the integration is configured but
     // not yet activated. Operator action required (see setup script).
     // Logged so the gap is visible in Vercel logs the first time an

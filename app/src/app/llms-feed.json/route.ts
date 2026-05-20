@@ -665,7 +665,8 @@ export function OPTIONS() {
   });
 }
 
-// Static – no per-request inputs.
-
-// Node.js runtime (default). Pulls module-level data from five pSEO
-// catalogs which are sized for Node, not for an Edge V8 isolate.
+// Static – no per-request inputs. Under Cache Components (Next 16+) the
+// `force-static` and `runtime = "nodejs"` route segments are incompatible
+// with `cacheComponents: true`; Node.js is the default runtime, and static
+// rendering is handled via the `'use cache'` directive inside the payload
+// builder above.
