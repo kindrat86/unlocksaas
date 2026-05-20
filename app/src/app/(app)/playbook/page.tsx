@@ -1,11 +1,27 @@
+import { Suspense } from "react";
 import Link from "next/link";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 
 
-export default async function PlaybookDashboard() {
+// Cache Components: Supabase auth + verified_conversions reads are
+// request-time inputs. Outer export is a synchronous Suspense wrapper; the
+// async body lives in PlaybookDashboardBody and starts with `await
+// connection()` to defer to request time. Fallback is null because the
+// layout shell already paints the chrome.
+export default function PlaybookDashboard() {
+  return (
+    <Suspense fallback={null}>
+      <PlaybookDashboardBody />
+    </Suspense>
+  );
+}
+
+async function PlaybookDashboardBody() {
+  await connection();
   // The layout already enforces auth + tier gating. Here we only need the
   // First Paying Customer Verified flag to decide whether to render the
   // celebration banner above the Step 1 CTA.

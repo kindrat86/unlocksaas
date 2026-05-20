@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { DiagnosticShareReferralTracker } from "@/components/analytics/diagnostic-share-referral-tracker";
@@ -48,12 +49,30 @@ export const metadata: Metadata = {
 };
 
 // Squeeze must always be live; do not cache.
-
-export default async function DiagnosticSqueezePage(
+//
+// Under Cache Components (Next 16+) request headers and the searchParams
+// promise are uncached request-time inputs. Outer default export is a
+// synchronous Suspense wrapper; the async body lives in
+// DiagnosticSqueezePageBody and starts with `await connection()` to defer
+// to request time.
+export default function DiagnosticSqueezePage(
   props: {
     searchParams?: Promise<Record<string, string | string[] | undefined>>;
   }
 ) {
+  return (
+    <Suspense fallback={null}>
+      <DiagnosticSqueezePageBody searchParams={props.searchParams} />
+    </Suspense>
+  );
+}
+
+async function DiagnosticSqueezePageBody(
+  props: {
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  }
+) {
+  await connection();
   const searchParams = await props.searchParams;
   // Eugene Schwartz awareness-to-hook mapping. Resolved server-side from
   // ?utm_source / ?source / ?h plus the Referer header. The await is

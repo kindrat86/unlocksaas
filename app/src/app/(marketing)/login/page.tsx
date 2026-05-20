@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { LoginForm } from "./login-form";
 
@@ -7,11 +9,27 @@ export const metadata = {
   description: "Sign in to your Unlock SaaS account with a one-time email link.",
 };
 
-export default async function LoginPage(
+// Cache Components: searchParams + Supabase auth read are request-time inputs.
+// Outer export is a synchronous Suspense wrapper; the async body lives in
+// LoginPageBody and starts with `await connection()` to defer to request time.
+export default function LoginPage(
   props: {
     searchParams: Promise<{ next?: string }>;
   }
 ) {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageBody searchParams={props.searchParams} />
+    </Suspense>
+  );
+}
+
+async function LoginPageBody(
+  props: {
+    searchParams: Promise<{ next?: string }>;
+  }
+) {
+  await connection();
   const searchParams = await props.searchParams;
   // If already signed in, skip the form and go where the user was headed.
   const supabase = await createClient();

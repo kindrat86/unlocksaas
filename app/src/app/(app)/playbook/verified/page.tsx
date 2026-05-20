@@ -18,9 +18,11 @@
  *  Auth: enforced by the playbook layout. Profile row guaranteed to exist
  *  via the link_profile_on_user_create trigger.
  */
+import { Suspense } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -73,7 +75,21 @@ function formatDate(iso: string): string {
   });
 }
 
-export default async function VerifiedCelebrationPage() {
+// Cache Components: every read below (Supabase auth, profile, verified
+// conversions) is a request-time input. Outer export is a synchronous
+// Suspense wrapper; the async body lives in VerifiedCelebrationPageBody
+// and starts with `await connection()` to defer to request time. Fallback
+// is null because the playbook layout already paints the chrome.
+export default function VerifiedCelebrationPage() {
+  return (
+    <Suspense fallback={null}>
+      <VerifiedCelebrationPageBody />
+    </Suspense>
+  );
+}
+
+async function VerifiedCelebrationPageBody() {
+  await connection();
   const sb = await createClient();
   const { data: userData } = await sb.auth.getUser();
   if (!userData?.user) redirect("/login?next=/playbook/verified");
