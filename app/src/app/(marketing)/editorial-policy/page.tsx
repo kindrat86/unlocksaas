@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import {
+  BreadcrumbListJsonLd,
+  EditorialPolicyArticleJsonLd,
+} from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import {
+  CORRECTIONS,
+  CORRECTIONS_LOG_SINCE,
+} from "@/lib/seo/corrections-log";
 
 /**
  * Editorial policy + disclosures + corrections page.
@@ -74,6 +81,13 @@ export default function EditorialPolicyPage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <BreadcrumbListJsonLd trail={TRAIL} />
+      {/* Article + correctionsPolicy + correction (when CORRECTIONS
+          is populated). Hoisted at module load; per-render cost is
+          zero. The corrections ItemList is omitted entirely while
+          the registry is empty – the honest empty-state policy is
+          encoded both in the rendered prose below and in the
+          structured-data schema. */}
+      <EditorialPolicyArticleJsonLd />
 
       <article className="max-w-2xl mx-auto">
         <nav
@@ -273,22 +287,86 @@ export default function EditorialPolicyPage() {
 
         <Separator className="my-10" />
 
-        {/* 6 — Corrections log */}
+        {/* 6 — Corrections log
+            Reads from the CORRECTIONS registry in lib/seo/corrections-log.ts.
+            Empty by default; the honest empty-state copy renders below until
+            a real correction lands. When the registry is populated, the same
+            data feeds both this rendered surface AND the schema.org/Article
+            correction ItemList emitted by EditorialPolicyArticleJsonLd above. */}
         <section className="mb-12" aria-labelledby="corrections-log">
           <h2 id="corrections-log" className="text-xl font-bold mb-4">
             6. Corrections log
           </h2>
           <p className="text-base text-muted-foreground leading-relaxed mb-4">
             Reverse-chronological. Every confirmed correction since the
-            site launched. Empty does not mean nothing has ever been
-            wrong; it means nothing has been reported and confirmed yet.
+            editorial policy was published on{" "}
+            <time dateTime={CORRECTIONS_LOG_SINCE}>
+              {CORRECTIONS_LOG_SINCE}
+            </time>
+            . Empty does not mean nothing has ever been wrong; it means
+            nothing has been reported and confirmed yet.
           </p>
-          <div className="border border-border rounded-md p-6 bg-muted/30">
-            <p className="text-sm text-muted-foreground italic">
-              No corrections logged yet. If you find a wrong claim, the
-              workflow above is how it lands here.
-            </p>
-          </div>
+          {CORRECTIONS.length === 0 ? (
+            <div className="border border-border rounded-md p-6 bg-muted/30">
+              <p className="text-sm text-muted-foreground italic">
+                No corrections confirmed since{" "}
+                <time dateTime={CORRECTIONS_LOG_SINCE}>
+                  {CORRECTIONS_LOG_SINCE}
+                </time>
+                . If you find a wrong claim, the workflow above is how it
+                lands here.
+              </p>
+            </div>
+          ) : (
+            <ol className="space-y-4 list-none pl-0">
+              {CORRECTIONS.map((c) => (
+                <li
+                  key={`${c.correctedAt}-${c.pageUrl}-${c.title}`}
+                  className="border border-border rounded-md p-5 bg-muted/30"
+                >
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+                    <time
+                      dateTime={c.correctedAt}
+                      className="text-xs uppercase tracking-widest text-muted-foreground"
+                    >
+                      {c.correctedAt}
+                    </time>
+                    <h3 className="text-base font-semibold">{c.title}</h3>
+                  </div>
+                  <p className="text-sm leading-relaxed mb-2">
+                    <span className="text-muted-foreground">Originally:</span>{" "}
+                    {c.originalClaim}
+                  </p>
+                  <p className="text-sm leading-relaxed mb-3">
+                    <span className="text-muted-foreground">Corrected:</span>{" "}
+                    {c.corrected}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    On{" "}
+                    <a
+                      href={c.pageUrl}
+                      className="underline underline-offset-4 hover:text-foreground"
+                    >
+                      {c.pageUrl.replace(/^https:\/\//, "")}
+                    </a>
+                    {c.sourceUrl ? (
+                      <>
+                        {" "}
+                        · Source:{" "}
+                        <a
+                          href={c.sourceUrl}
+                          className="underline underline-offset-4 hover:text-foreground"
+                          rel="noopener"
+                        >
+                          {c.sourceUrl.replace(/^https?:\/\//, "")}
+                        </a>
+                      </>
+                    ) : null}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          )}
         </section>
 
         <Separator className="my-10" />
