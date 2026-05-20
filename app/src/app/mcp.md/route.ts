@@ -88,6 +88,8 @@ npx @modelcontextprotocol/inspector ${MCP_URL}
 - \`list_categories\` — slug + display name + one-line summary for every category roundup.
 - \`get_category\` — category roundup with intent paragraph plus every funnel teardown, pricing teardown, and comparison in that category.
 - \`get_playbook_step\` — one of the seven Playbook steps by number (1-7).
+- \`list_glossary_terms\` – slug + term name for every Brunson concept UnlockSaaS teaches (Hook, Story, Offer, Value Ladder, Stack Slide, Dream 100, Reluctant Hero, Brunson Hard-Rule, Big Domino, etc.).
+- \`get_glossary_term\` – working definition of one Brunson term in the founder's own words, by slug.
 - \`get_faq\` — search or list UnlockSaaS FAQ entries (objection answers, guarantee mechanics).
 
 ## What it will not do
