@@ -54,6 +54,19 @@ export function SignatureFooter() {
             >
               Press
             </Link>
+            {/*
+              Marco's Diary — the faceless YouTube channel (channel #5,
+              additive to the locked launch-minimum-four). Grouped with the
+              other founder-authored content surfaces (Press = mentions of
+              him; this = his own series) rather than the legal column.
+              See strategy/youtube-faceless-channel.md.
+            */}
+            <Link
+              href="/youtube"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Marco&apos;s Diary on YouTube
+            </Link>
             <Link
               href="/faq"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
