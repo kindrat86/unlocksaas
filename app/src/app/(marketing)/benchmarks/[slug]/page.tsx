@@ -21,6 +21,10 @@ import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
 import { CitationBlock } from "@/components/seo/citation-block";
 import { getCitationForBenchmark } from "@/lib/citations";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import {
+  buildSpeakable,
+  ACCESS_MODE_TEXTUAL,
+} from "@/components/seo/json-ld";
 
 
 export function generateStaticParams() {
@@ -71,10 +75,23 @@ function buildJsonLd(
   // with one accepted answer; FAQPage stays in place for the
   // secondary founder questions further down the page.
   const primaryQuestion = `What's a good ${e.metric}?`;
+
+  // SpeakableSpecification curated per-page so voice engines (Google
+  // Assistant, ChatGPT Voice, Perplexity voice) extract exactly the
+  // AEO answer and FAQ Q/A pairs, not nav or citation chrome. Stable
+  // [data-llm-summary] handle is auto-included by buildSpeakable.
+  const speakable = buildSpeakable(
+    '[data-speakable="aeo-answer"]',
+    '[data-speakable="faq-q"]',
+    '[data-speakable="faq-a"]',
+  );
+
   const qaPage = {
     "@context": "https://schema.org",
     "@type": "QAPage",
     inLanguage: "en-US",
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: {
       "@type": "Question",
       name: primaryQuestion,
@@ -110,6 +127,8 @@ function buildJsonLd(
       "indie SaaS",
     ].join(", "),
     inLanguage: "en-US",
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
     // `citation` points at the stable /cite/benchmark-<slug> permalink
     // so the bidirectional citation graph (article→permalink, permalink
     // →article) is machine-discoverable for any retriever walking the
@@ -126,6 +145,8 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -259,12 +280,14 @@ export default async function BenchmarkDetailPage(props: {
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Direct answer
             </p>
-            <DateStampedAnswer
-              lastVerified={e.lastVerified}
-              variant="benchmark"
-            >
-              {e.aeoAnswer}
-            </DateStampedAnswer>
+            <div data-speakable="aeo-answer">
+              <DateStampedAnswer
+                lastVerified={e.lastVerified}
+                variant="benchmark"
+              >
+                {e.aeoAnswer}
+              </DateStampedAnswer>
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -360,8 +383,16 @@ export default async function BenchmarkDetailPage(props: {
         <div className="space-y-4">
           {e.faqs.map((f) => (
             <div key={f.q}>
-              <p className="text-base font-semibold mb-2 aeo-q">{f.q}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed aeo-a">
+              <p
+                className="text-base font-semibold mb-2 aeo-q"
+                data-speakable="faq-q"
+              >
+                {f.q}
+              </p>
+              <p
+                className="text-sm text-muted-foreground leading-relaxed aeo-a"
+                data-speakable="faq-a"
+              >
                 {f.a}
               </p>
             </div>

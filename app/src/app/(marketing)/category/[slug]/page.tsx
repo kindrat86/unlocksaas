@@ -13,7 +13,7 @@ import {
   type CategoryDef,
 } from "@/lib/categories";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { ID } from "@/lib/seo/entity";
@@ -117,7 +117,7 @@ function buildJsonLd(
     // ACCESS_MODE_TEXTUAL declares the roundup is fully consumable
     // as text (the product/comparison lists are text-link rows, no
     // images carry meaning).
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable('[data-speakable="overview"]'),
     ...ACCESS_MODE_TEXTUAL,
     // @id cross-references resolve to the canonical Organization /
     // WebSite nodes rendered by OrganizationJsonLd in the root layout.
@@ -297,7 +297,7 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
             <p className="text-xs uppercase tracking-widest text-primary mb-3">
               Category overview
             </p>
-            <p className="text-base leading-relaxed" data-speakable>
+            <p className="text-base leading-relaxed" data-speakable="overview">
               {cat.intent}
             </p>
           </CardContent>

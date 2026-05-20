@@ -22,7 +22,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -145,7 +145,11 @@ function buildJsonLd(
     // VEO — Quick-take section on this page wraps in
     // `aria-labelledby="quick-take"`, matched by SPEAKABLE_SELECTORS.
     // Voice modes read the comparison summary first.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="verdict"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -153,7 +157,11 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="verdict"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
@@ -561,7 +569,12 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
         <h2 id="verdict" className="text-2xl font-bold mb-4 leading-tight">
           Honest verdict
         </h2>
-        <p className="text-base leading-relaxed">{alt.honestVerdict}</p>
+        <p
+          className="text-base leading-relaxed"
+          data-speakable="verdict"
+        >
+          {alt.honestVerdict}
+        </p>
       </section>
       {/* ----- People Also Ask — canonical PAA phrasings sourced from
           this alternative's whatItIs / honestVerdict / whoForIt / pricing. */}

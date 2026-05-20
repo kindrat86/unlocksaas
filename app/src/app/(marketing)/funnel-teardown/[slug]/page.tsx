@@ -20,7 +20,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -151,7 +151,13 @@ function buildJsonLd(
     // VEO — TL;DR section wraps in `aria-labelledby="tldr"`, matched by
     // SPEAKABLE_SELECTORS. Voice assistants and LLM voice modes (ChatGPT
     // Voice, Perplexity voice) read the teardown summary aloud first.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="hook"]',
+      '[data-speakable="story"]',
+      '[data-speakable="offer"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -159,7 +165,13 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="hook"]',
+      '[data-speakable="story"]',
+      '[data-speakable="offer"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
@@ -433,8 +445,16 @@ export default async function FunnelTeardownPage(
               <p className="text-xs uppercase tracking-widest text-primary mb-2">
                 Hook · how they catch attention
               </p>
-              <p className="text-base font-semibold mb-3">{t.hook.pattern}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p
+                className="text-base font-semibold mb-3"
+                data-speakable="hook"
+              >
+                {t.hook.pattern}
+              </p>
+              <p
+                className="text-sm text-muted-foreground leading-relaxed"
+                data-speakable="hook"
+              >
                 {t.hook.analysis}
               </p>
             </CardContent>
@@ -444,8 +464,16 @@ export default async function FunnelTeardownPage(
               <p className="text-xs uppercase tracking-widest text-primary mb-2">
                 Story · how they create belief
               </p>
-              <p className="text-base font-semibold mb-3">{t.story.pattern}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p
+                className="text-base font-semibold mb-3"
+                data-speakable="story"
+              >
+                {t.story.pattern}
+              </p>
+              <p
+                className="text-sm text-muted-foreground leading-relaxed"
+                data-speakable="story"
+              >
                 {t.story.analysis}
               </p>
             </CardContent>
@@ -455,8 +483,16 @@ export default async function FunnelTeardownPage(
               <p className="text-xs uppercase tracking-widest text-primary mb-2">
                 Offer · how they close
               </p>
-              <p className="text-base font-semibold mb-3">{t.offer.pattern}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p
+                className="text-base font-semibold mb-3"
+                data-speakable="offer"
+              >
+                {t.offer.pattern}
+              </p>
+              <p
+                className="text-sm text-muted-foreground leading-relaxed"
+                data-speakable="offer"
+              >
                 {t.offer.analysis}
               </p>
             </CardContent>
@@ -585,7 +621,7 @@ export default async function FunnelTeardownPage(
               className="group border border-border rounded-lg px-4 py-3"
             >
               <summary className="cursor-pointer font-semibold leading-snug list-none flex items-start justify-between gap-3">
-                <span>{f.q}</span>
+                <span data-speakable="faq-q">{f.q}</span>
                 <span
                   aria-hidden="true"
                   className="text-muted-foreground shrink-0 group-open:rotate-180 transition-transform"
@@ -593,7 +629,10 @@ export default async function FunnelTeardownPage(
                   ▾
                 </span>
               </summary>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+              <p
+                className="mt-3 text-sm text-muted-foreground leading-relaxed"
+                data-speakable="faq-a"
+              >
                 {f.a}
               </p>
             </details>

@@ -20,7 +20,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -145,7 +145,13 @@ function buildJsonLd(
     // VEO — TL;DR block wraps in `aria-labelledby="tldr"`, matched by
     // SPEAKABLE_SELECTORS. Voice modes read the pricing-teardown summary
     // aloud first.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="pricing-model"]',
+      '[data-speakable="anchor"]',
+      '[data-speakable="upgrade-trigger"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -153,7 +159,13 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "FAQPage",
     inLanguage: "en-US",
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable(
+      '[data-speakable="pricing-model"]',
+      '[data-speakable="anchor"]',
+      '[data-speakable="upgrade-trigger"]',
+      '[data-speakable="faq-q"]',
+      '[data-speakable="faq-a"]',
+    ),
     ...ACCESS_MODE_TEXTUAL,
     mainEntity: faqsForSchema.map((f) => ({
       "@type": "Question",
@@ -431,7 +443,10 @@ export default async function PricingTeardownPage(
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">
                 Model
               </p>
-              <p className="text-sm font-semibold">
+              <p
+                className="text-sm font-semibold"
+                data-speakable="pricing-model"
+              >
                 {t.pricingStructure.model}
               </p>
             </div>
@@ -488,10 +503,16 @@ export default async function PricingTeardownPage(
         </h2>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-base font-semibold mb-3">
+            <p
+              className="text-base font-semibold mb-3"
+              data-speakable="anchor"
+            >
               {t.anchorAnalysis.pattern}
             </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p
+              className="text-sm text-muted-foreground leading-relaxed"
+              data-speakable="anchor"
+            >
               {t.anchorAnalysis.analysis}
             </p>
           </CardContent>
@@ -507,10 +528,16 @@ export default async function PricingTeardownPage(
         </h2>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-base font-semibold mb-3">
+            <p
+              className="text-base font-semibold mb-3"
+              data-speakable="upgrade-trigger"
+            >
               {t.upgradeTrigger.pattern}
             </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p
+              className="text-sm text-muted-foreground leading-relaxed"
+              data-speakable="upgrade-trigger"
+            >
               {t.upgradeTrigger.analysis}
             </p>
           </CardContent>
@@ -643,7 +670,7 @@ export default async function PricingTeardownPage(
               className="group border border-border rounded-lg px-4 py-3"
             >
               <summary className="cursor-pointer font-semibold leading-snug list-none flex items-start justify-between gap-3">
-                <span>{f.q}</span>
+                <span data-speakable="faq-q">{f.q}</span>
                 <span
                   aria-hidden="true"
                   className="text-muted-foreground shrink-0 group-open:rotate-180 transition-transform"
@@ -651,7 +678,10 @@ export default async function PricingTeardownPage(
                   ▾
                 </span>
               </summary>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+              <p
+                className="mt-3 text-sm text-muted-foreground leading-relaxed"
+                data-speakable="faq-a"
+              >
                 {f.a}
               </p>
             </details>

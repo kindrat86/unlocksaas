@@ -15,7 +15,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
-  SPEAKABLE_SPEC,
+  buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
@@ -108,7 +108,7 @@ function buildJsonLd(
     // does NOT carry Speakable: stepwise instructions are read in
     // the dedicated /diagnostic and onboarding voice surfaces, not
     // as a single read-aloud block on the marketing page.
-    speakable: SPEAKABLE_SPEC,
+    speakable: buildSpeakable('[data-speakable="tldr-prose"]'),
     ...ACCESS_MODE_TEXTUAL,
   };
 
@@ -226,7 +226,7 @@ export default async function FunnelPlaybookDetailPage(props: {
         </h1>
         <p
           className="text-lg text-muted-foreground leading-relaxed"
-          data-speakable
+          data-speakable="tldr-prose"
         >
           {e.tldr}
         </p>
