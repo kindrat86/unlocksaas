@@ -51,6 +51,12 @@ import {
   type PodcastEpisode,
 } from "@/lib/seo/podcast";
 import {
+  FOUNDER_ALUMNI_OF,
+  FOUNDER_AWARDS,
+  FOUNDER_KNOWS_ABOUT,
+  FOUNDER_SAME_AS,
+} from "@/lib/seo/founder";
+import {
   buildPlaybookAggregateRating,
   type PlaybookAggregateRatingNode,
 } from "@/lib/seo/review-rating";
@@ -862,76 +868,27 @@ const PLAYBOOK_COURSE_JSON = JSON.stringify({
 // Organization above via the shared founder reference. ProfilePage on `/` is
 // the canonical place to render this; the empty sameAs[] is the same
 // honest-state pattern as Organization — fills as the founder publishes.
-const PERSON_JSON = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": ID.person,
-  name: "Maryan",
-  url: `${BASE}/about`,
-  mainEntityOfPage: {
-    "@type": "ProfilePage",
-    "@id": `${BASE}/about`,
-  },
-  email: "maryan@unlocksaas.com",
-  jobTitle: "Founder",
-  // Author-language signal for E-E-A-T attribution on /stories and any
-  // future bylined content. Mirrors Organization.inLanguage.
-  knowsLanguage: ["en-US"],
-  description:
-    "Marketer and non-engineer. Built a dozen AI products with Lovable and Claude, watched them flatline in Stripe, then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
-  knowsAbout: [
-    "Customer development",
-    "Sales funnel design",
-    "Indie SaaS go-to-market",
-    "Russell Brunson DotCom Secrets framework",
-    "AI-assisted product development",
-  ],
-  worksFor: {
-    "@type": "Organization",
-    name: "Unlock SaaS",
-    url: BASE,
-  },
-  // hasOccupation — schema.org's machine-readable Occupation node lets
-  // Google Knowledge Graph and LLM citation pipelines disambiguate
-  // "Maryan, founder of Unlock SaaS" from any other Maryan with a public
-  // surface. occupationLocation = Worldwide matches Organization.areaServed
-  // for internal consistency. skills mirror knowsAbout (re-listed here so
-  // Occupation reads as a self-contained node when retrievers parse it in
-  // isolation from the parent Person).
-  //
-  // Brunson Hard-Rule: every entry below is on the operator's documented
-  // origin story (workbook 01 §6 Beat 1, founder VSL script). No invented
-  // titles, no fabricated certifications.
-  hasOccupation: {
-    "@type": "Occupation",
-    name: "Indie SaaS founder",
-    description:
-      "Solo non-engineer founder building Unlock SaaS with Claude Code. Builds the playbook he uses for his own launch.",
-    occupationLocation: {
-      "@type": "Place",
-      name: "Worldwide",
-    },
-    skills: [
-      "Customer development",
-      "Sales funnel design",
-      "Indie SaaS go-to-market",
-      "Russell Brunson DotCom Secrets framework",
-      "AI-assisted product development",
-    ].join(", "),
-  },
-  // subjectOf — declares the bylined editorial work Maryan is the named
-  // subject/author of. Anchors the Person entity to the longform content
-  // graph so retrievers can answer "what has Maryan written" with the
-  // canonical surfaces, not a list of random page mentions.
-  //
-  // Only includes content where Maryan is the explicit, on-page byline:
-  //   - /stories: Article, bylined "Maryan", datePublished locked in
-  //     /stories/page.tsx (PARABLES_PUBLISHED_AT).
-  //   - /about: ProfilePage where Maryan is the page's mainEntity.
-  //
-  // Page-level Article schema on /stories already cross-references this
-  // Person via author."@id", so the link is bidirectional.
-  subjectOf: [
+//
+// 2026-05-20 enrichment (GEO uplift): knowsAbout sourced from DEFINED_TERMS +
+// KNOWS_ABOUT via FOUNDER_KNOWS_ABOUT; subjectOf composes the existing
+// bylined-work entries with any earned MEDIA_MENTIONS; alumniOf, award, and
+// sameAs are env-gated via src/lib/seo/founder.ts and omitted entirely when
+// the operator has not provisioned source-of-truth values. No fabricated
+// claims ship in a fresh checkout.
+
+/**
+ * Build the Person.subjectOf array: the two always-present bylined
+ * surfaces first, then any earned media mentions where Maryan is the
+ * named subject. Earned mentions auto-populate as MEDIA_MENTIONS fills –
+ * the integrity gate in src/lib/media-mentions.ts prevents fabricated
+ * rows from shipping.
+ *
+ * Order: bylined work first (the canonical surfaces retrievers should
+ * resolve to first), then mentions. Mirrors the Organization buildSubjectOf
+ * composition order.
+ */
+function buildPersonSubjectOf(mentions: readonly MediaMention[]) {
+  const bylinedWork = [
     {
       "@type": "Article",
       "@id": `${BASE}/stories`,
@@ -943,9 +900,125 @@ const PERSON_JSON = JSON.stringify({
       "@id": `${BASE}/about`,
       url: `${BASE}/about`,
     },
-  ],
-  sameAs: SAME_AS,
-});
+  ] as const;
+  const mentionEntries = mentions.map((m) => ({
+    "@type": "Article",
+    url: m.url,
+    name: m.context ?? `Maryan mention in ${m.publication}`,
+    datePublished: m.publishedAt,
+    publisher: {
+      "@type": "Organization",
+      name: m.publication,
+    },
+    about: { "@id": ID.person },
+  }));
+  return [...bylinedWork, ...mentionEntries];
+}
+
+/**
+ * Compose the full Person object then JSON.stringify once at module load.
+ * Env-gated keys (alumniOf, award, sameAs) are omitted entirely when the
+ * source array is empty – a `[]` or `undefined` on these keys is a
+ * fabrication tell to KG validators, so we strip them at build time.
+ *
+ * The hoisted-static pattern is preserved: the build runs once at module
+ * load, the resulting JSON string is shared across every render, and no
+ * per-request allocation happens.
+ */
+function buildPersonJson(): string {
+  const base = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": ID.person,
+    name: "Maryan",
+    url: `${BASE}/about`,
+    mainEntityOfPage: {
+      "@type": "ProfilePage",
+      "@id": `${BASE}/about`,
+    },
+    email: "maryan@unlocksaas.com",
+    jobTitle: "Founder",
+    // Author-language signal for E-E-A-T attribution on /stories and any
+    // future bylined content. Mirrors Organization.inLanguage.
+    knowsLanguage: ["en-US"],
+    description:
+      "Marketer and non-engineer. Built a dozen AI products with Lovable and Claude, watched them flatline in Stripe, then built the Playbook to fix the work nobody taught indie SaaS founders to do.",
+    // knowsAbout composes DEFINED_TERMS (the Brunson glossary the site
+    // teaches at /glossary) + the broader KNOWS_ABOUT topical-authority
+    // list + the five baseline founder skills. See FOUNDER_KNOWS_ABOUT
+    // in src/lib/seo/founder.ts for the composition logic. Every entry
+    // is verifiable: the product teaches each term on a shipped page,
+    // and the founder is the one teaching it.
+    knowsAbout: FOUNDER_KNOWS_ABOUT,
+    worksFor: {
+      "@type": "Organization",
+      name: "Unlock SaaS",
+      url: BASE,
+    },
+    // hasOccupation – schema.org's machine-readable Occupation node lets
+    // Google Knowledge Graph and LLM citation pipelines disambiguate
+    // "Maryan, founder of Unlock SaaS" from any other Maryan with a public
+    // surface. occupationLocation = Worldwide matches Organization.areaServed
+    // for internal consistency.
+    //
+    // Brunson Hard-Rule: every entry below is on the operator's documented
+    // origin story (workbook 01 §6 Beat 1, founder VSL script). No invented
+    // titles, no fabricated certifications.
+    hasOccupation: {
+      "@type": "Occupation",
+      name: "Indie SaaS founder",
+      description:
+        "Solo non-engineer founder building Unlock SaaS with Claude Code. Builds the playbook he uses for his own launch.",
+      occupationLocation: {
+        "@type": "Place",
+        name: "Worldwide",
+      },
+      // Skills mirror the founder baseline (the five core domains) so the
+      // Occupation node reads as a self-contained signal when retrievers
+      // parse it in isolation. The full glossary lives on knowsAbout above.
+      skills: [
+        "Customer development",
+        "Sales funnel design",
+        "Indie SaaS go-to-market",
+        "Russell Brunson DotCom Secrets framework",
+        "AI-assisted product development",
+      ].join(", "),
+    },
+    // subjectOf – declares the bylined editorial work + the earned-media
+    // articles where Maryan is the named subject. Anchors the Person
+    // entity to the longform content graph so retrievers can answer
+    // "what has Maryan written" or "where has Maryan been mentioned"
+    // with the canonical surfaces.
+    //
+    // Always emits the two bylined-work entries (/stories, /about).
+    // Earned mentions layer on top via buildPersonSubjectOf and auto-
+    // populate as MEDIA_MENTIONS fills. The build-time integrity gate
+    // in src/lib/media-mentions.ts prevents fabricated rows from
+    // reaching this composition.
+    subjectOf: buildPersonSubjectOf(getEarnedMentions()),
+  } as const;
+  // Env-gated keys, composed conditionally so an unset env var omits the
+  // key entirely from the serialized JSON. JSON.stringify drops undefined
+  // values, so the conditional spreads below are the cleanest way to ship
+  // "nothing claimed" for an unset operator slot. See src/lib/seo/founder.ts
+  // for the env var contract – the helper module returns frozen empty
+  // arrays for unset values, never undefined / null.
+  const sameAs =
+    FOUNDER_SAME_AS.length > 0 ? { sameAs: FOUNDER_SAME_AS } : {};
+  const alumniOf =
+    FOUNDER_ALUMNI_OF.length > 0
+      ? {
+          alumniOf: FOUNDER_ALUMNI_OF.map((name) => ({
+            "@type": "EducationalOrganization",
+            name,
+          })),
+        }
+      : {};
+  const award = FOUNDER_AWARDS.length > 0 ? { award: FOUNDER_AWARDS } : {};
+  return JSON.stringify({ ...base, ...sameAs, ...alumniOf, ...award });
+}
+
+const PERSON_JSON = buildPersonJson();
 
 // --- Dynamic-input schema builders ------------------------------------------
 // These accept caller-supplied data and serialize per render. Per-render cost
