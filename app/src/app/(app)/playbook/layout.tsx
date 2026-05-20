@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getProfileByUserId } from "@/lib/onboarding";
 import { Badge } from "@/components/ui/badge";
@@ -25,11 +27,32 @@ const steps = [
   { id: 7, name: "Convert & Verify", icon: CheckCircle2, milestone: "First Paying Customer Verified" },
 ];
 
-export default async function PlaybookLayout({
+/**
+ * Top-level layout component. Under Cache Components (Next 16+) this MUST
+ * be synchronous and free of top-level dynamic-data reads; all of
+ * `cookies()` / Supabase auth / profile reads happen inside the
+ * Suspense-wrapped <PlaybookShell> below. The Suspense fallback is `null`
+ * because the shell is mostly the sidebar — a flash of empty space is
+ * preferable to a skeleton that doesn't match the final layout.
+ */
+export default function PlaybookLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  return (
+    <Suspense fallback={null}>
+      <PlaybookShell>{children}</PlaybookShell>
+    </Suspense>
+  );
+}
+
+async function PlaybookShell({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  await connection();
   // Auth gate — anonymous traffic gets sent to /login with the original
   // path preserved so we can deep-link back after sign-in.
   const supabase = await createClient();

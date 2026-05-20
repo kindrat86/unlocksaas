@@ -34,7 +34,9 @@
  */
 
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
+import { connection } from "next/server";
 import {
   BreadcrumbListJsonLd,
   OrganizationJsonLd,
@@ -87,7 +89,22 @@ const BREADCRUMB_TRAIL = [
   { name: "Search", url: "https://unlocksaas.com/search" },
 ] as const;
 
-export default async function SearchPage(props: SearchPageProps) {
+/**
+ * Under Cache Components (Next 16+) any route that reads `searchParams` must
+ * place that read inside a `<Suspense>` boundary so the static shell can
+ * prerender while the dynamic results stream in. The outer default export is
+ * a synchronous Suspense wrapper; the original async body moves into a child.
+ */
+export default function SearchPage(props: SearchPageProps) {
+  return (
+    <Suspense fallback={null}>
+      <SearchPageBody searchParams={props.searchParams} />
+    </Suspense>
+  );
+}
+
+async function SearchPageBody(props: SearchPageProps) {
+  await connection();
   const searchParams = await props.searchParams;
   const query = readQuery(searchParams);
   const results = query ? searchIndex(query) : [];

@@ -51,9 +51,11 @@
  *   stable badge SVG and oembed.json endpoints on unlocksaas.com. Every
  *   snippet survives any host stylesheet because styles are inline.
  */
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
@@ -68,9 +70,25 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/**
+ * Cached badge lookup tagged by slug.
+ *
+ * Service-role Supabase reads (no cookies/headers) are safe inside `'use cache'`.
+ * Tag `builder:${slug}` lets the verified-conversion webhook target an exact
+ * builder page for invalidation: `revalidateTag('builder:tally', 'max')`.
+ * Without the tag a builder edit would have to wait for the 1-hour
+ * cacheLife window or trigger a full deploy.
+ */
+async function getBadge(slug: string) {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag(`builder:${slug}`);
+  return loadPublicBadge(createAdminClient(), slug);
+}
+
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
-  const badge = await loadPublicBadge(createAdminClient(), params.slug);
+  const badge = await getBadge(params.slug);
   if (!badge) {
     return {
       title: "Verified Builder embed",
@@ -89,9 +107,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   };
 }
 
-export default async function EmbedPage(props: Props) {
-  const params = await props.params;
-  const badge = await loadPublicBadge(createAdminClient(), params.slug);
+export default function EmbedPage(props: Props) {
+  return (
+    <Suspense fallback={null}>
+      <EmbedPageBody params={props.params} />
+    </Suspense>
+  );
+}
+
+async function EmbedPageBody({ params: paramsP }: { params: Props["params"] }) {
+  const params = await paramsP;
+  const badge = await getBadge(params.slug);
   if (!badge) notFound();
 
   const badgeUrl = absoluteBadgeUrl(badge.slug);
