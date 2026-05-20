@@ -5,6 +5,8 @@ import {
   BreadcrumbListJsonLd,
   PublicDatasetJsonLd,
 } from "@/components/seo/json-ld";
+import { CitationBlock } from "@/components/seo/citation-block";
+import { getCitationForDataset } from "@/lib/citations";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import {
   BASE_URL,
@@ -17,7 +19,6 @@ import {
 import {
   DATASET_ALTERNATE_NAMES,
   DATASET_ATTRIBUTION,
-  DATASET_BIBTEX,
   DATASET_BUNDLE,
   DATASET_CITATION,
   DATASET_CSV_COLUMNS,
@@ -367,17 +368,21 @@ export default function DatasetPage() {
           </pre>
         </section>
 
-        <section className="mb-10 space-y-4 leading-relaxed">
-          <h2 className="text-2xl font-bold">Citation</h2>
-          <p className="text-sm text-muted-foreground">Plain text:</p>
-          <pre className="bg-muted/40 border border-border rounded-lg p-4 text-xs overflow-x-auto whitespace-pre-wrap">
-            {DATASET_CITATION}
-          </pre>
-          <p className="text-sm text-muted-foreground">BibTeX:</p>
-          <pre className="bg-muted/40 border border-border rounded-lg p-4 text-xs overflow-x-auto">
-            {DATASET_BIBTEX}
-          </pre>
-        </section>
+        {/*
+          Citation – formal citation strings for academic / agent
+          re-use. Replaces the previous hand-rolled plain-text +
+          BibTeX duo with the shared CitationBlock (APA / MLA /
+          Chicago / BibTeX / RIS / CSL-JSON) plus a link to the
+          stable /cite/dataset-<slug>-v<version> permalink. The
+          per-format download URLs (e.g. /cite/<id>/bibtex) are
+          discoverable by reference managers without requiring the
+          citer to copy text manually.
+        */}
+        <CitationBlock
+          citation={getCitationForDataset()}
+          headingLevel="h2"
+        />
+        <Separator className="my-8" />
 
         <Separator className="my-8" />
 

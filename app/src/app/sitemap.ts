@@ -12,6 +12,7 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
+import { allCitationIds } from "@/lib/citations";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -792,6 +793,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.4,
     },
+    // -------------------------------------------------------------------------
+    // Citation permalinks (Surface B – GEO/AEO/AIO uplift).
+    //
+    // /cite/[id] is a stable indirection layer: every formatted citation
+    // string (APA, MLA, Chicago, BibTeX, RIS, CSL-JSON) points at the
+    // permalink rather than the live canonical URL. The permalink page
+    // itself is noindexed (link-equity flows to the live canonical) but
+    // is intentionally included in the sitemap so AI crawlers discover
+    // the citation surface without depending on inline links. Format-
+    // specific export URLs (e.g. /cite/<id>/bibtex) are NOT enumerated
+    // here – Google Sitemap protocol treats per-URL siblings as
+    // alternates, and the format URLs are sub-canonical variants
+    // accessed via the permalink's CitationBlock.
+    //
+    // Priority 0.3 — below the canonical artifact (0.5–0.7) and the
+    // dataset distributions (0.45–0.7), above llms.txt. They are not
+    // ranking surfaces; they are discoverability anchors for retrievers.
+    // -------------------------------------------------------------------------
+    ...allCitationIds().map((id) => ({
+      url: `${base}/cite/${id}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    })),
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers

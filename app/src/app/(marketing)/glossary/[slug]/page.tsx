@@ -24,6 +24,8 @@ import {
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
 import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
+import { CitationBlock } from "@/components/seo/citation-block";
+import { getCitationForGlossary } from "@/lib/citations";
 
 /**
  * Programmatic SEO surface – Glossary term: {term}.
@@ -141,6 +143,16 @@ function buildJsonLd(
     inLanguage: "en-US",
     speakable: SPEAKABLE_SPEC,
     ...ACCESS_MODE_TEXTUAL,
+    // `citation` field points at the stable /cite/[id] permalink.
+    // The permalink view itself emits a WebPage schema with
+    // mainEntity back to this canonical URL, completing the
+    // bidirectional citation graph LLM training corpora index.
+    citation: {
+      "@type": "CreativeWork",
+      "@id": `${BASE}/cite/glossary-${g.slug}`,
+      url: `${BASE}/cite/glossary-${g.slug}`,
+      name: `Stable citation permalink for ${g.term}`,
+    },
   };
 
   const faqPage = {
@@ -241,6 +253,12 @@ export default async function GlossaryDetailPage(props: {
     .filter((r): r is NonNullable<ReturnType<typeof resolveRelated>> =>
       Boolean(r),
     );
+
+  // Resolve the citation record for this glossary entry. Materialised
+  // once at module load (citations.ts REGISTRY), this is an O(1) map
+  // lookup. Returns undefined only if the citation library is missing
+  // a row – CitationBlock no-ops gracefully in that case.
+  const citation = getCitationForGlossary(g.slug);
 
   return (
     <article className="min-h-screen">
@@ -489,6 +507,11 @@ export default async function GlossaryDetailPage(props: {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Citation – formal citation strings for academic / agent re-use. */}
+      <section className="max-w-3xl mx-auto px-6 py-10 border-t border-border/40">
+        <CitationBlock citation={citation} headingLevel="h2" />
       </section>
 
       {/* CTA */}
