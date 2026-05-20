@@ -17,6 +17,7 @@ import { ANSWER_SLUGS } from "@/lib/answers";
 import { SCRIPT_SLUGS } from "@/lib/scripts";
 import { PRICING_PAGE_PATTERN_SLUGS } from "@/lib/pricing-page-examples";
 import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
+import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { allCitationIds } from "@/lib/citations";
@@ -637,7 +638,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/answers/${slug}`),
     })),
     // ---------------------------------------------------------------------
-    // Programmatic SEO block #12 — recordable funnel scripts.
+    // Programmatic SEO block #12 – recordable funnel scripts.
     // Data source: src/lib/scripts.ts. Targets script-template search
     // intent ("VSL script template", "perfect webinar script outline",
     // "soap opera sequence template"). Article + HowTo + FAQPage +
@@ -658,7 +659,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/scripts/${slug}`),
     })),
     // ---------------------------------------------------------------------
-    // Programmatic SEO block #13 — pricing page pattern teardowns.
+    // Programmatic SEO block #13 – pricing page pattern teardowns.
     // Data source: src/lib/pricing-page-examples.ts. Targets pricing-
     // pattern search intent ("SaaS pricing page examples", "decoy
     // pricing examples", "tiered pricing examples"). Article + FAQPage
@@ -679,7 +680,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/pricing-page-examples/${slug}`),
     })),
     // ---------------------------------------------------------------------
-    // Programmatic SEO block #14 — niche-specific conversion benchmarks.
+    // Programmatic SEO block #14 – niche-specific conversion benchmarks.
     // Data source: src/lib/conversion-rate.ts. Targets "what is a good
     // conversion rate for [niche]" – pure AEO intent for founder cohorts.
     // Article + FAQPage + BreadcrumbList JSON-LD per detail page.
@@ -697,6 +698,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/conversion-rate/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #15 – per-element copy/UI swipe files.
+    // Data source: src/lib/swipe-files.ts. Action-intent build queries
+    // ("saas hero headline examples", "pricing table examples",
+    // "CTA button copy", "exit intent popup examples"). Article +
+    // ItemList + FAQPage + BreadcrumbList JSON-LD per detail.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/swipe-file`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/swipe-file`),
+    },
+    ...SWIPE_FILE_SLUGS.map((slug) => ({
+      url: `${base}/swipe-file/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/swipe-file/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural

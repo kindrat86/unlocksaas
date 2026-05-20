@@ -31,6 +31,7 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -143,6 +144,7 @@ const PSEO_COUNTS = Object.freeze({
   funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
   funnelPlaybookMatrix: FUNNEL_MATRIX_SLUGS.length,
   answers: ANSWER_SLUGS.length,
+  swipeFile: SWIPE_FILE_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -157,7 +159,8 @@ const PSEO_TOTAL =
   PSEO_COUNTS.benchmarks +
   PSEO_COUNTS.funnelPlaybook +
   PSEO_COUNTS.funnelPlaybookMatrix +
-  PSEO_COUNTS.answers;
+  PSEO_COUNTS.answers +
+  PSEO_COUNTS.swipeFile;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -386,6 +389,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Funnel × niche matrix combos: each Brunson funnel archetype cross-applied to each indie-SaaS cohort (course creators, agency owners, SaaS founders, coaches, consultants, ecommerce, no-code builders, indie hackers, AI wrappers, info product creators, newsletter operators, freelancers). Synthesised from FUNNEL_PLAYBOOK_ENTRIES × NICHE_ENTRIES. Same Article + HowTo + FAQPage + BreadcrumbList JSON-LD as the bare-funnel pages, with three combo-specific sections: fit verdict against the cohort's money mechanics, how the playbook shifts for the cohort's vocabulary, and the cohort's specific failure mode running this funnel.",
     slugs: FUNNEL_MATRIX_SLUGS,
     count: PSEO_COUNTS.funnelPlaybookMatrix,
+  },
+  swipeFile: {
+    hub: "/swipe-file",
+    slugPattern: "/swipe-file/{slug}",
+    markdownPattern: "/swipe-file/{slug}/md",
+    description:
+      "Per-funnel-element copy and UI pattern libraries (hero headline, hero subhead, CTA button, pricing table, testimonial block, exit-intent popup, post-purchase upsell, social proof bar, money-back guarantee, founder letter, FAQ section, urgency/scarcity, checkout, thank-you page, value stack, order bump, welcome email, abandoned cart email, waitlist signup, lead magnet opt-in). Each page ships 12 named patterns with formulas, examples, and structural notes, mapped to Russell Brunson's Hook / Story / Offer lens.",
+    slugs: SWIPE_FILE_SLUGS,
+    count: PSEO_COUNTS.swipeFile,
   },
   answers: {
     hub: "/answers",

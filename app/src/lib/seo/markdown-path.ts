@@ -74,6 +74,7 @@ const PSEO_SLUG_ROOTS: ReadonlyArray<string> = [
   "/why-isnt-my",
   "/for",
   "/launch-checklist",
+  "/swipe-file",
 ];
 
 /**
