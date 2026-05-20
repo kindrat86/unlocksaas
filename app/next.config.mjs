@@ -95,6 +95,30 @@ const nextConfig = {
   poweredByHeader: false,
 
   /**
+   * next/image format preferences (2026-05-21 SEO audit fix).
+   *
+   * Without an explicit `formats` array, Next.js still negotiates AVIF/WebP
+   * via the `Accept` header, but the order is undocumented and has shifted
+   * between minor versions. Declaring `image/avif` first locks in the
+   * smallest-on-the-wire format for browsers that support it (≈95% of
+   * modern desktop + mobile traffic per caniuse 2026-05), falling back to
+   * WebP, then the original.
+   *
+   * AVIF is preferred over WebP because at the LCP-sensitive viewport sizes
+   * we serve (hero, OG cards, founder portrait, dynamic ImageResponse
+   * cards), AVIF reduces bytes by an additional 20–30% vs WebP at the
+   * same SSIM. The CPU cost of AVIF encoding is paid once at build/edge
+   * time and cached, so it never enters the request path.
+   *
+   * This is purely declarative: no /next/image consumers need to change.
+   * The format negotiation happens inside the Next image-optimization
+   * pipeline that already serves dynamic OG cards via ImageResponse.
+   */
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
+
+  /**
    * Trailing-slash normalization (2026-05-20 SEO audit fix #8).
    *
    * Without this flag, Next.js serves `/about` and `/about/` as two distinct

@@ -8,6 +8,50 @@ import {
   pickSubjectId,
 } from "@/lib/ab";
 import { toMarkdownPath, wantsMarkdown } from "@/lib/seo/markdown-path";
+import { BASE_URL } from "@/lib/seo/entity";
+
+/**
+ * Emit an explicit `Link: <…>; rel="canonical"` HTTP header on every proxied
+ * response (2026-05-21 SEO audit fix).
+ *
+ * Why a header on top of the metadataBase-inferred <link rel="canonical">?
+ *
+ *   - Google honours the HTML <link> tag but several non-Google retrievers
+ *     (some indie crawlers, citation-following AI agents, RSS/Atom readers
+ *     that don't parse HTML body) only inspect HTTP headers. Without the
+ *     header, those clients have no canonical signal at all.
+ *   - The same header is what /cite/[id]/[format] uses to anchor citation
+ *     formats back to the human page; emitting it everywhere makes the
+ *     site's canonical-claim policy uniform.
+ *   - It's defence-in-depth: if a per-page metadata override forgets a
+ *     canonical, the header still names one.
+ *
+ * Skip rules:
+ *   – `/api/*` is a pure RPC surface (returns JSON, not indexable HTML).
+ *   – `/cite/*` already emits its own canonical pointing to the HUMAN page
+ *     rather than to itself; overriding here would create two competing
+ *     rel="canonical" Link values.
+ *
+ * For markdown-rewrite responses, the canonical points to the ORIGINAL HTML
+ * URL (e.g., /about), not the rewritten .md path, because /about is the
+ * canonical surface and /about.md is its mirror.
+ *
+ * Trailing slash defensive-strip: `trailingSlash: false` in next.config.mjs
+ * already 308-redirects /about/ → /about, but if a request ever reaches the
+ * proxy with a stray trailing slash we still emit a clean canonical.
+ */
+function setCanonicalLinkHeader(
+  response: NextResponse,
+  originalPathname: string,
+): void {
+  if (originalPathname.startsWith("/api/")) return;
+  if (originalPathname.startsWith("/cite/")) return;
+  const path =
+    originalPathname.length > 1 && originalPathname.endsWith("/")
+      ? originalPathname.slice(0, -1)
+      : originalPathname;
+  response.headers.set("Link", `<${BASE_URL}${path}>; rel="canonical"`);
+}
 
 /**
  * Refreshes the Supabase auth session cookie on every (non-static) request,
@@ -29,6 +73,8 @@ import { toMarkdownPath, wantsMarkdown } from "@/lib/seo/markdown-path";
  * `text/html` in the Accept header short-circuits the check.
  */
 export async function proxy(request: NextRequest) {
+  const originalPathname = request.nextUrl.pathname;
+
   // 1) Markdown content negotiation — runs before session refresh because
   //    .md routes are pure static content; no Supabase or A/B work needed.
   if (
@@ -37,13 +83,16 @@ export async function proxy(request: NextRequest) {
       acceptHeader: request.headers.get("accept"),
     })
   ) {
-    const mdPath = toMarkdownPath(request.nextUrl.pathname);
+    const mdPath = toMarkdownPath(originalPathname);
     if (mdPath) {
       const rewriteUrl = request.nextUrl.clone();
       rewriteUrl.pathname = mdPath;
       // Strip the `format` param so the rewritten URL is cache-key clean.
       rewriteUrl.searchParams.delete("format");
-      return NextResponse.rewrite(rewriteUrl);
+      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
+      // Canonical points to the original HTML URL, not the .md mirror.
+      setCanonicalLinkHeader(rewriteResponse, originalPathname);
+      return rewriteResponse;
     }
   }
 
@@ -85,6 +134,7 @@ export async function proxy(request: NextRequest) {
     });
   }
 
+  setCanonicalLinkHeader(response, originalPathname);
   return response;
 }
 
