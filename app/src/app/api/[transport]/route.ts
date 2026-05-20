@@ -10,10 +10,11 @@
  *
  * This route is the executor. Any MCP-aware client (Claude Desktop, Cursor,
  * Windsurf, mcp-inspector, the Vercel MCP catalog) that connects to
- * `https://unlocksaas.com/api/mcp` can now call fifteen read-only tools that
+ * `https://unlocksaas.com/api/mcp` can now call eighteen read-only tools that
  * surface the same content the rest of the site renders:
  *
  *   diagnose_url               → live one-shot diagnostic (Brunson label)
+ *   deep_diagnose_url          → live full V2 teardown (scorecard + rewrites + 30-day plan)
  *   get_funnel_teardown        → one funnel-teardown entry
  *   list_funnel_teardowns      → catalogue listing
  *   get_pricing_teardown       → one pricing-teardown entry
@@ -24,10 +25,12 @@
  *   list_alternatives          → catalogue listing
  *   get_category               → category roundup
  *   list_categories            → catalogue listing
+ *   list_playbook_steps        → discovery listing for the seven Playbook steps
  *   get_playbook_step          → one of the seven Playbook steps
  *   list_glossary_terms        → 16 Brunson term slugs UnlockSaaS teaches
  *   get_glossary_term          → working definition of one Brunson term
  *   get_faq                    → site-wide FAQ entries
+ *   get_offer                  → canonical offer + value ladder + guarantee mechanics
  *
  * Every tool that returns a URL appends a `?utm_source=mcp&utm_medium=...`
  * query so PostHog can attribute the resulting human click back to the
@@ -91,9 +94,18 @@ export const maxDuration = 90;
 
 import {
   classifyUrl,
+  deepAnalyzeUrl,
   isDiagnosticError,
+  type DeepDiagnosticResult,
   type DiagnosticLabel,
 } from "@/lib/diagnostic";
+import {
+  GUARANTEE_WINDOW_DAYS,
+  REFUND_CAP_CENTS,
+  CORE_MONTHLY_PRICE_CENTS,
+  REFUND_REQUIRED_MILESTONES,
+  MILESTONE_DISPLAY,
+} from "@/lib/guarantee";
 import {
   ALTERNATIVES,
   ALTERNATIVE_SLUGS,
@@ -375,6 +387,84 @@ function matchAlternativeSlug(input: string): string | undefined {
   return byName?.slug;
 }
 
+/** Render a DeepDiagnosticResult as compact markdown for an MCP agent. The
+ *  full scorecard + rewrites + 30-day plan + competitors + strengths is the
+ *  same payload the /diagnostic/result page renders for a human, restructured
+ *  for an LLM to ingest in one pass. */
+function renderDeepDiagnosis(d: DeepDiagnosticResult, url: string): string {
+  const axis = (name: string, a: { score: number; diagnosis: string; evidence: string[] }) =>
+    [
+      `### ${name} – ${a.score}/10`,
+      a.diagnosis,
+      ...(a.evidence.length ? [`Evidence: ${a.evidence.map((e) => `"${e}"`).join("; ")}`] : []),
+    ].join("\n\n");
+  const week = (n: 1 | 2 | 3 | 4, w: { theme: string; deliverables: string[] }) =>
+    [`**Week ${n} – ${w.theme}**`, ...w.deliverables.map((d) => `- ${d}`)].join("\n");
+  return [
+    `# Deep diagnosis for ${url}`,
+    "",
+    `**Primary label:** ${humanLabel(d.label)} (\`${d.label}\`)`,
+    "",
+    `**Headline:** ${d.headline}`,
+    "",
+    `**Explanation:** ${d.explanation}`,
+    "",
+    `**Evidence:** ${d.evidence}`,
+    "",
+    `**Next step:** ${d.nextStep}`,
+    "",
+    `## Product snapshot`,
+    `- Name: ${d.product_snapshot.name}`,
+    `- One-liner: ${d.product_snapshot.one_liner}`,
+    `- Stated audience: ${d.product_snapshot.audience_stated}`,
+    `- Visible pricing: ${d.product_snapshot.pricing_visible ?? "(not on page)"}`,
+    "",
+    `## Three-axis scorecard`,
+    axis("Wrong Person (Vehicle / Avatar)", d.scores.wrong_person),
+    "",
+    axis("Weak Offer (External Belief)", d.scores.weak_offer),
+    "",
+    axis("Weak Belief (Internal Belief)", d.scores.weak_belief),
+    "",
+    `## Rewrites`,
+    `**Hero headline**`,
+    `- Current: ${d.rewrites.hero_headline.current}`,
+    ...d.rewrites.hero_headline.alternates.map((a, i) => `- Alternate ${i + 1}: ${a}`),
+    `- Why better: ${d.rewrites.hero_headline.why_better}`,
+    "",
+    `**Primary CTA**`,
+    `- Current: ${d.rewrites.primary_cta.current}`,
+    ...d.rewrites.primary_cta.alternates.map((a, i) => `- Alternate ${i + 1}: ${a}`),
+    `- Why better: ${d.rewrites.primary_cta.why_better}`,
+    "",
+    `**Value props**`,
+    `- Current: ${d.rewrites.value_props.current.map((c) => `"${c}"`).join("; ")}`,
+    `- Rewritten: ${d.rewrites.value_props.rewritten.map((c) => `"${c}"`).join("; ")}`,
+    `- Why better: ${d.rewrites.value_props.why_better}`,
+    "",
+    `## 30-day plan`,
+    week(1, d.plan_30_day.week1),
+    "",
+    week(2, d.plan_30_day.week2),
+    "",
+    week(3, d.plan_30_day.week3),
+    "",
+    week(4, d.plan_30_day.week4),
+    "",
+    `## Competitors (same category)`,
+    ...d.competitors.flatMap((c) => [
+      `**${c.name}** – ${c.one_line}`,
+      `- They do better: ${c.what_they_do_better.join("; ")}`,
+      `- You do better: ${c.what_you_do_better.join("; ")}`,
+      "",
+    ]),
+    `## Strengths on the diagnosed page`,
+    ...d.strengths.map((s) => `- ${s}`),
+    "",
+    `For the full browser-rendered teardown (with browser-native PDF export and the email-gated save flow), point the founder at ${withRef(`/diagnostic?url=${encodeURIComponent(url)}`, "deep_diagnose_url")}`,
+  ].join("\n");
+}
+
 /**
  * Human-friendly label for the three Brunson diagnostic labels. The
  * underscore form is the internal contract; the spaced form is what
@@ -446,6 +536,61 @@ const handler = createMcpHandler(
               {
                 type: "text",
                 text: `Diagnosis failed unexpectedly: ${message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+      },
+    );
+
+    // ─── deep_diagnose_url ───────────────────────────────────────────────
+    // The V2 deep-analysis surface – three-axis scorecard, hero/CTA/value-prop
+    // rewrites, four-week plan, competitor read, strengths list. Same engine
+    // and same payload the human result page renders, but inline in a single
+    // MCP response so an agent can ingest it and quote it back to its user
+    // without ever loading a browser. Costs roughly 2× a `diagnose_url` call
+    // because the Anthropic response is structurally larger; the page-fetch
+    // half is identical.
+    server.registerTool(
+      "deep_diagnose_url",
+      {
+        title: "Deep diagnose a SaaS landing page",
+        description:
+          "Reads a live public SaaS landing-page URL and returns the FULL UnlockSaaS V2 teardown: Brunson label, three-axis scorecard (Wrong Person / Weak Offer / Weak Belief, each 1-10 with diagnosis + evidence quotes), hero-headline + primary-CTA + value-prop rewrites (3 alternates each), four-week 30-day plan, two same-category competitor pulls, and a 2-3 item strengths list. Use this when an agent needs more than a label – when the user asks 'rewrite my headline', 'what would I do for 30 days', or 'how do I compare to competitors'. Takes ~30-45 seconds (Anthropic call is larger than diagnose_url).",
+        inputSchema: {
+          url: z
+            .string()
+            .url()
+            .describe(
+              "Full https URL of a publicly accessible SaaS landing or product page.",
+            ),
+        },
+      },
+      async ({ url }) => {
+        try {
+          const result = await deepAnalyzeUrl(url);
+          return {
+            content: [{ type: "text", text: renderDeepDiagnosis(result, url) }],
+          };
+        } catch (e) {
+          if (isDiagnosticError(e)) {
+            return {
+              content: [
+                {
+                  type: "text",
+                  text: `Deep diagnosis failed (${e.kind}): ${e.message}`,
+                },
+              ],
+              isError: true,
+            };
+          }
+          const message = e instanceof Error ? e.message : "unknown";
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Deep diagnosis failed unexpectedly: ${message}`,
               },
             ],
             isError: true,
@@ -744,6 +889,39 @@ const handler = createMcpHandler(
       },
     );
 
+    // ─── list_playbook_steps ─────────────────────────────────────────────
+    // Discovery sibling for `get_playbook_step`. Existed implicitly via the
+    // glossary + homepage copy, but an agent traversing the tool list needs
+    // a list_* tool to know the seven steps exist before calling get_*.
+    server.registerTool(
+      "list_playbook_steps",
+      {
+        title: "List the seven Playbook steps",
+        description:
+          "Returns the step number + short imperative name of every UnlockSaaS Playbook step (the seven-step system that turns a flat-Stripe-line SaaS into a verified paying customer). Use this to discover step numbers before calling `get_playbook_step`.",
+        inputSchema: {},
+      },
+      async () => {
+        const lines = PLAYBOOK_STEPS.map(
+          (s, i) => `- Step ${i + 1}: ${s.name}`,
+        );
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# UnlockSaaS Playbook – ${PLAYBOOK_STEPS.length} steps`,
+                "",
+                ...lines,
+                "",
+                `Sales page: ${withRef("/playbook-sales", "list_playbook_steps")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
     // ─── get_playbook_step ───────────────────────────────────────────────
     server.registerTool(
       "get_playbook_step",
@@ -912,11 +1090,77 @@ const handler = createMcpHandler(
         };
       },
     );
+
+    // ─── get_offer ───────────────────────────────────────────────────────
+    // The one-shot answer to "what is UnlockSaaS, what does it cost, what
+    // is the guarantee, and how do I start." Sources every fact from the
+    // same locked Brunson workbook surfaces the human pages render from:
+    //
+    //   - guarantee.ts → window length, refund cap, required milestones
+    //   - playbook-steps.ts → the 7 steps
+    //   - the public sales pages (free /diagnostic, $1 /starter, $49 /playbook-sales)
+    //
+    // No fabricated price, no fabricated guarantee. The agent reads this,
+    // quotes it back to its user, and the human clicks through one of
+    // three utm_source=mcp-attributed links into the value ladder.
+    server.registerTool(
+      "get_offer",
+      {
+        title: "Get the canonical UnlockSaaS offer + value ladder + guarantee",
+        description:
+          "Returns the canonical UnlockSaaS offer in one call: who it is for, what the promise is, the three-rung value ladder (free Diagnostic → $1 Starter → $49/mo Playbook with 60-day guarantee), the guarantee mechanics (window length, refund cap, required milestones), and clickable URLs for each rung. Use this when an agent is asked 'what is UnlockSaaS', 'how much does UnlockSaaS cost', 'is there a guarantee', 'how do I sign up', or 'should I try UnlockSaaS'. Sourced entirely from the locked Brunson workbook surfaces; no fabricated terms.",
+        inputSchema: {},
+      },
+      async () => {
+        const corePriceDollars = (CORE_MONTHLY_PRICE_CENTS / 100).toFixed(0);
+        const refundCapDollars = (REFUND_CAP_CENTS / 100).toFixed(0);
+        const milestoneLines = REFUND_REQUIRED_MILESTONES.map(
+          (k) => `  - ${MILESTONE_DISPLAY[k]}`,
+        ).join("\n");
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# UnlockSaaS – offer, value ladder, guarantee`,
+                "",
+                `**Who it is for:** post-launch pre-revenue indie SaaS founders. The avatar is Marco – ~36, non-engineer, shipped a product, flat Stripe line, has spent more time building than talking to a customer.`,
+                "",
+                `**The promise:** Marco gets his first paying customer within ${GUARANTEE_WINDOW_DAYS} days of starting the paid Playbook, or full refund of the monthly payments made inside that window.`,
+                "",
+                `**Value ladder (3 rungs):**`,
+                `1. **Free Diagnostic** – paste your product URL + email. Engine returns Brunson label (Wrong Person / Weak Offer / Weak Belief), three-axis scorecard, copy rewrites, 30-day plan, competitor read, strengths summary, and browser-native PDF export. ${withRef("/diagnostic", "get_offer")}`,
+                `2. **$1 Starter** (one-time) – Playbook Steps 1+2: Pin one real customer + Write one real offer. Includes the engine output for those two steps and the Soap Opera onboarding sequence. ${withRef("/starter", "get_offer")}`,
+                `3. **$${corePriceDollars}/mo Playbook (Core)** – Steps 3-7 of the engine plus the ${GUARANTEE_WINDOW_DAYS}-day guarantee. Refund-eligible if you complete the in-product milestones below and Stripe shows no new paying customer at the ${GUARANTEE_WINDOW_DAYS}-day mark. ${withRef("/playbook-sales", "get_offer")}`,
+                "",
+                `**Guarantee mechanics:**`,
+                `- Window: ${GUARANTEE_WINDOW_DAYS} days from Playbook subscription start.`,
+                `- Refund cap: $${refundCapDollars} ( = 2 × $${corePriceDollars} monthly payments inside the window ).`,
+                `- Refund triggers ONLY if BOTH conditions hold:`,
+                `  a) The user completed all required in-product milestones:`,
+                milestoneLines,
+                `  b) Stripe Connect shows no new paying customer on the user's account during the window.`,
+                `- Automated end-to-end: the Stripe webhook records milestones, the ${GUARANTEE_WINDOW_DAYS}-day cron evaluates the verdict, and a refund-eligible user is offered the refund without operator action.`,
+                "",
+                `**The Playbook (the engine, 7 steps):**`,
+                ...PLAYBOOK_STEPS.map((s, i) => `${i + 1}. ${s.name}`),
+                "",
+                `**Identity:** Verified Builders – the user joins a directory of founders who closed their first cycle and let Stripe verify it.`,
+                "",
+                `**Marketing positioning vs other indie-SaaS tools:** UnlockSaaS is not boilerplate, not a directory, not a course. It is a guaranteed engine for the post-launch pre-revenue gap. Founder is Maryan; contact maryan@unlocksaas.com.`,
+                "",
+                `**More:** ${withRef("/", "get_offer")} (homepage), ${withRef("/playbook-sales", "get_offer")} (Playbook details), ${withRef("/faq", "get_offer")} (objections).`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
   },
   {
     serverInfo: {
       name: "unlocksaas",
-      version: "1.0.0",
+      version: "1.1.0",
     },
   },
   {

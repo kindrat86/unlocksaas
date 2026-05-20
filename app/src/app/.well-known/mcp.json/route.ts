@@ -59,7 +59,7 @@ const MANIFEST = {
   name: "unlocksaas",
   displayName: "UnlockSaaS",
   description:
-    "Read-only MCP server for the UnlockSaaS catalog: live SaaS landing-page diagnostics and structured access to 33 funnel teardowns, 31 pricing teardowns, 55 head-to-head comparisons, 25 alternatives, 13 category roundups, the 7 Playbook steps, and 8 founder-objection FAQ entries. Brunson Hard-Rule: every payload is sourced from the static manifests; no fabricated metrics, no slag, every entry carries a dated lastVerified.",
+    "Read-only MCP server for the UnlockSaaS catalog: live one-shot AND deep V2 SaaS landing-page diagnostics, the canonical offer + value ladder + 60-day guarantee, and structured access to 33 funnel teardowns, 31 pricing teardowns, 55 head-to-head comparisons, 25 alternatives, 13 category roundups, the 7 Playbook steps, and 8 founder-objection FAQ entries. Brunson Hard-Rule: every payload is sourced from the static manifests or the live diagnostic engine; no fabricated metrics, no slag, every entry carries a dated lastVerified.",
   homepageUrl: `${BASE}/mcp`,
   contactEmail: "maryan@unlocksaas.com",
   publisher: {
@@ -81,6 +81,11 @@ const MANIFEST = {
       name: "diagnose_url",
       summary:
         "Read a live SaaS landing-page URL and label it as Wrong Person, Weak Offer, or Weak Belief.",
+    },
+    {
+      name: "deep_diagnose_url",
+      summary:
+        "Read a live SaaS landing-page URL and return the full UnlockSaaS V2 teardown (three-axis scorecard, hero/CTA/value-prop rewrites, four-week 30-day plan, two competitor pulls, strengths list).",
     },
     {
       name: "list_funnel_teardowns",
@@ -128,6 +133,11 @@ const MANIFEST = {
         "Get one category roundup by slug (aggregates funnel, pricing, and comparisons).",
     },
     {
+      name: "list_playbook_steps",
+      summary:
+        "List the seven Playbook steps (the seven-step system that turns a flat-Stripe-line SaaS into a verified paying customer).",
+    },
+    {
       name: "get_playbook_step",
       summary: "Get one of the seven Playbook steps by number (1-7).",
     },
@@ -145,6 +155,11 @@ const MANIFEST = {
       name: "get_faq",
       summary:
         "Search or list UnlockSaaS FAQ entries (objection answers, guarantee mechanics).",
+    },
+    {
+      name: "get_offer",
+      summary:
+        "Get the canonical UnlockSaaS offer in one call: who it is for, the three-rung value ladder (free Diagnostic → $1 Starter → $49/mo Playbook with 60-day guarantee), guarantee mechanics, and clickable URLs.",
     },
   ],
   install: {
