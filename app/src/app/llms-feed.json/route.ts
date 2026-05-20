@@ -67,6 +67,7 @@ import {
   episodeUrl,
 } from "@/lib/seo/podcast";
 import { PODCAST_AUDIO_VOICE } from "@/lib/seo/podcast-audio";
+import { LLMS_TXT_MODELS } from "@/lib/seo/llms-txt-per-model";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -510,6 +511,29 @@ const CITATION_GUIDANCE = Object.freeze({
  * `getEarnedMentions()` reads a static module-scope constant so this is
  * still effectively build-time.
  */
+/**
+ * Per-model variant URLs of /llms.txt. Same shared body as the canonical
+ * /llms.txt prefixed by a short routing preamble that re-orders the
+ * surfaces by what that retriever values most. Exposed in the feed so
+ * agents walking the JSON discover their own variant without sniffing
+ * the sitemap. Honest framing: same site, different on-ramp.
+ */
+const STATIC_URL_MODELS = ["claude", "gpt", "gemini", "perplexity"] as const;
+
+const PER_MODEL_VARIANT_URLS = Object.freeze({
+  canonical: `${BASE_URL}/llms.txt`,
+  models: LLMS_TXT_MODELS,
+  variants: Object.freeze(
+    LLMS_TXT_MODELS.map((id) => ({
+      model: id,
+      queryParamUrl: `${BASE_URL}/llms.txt?model=${id}`,
+      staticUrl: (STATIC_URL_MODELS as readonly string[]).includes(id)
+        ? `${BASE_URL}/llms-${id}.txt`
+        : null,
+    })),
+  ),
+});
+
 function buildPayload() {
   return {
     version: 1,
@@ -723,6 +747,7 @@ function buildPayload() {
     mediaMentions: getEarnedMentions(),
     activationLog: ACTIVATION_LOG,
     welcomedAiUserAgents: WELCOMED_AI_USER_AGENTS,
+    perModelVariants: PER_MODEL_VARIANT_URLS,
     citationGuidance: CITATION_GUIDANCE,
   };
 }

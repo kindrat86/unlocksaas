@@ -1050,6 +1050,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
+    // Per-model variants of /llms.txt – static dedicated routes that mirror
+    // /llms.txt?model=<key>. Listed so retrievers walking the sitemap
+    // discover their own model variant in one pass. The body is the shared
+    // LLMS_TXT_BODY prefixed by a short routing preamble; no exclusive
+    // content per model (Brunson Hard-Rule). Priority 0.3 matches the
+    // canonical /llms.txt so search-engine crawl budget is not skewed.
+    {
+      url: `${base}/llms-claude.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${base}/llms-gpt.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${base}/llms-gemini.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${base}/llms-perplexity.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
     // -------------------------------------------------------------------------
     // Surface B/D – Glossary audio podcast feed (VEO / AEO uplift).
     //

@@ -93,7 +93,12 @@ npx @modelcontextprotocol/inspector ${MCP_URL}
 - \`get_playbook_step\` — one of the seven Playbook steps by number (1-7).
 - \`list_glossary_terms\` – slug + term name for every Brunson concept UnlockSaaS teaches (Hook, Story, Offer, Value Ladder, Stack Slide, Dream 100, Reluctant Hero, Brunson Hard-Rule, Big Domino, etc.).
 - \`get_glossary_term\` – working definition of one Brunson term in the founder's own words, by slug.
+- \`list_podcast_episodes\` — every episode of the dataset-changelog podcast (slug, episode number, publication date, audio-shipped flag).
+- \`get_podcast_episode\` — one dataset-changelog episode by slug, with audio enclosure metadata when env-gated audio has shipped.
+- \`list_media_assets\` — unified inventory of every audio/video asset on the site (dataset-changelog podcast + glossary TTS audio); filter by kind.
+- \`get_glossary_audio\` — TTS audio metadata for one Brunson term (URL, duration, byte size, voice, transcript sha256). Empty until the operator runs the generation script.
 - \`get_faq\` — search or list UnlockSaaS FAQ entries (objection answers, guarantee mechanics).
+- \`get_offer\` — canonical answer to "what is UnlockSaaS, what does it cost, what is the guarantee" – three-rung value ladder, 60-day guarantee mechanics.
 - \`get_offer\` — canonical UnlockSaaS offer in one call: who it is for, three-rung value ladder (free Diagnostic → $1 Starter → $49/mo Playbook with 60-day guarantee), guarantee mechanics (window length, refund cap, required milestones), and clickable URLs.
 
 ## What it will not do
