@@ -7,23 +7,37 @@ const nextConfig = {
   // `eslint.config.mjs` per the v16 codemod (`next-lint-to-eslint-cli`).
 
   /**
-   * Cache Components (Next 16+) — enabled 2026-05-20.
+   * Cache Components (Next 16+) — DEFERRED 2026-05-20.
    *
-   * Replaces the older `experimental.ppr` flag. With this on, every route is
-   * eligible for Partial Prerendering: the synchronous shell streams from the
-   * CDN immediately while dynamic regions (Suspense boundaries) stream in at
-   * request time, and async functions tagged with `'use cache'` declare
-   * per-tag invalidation via `cacheTag()`.
+   * Initially enabled 2026-05-20 alongside the SEO audit batch, but four
+   * consecutive prod deploys failed at the prerender step with:
    *
-   * The pSEO surfaces (alternatives-to, compare, glossary, why-isnt-my, for,
-   * benchmarks, funnel-playbook, answers, funnel-teardown, pricing-teardown,
-   * category, press/topics) wrap their body fetchers in
-   * `'use cache' + cacheTag(`<surface>:${slug}`) + cacheLife('max')` so a
-   * single content edit can be revalidated server-side via `revalidateTag()`
-   * without a full rebuild. The current data sources are frozen `.ts` arrays,
-   * so the perf gain at build is zero; the value is the per-slug invalidation
-   * API that lights up when content moves to Supabase or per-slug Markdown
-   * front-matter, and the consistent pattern for every future pSEO surface.
+   *   Error: Route "<path>": Uncached data was accessed outside of
+   *   <Suspense>. This delays the entire page from rendering...
+   *
+   * The strict cacheComponents:true rule requires every uncached data read
+   * to be inside a <Suspense> boundary. Many existing auth-gated and
+   * personalised routes (/onboarding, /playbook, /playbook/verified,
+   * /diagnostic, /login, plus likely more) call `await createClient()` +
+   * `await getUser()` at the top level — the old escape hatch
+   * `export const dynamic = "force-dynamic"` was already removed in the
+   * directive cleanup, and the new Suspense + connection() pattern needs
+   * to be applied per-route. Two partial-fix commits (#12dc333 onboarding,
+   * #173cd49 (app) layouts) chipped at the list but new failures kept
+   * surfacing.
+   *
+   * To unblock production deploys, cacheComponents is OFF here. Without it
+   * Next 16 falls back to the auto-dynamic detection it had pre-16: routes
+   * that read cookies/headers/auth render dynamically without the explicit
+   * directive. The Suspense wrapping already added in #12dc333 / #173cd49
+   * stays in place — Suspense without cacheComponents is harmless.
+   *
+   * Re-enable plan: convert each remaining auth/personalised route to the
+   * Suspense + connection() pattern on a focused feature branch, verify the
+   * full prerender pass locally with `next build`, then flip this back to
+   * `cacheComponents: true` in a single atomic commit. The original audit
+   * target (per-tag invalidation for pSEO surfaces via cacheTag/revalidateTag)
+   * is preserved as the destination — just not on the launch path.
    *
    * SXO / CWV bundle wins (kept from 2026-05-17):
    *
@@ -59,7 +73,7 @@ const nextConfig = {
    *     been flaky on Vercel CI in past 14.x patch releases. Re-evaluate
    *     after the first verified customer cycle.
    */
-  cacheComponents: true,
+  cacheComponents: false,
   experimental: {
     optimizePackageImports: [
       "lucide-react",
