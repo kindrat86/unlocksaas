@@ -10,6 +10,7 @@ import {
 } from "@/lib/answers";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 
 const CANONICAL = "/answers";
@@ -118,6 +119,14 @@ export default function AnswersHubPage() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Answers hub TL;DR"
+        cluster="Direct AEO answers"
+        count={`${ANSWER_ENTRIES.length} direct AEO-formatted answers across ${ANSWER_CATEGORIES.length} categories`}
+        intent="Direct AEO-formatted answers to the most-asked indie SaaS funnel questions. Each carries a 2–4 sentence direct answer designed for AI assistant citation."
+        schema="CollectionPage + ItemList; per-detail QAPage + Article + BreadcrumbList"
+      />
 
       {ANSWER_CATEGORIES.map((category) => {
         const items = ANSWER_ENTRIES.filter((e) => e.category === category);

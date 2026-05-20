@@ -4,6 +4,11 @@ import {
   LLMS_TXT_CACHE_CONTROL,
   LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
 } from "@/lib/seo/llms-txt";
+import {
+  resolveModelParam,
+  getCachedLlmsTxtForModel,
+  LLMS_TXT_MODELS,
+} from "@/lib/seo/llms-txt-per-model";
 import { BASE_URL } from "@/lib/seo/entity";
 
 /**
@@ -28,38 +33,75 @@ import { BASE_URL } from "@/lib/seo/entity";
  *      finds every public machine-readable surface in one well-known
  *      directory.
  *
+ * Per-model curated views
+ * -----------------------
+ * Accepting `?model=<key>` returns a curated view that re-orders the
+ * same surfaces to match how that retriever ranks SaaS-publisher
+ * sources. Mirrors the canonical /llms.txt route exactly; see that
+ * route handler's header comment for the full model catalog and alias
+ * map. Available keys: ${LLMS_TXT_MODELS.join(", ")}.
+ *
  * Canonical resolution
  * --------------------
- * The body is byte-identical to /llms.txt – both routes import from
- * @/lib/seo/llms-txt (single source of truth). The only difference is
- * that this response carries a `Link: rel="canonical"` header pointing
- * at /llms.txt, so any cache, retrieval pipeline, or assistant that
+ * The body is byte-identical to /llms.txt (for the same model key) –
+ * both routes import from @/lib/seo/llms-txt and
+ * @/lib/seo/llms-txt-per-model (single sources of truth). The only
+ * difference is that this response carries a `Link: rel="canonical"`
+ * header pointing at /llms.txt (or /llms.txt?model=<key> for curated
+ * views), so any cache, retrieval pipeline, or assistant that
  * encounters both URLs collapses them onto the canonical one.
  *
  * Brunson Hard-Rule reconciliation: every claim in the body is also
  * present, verifiable, in the public HTML. Adding a discovery path
  * does not change the content – it only changes where the same content
- * can be found.
+ * can be found. Per-model views NEVER carry exclusive content.
  *
  * Caching: same edge-cache discipline as the canonical route (24h
  * s-maxage, 7d stale-while-revalidate). Strategy-doc cadence, not
- * request cadence.
+ * request cadence. The `Vary: x-llms-model` header partitions the
+ * cache when a curated view is served so canonical and curated bodies
+ * never collide.
  */
 
-export function GET() {
-  return new NextResponse(LLMS_TXT_BODY, {
+const ALIAS_HEADERS = {
+  "content-type": "text/plain; charset=utf-8",
+  "cache-control": LLMS_TXT_CACHE_CONTROL,
+  "training-data-attribution": LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
+  "x-llms-models": LLMS_TXT_MODELS.join(", "),
+} as const;
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const rawModel = url.searchParams.get("model");
+  const resolved = resolveModelParam(rawModel);
+
+  // Canonical body – no model param or unrecognised value. Always points
+  // back at the llmstxt.org §1 URL via Link header so this alias never
+  // becomes a separately-weighted citation surface.
+  if (resolved === null) {
+    return new NextResponse(LLMS_TXT_BODY, {
+      status: 200,
+      headers: {
+        ...ALIAS_HEADERS,
+        vary: "x-llms-model",
+        // RFC 5988 Link header pointing every consumer at the canonical
+        // llmstxt.org §1 URL.
+        link: `<${BASE_URL}/llms.txt>; rel="canonical"`,
+      },
+    });
+  }
+
+  // Curated view – canonical Link header points back at the curated
+  // canonical (e.g. /llms.txt?model=claude), not the bare /llms.txt URL.
+  // This keeps the per-model citation surface singular.
+  const body = getCachedLlmsTxtForModel(resolved);
+  return new NextResponse(body, {
     status: 200,
     headers: {
-      "content-type": "text/plain; charset=utf-8",
-      "cache-control": LLMS_TXT_CACHE_CONTROL,
-      "training-data-attribution": LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
-      // RFC 5988 Link header pointing every consumer at the canonical
-      // llmstxt.org §1 URL. Keeps caches, retrievers, and assistants
-      // from treating /.well-known/llms.txt and /llms.txt as two
-      // distinct sources to weight separately.
-      link: `<${BASE_URL}/llms.txt>; rel="canonical"`,
+      ...ALIAS_HEADERS,
+      vary: "x-llms-model",
+      link: `<${BASE_URL}/llms.txt?model=${resolved}>; rel="canonical"`,
+      "x-llms-model-resolved": resolved,
     },
   });
 }
-
-// Static – no per-request inputs, identical body on every call.

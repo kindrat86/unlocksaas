@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FUNNEL_PLAYBOOK_ENTRIES } from "@/lib/funnel-playbooks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 
 const CANONICAL = "/funnel-playbook";
@@ -114,6 +115,14 @@ export default function FunnelPlaybookHubPage() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Funnel playbooks hub TL;DR"
+        cluster="Brunson funnel playbooks"
+        count={`${FUNNEL_PLAYBOOK_ENTRIES.length} Brunson funnel archetypes`}
+        intent="Step-by-step playbooks for the Brunson funnel archetypes. Each carries when-to-use / when-not-to-use criteria, sequential build steps, common implementation mistakes, and ladder-position guidance."
+        schema="CollectionPage + ItemList; per-detail Article + HowTo + FAQPage + BreadcrumbList"
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8 space-y-4"

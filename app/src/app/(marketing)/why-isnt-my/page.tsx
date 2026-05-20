@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { WHY_ISNT_MY_ENTRIES } from "@/lib/why-isnt-my";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
  * /why-isnt-my hub – panic-mode diagnostic intent.
@@ -128,6 +129,14 @@ export default function WhyIsntMyHubPage() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Panic-mode diagnostic hub TL;DR"
+        cluster="Panic-mode diagnostics"
+        count={`${WHY_ISNT_MY_ENTRIES.length} per-element diagnostic pages`}
+        intent="Per-element diagnostic pages for indie SaaS founders. Each labels the issue as Wrong Person, Weak Offer, or Weak Belief, names the most common cause, and gives the one fix to ship this week."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + BreadcrumbList"
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8 space-y-4"

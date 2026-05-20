@@ -8,6 +8,7 @@ import {
   getContentDepthForCategory,
 } from "@/lib/categories";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
  * Category hub — fifth pSEO surface index.
@@ -139,6 +140,14 @@ export default function CategoryHub() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Category hub TL;DR"
+        cluster="Category roundups"
+        count={`${CATEGORIES.length} curated category roundups`}
+        intent="Curated category roundups across every SaaS tool we have analyzed. Each page aggregates funnel teardowns, pricing teardowns, and head-to-head comparisons in that category into a single high-intent landing page."
+        schema="CollectionPage + ItemList; per-detail Article + ItemList + BreadcrumbList"
+      />
 
       {/* Category list */}
       <section

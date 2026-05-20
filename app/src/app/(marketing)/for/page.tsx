@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { NICHE_ENTRIES } from "@/lib/niches";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 
 const CANONICAL = "/for";
@@ -114,6 +115,14 @@ export default function ForHubPage() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Niche hub TL;DR"
+        cluster="Niche cohort pages"
+        count={`${NICHE_ENTRIES.length} cohort-tuned landing pages`}
+        intent="Same Hook / Story / Offer diagnostic, applied to the vocabulary, money mechanics, and common mistakes of one specific cohort."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + BreadcrumbList"
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-4"

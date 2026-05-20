@@ -9,6 +9,7 @@ import {
 } from "@/lib/funnel-teardowns";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
  * Funnel teardowns hub — pSEO surface index.
@@ -170,6 +171,14 @@ export default function FunnelTeardownHub() {
       </header>
 
       <Separator className="my-2" />
+
+      <HubTldr
+        headingLabel="Funnel teardown hub TL;DR"
+        cluster="Funnel teardowns"
+        count={`${TEARDOWNS.length} indie SaaS funnel teardowns`}
+        intent="Indie SaaS funnels analyzed through Russell Brunson's Hook / Story / Offer framework. Pattern-level lessons indie founders can adapt to their own page."
+        schema="CollectionPage + ItemList; per-detail Article + FAQPage + BreadcrumbList"
+      />
 
       {/* How we read these */}
       <section
