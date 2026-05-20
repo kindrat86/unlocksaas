@@ -725,8 +725,13 @@ export const FOUNDER = {
   jobTitle: "Founder",
   email: "maryan@unlocksaas.com",
   url: BASE_URL,
+  // Cross-section frame baked into the canonical Person description.
+  // Surfaces the Brunson-funnels (15 years) + non-engineer-who-shipped
+  // combination as the credibility wedge, not just two unrelated facts.
+  // Mirrors the /about "The weird mix" section, the ABOUT_BODY markdown
+  // subsection, and strategy/founder-vsl-script.md Beat 3.5.
   description:
-    "Solo founder of Unlock SaaS. Marketer by trade, not engineer; builds the product with Claude Code. Built the playbook he uses for his own launch.",
+    "Solo founder of Unlock SaaS. A marketer who spent fifteen years inside Brunson-style funnels, then shipped his own AI products with Lovable and Claude when AI tooling opened the door for non-engineers. Builds the playbook he uses for his own launch.",
 } as const;
 
 // ---------------------------------------------------------------------------

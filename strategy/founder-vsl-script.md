@@ -62,6 +62,16 @@ I'd been building beautiful things for no one in particular and acting surprised
 
 ---
 
+**[Beat 3.5 — Quiet addendum to the break. ~15 seconds. Same setup as Beat 3. Eyes off camera, half-mumble. NOT a confession beat — more like a footnote spoken out loud. Inserted per the cross-section overlay (workbook 01 §6 backstory + state.json attractive_character.locked.cross_section_frame). The point of the beat is to flag the skill-mix as the credibility wedge WITHOUT breaking Reluctant Hero voice. Founder must sound like he is admitting something, not selling it.]**
+
+What also became clear that night was that I'd been pretending I was one thing or the other. Just-a-marketer. Just-a-builder.
+
+[beat]
+
+I'm both. In one head. By accident. Almost nobody in this niche is. And that's the only reason I'm trying to build a product about this work instead of writing another thread about it.
+
+---
+
 **[Beat 4 — The Big Domino. ~35 seconds. Founder steps back from confession. Voice firms up. Camera goes slightly wider. No longer looking-into-lens — looking just to the side, like he's making the argument to a peer, not selling.]**
 
 So here is what I'd say to you, if you're on the other side of that flat Stripe line right now.
