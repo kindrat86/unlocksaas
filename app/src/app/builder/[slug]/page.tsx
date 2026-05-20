@@ -14,7 +14,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
-import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
+import {
+  loadPublicBadge,
+  loadPublicBadgeSerial,
+  absoluteBadgeUrl,
+  formatSerial,
+  FOUNDING_COHORT_SERIAL_CAP,
+} from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
 import { CheckCircle2 } from "lucide-react";
 
@@ -69,8 +75,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function BuilderBadgePage(props: Props) {
   const params = await props.params;
-  const badge = await loadPublicBadge(createAdminClient(), params.slug);
+  const adminClient = createAdminClient();
+  const badge = await loadPublicBadge(adminClient, params.slug);
   if (!badge) notFound();
+
+  // Founding-cohort serial. Computed via a head-only count query against
+  // `builder_badges` rows strictly earlier than this badge's
+  // first_customer_at, plus one (so the earliest verified builder gets
+  // #001). Returns null on DB error; the UI suppresses the serial chip
+  // rather than render `#NaN` if that happens. Brunson identity hook
+  // (DotCom Secrets Secret #2) – same number that appears on
+  // /builders next to this builder's avatar card.
+  const serial = await loadPublicBadgeSerial(adminClient, badge.firstCustomerAt);
+  const isFoundingCohort =
+    serial !== null && serial <= FOUNDING_COHORT_SERIAL_CAP;
 
   const dateStr = badge.firstCustomerAt.toLocaleDateString("en-US", {
     year: "numeric",
@@ -99,11 +117,24 @@ export default async function BuilderBadgePage(props: Props) {
         <article className="w-full max-w-2xl space-y-8">
           {/* Badge */}
           <div className="rounded-2xl border bg-card p-8 sm:p-12 space-y-6 shadow-sm">
-            <div className="flex items-center gap-3 text-sm text-muted-foreground">
-              <CheckCircle2 className="h-4 w-4 text-foreground" />
-              <span className="uppercase tracking-wider text-xs font-medium">
-                Verified Builder
-              </span>
+            <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="h-4 w-4 text-foreground" />
+                <span className="uppercase tracking-wider text-xs font-medium">
+                  Verified Builder
+                  {serial !== null ? <> {formatSerial(serial)}</> : null}
+                </span>
+              </div>
+              {isFoundingCohort ? (
+                <span
+                  className="rounded-full border px-2.5 py-0.5 text-[10px] uppercase tracking-widest text-muted-foreground"
+                  aria-label={`Founding cohort serial ${formatSerial(
+                    serial!,
+                  )} of ${FOUNDING_COHORT_SERIAL_CAP}`}
+                >
+                  Founding cohort
+                </span>
+              ) : null}
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold leading-tight">

@@ -39,6 +39,7 @@ import {
   type BuilderRowForSchema,
 } from "@/components/seo/builders-collection";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import { FOUNDING_COHORT_SERIAL_CAP, formatSerial } from "@/lib/builder-badge";
 
 
 export const metadata: Metadata = {
@@ -94,6 +95,20 @@ async function loadPublicBuilders(): Promise<BuilderRow[]> {
   return data as BuilderRow[];
 }
 
+/**
+ * Attach the founding-cohort serial (1-indexed, ASC-by-first_customer_at)
+ * to each row. We already fetched the rows in DESC order above; the
+ * earliest verified row in the page has the smallest serial, the latest
+ * the largest. Computed inline (not via `loadVerifiedBuilders`) because
+ * this page reads the snake_case Supabase shape directly – the lib
+ * helper returns the camelCase `PublicBadge` shape and we don't want a
+ * lossy round-trip.
+ */
+function attachSerials(rows: BuilderRow[]): Array<BuilderRow & { serial: number }> {
+  const total = rows.length;
+  return rows.map((row, i) => ({ ...row, serial: total - i }));
+}
+
 function formatDate(iso: string): string {
   try {
     return new Date(iso).toLocaleDateString("en-US", {
@@ -144,6 +159,16 @@ export default async function BuildersDirectoryPage() {
   const builders = await loadPublicBuilders();
   const count = builders.length;
   const buildersForSchema = builders.map(rowToSchemaShape);
+  const ranked = attachSerials(builders);
+  // The "next seat" identity. When the directory is empty, the first
+  // verified builder gets #001. When ranked.length === 5, the next seat
+  // is #006. Displayed in the empty-state polarity card so a reader
+  // knows exactly which serial they would inherit.
+  const nextSerial = count + 1;
+  const foundingSeatsRemaining = Math.max(
+    0,
+    FOUNDING_COHORT_SERIAL_CAP - count,
+  );
 
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
@@ -183,33 +208,115 @@ export default async function BuildersDirectoryPage() {
 
         {/* ── Body: empty state OR card grid ──────────────────────────── */}
         {count === 0 ? (
+          // ────────────────────────────────────────────────────────────────
+          // Brunson polarity empty state.
+          //
+          // The directory has zero rows. Two ways to render this:
+          //  (a) "No verified builders yet." Flat. Apologetic. Honest but soft.
+          //  (b) Turn the 0 into the proof. Lean into the absence – we refuse
+          //      to fake it – and assign identity to the as-yet-unclaimed
+          //      first seat. Brunson's polarity move: the empty page is the
+          //      offer.
+          //
+          // Three cards, no hype:
+          //   1. The live count, dated, with the "we refuse to fabricate"
+          //      line that anchors the editorial position.
+          //   2. The founding-cohort numbered seats (#001 – #010), so the
+          //      first ten founders carry a permanent identity marker on
+          //      their badge / Review JSON-LD / embed kit.
+          //   3. The four-step path, so a reader does not have to guess
+          //      what they would actually do to claim the next seat.
+          //
+          // Voice: Reluctant Hero. No "be a hero." No emoji. No yellow
+          // attention bar. The proof is the language, not the visual gloss.
+          // ────────────────────────────────────────────────────────────────
           <section
-            aria-label="No verified builders yet"
-            className="rounded-2xl border bg-card p-8 sm:p-12 space-y-4"
+            aria-label="The directory is empty by design"
+            className="space-y-6"
           >
-            <p className="text-sm uppercase tracking-wider text-muted-foreground">
-              The directory
-            </p>
-            <h2 className="text-2xl font-bold leading-tight">
-              No public verified builders yet.
-            </h2>
-            <p className="text-base text-muted-foreground leading-relaxed">
-              The first one will land here. The badge is what fires when a
-              connected Stripe account sees its first paying customer through
-              the Playbook. It is not a self-report. It is not a screenshot.
-              It is a row in our database that says someone, somewhere,
-              finished the work — and a verified charge says so.
-            </p>
-            <p className="text-base text-muted-foreground leading-relaxed">
-              If you want to be the first row,{" "}
-              <Link
-                href="/diagnostic"
-                className="underline underline-offset-4 hover:text-foreground"
-              >
-                start with the Free Diagnostic
-              </Link>
-              .
-            </p>
+            {/* Card 1 – live count + editorial position */}
+            <div className="rounded-2xl border bg-card p-8 sm:p-10 space-y-4">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                Live count
+              </p>
+              <h2 className="text-3xl font-bold leading-tight">
+                0 verified builders today.
+              </h2>
+              <p className="text-base text-muted-foreground leading-relaxed">
+                We refuse to fabricate this number. The directory updates
+                automatically the moment a connected Stripe account on the
+                Playbook sees its first paying customer. Nothing here is
+                hand-curated. Nothing here is bought. The cycle is wired and
+                live – when the first webhook fires, this card disappears and
+                the first row lands.
+              </p>
+            </div>
+
+            {/* Card 2 – numbered seats (founding cohort identity) */}
+            <div className="rounded-2xl border bg-card p-8 sm:p-10 space-y-4">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                Numbered seats
+              </p>
+              <h2 className="text-2xl font-bold leading-tight">
+                {formatSerial(1)} through{" "}
+                {formatSerial(FOUNDING_COHORT_SERIAL_CAP)} carry the founding
+                cohort serial.
+              </h2>
+              <p className="text-base text-muted-foreground leading-relaxed">
+                The first {FOUNDING_COHORT_SERIAL_CAP} founders through the
+                cycle each get a permanent numbered identity on their public
+                badge, on their cross-domain Review JSON-LD, and on every
+                comparison page that names the Playbook as the proof. Seats
+                after {formatSerial(FOUNDING_COHORT_SERIAL_CAP)} are
+                unnumbered, still Verified. The number is earned, not given –
+                Stripe picks who gets it.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed pt-2 border-t">
+                <span className="text-foreground font-medium">
+                  Next seat: {formatSerial(nextSerial)}
+                </span>{" "}
+                · {foundingSeatsRemaining} founding-cohort serials remaining.
+              </p>
+            </div>
+
+            {/* Card 3 – the path */}
+            <div className="rounded-2xl border bg-card p-8 sm:p-10 space-y-4">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                The path to {formatSerial(nextSerial)}
+              </p>
+              <h2 className="text-2xl font-bold leading-tight">
+                Four steps. No invitation. No application.
+              </h2>
+              <ol className="space-y-3 text-base text-muted-foreground leading-relaxed">
+                <li>
+                  <span className="text-foreground font-medium">1.</span> Take
+                  the Free Diagnostic. Sixty seconds. No card.
+                </li>
+                <li>
+                  <span className="text-foreground font-medium">2.</span> If
+                  the diagnosis fits, start the Playbook ($1 Starter, then
+                  $49/mo Core).
+                </li>
+                <li>
+                  <span className="text-foreground font-medium">3.</span>{" "}
+                  Connect your Stripe in Step 7 of the Playbook.
+                </li>
+                <li>
+                  <span className="text-foreground font-medium">4.</span> Ship
+                  the work. When a real customer pays you, the badge fires
+                  automatically. No screenshot. No self-report. No tweet for
+                  proof.
+                </li>
+              </ol>
+              <div className="pt-4">
+                <Link
+                  href="/diagnostic"
+                  className="inline-flex items-center gap-2 rounded-md border border-foreground bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                >
+                  Start the Free Diagnostic →
+                </Link>
+              </div>
+            </div>
           </section>
         ) : (
           <>
@@ -224,49 +331,62 @@ export default async function BuildersDirectoryPage() {
               className="grid gap-4 sm:grid-cols-2"
               aria-label="Verified Builder directory"
             >
-              {builders.map((b) => (
-                <li key={b.builder_slug}>
-                  <Link
-                    href={`/builder/${b.builder_slug}`}
-                    className="block h-full rounded-2xl border bg-card p-6 transition-colors hover:border-foreground/40 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  >
-                    <article className="space-y-3">
-                      <div className="flex items-center gap-3">
-                        <span
-                          aria-hidden="true"
-                          className="flex h-10 w-10 items-center justify-center rounded-full border bg-background text-sm font-semibold uppercase"
-                        >
-                          {initials(b.builder_name)}
-                        </span>
-                        <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground">
-                          <CheckCircle2
-                            className="h-3 w-3 text-foreground"
+              {ranked.map((b) => {
+                const isFoundingCohort =
+                  b.serial <= FOUNDING_COHORT_SERIAL_CAP;
+                return (
+                  <li key={b.builder_slug}>
+                    <Link
+                      href={`/builder/${b.builder_slug}`}
+                      className="block h-full rounded-2xl border bg-card p-6 transition-colors hover:border-foreground/40 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    >
+                      <article className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <span
                             aria-hidden="true"
-                          />
-                          <span>Verified Builder</span>
+                            className="flex h-10 w-10 items-center justify-center rounded-full border bg-background text-sm font-semibold uppercase"
+                          >
+                            {initials(b.builder_name)}
+                          </span>
+                          <div className="flex flex-col gap-0.5">
+                            <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground">
+                              <CheckCircle2
+                                className="h-3 w-3 text-foreground"
+                                aria-hidden="true"
+                              />
+                              <span>
+                                Verified Builder {formatSerial(b.serial)}
+                              </span>
+                            </div>
+                            {isFoundingCohort ? (
+                              <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                                Founding cohort
+                              </span>
+                            ) : null}
+                          </div>
                         </div>
-                      </div>
 
-                      <h3 className="text-lg font-semibold leading-tight">
-                        {b.builder_name ?? "Verified Builder"}
-                      </h3>
+                        <h3 className="text-lg font-semibold leading-tight">
+                          {b.builder_name ?? "Verified Builder"}
+                        </h3>
 
-                      {b.product_name ? (
-                        <p className="text-sm text-muted-foreground">
-                          {b.product_name}
+                        {b.product_name ? (
+                          <p className="text-sm text-muted-foreground">
+                            {b.product_name}
+                          </p>
+                        ) : null}
+
+                        <p className="text-xs text-muted-foreground pt-2 border-t">
+                          First customer verified{" "}
+                          <span className="text-foreground">
+                            {formatDate(b.first_customer_at)}
+                          </span>
                         </p>
-                      ) : null}
-
-                      <p className="text-xs text-muted-foreground pt-2 border-t">
-                        First customer verified{" "}
-                        <span className="text-foreground">
-                          {formatDate(b.first_customer_at)}
-                        </span>
-                      </p>
-                    </article>
-                  </Link>
-                </li>
-              ))}
+                      </article>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </>
         )}
