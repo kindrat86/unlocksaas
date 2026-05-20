@@ -73,6 +73,7 @@ const PSEO_SLUG_ROOTS: ReadonlyArray<string> = [
   "/funnel-playbook",
   "/why-isnt-my",
   "/for",
+  "/launch-checklist",
 ];
 
 /**

@@ -9,6 +9,7 @@ import { GLOSSARY_SLUGS } from "@/lib/glossary";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
 import { STACK_SLUGS } from "@/lib/stacks";
+import { LAUNCH_CHECKLIST_SLUGS } from "@/lib/launch-checklists";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
@@ -482,6 +483,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/stack-for/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #8c — pre-revenue launch checklists by niche.
+    // Data source: src/lib/launch-checklists.ts (cross-checked against
+    // NICHE_SLUGS at module load – drift errors at build time). Targets
+    // intent-shaped queries like "how to launch [niche] saas" and
+    // "[cohort] pre-revenue checklist". Article + HowTo + FAQPage +
+    // BreadcrumbList JSON-LD per detail page; CollectionPage + ItemList
+    // on the hub. Priority slightly above /for/[slug] because launch
+    // checklists carry the conversion-optimised diagnostic CTA on every
+    // step's resolution.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/launch-checklist`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/launch-checklist`),
+    },
+    ...LAUNCH_CHECKLIST_SLUGS.map((slug) => ({
+      url: `${base}/launch-checklist/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/launch-checklist/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #9 — directional metric benchmarks (AEO).

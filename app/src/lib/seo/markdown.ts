@@ -144,6 +144,11 @@ import {
   type ConversionRateEntry,
   getConversionRateBySlug,
 } from "@/lib/conversion-rate";
+import {
+  LAUNCH_CHECKLIST_ENTRIES,
+  type LaunchChecklistEntry,
+  getLaunchChecklistBySlug,
+} from "@/lib/launch-checklists";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -2651,6 +2656,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const launchChecklists = LAUNCH_CHECKLIST_ENTRIES.map((e) => {
+    const canonical = `${BASE_URL}/launch-checklist/${e.slug}`;
+    const mirror = `${BASE_URL}/launch-checklist/${e.slug}/md`;
+    return [
+      `## Launch checklist for ${e.displayName}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildLaunchChecklistMarkdown(e).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -2699,6 +2719,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "",
     niches,
     "",
+    "# Launch Checklists – Pre-Revenue Founder Plans, Tuned per Cohort",
+    "",
+    launchChecklists,
+    "",
     citationFooter(BASE_URL),
   ].join("\n");
 }
@@ -2707,3 +2731,69 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
  * Concatenated llms-full.txt body. Pre-rendered at module load.
  */
 export const LLMS_FULL_BODY: string = buildLlmsFullBody();
+
+// --- Launch-checklist per-niche markdown -----------------------------------
+
+function buildLaunchChecklistMarkdown(e: LaunchChecklistEntry): string {
+  const steps = e.steps
+    .map(
+      (s, i) =>
+        `### ${i + 1}. ${s.title}\n\n_Bucket: ${s.bucket} · Time: ${
+          s.timeEstimate
+        }_\n\n${s.detail}`,
+    )
+    .join("\n\n");
+  const faqs = e.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# Launch checklist for ${e.displayName}
+
+> ${e.heroSubhead}
+
+## Who this checklist is for
+
+${e.whoThisIsFor}
+
+## The 10 ordered moves
+
+${steps}
+
+## How the buckets work
+
+- **Foundation** – hero, headline, cohort definition. Where the page either earns the next four seconds or loses the reader.
+- **Offer** – Stack, guarantee, pricing structure. What turns interested into ready-to-pay.
+- **Proof** – dated, named, specific evidence. What turns ready-to-pay into actually-paid.
+- **Traffic** – how the right cohort finds the page. Always after the page is rewritten, never before.
+- **Follow-up** – Soap Opera, Seinfeld, OTOs, post-purchase sequences. What turns one customer into compounding revenue.
+
+## FAQ
+
+${faqs}
+
+## Next step
+
+Run the free 90-second Launch Diagnostic on the rewritten page: ${BASE_URL}/diagnostic
+`;
+}
+
+/**
+ * Render a per-niche launch-checklist markdown body. Powers
+ * /launch-checklist/<slug>/md.
+ */
+export function renderLaunchChecklistMarkdown(
+  slug: string,
+): string | undefined {
+  const e = getLaunchChecklistBySlug(slug);
+  if (!e) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/launch-checklist/${e.slug}`;
+  return [
+    frontMatter({
+      title: `Launch checklist for ${e.displayName}`,
+      summary: e.heroSubhead,
+      canonical: canonicalUrl,
+      updated: e.lastVerified,
+    }),
+    buildLaunchChecklistMarkdown(e).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
