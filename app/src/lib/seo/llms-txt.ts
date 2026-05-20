@@ -150,6 +150,10 @@ One report per calendar year on the cohort no other indie SaaS publisher writes 
 
 Citation forms (plain-text, BibTeX, APA 7, MLA 9, Chicago author-date) live on each edition's page. Schema graph emits Report (Article subtype) + Dataset (when published) so Google Dataset Search and AI-overview pipelines see the report as both a research publication and a dataset publication.
 
+## State of UnlockSaaS snapshot – live monthly dashboard
+
+- [State of UnlockSaaS snapshot dashboard](${BASE_URL}/state-of-saas/snapshot): a monthly dated machine- and human-readable snapshot of every editorial signal the site exposes. Companion to the annual report editions at \`${BASE_URL}/state-of-saas/<year>\`: the annual report is the SO WHAT narrative; this snapshot is the live monthly numbers feed. Carries one schema.org \`Observation\` per signal under a \`DataFeed\` plus a parent \`Dataset\` block so Google Dataset Search, AI Overviews, and Perplexity-style retrievers can ingest the same dated facts in one fetch. Signals covered: programmatic SEO surface counts (glossary, benchmarks, funnel/pricing teardowns, comparisons, alternatives, answers, why-isn't-my, niches, funnel playbooks, categories, press topics), open-dataset row count, Brunson glossary depth, declared topical-expertise areas, mentioned third-party entities, off-platform sameAs anchor count, external dataset catalog cross-listing count, approved-locale translation count, earned-media mention count, and the shipped/operator/gated activation-state breakdown. Every value derives from a real importable constant in the repo; a build-time integrity gate refuses to start the server on a malformed row. Snapshot version is SemVer (currently v1.0.0); the next human-attested review is dated on the page itself. Open under CC-BY-4.0; cite freely.
+
 ## Public dataset (CC-BY-4.0)
 
 The five pSEO catalogs above ship as a single open, attribution-licensed bundle for researchers, indie founders, newsletter writers, and academics:

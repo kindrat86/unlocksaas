@@ -82,6 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/dont-buy-unlock-saas",
     "/four-indie-search-engines",
     "/state-of-saas",
+    "/state-of-saas/snapshot",
   ]);
   const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
     /^\/alternatives-to\/[^/]+$/,
@@ -870,6 +871,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.3,
     })),
+    // -------------------------------------------------------------------------
+    // State of UnlockSaaS snapshot – live monthly editorial dashboard.
+    //
+    // /state-of-saas/snapshot is the single dated machine- and human-
+    // readable citation surface for every editorial signal UnlockSaaS
+    // exposes: pSEO surface counts, Brunson glossary depth, dataset row
+    // counts, Knowledge-Graph anchor counts, locale coverage, earned-
+    // media count, and the shipped/operator/gated activation state of
+    // every surface. Carries Dataset + DataFeed + BreadcrumbList JSON-LD
+    // so Google Dataset Search and AI Overviews can ingest the same
+    // dated observations in one fetch.
+    //
+    // Companion to the annual report index at /state-of-saas (which
+    // lists per-year `State of Post-Launch Pre-Revenue SaaS` editions).
+    // The annual report is the SO WHAT narrative; this snapshot is the
+    // live monthly numbers feed.
+    //
+    // Priority 0.55 sits just above the /dataset bundle download URLs
+    // (0.5) and below the /dataset canonical landing (0.7) – the
+    // dashboard is a citable artifact in its own right, but the
+    // underlying dataset bundle remains the canonical research deliverable.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/state-of-saas/snapshot`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.55,
+      alternates: hreflang(`${base}/state-of-saas/snapshot`),
+    },
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers

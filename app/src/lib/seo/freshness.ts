@@ -221,6 +221,12 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
       "RSS 2.0 + iTunes namespace feed at /feed/podcast.rss mirrors every dataset milestone as a dated, attributed PodcastEpisode. Hub at /podcast, per-episode pages at /podcast/<slug>. Audio enclosures are per-episode env-gated (NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL); ships show-notes-only until a recorded audio asset exists.",
   },
   {
+    item: "state_of_saas_snapshot_dashboard",
+    state: "shipped",
+    note:
+      "/state-of-saas/snapshot live editorial snapshot dashboard – monthly dated DataFeed + Dataset JSON-LD covering pSEO surface counts, Brunson glossary depth, open-dataset row count, Knowledge-Graph anchors, locale coverage, earned-media count, and shipped/operator/gated activation breakdown. Companion to the annual report index at /state-of-saas. Build-time integrity gate enforces non-negative integer values, valid ISO dates, unique snake_case keys, https sourceUrls.",
+  },
+  {
     item: "quarterly_strategy_review",
     state: "shipped",
     note:

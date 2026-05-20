@@ -2255,3 +2255,199 @@ function buildGlossaryAudioJson(input: GlossaryAudioJsonLdInput): string {
 export function GlossaryAudioJsonLd(props: GlossaryAudioJsonLdInput) {
   return <JsonLdScript json={buildGlossaryAudioJson(props)} />;
 }
+
+/**
+ * State of UnlockSaaS dashboard schema. Emits two complementary JSON-LD
+ * blocks consumed by Google Dataset Search, AI Overviews, Perplexity-style
+ * retrievers, and any structured-data crawler that walks `@graph` edges:
+ *
+ *   1. `Dataset` – the dashboard itself as a citable artifact (stable
+ *      URL, SemVer version, CC-BY-4.0 license, identifier, citation,
+ *      keywords, creator/publisher/sourceOrganization linked via @id).
+ *      Dataset Search ranks it; AI Overviews cite it.
+ *
+ *   2. `DataFeed` – the stream of dated observations. Each observation
+ *      becomes a `DataFeedItem` whose `item` is a schema.org
+ *      `Observation` with `name`, `description`, `measuredProperty`,
+ *      `value`, `observationDate`, and an `isBasedOn` URL pointing at
+ *      the canonical surface where the value is independently
+ *      verifiable. The DataFeed shape is the schema.org-recommended
+ *      pattern for "a snapshot that updates on a cadence" – exactly
+ *      what /state-of-saas is.
+ *
+ * Pattern note: both blocks ship from this single component so callers
+ * cannot accidentally render one without the other. Dataset alone is a
+ * static-shaped artifact; DataFeed alone has no citable identity.
+ * Together they read as "this dataset is a feed; this feed has these
+ * dated observations" – the shape Knowledge Graph and Dataset Search
+ * jointly recognise.
+ *
+ * Brunson Hard-Rule reconciliation: the schema only emits what the
+ * upstream `state-of-saas` module passed validation for. The integrity
+ * gate in src/lib/state-of-saas.ts is the single point that guards
+ * against malformed rows (non-negative integers, valid ISO dates,
+ * unique snake_case keys, https sourceUrls); this builder trusts that
+ * upstream contract and renders verbatim.
+ */
+export type SnapshotObservationLd = {
+  /** snake_case stable key, e.g. `glossary_terms`. */
+  key: string;
+  /** Category bucket, used for `additionalType` on the Observation. */
+  category: string;
+  /** Short human-readable label for the metric. */
+  label: string;
+  /** The measured value. */
+  value: number;
+  /** Plain-text unit, e.g. "pages", "terms". */
+  unit: string;
+  /** Sentence-form description. */
+  description: string;
+  /** Canonical URL where the value can be verified. */
+  sourceUrl?: string;
+  /** ISO 8601 date the value was current as of. */
+  asOf: string;
+};
+
+export type SnapshotJsonLdInput = {
+  /** Canonical URL of the dashboard surface, e.g. https://unlocksaas.com/state-of-saas. */
+  url: string;
+  /** Display name. */
+  name: string;
+  /** Long-form description. */
+  description: string;
+  /** SemVer version string. */
+  version: string;
+  /** ISO date the snapshot was last verified end-to-end by a human. */
+  lastVerified: string;
+  /** ISO date the next scheduled review is due. */
+  nextReview: string;
+  /** Plain-text citation string. */
+  citation: string;
+  /** Top-level keywords for cross-catalog retrieval. */
+  keywords: ReadonlyArray<string>;
+  /** Stable, version-pinned identifier. */
+  primaryIdentifier: string;
+  /** License URL (CC-BY-4.0). */
+  licenseUrl: string;
+  /** Markdown mirror URL. */
+  markdownUrl: string;
+  /** Ordered observation rows from SNAPSHOT_OBSERVATIONS. */
+  observations: ReadonlyArray<SnapshotObservationLd>;
+};
+
+function buildSnapshotDatasetJson(input: SnapshotJsonLdInput): string {
+  // Distinct variable names (one per observation key) – Dataset Search
+  // reads `variableMeasured` as the retrieval anchor for "what does
+  // this dataset measure" queries.
+  const variableMeasured = input.observations.map((o) => ({
+    "@type": "PropertyValue" as const,
+    name: o.label,
+    propertyID: o.key,
+    unitText: o.unit,
+    description: o.description,
+  }));
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${input.url}#dataset`,
+    name: input.name,
+    description: input.description,
+    url: input.url,
+    sameAs: [input.url],
+    identifier: input.primaryIdentifier,
+    version: input.version,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: input.licenseUrl,
+    creator: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    sourceOrganization: { "@id": ID.organization },
+    citation: input.citation,
+    keywords: input.keywords.join(", "),
+    variableMeasured,
+    dateModified: input.lastVerified,
+    datePublished: input.lastVerified,
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/html",
+        contentUrl: input.url,
+        name: `${input.name} (HTML dashboard)`,
+      },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "text/markdown",
+        contentUrl: input.markdownUrl,
+        name: `${input.name} (Markdown summary)`,
+      },
+    ],
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "nextScheduledReview",
+        value: input.nextReview,
+      },
+      {
+        "@type": "PropertyValue",
+        name: "observationCount",
+        value: String(input.observations.length),
+      },
+    ],
+    spatialCoverage: { "@type": "Place", name: "Worldwide" },
+    temporalCoverage: `${input.lastVerified}/..`,
+  });
+}
+
+function buildSnapshotDataFeedJson(input: SnapshotJsonLdInput): string {
+  // Each observation becomes one DataFeedItem whose `item` is a
+  // schema.org Observation. The Observation links back to the source
+  // URL via `isBasedOn` and carries the value as a PropertyValue.
+  const dataFeedElement = input.observations.map((o) => ({
+    "@type": "DataFeedItem" as const,
+    dateCreated: o.asOf,
+    dateModified: o.asOf,
+    item: {
+      "@type": "Observation",
+      "@id": `${input.url}#obs-${o.key}`,
+      name: o.label,
+      description: o.description,
+      observationDate: o.asOf,
+      measuredProperty: o.key,
+      additionalType: o.category,
+      value: o.value,
+      unitText: o.unit,
+      inLanguage: "en-US",
+      about: { "@id": ID.organization },
+      ...(o.sourceUrl ? { isBasedOn: o.sourceUrl } : {}),
+    },
+  }));
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "DataFeed",
+    "@id": `${input.url}#datafeed`,
+    name: input.name,
+    description: input.description,
+    url: input.url,
+    inLanguage: "en-US",
+    isBasedOn: { "@id": `${input.url}#dataset` },
+    creator: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    sourceOrganization: { "@id": ID.organization },
+    license: input.licenseUrl,
+    keywords: input.keywords.join(", "),
+    dateModified: input.lastVerified,
+    datePublished: input.lastVerified,
+    dataFeedElement,
+  });
+}
+
+export function SnapshotJsonLd(props: SnapshotJsonLdInput) {
+  return (
+    <>
+      <JsonLdScript json={buildSnapshotDatasetJson(props)} />
+      <JsonLdScript json={buildSnapshotDataFeedJson(props)} />
+    </>
+  );
+}
