@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
+import { FounderMemoryBanner } from "@/components/founder-memory-banner";
 
 
 // Cache Components: Supabase auth + verified_conversions reads are
@@ -55,6 +56,12 @@ async function PlaybookDashboardBody() {
 
   return (
     <div className="max-w-2xl space-y-6">
+      {userData?.user && (
+        <FounderMemoryBanner
+          userId={userData.user.id}
+          email={userData.user.email ?? null}
+        />
+      )}
       {verified && (
         <Card className="border-primary/50 bg-primary/5">
           <CardContent className="pt-6">

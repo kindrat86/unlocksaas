@@ -21,6 +21,7 @@ import {
   verifyDeliverableEmail,
   isPreVerifiedSource,
 } from "@/lib/email-verification";
+import { writeFounderMemoryAfter } from "@/lib/founder-memory";
 
 /**
  * Free Diagnostic submission endpoint.
@@ -364,6 +365,26 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (data?.id) {
+    // Persistent founder memory – fire-and-forget. Hydrates founder_memory
+    // from the deep-analysis findings so every downstream surface (dashboard,
+    // onboarding, future chat sidebar) reads from the same blob instead of
+    // re-asking intake. Never blocks the response; failures are logged.
+    if (diagnosis.label !== "error") {
+      writeFounderMemoryAfter({
+        leadId: data.id as string,
+        email,
+        findings: diagnosis as DeepDiagnosticResult,
+        productUrl,
+        stage: survey
+          ? {
+              time_since_launch: survey.time_since_launch,
+              recent_revenue: survey.recent_revenue,
+              biggest_attempt: survey.biggest_attempt,
+            }
+          : null,
+        bucket: bucket === "error" ? null : bucket,
+      });
+    }
     return NextResponse.json({ id: data.id });
   }
 

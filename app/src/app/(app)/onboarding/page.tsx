@@ -8,6 +8,7 @@ import {
   getCommunityCardState,
   type CommunityCardState,
 } from "@/lib/community";
+import { FounderMemoryBanner } from "@/components/founder-memory-banner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -153,6 +154,14 @@ async function OnboardingBody({
           message="The invite resend did not go through. Reply to the welcome email and Maryan will send it manually."
         />
       ) : null}
+
+      {/* Persistent founder memory – pulls the founder's last diagnostic so
+          onboarding never re-asks the questions the diagnostic already
+          answered. Renders nothing when no memory exists. */}
+      <FounderMemoryBanner
+        userId={data.user.id}
+        email={data.user.email ?? null}
+      />
 
       <ClockCard status={status} />
       <CarryoverCard status={status} />

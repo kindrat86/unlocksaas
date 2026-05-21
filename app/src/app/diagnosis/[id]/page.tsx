@@ -225,6 +225,11 @@ async function PublicDiagnosisBody({
           had handed him. No card, no spam, one short note a day for five days
           after you run yours.
         </p>
+        <p className="text-xs text-muted-foreground mt-4 text-center leading-relaxed">
+          When this founder ran the diagnostic, it landed in their founder
+          memory – every later surface in Unlock SaaS picks up where this
+          leaves off.
+        </p>
       </div>
     </div>
   );

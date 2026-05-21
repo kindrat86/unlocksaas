@@ -488,6 +488,11 @@ function BridgePage({ row }: { row: LeadRow }) {
         The diagnosis is also in your inbox. Reply if you want me to look at it
         personally.
       </p>
+      <p className="text-xs text-muted-foreground mt-2 text-center print:hidden">
+        This diagnosis is now in your founder memory. Every future surface –
+        onboarding, the Playbook dashboard, the chat sidebar – will pick up
+        where this leaves off.
+      </p>
       {/* Print-only footer attribution — shows up in the saved PDF so the
           artifact carries its source when a founder shares the file. */}
       <p className="hidden print:block mt-10 text-center text-xs text-muted-foreground">
