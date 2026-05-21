@@ -49,6 +49,24 @@ export type BiggestAttempt =
   | "customer_conversations"
   | "nothing_yet";
 
+// Quiz expansion (2026-05-21). Three orthogonal segmenting signals that
+// drive the per-answer variant resolver in lib/diagnostic-variants.ts.
+// All three are nullable at the API edge — legacy callers still work.
+export type PrimaryGoal =
+  | "first_customer"
+  | "replace_income"
+  | "scale_revenue"
+  | "validate_pmf"
+  | "build_audience";
+export type HoursPerWeek = "under_5" | "five_to_fifteen" | "fifteen_plus";
+export type BiggestFear =
+  | "wrong_audience"
+  | "no_distribution"
+  | "not_ready"
+  | "ad_waste"
+  | "not_expert"
+  | "none";
+
 export const TIME_VALUES: readonly TimeSinceLaunch[] = [
   "under_30",
   "30_to_90",
@@ -67,11 +85,37 @@ export const ATTEMPT_VALUES: readonly BiggestAttempt[] = [
   "customer_conversations",
   "nothing_yet",
 ] as const;
+export const PRIMARY_GOAL_VALUES: readonly PrimaryGoal[] = [
+  "first_customer",
+  "replace_income",
+  "scale_revenue",
+  "validate_pmf",
+  "build_audience",
+] as const;
+export const HOURS_PER_WEEK_VALUES: readonly HoursPerWeek[] = [
+  "under_5",
+  "five_to_fifteen",
+  "fifteen_plus",
+] as const;
+export const BIGGEST_FEAR_VALUES: readonly BiggestFear[] = [
+  "wrong_audience",
+  "no_distribution",
+  "not_ready",
+  "ad_waste",
+  "not_expert",
+  "none",
+] as const;
 
 export type SurveyAnswers = {
   time_since_launch: TimeSinceLaunch;
   recent_revenue: RecentRevenue;
   biggest_attempt: BiggestAttempt;
+  // Quiz expansion fields are optional so the API still accepts the
+  // legacy 3-question shape. assignBucket() ignores them; the variant
+  // resolver consumes them when present.
+  primary_goal?: PrimaryGoal | null;
+  hours_per_week?: HoursPerWeek | null;
+  biggest_fear?: BiggestFear | null;
 };
 
 export type Bucket =
@@ -202,6 +246,24 @@ export function isRecentRevenue(v: unknown): v is RecentRevenue {
 export function isBiggestAttempt(v: unknown): v is BiggestAttempt {
   return (
     typeof v === "string" && (ATTEMPT_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isPrimaryGoal(v: unknown): v is PrimaryGoal {
+  return (
+    typeof v === "string" &&
+    (PRIMARY_GOAL_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isHoursPerWeek(v: unknown): v is HoursPerWeek {
+  return (
+    typeof v === "string" &&
+    (HOURS_PER_WEEK_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isBiggestFear(v: unknown): v is BiggestFear {
+  return (
+    typeof v === "string" &&
+    (BIGGEST_FEAR_VALUES as readonly string[]).includes(v)
   );
 }
 
@@ -807,18 +869,72 @@ function validateDeep(parsed: unknown): DeepDiagnosticResult {
   };
 }
 
+/**
+ * Build the optional "Founder context" block we append to the deep-analysis
+ * prompt when the quiz-expansion fields are present. The LLM uses this to
+ * tune (a) the plan emphasis (distribution-first / ship-imperfect / etc.)
+ * and (b) the headline framing so the deliverables align with the variant
+ * preface the result page renders. Pure string builder — returns "" when
+ * no signal is present so the legacy code path is byte-identical.
+ */
+function buildFounderContext(survey: SurveyAnswers | null | undefined): string {
+  if (!survey) return "";
+  const lines: string[] = [];
+  if (survey.primary_goal) {
+    const goalLabels: Record<PrimaryGoal, string> = {
+      first_customer: "first paying customer in the next 60 days",
+      replace_income: "replace day-job income",
+      scale_revenue: "scale revenue past where it is now",
+      validate_pmf: "validate product-market fit",
+      build_audience: "build an audience before monetizing",
+    };
+    lines.push(`- Stated goal: ${goalLabels[survey.primary_goal]}.`);
+  }
+  if (survey.hours_per_week) {
+    const hoursLabels: Record<HoursPerWeek, string> = {
+      under_5: "under 5",
+      five_to_fifteen: "5 to 15",
+      fifteen_plus: "15 or more",
+    };
+    lines.push(
+      `- Hours per week available: ${hoursLabels[survey.hours_per_week]}. Scale deliverables to fit; do not over-schedule.`,
+    );
+  }
+  if (survey.biggest_fear && survey.biggest_fear !== "none") {
+    const fearGuidance: Record<Exclude<BiggestFear, "none">, string> = {
+      wrong_audience:
+        "Front-load named-customer conversations. The plan must produce one named buyer by end of week 2.",
+      no_distribution:
+        "Treat distribution as the first deliverable, not the last. Week 1 ships the smallest distribution loop; weeks 2-4 sharpen the offer the loop sends traffic to.",
+      not_ready:
+        "Assume shipped beats perfect. Shrink the offer to the smallest thing one named buyer would pay for in week 1.",
+      ad_waste:
+        "No paid deliverables until week 4, and only if the offer has converted at least one organic customer first.",
+      not_expert:
+        "Build credibility surface in parallel. Each week ships one public artifact under the founder's own name.",
+    };
+    lines.push(`- Biggest fear: ${survey.biggest_fear}. ${fearGuidance[survey.biggest_fear]}`);
+  }
+  if (lines.length === 0) return "";
+  return `\n\nFOUNDER CONTEXT (use to tune plan_30_day deliverables; do NOT echo verbatim):\n${lines.join("\n")}`;
+}
+
 export async function deepAnalyzePageText(
   url: string,
   pageText: string,
+  surveyContext?: SurveyAnswers | null,
 ): Promise<DeepDiagnosticResult> {
+  const founderContext = buildFounderContext(surveyContext);
   const { text } = await generateText({
     model: model,
     maxOutputTokens: 4096,
     system: DEEP_SYSTEM,
-    prompt: `URL submitted: ${url}
+    prompt: `${founderContext}
+
+URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
-${pageText}
+${pageText}${founderContext}
 
 Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
   });
@@ -852,9 +968,16 @@ Run the deep analysis now. Respond with ONLY the JSON object. No text before or 
  * End-to-end deep analysis: validate URL, fetch, strip, deep-analyze.
  * Throws a `DiagnosticError`-shaped object on failure (same shape as
  * classifyUrl, so the route's error path stays uniform).
+ *
+ * The optional `surveyContext` is the quiz-funnel-expansion signal block
+ * (primary_goal / hours_per_week / biggest_fear) that tunes plan_30_day
+ * deliverables to match the variant preface rendered on the result page.
+ * When omitted or null the prompt is byte-identical to the legacy version,
+ * so the existing single-arg callers continue to work unchanged.
  */
 export async function deepAnalyzeUrl(
   rawUrl: string,
+  surveyContext?: SurveyAnswers | null,
 ): Promise<DeepDiagnosticResult> {
   const url = normalizeUrl(rawUrl);
   if (!url) {
@@ -897,7 +1020,7 @@ export async function deepAnalyzeUrl(
   }
 
   try {
-    return await deepAnalyzePageText(url.toString(), text);
+    return await deepAnalyzePageText(url.toString(), text, surveyContext);
   } catch (e) {
     const reason = e instanceof Error ? e.message : "unknown";
     const err: DiagnosticError = {
