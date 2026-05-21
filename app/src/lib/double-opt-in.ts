@@ -44,7 +44,7 @@ export const FUNNEL_TABLES: Record<FunnelList, string> = {
 
 /** Human-friendly label used in the confirmation email body. */
 export const FUNNEL_LABELS: Record<FunnelList, string> = {
-  soap_opera: "the 5-email founder breakdown series",
+  soap_opera: "the founder breakdown series",
   seinfeld: "the UnlockSaaS nurture sequence",
   challenge: "the 14-day Unstuck Sprint",
   founding: "the Founding Cohort waitlist",
