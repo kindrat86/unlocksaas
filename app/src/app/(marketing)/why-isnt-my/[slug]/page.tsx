@@ -152,10 +152,48 @@ function buildJsonLd(
     ],
   };
 
+  // QAPage: the page IS the answer to one canonical founder question.
+  // Distinct from the sibling FAQPage above – the FAQPage carries the
+  // PAA follow-ups (3-5 supporting Q+A pairs); the QAPage carries the
+  // single primary Q+A that this URL exists to answer.
+  //
+  // LLM citation pipelines (Perplexity, ChatGPT, Claude, Google AI Mode)
+  // preferentially cite QAPage-typed surfaces for direct-answer queries.
+  // FAQPage is the citation surface for ancillary "people also ask" hits.
+  // Shipping both on the same URL is the documented schema.org pattern.
+  const qaPage = {
+    "@context": "https://schema.org",
+    "@type": "QAPage",
+    "@id": `${canonicalUrl}#qa`,
+    url: canonicalUrl,
+    inLanguage: "en-US",
+    mainEntity: {
+      "@type": "Question",
+      name: `Why isn't my ${e.element} converting?`,
+      text: `Why isn't my ${e.element} converting?`,
+      author: { "@id": ID.person },
+      dateCreated: e.lastVerified,
+      answerCount: 1 + e.diagnoses.length,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: e.tldr,
+        author: { "@id": ID.person },
+        dateCreated: e.lastVerified,
+      },
+      suggestedAnswer: e.diagnoses.map((d) => ({
+        "@type": "Answer",
+        text: `${d.label}: ${d.appearance} Fix to try this week: ${d.fix}`,
+        author: { "@id": ID.person },
+        dateCreated: e.lastVerified,
+      })),
+    },
+  };
+
   return [
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
+    JSON.stringify(qaPage),
   ];
 }
 
@@ -178,7 +216,7 @@ export default async function WhyIsntMyDetailPage(props: {
   const canonicalUrl = `${BASE_URL}/why-isnt-my/${e.slug}`;
   const paaPairs = paaForWhyIsntMy(e);
   const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
-  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+  const [articleJson, faqJson, breadcrumbJson, qaJson] = buildJsonLd(
     e,
     canonicalUrl,
     mergedFaqs,
@@ -193,6 +231,7 @@ export default async function WhyIsntMyDetailPage(props: {
 
   return (
     <article className="min-h-screen">
+      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
