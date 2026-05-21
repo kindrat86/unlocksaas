@@ -94,7 +94,42 @@ export default function robots(): MetadataRoute.Robots {
     "/oto",
     "/welcome",
     "/onboarding",
+    // Affiliate-tracking redirects (2026-05-21 GSC audit fix).
+    // /r/<code> 302-redirects to /diagnostic with attribution params.
+    // Verified Builders share these on social + their own founder sites,
+    // so Googlebot discovers them via backlinks even though we never link
+    // to them from owned surfaces. Without this Disallow they appear as
+    // "Page with redirect" in Search Console — every affiliate code Google
+    // crawls is one indexing-budget waste, and the redirect chain ends at
+    // /diagnostic anyway (which is the canonical landing surface and
+    // already indexed). Blocking /r/* applies to EVERY crawler (web + AI)
+    // because affiliate redirects carry no editorial content for any
+    // retriever — they're a UTM-attribution mechanism, not a citable page.
+    "/r/",
   ];
+
+  // Web-search-only disallow (Googlebot, Bingbot, etc.) — kept SEPARATE
+  // from PRIVATE_DISALLOW_CANONICAL because these paths are first-class
+  // discovery surfaces for AI retrievers and must NOT be blocked under the
+  // AI / indie-search user-agent rules below.
+  //
+  // /*.md (2026-05-21 GSC audit fix):
+  //   Every pSEO HTML page advertises its markdown mirror via
+  //     <link rel="alternate" type="text/markdown" href="/foo.md" />
+  //   Googlebot follows alternate links during discovery and crawls /foo.md,
+  //   which serves the SAME body content with a Link: rel="canonical"
+  //   pointing back to /foo (the HTML page). Google then reports it as
+  //   "Alternative page with proper canonical tag" — accurate but wasted
+  //   crawl budget. The markdown mirror exists for AI retrievers
+  //   (Perplexity, Claude, GPT, AI Overviews via Google-Extended which is
+  //   distinct from Googlebot's web index) discovered via /llms.txt, not
+  //   for the HTML web index. Web crawlers see /foo (HTML); AI crawlers
+  //   see /foo.md (same content, machine-friendlier shape).
+  //
+  // robots.txt wildcard semantics per RFC 9309 §2.2.2: `/*.md` matches any
+  // URL path containing `.md`. Trailing `$` anchors end-of-URL so we don't
+  // accidentally block `/foo.md.html` (none exist, but defence-in-depth).
+  const WEB_INDEX_ONLY_DISALLOW_CANONICAL = ["/*.md$"];
 
   // Locales with at least one approved translation get their private
   // subtree mirrored. Locales with zero approved content are NOT mentioned
@@ -185,10 +220,18 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       // ─── Default policy (Googlebot, Bingbot, every long-tail crawler) ────
+      // PRIVATE_DISALLOW + WEB_INDEX_ONLY: the web-index disallow is added
+      // here only, NOT under the AI / indie blocks below, because /*.md is
+      // the AI-retriever discovery surface for those user-agents. Googlebot
+      // (the web crawler, distinct from Google-Extended which is in
+      // AI_USER_AGENTS) follows <link rel="alternate" type="text/markdown">
+      // during HTML crawl, lands on /foo.md, and reports it as "Alternative
+      // page with proper canonical tag" in Search Console — blocking here
+      // breaks the discovery → flag loop without affecting AEO citations.
       {
         userAgent: "*",
         allow: "/",
-        disallow: PRIVATE_DISALLOW,
+        disallow: [...PRIVATE_DISALLOW, ...WEB_INDEX_ONLY_DISALLOW_CANONICAL],
       },
       // ─── AI-crawler explicit allow-list ──────────────────────────────────
       // One rule entry per user-agent so the Allow/Disallow pair is

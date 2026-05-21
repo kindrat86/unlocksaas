@@ -329,6 +329,16 @@ const nextConfig = {
       "/builder/:slug/oembed.json",
       "/builder/:slug/opengraph-image",
       "/builder/:slug/opengraph-image.png",
+      // Affiliate-tracking redirect (2026-05-21 GSC audit fix).
+      // /r/<code> 302-redirects to /diagnostic with attribution params.
+      // X-Robots-Tag mirrors the robots.ts Disallow as defence-in-depth:
+      // even if Googlebot ignores robots.txt for an already-indexed URL,
+      // the noindex header forces de-indexing on next crawl. Without this
+      // header the /r/<code> URLs appear in Search Console as
+      // "Page with redirect" issues (Googlebot follows external backlinks
+      // posted by Verified Builders on social, lands on the 302, and
+      // catalogues the redirect target as an indexing issue).
+      "/r/:code",
     ];
 
     return [
