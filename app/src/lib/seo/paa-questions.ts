@@ -46,6 +46,7 @@ import type { PricingTeardown } from "@/lib/pricing-teardowns";
 import type { FunnelPlaybookEntry } from "@/lib/funnel-playbooks";
 import type { NicheEntry } from "@/lib/niches";
 import type { WhyIsntMyEntry } from "@/lib/why-isnt-my";
+import type { SwipeFileEntry } from "@/lib/swipe-files";
 import type { Locale } from "@/lib/i18n/locales";
 
 /** A canonical PAA question/answer pair. Identical shape to existing FAQ entries. */
@@ -304,6 +305,20 @@ export function paaForFunnelPlaybook(p: FunnelPlaybookEntry): PaaPair[] {
     {
       q: `Where does a ${lower} sit on the value ladder?`,
       a: p.ladderPosition,
+    },
+  ];
+}
+
+export function paaForSwipeFile(s: SwipeFileEntry): PaaPair[] {
+  return [
+    { q: `What is a ${s.element} swipe file?`, a: s.tldr },
+    {
+      q: `When should I rewrite my ${s.element}?`,
+      a: s.whenToUse,
+    },
+    {
+      q: `When is the ${s.element} not the right thing to fix?`,
+      a: s.whenNotToUse,
     },
   ];
 }
