@@ -35,7 +35,7 @@
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { streamText } from "ai";
-import { model } from "@/lib/anthropic";
+import { model, MODEL_ID } from "@/lib/anthropic";
 
 export const FIRST_WIN_AGENT_KIND = "first_win_starter" as const;
 
@@ -387,7 +387,7 @@ export async function persistFirstWinRun(
       },
       output,
       duration_ms: durationMs,
-      model: MODEL,
+      model: MODEL_ID,
     })
     .select("id")
     .maybeSingle();
