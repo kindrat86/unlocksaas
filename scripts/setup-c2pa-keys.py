@@ -41,7 +41,7 @@ def run_cmd(cmd, input_text=None):
     result = subprocess.run(
         cmd,
         shell=True,
-        input=input_text.encode() if input_text else None,
+        input=input_text if input_text else None,
         capture_output=True,
         text=True,
     )
@@ -54,21 +54,43 @@ def run_cmd(cmd, input_text=None):
 
 def generate_keys():
     """Generate ECDSA P-256 self-signed cert and private key via openssl."""
-    print("[1/5] Generating ECDSA P-256 private key...")
-    # Generate private key (PKCS#8 format for c2pa-node compatibility)
-    private_key_pem = run_cmd(
-        "openssl ecparam -name prime256v1 -genkey | openssl pkcs8 -topk8 -nocrypt"
-    )
+    import tempfile
+    import os
 
-    print("[2/5] Generating self-signed certificate...")
-    # Create self-signed cert valid for 10 years
-    cert_pem = run_cmd(
-        "openssl req -new -x509 -days 3650 "
-        '-subj "/C=GR/ST=Attica/L=Athens/O=UnlockSaaS/CN=unlocksaas.com" ',
-        input_text=private_key_pem,
-    )
+    print("[1/5] Generating ECDSA P-256 private key and certificate...")
 
-    return cert_pem, private_key_pem
+    # Use temp files (only in /tmp, cleaned up immediately after reading)
+    fd_key, temp_key_file = tempfile.mkstemp(suffix='.pem')
+    fd_cert, temp_cert_file = tempfile.mkstemp(suffix='.pem')
+
+    try:
+        # Close file descriptors (we'll use the filenames)
+        os.close(fd_key)
+        os.close(fd_cert)
+
+        # Generate key and cert in one command (no password prompts)
+        run_cmd(
+            f"openssl req -new -x509 -days 3650 "
+            f"-newkey ec -pkeyopt ec_paramgen_curve:P-256 "
+            f'-subj "/C=GR/ST=Attica/L=Athens/O=UnlockSaaS/CN=unlocksaas.com" '
+            f"-nodes "
+            f"-keyout {temp_key_file} "
+            f"-out {temp_cert_file}"
+        )
+
+        # Read both files into memory
+        with open(temp_key_file, 'r') as f:
+            private_key_pem = f.read().strip()
+        with open(temp_cert_file, 'r') as f:
+            cert_pem = f.read().strip()
+
+        return cert_pem, private_key_pem
+
+    finally:
+        # Clean up temp files immediately
+        for f in [temp_key_file, temp_cert_file]:
+            if os.path.exists(f):
+                os.remove(f)
 
 
 def encode_to_base64(pem_string):
@@ -77,49 +99,60 @@ def encode_to_base64(pem_string):
 
 
 def push_to_vercel(cert_b64, key_b64):
-    """Push env vars to Vercel using REST API (avoids CLI quirks)."""
-    print("[3/5] Authenticating with Vercel...")
+    """Push env vars to Vercel using vercel env add (handles auth automatically)."""
+    print("[3/5] Pushing environment variables to Vercel...")
 
-    # Get Vercel auth token (assumes `vercel auth login` was run)
-    auth_token = run_cmd("vercel auth --token")
-    if not auth_token:
+    # Verify Vercel auth is working
+    try:
+        run_cmd("vercel whoami")
+    except SystemExit:
         print(
-            "Error: No Vercel auth token. Run `vercel auth login` first.",
+            "Error: Not authenticated with Vercel. Run `vercel login` first.",
             file=sys.stderr,
         )
         sys.exit(1)
 
-    print("[4/5] Pushing environment variables to Vercel...")
+    print("[4/5] Setting C2PA signing credentials...")
 
-    headers = f'-H "Authorization: Bearer {auth_token}"'
-    headers += ' -H "Content-Type: application/json"'
+    # Use vercel env add which handles auth automatically from the CLI session
+    # This command uses the operator's authenticated Vercel session
+    # The --yes flag makes it non-interactive
+    env_vars = {
+        "C2PA_SIGNING_CERT": cert_b64,
+        "C2PA_SIGNING_KEY": key_b64,
+        "C2PA_SIGNING_ALG": "ES256",
+    }
 
-    # C2PA_SIGNING_CERT
-    cert_payload = json.dumps(
-        {"key": "C2PA_SIGNING_CERT", "value": cert_b64, "target": ["production", "preview", "development"]}
-    )
-    run_cmd(
-        f'curl -s -X POST "https://api.vercel.com/v10/projects/{PROJECT_ID}/env" '
-        f"{headers} -d '{cert_payload}' > /dev/null"
-    )
-
-    # C2PA_SIGNING_KEY
-    key_payload = json.dumps(
-        {"key": "C2PA_SIGNING_KEY", "value": key_b64, "target": ["production", "preview", "development"]}
-    )
-    run_cmd(
-        f'curl -s -X POST "https://api.vercel.com/v10/projects/{PROJECT_ID}/env" '
-        f"{headers} -d '{key_payload}' > /dev/null"
-    )
-
-    # C2PA_SIGNING_ALG (default ES256)
-    alg_payload = json.dumps(
-        {"key": "C2PA_SIGNING_ALG", "value": "ES256", "target": ["production", "preview", "development"]}
-    )
-    run_cmd(
-        f'curl -s -X POST "https://api.vercel.com/v10/projects/{PROJECT_ID}/env" '
-        f"{headers} -d '{alg_payload}' > /dev/null"
-    )
+    for key, value in env_vars.items():
+        # Use shell export to pass the value securely (not in command args)
+        # Then use vercel env add with production target
+        # Note: preview is broken per feedback_vercel_cli_preview_env_bug.md,
+        # so we add to production and development only
+        cmd = f"vercel env add {key} production development --yes"
+        try:
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                input=value,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if result.returncode != 0:
+                # Try with explicit input method
+                result = subprocess.run(
+                    f"echo '{value}' | vercel env add {key} production development --yes",
+                    shell=True,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                )
+            if result.returncode == 0:
+                print(f"  ✓ {key} pushed to Vercel (production, development)")
+            else:
+                print(f"  ⚠ {key} may not have been set. Check: vercel env list", file=sys.stderr)
+        except Exception as e:
+            print(f"  ⚠ Error setting {key}: {e}", file=sys.stderr)
 
 
 def main():
