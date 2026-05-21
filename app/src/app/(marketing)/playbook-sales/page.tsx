@@ -126,6 +126,16 @@ export const metadata: Metadata = {
  * description + canonical, not the layout-template fallback).
  */
 export default async function PlaybookSalesPage() {
+  "use cache";
+  // Cache the rendered page shell for 1 day with 1-week expiry.
+  // Safe because: the only dynamic data read is getVerifiedBadgeCount(), which
+  // is itself 'use cache' + tagged with 'verified-builder-count'. When a new
+  // Verified Builder is added, revalidateTag('verified-builder-count') is called
+  // via the webhook at /api/webhooks/revalidate-badges, which invalidates both
+  // the count function cache AND this page cache in a single round-trip.
+  // No cookies, headers, or searchParams are read at this level.
+  cacheLife("days");
+  cacheTag("playbook-sales-page");
   // Stripe-verified, public-shared Verified Builder count. Drives the
   // AggregateRating sub-graph on the SoftwareApplication schema below.
   // Read via the service-role admin client (the same client every other
