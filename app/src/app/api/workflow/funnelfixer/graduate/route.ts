@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resumeHook } from "workflow/api";
+import { resumeHook } from "@/lib/workflow-stub";
 
 /**
  * POST /api/workflow/funnelfixer/graduate

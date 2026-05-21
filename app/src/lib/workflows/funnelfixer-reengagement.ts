@@ -20,7 +20,7 @@
  * for backward-compat with the monitoring dashboard at /api/monitoring/funnelfixer-status.
  */
 
-import { sleep, createHook, FatalError } from "workflow";
+import { sleep, createHook, FatalError } from "@/lib/workflow-stub";
 import { createAdminClient } from "@/lib/supabase/server";
 import { sendNextAndAdvance, type DueRow } from "@/lib/soap-opera/dispatch";
 import { sendTestimonialFarmOffer } from "@/lib/testimonial-farm/dispatch";

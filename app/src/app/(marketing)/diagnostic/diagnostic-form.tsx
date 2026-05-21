@@ -421,29 +421,46 @@ export function DiagnosticForm({
 
       // Early-validation failures (bad email syntax, bad URL) come back as
       // a JSON envelope instead of an NDJSON stream. Detect via content-type.
+      // The JSON envelope can also carry an already_used signal pointing the
+      // visitor at their prior diagnostic instead of re-running.
       const contentType = res.headers.get("content-type") ?? "";
+      // Hoisted so the already_used branch below (left over from the pre-
+      // streaming JSON-only shape) still type-checks. When the response is
+      // an NDJSON stream this stays undefined and the orphaned branch is a
+      // no-op — fix-up TODO for the streaming-diagnostic author.
+      let body:
+        | {
+            error?: string;
+            already_used?: boolean;
+            id?: string;
+            previous_url?: string | null;
+          }
+        | undefined;
       if (!contentType.includes("ndjson")) {
-        const body = (await res.json().catch(() => ({}))) as {
-          error?: string;
-        };
-        setErrors({
-          form:
-            body.error ||
-            "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
-        });
-        setStreaming(false);
-        setSubmitting(false);
-        return;
+        body = (await res.json().catch(() => ({}))) as typeof body;
+        if (body?.already_used) {
+          // Fall through to the already_used branch below so the prior
+          // behaviour is preserved (analytics + UI flip).
+        } else {
+          setErrors({
+            form:
+              body?.error ||
+              "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
+          });
+          setStreaming(false);
+          setSubmitting(false);
+          return;
+        }
       }
 
-      if (body.already_used) {
+      if (body?.already_used) {
         track(Event.DiagnosticFormSubmitted, {
           step_completed: TOTAL_STEPS,
           already_used: true,
           email_domain: state.email.trim().split("@")[1] ?? null,
         });
         setAlreadyUsed({
-          existingId: body.id,
+          existingId: body.id ?? "",
           previousUrl: body.previous_url ?? null,
         });
         setSubmitting(false);

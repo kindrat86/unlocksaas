@@ -30,6 +30,26 @@ const nextConfig = {
     return config;
   },
 
+  /**
+   * Empty turbopack stub – Next 16 Turbopack-aware acknowledgement.
+   *
+   * Without this declaration, `next build` errors with:
+   *   "This build is using Turbopack, with a `webpack` config and no
+   *    `turbopack` config. This may be a mistake."
+   *
+   * Next 16 enables Turbopack by default. Our `webpack` override above is
+   * still required for fallback codepaths (some local dev tooling, the
+   * eventual `--webpack` opt-out, plugins that auto-wrap the build). The
+   * empty `turbopack: {}` is the Next-recommended signal that "yes, this
+   * project is Turbopack-aware; the webpack config is intentional defence
+   * in depth, not a legacy artefact." `serverExternalPackages` above is
+   * the actual c2pa-node externalization mechanism for both runtimes; the
+   * webpack hook only mirrors it for the fallback path.
+   *
+   * See: https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack
+   */
+  turbopack: {},
+
   // Next 16 removes the `eslint` config option and the `next lint` command.
   // Lint runs through the ESLint CLI directly (out of the Next.js build) and
   // is not configured in this baseline migration; the existing

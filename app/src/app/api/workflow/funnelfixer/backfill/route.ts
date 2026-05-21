@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { start } from "workflow/api";
+import { start } from "@/lib/workflow-stub";
 import { createAdminClient } from "@/lib/supabase/server";
 import { funnelfixerReengagementWorkflow } from "@/lib/workflows/funnelfixer-reengagement";
 
