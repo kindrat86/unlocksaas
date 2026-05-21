@@ -31,14 +31,16 @@ function WelcomeInner() {
   const path = params.get("path") ?? "starter_only";
   const router = useRouter();
 
-  // After 12s, route to the member area so the visitor never sits on a
-  // dead-end page. 12s = comfortable read time without trapping them.
+  // After 12s, route to the member area or first-win onboarding so the
+  // visitor never sits on a dead-end page. 12s = comfortable read time
+  // without trapping them.
   useEffect(() => {
     const t = window.setTimeout(() => {
-      router.push("/playbook");
+      const dest = path === "starter_only" ? "/first-win" : "/playbook";
+      router.push(dest);
     }, 12_000);
     return () => window.clearTimeout(t);
-  }, [router]);
+  }, [router, path]);
 
   if (path === "core_activated") {
     return (
@@ -97,7 +99,7 @@ function WelcomeInner() {
         </Card>
 
         <Button asChild size="lg" className="w-full text-lg py-6">
-          <Link href="/playbook">Open the Starter</Link>
+          <Link href="/first-win">Get your first-win drafts</Link>
         </Button>
         <p className="text-xs text-muted-foreground mt-4">
           Auto-redirecting in 12 seconds. — Maryan
