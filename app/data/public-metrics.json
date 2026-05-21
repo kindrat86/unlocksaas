@@ -1,0 +1,19 @@
+{
+  "last_updated": "21-05-2026",
+  "mrr_eur": 0,
+  "arr_eur": 0,
+  "paying_customers": 0,
+  "starter_purchases": 0,
+  "diagnostic_submissions": 0,
+  "email_subscribers": 0,
+  "weeks_since_launch": 0,
+  "weekly_log": [
+    {
+      "week": 1,
+      "date": "21-05-2026",
+      "mrr_eur": 0,
+      "customers": 0,
+      "note": "Launch week. First diagnostic submissions live. Stripe at zero. This is where it starts."
+    }
+  ]
+}
