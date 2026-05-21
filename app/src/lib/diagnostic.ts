@@ -858,6 +858,300 @@ Run the deep analysis now. Respond with ONLY the JSON object. No text before or 
   return validateDeep(parsed);
 }
 
+// ---------------------------------------------------------------------------
+// Streaming variant — emits visible reasoning tokens + parses JSON afterwards.
+// Used by /api/diagnostic/stream (SSE endpoint).
+// ---------------------------------------------------------------------------
+
+/**
+ * Progress event shape emitted by deepAnalyzeUrlStream.
+ */
+export type DiagnosticProgressEvent =
+  | { type: "step"; text: string }
+  | { type: "reason"; text: string };
+
+/**
+ * Modified system prompt for streaming mode.
+ * Same diagnostics/scoring/voice rules as DEEP_SYSTEM, but the model emits
+ * a prose "visible analysis" preamble first, then the ---JSON--- separator,
+ * then the full JSON object. The preamble streams to the browser; the JSON
+ * is buffered server-side for parsing.
+ */
+const DEEP_SYSTEM_STREAM = `You are the diagnostic engine inside Unlock SaaS, a tool for post-launch pre-revenue founders.
+
+Your voice: Reluctant Hero. Honest, direct, no fluff, no guru energy, no exclamation marks, no greetings. Short sentences. You sound like a founder who has been where they are, not a marketer pitching them.
+
+You read a founder's product or landing page and return a COMPLETE structured teardown. Brunson's Four Core Stories anchor the three axes:
+
+  - "wrong_person" -- VEHICLE / AVATAR. Does the page name ONE specific person with a real situation, or does it speak to a category ("founders", "teams", "businesses")?
+  - "weak_offer" -- EXTERNAL BELIEF. Does the page promise a measurable result by a specific time, with a remedy if the result fails to arrive? Or does it describe features and capabilities?
+  - "weak_belief" -- INTERNAL BELIEF. Does the page bridge the visitor from their current belief to the one required to buy? Or does it assume the visitor already cares?
+
+For the primary label, pick the UPSTREAM problem (the one that, if fixed, unblocks the others). Upstream order: wrong_person > weak_offer > weak_belief. When in doubt, pick wrong_person -- it is the most common failure for the founders this tool serves.
+
+For each axis, score 1-10:
+  1-3 = catastrophic (no signal on the page)
+  4-5 = weak (gesture toward it, no commitment)
+  6-7 = workable (named, but not differentiated)
+  8-9 = strong (named, specific, defensible)
+  10  = world-class (named, specific, defensible, AND memorable)
+
+For rewrites: quote the current text exactly (or close paraphrase), then give THREE alternates that move it up at least 2 score points. Reluctant Hero voice on the alternates: no exclamation marks, no "Unlock your potential", no "Imagine if...". The alternates must be different from each other in approach (e.g. one customer-specific, one outcome-specific, one risk-reversal-specific).
+
+For the 30-day plan: 4 weeks, each with a theme and 3-5 concrete deliverables. Verbs: "Write", "Call", "Ship", "Send", "Cut", "Rewrite". Forbidden: "Consider", "Explore", "Look into", "Think about". Each deliverable must be completable in one work session.
+
+For competitors: name TWO real products in the same indie SaaS category that you can describe accurately from training. No URLs (avoid hallucinating). For each: one-line description, 2-3 things they do better, 1-2 things the diagnosed page does better.
+
+For strengths: 2-3 specific positives on the diagnosed page. Honest, not flattery.
+
+RESPONSE FORMAT -- TWO SECTIONS:
+
+SECTION 1 -- VISIBLE ANALYSIS (4-6 sentences, present tense, no first person):
+State what you observe on the page:
+-- What the page calls the product and who it says it is for.
+-- What result or outcome the page promises (or fails to promise).
+-- What belief the page builds -- or fails to build -- with the visitor.
+End with exactly one of these three phrases (the label you will output in the JSON):
+  "Primary diagnosis: Wrong Person."
+  "Primary diagnosis: Weak Offer."
+  "Primary diagnosis: Weak Belief."
+
+SECTION 2 -- JSON OUTPUT:
+Write exactly this separator on its own line: ---JSON---
+Then write the complete JSON object with this exact shape:
+
+{
+  "label": "wrong_person" | "weak_offer" | "weak_belief",
+  "headline": "<6-12 words, Reluctant Hero, names the upstream failure>",
+  "explanation": "<exactly 80-120 words, Reluctant Hero. Name the diagnosis. Explain WHY it is upstream. Use the user's own words from the page. End with a one-line implication of what fixing it changes.>",
+  "evidence": "<one sentence quoting / paraphrasing the page signal that drove the diagnosis>",
+  "nextStep": "<4-10 words, single-action CTA copy>",
+  "product_snapshot": {
+    "name": "<as it appears on the page, or hostname>",
+    "one_liner": "<their elevator pitch as written, at most 25 words>",
+    "audience_stated": "<who the page says it is for>",
+    "pricing_visible": "<any pricing on the page, or null>"
+  },
+  "scores": {
+    "wrong_person": { "score": 1, "diagnosis": "<2-3 sentences>", "evidence": ["<quote>", "<quote>"] },
+    "weak_offer":   { "score": 1, "diagnosis": "<2-3 sentences>", "evidence": ["<quote>", "<quote>"] },
+    "weak_belief":  { "score": 1, "diagnosis": "<2-3 sentences>", "evidence": ["<quote>", "<quote>"] }
+  },
+  "rewrites": {
+    "hero_headline": {
+      "current": "<exact or close paraphrase>",
+      "alternates": ["<alt1>", "<alt2>", "<alt3>"],
+      "why_better": "<one sentence>"
+    },
+    "primary_cta": {
+      "current": "<exact CTA text on the page>",
+      "alternates": ["<alt1>", "<alt2>", "<alt3>"],
+      "why_better": "<one sentence>"
+    },
+    "value_props": {
+      "current": ["<bullet 1>", "<bullet 2>", "<bullet 3>"],
+      "rewritten": ["<rewritten 1>", "<rewritten 2>", "<rewritten 3>"],
+      "why_better": "<one sentence>"
+    }
+  },
+  "plan_30_day": {
+    "week1": { "theme": "<short>", "deliverables": ["<verb-led deliverable>", "..."] },
+    "week2": { "theme": "<short>", "deliverables": ["...", "..."] },
+    "week3": { "theme": "<short>", "deliverables": ["...", "..."] },
+    "week4": { "theme": "<short>", "deliverables": ["...", "..."] }
+  },
+  "competitors": [
+    {
+      "name": "<real product>",
+      "one_line": "<at most 20 words>",
+      "what_they_do_better": ["<specific>", "<specific>"],
+      "what_you_do_better": ["<specific>"]
+    },
+    {}
+  ],
+  "strengths": ["<positive 1>", "<positive 2>"]
+}
+
+No text before Section 1. No text after the closing brace of the JSON.`;
+
+const STREAM_SEP = "---JSON---";
+
+/**
+ * Streaming deep analysis. Calls `onReasonToken` with each chunk of the prose
+ * "visible analysis" preamble as it arrives, then buffers the JSON section and
+ * returns the fully-validated DeepDiagnosticResult.
+ *
+ * Uses messages.create({ stream: true }) which returns an async-iterable
+ * Stream of MessageStreamEvents -- compatible with @anthropic-ai/sdk ^0.96.
+ */
+export async function deepAnalyzePageTextStream(
+  url: string,
+  pageText: string,
+  onReasonToken: (chunk: string) => void | Promise<void>,
+): Promise<DeepDiagnosticResult> {
+  const stream = await getAnthropic().messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 4500,
+    system: DEEP_SYSTEM_STREAM,
+    stream: true,
+    messages: [
+      {
+        role: "user",
+        content: `URL submitted: ${url}
+
+PAGE CONTENT (title, meta, body, truncated):
+${pageText}
+
+Run the full analysis now. Start with the visible analysis, then ---JSON---, then the JSON object.`,
+      },
+    ],
+  });
+
+  // Sliding-window separator detection.
+  // We hold back SEP.length-1 chars in case the separator straddles chunks.
+  const HOLD_BACK = STREAM_SEP.length - 1; // 12 chars
+  let pending = ""; // undelivered reasoning chars (waiting for sep check)
+  let jsonAccum = ""; // everything after the separator
+  let sepFound = false;
+
+  for await (const event of stream) {
+    if (
+      event.type !== "content_block_delta" ||
+      event.delta.type !== "text_delta"
+    ) {
+      continue;
+    }
+    const chunk = event.delta.text;
+    if (sepFound) {
+      jsonAccum += chunk;
+      continue;
+    }
+
+    pending += chunk;
+    const idx = pending.indexOf(STREAM_SEP);
+    if (idx >= 0) {
+      const reasonPart = pending.slice(0, idx).trimEnd();
+      if (reasonPart) await onReasonToken(reasonPart);
+      jsonAccum = pending.slice(idx + STREAM_SEP.length);
+      sepFound = true;
+      pending = "";
+    } else {
+      // Flush safe portion (keep HOLD_BACK chars to catch a split separator).
+      const safe = pending.length > HOLD_BACK ? pending.slice(0, -HOLD_BACK) : "";
+      if (safe) {
+        await onReasonToken(safe);
+        pending = pending.slice(safe.length);
+      }
+    }
+  }
+
+  // Flush any leftover pending reasoning.
+  if (!sepFound) {
+    if (pending) await onReasonToken(pending);
+    // Separator was never emitted. Try to extract JSON from the full text.
+    const j = pending.indexOf("{");
+    if (j >= 0) {
+      jsonAccum = pending.slice(j);
+    } else {
+      throw new Error("Streaming analysis: model did not emit the ---JSON--- separator");
+    }
+  }
+
+  // Extract the outermost JSON object from the accumulator.
+  const jStart = jsonAccum.indexOf("{");
+  const jEnd = jsonAccum.lastIndexOf("}");
+  if (jStart < 0 || jEnd <= jStart) {
+    throw new Error("Streaming analysis: no JSON object found after separator");
+  }
+  const jsonSlice = jsonAccum.slice(jStart, jEnd + 1);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(jsonSlice);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    throw new Error(`Streaming analysis: JSON parse failed (${reason})`);
+  }
+
+  return validateDeep(parsed);
+}
+
+/**
+ * End-to-end streaming analysis: validate URL, fetch page, run
+ * deepAnalyzePageTextStream. Emits progress events via onProgress.
+ * Throws DiagnosticError-shaped objects on expected failures (same shape as
+ * deepAnalyzeUrl so the route's error path is uniform).
+ */
+export async function deepAnalyzeUrlStream(
+  rawUrl: string,
+  onProgress: (event: DiagnosticProgressEvent) => void | Promise<void>,
+): Promise<DeepDiagnosticResult> {
+  const url = normalizeUrl(rawUrl);
+  if (!url) {
+    const err: DiagnosticError = {
+      kind: "invalid_url",
+      message:
+        "That does not look like a URL I can read. Paste a full https:// link.",
+    };
+    throw err;
+  }
+  if (isBlockedHost(url.hostname)) {
+    const err: DiagnosticError = {
+      kind: "blocked_host",
+      message:
+        "I cannot read internal or local addresses. Use your public product URL.",
+    };
+    throw err;
+  }
+
+  await onProgress({ type: "step", text: `Fetching ${url.hostname}...` });
+
+  let html: string;
+  try {
+    html = await fetchPage(url);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "fetch_failed",
+      message: `I could not load that page (${reason}). If it is behind login or Cloudflare's challenge, paste a public version.`,
+    };
+    throw err;
+  }
+
+  const text = htmlToText(html);
+  if (
+    text
+      .replace(/^(TITLE|META DESCRIPTION|OG DESCRIPTION|BODY):/gm, "")
+      .trim().length < 200
+  ) {
+    const err: DiagnosticError = {
+      kind: "empty_page",
+      message:
+        "That page had almost no readable copy. The diagnostic needs real text to read.",
+    };
+    throw err;
+  }
+
+  const wordCount = text.split(/\s+/).filter(Boolean).length;
+  await onProgress({
+    type: "step",
+    text: `Read ${wordCount.toLocaleString()} words. Analyzing your page...`,
+  });
+
+  try {
+    return await deepAnalyzePageTextStream(url.toString(), text, async (chunk) => {
+      await onProgress({ type: "reason", text: chunk });
+    });
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "engine_failed",
+      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+    };
+    throw err;
+  }
+}
+
 /**
  * End-to-end deep analysis: validate URL, fetch, strip, deep-analyze.
  * Throws a `DiagnosticError`-shaped object on failure (same shape as

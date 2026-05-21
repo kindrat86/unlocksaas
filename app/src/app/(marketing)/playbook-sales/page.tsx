@@ -200,6 +200,22 @@ export default async function PlaybookSalesPage() {
             The $49 Playbook
           </Badge>
 
+          {/* GEO -- answer-first factual description before the persuasive
+              hook copy. 72.4% of ChatGPT-cited pages have a direct answer
+              in the first 60 words. This sentence is the canonical product
+              summary for AI crawlers; it does not rotate with A/B copy. */}
+          <p
+            className="text-xs text-muted-foreground mb-4 leading-relaxed"
+            data-speakable="product-answer"
+          >
+            The UnlockSaaS Playbook is a seven-step program for post-launch,
+            pre-revenue SaaS founders who have not yet landed a paying
+            customer. It covers funnel diagnosis, offer construction, dream
+            customer targeting, and distribution. $49 per month. Sixty-day
+            money-back guarantee: a verified paying customer or you pay
+            nothing.
+          </p>
+
           {/* Slide 1 — Hook. Workbook 01 §5 Hook #7, verbatim. */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 sm:mb-8">
             How to get your first real paying customer in 60 days, even if

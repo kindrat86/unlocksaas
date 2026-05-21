@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -102,34 +102,19 @@ export function DiagnosticForm({
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
-  const [submitElapsed, setSubmitElapsed] = useState(0);
   const [errors, setErrors] = useState<FieldError>({});
   const [alreadyUsed, setAlreadyUsed] = useState<AlreadyUsed | null>(null);
 
-  // Cycle a stage-of-work hint while the engine reads + analyzes. The deep
-  // analysis call runs ~30-45 s and a silent button is worse UX than a stale
-  // counter — the user wants to know something is happening.
+  // SSE streaming state -- populated by the /api/diagnostic/stream endpoint.
+  const [streamSteps, setStreamSteps] = useState<string[]>([]);
+  const [reasoning, setReasoning] = useState("");
+  // Auto-scroll the reasoning panel as tokens arrive.
+  const reasoningRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!submitting) {
-      setSubmitElapsed(0);
-      return;
+    if (reasoning) {
+      reasoningRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
-    setSubmitElapsed(0);
-    const start = Date.now();
-    const t = setInterval(() => {
-      setSubmitElapsed(Math.round((Date.now() - start) / 1000));
-    }, 1000);
-    return () => clearInterval(t);
-  }, [submitting]);
-
-  const submitStage = (() => {
-    if (submitElapsed < 5) return "Fetching your page...";
-    if (submitElapsed < 15) return "Reading the hero, offer, and copy...";
-    if (submitElapsed < 30) return "Scoring three failure modes...";
-    if (submitElapsed < 45) return "Drafting rewrites + 30-day plan...";
-    if (submitElapsed < 60) return "Naming competitors...";
-    return "Almost there. Finalizing the teardown...";
-  })();
+  }, [reasoning]);
   const [state, setState] = useState<SurveyState>({
     productUrl: "",
     time_since_launch: "",
@@ -242,7 +227,7 @@ export function DiagnosticForm({
     advance(2, { productUrl: normalizedUrl });
   }
 
-  // -- Step 5: Email + final submit ----------------------------------------
+  // -- Step 5: Email + final submit (SSE streaming) -------------------------
   async function handleEmailSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrors({});
@@ -255,7 +240,6 @@ export function DiagnosticForm({
       !state.recent_revenue ||
       !state.biggest_attempt
     ) {
-      // Should never happen; the steps gate this. Defensive guard.
       setErrors({
         form: "Some survey answers are missing. Refresh and start again.",
       });
@@ -263,6 +247,8 @@ export function DiagnosticForm({
     }
 
     setSubmitting(true);
+    setStreamSteps([]);
+    setReasoning("");
     track(Event.DiagnosticFormSubmitted, {
       step_completed: 5,
       email_domain: state.email.trim().split("@")[1] ?? null,
@@ -271,8 +257,10 @@ export function DiagnosticForm({
       recent_revenue: state.recent_revenue,
       biggest_attempt: state.biggest_attempt,
     });
+
+    let res: Response;
     try {
-      const res = await fetch("/api/diagnostic", {
+      res = await fetch("/api/diagnostic/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -287,39 +275,93 @@ export function DiagnosticForm({
             typeof document !== "undefined" ? document.referrer : undefined,
         }),
       });
-      const body = (await res.json().catch(() => ({}))) as {
-        id?: string;
-        error?: string;
-        already_used?: boolean;
-        previous_url?: string | null;
-      };
-      if (!res.ok || !body.id) {
-        setErrors({
-          form:
-            body.error ||
-            "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
-        });
-        setSubmitting(false);
-        return;
-      }
-      if (body.already_used) {
-        track(Event.DiagnosticFormSubmitted, {
-          step_completed: 5,
-          already_used: true,
-          email_domain: state.email.trim().split("@")[1] ?? null,
-        });
-        setAlreadyUsed({
-          existingId: body.id,
-          previousUrl: body.previous_url ?? null,
-        });
-        setSubmitting(false);
-        return;
-      }
-      router.push(`/diagnostic/result?id=${body.id}`);
     } catch {
       setErrors({
         form:
           "Could not reach the diagnostic engine. Try again in a minute, or email me directly at maryan@unlocksaas.com.",
+      });
+      setSubmitting(false);
+      return;
+    }
+
+    if (!res.ok || !res.body) {
+      // Non-streaming error from the server (validation failure etc.)
+      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      setErrors({
+        form:
+          body.error ||
+          "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
+      });
+      setSubmitting(false);
+      return;
+    }
+
+    // Read SSE stream
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = "";
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buf += decoder.decode(value, { stream: true });
+        // SSE events are separated by \n\n
+        const messages = buf.split("\n\n");
+        buf = messages.pop() ?? "";
+
+        for (const msg of messages) {
+          if (!msg.startsWith("data: ")) continue;
+          let event: {
+            type: string;
+            text?: string;
+            message?: string;
+            id?: string;
+            already_used?: boolean;
+            previous_url?: string | null;
+          };
+          try {
+            event = JSON.parse(msg.slice(6));
+          } catch {
+            continue;
+          }
+
+          if (event.type === "step" && event.text) {
+            setStreamSteps((prev) => [...prev, event.text!]);
+          } else if (event.type === "reason" && event.text) {
+            setReasoning((prev) => prev + event.text);
+          } else if (event.type === "done" && event.id) {
+            if (event.already_used) {
+              track(Event.DiagnosticFormSubmitted, {
+                step_completed: 5,
+                already_used: true,
+                email_domain: state.email.trim().split("@")[1] ?? null,
+              });
+              setAlreadyUsed({
+                existingId: event.id,
+                previousUrl: event.previous_url ?? null,
+              });
+              setSubmitting(false);
+            } else {
+              router.push(`/diagnostic/result?id=${event.id}`);
+            }
+            return;
+          } else if (event.type === "error") {
+            setErrors({
+              form:
+                event.message ||
+                "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
+            });
+            setSubmitting(false);
+            return;
+          }
+        }
+      }
+    } catch {
+      setErrors({
+        form:
+          "The stream dropped mid-way. Try again in a minute, or email me directly at maryan@unlocksaas.com.",
       });
       setSubmitting(false);
     }
@@ -407,7 +449,7 @@ export function DiagnosticForm({
         />
       )}
 
-      {step === 5 && (
+      {step === 5 && !submitting && (
         <form onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
           <div className="space-y-1.5">
             <label
@@ -429,7 +471,6 @@ export function DiagnosticForm({
                 setState((p) => ({ ...p, email: e.target.value }))
               }
               aria-invalid={errors.email ? true : undefined}
-              disabled={submitting}
               autoFocus
             />
             {errors.email && (
@@ -444,22 +485,11 @@ export function DiagnosticForm({
           )}
 
           <div className="flex gap-3">
-            <Button
-              type="button"
-              variant="ghost"
-              size="lg"
-              onClick={back}
-              disabled={submitting}
-            >
+            <Button type="button" variant="ghost" size="lg" onClick={back}>
               Back
             </Button>
-            <Button
-              type="submit"
-              size="lg"
-              disabled={submitting}
-              className="flex-1 text-base py-6"
-            >
-              {submitting ? submitStage : ctaLabel}
+            <Button type="submit" size="lg" className="flex-1 text-base py-6">
+              {ctaLabel}
             </Button>
           </div>
 
@@ -476,7 +506,6 @@ export function DiagnosticForm({
                 variant="outline"
                 size="lg"
                 className="w-full text-base py-6"
-                disabled={submitting}
                 onClick={continueWithGoogle}
               >
                 <GoogleGlyph />
@@ -489,6 +518,14 @@ export function DiagnosticForm({
             I email the diagnosis. No spam. Reply STOP to unsubscribe.
           </p>
         </form>
+      )}
+
+      {step === 5 && submitting && (
+        <ThinkingPanel
+          steps={streamSteps}
+          reasoning={reasoning}
+          scrollRef={reasoningRef}
+        />
       )}
     </div>
   );
@@ -596,6 +633,77 @@ function safeHost(url: string): string {
   } catch {
     return url;
   }
+}
+
+/**
+ * Visible-reasoning panel shown while the SSE diagnostic stream runs.
+ *
+ * Displays progress step labels (dim) and the streaming AI reasoning prose
+ * (full color) as tokens arrive from /api/diagnostic/stream. Replacing the
+ * silent spinner with live reasoning is the 2026 "wow" UX moment -- the user
+ * sees Claude actually reading their page instead of watching a generic loader.
+ */
+function ThinkingPanel({
+  steps,
+  reasoning,
+  scrollRef,
+}: {
+  steps: string[];
+  reasoning: string;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  return (
+    <div
+      className="space-y-3"
+      role="status"
+      aria-live="polite"
+      aria-label="Diagnosis in progress"
+    >
+      {/* Step labels -- appear one by one as the engine progresses */}
+      {steps.length > 0 && (
+        <ul className="space-y-1.5">
+          {steps.map((s, i) => (
+            <li key={i} className="flex items-start gap-2">
+              <span
+                className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40"
+                aria-hidden="true"
+              />
+              <p className="text-xs text-muted-foreground leading-relaxed">{s}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Live AI reasoning -- streams token by token */}
+      {reasoning && (
+        <div className="rounded-xl border border-border bg-muted/40 px-4 py-3">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
+            Reading your page
+          </p>
+          <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
+            {reasoning}
+            {/* Blinking cursor while streaming */}
+            <span
+              className="inline-block w-[2px] h-[1em] bg-foreground/60 animate-pulse align-middle ml-0.5"
+              aria-hidden="true"
+            />
+          </p>
+          <div ref={scrollRef} />
+        </div>
+      )}
+
+      {/* Spinner while waiting for first step / first reason token */}
+      {steps.length === 0 && !reasoning && (
+        <div className="flex items-center gap-2 py-2">
+          <span
+            className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-pulse"
+            aria-hidden="true"
+          />
+          <p className="text-xs text-muted-foreground">Starting the engine...</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ChoiceStep<T extends string>({
