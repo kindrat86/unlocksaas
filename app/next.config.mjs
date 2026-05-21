@@ -256,7 +256,7 @@ const nextConfig = {
    *   on public surfaces) and survives misconfigurations at the per-page
    *   metadata level. Defence-in-depth, not the primary mechanism.
    */
-  async headers() {
+  headers() {
     // ── Reusable header sets ────────────────────────────────────────────
     //
     // CSP origins audited 2026-05-20 against actual client-side use:
@@ -444,22 +444,4 @@ const nextConfig = {
   },
 };
 
-<<<<<<< HEAD
-/**
- * Workflow DevKit integration (2026-05-21).
- *
- * `withWorkflow` wires the webpack/turbopack loader that transforms
- * `"use workflow"` and `"use step"` directives. Without this wrapper,
- * the Workflow DevKit primitives (sleep, createHook, start, etc.)
- * compile but throw at runtime with "invalid workflow function".
- *
- * First user: lib/workflows/funnelfixer-reengagement.ts — the durable
- * version of the testimonial-farm + SOS re-engagement flow that used
- * to live across three crons (activate-funnelfixer-carryover,
- * funnelfixer-tick, testimonial-farm-offer) + a Supabase row-state
- * machine (status + emails_sent + next_send_at columns).
- *
- * See https://useworkflow.dev for the API reference and
- * node_modules/@workflow/next/docs/next.mdx for setup.
- */
-export default withBotId(withWorkflow(nextConfig));
+export default withBotId(nextConfig);
