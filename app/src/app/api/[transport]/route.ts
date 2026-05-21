@@ -1934,7 +1934,7 @@ const handler = createMcpHandler(
           | { plan_30_day?: DeepDiagnosticResult["plan_30_day"] }
           | null;
         const plan = detail?.plan_30_day;
-        if (!plan || !plan.weeks || plan.weeks.length === 0) {
+        if (!plan || !plan.week1) {
           return {
             content: [
               {
