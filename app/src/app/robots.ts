@@ -189,9 +189,14 @@ export default function robots(): MetadataRoute.Robots {
     // OpenAI -- ChatGPT browsing and search-surface crawlers.
     "OAI-SearchBot",
     "ChatGPT-User",
-    // Anthropic -- Claude web search + training (citation surface kept).
+    // Anthropic -- Claude web search + retrieval indexing + training (citation
+    // surface kept). Claude-SearchBot is the dedicated retrieval-indexing UA
+    // (independently controllable from ClaudeBot per nohacks.co 2026 report).
+    // Claude-User is the user-triggered fetch UA (real-time queries in Claude).
     "ClaudeBot",
+    "Claude-SearchBot",
     "Claude-Web",
+    "Claude-User",
     "anthropic-ai",
     // Google -- AI Overviews fetch and Gemini inference (not training).
     "GoogleOther",
