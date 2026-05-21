@@ -6362,6 +6362,360 @@ const COMPARISONS_LIST: Comparison[] = [
     ],
     lastVerified: "2026-05-21",
   },
+
+  // ---- ClickFunnels vs UnlockSaaS ----------------------------------------
+  {
+    slug: "clickfunnels-vs-unlocksaas",
+    a: { name: "ClickFunnels", url: "https://www.clickfunnels.com/" },
+    b: { name: "Unlock SaaS", url: "https://unlocksaas.com/" },
+    category: "Funnel and sales playbook tools",
+    oneLine:
+      "ClickFunnels builds the funnel before you launch. Unlock SaaS runs the playbook after you launched and nobody paid you yet.",
+    tldr:
+      "ClickFunnels ($97–$297/mo) is a drag-and-drop funnel builder: you build pages, add email sequences, host courses. Unlock SaaS ($1 tripwire + $49/mo) is a post-launch playbook: you already shipped, nobody paid, you need the first verified Stripe charge. If your product is not live yet, use ClickFunnels. If it is live and your Stripe is at zero, Unlock SaaS is the tool built for exactly that gap.",
+    bestFor: {
+      a: "Founders who have not launched yet and need drag-and-drop page-building, integrated email/CRM, and Brunson's community and inner circle around them.",
+      b: "Founders who launched and still have zero paying customers — who need a post-launch playbook, not more infrastructure to build before anyone pays.",
+    },
+    pickAIf: [
+      "You have not launched and need to build your funnel, landing pages, and opt-in sequences from scratch.",
+      "You want one platform that bundles a page builder, email marketing, CRM, and course hosting under a single subscription.",
+      "You are deep in the Brunson ecosystem and want direct access to his community, OFA Challenge training, and inner-circle events.",
+    ],
+    pickBIf: [
+      "Your product is live, your Stripe dashboard shows $0, and you need the first verified customer charge within 60 days.",
+      "You want Brunson's Hook / Story / Offer methodology applied specifically to your post-launch situation — without paying for a full funnel builder you do not need yet.",
+      "You want a Stripe-webhook-verified accountability mechanism: the refund fires automatically on day 60 if no customer charge lands.",
+    ],
+    dimensions: [
+      {
+        name: "Price",
+        a: "$97/mo (Launch), $197/mo (Scale), $297/mo (Optimize); annual plans save 15–17%.",
+        b: "$1 one-time Starter tripwire; $49/mo Core with 60-day Stripe-verified refund.",
+        winner: "B",
+        note: "ClickFunnels pricing is justified by its feature breadth. If you need the funnel builder, it is the right tool at that price.",
+      },
+      {
+        name: "Primary use case",
+        a: "Building the funnel infrastructure: pages, email sequences, courses, CRM, checkout.",
+        b: "Running the post-launch motion: who to reach, what to say, logging outreach, verifying a Stripe charge.",
+        winner: "different",
+        note: "These tools do not compete on the same job. ClickFunnels builds the vehicle; Unlock SaaS drives it after launch.",
+      },
+      {
+        name: "Stage fit",
+        a: "Pre-launch or launch: ideal when you are building your funnel and need pages to send traffic to.",
+        b: "Post-launch pre-revenue: built for the founder who shipped and is still at $0.",
+        winner: "different",
+      },
+      {
+        name: "Page builder",
+        a: "Full drag-and-drop funnel builder with templates, A/B testing, and multi-step checkout.",
+        b: "None — Unlock SaaS assumes your pages already exist.",
+        winner: "A",
+      },
+      {
+        name: "Email and CRM",
+        a: "Built-in email sequences, broadcast, and basic CRM across all paid tiers.",
+        b: "None native — assumes you have a transactional email setup.",
+        winner: "A",
+      },
+      {
+        name: "Community and coaching",
+        a: "Large active community, Brunson's OFA Challenge included with subscription, Funnel Hacking Live events.",
+        b: "Verified Builders community gated on $49/mo Core tier; no live events.",
+        winner: "A",
+      },
+      {
+        name: "Accountability mechanism",
+        a: "Social accountability via community and challenge curriculum; no code-enforced refund.",
+        b: "Stripe-webhook refund fires on day 60 if no verified customer charge lands and milestones were completed.",
+        winner: "B",
+        note: "The accountability mechanisms are structurally different: social vs code-enforced.",
+      },
+      {
+        name: "Brunson methodology",
+        a: "Source — Brunson created Hook / Story / Offer and his community is the primary delivery vehicle.",
+        b: "Operationalizes the same methodology in a guided seven-step playbook built for the solo post-launch founder.",
+        winner: "different",
+        note: "Unlock SaaS is built on top of Brunson, not against him.",
+      },
+      {
+        name: "Time to first result",
+        a: "Weeks to months to build a complete funnel from scratch; time to first result depends on traffic.",
+        b: "60-day refund window is the explicit contract; the playbook is designed around that constraint.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "ClickFunnels is the right tool if you need to build funnel infrastructure and you want Brunson's ecosystem tightly integrated. It is a genuinely good product for that job. Unlock SaaS is the right tool if your funnel already exists and your Stripe account is still at $0 — the problem it solves is post-launch motion, not pre-launch build. Most founders who come to Unlock SaaS after trying ClickFunnels say the same thing: they built a beautiful funnel and then did not know what to do next. That is the gap Unlock SaaS was built for.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you have not launched, ClickFunnels may be premature — you do not need a full funnel builder yet. If you launched and are at $0, ClickFunnels adds infrastructure to a distribution problem: you do not need more pages, you need the right outreach to the right person. Use Unlock SaaS for the post-launch motion. If you scale past your first customers and need a full funnel build-out, add ClickFunnels at that point.",
+    },
+    faqs: [
+      {
+        q: "Can I use ClickFunnels and Unlock SaaS at the same time?",
+        a: "Yes, and it is a reasonable combination at the right stage. Build your funnel in ClickFunnels, then run the Unlock SaaS playbook to find the first paying customers for that funnel. They address different parts of the same problem.",
+      },
+      {
+        q: "ClickFunnels is $97/mo. Why would I pay that instead of $49/mo?",
+        a: "Because ClickFunnels includes a full drag-and-drop page builder, email marketing, CRM, and course hosting. If you need those capabilities, $97/mo is fair. If you already have pages and just need the post-launch motion to get your first customer, $49/mo for the Unlock SaaS Core playbook is the more targeted spend.",
+      },
+      {
+        q: "Does Unlock SaaS compete with Russell Brunson?",
+        a: "No. Unlock SaaS is built on Brunson's Hook / Story / Offer and Dream 100 frameworks. The seven-step playbook operationalizes those books for the solo post-launch founder specifically. If anything, read DotCom Secrets before buying Unlock SaaS — the playbook will make more sense if you understand where the methodology comes from.",
+      },
+      {
+        q: "I heard ClickFunnels has a 14-day free trial. Does Unlock SaaS?",
+        a: "Unlock SaaS has a $1 Starter tripwire — a one-time $1 payment that gives you the WHO workbook and WHAT workbook before you decide whether to continue to Core. The free Diagnostic is also a no-cost first step. Neither is a time-locked trial.",
+      },
+      {
+        q: "What if I build my funnel in ClickFunnels and still get no customers?",
+        a: "That is precisely the problem Unlock SaaS was built for. The tool is not the bottleneck when Stripe is still at $0 after launch — the motion is. The playbook walks you through offer clarity, ICP naming, hook writing, and 20+ logged outreach actions with a Stripe-verified refund if nothing lands in 60 days.",
+      },
+    ],
+    tags: [
+      "funnel-builder",
+      "post-launch",
+      "brunson-methodology",
+      "indie-saas",
+      "first-party",
+    ],
+    lastVerified: "2026-05-21",
+  },
+
+  // ---- ShipFast vs UnlockSaaS --------------------------------------------
+  {
+    slug: "shipfast-vs-unlocksaas",
+    a: { name: "ShipFast", url: "https://shipfa.st/" },
+    b: { name: "Unlock SaaS", url: "https://unlocksaas.com/" },
+    category: "Funnel and sales playbook tools",
+    oneLine:
+      "ShipFast ships the product in a week. Unlock SaaS gets the first paying customer after you shipped.",
+    tldr:
+      "ShipFast ($199–$299 one-time) is a Next.js boilerplate: Stripe, auth, email, and database wired up so you can launch fast. Unlock SaaS ($1 tripwire + $49/mo) is a post-launch playbook for founders who already shipped — possibly with ShipFast — and still have no paying customers. These products are complementary: ShipFast handles the build, Unlock SaaS handles the sell.",
+    bestFor: {
+      a: "Developers and technical founders who want to skip the authentication, payment, and email boilerplate and ship a working SaaS in days rather than weeks.",
+      b: "Founders who shipped their SaaS — with ShipFast or anything else — and are still at $0 in Stripe with no clear path to the first paying customer.",
+    },
+    pickAIf: [
+      "You want to launch a Next.js SaaS in days rather than weeks and need auth, Stripe, and email wired up without building from scratch.",
+      "You are technical and value one-time pricing over a recurring subscription for your infrastructure scaffolding.",
+      "You want access to Marc Lou's Discord community of makers and the leaderboard surface for early traction.",
+    ],
+    pickBIf: [
+      "Your product is already live — built with ShipFast, a custom stack, or anything else — and your Stripe dashboard still shows $0.",
+      "You know how to build but are not sure who to target, what to say, or how to get someone to pay you for the thing you shipped.",
+      "You want a Stripe-webhook-verified guarantee: 60 days, the right outreach motion, and a refund if no verified charge lands.",
+    ],
+    dimensions: [
+      {
+        name: "Price",
+        a: "$199 Starter / $249 All-in, one-time (promotional pricing; regular $299/$349). No recurring fee.",
+        b: "$1 one-time Starter tripwire; $49/mo Core with 60-day Stripe-verified refund.",
+        winner: "different",
+        note: "One-time vs subscription is a structural difference, not a price difference. ShipFast buys the scaffold; Unlock SaaS buys the motion.",
+      },
+      {
+        name: "Primary use case",
+        a: "Ship a working SaaS fast: Next.js boilerplate with Stripe, auth, email, SEO, and database configured.",
+        b: "Get the first verified paying customer after launch: ICP clarity, offer hooks, logged outreach, Stripe verification.",
+        winner: "different",
+        note: "Different jobs entirely. You can and should use both.",
+      },
+      {
+        name: "Stage fit",
+        a: "Pre-launch: designed to compress build time so you ship in days.",
+        b: "Post-launch pre-revenue: designed for the gap between 'I shipped' and 'someone paid me.'",
+        winner: "different",
+      },
+      {
+        name: "Technical scaffold",
+        a: "Full Next.js boilerplate with Stripe, Google OAuth, magic links, MongoDB/Supabase, Mailgun/Resend, Tailwind, and SEO.",
+        b: "None — Unlock SaaS is methodology and accountability, not a code scaffold.",
+        winner: "A",
+      },
+      {
+        name: "Community",
+        a: "Discord with 5,000+ makers; leaderboard showcase; partner discounts.",
+        b: "Verified Builders community gated on $49/mo Core; Stripe-verified to join.",
+        winner: "A",
+        note: "ShipFast's community is larger by design; Unlock SaaS's community is verified by Stripe charge.",
+      },
+      {
+        name: "Accountability mechanism",
+        a: "No built-in accountability; the leaderboard and Discord provide social motivation.",
+        b: "Stripe-webhook refund fires automatically on day 60 if no verified customer charge lands.",
+        winner: "B",
+      },
+      {
+        name: "Distribution and sales methodology",
+        a: "None native — ShipFast builds the product; finding customers is the founder's job.",
+        b: "Seven-step playbook covering ICP naming, offer hooks, Dream 100 targeting, and logged outreach.",
+        winner: "B",
+        note: "ShipFast explicitly does not solve the distribution problem. Unlock SaaS is built for exactly that.",
+      },
+      {
+        name: "Refund policy",
+        a: "No refunds once access is granted.",
+        b: "60-day Stripe-verified refund: automated webhook fires if no customer charge lands and milestones were completed.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "ShipFast and Unlock SaaS are not competitors. ShipFast is the fastest path from idea to shipped product for technical founders. Unlock SaaS is the fastest path from shipped product to first paying customer. If you used ShipFast and your Stripe is still at zero, you do not have a build problem — you have a distribution problem. The honest answer is: use both. Ship fast, then sell systematically.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "If you have not shipped yet and you are technical, ShipFast is a strong first buy. It compresses weeks of boilerplate work into days and the one-time price is fair. Once you ship, if you do not have paying customers within a few weeks, that is when Unlock SaaS becomes the right next investment. The sequence matters: build first, then run the sales playbook. Buying Unlock SaaS before you have a product is premature; buying ShipFast after you have a product but no customers does not solve the right problem.",
+    },
+    faqs: [
+      {
+        q: "I built my product with ShipFast and nobody is paying. What do I do?",
+        a: "That is the exact problem Unlock SaaS was built for. You have the product. The gap is the motion: who to target, what to say, how many conversations to log before the guarantee fires. The 90-second Diagnostic is the free first step — it labels what is broken on your offer before you spend anything.",
+      },
+      {
+        q: "Do I need to use ShipFast to use Unlock SaaS?",
+        a: "No. Unlock SaaS is framework-agnostic — it does not care how you built your product. The playbook works for any post-launch SaaS founder with a product live and Stripe at zero.",
+      },
+      {
+        q: "ShipFast is a one-time fee. Why is Unlock SaaS a subscription?",
+        a: "ShipFast sells you a scaffold you use once and own forever. Unlock SaaS is a doing-environment with a 60-day accountability clock: outreach is logged inside it, the Stripe webhook listens inside it, and the refund fires from inside it. That running contract needs a billing cycle. The cap on your downside is $98 over two months — and if no charge lands, you get the $98 back.",
+      },
+      {
+        q: "Marc Lou ships fast. Isn't that the model I should follow?",
+        a: "Shipping fast is the right first move. Unlock SaaS does not argue against it — the $1 Starter is designed for founders who already move fast. The playbook is for what comes after shipping: finding the right person, saying the right thing, and logging enough outreach that Stripe actually pings.",
+      },
+    ],
+    tags: [
+      "nextjs-boilerplate",
+      "post-launch",
+      "complementary",
+      "indie-saas",
+      "first-party",
+    ],
+    lastVerified: "2026-05-21",
+  },
+
+  // ---- DotCom Secrets vs UnlockSaaS -------------------------------------
+  {
+    slug: "dotcom-secrets-vs-unlocksaas",
+    a: { name: "DotCom Secrets", url: "https://dotcomsecrets.com/" },
+    b: { name: "Unlock SaaS", url: "https://unlocksaas.com/" },
+    category: "Funnel and sales playbook tools",
+    oneLine:
+      "DotCom Secrets teaches the Brunson methodology. Unlock SaaS runs it, specifically for post-launch solo SaaS founders.",
+    tldr:
+      "DotCom Secrets (free + shipping or ~$10 on Amazon) is Russell Brunson's foundational book: Hook / Story / Offer, the Value Ladder, Dream 100. The One Funnel Away Challenge (bundled with ClickFunnels at $97/mo) applies the method in a 30-day curriculum. Unlock SaaS ($1 tripwire + $49/mo) is built on top of those frameworks and operationalizes them for solo post-launch SaaS founders specifically — with a Stripe-verified accountability guarantee. Read DotCom Secrets first. Then use Unlock SaaS to run it.",
+    bestFor: {
+      a: "Anyone who wants to understand how high-converting funnels are built — the theory, the vocabulary, and the framework behind every funnel Brunson has ever published.",
+      b: "Founders who shipped a SaaS, understand the Brunson methodology (or are willing to learn it fast), and need a tool that runs the playbook with Stripe-verified accountability.",
+    },
+    pickAIf: [
+      "You want to understand the theory behind Hook / Story / Offer and the Dream 100 before you apply it to your own funnel.",
+      "You are new to Brunson's world and want the foundational mental models in a readable, low-cost format.",
+      "You want access to the broader ClickFunnels ecosystem, OFA Challenge curriculum, and Funnel Hacking Live events.",
+    ],
+    pickBIf: [
+      "You have already read DotCom Secrets (or are willing to learn the methodology) and want a tool that runs the playbook on your specific post-launch SaaS.",
+      "You want the Brunson framework chain applied to your actual ICP, your actual offer, and your actual outreach — not a general curriculum.",
+      "You want a 60-day Stripe-verified refund: code-enforced, no negotiation, fires automatically if no customer charge lands.",
+    ],
+    dimensions: [
+      {
+        name: "Price",
+        a: "DotCom Secrets book: free + shipping (~$9.95) or ~$10–$15 on Amazon. OFA Challenge: bundled with ClickFunnels at $97/mo. Funnel Hacking Live: $1,000+ per ticket.",
+        b: "$1 one-time Starter; $49/mo Core with 60-day Stripe-verified refund.",
+        winner: "different",
+        note: "DotCom Secrets the book is nearly free — one of the most accessible starting points in the Brunson ecosystem.",
+      },
+      {
+        name: "Primary use case",
+        a: "Teaching the Brunson methodology: theory, vocabulary, and frameworks for building any kind of online funnel.",
+        b: "Running the Brunson methodology specifically on a post-launch SaaS with no paying customers yet.",
+        winner: "different",
+        note: "These are complementary, not competing. The book is prerequisite-level for the playbook.",
+      },
+      {
+        name: "Depth of methodology",
+        a: "Source — Brunson created the frameworks and the book is the most complete public treatment of them.",
+        b: "Applies a subset of the same frameworks to one specific scenario: solo SaaS founder, post-launch, pre-revenue.",
+        winner: "A",
+        note: "Unlock SaaS does not claim to replace DotCom Secrets. The book is deeper and broader by design.",
+      },
+      {
+        name: "Accountability mechanism",
+        a: "Community and cohort accountability (OFA Challenge); no code-enforced refund.",
+        b: "Stripe-webhook refund fires automatically on day 60 if no verified customer charge lands.",
+        winner: "B",
+      },
+      {
+        name: "Application specificity",
+        a: "General — applies to e-commerce, information products, agencies, SaaS, and any business with an online funnel.",
+        b: "Specific — built exclusively for solo post-launch SaaS founders with a product live and Stripe at zero.",
+        winner: "different",
+        note: "Specificity is the Unlock SaaS trade-off: deeper fit for one profile, useless for others.",
+      },
+      {
+        name: "Time to first result",
+        a: "OFA Challenge is a 30-day curriculum; FHL is a 3–4 day event. Neither has a Stripe-verified refund.",
+        b: "60-day contract with Stripe-webhook verification; refund fires automatically if no charge lands.",
+        winner: "different",
+      },
+      {
+        name: "Community",
+        a: "Brunson's community is the largest Brunson-methodology community that exists — ClickFunnels has millions of users.",
+        b: "Verified Builders community is small and Stripe-verified; intentionally tight.",
+        winner: "A",
+        note: "ClickFunnels' scale is a genuine advantage. Unlock SaaS's community is narrower by design.",
+      },
+      {
+        name: "Format",
+        a: "Book, challenge curriculum, live event — education-first, founder applies it independently.",
+        b: "Guided playbook with engine-assembled output — the framework runs inside the tool, not in your head.",
+        winner: "different",
+      },
+    ],
+    honestTake:
+      "DotCom Secrets is a better first investment than Unlock SaaS for anyone who has not read it. The book is nearly free and it is the source of everything Unlock SaaS is built on. Read it before you buy anything else. The One Funnel Away Challenge is Brunson's live application of the methodology — high-quality, well-run, and community-backed. The honest gap it leaves for solo SaaS founders is specificity: the OFA curriculum is general, and a post-launch SaaS with no paying customers has a specific problem (wrong person, weak offer, or weak belief) that the generic curriculum does not diagnose. Unlock SaaS fills that gap with a diagnostic, a Stripe-verified playbook, and a code-enforced refund. Neither product makes the other wrong.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Read DotCom Secrets first — it is nearly free and it is the best intellectual grounding for the Brunson methodology. Then use Unlock SaaS to operationalize it on your specific post-launch SaaS situation. The sequence matters: the book gives you the mental model; the playbook runs it with accountability. Buying Unlock SaaS without the mental model is building on sand. Reading DotCom Secrets without the doing-environment often produces a founder who understands the theory and still has zero customers.",
+    },
+    faqs: [
+      {
+        q: "Is Unlock SaaS affiliated with Russell Brunson or ClickFunnels?",
+        a: "No. Unlock SaaS is an independent product built on top of the Brunson methodology — the same way a running coach builds their program on exercise science without being affiliated with the researchers who published it. The frameworks (Hook / Story / Offer, Dream 100, Value Ladder) are Brunson's. The application to solo post-launch SaaS founders is Unlock SaaS's.",
+      },
+      {
+        q: "Should I do the OFA Challenge or Unlock SaaS?",
+        a: "OFA Challenge if you want the live cohort experience and the full breadth of the Brunson curriculum in a community setting. Unlock SaaS if you already shipped a SaaS and want the methodology applied to your specific situation with a code-enforced Stripe refund. They are not mutually exclusive.",
+      },
+      {
+        q: "I read DotCom Secrets and I still have no customers. Now what?",
+        a: "You have the mental model. The gap between the model and the first Stripe charge is the motion: who specifically to reach, what specifically to say, and how many logged outreach actions it takes before the guarantee fires. That is the gap the Unlock SaaS playbook closes. The free Diagnostic is the first step — it labels whether your problem is Wrong Person, Weak Offer, or Weak Belief before you spend anything.",
+      },
+      {
+        q: "How much does the full Brunson ecosystem cost vs Unlock SaaS?",
+        a: "DotCom Secrets book: free + shipping. OFA Challenge: bundled with ClickFunnels at $97/mo. Funnel Hacking Live: $1,000+ per ticket. Unlock SaaS Core: $49/mo with a 60-day cap of $98. The ecosystems serve different budgets and different stages.",
+      },
+      {
+        q: "Does Unlock SaaS replace the Brunson books?",
+        a: "No. Read DotCom Secrets, Expert Secrets, and Traffic Secrets before or alongside Unlock SaaS. The playbook operationalizes a specific slice of those frameworks — the post-launch ICP-naming and outreach motion — and the books give you the theory the playbook runs on.",
+      },
+    ],
+    tags: [
+      "brunson-methodology",
+      "dotcom-secrets",
+      "post-launch",
+      "indie-saas",
+      "first-party",
+    ],
+    lastVerified: "2026-05-21",
+  },
 ];
 
 // Indexed lookup.
