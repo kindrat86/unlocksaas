@@ -27,6 +27,7 @@ import {
   verifyDeliverableEmail,
   isPreVerifiedSource,
 } from "@/lib/email-verification";
+import { writeFounderMemoryAfter } from "@/lib/founder-memory";
 
 /**
  * Streaming variant of /api/diagnostic.
@@ -469,6 +470,28 @@ export async function POST(req: NextRequest) {
               "I read your page but could not save the result. Try again in a minute, or email me at maryan@unlocksaas.com.",
           });
           return;
+        }
+
+        // Persistent founder memory – fire-and-forget. Mirrors the
+        // non-streaming /api/diagnostic so streaming visitors get the same
+        // downstream context (dashboard banner, chat sidebar) as visitors
+        // on the synchronous path. Never blocks the stream; failures
+        // logged inside the helper.
+        if (!isDiagnosticError(diagnosis)) {
+          writeFounderMemoryAfter({
+            leadId: rowId,
+            email,
+            findings: diagnosis as DeepDiagnosticResult,
+            productUrl,
+            stage: survey
+              ? {
+                  time_since_launch: survey.time_since_launch,
+                  recent_revenue: survey.recent_revenue,
+                  biggest_attempt: survey.biggest_attempt,
+                }
+              : null,
+            bucket: bucket === "error" ? null : bucket,
+          });
         }
 
         send({
