@@ -1,5 +1,103 @@
 # Build Log — Unlock SaaS
 
+## Founder-memory loop closure: chat reads + streaming-diagnostic writes -- 2026-05-21
+
+**Status: SHIPPED (PRs #146 + #147)**  
+**Closes:** the founder-memory architecture end-to-end (write path + read path on every surface)  
+**Branches:** feat/chat-uses-founder-memory, feat/streaming-diagnostic-memory
+
+Two surgical follow-ups to the founder-memory infrastructure (PR #138) that
+together close the loop. After PR #138 shipped the table + helpers, two
+write/read gaps remained: the chat sidebar (merged in PR #101 before memory
+existed) was still reading the older `diagnostic_leads` shape, and the
+streaming diagnostic endpoint (also from PR #101) wrote to `diagnostic_leads`
+but never to `founder_memory`. Both are now wired through.
+
+### PR #146 — Chat Coach uses founder memory (commit d5020ae)
+
+Upgraded `/api/chat` to call `readFounderMemory({ userId, email })` and
+inject the full structured context via `toChatContext()`:
+
+- Scorecard (wrong_person / weak_offer / weak_belief, 0-10 each)
+- Stage (time since launch, recent revenue, biggest attempt)
+- ICP, Brunson bucket, strengths
+- Open 30-day actions
+- Last diagnosis label + headline
+
+Memory-first lookup with legacy fallback: if no memory row exists yet
+(founder predates PR #138), the route falls through to the previous
+`diagnostic_leads` direct read. System prompt also strengthened to
+discourage re-asking facts that are already in the context block.
+
+Observability: log line now distinguishes `ctx=memory | legacy_diagnostic
+| none` so we can see migration to the richer path in real time.
+
+Client-side: ZERO changes. The chat sidebar talks to `/api/chat` via AI
+SDK's `useChat` hook with `DefaultChatTransport` -- the upgrade is fully
+transparent at the API boundary.
+
+### PR #147 — Streaming diagnostic writes founder memory (commit 850d439)
+
+The streaming diagnostic at `/api/diagnostic/stream` (introduced in PR
+#101) created `diagnostic_leads` rows but never wrote `founder_memory`.
+The non-streaming `/api/diagnostic` already did. So streaming visitors
+got no dashboard banner and their chat sidebar fell through to the legacy
+path. This mirrors the exact `writeFounderMemoryAfter()` call from the
+sync route into the streaming path with identical args:
+
+- `leadId` = `rowId` (the freshly inserted diagnostic_leads id)
+- `email`, `productUrl` (from request body)
+- `findings` = `diagnosis` (the DeepDiagnosticResult)
+- `stage` = `survey` mapped to the structured shape
+- `bucket` = local bucket, `"error"` mapped to null
+
+Guarded by `isDiagnosticError(diagnosis)` so error-result diagnoses are
+skipped (matches the non-streaming guard). Fire-and-forget via `after()`
+so the SSE stream is never blocked.
+
+### Loop closure verification
+
+After PRs #138 + #146 + #147:
+
+| Surface | Direction | Path |
+|---|---|---|
+| `/api/diagnostic` | WRITE | `writeFounderMemoryAfter()` (PR #138) |
+| `/api/diagnostic/stream` | WRITE | `writeFounderMemoryAfter()` (PR #147 -- new) |
+| `/onboarding` | READ | `readFounderMemory()` + banner (PR #138) |
+| `/playbook` | READ | `readFounderMemory()` + banner (PR #138) |
+| `/api/founder-memory/context` | READ | `readFounderMemory()` + `toChatContext()` (PR #138) |
+| `/api/chat` | READ | `readFounderMemory()` + `toChatContext()` (PR #146 -- upgraded) |
+
+Every founder touchpoint after the diagnostic now reads from the same
+structured blob. The 2023 product feel ("please re-tell us your offer")
+is gone.
+
+### Operator dependencies (unchanged from PR #138)
+
+The feature is **deployed but dormant** until:
+
+1. `supabase db push --linked` — applies the founder_memory migration.
+   Until then, all read/write helpers silently no-op (defensive helpers
+   swallow the missing-table error).
+2. `vercel env add OPENAI_API_KEY production preview development --sensitive`
+   — populates `embedding` column. Without it, structured reads still
+   work; only semantic recall is disabled.
+
+Full operator workflow in `OPERATOR-FOUNDER-MEMORY-ACTIONS.md`.
+
+### Why this was worth doing autonomously
+
+PR #101 (the original chat sidebar) and PR #138 (founder memory) were
+designed and shipped in parallel by different sessions. They both made
+it to main but PR #101 happened to merge first, so the chat sidebar
+ended up using a stub context layer. Without these two follow-ups the
+founder-memory feature would have shipped with two surfaces (chat,
+streaming diagnostic) silently bypassing it -- exactly the kind of gap
+that's invisible in feature-shipped audits but obvious in production
+behavior.
+
+---
+
 ## Persistent founder memory: pgvector + chat context API -- 2026-05-21
 
 **Status: SHIPPED (PR #138, commit f994520)**  
