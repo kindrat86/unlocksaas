@@ -1352,7 +1352,12 @@ export default async function PlaybookSalesPage() {
               <Link href="/starter" className="underline underline-offset-4">
                 $1
               </Link>{" "}
-              and upgrade once Steps 1 and 2 are done.
+              and upgrade once Steps 1 and 2 are done. Have the budget and
+              want a 30-day compress instead?{" "}
+              <Link href="/apply" className="underline underline-offset-4">
+                Apply for the Done-With-You Sprint
+              </Link>
+              .
             </p>
             <p className="text-sm text-muted-foreground italic pt-4">
               I built this because I was you. – Maryan
