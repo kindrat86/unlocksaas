@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/build-workbook-bundle.mjs",
     "build": "next build",
     "start": "next start",
-    "validate:jsonld": "node scripts/validate-jsonld.mjs"
+    "validate:jsonld": "node scripts/validate-jsonld.mjs",
+    "workbooks:bundle": "node scripts/build-workbook-bundle.mjs"
   },
   "dependencies": {
+    "@ai-sdk/react": "^3.0.190",
     "@anthropic-ai/sdk": "^0.96.0",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.15",

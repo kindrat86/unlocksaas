@@ -78,8 +78,8 @@ async function DiagnosticSqueezePageBody(
   await connection();
   const searchParams = await props.searchParams;
   // Eugene Schwartz awareness-to-hook mapping. Resolved server-side from
-  // ?utm_source / ?source / ?h plus the Referer header. `headers()` is the
-  // async runtime API from next/headers (Next 16) — the await is required.
+  // ?utm_source / ?source / ?h plus the Referer header. The next/headers
+  // API is async in Next 16 -- await is required.
   const hdrs = await headers();
   const referer = hdrs.get("referer");
   const variantProps = resolveHookVariant({ searchParams, referer });
@@ -141,6 +141,21 @@ async function DiagnosticSqueezePageBody(
             className="text-base text-muted-foreground leading-relaxed"
           >
             {hook.lede}
+          </p>
+
+          {/* GEO -- answer-first block. 72.4% of ChatGPT-cited pages have
+              a direct factual answer in the first 60 words. This paragraph
+              is the fixed, hook-invariant machine-readable description so
+              AI crawlers always find the same canonical product summary. */}
+          <p
+            className="mt-3 text-xs text-muted-foreground leading-relaxed"
+            data-speakable="diagnostic-answer"
+          >
+            The UnlockSaaS diagnostic reads any live product page and labels
+            one upstream failure: Wrong Person (no specific avatar named),
+            Weak Offer (features instead of a promised result), or Weak
+            Belief (no epiphany bridge for the visitor). Free forever. No
+            card required. Results in 90 seconds.
           </p>
         </header>
 
