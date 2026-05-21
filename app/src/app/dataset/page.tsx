@@ -578,6 +578,33 @@ export default function DatasetPage() {
         <Separator className="my-8" />
 
         <section className="mb-10 space-y-3 leading-relaxed">
+          <h2 className="text-2xl font-bold">Derived analyses</h2>
+          <p className="text-sm leading-relaxed">
+            Open research pieces built on top of this corpus. Each is
+            independently citable with its own pinned version, rubric, and
+            permalink so a future change to either the corpus or the analysis
+            does not break a paper that quotes it.
+          </p>
+          <ul className="mt-2 space-y-2 text-sm">
+            <li>
+              <Link
+                href="/research/funnel-hook-distribution"
+                className="font-medium underline underline-offset-4"
+              >
+                Funnel Hook Distribution v1.0.0
+              </Link>{" "}
+              <span className="text-muted-foreground">
+                – 5-axis structural rubric applied to every brunsonLens.hook
+                pattern in the corpus. Methodology, per-pattern scores, and
+                histogram open.
+              </span>
+            </li>
+          </ul>
+        </section>
+
+        <Separator className="my-8" />
+
+        <section className="mb-10 space-y-3 leading-relaxed">
           <h2 className="text-2xl font-bold">Want Parquet, Arrow, or Excel?</h2>
           <p className="text-sm text-muted-foreground">
             Convert the CSV with one line. We do not ship binary

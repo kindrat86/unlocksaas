@@ -292,5 +292,7 @@ function surfaceLabel(surface: Citation["surface"]): string {
       return "Benchmark";
     case "dataset":
       return "Dataset";
+    case "research":
+      return "Research artifact";
   }
 }

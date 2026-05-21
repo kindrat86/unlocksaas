@@ -83,7 +83,7 @@ import {
 // ---------------------------------------------------------------------------
 
 /** Citation surface the artifact belongs to. */
-export type CitationSurface = "glossary" | "benchmark" | "dataset";
+export type CitationSurface = "glossary" | "benchmark" | "dataset" | "research";
 
 /**
  * Citation formats the library can emit. The route handler maps each
@@ -295,6 +295,71 @@ const DATASET_BUNDLE_LAST_VERIFIED_YEAR: string =
   LAST_VERIFIED_DATE.slice(0, 4);
 
 // ---------------------------------------------------------------------------
+// Research-piece citations – derived analyses on the public dataset.
+// ---------------------------------------------------------------------------
+//
+// Research pieces are dated, versioned, citable artifacts derived from
+// the same editorial corpus the public dataset publishes. Each gets a
+// stable /cite/research-<slug>-v<x>-<y>-<z> permalink so a reviewer who
+// quotes a statistic from the page can pin the exact version of the
+// analytic that produced it. Versions follow SemVer; a rubric change
+// bumps minor, a corpus row change is absorbed at patch.
+
+/** A registered research artifact. */
+interface ResearchArtifactRegistration {
+  /** Slug component of the citation ID, e.g. "funnel-hook-distribution". */
+  slug: string;
+  /** Version pinned at publication, e.g. "1.0.0". */
+  version: string;
+  /** Citation-ready title. */
+  title: string;
+  /** Canonical landing URL. */
+  canonicalUrl: string;
+  /** 1-sentence abstract used by RIS / CSL-JSON / APA strings. */
+  abstract: string;
+  /** ISO date of last manual sanity check of the analysis. */
+  lastVerifiedIso: string;
+}
+
+const RESEARCH_ARTIFACTS: ReadonlyArray<ResearchArtifactRegistration> = [
+  {
+    slug: "funnel-hook-distribution",
+    version: "1.0.0",
+    title:
+      "Indie SaaS Funnel Hook Distribution – A 5-Axis Structural Analysis of n=36 Teardowns",
+    canonicalUrl: `${BASE_URL}/research/funnel-hook-distribution`,
+    abstract:
+      "A derived structural analysis of the brunsonLens.hook patterns published in the n=36 Indie SaaS Teardowns dataset. Each pattern is scored 0-10 on five axes – target identity, outcome specificity, polarity, distinct mechanism, and time/quantity grounding – yielding a corpus-wide distribution and identifying the three patterns scoring under 4. Methodology, full rubric, and per-pattern scores are published.",
+    lastVerifiedIso: LAST_VERIFIED_DATE,
+  },
+];
+
+function buildResearchCitation(
+  entry: ResearchArtifactRegistration,
+): Citation {
+  const versionFlat = entry.version.replace(/\./g, "-");
+  const id = `research-${entry.slug}-v${versionFlat}`;
+  const year = Number(entry.lastVerifiedIso.slice(0, 4));
+  return {
+    id,
+    surface: "research",
+    title: entry.title,
+    authorName: FOUNDER.name,
+    publisherName: ORGANIZATION.name,
+    canonicalUrl: entry.canonicalUrl,
+    year,
+    lastVerifiedIso: entry.lastVerifiedIso,
+    abstract: entry.abstract,
+    bibtexKey: sanitizeBibtexKey(
+      `unlocksaas_research_${entry.slug}_${versionFlat}`,
+    ),
+    version: entry.version,
+    licenseSpdx: DATASET_LICENSE_SPDX,
+    licenseUrl: DATASET_LICENSE_URL,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Registry – materialized once at module load
 // ---------------------------------------------------------------------------
 
@@ -325,6 +390,13 @@ function buildRegistry(): ReadonlyMap<string, Citation> {
     throw new Error(`citations.ts: duplicate citation id "${ds.id}"`);
   }
   map.set(ds.id, ds);
+  for (const r of RESEARCH_ARTIFACTS) {
+    const c = buildResearchCitation(r);
+    if (map.has(c.id)) {
+      throw new Error(`citations.ts: duplicate citation id "${c.id}"`);
+    }
+    map.set(c.id, c);
+  }
   return map;
 }
 
@@ -346,6 +418,30 @@ export function getCitationForBenchmark(
   slug: string,
 ): Citation | undefined {
   return REGISTRY.get(`benchmark-${slug}`);
+}
+
+/**
+ * Resolve a research-piece slug to its registered citation. Throws if
+ * the slug isn't registered – consumers should pass a slug declared
+ * in RESEARCH_ARTIFACTS above, so a missing entry is a build-time bug
+ * worth failing loudly on.
+ */
+export function getCitationForResearch(slug: string): Citation {
+  const entry = RESEARCH_ARTIFACTS.find((r) => r.slug === slug);
+  if (!entry) {
+    throw new Error(
+      `citations.ts: research artifact "${slug}" not registered`,
+    );
+  }
+  const versionFlat = entry.version.replace(/\./g, "-");
+  const id = `research-${slug}-v${versionFlat}`;
+  const c = REGISTRY.get(id);
+  if (!c) {
+    throw new Error(
+      `citations.ts: research citation "${id}" missing from registry`,
+    );
+  }
+  return c;
 }
 
 export function getCitationForDataset(): Citation {
@@ -473,6 +569,8 @@ export function formatBibtex(c: Citation): string {
 const RIS_TYPE_BY_SURFACE: Readonly<Record<CitationSurface, string>> =
   Object.freeze({
     dataset: "DATA",
+    // Research pieces are derived datasets – same RIS reference type.
+    research: "DATA",
     glossary: "ELEC",
     benchmark: "ELEC",
   });
