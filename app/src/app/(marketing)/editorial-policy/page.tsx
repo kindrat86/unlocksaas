@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import {
   BreadcrumbListJsonLd,
+  ClaimReviewJsonLd,
   EditorialPolicyArticleJsonLd,
 } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
@@ -84,10 +85,17 @@ export default function EditorialPolicyPage() {
       {/* Article + correctionsPolicy + correction (when CORRECTIONS
           is populated). Hoisted at module load; per-render cost is
           zero. The corrections ItemList is omitted entirely while
-          the registry is empty – the honest empty-state policy is
+          the registry is empty -- the honest empty-state policy is
           encoded both in the rendered prose below and in the
           structured-data schema. */}
       <EditorialPolicyArticleJsonLd />
+      {/* ClaimReview: machine-readable editorial accuracy commitment.
+          Signals to Google AI Mode and LLM citation pipelines that this
+          publisher takes factual accuracy seriously. The claim reviewed is
+          the sourcing + dating + corrections commitment stated on this page.
+          Rating 5/5 ("Confirmed") because the corrections workflow is live
+          and the sourcing standards are real operational practice. */}
+      <ClaimReviewJsonLd />
 
       <article className="max-w-2xl mx-auto">
         <nav

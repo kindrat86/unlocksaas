@@ -37,4 +37,13 @@ export type {
 export { buildReview } from "./review.js";
 export type { ReviewInput } from "./review.js";
 
+export { buildSoftwareApplication } from "./softwareapplication.js";
+export type { SoftwareApplicationInput } from "./softwareapplication.js";
+
+export { buildClaimReview } from "./claimreview.js";
+export type { ClaimReviewInput, ClaimReviewRatingInput } from "./claimreview.js";
+
+export { buildQAPage } from "./qapage.js";
+export type { QAEntry, QAPageInput } from "./qapage.js";
+
 export { speakableFromClass, speakableFromXpath } from "./speakable.js";

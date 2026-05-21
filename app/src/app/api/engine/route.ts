@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropic } from "@/lib/anthropic";
+import { getAnthropic, primaryModel } from "@/lib/anthropic";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import {
   MILESTONE_KEYS,
@@ -370,7 +370,7 @@ export async function POST(req: NextRequest) {
 
     // Validate the current answer.
     const validationResponse = await getAnthropic().messages.create({
-      model: "claude-sonnet-4-6",
+      model: primaryModel(),
       max_tokens: 400,
       system: stepPrompt.validate,
       messages: [
@@ -453,7 +453,7 @@ Validate this answer. Respond ONLY with JSON.`,
     if (isLastQuestion) {
       const allAnswers = [...(previousAnswers ?? []), answer];
       const assemblyResponse = await getAnthropic().messages.create({
-        model: "claude-sonnet-4-6",
+        model: primaryModel(),
         max_tokens: 1500,
         system: stepPrompt.assemble,
         messages: [

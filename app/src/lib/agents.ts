@@ -24,7 +24,7 @@
  * write like Marco's blunt friend who has already shipped.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getAnthropic } from "@/lib/anthropic";
+import { getAnthropic, primaryModel } from "@/lib/anthropic";
 import { loadStepOutputs, type EngineStepId } from "@/lib/step-outputs";
 
 export const AGENT_KINDS = [
@@ -34,7 +34,6 @@ export const AGENT_KINDS = [
 ] as const;
 export type AgentKind = (typeof AGENT_KINDS)[number];
 
-const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS = 1800;
 
 const RELUCTANT_HERO_VOICE = `Your voice: Reluctant Hero (workbook 01 §6).
@@ -59,7 +58,7 @@ interface AgentLLMArgs {
  */
 async function callLLM({ system, user }: AgentLLMArgs): Promise<string> {
   const resp = await getAnthropic().messages.create({
-    model: MODEL,
+    model: primaryModel(),
     max_tokens: MAX_TOKENS,
     system,
     messages: [{ role: "user", content: user }],
@@ -346,7 +345,7 @@ export async function persistAgentRun(
     input,
     output,
     duration_ms: durationMs,
-    model: MODEL,
+    model: primaryModel(),
   });
   if (error) {
     console.error("[agents] persistAgentRun failed", {

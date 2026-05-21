@@ -1,4 +1,4 @@
-import { getAnthropic } from "@/lib/anthropic";
+import { getAnthropic, primaryModel } from "@/lib/anthropic";
 
 /**
  * Diagnostic engine for the Free Diagnostic Lead Funnel.
@@ -342,7 +342,7 @@ export async function classifyPageText(
   pageText: string,
 ): Promise<DiagnosticResult> {
   const response = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
+    model: primaryModel(),
     max_tokens: 700,
     system: CLASSIFIER_SYSTEM,
     messages: [
@@ -814,7 +814,7 @@ export async function deepAnalyzePageText(
   pageText: string,
 ): Promise<DeepDiagnosticResult> {
   const response = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
+    model: primaryModel(),
     max_tokens: 4096,
     system: DEEP_SYSTEM,
     messages: [

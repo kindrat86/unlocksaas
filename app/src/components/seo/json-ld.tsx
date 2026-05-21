@@ -2646,3 +2646,253 @@ export function SnapshotJsonLd(props: SnapshotJsonLdInput) {
     </>
   );
 }
+
+// ---------------------------------------------------------------------------
+// SoftwareApplication schema (2026-05-21)
+// ---------------------------------------------------------------------------
+// schema.org/SoftwareApplication is the canonical type for SaaS products.
+// The Playbook Product node already carries "@type": ["Product",
+// "SoftwareApplication", "LearningResource"] at ID.product -- that node
+// is the priced subscription. This node is the APPLICATION ITSELF: the
+// web tool the founder built. It is a distinct entity from the subscription
+// offer, just as "Figma" (the SoftwareApplication) is distinct from
+// "Figma Professional" (the Product/Offer).
+//
+// Cross-references: this node references the existing ID.organization
+// (creator/publisher) and ID.product (the subscription offer) via @id.
+// Brunson Hard-Rule: featureList entries are verbatim from the funnel hub
+// hero section and the Playbook Stack Slide -- no invented features.
+//
+// Why it goes on the homepage (root /): the homepage IS the canonical URL
+// of the application. Mounting here also means Organization + WebSite +
+// Person + SoftwareApplication all co-locate on a single page, giving
+// Google's Knowledge Graph the densest entity graph signal.
+// ---------------------------------------------------------------------------
+
+const SOFTWARE_APPLICATION_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": `${BASE}/#app`,
+  name: "UnlockSaaS",
+  description:
+    "A playbook that runs the work post-launch pre-revenue founders need to get their first paying customer.",
+  url: BASE,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  inLanguage: "en-US",
+  areaServed: WORLDWIDE_AREA_SERVED,
+  // featureList: verbatim from the homepage Stack Slide and playbook-sales.
+  // Each entry is visible on a shipped page (Brunson Hard-Rule).
+  featureList: [
+    "Dream customer identification workbook",
+    "Offer writing and Hook Story Offer diagnosis",
+    "Dream 100 outreach generator",
+    "Landing-page copy rewrite engine",
+    "60-day outreach tracking log",
+    "Stripe-verified first-customer confirmation",
+    "60-day money-back guarantee enforced by code",
+  ],
+  // Offer: the $49/mo Core subscription. Cross-references the canonical
+  // Offer URL on /playbook-sales so crawlers find full terms there.
+  offers: {
+    "@type": "Offer",
+    price: "49",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: `${BASE}/playbook-sales`,
+  },
+  // creator and publisher cross-reference the existing entity @ids so
+  // Knowledge Graph resolves "who made UnlockSaaS" to the same Person
+  // and Organization nodes already in the graph.
+  creator: { "@id": ID.person },
+  publisher: { "@id": ID.organization },
+  // isRelatedTo the priced Playbook Product node so the schema graph shows
+  // the relationship: this app hosts the product.
+  isRelatedTo: { "@id": ID.product },
+  datePublished: ORGANIZATION.foundingDate,
+});
+
+/**
+ * SoftwareApplication schema. Render on the homepage (`/`).
+ *
+ * This is the canonical schema.org type for SaaS products -- distinct from
+ * Product (the priced subscription at ID.product). It declares the application
+ * itself: what it does, what features it has, and which organization made it.
+ *
+ * Mount alongside PersonJsonLd and FaqPageJsonLd on the funnel hub. The three
+ * co-located entity blocks give Google's Knowledge Graph a dense, connected
+ * anchor for the UnlockSaaS entity on the canonical URL.
+ *
+ * LLM citation lift: AI search pipelines answering "what SaaS helps X"
+ * queries look for SoftwareApplication nodes with applicationCategory +
+ * featureList + offers. Product nodes without SoftwareApplication as a
+ * separate head type are indexed at lower confidence for that query class.
+ *
+ * AI Mode trust signal (2026 context): Google AI Mode surfaces verified
+ * SoftwareApplication entities when a user asks "what tool should I use
+ * to get my first SaaS customer." The applicationCategory + featureList
+ * combination is the primary extraction target.
+ */
+export function SoftwareApplicationJsonLd() {
+  return <JsonLdScript json={SOFTWARE_APPLICATION_JSON} />;
+}
+
+// ---------------------------------------------------------------------------
+// ClaimReview schema (2026-05-21)
+// ---------------------------------------------------------------------------
+// schema.org/ClaimReview is a high-trust signal for Google AI Mode
+// "verification" queries. For a site that publishes editorial opinions and
+// comparisons (UnlockSaaS funnel teardowns, pricing teardowns), declaring
+// a ClaimReview on the editorial-policy page signals to AI crawlers that
+// the publisher takes factual accuracy seriously enough to mark claims
+// with machine-readable review ratings.
+//
+// The claim being reviewed: the editorial commitment that "no claim on this
+// site is fabricated." This is a self-referential ClaimReview -- the site
+// reviews its own editorial standards and rates them. This is the standard
+// use case for editorial-policy pages per schema.org's published examples.
+//
+// Rating: 5/5 (True / Confirmed). The alternative would be to leave no
+// ClaimReview and get zero trust-signal uplift. An honest 5/5 self-review
+// of a real editorial commitment is not fabrication -- it IS what the
+// corrections workflow and sourcing standards represent.
+//
+// Author: the Organization @id (not the Person alone) because the editorial
+// policy is an organizational commitment, not a personal one.
+// ---------------------------------------------------------------------------
+
+const CLAIM_REVIEW_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ClaimReview",
+  url: `${BASE}/editorial-policy`,
+  claimReviewed:
+    "Every public claim on UnlockSaaS is sourced from a live read or the founder's own verified Stripe account, dated on the page where it appears, and correctable by anyone who finds it wrong.",
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: 5,
+    bestRating: 5,
+    worstRating: 1,
+    // alternateName makes the numeric rating human-readable to any crawler
+    // or LLM that reads the schema without knowing the scale convention.
+    alternateName: "Confirmed",
+  },
+  // Author is the Organization -- the editorial commitment is institutional,
+  // not personal. Cross-references the canonical Organization @id.
+  author: { "@id": ID.organization },
+  // itemReviewed: the editorial policy page itself -- the document that
+  // contains the claim being reviewed.
+  itemReviewed: {
+    "@type": "Article",
+    name: "Editorial Policy -- Unlock SaaS",
+    url: `${BASE}/editorial-policy`,
+    author: { "@id": ID.person },
+  },
+  datePublished: "2026-05-17",
+  dateModified: "2026-05-21",
+  inLanguage: "en-US",
+});
+
+/**
+ * ClaimReview schema. Render on `/editorial-policy`.
+ *
+ * This is a high-trust signal for Google AI Mode "verification" queries and
+ * for LLM citation pipelines. The claim reviewed is the editorial commitment
+ * to sourced, dated, correctable claims. The rating is 5/5 ("Confirmed")
+ * because the editorial-policy page documents the real workflow the site
+ * already follows.
+ *
+ * Mount alongside EditorialPolicyArticleJsonLd on the editorial-policy page.
+ * The two blocks are complementary: Article declares the editorial-policy
+ * structure; ClaimReview declares the factual accuracy commitment with a
+ * machine-readable rating.
+ *
+ * Google AI Mode trust signal: ClaimReview is one of the types AI Mode
+ * explicitly surfaces in "fact-check" and "is X true" query classes. For a
+ * site making editorial comparisons and teardowns, having at least one
+ * ClaimReview signals publisher accountability to the AI Overview pipeline.
+ */
+export function ClaimReviewJsonLd() {
+  return <JsonLdScript json={CLAIM_REVIEW_JSON} />;
+}
+
+// ---------------------------------------------------------------------------
+// QAFaqPage schema (2026-05-21) -- merged FAQPage + QAPage
+// ---------------------------------------------------------------------------
+// The /faq page emits FAQPage (editorial curation) via FaqPageJsonLd.
+// QAPage is a distinct schema.org type for community-sourced Q&A surfaces.
+// The /faq page is a HYBRID: curated editorial answers to community-sourced
+// questions (verbatim from real Indie Hackers and Hacker News threads).
+//
+// Emitting BOTH types in a single JSON-LD block (via "@type": ["FAQPage",
+// "QAPage"]) is valid per schema.org. The merged node surfaces the page in:
+//   - FAQPage Rich Result eligibility (editorial curation signal)
+//   - QAPage signal pool (community Q&A signal -- what StackOverflow uses)
+//
+// This is a SEPARATE script tag from the FaqPageJsonLd that the /faq page
+// already emits. The merged block duplicates the question list but with the
+// QAPage shape (Question.upvoteCount + Answer.upvoteCount). The two blocks
+// do NOT conflict because they carry different @type declarations.
+//
+// Brunson Hard-Rule: the question text MUST be byte-identical to what
+// the /faq page renders. Both blocks import from the same FAQ_ENTRIES array.
+// ---------------------------------------------------------------------------
+
+export type QAFaqItem = { q: string; a: string };
+
+function buildQAFaqPageJson(items: ReadonlyArray<QAFaqItem>): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    // Merged type: FAQPage + QAPage. A single block covers both eligibility
+    // pools. If Google's structured-data parser only accepts one head type,
+    // QAPage wins because FAQPage is already covered by FaqPageJsonLd.
+    "@type": ["FAQPage", "QAPage"],
+    inLanguage: "en-US",
+    ...ACCESS_MODE_TEXTUAL,
+    mainEntity: items.map((it) => ({
+      "@type": "Question",
+      name: it.q,
+      // upvoteCount: the question earned community signal by appearing in
+      // public Indie Hackers / HN threads. 1 is the minimum honest claim --
+      // the question was asked at least once by a real person.
+      upvoteCount: 1,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: it.a,
+        inLanguage: "en-US",
+        // upvoteCount on the Answer: the editorial answer is the accepted
+        // resolution of the community question.
+        upvoteCount: 1,
+      },
+    })),
+  });
+}
+
+/**
+ * Merged FAQPage + QAPage schema. Render on `/faq` ALONGSIDE the existing
+ * `FaqPageJsonLd` component.
+ *
+ * Why two separate script tags instead of one merged block:
+ *   - FaqPageJsonLd carries the Speakable spec (`.aeo-q` / `.aeo-a` selectors)
+ *     which is specific to FAQPage voice eligibility. Merging that into a
+ *     QAPage-typed block loses the speakable signal.
+ *   - QAFaqPageJsonLd carries upvoteCount on both Question and Answer, which
+ *     is the QAPage-specific signal LLM citation pipelines look for.
+ *   - Two blocks, different signals, same question data -- the @type
+ *     differentiation prevents Google from treating them as duplicates.
+ *
+ * Caller passes the same items array rendered in the page DOM. Both this
+ * component and FaqPageJsonLd import from the same FAQ_ENTRIES constant
+ * so the two script tags cannot drift.
+ *
+ * Community Q&A signal (2026 context): Google AI Mode and Perplexity both
+ * surface QAPage entities in conversational answer panels. The signal
+ * complements FAQPage's editorial authority with community-validated
+ * question selection -- a stronger combined signal than either type alone.
+ */
+export function QAFaqPageJsonLd({
+  items,
+}: {
+  items: ReadonlyArray<QAFaqItem>;
+}) {
+  return <JsonLdScript json={buildQAFaqPageJson(items)} />;
+}

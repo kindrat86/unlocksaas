@@ -10,8 +10,8 @@
  *
  * This route is the executor. Any MCP-aware client (Claude Desktop, Cursor,
  * Windsurf, mcp-inspector, the Vercel MCP catalog) that connects to
- * `https://unlocksaas.com/api/mcp` can now call twenty-two read-only tools that
- * surface the same content the rest of the site renders:
+ * `https://unlocksaas.com/api/mcp` can now call twenty-six read-only tools
+ * that surface the same content the rest of the site renders:
  *
  *   diagnose_url               → live one-shot diagnostic (Brunson label)
  *   deep_diagnose_url          → live full V2 teardown (scorecard + rewrites + 30-day plan)
@@ -35,6 +35,10 @@
  *   get_glossary_audio         → one Brunson-term TTS audio episode
  *   get_faq                    → site-wide FAQ entries
  *   get_offer                  → canonical offer + value ladder + guarantee mechanics
+ *   get_dream_100_template     → seven-category Dream 100 framework (any niche)
+ *   get_value_ladder_archetype → one of four Brunson funnel-type patterns
+ *   get_objection_pattern      → one of eight dollar-objection patterns with verbatim source
+ *   nlweb_ask                  → natural-language search across the full schema.org corpus (Microsoft NLWeb compatible)
  *
  * Every tool that returns a URL appends a `?utm_source=mcp&utm_medium=...`
  * query so PostHog can attribute the resulting human click back to the
@@ -171,6 +175,16 @@ import {
   GLOSSARY_AUDIO_PODCAST_CONFIG,
   type GlossaryAudioEntry,
 } from "@/lib/seo/glossary-audio";
+import {
+  DREAM_100_CATEGORIES,
+  DREAM_100_TARGET_TOTAL,
+  VALUE_LADDER_FUNNEL_SLUGS,
+  getFunnelArchetypeBySlug,
+  OBJECTION_SLUGS,
+  getObjectionPatternBySlug,
+  type FunnelArchetype,
+  type ObjectionPattern,
+} from "@/lib/brunson-frameworks";
 import { NLWEB_CORPUS, NLWEB_CORPUS_SIZE } from "@/lib/nlweb/corpus";
 import { buildIndex, rank } from "@/lib/nlweb/bm25";
 import { summarise } from "@/lib/nlweb/summary";
@@ -178,10 +192,8 @@ import { summarise } from "@/lib/nlweb/summary";
 const BASE = "https://unlocksaas.com";
 
 /**
- * BM25 index over the NLWeb corpus. Built once at module load and reused
- * across every `nlweb_ask` invocation in the lifetime of the function
- * instance. Same instance is used here and at /api/nlweb/ask – two
- * surfaces, one in-memory index.
+ * Pre-built BM25 index for NLWeb retrieval. Built once at module load,
+ * reused across every request.
  */
 const NLWEB_BM25_INDEX = buildIndex(NLWEB_CORPUS);
 
@@ -569,6 +581,95 @@ function renderDeepDiagnosis(d: DeepDiagnosticResult, url: string): string {
     ...d.strengths.map((s) => `- ${s}`),
     "",
     `For the full browser-rendered teardown (with browser-native PDF export and the email-gated save flow), point the founder at ${withRef(`/diagnostic?url=${encodeURIComponent(url)}`, "deep_diagnose_url")}`,
+  ].join("\n");
+}
+
+/**
+ * Render the Dream 100 seven-category framework as compact markdown for an
+ * MCP agent. Returns the structural skeleton (categories + targets + intent
+ * + worked examples + work-your-way-in vs buy-your-way-in tactics) any indie
+ * founder can apply to their own niche. UnlockSaaS's specific 100 entries
+ * stay private in `strategy/dream-100.csv`; only the framework ships here.
+ */
+function renderDream100Template(tool: string): string {
+  const blocks = DREAM_100_CATEGORIES.map((c) =>
+    [
+      `## Category ${c.number}: ${c.name} (target ${c.target})`,
+      "",
+      `**Intent:** ${c.intent}`,
+      "",
+      `**Examples (worked, generic to any niche):**`,
+      ...c.examples.map((e) => `- ${e}`),
+      "",
+      `**Work your way in:** ${c.workYourWayIn}`,
+      "",
+      `**Buy your way in:** ${c.buyYourWayIn}`,
+    ].join("\n"),
+  );
+  return [
+    `# Dream 100 – seven-category framework (target ${DREAM_100_TARGET_TOTAL} entries)`,
+    "",
+    `Brunson's Dream 100 (Traffic Secrets §1): the canonical seven gates where the dream customer already congregates. Build the list once; mine forever.`,
+    "",
+    `Each category below carries a target count, an intent paragraph (what the founder earns by being there), example entries any niche can adapt, and the work-your-way-in vs buy-your-way-in tactic split.`,
+    "",
+    ...blocks,
+    "",
+    `**Brunson canon:** Traffic Secrets §1 (Russell Brunson).`,
+    "",
+    `**UnlockSaaS application:** Homepage at ${withRef("/", tool)} and the locked Dream 100 list (private, 100 entries; 40 individuals named in workbook 08 §2).`,
+  ].join("\n");
+}
+
+/** Render one Brunson funnel archetype as compact markdown for an MCP agent. */
+function renderFunnelArchetype(f: FunnelArchetype, tool: string): string {
+  return [
+    `# ${f.name} (Rung ${f.rung}) – ${f.priceRange}`,
+    "",
+    `**Purpose:** ${f.purpose}`,
+    "",
+    `**Pages (in order):**`,
+    ...f.pages.map((p, i) => `${i + 1}. ${p}`),
+    "",
+    `**Hook / Story / Offer shape:**`,
+    `- **Hook:** ${f.hookStoryOffer.hookShape}`,
+    `- **Story:** ${f.hookStoryOffer.storyShape}`,
+    `- **Offer:** ${f.hookStoryOffer.offerShape}`,
+    "",
+    `**Build-order rule:** ${f.buildOrderRule}`,
+    "",
+    `**UnlockSaaS worked example:** ${f.unlockSaasExample}`,
+    "",
+    `**Common failure at indie scale:** ${f.commonFailure}`,
+    "",
+    `**Brunson canon:** DotCom Secrets §1 + Expert Secrets §3.`,
+    "",
+    `**UnlockSaaS rungs (worked examples):** ${withRef("/diagnostic", tool)} (free Lead Funnel), ${withRef("/starter", tool)} ($1 Unboxing Funnel), ${withRef("/playbook-sales", tool)} ($49/mo Presentation Funnel).`,
+  ].join("\n");
+}
+
+/** Render one dollar-objection pattern as compact markdown for an MCP agent. */
+function renderObjectionPattern(o: ObjectionPattern, tool: string): string {
+  return [
+    `# ${o.name} – dollar-objection pattern`,
+    "",
+    `**Objection (founder language):** ${o.objection}`,
+    "",
+    `**Verbatim source quote:**`,
+    `> "${o.verbatimQuote.quote}"`,
+    `> – ${o.verbatimQuote.user}, [${o.verbatimQuote.sourceLabel}](${o.verbatimQuote.sourceUrl})`,
+    "",
+    `**Brunson classification:** ${o.brunsonClassification}`,
+    "",
+    `**Answer (in Reluctant Hero voice):**`,
+    o.answer,
+    "",
+    `**Sales-page disqualifier line:**`,
+    `> ${o.disqualifier}`,
+    "",
+    `**Funnel placement:** ${o.funnelPlacement}`,
+    "",
+    `**UnlockSaaS application:** ${withRef("/faq", tool)} (live FAQ entries) and ${withRef("/playbook-sales", tool)} (sales page with disqualifier block).`,
   ].join("\n");
 }
 
@@ -1459,81 +1560,243 @@ const handler = createMcpHandler(
       },
     );
 
-    // ─── nlweb_ask ───────────────────────────────────────────────────────
-    // Surface E (NLWeb /ask) wrapped as an MCP tool. Same BM25 corpus
-    // and same deterministic summary template the /api/nlweb/ask
-    // endpoint returns; an MCP-only agent that does not separately
-    // speak NLWeb can still ask natural-language questions across the
-    // 700-ish item static corpus through this tool. Returns the top-k
-    // matching items as a compact markdown block followed by the
-    // deterministic NL summary. Brunson Hard-Rule: every entry is
-    // sourced from the static catalogs that render the public HTML;
-    // no fabricated answers.
+    // ─── get_dream_100_template ──────────────────────────────────────────
+    // Brunson Dream 100 framework, distilled to its structural skeleton:
+    // seven categories with target counts (summing to 100), intent
+    // paragraphs, worked example entries, and the work-your-way-in vs
+    // buy-your-way-in tactic split. UnlockSaaS's specific 100 entries
+    // stay private in `strategy/dream-100.csv`; this tool exposes the
+    // framework only. An agent helping a different founder design their
+    // distribution plan calls this once and adapts the categories.
+    server.registerTool(
+      "get_dream_100_template",
+      {
+        title: "Get the Dream 100 seven-category framework",
+        description:
+          "Returns the canonical Brunson Dream 100 framework as a structural template any indie founder can apply to their own niche: seven categories (Communities, Influencers, Podcasts, Newsletters, Products, YouTube, Blogs) with target counts summing to 100, intent paragraphs, 3-5 worked example entries per category, and the work-your-way-in vs buy-your-way-in tactic split. UnlockSaaS's own locked 100 entries stay private; this tool exposes the framework, not the list. Use this when an agent helps a founder build their distribution plan from scratch, or wants to evaluate whether an existing distribution plan covers all seven gates.",
+        inputSchema: {},
+      },
+      async () => {
+        return {
+          content: [
+            {
+              type: "text",
+              text: renderDream100Template("get_dream_100_template"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_value_ladder_archetype ──────────────────────────────────────
+    // The four canonical Brunson funnel types, one per value-ladder rung,
+    // each with the pages, the Hook/Story/Offer shape, the build-order
+    // rule, the UnlockSaaS-specific worked example, and the common
+    // failure mode at indie scale. Pairs naturally with
+    // `get_dream_100_template` — Dream 100 is the audience side, value
+    // ladder is the offer side, both required to ship a complete launch.
+    server.registerTool(
+      "get_value_ladder_archetype",
+      {
+        title: "Get one Brunson value-ladder funnel archetype",
+        description:
+          "Returns the canonical Brunson funnel-type pattern for one rung of the value ladder: Lead Funnel (Rung 0, free), Unboxing Funnel (Rung 1, $1-$50 one-time), Presentation Funnel (Rung 2, $49-$300/mo recurring), or Phone Funnel (Rung 3, $2,000+ high-ticket). Each archetype carries the canonical pages, the Hook/Story/Offer shape, the build-order rule, the UnlockSaaS-specific worked example, and the common failure mode at indie scale. Use this when an agent designs a value ladder for a different founder.",
+        inputSchema: {
+          funnel_type: z
+            .enum(["lead", "unboxing", "presentation", "phone"])
+            .describe(
+              "Which Brunson funnel type to fetch. 'lead' = free, 'unboxing' = $1-$50 one-time, 'presentation' = $49-$300/mo recurring, 'phone' = $2,000+ high-ticket.",
+            ),
+        },
+      },
+      async ({ funnel_type }) => {
+        const f = getFunnelArchetypeBySlug(funnel_type);
+        if (!f) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Unknown funnel type "${funnel_type}". Valid: ${VALUE_LADDER_FUNNEL_SLUGS.join(", ")}.`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text",
+              text: renderFunnelArchetype(f, "get_value_ladder_archetype"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_objection_pattern ───────────────────────────────────────────
+    // Eight dollar-objection patterns mined from public Indie Hackers and
+    // Hacker News threads (2026-05-17). Each entry returns the verbatim
+    // founder quote with attribution, the Brunson External Belief
+    // classification, the answer copy (already shipped on /faq for
+    // UnlockSaaS), the sales-page disqualifier line, and the funnel
+    // placement. Distinct from `get_faq` (UnlockSaaS-specific Q+A only):
+    // this tool returns the structural pattern an agent can transfer
+    // across niches when helping a different founder.
+    server.registerTool(
+      "get_objection_pattern",
+      {
+        title: "Get one dollar-objection pattern with verbatim source",
+        description:
+          "Returns one of the eight indie-SaaS dollar-objection patterns mined from public Indie Hackers and Hacker News threads: a verbatim founder quote with attribution and source URL, the Brunson External Belief classification, the answer copy (already shipped on /faq for UnlockSaaS), the sales-page disqualifier line, and the funnel placement. Categories: subscription-fatigue, cash-constraint, burned-by-gurus, not-tools-job, build-it-myself, price-scales-badly, praise-without-payment, built-beside-not-inside. Use this when an agent helps a different founder craft their own objection-handling — the structural pattern transfers across niches even when the niche-specific dollar language varies. Distinct from `get_faq` which returns UnlockSaaS-specific FAQ answers only.",
+        inputSchema: {
+          category: z
+            .enum([
+              "subscription-fatigue",
+              "cash-constraint",
+              "burned-by-gurus",
+              "not-tools-job",
+              "build-it-myself",
+              "price-scales-badly",
+              "praise-without-payment",
+              "built-beside-not-inside",
+            ])
+            .describe(
+              "Which dollar-objection category to fetch. Use the kebab-case slug.",
+            ),
+        },
+      },
+      async ({ category }) => {
+        const o = getObjectionPatternBySlug(category);
+        if (!o) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Unknown objection category "${category}". Valid: ${OBJECTION_SLUGS.join(", ")}.`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text",
+              text: renderObjectionPattern(o, "get_objection_pattern"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── nlweb_ask ──────────────────────────────────────────────────────────
+    // Natural-language search against the full schema.org corpus using BM25.
+    // Microsoft NLWeb compatible endpoint (Surface E of the agent-retrieval
+    // stack). Returns top-k items with a deterministic summary, suitable for
+    // both agent-native retrieval and programmatic corpus exploration.
     server.registerTool(
       "nlweb_ask",
       {
-        title: "Ask UnlockSaaS in natural language (NLWeb /ask via MCP)",
+        title: "Ask a natural-language question against the UnlockSaaS corpus",
         description:
-          "Natural-language search across the full UnlockSaaS schema.org corpus: funnel teardowns, pricing teardowns, head-to-head comparisons, alternatives, category roundups, Playbook steps, Brunson glossary, FAQ entries, direct answers, and indie SaaS benchmarks. Returns the top-k matching items with name, description, and clickable URL, plus a one-paragraph deterministic NL summary. Use this when an agent needs to find content across surfaces (e.g. 'pricing for Stripe alternatives', 'what is Hook-Story-Offer', 'benchmarks for landing page conversion') and does not already know which catalog tool to call. Backed by the same BM25 ranker as the public /api/nlweb/ask endpoint.",
+          "Search the UnlockSaaS schema.org corpus (700+ items across Articles, HowTos, Products, DefinedTerms, FAQPages, QAPages) using natural-language keywords. Returns the top-k matching items with a deterministic one-paragraph summary. Uses BM25 ranking for deterministic, sub-millisecond retrieval. Items span all surfaces: funnel teardowns, pricing teardowns, comparisons, alternatives, categories, Playbook steps, glossary terms, FAQ entries, direct answers, and benchmarks. Useful for helping agents discover relevant content without hardcoding paths or iterating through list_* tools.",
         inputSchema: {
           query: z
             .string()
-            .min(1)
-            .max(500)
+            .trim()
+            .min(1, "query is required")
+            .max(500, "query too long")
             .describe(
-              "Natural-language query, 1-500 chars. Tokens are case-insensitive; multi-word queries score higher when more tokens hit the same item.",
+              "Natural-language search query (1-500 characters). Examples: 'how to find first customers', 'SaaS pricing strategies', 'Typeform vs Tally'.",
             ),
           top_k: z
             .number()
             .int()
             .min(1)
             .max(20)
+            .default(5)
             .optional()
             .describe(
-              "How many items to return. Defaults to 5 in MCP context (smaller than the HTTP default so the agent can quote them all). Max 20.",
+              "How many top-ranked items to return (1-20, default 5). Higher values give more context but longer responses.",
             ),
         },
       },
       async ({ query, top_k }) => {
-        const k = top_k ?? 5;
-        const ranked = rank(NLWEB_BM25_INDEX, NLWEB_CORPUS, query, k);
-        if (ranked.length === 0) {
+        const rankedItems = rank(
+          NLWEB_BM25_INDEX,
+          NLWEB_CORPUS,
+          query,
+          top_k ?? 5,
+        );
+        if (rankedItems.length === 0) {
           return {
             content: [
               {
                 type: "text",
-                text: `No items in the UnlockSaaS corpus match "${query}". Corpus contains ${NLWEB_CORPUS_SIZE} items across funnel/pricing teardowns, comparisons, alternatives, category roundups, Playbook steps, glossary terms, FAQ entries, direct answers, and benchmarks. Try a more specific keyword or browse via \`list_*\` tools.`,
+                text: `No results in the UnlockSaaS corpus match the query "${query}". Try a different keyword, or explore the catalog hubs at /alternatives-to, /funnel-teardown, /pricing-teardown, /vs, /category, /benchmarks, /answers, /glossary, or /faq.`,
               },
             ],
           };
         }
-        const items = ranked.map((r) => r.item);
-        const lines = items.map((it, i) => {
-          // Reuse the MCP `withRef` so the link carries utm_source=mcp,
-          // utm_medium=ai-agent, utm_campaign=nlweb_ask – the click is
-          // attributed to the MCP channel even though the retrieval
-          // mechanism mirrors the NLWeb endpoint.
-          return `${i + 1}. **${it.name}** (${it.surface}) – ${it.description}\n   URL: ${withRef(it.url, "nlweb_ask")}`;
-        });
-        const text = [
-          `# NLWeb ask results for "${query}"`,
-          "",
-          `**Summary:** ${summarise(query, items)}`,
-          "",
-          `**Top ${items.length} items:**`,
-          "",
-          ...lines,
-          "",
-          `_Retrieved via the same BM25 ranker that powers ${BASE}/api/nlweb/ask. Corpus size: ${NLWEB_CORPUS_SIZE} items._`,
-        ].join("\n");
-        return { content: [{ type: "text", text }] };
+
+        const items = rankedItems.map((r) => r.item);
+        const itemListElement = items.map((item, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": item["@type"],
+            "@id": item["@id"],
+            name: item.name,
+            description: item.description,
+            url: withRef(item.url, "nlweb_ask"),
+            dateModified: item.dateModified,
+            keywords: item.keywords,
+          },
+        }));
+
+        const summary = summarise(query, items);
+
+        const nlwebResponse = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: `NLWeb results for: ${query}`,
+          numberOfItems: itemListElement.length,
+          itemListElement,
+          summary,
+          "unlocksaas:retriever": "bm25-v1",
+          "unlocksaas:corpusSize": NLWEB_CORPUS_SIZE,
+        };
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# NLWeb search: "${query}"`,
+                "",
+                summary,
+                "",
+                "**Results:**",
+                ...items.map((item, i) => {
+                  const surface = item.surface || "unknown";
+                  return `${i + 1}. **${item.name}** (${surface})\n   ${withRef(item.url, "nlweb_ask")}`;
+                }),
+                "",
+                `**Full JSON-LD response available at:**`,
+                `\`\`\`json`,
+                JSON.stringify(nlwebResponse, null, 2),
+                `\`\`\``,
+              ].join("\n"),
+            },
+          ],
+        };
       },
     );
   },
   {
     serverInfo: {
       name: "unlocksaas",
-      version: "1.2.0",
+      version: "1.3.0",
     },
   },
   {
