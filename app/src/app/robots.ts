@@ -5,32 +5,49 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  * robots.txt for UnlockSaaS — Surface A (crawl) + Surface B (AEO/GEO) policy.
  *
  * Source: strategy/google-strategy.md §A.4 (crawl) and §B.1 (AI-crawler policy).
+ * AI-crawler policy doc: strategy/decisions/ai-crawler-policy.md (2026-05-21).
+ *
+ * Purpose-based crawler policy (2026-05-21 update)
+ * ------------------------------------------------
+ * This file governs CRAWL ACCESS (who can fetch which paths). A companion
+ * file at /ai.txt (Spawning spec) governs TRAINING DATA CONSENT (whether
+ * content may be used in AI training corpora). The two layers are distinct:
+ *
+ *   robots.txt  → "you may crawl this path" (HTTP access)
+ *   ai.txt      → "you may / may not use this content for training" (consent)
+ *
+ * UnlockSaaS allows crawling by answer-engine bots because citation = revenue.
+ * UnlockSaaS disallows training data harvesting (see /ai.txt -- Spawning: disallow).
+ * Both signals are intentional and non-contradictory.
  *
  * Four rule groups:
  *   1. `*`           — every crawler (Google, Bing, Yandex, etc.). Public
  *                      marketing surfaces allowed; private/auth/api blocked.
- *   2. AI training   — explicit Allow for the AI crawlers UnlockSaaS WANTS
- *                      to be cited by (Perplexity, Anthropic, OpenAI,
- *                      Google AI Overviews, Apple, ByteDance, Meta, CCBot,
- *                      DuckAssist, Amazon, Mistral). Distribution > scrape
- *                      protection for a pre-revenue founder-tools SaaS where
- *                      AI-answer citation IS the channel.
+ *   2. AI search/answer bots — explicit Allow for crawlers whose products
+ *                      surface citations or link back to source URLs:
+ *                      OAI-SearchBot (ChatGPT Search), PerplexityBot,
+ *                      ClaudeBot + Claude-SearchBot (Anthropic retrieval),
+ *                      Google-Extended (AI Overviews/Gemini), DuckAssistBot,
+ *                      YouBot, and the major LLM providers' user agents.
+ *                      Distribution > scrape protection for a pre-revenue
+ *                      founder-tools SaaS where AI-answer citation IS the
+ *                      channel.
  *   3. Indie search  — explicit Allow for Brave, Mojeek, Marginalia, Kagi.
  *                      Tiny absolute share, but the demographic they index
  *                      for matches the UnlockSaaS buyer profile (founders
  *                      who deliberately use Google alternatives).
  *   4. Bad-actor     — block the scrapers that take content without driving
- *                      any retrieval traffic (legacy CCBot already covered
- *                      by allow above; future bad-actor entries land here).
+ *                      any retrieval traffic.
  *
  * Allow-list rationale: each AI user-agent below was added because the
  * model behind it surfaces citations or links back to source URLs in its
  * answers. Allow-listing them is reciprocity — they cite, we let them in.
+ * Training-data consent is governed separately by /ai.txt (Spawning spec).
  *
  * Brunson Hard-Rule reconciliation: no fabricated bot names, no aspirational
  * crawlers ("Wikipedia AI" etc.). Every entry below is a real, currently
- * operating user-agent string verified at /etc/robots-research/ on
- * 2026-05-17.
+ * operating user-agent string verified against nohacks.co AI crawler
+ * landscape report 2026 on 2026-05-21.
  *
  * Disallow list for `*` continues to block:
  *  - /playbook/*            — authenticated member area; per-user data
@@ -181,8 +198,12 @@ export default function robots(): MetadataRoute.Robots {
     "OAI-SearchBot",
     "ChatGPT-User",
     // Anthropic — training + Claude with web/search tools.
+    // ClaudeBot: general crawl + training. Claude-SearchBot: retrieval indexing
+    // (independently controllable from ClaudeBot per nohacks.co 2026 report).
     "ClaudeBot",
+    "Claude-SearchBot",
     "Claude-Web",
+    "Claude-User",
     "anthropic-ai",
     // Google — AI Overviews / Gemini training opt-in (separate from Googlebot).
     "Google-Extended",

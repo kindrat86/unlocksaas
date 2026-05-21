@@ -1609,4 +1609,58 @@ The funnel labels are: `the 5-email founder breakdown series` (soap_opera), `the
 
 ### Next coherent unit
 
+---
+
+## 2026-05-21 -- AI crawler policy: /ai.txt + purpose-based robots.txt
+
+**PR:** feat/ai-crawler-policy
+**Branch:** feat/ai-crawler-policy -- main
+
+### What was added
+
+**New file: `/ai.txt` route** (`app/src/app/ai.txt/route.ts`)
+
+Serves `https://unlocksaas.com/ai.txt` following the Spawning ai.txt spec
+(https://site.spawning.ai/spawning-ai-txt). Declares `Spawning: disallow`
+for all user-agents -- UnlockSaaS does not consent to training data
+harvesting. Format: robots.txt-style `User-agent` / `Spawning` blocks.
+
+### Bots allowed (in robots.txt -- crawl/search/citation access)
+
+OAI-SearchBot, GPTBot, ChatGPT-User, ClaudeBot, Claude-SearchBot (new),
+Claude-Web, Claude-User (new), anthropic-ai, Google-Extended, GoogleOther,
+PerplexityBot, Perplexity-User, Bingbot, Applebot, Applebot-Extended,
+Meta-ExternalAgent, FacebookBot, CCBot, Bytespider, DuckAssistBot, Amazonbot,
+MistralAI-User, YouBot, cohere-ai, cohere-training-data-crawler, Diffbot,
+Bravebot, MojeekBot, search.marginalia.nu, Kagibot
+
+### Training data consent (ai.txt -- Spawning: disallow for all)
+
+All of the above plus `*` (catch-all). The ai.txt layer is training-specific;
+crawl access remains governed by robots.txt.
+
+### Design decisions
+
+- **Two-layer model:** robots.txt = crawl access; ai.txt = training consent.
+  Allowing crawling for citation is not the same as consenting to training corpus inclusion.
+- **CCBot:** allowed in robots.txt (also feeds RAG pipelines), disallowed in
+  ai.txt (training data harvesting is a separate consent layer).
+- **Claude-SearchBot:** added to robots.ts AI_USER_AGENTS -- distinct from
+  ClaudeBot, independently controllable, confirmed in nohacks.co 2026 report.
+- **Spawning site was down** during implementation (maintenance). Format used
+  (`Spawning: disallow` per user-agent block) is the documented spec format
+  confirmed from existing codebase references in `/.well-known/ai-policy.json`.
+
+### User-agent source
+
+nohacks.co "AI User Agents Landscape 2026" (fetched 2026-05-21).
+
+### Files changed
+
+- `app/src/app/ai.txt/route.ts` (NEW)
+- `app/src/app/robots.ts` (updated header comment + added Claude-SearchBot, Claude-User)
+- `app/src/app/sitemap.ts` (added /ai.txt entry)
+- `strategy/decisions/ai-crawler-policy.md` (NEW)
+- `build-log.md` (this entry)
+
 The matching follow-up is wiring an existing-state UI for the 34 paused carry-overs: a one-time admin endpoint that flips them to `active` and triggers their first Soap Opera email when you're ready to launch the re-engagement campaign. Until then, this PR makes new signups safer without disturbing the carry-over plan.
