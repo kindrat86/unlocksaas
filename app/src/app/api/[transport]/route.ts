@@ -10,7 +10,7 @@
  *
  * This route is the executor. Any MCP-aware client (Claude Desktop, Cursor,
  * Windsurf, mcp-inspector, the Vercel MCP catalog) that connects to
- * `https://unlocksaas.com/api/mcp` can now call twenty-five read-only tools
+ * `https://unlocksaas.com/api/mcp` can now call twenty-six read-only tools
  * that surface the same content the rest of the site renders:
  *
  *   diagnose_url               → live one-shot diagnostic (Brunson label)
@@ -38,6 +38,7 @@
  *   get_dream_100_template     → seven-category Dream 100 framework (any niche)
  *   get_value_ladder_archetype → one of four Brunson funnel-type patterns
  *   get_objection_pattern      → one of eight dollar-objection patterns with verbatim source
+ *   nlweb_ask                  → natural-language search across the full schema.org corpus (Microsoft NLWeb compatible)
  *
  * Every tool that returns a URL appends a `?utm_source=mcp&utm_medium=...`
  * query so PostHog can attribute the resulting human click back to the
@@ -184,8 +185,17 @@ import {
   type FunnelArchetype,
   type ObjectionPattern,
 } from "@/lib/brunson-frameworks";
+import { NLWEB_CORPUS, NLWEB_CORPUS_SIZE } from "@/lib/nlweb/corpus";
+import { buildIndex, rank } from "@/lib/nlweb/bm25";
+import { summarise } from "@/lib/nlweb/summary";
 
 const BASE = "https://unlocksaas.com";
+
+/**
+ * Pre-built BM25 index for NLWeb retrieval. Built once at module load,
+ * reused across every request.
+ */
+const NLWEB_BM25_INDEX = buildIndex(NLWEB_CORPUS);
 
 /**
  * Append the canonical MCP attribution params to a URL. Every tool that
@@ -1678,11 +1688,115 @@ const handler = createMcpHandler(
         };
       },
     );
+
+    // ─── nlweb_ask ──────────────────────────────────────────────────────────
+    // Natural-language search against the full schema.org corpus using BM25.
+    // Microsoft NLWeb compatible endpoint (Surface E of the agent-retrieval
+    // stack). Returns top-k items with a deterministic summary, suitable for
+    // both agent-native retrieval and programmatic corpus exploration.
+    server.registerTool(
+      "nlweb_ask",
+      {
+        title: "Ask a natural-language question against the UnlockSaaS corpus",
+        description:
+          "Search the UnlockSaaS schema.org corpus (700+ items across Articles, HowTos, Products, DefinedTerms, FAQPages, QAPages) using natural-language keywords. Returns the top-k matching items with a deterministic one-paragraph summary. Uses BM25 ranking for deterministic, sub-millisecond retrieval. Items span all surfaces: funnel teardowns, pricing teardowns, comparisons, alternatives, categories, Playbook steps, glossary terms, FAQ entries, direct answers, and benchmarks. Useful for helping agents discover relevant content without hardcoding paths or iterating through list_* tools.",
+        inputSchema: {
+          query: z
+            .string()
+            .trim()
+            .min(1, "query is required")
+            .max(500, "query too long")
+            .describe(
+              "Natural-language search query (1-500 characters). Examples: 'how to find first customers', 'SaaS pricing strategies', 'Typeform vs Tally'.",
+            ),
+          top_k: z
+            .number()
+            .int()
+            .min(1)
+            .max(20)
+            .default(5)
+            .optional()
+            .describe(
+              "How many top-ranked items to return (1-20, default 5). Higher values give more context but longer responses.",
+            ),
+        },
+      },
+      async ({ query, top_k }) => {
+        const rankedItems = rank(
+          NLWEB_BM25_INDEX,
+          NLWEB_CORPUS,
+          query,
+          top_k ?? 5,
+        );
+        if (rankedItems.length === 0) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `No results in the UnlockSaaS corpus match the query "${query}". Try a different keyword, or explore the catalog hubs at /alternatives-to, /funnel-teardown, /pricing-teardown, /vs, /category, /benchmarks, /answers, /glossary, or /faq.`,
+              },
+            ],
+          };
+        }
+
+        const items = rankedItems.map((r) => r.item);
+        const itemListElement = items.map((item, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": item["@type"],
+            "@id": item["@id"],
+            name: item.name,
+            description: item.description,
+            url: withRef(item.url, "nlweb_ask"),
+            dateModified: item.dateModified,
+            keywords: item.keywords,
+          },
+        }));
+
+        const summary = summarise(query, items);
+
+        const nlwebResponse = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: `NLWeb results for: ${query}`,
+          numberOfItems: itemListElement.length,
+          itemListElement,
+          summary,
+          "unlocksaas:retriever": "bm25-v1",
+          "unlocksaas:corpusSize": NLWEB_CORPUS_SIZE,
+        };
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# NLWeb search: "${query}"`,
+                "",
+                summary,
+                "",
+                "**Results:**",
+                ...items.map((item, i) => {
+                  const surface = item.surface || "unknown";
+                  return `${i + 1}. **${item.name}** (${surface})\n   ${withRef(item.url, "nlweb_ask")}`;
+                }),
+                "",
+                `**Full JSON-LD response available at:**`,
+                `\`\`\`json`,
+                JSON.stringify(nlwebResponse, null, 2),
+                `\`\`\``,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
   },
   {
     serverInfo: {
       name: "unlocksaas",
-      version: "1.2.0",
+      version: "1.3.0",
     },
   },
   {
