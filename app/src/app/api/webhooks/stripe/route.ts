@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { getStripe } from "@/lib/stripe";
 import Stripe from "stripe";
 import { createAdminClient } from "@/lib/supabase/server";
@@ -219,6 +220,13 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+
+  // Bust the cached /open transparency metrics so the next render reflects
+  // this event. Two-arg form (Next 16): tag, then cacheLife profile. "max"
+  // tells the cache layer this invalidation should outlive the default TTL.
+  // Cheap: it just marks the tag stale; the next /open render rehydrates.
+  // See app/src/lib/open-metrics.ts → cacheTag("open-metrics","billing-mutation").
+  revalidateTag("billing-mutation", "max");
 
   return NextResponse.json({ received: true });
 }

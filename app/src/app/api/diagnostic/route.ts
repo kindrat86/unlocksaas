@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkBotId } from "botid/server";
 import {
   assignBucket,
   deepAnalyzeUrl,
@@ -67,6 +68,18 @@ function clientIp(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  // BotID protection: blocks confirmed bot traffic (LLM-scraping / Anthropic
+  // cost prevention). Fail-open: any verification error lets the request
+  // through so a BotID outage never blocks a real founder's diagnostic.
+  try {
+    const botCheck = await checkBotId();
+    if (botCheck.isBot) {
+      return NextResponse.json({ error: "bot_detected" }, { status: 403 });
+    }
+  } catch (err) {
+    console.warn("[botid] diagnostic verification failed, proceeding fail-open", err);
+  }
+
   let body: {
     email?: unknown;
     url?: unknown;
@@ -270,7 +283,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Subscribe to the 5-email Soap Opera sequence and fire Email 1 (Day 0).
+  // Subscribe to the Soap Opera Sequence and fire E1 (Day 0). Sequence
+  // shape is 3 spine emails (day 0/2/4) + up to one behavioral branch
+  // (soft_sell or objection_handler) on day 6 gated on E3 engagement.
+  // Decision: strategy/decisions/sos-3-spine-2-branch.md
   // Skipped when the diagnostic itself failed — sending "Your diagnosis came
   // back: X" when there was no real diagnosis would be a lie. The lead is
   // still captured in diagnostic_leads below for manual retargeting.

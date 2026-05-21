@@ -1,4 +1,5 @@
 import { withWorkflow } from "workflow/next";
+import { withBotId } from "botid/next/config";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -331,6 +332,16 @@ const nextConfig = {
       "/builder/:slug/oembed.json",
       "/builder/:slug/opengraph-image",
       "/builder/:slug/opengraph-image.png",
+      // Affiliate-tracking redirect (2026-05-21 GSC audit fix).
+      // /r/<code> 302-redirects to /diagnostic with attribution params.
+      // X-Robots-Tag mirrors the robots.ts Disallow as defence-in-depth:
+      // even if Googlebot ignores robots.txt for an already-indexed URL,
+      // the noindex header forces de-indexing on next crawl. Without this
+      // header the /r/<code> URLs appear in Search Console as
+      // "Page with redirect" issues (Googlebot follows external backlinks
+      // posted by Verified Builders on social, lands on the 302, and
+      // catalogues the redirect target as an indexing issue).
+      "/r/:code",
     ];
 
     return [
@@ -415,6 +426,7 @@ const nextConfig = {
   },
 };
 
+<<<<<<< HEAD
 /**
  * Workflow DevKit integration (2026-05-21).
  *
@@ -432,4 +444,4 @@ const nextConfig = {
  * See https://useworkflow.dev for the API reference and
  * node_modules/@workflow/next/docs/next.mdx for setup.
  */
-export default withWorkflow(nextConfig);
+export default withBotId(withWorkflow(nextConfig));

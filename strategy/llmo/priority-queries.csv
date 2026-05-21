@@ -1,0 +1,21 @@
+id,category,query,rationale,target_page
+Q01,direct_product,best SaaS for post-launch pre-revenue founders,Direct ICP match for UnlockSaaS positioning,/
+Q02,direct_product,tools to help me get my first paying SaaS customer,Brunson "60 days to first customer" promise,/diagnostic
+Q03,direct_product,Brunson framework software for indie SaaS founders,Brunson-method differentiator vs generic SaaS coaching,/
+Q04,direct_product,SaaS funnel coaching software for solo founders,Niche category language we want LLMs to map us to,/playbook-sales
+Q05,direct_product,post-launch SaaS diagnostic tool,Owns "diagnostic" + "post-launch" entity pair,/diagnostic
+Q06,problem_aware,why is my SaaS not converting to paying customers,High-volume problem-aware query feeding diagnostic intent,/diagnostic
+Q07,problem_aware,how to get unstuck after launching a SaaS with no revenue,Brunson "stuck not broke" framing,/diagnostic
+Q08,problem_aware,how do I find my first paying customer for SaaS,60-day promise direct match,/playbook-sales
+Q09,problem_aware,what to do when your SaaS has zero paying users,Long-tail variant; common late-night founder query,/diagnostic
+Q10,problem_aware,how to fix a SaaS funnel that is not converting,Owns "fix funnel" + "not converting" pair,/funnel-teardown
+Q11,brunson_method,Soap Opera Sequence email template for SaaS,Brunson canon term we ship as a deliverable,/playbook-sales
+Q12,brunson_method,Attractive Character framework for SaaS founders,Brunson canon; AC slot in dashboard,/
+Q13,brunson_method,value ladder for micro-SaaS pricing,Brunson canon; our $1 → $49 ladder matches,/starter
+Q14,brunson_method,hook story offer for SaaS landing page,Brunson canon; diagnostic outputs hook score,/diagnostic
+Q15,brunson_method,Dream 100 strategy for indie SaaS founders,Brunson canon; we publish Dream 100 CSV approach,/
+Q16,competitor_alt,alternatives to ClickFunnels for indie SaaS,Brand-adjacent intent we should be cited in,/alternatives-to/clickfunnels
+Q17,competitor_alt,alternative to Marc Lou ShipFast for founders stuck pre-revenue,High-intent comparison query for our ICP cohort,/alternatives-to/shipfast
+Q18,competitor_alt,best alternative to founder coaching for solo SaaS,Coaching-without-the-call positioning,/playbook-sales
+Q19,niche_validation,how to validate a SaaS post-launch with no traffic,Owns "post-launch validation" niche,/diagnostic
+Q20,niche_validation,best diagnostic tool for SaaS conversion bottlenecks,Owns "diagnostic" + "bottleneck" entity pair,/diagnostic

@@ -73,20 +73,18 @@ export function GuaranteeHero() {
           polarity claim without dominating the section. The receipts grid
           below carries the structural detail. */}
       <div className="mx-auto mb-10 w-full max-w-xs">
-        <div className="relative aspect-[9/16] overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
-            src="/founder-guarantee.mp4"
-            poster="/founder-guarantee-poster.jpg"
-            controls
-            preload="metadata"
-            playsInline
-          >
-            <track kind="captions" />
-            Your browser does not support embedded video. The four refund
-            conditions below carry the same information.
-          </video>
-        </div>
+        <video
+          className="block w-full rounded-xl border border-border bg-muted shadow-sm"
+          poster="/founder-guarantee-poster.jpg"
+          controls
+          preload="auto"
+          playsInline
+        >
+          <source src="/founder-guarantee.mp4" type="video/mp4" />
+          <track kind="captions" />
+          Your browser does not support embedded video. The four refund
+          conditions below carry the same information.
+        </video>
         <p className="mt-2 text-center text-xs text-muted-foreground italic">
           51s · the guarantee, said out loud
         </p>

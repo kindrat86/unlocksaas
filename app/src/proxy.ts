@@ -7,6 +7,12 @@ import {
   pickIdentityVariant,
   pickSubjectId,
 } from "@/lib/ab";
+import {
+  SOURCE_COOKIE,
+  SOURCE_COOKIE_MAX_AGE,
+  detectSourceFromRequest,
+  parseSource,
+} from "@/lib/acquisition-source";
 import { toMarkdownPath, wantsMarkdown } from "@/lib/seo/markdown-path";
 import { BASE_URL } from "@/lib/seo/entity";
 
@@ -126,6 +132,40 @@ export async function proxy(request: NextRequest) {
       request.cookies.set(REF_COOKIE, normalised);
       response.cookies.set(REF_COOKIE, normalised, {
         maxAge: REF_COOKIE_MAX_AGE,
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+  }
+
+  // Acquisition source attribution: first-touch sticky cookie that drives
+  // the home Hero block's source-aware variant copy (see
+  // src/lib/acquisition-source.ts). Detected from utm_source / source / ref
+  // tokens, then Referer hostname. Decoupled from the affiliate REF cookie
+  // because affiliate codes are revenue attribution (per-creator) while
+  // acquisition source is channel attribution (per-platform); the two can
+  // and do co-exist on a single visit.
+  //
+  // First-touch wins, same discipline as REF: if the cookie already holds
+  // a valid source value, we do NOT overwrite. A later visit from a
+  // different channel cannot steal the attribution mid-funnel.
+  //
+  // Self-write-skip: detectSourceFromRequest returns null when no rule
+  // matches (organic / direct / unknown referrer). In that case we leave
+  // the cookie alone — uncookied visitors render the `default` variant
+  // via readSourceFromCookies's null-fallback, no Set-Cookie header needed.
+  const existingSource = parseSource(
+    request.cookies.get(SOURCE_COOKIE)?.value,
+  );
+  if (!existingSource) {
+    const detectedSource = detectSourceFromRequest({
+      searchParams: request.nextUrl.searchParams,
+      refererHeader: request.headers.get("referer"),
+    });
+    if (detectedSource) {
+      request.cookies.set(SOURCE_COOKIE, detectedSource);
+      response.cookies.set(SOURCE_COOKIE, detectedSource, {
+        maxAge: SOURCE_COOKIE_MAX_AGE,
         sameSite: "lax",
         path: "/",
       });

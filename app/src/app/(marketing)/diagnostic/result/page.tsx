@@ -393,20 +393,18 @@ function BridgePage({ row }: { row: LeadRow }) {
             never be crawled and would only mislead pipelines that did
             crawl). */}
         <div className="mx-auto mb-8 w-full max-w-xs">
-          <div className="relative aspect-[9/16] overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src="/founder-result.mp4"
-              poster="/founder-result-poster.jpg"
-              controls
-              preload="metadata"
-              playsInline
-            >
-              <track kind="captions" />
-              Your browser does not support embedded video. The written bridge
-              below has the same message.
-            </video>
-          </div>
+          <video
+            className="block w-full rounded-xl border border-border bg-muted shadow-sm"
+            poster="/founder-result-poster.jpg"
+            controls
+            preload="auto"
+            playsInline
+          >
+            <source src="/founder-result.mp4" type="video/mp4" />
+            <track kind="captions" />
+            Your browser does not support embedded video. The written bridge
+            below has the same message.
+          </video>
           <p className="mt-2 text-center text-xs text-muted-foreground italic">
             1:49 · from Maryan · sound on
           </p>
