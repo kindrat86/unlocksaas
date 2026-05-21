@@ -213,7 +213,8 @@ export async function GET(req: NextRequest) {
     citations_won: citationsWon,
     elapsed_ms: summary.duration_ms,
   };
-  await captureServerAndFlush(LLMO_DISTINCT_ID, Event.LlmoCitationsSynced, syncedProps as Record<string, unknown>);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await captureServerAndFlush(LLMO_DISTINCT_ID, Event.LlmoCitationsSynced, syncedProps as any);
 
   // Vercel function logs: single grep-able line for quick health checks.
   console.log(
