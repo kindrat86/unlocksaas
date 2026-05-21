@@ -287,6 +287,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       alternates: hreflang(`${base}/playbook-sales`),
     },
+    // High-Ticket Application Funnel — Done-With-You Sprint ($997 / $1,997).
+    // Rung 3 of the value ladder. Application-only; the /apply/qualified and
+    // /apply/not-yet thank-you destinations are noindex by metadata and so
+    // omitted from the sitemap.
+    {
+      url: `${base}/apply`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: hreflang(`${base}/apply`),
+    },
     // Founding-Cohort PLF landing — state-dependent; while waitlist is open or
     // cart is open, this is a high-priority page. After cart-close it 404s or
     // redirects (per strategy/founding-plv-scripts.md), at which point this
