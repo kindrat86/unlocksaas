@@ -164,28 +164,25 @@ done.
    `branch_fired_at`) and the partial index
    `soap_opera_branch_pending_idx`.
 
-6. **Apply founder-memory Supabase migration + embedding API key.**
-   Persistent founder context is required before chat sidebar (PR #101)
-   ships. Two steps:
+6. ~~**Apply founder-memory Supabase migration + embedding API key.**~~
+   **DONE 2026-05-21** — migration applied directly via `psql` against the
+   linked production pool (the supabase CLI couldn't push cleanly because
+   of pre-existing migration-history drift from MCP-applied changes; the
+   migration SQL is idempotent so direct application was safe).
 
-   A. Apply migration to production database:
-   ```bash
-   supabase db push --remote
-   ```
-   This creates the `founder_memory` table with pgvector embeddings,
-   indexes, and RLS policies. The schema is idempotent and safe to
-   re-run.
+   Schema verified live: `founder_memory` table with all 10 columns,
+   6 indexes (incl. HNSW vector index), RLS enabled, pgvector 0.8.0
+   extension installed.
 
-   B. Configure the embedding API (set in Vercel for all 3 environments):
-   ```bash
-   # Option 1: Direct OpenAI (recommended for simplicity)
-   vercel env add OPENAI_API_KEY production preview development --sensitive
-
-   # Option 2: Via Vercel AI Gateway (recommended if using AI Gateway elsewhere)
-   # Set AI_GATEWAY_API_KEY instead. The code checks for AI_GATEWAY_API_KEY
-   # first, falls back to direct OpenAI, then gracefully skips embedding if
-   # neither is set. Memory reads still work, but semantic recall is off.
-   ```
+   **Embedding decision:** OpenAI not configured. Anthropic doesn't ship
+   an embedding API and Voyage (their partner) wasn't worth the
+   integration cost for the Marco-prototype scale. Memory writes succeed
+   with `embedding` column NULL. Structured reads (dashboard banner,
+   chat context, onboarding) work fully. Semantic recall is the only
+   degraded capability — code already falls back to chronological order
+   when embeddings are missing. Revisit if/when chat RAG over memory
+   history becomes a priority (Voyage AI free tier is the recommended
+   path then; AI Gateway is the alternative if AI_GATEWAY_API_KEY is set).
 
    Verify after prod migration: POST to `/api/diagnostic` should succeed
    and create a founder_memory row in Supabase. GET `/api/founder-memory/context`
