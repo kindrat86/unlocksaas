@@ -101,14 +101,14 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
   try {
     // Render unsigned PDF
     const pdfBuffer = await renderDiagnosticPdf({
-      diagnosticId: diagnosticRow.id,
-      productUrl: diagnosticRow.product_url,
+      id: diagnosticRow.id,
+      product_url: diagnosticRow.product_url,
       label: (diagnosticRow.label ?? "error") as any,
-      explanation: diagnosticRow.explanation ?? "",
-      evidence: diagnosticRow.evidence ?? "",
-      createdAt: diagnosticRow.created_at,
-      analysisDetail: diagnosticRow.analysis_detail,
-      siteOrigin: origin,
+      explanation: diagnosticRow.explanation ?? null,
+      evidence: diagnosticRow.evidence ?? null,
+      bucket: null,
+      created_at: diagnosticRow.created_at,
+      analysis_detail: diagnosticRow.analysis_detail as any,
     });
 
     // Build manifest for C2PA signing
@@ -123,7 +123,7 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
     const signResult = await signPdf(pdfBuffer, manifest);
 
     // Return the signed (or unsigned) PDF
-    return new NextResponse(signResult.pdf, {
+    return new NextResponse(signResult.pdf as unknown as BodyInit, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
