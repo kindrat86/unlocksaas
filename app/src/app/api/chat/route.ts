@@ -2,9 +2,17 @@
  * /api/chat — Streaming chat endpoint for the Playbook Coach sidebar.
  *
  * Requires a valid Supabase session (cookie-based). Returns 401 for anonymous
- * visitors. Loads the founder's latest diagnostic from diagnostic_leads and
- * injects it alongside all 10 Brunson workbooks into the system prompt so the
- * model can answer questions grounded in their specific situation.
+ * visitors. Loads the founder's persistent memory blob (offer, ICP, stage,
+ * scorecard, 30-day plan) via lib/founder-memory.ts and injects it alongside
+ * all 10 Brunson workbooks into the system prompt so the model can answer
+ * questions grounded in their specific situation.
+ *
+ * Memory-first lookup with diagnostic-leads fallback:
+ *   1. Try readFounderMemory({ userId, email }) — full structured context
+ *      (scorecard, 30-day plan, stage, ICP, bucket, diagnosis).
+ *   2. If no memory row (founder predates the founder-memory migration),
+ *      fall back to the legacy diagnostic_leads direct read so existing
+ *      founders still get diagnostic-grounded answers.
  *
  * Uses AI SDK v6 + Vercel AI Gateway:
  *   - Vercel deployments: OIDC is automatic via the platform -- zero config.
@@ -17,6 +25,7 @@
 import { convertToModelMessages, gateway, streamText, UIMessage } from 'ai'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { WORKBOOKS_SYSTEM_CONTEXT } from '@/lib/workbooks-bundle'
+import { readFounderMemory, toChatContext } from '@/lib/founder-memory'
 
 // Vercel Fluid Compute: allow up to 60s for a streaming chat response.
 export const maxDuration = 60
@@ -67,7 +76,18 @@ type DiagnosticRow = {
   product_url: string
 }
 
-function buildDiagnosticContext(row: DiagnosticRow | null): string {
+function buildDiagnosticContext(row: DiagnosticRow | null, memoryContext: string): string {
+  // Founder memory is the richer source: includes scorecard, 30-day plan,
+  // stage, ICP, bucket, strengths. When present, prefer it.
+  if (memoryContext) {
+    return `${memoryContext}
+
+When answering, connect advice to their specific situation. Reference their scorecard, stage, and open 30-day actions to make answers concrete. Do not re-ask facts that are already in the context above -- that's the 2023 product feel we explicitly avoid.`
+  }
+
+  // Legacy fallback: diagnostic_leads direct read for founders predating
+  // the founder-memory migration. Same shape as before so behavior is
+  // identical for those users.
   if (!row) {
     return `No diagnostic on file yet for this founder. If they mention their product or ask about their specific situation, suggest they run the free diagnostic at /diagnostic to get a personalised label and scorecard.`
   }
@@ -101,21 +121,45 @@ export async function POST(req: Request) {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  // Load the founder's latest diagnostic (non-blocking -- proceed without if it fails).
-  let diagnosticRow: DiagnosticRow | null = null
+  // Memory-first lookup. readFounderMemory() is defensive (never throws --
+  // returns null on any failure) so we can race it alongside the legacy
+  // diagnostic_leads read without try/catch each side individually.
+  let memoryContext = ''
+  let memoryHit = false
   try {
-    const admin = createAdminClient()
-    const { data } = await admin
-      .from('diagnostic_leads')
-      .select('label, headline, explanation, product_url')
-      .ilike('email', user.email)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-    diagnosticRow = data as DiagnosticRow | null
+    const memory = await readFounderMemory({
+      userId: user.id,
+      email: user.email,
+    })
+    if (memory) {
+      memoryContext = toChatContext(memory)
+      memoryHit = memoryContext.length > 0
+    }
   } catch (err) {
-    // Non-fatal -- the coach still works without diagnostic context.
-    console.error('[chat] diagnostic_leads fetch failed:', err)
+    // Defensive -- helper already handles its own errors, but never let
+    // a memory-layer issue block the chat response.
+    console.warn('[chat] founder_memory read failed:', err)
+  }
+
+  // Legacy fallback: load diagnostic_leads directly when memory has no row
+  // yet. Keeps existing founders (created before the founder-memory migration)
+  // working until their next diagnostic write populates a memory row.
+  let diagnosticRow: DiagnosticRow | null = null
+  if (!memoryHit) {
+    try {
+      const admin = createAdminClient()
+      const { data } = await admin
+        .from('diagnostic_leads')
+        .select('label, headline, explanation, product_url')
+        .ilike('email', user.email)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      diagnosticRow = data as DiagnosticRow | null
+    } catch (err) {
+      // Non-fatal -- the coach still works without diagnostic context.
+      console.error('[chat] diagnostic_leads fetch failed:', err)
+    }
   }
 
   let messages: UIMessage[]
@@ -127,12 +171,14 @@ export async function POST(req: Request) {
     return new Response('Bad Request', { status: 400 })
   }
 
-  console.log(`[chat] user=${user.email} diagnostic=${diagnosticRow?.label ?? 'none'} msgs=${messages.length} setup_ms=${Date.now() - start}`)
+  console.log(
+    `[chat] user=${user.email} ctx=${memoryHit ? 'memory' : diagnosticRow ? 'legacy_diagnostic' : 'none'} msgs=${messages.length} setup_ms=${Date.now() - start}`,
+  )
 
   try {
     const result = streamText({
       model: MODEL,
-      system: buildSystemPrompt(buildDiagnosticContext(diagnosticRow)),
+      system: buildSystemPrompt(buildDiagnosticContext(diagnosticRow, memoryContext)),
       messages: await convertToModelMessages(messages),
       maxOutputTokens: 600,
     })
