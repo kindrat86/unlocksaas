@@ -81,6 +81,10 @@
 import { useReportWebVitals } from "next/web-vitals";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
+import {
+  classifyLcpAgainstTarget,
+  resolveRouteCategory,
+} from "@/lib/seo/lcp-targets";
 
 /**
  * `track<P extends Record<string, unknown>>` rejects named-interface
@@ -113,6 +117,24 @@ export function WebVitalsReporter() {
     const route =
       typeof window !== "undefined" ? window.location.pathname : "";
 
+    // Per-route LCP target lookup. Pure function over a module-level
+    // table (server-hoist-static-io). Resolved on every emission – the
+    // cost is one Array.prototype.find over a ~40-entry list, well below
+    // the noise floor of the metric we're about to ship.
+    const { category, target_ms } = resolveRouteCategory(route);
+
+    // LCP-specific classification against the per-route budget. The
+    // upstream `metric.rating` field uses Google's blanket 2500/4000
+    // thresholds, which under-reports drift on conversion pages (where
+    // we should fail at 1800ms) and over-reports on content pages
+    // (where 3000ms is acceptable). Only populated for LCP – the other
+    // metrics have global targets and don't need the per-route field.
+    const isLcp = metric.name === "LCP";
+    const lcpTargetMs = isLcp ? target_ms : null;
+    const lcpTargetStatus = isLcp
+      ? classifyLcpAgainstTarget(metric.value, target_ms)
+      : null;
+
     // Inline object literal so it's structurally a Record<string, unknown>
     // at the call site (see import-block note above).
     track(Event.WebVitalReported, {
@@ -136,6 +158,9 @@ export function WebVitalsReporter() {
       navigation_type:
         (metric as { navigationType?: string | null }).navigationType ?? null,
       route,
+      route_category: category,
+      lcp_target_ms: lcpTargetMs,
+      lcp_target_status: lcpTargetStatus,
     });
   });
 

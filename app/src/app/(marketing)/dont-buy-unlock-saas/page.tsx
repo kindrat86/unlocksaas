@@ -7,6 +7,7 @@ import {
 } from "@/components/seo/json-ld";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { DISQUALIFIERS, FIT_CRITERIA } from "@/lib/dont-buy";
+import { buildSerpMetadata } from "@/lib/seo/serp-variants";
 
 /**
  * /dont-buy-unlock-saas – the polarity / anti-marketing page.
@@ -52,37 +53,49 @@ const PAGE_URL = "https://unlocksaas.com/dont-buy-unlock-saas";
 const PAGE_PUBLISHED_AT = "2026-05-18";
 const PAGE_LAST_REVIEWED_AT = "2026-05-18";
 
-export const metadata: Metadata = {
+// SERP-variant baseline. Used when no variant is registered in
+// lib/seo/serp-variants for this path – also feeds the active variant
+// since the baseline is the first entry there.
+const SERP_FALLBACK = {
   title: "Don't buy Unlock SaaS",
   description:
     "Eight honest disqualifiers and one canonical fit profile. If any disqualifier matches, the Playbook is the wrong tool for you. Said out loud, before checkout.",
-  alternates: markdownAlternate(
-    "/dont-buy-unlock-saas",
-    "/dont-buy-unlock-saas.md",
-  ),
-  openGraph: {
-    type: "article",
-    title: "Don't buy Unlock SaaS",
-    description:
-      "Eight honest disqualifiers and one canonical fit profile. Said out loud, before checkout.",
-    url: "/dont-buy-unlock-saas",
-    publishedTime: PAGE_PUBLISHED_AT,
-    authors: ["Maryan"],
-  },
-  twitter: {
-    // summary_large_image because the polarity page now ships a per-route
-    // OG card at /dont-buy-unlock-saas/opengraph-image (1200x630). The
-    // small-card "summary" variant would crop the polarity headline to
-    // a 144px thumbnail on Twitter/X, wasting the visual real estate the
-    // off-page launch pack (strategy/launch-content/off-page-launch-pack.md
-    // §B.1) depends on for scroll-stop CTR.
-    card: "summary_large_image",
-    title: "Don't buy Unlock SaaS",
-    description:
-      "Eight honest disqualifiers and one canonical fit profile. Said out loud, before checkout.",
-  },
-  robots: { index: true, follow: true },
-};
+} as const;
+
+// `buildSerpMetadata` resolves the active variant from the registry and
+// returns title + description + openGraph.{title,description} +
+// twitter.{title,description}. The structural fields below (og.type,
+// og.url, og.publishedTime, og.authors, twitter.card) are layered on
+// after so the variant rotation never disturbs the OG-card shape or
+// the article-type signal.
+export const metadata: Metadata = (() => {
+  const serp = buildSerpMetadata("/dont-buy-unlock-saas", SERP_FALLBACK);
+  return {
+    ...serp,
+    alternates: markdownAlternate(
+      "/dont-buy-unlock-saas",
+      "/dont-buy-unlock-saas.md",
+    ),
+    openGraph: {
+      ...serp.openGraph,
+      type: "article",
+      url: "/dont-buy-unlock-saas",
+      publishedTime: PAGE_PUBLISHED_AT,
+      authors: ["Maryan"],
+    },
+    twitter: {
+      ...serp.twitter,
+      // summary_large_image because the polarity page now ships a per-route
+      // OG card at /dont-buy-unlock-saas/opengraph-image (1200x630). The
+      // small-card "summary" variant would crop the polarity headline to
+      // a 144px thumbnail on Twitter/X, wasting the visual real estate the
+      // off-page launch pack (strategy/launch-content/off-page-launch-pack.md
+      // §B.1) depends on for scroll-stop CTR.
+      card: "summary_large_image",
+    },
+    robots: { index: true, follow: true },
+  };
+})();
 
 
 const TRAIL = [
