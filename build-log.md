@@ -1,5 +1,66 @@
 # Build Log — Unlock SaaS
 
+## Founder-memory migration applied to production -- 2026-05-21
+
+**Status: APPLIED**
+**Decision: No embedding provider configured (semantic recall deferred)**
+
+The migration `20260521000020_founder_memory.sql` was applied to the
+production Supabase database via direct `psql` execution against the
+non-pooling connection (extracted from `.env.development.local`). The
+Supabase CLI's `db push --linked` couldn't run cleanly because the
+remote migration history has 18 entries from May 16-18 that don't exist
+in the local `supabase/migrations/` directory (legacy of the MCP-direct
+schema-management pattern flagged in `feedback_supabase_postgrest_quirks.md`).
+Direct application via `psql` was safe because the migration is
+idempotent (uses `create ... if not exists` everywhere).
+
+### Verified live on prod
+
+- `public.founder_memory` table created with 10 columns
+- 6 indexes including HNSW vector index (m=16, ef_construction=64)
+- RLS enabled, `founder_memory_self_select` policy created
+- pgvector extension 0.8.0 installed
+- `set_updated_at` trigger wired
+
+### Embedding decision
+
+OpenAI was deliberately NOT configured. Anthropic doesn't ship an
+embedding API; their official partner Voyage AI would have required a
+new account + key. For the Marco-prototype scale (<10k memory rows in
+year 1, no chat RAG demand yet) the integration cost wasn't worth it.
+
+Behavior consequence:
+- Memory WRITES succeed -- `embedding` column stays NULL
+- Structured READS work fully -- dashboard banner, chat context,
+  onboarding all pull the structured blob (offer, ICP, stage, scorecard,
+  30-day plan, strengths)
+- Semantic recall (`semanticRecall()`) degrades to chronological
+  order -- code already has the fallback. No functional break, just less
+  relevance ranking when the chat RAG path eventually ships.
+
+When chat RAG over memory history becomes a priority, the cheapest path
+forward is Voyage AI (200M tokens/mo free tier, Anthropic-recommended)
+or Vercel AI Gateway (if `AI_GATEWAY_API_KEY` is set, the existing code
+will use it automatically).
+
+### Migration history housekeeping (deferred)
+
+The 18 remote-only migrations from May 16-18 are still divergent from
+the local repo. Future migrations going through `supabase db push
+--linked` will hit the same block. Two paths to resolve:
+
+1. `supabase db pull` -- fetch remote schema as a consolidated local
+   migration (creates a noisy file, but aligns history)
+2. `supabase migration repair --status applied <each>` -- mark them
+   applied locally so the CLI stops complaining (cleaner, but means
+   the SQL bodies remain only on remote)
+
+Neither is urgent -- direct psql application works as a fallback. Pick
+one when the next migration is needed.
+
+---
+
 ## Founder-memory loop closure: chat reads + streaming-diagnostic writes -- 2026-05-21
 
 **Status: SHIPPED (PRs #146 + #147)**  
