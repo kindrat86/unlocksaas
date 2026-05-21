@@ -310,7 +310,7 @@ async function FaqSection() {
         </TldrBlock>
         <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto leading-relaxed">
           Mined from public Indie Hackers and Hacker News threads written by
-          founders matching the Marco avatar. Full sources:{" "}
+          founders matching the indie-founder profile. Full sources:{" "}
           <code className="text-xs">strategy/dollar-objections.md</code>.
         </p>
       </div>

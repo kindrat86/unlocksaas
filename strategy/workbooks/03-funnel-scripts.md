@@ -96,7 +96,7 @@ The Perfect Webinar is built for live one-to-many. For a self-serve SaaS sales p
 
 ## Script 6: The Four-Question Close (Onboarding + Mid-Playbook Friction)
 
-Used in the welcome email after $1 OR $49 checkout, and re-used inside the Playbook at Step 5 when Marco hesitates on outreach.
+Used in the welcome email after $1 OR $49 checkout, and re-used inside the Playbook at Step 5 when Alex hesitates on outreach.
 
 1. "On a scale of 1 to 10, how stuck do you feel right now?"
 2. "What have you already tried that did not work?"
@@ -137,7 +137,7 @@ Three convergences make the founding cohort the right place for a Brunson Produc
 | Video | Brunson label | UnlockSaaS content | Length |
 |---|---|---|---|
 | PLV1 | Wow & How / Opportunity | "The Door That Opened" — Parable 5 expanded. Reluctant Hero opens with his flat-Stripe-line scar, names the new category (non-engineers who shipped with AI tools), declares the opportunity (first paying customer in 60 days, verified by code). Ends with: "I'll show you HOW next." | 5–7 min |
-| PLV2 | Transformation / Education | The Playbook, deconstructed in 7 steps with the Vehicle Story from workbook 06 Section 4. Each step shown as a screen recording of the actual engine prompting Marco for a specific answer. Climax: "Step 5 is where every other tool quits. Watch what mine does instead." | 8–10 min |
+| PLV2 | Transformation / Education | The Playbook, deconstructed in 7 steps with the Vehicle Story from workbook 06 Section 4. Each step shown as a screen recording of the actual engine prompting Alex for a specific answer. Climax: "Step 5 is where every other tool quits. Watch what mine does instead." | 8–10 min |
 | PLV3 | Ownership Experience / Big Reveal | What it looks like to be a Verified Builder. Manifesto read aloud. Live demo of the Stripe-verified guarantee mechanic (real screen, real refund button, real $98 cap math). End frame: "On [date] at 9am, 50 founding seats open. They will close in 7 days or when full. The price is $49 a month, locked for the life of your subscription. I'll see you on the other side of the door." | 10–12 min |
 
 Each video drops as its own page (`/founding/v1`, `/founding/v2`, `/founding/v3`) and is gated by a single waitlist signup. Replays remain available through cart-close.
@@ -180,7 +180,7 @@ Single page. Same Reluctant Hero voice. Components, top to bottom:
 
 ### Engine implications
 
-- The engine never asks Marco about the PLF. The PLF is a one-time event run by Maryan; it is NOT a Playbook step. Do not let the engine "help users run their own PLF" — that's a Phase 4 product feature, not part of the core 7-step playbook.
+- The engine never asks Alex about the PLF. The PLF is a one-time event run by Maryan; it is NOT a Playbook step. Do not let the engine "help users run their own PLF" — that's a Phase 4 product feature, not part of the core 7-step playbook.
 - The Soap Opera Sequence continues running for non-founding traffic during the launch window. The PLF sequence routes via a separate `founding_waitlist` table that is mutually exclusive with `soap_opera_subscribers` (anyone on the waitlist gets the PLF sequence; anyone who comes in from the diagnostic during the launch window still gets the Soap Opera unless they opt into the waitlist).
 
 ### Implementation status
@@ -192,20 +192,20 @@ Single page. Same Reluctant Hero voice. Components, top to bottom:
 
 ---
 
-## Engine Implications: Marco Generates His Own Scripts
+## Engine Implications: Alex Generates His Own Scripts
 
-The same way Marco's AC is engine-assembled, his scripts are engine-assembled.
+The same way Alex's AC is engine-assembled, his scripts are engine-assembled.
 
-| Script | Engine question to Marco | Engine output |
+| Script | Engine question to Alex | Engine output |
 |---|---|---|
 | Curiosity-Based Headline | "What is the one sentence about your product that someone in your audience would stop scrolling for?" | 5 headline variants in his voice |
 | Who-What-Why-How | Already produced by Playbook Steps 1 (Dream Customer) and 2 (Offer) | Auto-filled |
 | Star Story Solution | Pulls Star from Step 2 guarantee, Story from Step 3 AC backstory, Solution from Step 2 stack | Auto-assembled |
 | OTO | One question: "What is the small piece I sell first?" | Engine writes the one-decision-two-buttons block |
-| Perfect Webinar Lite | Engine assembles from prior steps; Marco confirms or edits | Long-form sales page |
+| Perfect Webinar Lite | Engine assembles from prior steps; Alex confirms or edits | Long-form sales page |
 | Four-Question Close | Static template | Inserted into onboarding email |
 
-**Design rule (carried from AC):** Marco never sees a "fill in your sales copy" form. He answers 1 to 3 questions per script slot and the engine assembles.
+**Design rule (carried from AC):** Alex never sees a "fill in your sales copy" form. He answers 1 to 3 questions per script slot and the engine assembles.
 
 ---
 

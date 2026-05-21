@@ -23,10 +23,10 @@ The current launch ladder is intentionally lean: Free Diagnostic → $1 Starter 
 
 This is NOT "more building" (the disease). It is **carry-over and pattern compression**:
 
-1. **Dream Customer carry-over.** Marco's Step 1 answers from Product 1 inform Step 1 of Product 2. The engine pre-fills the congregations he already knows convert. Saves a week.
+1. **Dream Customer carry-over.** Alex's Step 1 answers from Product 1 inform Step 1 of Product 2. The engine pre-fills the congregations he already knows convert. Saves a week.
 2. **Attractive Character lock.** AC is identity-level, not product-level. Rung 2 promotes the AC built in Step 3 to a reusable asset across all future products — no re-defining Reluctant Hero / Adventurer / etc.
 3. **Outreach playbook clone.** Dream 100 list, message templates, and reply scripts that worked in Product 1's Step 5–6 become starting templates for Product 2. Engine flags which targets are still warm.
-4. **Stripe pattern library.** First Paying Customer in Product 1 produced a known offer shape (price, guarantee, stack). Rung 2 lets Marco mutate that pattern for Product 2 instead of starting at "blank offer page."
+4. **Stripe pattern library.** First Paying Customer in Product 1 produced a known offer shape (price, guarantee, stack). Rung 2 lets Alex mutate that pattern for Product 2 instead of starting at "blank offer page."
 5. **Verified Builder identity multiplier.** Public badge from Product 1 becomes social proof on Product 2's funnel hub — automatically.
 
 ## What it is NOT

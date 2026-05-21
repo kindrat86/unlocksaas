@@ -46,7 +46,7 @@ overlay wraps the existing Core tier with a room; it does not rewrite the deal.
 - **Platform selection (Skool vs Discord).** The operator (Maryan) picks at
   runtime by pasting the invite URL into Vercel env. No code change required to
   flip platforms. Reasoning: cost-conscious pre-revenue (Discord = $0 vs Skool
-  = $99/mo), and the audience (Marco, technical post-launch pre-revenue) is
+  = $99/mo), and the audience (Alex, technical post-launch pre-revenue) is
   more likely to already be on Discord. Skool's gamification advantage matters
   more at 50+ members – revisit then.
 - **Bot-driven auto-add on grant / auto-remove on revoke.** Manual operator

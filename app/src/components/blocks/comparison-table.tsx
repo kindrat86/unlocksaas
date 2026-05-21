@@ -1,7 +1,7 @@
 /**
  * Comparison Table — Brunson Building Block #17.
  *
- * Positions the Playbook against the four things Marco has ALREADY tried that
+ * Positions the Playbook against the four things the founder has ALREADY tried that
  * did not produce a paying customer. Workbook 01 §6 Beat 5 polarity AGAINST
  * list maps directly: SEO/AEO/GEO, courses, "validate your idea" advice,
  * funnel tooling that quietly assumes you can code.

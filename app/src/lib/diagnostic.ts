@@ -119,7 +119,7 @@ export type SurveyAnswers = {
 };
 
 export type Bucket =
-  // The Marco prototype: a year of avoidance, flat Stripe, builds/SEOs/runs
+  // The canonical prototype: a year of avoidance, flat Stripe, builds/SEOs/runs
   // ads as a substitute for talking to a customer. Most common bucket.
   | "customer_avoider"
   // Pure builder: keeps shipping features, won't sell. Time since launch +
@@ -131,7 +131,7 @@ export type Bucket =
   // Shipped <30 days ago, low revenue: upstream of where the Playbook helps.
   // Sent to free content, NOT to the $1 Starter. Different destination.
   | "premature"
-  // Has some traction, still flat. Marco's exact profile minus the bad
+  // Has some traction, still flat. The canonical avatar minus the bad
   // marketing tactic — most likely to convert on the Mirror in Ten Founders
   // story.
   | "traction_but_stuck"
@@ -214,7 +214,7 @@ export function assignBucket(
     return "traction_but_stuck";
   }
 
-  // 6. Default: customer avoider. Catches the long tail of Marco-shaped
+  // 6. Default: customer avoider. Catches the long tail of avatar-shaped
   //    leads who don't fit the more specific buckets but match the disease.
   return "customer_avoider";
 }
@@ -224,7 +224,7 @@ export function assignBucket(
  * the bridge points to a different door for different readiness levels.
  *
  *  - "free_content" → no $1 ask yet; let the Soap Opera Sequence warm them up
- *  - "starter"      → $1 Starter (the default for Marco-shaped leads)
+ *  - "starter"      → $1 Starter (the default for avatar-shaped leads)
  *  - "playbook"      → $49 Playbook sales page directly (skip the $1)
  */
 export function bucketDestination(
@@ -295,7 +295,7 @@ function isBlockedHost(hostname: string): boolean {
 
 /**
  * Validate + normalize the founder's URL. Accept bare domains too —
- * Marco will paste "myproduct.com" half the time.
+ * The founder will paste "myproduct.com" half the time.
  */
 export function normalizeUrl(input: string): URL | null {
   if (!input) return null;

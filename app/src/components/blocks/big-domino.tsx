@@ -11,7 +11,7 @@
  *   "A code-enforced 60-day playbook can produce your first paying Stripe
  *    charge in 60 days."
  *
- * If Marco (the avatar) accepts that, $49/mo capped at $98 with a webhook
+ * If the founder (the avatar) accepts that, $49/mo capped at $98 with a webhook
  * refund is rational. If he doesn't, no amount of testimonials, FAQs, or stack
  * anchoring will close him.
  *

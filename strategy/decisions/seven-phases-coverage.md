@@ -44,7 +44,7 @@ A common Brunson reflex on Phase 5 is to stack a $19 or $27 downsell after the O
 
 1. **Workbook 02 contested resolution.** The founder originally proposed a six-tier monthly staircase ($0.97 → $4.97 → $9.97 → $19.97 → $29.97 → $49). All sub-$49 monthly tiers were rejected on four grounds: Stripe fees eat sub-dollar charges, 10x value at every tier requires building 5–6 products solo, six prices on one page paralyzes the buyer, and watered-down tiers cannibalize the $49 core for a skeptic avatar. The lean two-rung ladder (free → $49) plus the $1 buyer-identifier was chosen instead. Adding a $19 downsell now would re-introduce the rejected staircase through the back door.
 
-2. **Avatar incompatibility.** Marco is a skeptic. A downsell after the OTO confirms his "I am being sold to" frame and burns trust at the exact moment the SOS needs to earn it back. The polarity AGAINST list rejects "Praise treated as traction" and "Course-and-framework economies that sell teaching when the cure is doing." A downsell is a course-and-framework move.
+2. **Avatar incompatibility.** Alex is a skeptic. A downsell after the OTO confirms his "I am being sold to" frame and burns trust at the exact moment the SOS needs to earn it back. The polarity AGAINST list rejects "Praise treated as traction" and "Course-and-framework economies that sell teaching when the cure is doing." A downsell is a course-and-framework move.
 
 3. **One-funnel-away discipline (DCS Secret #26).** Sprint 1 ships ONE funnel: the $1 Starter Unboxing Funnel with the OTO. Sprint 2 ships the diagnostic + the SOS. Sprint 3 ships the long-form $49 sales page. A downsell at any phase is a fourth funnel and violates the locked build order.
 
@@ -56,7 +56,7 @@ A downsell, cross-sell, or order bump becomes a correct addition to Phase 5 only
 
 1. Phase 2 trigger from workbook 10 has fired: **3 verified customer cycles** (3 founders who completed all 7 Playbook steps and had a paying customer detected in their Stripe).
 2. SOS Email 5 conversion rate is measured and the gap between SOS-only and SOS-plus-downsell is testable.
-3. The downsell product is something Marco would call "useful before he gets a customer," not a fragment of the Playbook (fragments insult a skeptic).
+3. The downsell product is something Alex would call "useful before he gets a customer," not a fragment of the Playbook (fragments insult a skeptic).
 4. The downsell price point clears Stripe per-charge fees with a comfortable margin (≥ $9 one-time).
 
 Until those four hold, the Profit Maximizer phase is **deliberately the Return Path**, not a new offer.
@@ -75,7 +75,7 @@ Nothing. The backend has no live surface and no roadmap page teasing it. The clo
 
 1. **Workbook 10 growth phases.** The growth map is **evidence-based, not time-based**. Phase 2 trigger: 3 verified customer cycles. Phase 3 trigger: 50 paying customers. Backend opens at Phase 3 the earliest. Today: zero verified cycles. Phase 1 only.
 
-2. **Building backend pre-PMF is Marco's disease.** The product treats avoidance. Marco's documented false belief is "more building is progress." If the founder ships a Rung 2 product before Rung 1 has revenue, the founder is running their own disease in public. The whole brand collapses.
+2. **Building backend pre-PMF is Alex's disease.** The product treats avoidance. Alex's documented false belief is "more building is progress." If the founder ships a Rung 2 product before Rung 1 has revenue, the founder is running their own disease in public. The whole brand collapses.
 
 3. **Rung 2 is explicitly not coaching/DFY.** The founder ruled out high-touch delivery (workbook 02 §3, `rung_2_future.note`). The remaining Backend candidates are software for the founder doing it again on product 2+ — and that audience does not exist until product 1 has produced multiple customers. The Backend audience is downstream of Rung 1's success.
 

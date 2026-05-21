@@ -4,7 +4,7 @@
  *
  * Brunson's Category 4 mini-close (urgency / scarcity) is the default for cold
  * traffic. The /playbook-sales page originally rejected Category 4 because
- * fake "3 seats left" counters destroy trust with the Marco avatar.
+ * fake "3 seats left" counters destroy trust with the indie-founder avatar.
  *
  * This block is the HONEST Category 4 – three real, defensible levers:
  *

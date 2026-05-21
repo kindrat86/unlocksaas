@@ -1,14 +1,14 @@
 /**
  * Honest Testimonials — Brunson Building Block #7 (skeptic-safe variant).
  *
- * Marco is a Praise Junkie (workbook 01 §6 Beat 4) who has been burned by
+ * The avatar is a Praise Junkie (workbook 01 §6 Beat 4) who has been burned by
  * fabricated reviews on every other tool he tried. So this block carries
  * PUBLIC QUOTES from real Indie Hackers / Hacker News threads (sourced in
  * strategy/dollar-objections.md) where founders described the SAME PAIN
  * the Playbook fixes — not testimonials about the product itself (we have
  * zero customers; we will not fabricate any).
  *
- * The job of this block: turn public pain into recognition. Marco reads
+ * The job of this block: turn public pain into recognition. The founder reads
  * the quotes, says "that is me," and the gap between him and the buyer is
  * closed. The CTA is implicit: "you are not alone in the flat-line — the
  * Playbook is the way out."

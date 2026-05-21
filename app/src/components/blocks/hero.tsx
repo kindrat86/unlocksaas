@@ -34,7 +34,7 @@
  *   2. H1 Hook – the emotional promise + the polarity move. Source-aware
  *      lead and tail; default preserves the originally shipped wording.
  *   3. Scar-tissue subhead – founder authority in two short paragraphs.
- *      Marco trusts founders who failed publicly, not coaches who never
+ *      The avatar trusts founders who failed publicly, not coaches who never
  *      did. Source-aware first paragraph; closer (founder credit) is
  *      variant-specific.
  *   4. PRIMARY CTA – "Get my free 2-minute diagnosis" → /diagnostic. The

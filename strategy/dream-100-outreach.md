@@ -70,7 +70,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 1. Anthony Castrio — Indie Worldwide founder
 
 - **Where:** X `@AnthonyCastrio` ▸ Indie Worldwide community ▸ `indieworldwide.com`
-- **Why prioritized:** runs the community Marco congregates in. Pure ICP overlap. Workbook 08 ranked him #1 priority among the 10 filled names.
+- **Why prioritized:** runs the community Alex congregates in. Pure ICP overlap. Workbook 08 ranked him #1 priority among the 10 filled names.
 - **Recent canon to reference:** Indie Worldwide events; his "indie hacker burnout" thread series.
 - **Warm-up reps (Mon–Wed):**
   - Mon: read his last 30 days on X; join Indie Worldwide community if free tier exists.
@@ -82,18 +82,18 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 >
 > Hey Anthony — your [recent specific Indie Worldwide post / event / thread] crystallized something I've been chasing. I'm a non-engineer who shipped a dozen AI products with Lovable and Claude over the last year. The pattern I saw across 10+ other founders in the same shape was the same one I had in the mirror: we'd refresh Stripe like it was the news, then go fix one more thing on the product. We'd never sit down and write to a real person.
 >
-> What broke the loop for me was hearing my own story back in someone else's mouth — which is exactly what happens in a community like Indie Worldwide. So a question, not a pitch: when you watch the Marco-shaped indie hackers in your community burn months on tactic-shopping, what's the single thing you've seen actually break them out of it?
+> What broke the loop for me was hearing my own story back in someone else's mouth — which is exactly what happens in a community like Indie Worldwide. So a question, not a pitch: when you watch the Alex-shaped indie hackers in your community burn months on tactic-shopping, what's the single thing you've seen actually break them out of it?
 >
 > — Maryan
 
 #### 2. Marc Lou — ShipFast / multi-product indie
 
 - **Where:** X `@marc_louvion` ▸ ShipFast community ▸ `marclou.com`
-- **Why prioritized:** built and shipped many small SaaS, ShipFast is the literal example of "non-engineer can ship", his audience is Marco's mirror.
+- **Why prioritized:** built and shipped many small SaaS, ShipFast is the literal example of "non-engineer can ship", his audience is Alex's mirror.
 - **Recent canon to reference:** ShipFast launches; his stat-tweet cadence (revenue screenshots, project counts).
 - **Warm-up reps:**
   - Mon: scroll his last 30 days on X; note 3 specific posts.
-  - Tue: substantive reply on a ShipFast or new-launch tweet — bring a Marco-shaped observation, not flattery.
+  - Tue: substantive reply on a ShipFast or new-launch tweet — bring a Alex-shaped observation, not flattery.
   - Wed: reply on a "shipped X product" tweet with a specific question about post-launch revenue (NOT about the build).
 - **DM (Thu):**
 
@@ -106,7 +106,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 3. Damon Chen — Testimonial.to founder
 
 - **Where:** X `@damengchen` ▸ `testimonial.to`
-- **Why prioritized:** bootstrapped B2B SaaS founder shipping publicly; his audience contains many Marcos.
+- **Why prioritized:** bootstrapped B2B SaaS founder shipping publicly; his audience contains many Alexes.
 - **Recent canon to reference:** his Testimonial.to pricing-page evolution; build-in-public revenue threads.
 - **Warm-up reps:**
   - Mon: read his last 30 days; specifically note any pricing / conversion / sales-page commentary.
@@ -123,7 +123,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 4. Arvid Kahl — Bootstrapped Founder
 
 - **Where:** X `@arvidkahl` ▸ `arvidkahl.com` ▸ Bootstrapped Founder podcast/newsletter ▸ books *Zero to Sold*, *The Embedded Entrepreneur*
-- **Why prioritized:** direct ICP author; his audience IS Marco's people; podcast is Tier-1 warm-up target (workbook 08 §3).
+- **Why prioritized:** direct ICP author; his audience IS Alex's people; podcast is Tier-1 warm-up target (workbook 08 §3).
 - **Recent canon to reference:** any *Bootstrapped Founder* episode in the last 30 days; newsletter issues; *The Embedded Entrepreneur* framework (community-led founders).
 - **Warm-up reps (run 4 weeks before any podcast pitch per workbook 08 §3):**
   - Week 1 Mon–Wed: read 3 recent newsletters, 1 recent podcast episode in full.
@@ -142,7 +142,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 5. Mubashar Iqbal (Mubs) — multi-product indie hacker
 
 - **Where:** X `@mubashariqbal` ▸ `mubs.me` ▸ has shipped 100+ projects
-- **Why prioritized:** quintessential many-shipped-products founder shape — Marco at scale.
+- **Why prioritized:** quintessential many-shipped-products founder shape — Alex at scale.
 - **Recent canon to reference:** any recent product launch; his shipping-cadence threads.
 - **Warm-up reps:**
   - Mon: read his last 30 days.
@@ -161,7 +161,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 6. Tibo Louis-Lucas — Tweet Hunter / Taplio
 
 - **Where:** X `@tibo_maker` ▸ Tweet Hunter / Taplio
-- **Why prioritized:** build-in-public arc Marco emulates; his cadence is a template.
+- **Why prioritized:** build-in-public arc Alex emulates; his cadence is a template.
 - **Recent canon:** Tweet Hunter milestones; Taplio updates; his cadence threads on creator economy.
 - **Warm-up:** 2 substantive replies in week + 1 IH comment citing his cadence work.
 - **DM:**
@@ -175,7 +175,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 7. Pat Walls — Starter Story
 
 - **Where:** X `@thepatwalls` ▸ `starterstory.com` ▸ newsletter (massive list of would-be / current indie hackers)
-- **Why prioritized:** Starter Story's audience is the largest concentrated pool of would-be Marcos.
+- **Why prioritized:** Starter Story's audience is the largest concentrated pool of would-be Alexes.
 - **Recent canon:** any recent Starter Story interview; his newsletter issues; his own build-stats threads.
 - **Warm-up:** read 3 recent interviews; reply to newsletter weekly; one X reply on a story he highlighted.
 - **DM:**
@@ -189,7 +189,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 8. Hassan El Mghari (Nutlope) — AI builder, Restorephotos / RoomGPT
 
 - **Where:** X `@nutlope` ▸ `nutlope.com`
-- **Why prioritized:** highest-velocity AI product shipper on X; vibe-coder audience is dense with Marcos.
+- **Why prioritized:** highest-velocity AI product shipper on X; vibe-coder audience is dense with Alexes.
 - **Recent canon:** any recent AI-product launch; his open-source AI build threads.
 - **Warm-up:** 2 substantive replies + comment on one of his GitHub repos with a specific implementation question.
 - **DM:**
@@ -220,7 +220,7 @@ Each dossier follows the same shape. The DM template is ready-to-send AFTER the 
 #### 10. Sahil Lavingia — Gumroad / *The Minimalist Entrepreneur*
 
 - **Where:** X `@shl` ▸ Gumroad ▸ book *The Minimalist Entrepreneur*
-- **Why prioritized:** solopreneur philosophy; non-engineer-friendly voice; book is on Marco's reading list.
+- **Why prioritized:** solopreneur philosophy; non-engineer-friendly voice; book is on Alex's reading list.
 - **Recent canon:** any recent solopreneur-philosophy thread; Gumroad creator updates.
 - **Warm-up:** 2 X replies + cite his "audience-first" frame in one IH post.
 - **DM:**
@@ -270,7 +270,7 @@ DM:
 #### 17. Sahil Bloom (`@SahilBloom`) — entrepreneurial broad audience (lowest ICP intensity in this tier)
 
 DM:
-> Hey Sahil — the [recent entrepreneurial thread] was a frame I forwarded to three founders the same day. Background: non-engineer with Lovable + Claude, shipped a dozen, flat Stripe, 10+ founder mirror. Question, not a pitch: what's the single thing you see Marco-shaped founders most reliably do that gets them stuck pre-revenue? — Maryan
+> Hey Sahil — the [recent entrepreneurial thread] was a frame I forwarded to three founders the same day. Background: non-engineer with Lovable + Claude, shipped a dozen, flat Stripe, 10+ founder mirror. Question, not a pitch: what's the single thing you see Alex-shaped founders most reliably do that gets them stuck pre-revenue? — Maryan
 
 #### 18. Andrew Gazdecki (`@agazdecki`) — Acquire.com
 
@@ -305,7 +305,7 @@ Per workbook 08 §3, podcast pitches without a customer story get the slow no. T
 >
 > What finally broke me was sitting with more than ten other founders and hearing my own story back, every single time. I sat down to write the offer for the next thing and found nothing. No promise. No specific person. So I stopped fixing products and built the playbook I wish someone had handed me — a 7-step doing-environment with a 60-day-or-refund guarantee enforced by code. [Customer name] is the first founder to complete it; their Stripe verified a new paying customer on [date], and I have the screenshots and their permission to share.
 >
-> I think there's an [Show name]-shaped episode here on [angle tuned per host — see below]. I can promise three things on the recording: the parable is honest (no fabricated numbers), the framework is one Marco can use that night, and the close is a question to your audience, not a CTA.
+> I think there's an [Show name]-shaped episode here on [angle tuned per host — see below]. I can promise three things on the recording: the parable is honest (no fabricated numbers), the framework is one Alex can use that night, and the close is a question to your audience, not a CTA.
 >
 > Worth a 30-minute call to see if the shape fits?
 >
@@ -388,7 +388,7 @@ Per workbook 10 §2, integration outreach without case-study evidence reads as "
 >
 > Maryan from UnlockSaaS. We've talked on X over the last [N] weeks; the embedded-entrepreneur framing has been the single most useful lens on the work I've been doing.
 >
-> What I'd like to propose: a Bootstrapped-Founder-branded mini-series (3 episodes or 3 newsletter issues, you pick the format) on "what audience-first looks like for founders who shipped before they had one." We provide the case studies (three verified-customer Marcos, names attached); you provide the editorial frame; your audience gets the Free Diagnostic.
+> What I'd like to propose: a Bootstrapped-Founder-branded mini-series (3 episodes or 3 newsletter issues, you pick the format) on "what audience-first looks like for founders who shipped before they had one." We provide the case studies (three verified-customer Alexes, names attached); you provide the editorial frame; your audience gets the Free Diagnostic.
 >
 > 30 minutes to scope?
 >
@@ -452,8 +452,8 @@ The Playbook produces a verifiable result (first paying customer in 60 days, Str
 
 ### Who we accept (in priority order)
 
-1. **Customer-affiliates.** Founders who completed The Playbook and verified their first paying customer. Strongest story; deepest credibility with the next Marco.
-2. **Influencer / publisher affiliates.** Category 2 Dream 100 entries whose audience matches Marco's shape (non-engineer, post-launch pre-revenue, builds in public).
+1. **Customer-affiliates.** Founders who completed The Playbook and verified their first paying customer. Strongest story; deepest credibility with the next Alex.
+2. **Influencer / publisher affiliates.** Category 2 Dream 100 entries whose audience matches Alex's shape (non-engineer, post-launch pre-revenue, builds in public).
 3. **Coach / community-owner affiliates.** Founder communities (Indie Worldwide, ShipFast, MegaMaker, Microconf Connect) whose members are pre-revenue and recommend tools.
 
 We do NOT accept: generic coupon sites, social-media coupon scrapers, content-farm SEO operators. The product's whole identity rejects praise-without-payment economics; the affiliate program does the same.
@@ -470,7 +470,7 @@ Payouts: monthly via Stripe Connect to the affiliate's bank. Net-30 from the end
 
 ### How affiliates apply
 
-A form at `unlocksaas.com/affiliates` collecting: name, audience size (X / newsletter / community), the URL of one piece they've published in the last 90 days, and the answer to "describe a Marco-shaped founder in your audience in three sentences." Manual review by Maryan in the first 50; templated approval after.
+A form at `unlocksaas.com/affiliates` collecting: name, audience size (X / newsletter / community), the URL of one piece they've published in the last 90 days, and the answer to "describe a Alex-shaped founder in your audience in three sentences." Manual review by Maryan in the first 50; templated approval after.
 
 ### What affiliates get
 

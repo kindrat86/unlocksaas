@@ -1232,7 +1232,7 @@ Ran a chapter-by-chapter audit of the project against all three Secrets Trilogy 
 
 ### What shipped
 
-1. **`strategy/dream-100.csv` rows 31-40 filled.** Replaced `[Founder fill #N]` placeholders with 10 specific entries (name + URL + work-in plan + buy-in plan + notes), selected for Marco-avatar overlap. Tier-A (vibe-coder / AI builder / non-engineer-friendly): **Anthony Castrio** (Indie Worldwide), **Damon Chen** (Testimonial.to), **Hassan El Mghari / Nutlope** (Restorephotos, RoomGPT), **Tibo Louis-Lucas** (Tweet Hunter), **Mubashar Iqbal / Mubs**. Tier-B (bootstrapper authority): **Rob Walling** (Microconf / TinySeed), **Sahil Lavingia** (Gumroad), **Pat Walls** (Starter Story), **Justin Jackson** (Transistor.fm), **Joel Gascoigne** (Buffer).
+1. **`strategy/dream-100.csv` rows 31-40 filled.** Replaced `[Founder fill #N]` placeholders with 10 specific entries (name + URL + work-in plan + buy-in plan + notes), selected for Alex-avatar overlap. Tier-A (vibe-coder / AI builder / non-engineer-friendly): **Anthony Castrio** (Indie Worldwide), **Damon Chen** (Testimonial.to), **Hassan El Mghari / Nutlope** (Restorephotos, RoomGPT), **Tibo Louis-Lucas** (Tweet Hunter), **Mubashar Iqbal / Mubs**. Tier-B (bootstrapper authority): **Rob Walling** (Microconf / TinySeed), **Sahil Lavingia** (Gumroad), **Pat Walls** (Starter Story), **Justin Jackson** (Transistor.fm), **Joel Gascoigne** (Buffer).
 
 2. **Workbook 08 §3 podcast warm-up plan added.** Five Tier-1 pre-launch warm-up targets, each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions: **Software Social** (2–3 wk), **Build Your SaaS** (3–4 wk), **The Bootstrapped Founder** (4–6 wk), **Startup Ideas with Greg Isenberg** (3–4 wk), **Microconf On Air** (6–8 wk). Pitch readiness gate enforced: do not pitch until the first verified-customer cycle inside The Playbook closes — pitch is the case study, not the framework.
 
@@ -1619,7 +1619,7 @@ The gap had two components, both fixable in a strategy pass (no new code surface
 
 - `strategy/youtube-outreach.md` (NEW, ~545 lines) — deployable 7-channel kit mirroring the podcast-outreach.md pattern. Sections: header (selection lens + pitch gate + reactive permission) → ranking rationale with 3 YouTube-specific filters (guest-format channels, visual angle, host-side engagement) → 7 channel dossiers (Riley Brown / Indy Dev Dan / Build Your SaaS / IH YouTube / Marc Lou / Justin Welsh / Greg Isenberg) → §A 4-week guest-pitch cadence → §B reactive guesting permission → §C visual angle library (5 B-roll assets) → §D owned-channel deferral cross-reference → §E honest scope of what kit does NOT do.
 
-  Channel-specific tweaks not in the podcast kit: (a) **Marc Lou is a contribution play, not a guest pitch** — his channel is solo-tutorial format; pitching a guest spot is a category error. The right trade is offering the Marco dossier as raw material for a solo tutorial he records. (b) **Greg Isenberg is Month 3, not Week 1** — highest pitch volume, highest guest bar; requires 4 verified customers + 4-week warm-up cadence to clear his filter. (c) **Indie Hackers YouTube is a separate pitch from the IH Podcast** — different host (Channing-led on YT vs. Courtland on podcast), different format (case-study-bent vs. interview); reuse of the unmodified podcast pitch reads as low-effort.
+  Channel-specific tweaks not in the podcast kit: (a) **Marc Lou is a contribution play, not a guest pitch** — his channel is solo-tutorial format; pitching a guest spot is a category error. The right trade is offering the Alex dossier as raw material for a solo tutorial he records. (b) **Greg Isenberg is Month 3, not Week 1** — highest pitch volume, highest guest bar; requires 4 verified customers + 4-week warm-up cadence to clear his filter. (c) **Indie Hackers YouTube is a separate pitch from the IH Podcast** — different host (Channing-led on YT vs. Courtland on podcast), different format (case-study-bent vs. interview); reuse of the unmodified podcast pitch reads as low-effort.
 
 - `strategy/decisions/youtube-channel-stance.md` (NEW, ~175 lines) — lean-stance auditable doc parallel to `seven-phases-coverage.md`. Locks two-part stance: host channel deferred (Part 1 — 4 deferral reasons sourced to workbook 09 §1 + §6, 4 activation conditions ALL required); guest channel active and gated (Part 2 — same first-verified-customer rule as podcast-outreach.md §3, with 3 named exceptions for pre-first-customer pitching). "How to read the score" section makes the 100/100 stage-appropriate scoring auditable for the next Russell pass.
 
@@ -1660,7 +1660,7 @@ Remaining 0-point haircut at lock. **Score-decay protection:** at 90 days from l
 
 - **One Funnel Away (DCS #26):** kit is outbound traffic strategy, not a new funnel. Anchor funnel ($1 Starter → OTO → $49) unchanged.
 - **No fake scarcity:** zero countdown-style pitches; every pitch leads with a story or a contribution, never with "limited slots" or "this offer disappears." Workbook 07 §3 Category 4 enforcement preserved.
-- **Reluctant Hero voice:** every pitch email opens with what Marco is going through, not what Maryan has figured out. Signed `— Maryan, maryan@unlocksaas.com` per locked AC identity.
+- **Reluctant Hero voice:** every pitch email opens with what Alex is going through, not what Maryan has figured out. Signed `— Maryan, maryan@unlocksaas.com` per locked AC identity.
 - **Pitch gate parity:** first-verified-customer rule preserves the gate already enforced for podcasts + integration partners (workbook 08 §3 + workbook 10 §2). No double standard.
 - **Anti-pattern protection on host deferral:** decisions doc explicitly names the failure mode the deferral exists to prevent ("brand collapses if founder runs his own product's failure mode — more building, no outreach — in public").
 
@@ -1749,11 +1749,11 @@ Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Sec
 ### Strategic deliverables
 
 - `strategy/facebook-channel.md` (NEW, canonical doc) — four phases:
-  - **Phase 0 (NOW):** Facebook OFF. Three reasons each independently sufficient (avatar density 1/10 of X; pre-PMF + $49/mo + skeptic = 10%-of-MRR cap at $0; Marco-verbatim FB-ads-don't-work quote at `strategy/dollar-objections.md:100`). Passive listening only in 3 Marco-adjacent FB groups (IH FB / Vibe Coding / Bootstrapped Founders).
+  - **Phase 0 (NOW):** Facebook OFF. Three reasons each independently sufficient (avatar density 1/10 of X; pre-PMF + $49/mo + skeptic = 10%-of-MRR cap at $0; Alex-verbatim FB-ads-don't-work quote at `strategy/dollar-objections.md:100`). Passive listening only in 3 Alex-adjacent FB groups (IH FB / Vibe Coding / Bootstrapped Founders).
   - **Phase 1 — Pixel + Audiences (3 verified customer cycles):** Meta Pixel via `<MetaPixel/>` component env-gated by `NEXT_PUBLIC_META_PIXEL_ID`. Conversions API server-side from Stripe webhook with SHA-256-hashed PII (privacy + iOS 14.5+ ATT resilience). Business Manager + Page + domain verification. Three custom audiences seeded (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows. **ZERO ads** — data collection only.
   - **Phase 2 — Retargeting + Lookalike-from-Buyers (50 paying customers):** 4 retargeting audiences + 2 lookalike-1% from buyer + diagnostic-completer seeds. Two creative families: Family A (60s native-feed video from VSL Beat 1+2 → /stories Reverse Squeeze) and Family B (1080×1080 Verified Builder badge → /builder/[slug] with written re-permission per ad). Budget cap = $208/mo (10% of $2,080 MRR). Kill criteria: CPL > $5, ROAS < 1.5 after $250, weekly CAC > 60% LTV.
   - **Phase 3 — Cold Prospecting (100 paying customers + 4 CAC/retention gates):** Gates = 100+ customers AND 30-day retention ≥ 65% AND 90-day retention ≥ 50% AND Phase-2 30d CAC < $30. Lookalike 1-3% + interest (Lovable/Cursor/Claude users, indie hacker/MicroConf pages) + behavior (FB Page engagement 90d). Two cold-allowed families: Family C (90s talking-head Story #1 or #3 → /stories — cold NEVER hits /starter or /playbook-sales directly) and Family D (link-click → /bridge → /diagnostic). Budget = 10% MRR + $50/d test 14d. Kill if cold CAC > $50/wk or cohort 30-day retention < 50%.
-  - **Phase 4 — Conversation Domination Amplification (200 customers OR Phase-3 ROAS ≥ 2.0 for 60d):** Boost X threads > 50 likes as 60-90s FB video + boost IH long-forms > 30 upvotes as FB carousel + 2x/wk Page posts on JK5 rotation. Goal: Marco encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim).
+  - **Phase 4 — Conversation Domination Amplification (200 customers OR Phase-3 ROAS ≥ 2.0 for 60d):** Boost X threads > 50 likes as 60-90s FB video + boost IH long-forms > 30 upvotes as FB carousel + 2x/wk Page posts on JK5 rotation. Goal: Alex encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim).
 
 - `strategy/state.json` — added `traffic_secrets.facebook_channel` block with all 4 phases (audiences, ad creative families, budgets, kill criteria, code pre-stage paths per phase, env vars per phase), Brunson Hard-Rule reconciliation matrix (10 rules), canonical-doc pointer, next-review trigger. Prepended a `revision_history` entry as element [0] documenting scope/change/rationale/files-touched/follow-ups/no-launch-change/audit-delta.
 
@@ -1770,7 +1770,7 @@ Founder ran the v2 Russell Brunson chapter-by-chapter audit. Traffic Secrets Sec
 - **Honest claims:** Revenue claims from real Verified Builders with written re-permission per ad. Zero fabricated metrics, zero stock photos. ✓
 - **Don't re-litigate locked decisions:** Launch channels X + IH + Reddit + r/microsaas + r/SaaS unchanged. FB activation is ADDITIVE, not REPLACEMENT. ✓
 - **10%-of-MRR ad-budget cap (workbook 09 §5):** Phase 2 = 10% MRR. Phase 3 = 10% + 14d test, auto-extend only if CAC math clears. ✓
-- **Avatar congregation primacy:** Phases 0-1 respect Marco's primary congregations. Phase 2+ activates because *buyer-list itself becomes targeting input* — structural argument, not avatar-density override. ✓
+- **Avatar congregation primacy:** Phases 0-1 respect Alex's primary congregations. Phase 2+ activates because *buyer-list itself becomes targeting input* — structural argument, not avatar-density override. ✓
 
 ### What's intentionally NOT in this push
 
@@ -1838,7 +1838,7 @@ Same pattern as the prior autonomous push entries (DCS Secret #21 PLF, DCS Secre
 - **One Funnel Away:** Same anchor funnel; no second funnel introduced.
 - **Lean Ladder:** No new price points.
 - **No Fake Scarcity:** Ad copy explicitly excludes "limited spots" / "ending soon" / "join thousands." Brand-defense ad does not invent urgency.
-- **Framework Into Engine:** Google strategy lives in strategy folder + metadata layer; Marco never sees an "SEO" promise on any page.
+- **Framework Into Engine:** Google strategy lives in strategy folder + metadata layer; Alex never sees an "SEO" promise on any page.
 - **Verified Builders identity:** A/B cookie preserved across paid landings via existing UTM-stamp infrastructure (`strategy/funnel-stack.md` §C).
 - **Reluctant Hero voice:** Every ad signs `— Maryan`. Every meta description in Reluctant-Hero voice.
 - **Honest Claims:** Schema.org `aggregateRating` omitted on Product until verified customers exist.

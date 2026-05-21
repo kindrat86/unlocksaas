@@ -1,12 +1,12 @@
 /**
- * Marco's Diary — YouTube episode registry.
+ * The Founder's Diary — YouTube episode registry.
  *
  * Source of truth for the /youtube hub page and any later transcript or
  * episode-detail surfaces. Mirrors the discipline of `lib/podcasts.ts`
  * (which the strategy doc planned but is not yet shipped): typed shape,
  * validated at module load, honest empty state pre-launch.
  *
- * The 30-episode backlog spec lives in strategy/youtube-marcos-diary-
+ * The 30-episode backlog spec lives in strategy/youtube-founders-diary-
  * backlog.md. Episodes graduate from that doc into this registry only
  * after the operator (Maryan) actually publishes them on YouTube — never
  * before. The Brunson Hard-Rule from workbook 09 applies: no fake counts,
@@ -15,12 +15,12 @@
  * UTM convention (see strategy/youtube-faceless-channel.md §6):
  *   utm_source=youtube
  *   utm_medium=video        (description CTA)
- *   utm_campaign=marcos-diary
+ *   utm_campaign=founders-diary
  *   utm_content=ep<NN>      (zero-padded)
  *
  * See also:
  *   - strategy/youtube-faceless-channel.md            (channel spec)
- *   - strategy/youtube-marcos-diary-backlog.md        (30-episode arc)
+ *   - strategy/youtube-founders-diary-backlog.md      (30-episode arc)
  *   - strategy/youtube-production-runbook.md          (per-episode workflow)
  */
 
@@ -28,7 +28,7 @@ export type BrunsonBeat = "hook" | "story" | "offer" | "polarity" | "proof";
 
 export type EpisodeStatus = "draft" | "voiced" | "cut" | "scheduled" | "live";
 
-export type MarcosDiaryEpisode = {
+export type FoundersDiaryEpisode = {
   /** Permanent id, e.g. "E07". Used as the React key + becomes the utm_content stem. */
   id: string;
   /** Zero-padded episode number, e.g. 7 → "ep07". Matches utm_content. */
@@ -56,12 +56,12 @@ export type MarcosDiaryEpisode = {
  * "we ship the first episode after these gates close" state.
  *
  * DO NOT add an entry here speculatively. The operator promotes an episode
- * from `strategy/youtube-marcos-diary-backlog.md` into this array on
+ * from `strategy/youtube-founders-diary-backlog.md` into this array on
  * publish day, not before.
  */
-export const MARCOS_DIARY_EPISODES: ReadonlyArray<MarcosDiaryEpisode> = [];
+export const FOUNDERS_DIARY_EPISODES: ReadonlyArray<FoundersDiaryEpisode> = [];
 
-const CAMPAIGN = "marcos-diary";
+const CAMPAIGN = "founders-diary";
 const SOURCE = "youtube";
 
 /**
@@ -91,8 +91,8 @@ export function hubDiagnosticUrl(): string {
  * brand surface, not an operator secret. Change here triggers a real
  * commit + diff in code review.
  */
-export const MARCOS_DIARY_CHANNEL = {
-  name: "Marco's Diary",
+export const FOUNDERS_DIARY_CHANNEL = {
+  name: "The Founder's Diary",
   tagline: "$0 to first paying customer, in public, in real time.",
   description:
     "The public log of a non-engineer founder going from $0 to his first verified paying customer. Two short episodes a week. No talking-head, no fake urgency, no neon. Just the work, screen-recorded.",
@@ -108,7 +108,7 @@ export const MARCOS_DIARY_CHANNEL = {
  */
 function validateRegistry(): void {
   const seen = new Set<string>();
-  for (const ep of MARCOS_DIARY_EPISODES) {
+  for (const ep of FOUNDERS_DIARY_EPISODES) {
     if (seen.has(ep.id)) {
       throw new Error(`[youtube] duplicate episode id: ${ep.id}`);
     }
@@ -153,6 +153,6 @@ validateRegistry();
  * iterates this; pre-launch it is empty and the hub renders the honest
  * "shipping after these gates close" state.
  */
-export function liveEpisodes(): ReadonlyArray<MarcosDiaryEpisode> {
-  return MARCOS_DIARY_EPISODES.filter((ep) => ep.status === "live");
+export function liveEpisodes(): ReadonlyArray<FoundersDiaryEpisode> {
+  return FOUNDERS_DIARY_EPISODES.filter((ep) => ep.status === "live");
 }

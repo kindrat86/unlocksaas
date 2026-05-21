@@ -113,7 +113,7 @@ Have these in a draft pad ready to paste. Reddit's algorithm rewards reply-densi
 
 **Q3: "What's the actual seven-step thing?"**
 
-> Step 1: Pin one real customer (workbook 01 §6, the "Marco" exercise). Step 2: Write one real offer to that one person (workbook 02). Step 3: Send one real message. Step 4: Close one verified Stripe payment. Step 5: Talk to that customer for 30 minutes. Step 6: Iterate the offer once. Step 7: Send the second message to the next person. The playbook page walks each step; the diagnostic puts you at the step you're actually at.
+> Step 1: Pin one real customer (workbook 01 §6, the "Alex" exercise). Step 2: Write one real offer to that one person (workbook 02). Step 3: Send one real message. Step 4: Close one verified Stripe payment. Step 5: Talk to that customer for 30 minutes. Step 6: Iterate the offer once. Step 7: Send the second message to the next person. The playbook page walks each step; the diagnostic puts you at the step you're actually at.
 
 **Q4: "Is this Russell Brunson stuff?"**
 
@@ -147,7 +147,7 @@ Have these in a draft pad ready to paste. Reddit's algorithm rewards reply-densi
 
 > Honest call: 60/40 against. r/microsaas readers are skeptical of founder-AMAs and the disclosure paragraph is unusual enough to either earn trust or trigger the same skepticism. I'll log the actual number in the post-mortem essay I'm publishing on Indie Hackers next Friday regardless.
 
-**Q12: "I'll bite – Marco, here's my URL. [URL]"**
+**Q12: "I'll bite – Alex, here's my URL. [URL]"**
 
 > Reading. Reply in this thread in 5 to 10 min.
 > (Then actually read the URL, post a one-paragraph diagnosis using the Diagnostic's framework, end with "if this resonates, the Diagnostic walks the full version: {{LINK_COMMENT_URL}}". This is the highest-leverage reply pattern – a real person, a real URL, a real read, a real diagnosis. One of these per thread sells more $1 Starters than any other content the AMA produces.)

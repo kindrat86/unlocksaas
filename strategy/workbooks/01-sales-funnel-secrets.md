@@ -22,7 +22,7 @@ The Secret Formula is four questions. Answer them honestly and they become the f
 
 | Field | Detail |
 |---|---|
-| **Name** | Marco |
+| **Name** | Alex |
 | **Age** | 36 |
 | **Background** | Marketer and operator. NOT an engineer. Has never written production code. |
 | **How he builds** | Ships real, working AI products with Lovable and Claude Code. |
@@ -36,7 +36,7 @@ The Secret Formula is four questions. Answer them honestly and they become the f
 
 **Supporting false beliefs:**
 - Idea validation equals customer understanding.
-- More building is progress (for Marco, it is avoidance).
+- More building is progress (for Alex, it is avoidance).
 - He can reason his way to a customer without ever talking to one.
 
 **Who he blames:** The product, and quietly himself. The blame is misdirected. The real cause: the product was built for no one in particular.
@@ -45,17 +45,17 @@ The Secret Formula is four questions. Answer them honestly and they become the f
 
 ### The Avatar, in one breath
 
-> Marco is 36. He is a marketer and an operator, not an engineer, and he has never written a line of production code. But it is 2026, and that stopped mattering. With Lovable and Claude Code he built a real, working AI product in a few weeks, and shipping it felt like magic. He is not broke, he has a day job and freelance income. He is something more dangerous: stuck. His product works. People who try it tell him it is good. And still his Stripe dashboard is a flat line with one heartbeat a month, twelve users, two who pay. Every evening runs the same: day job done, dinner done, laptop open, refresh Stripe, same number, tweak one small thing, call it progress, close the laptop. He believes the problem is the product. He half knows it is not. He has not said the real thing out loud yet, that he never knew who this was for. What he wants is simple and heavy: turn the thing he built into recurring revenue, and prove those three months were not wasted.
+> Alex is 36. He is a marketer and an operator, not an engineer, and he has never written a line of production code. But it is 2026, and that stopped mattering. With Lovable and Claude Code he built a real, working AI product in a few weeks, and shipping it felt like magic. He is not broke, he has a day job and freelance income. He is something more dangerous: stuck. His product works. People who try it tell him it is good. And still his Stripe dashboard is a flat line with one heartbeat a month, twelve users, two who pay. Every evening runs the same: day job done, dinner done, laptop open, refresh Stripe, same number, tweak one small thing, call it progress, close the laptop. He believes the problem is the product. He half knows it is not. He has not said the real thing out loud yet, that he never knew who this was for. What he wants is simple and heavy: turn the thing he built into recurring revenue, and prove those three months were not wasted.
 
-**Validation:** Marco is the founder, literally ("your mess is your message"), corroborated by 10+ real founder conversations. Avatar LOCKED.
+**Validation:** Alex is the founder, literally ("your mess is your message"), corroborated by 10+ real founder conversations. Avatar LOCKED.
 
 ---
 
-## Question 2: Where Does Marco Congregate?
+## Question 2: Where Does Alex Congregate?
 
 *Source: DotCom Secrets / Traffic Secrets, Secret #1*
 
-Marco's people are not scattered. They cluster in tight, dense rooms, which makes him findable.
+Alex's people are not scattered. They cluster in tight, dense rooms, which makes him findable.
 
 | Type | Where |
 |---|---|
@@ -75,9 +75,9 @@ Marco's people are not scattered. They cluster in tight, dense rooms, which make
 
 **The Hook:** "Your product isn't broken. It was built for no one in particular."
 
-**What pulls Marco:** the promise of clarity and a path. Not another tool. Not another tactic.
+**What pulls Alex:** the promise of clarity and a path. Not another tool. Not another tactic.
 
-**Dead bait (do NOT use):** anything that pattern-matches to "validate your idea" or "define your audience." Marco has tried those, they failed him, and any message that smells like them gets filed instantly with everything that already disappointed him.
+**Dead bait (do NOT use):** anything that pattern-matches to "validate your idea" or "define your audience." Alex has tried those, they failed him, and any message that smells like them gets filed instantly with everything that already disappointed him.
 
 *Note: the Story and the Offer are built in the next two exercises. This locks the Hook only.*
 
@@ -89,7 +89,7 @@ Marco's people are not scattered. They cluster in tight, dense rooms, which make
 
 *Source: DotCom Secrets, Secret #1*
 
-**Surface result:** Turn the product Marco already built into real, recurring revenue.
+**Surface result:** Turn the product Alex already built into real, recurring revenue.
 
 **Identity result:** Prove to himself the launch was not three wasted months of his life.
 
@@ -123,7 +123,7 @@ Re-mine the 10+ founder conversations for the exact words people used when they 
 
 ## The Core Promise
 
-**Marco gets his first paying customer**, proven by his own Stripe, within 60 days.
+**Alex gets his first paying customer**, proven by his own Stripe, within 60 days.
 
 ## The Core Product: "The Playbook"
 
@@ -164,7 +164,7 @@ Step 5, doing the outreach, is where a customer-avoidant founder stalls. Three w
 > Do the work the tool tracks. If 60 days pass and your Stripe shows no new paying customer, you get both months back, in full.
 
 - **Timeframe:** 60 days.
-- **Work condition:** playbook-verified in-product milestones only. Marco cannot lie to a log.
+- **Work condition:** playbook-verified in-product milestones only. Alex cannot lie to a log.
 - **Remedy:** full refund of the two monthly payments ($98) made inside the window.
 - **Judged:** at the 60-day mark.
 
@@ -172,7 +172,7 @@ The guarantee is a forcing function. The product's economics ride on the playboo
 
 ## The Honest-Value Rule
 
-Every value number must be defensible to a skeptic's face. Marco has been burned. Inflated numbers repel him. Honest math, or the stack works against you.
+Every value number must be defensible to a skeptic's face. Alex has been burned. Inflated numbers repel him. Honest math, or the stack works against you.
 
 ---
 
@@ -186,11 +186,11 @@ Every value number must be defensible to a skeptic's face. Marco has been burned
 
 > We take founders who shipped a real product but can't get paid from a flat Stripe line to a guaranteed first paying customer, and on to a repeatable revenue engine, through software they run themselves.
 
-## The Ladder: A Map of Marco's Transformation
+## The Ladder: A Map of Alex's Transformation
 
 A value ladder is not a price list. It is the customer's transformation, rung by rung. The price climbs because the result climbs.
 
-| Rung | Offer | Price | The result Marco gets | Build at launch? |
+| Rung | Offer | Price | The result Alex gets | Build at launch? |
 |---|---|---|---|---|
 | 0 | Free diagnostic tool | Free | He sees WHY he is stuck (clarity) | Yes |
 | 1 | The $1 Starter | $1 one-time | His WHO and WHAT are finished: a built dream customer and offer | Yes |
@@ -207,7 +207,7 @@ A value ladder is not a price list. It is the customer's transformation, rung by
 
 1. **Complete, not a taste.** It delivers one genuinely finished result, not a deliberately crippled fragment. A fragment insults a skeptic.
 2. **Stops short of the paying customer.** The actual paying customer is the $49 core's result. The $1 must never give it away. Restraint is the discipline.
-3. **One-time, not an auto-converting trial.** No silent $49 charge. Marco pays $1, gets a real win, then chooses to ascend with his eyes open.
+3. **One-time, not an auto-converting trial.** No silent $49 charge. Alex pays $1, gets a real win, then chooses to ascend with his eyes open.
 
 ## The Discipline Note
 
@@ -308,7 +308,7 @@ _Space for your revisions._
 
 **Status: COMPLETE. All five beats locked. This closes Step 1.**
 
-The Attractive Character is the voice that sells. It also becomes Step 3 of the in-product Playbook, the engine that builds Marco's own AC for him.
+The Attractive Character is the voice that sells. It also becomes Step 3 of the in-product Playbook, the engine that builds Alex's own AC for him.
 
 Five beats: Identity Type, Backstory, Parables, Character Flaws, and Polarity.
 
@@ -321,14 +321,14 @@ Five beats: Identity Type, Backstory, Parables, Character Flaws, and Polarity.
 Three reasons, anchored on the third:
 
 1. Your origin reads as Reluctant Hero, not Leader. You did not set out to teach. You were dragged here by your own flat Stripe line and ten founders telling the same story back.
-2. Marco is a skeptic. Leader voice pre-disqualifies you in three seconds. Reluctant Hero disarms him.
+2. Alex is a skeptic. Leader voice pre-disqualifies you in three seconds. Reluctant Hero disarms him.
 3. **Honesty makes it sustainable.** Reluctant Hero is the only identity you can hold up under pressure today without inflating. The day you have a wall of real customer wins, you can promote yourself to Leader. Today, Reluctant Hero is the truth and the strategy at the same time.
 
 ### Why not the other three
 
-- **The Leader**: triggers Marco's "another guru" allergy. Wrong voice for a burned skeptic.
+- **The Leader**: triggers Alex's "another guru" allergy. Wrong voice for a burned skeptic.
 - **The Adventurer**: too light. Does not earn trust on the pain.
-- **The Reporter / Evangelist**: credible but distant. Marco does not feel "this person is me."
+- **The Reporter / Evangelist**: credible but distant. Alex does not feel "this person is me."
 
 ---
 
@@ -411,7 +411,7 @@ Five named, reusable short stories. Each carries one lesson. Each retains the Re
 
 ## Beat 4: Character Flaws
 
-Four flaws. All real. All mirror something Marco does.
+Four flaws. All real. All mirror something Alex does.
 
 ### Flaw 1: The Avoider
 
@@ -419,13 +419,13 @@ Four flaws. All real. All mirror something Marco does.
 
 **The spine.** This is the whole brand. The product treats avoidance. Confessing it gives you the right to sell the cure.
 
-**Mirror:** Marco does this every night with the Stripe refresh.
+**Mirror:** Alex does this every night with the Stripe refresh.
 
 ### Flaw 2: Cannot Code
 
 > I am not an engineer. I have never written a line of production code. If my product goes down at 2 AM, I cannot fix it without Claude. I get told constantly that this is a problem. I think the world has changed enough that it is not, but I will not pretend it is not a real gap.
 
-**A flaw that doubles as a positioning wedge.** Every funnel guru on the internet quietly assumes you can code. Owning the gap pre-disqualifies the audience you do not want and pre-qualifies Marco, who has the same gap.
+**A flaw that doubles as a positioning wedge.** Every funnel guru on the internet quietly assumes you can code. Owning the gap pre-disqualifies the audience you do not want and pre-qualifies Alex, who has the same gap.
 
 ### Flaw 3: Praise Junkie
 
@@ -433,7 +433,7 @@ Four flaws. All real. All mirror something Marco does.
 
 **The most surgical flaw.** Ties directly to the "praise is not payment" theme that runs the whole offer.
 
-**Mirror:** Marco's flat Stripe with a wall of "this is awesome" comments is exactly this flaw on him.
+**Mirror:** Alex's flat Stripe with a wall of "this is awesome" comments is exactly this flaw on him.
 
 ### Flaw 4: Plans Before Shipping
 
@@ -441,13 +441,13 @@ Four flaws. All real. All mirror something Marco does.
 
 **Confess the flaw, then the product is the solution to your own confessed flaw.** That structure converts.
 
-**Mirror:** Marco's over-planning, documented in his false beliefs ("more building is progress, for him it is avoidance").
+**Mirror:** Alex's over-planning, documented in his false beliefs ("more building is progress, for him it is avoidance").
 
 ---
 
 ## Beat 5: Polarity
 
-The lines you draw in public are what tell Marco "this voice is for me." A neutral AC is invisible.
+The lines you draw in public are what tell Alex "this voice is for me." A neutral AC is invisible.
 
 ### What you stand FOR
 
@@ -480,9 +480,9 @@ The lines you draw in public are what tell Marco "this voice is for me." A neutr
 
 ## Engine Implications: Playbook Step 3 Spec
 
-The framework lives in the engine. Marco answers human questions. He never sees a "build your AC" form.
+The framework lives in the engine. Alex answers human questions. He never sees a "build your AC" form.
 
-| AC component | Marco's input | Engine output |
+| AC component | Alex's input | Engine output |
 |---|---|---|
 | Identity Type | 2-3 questions about origin | Recommended type (most often Reluctant Hero) |
 | Backstory | 3-4 turning-point questions | One-line, three-line, six-line versions |
@@ -490,7 +490,7 @@ The framework lives in the engine. Marco answers human questions. He never sees 
 | Character Flaws | 4 menu-based prompts (not open boxes) | 2-3 owned flaws |
 | Polarity | 2 questions (what wastes time / what you wish someone had told you earlier) | FOR list, AGAINST list, and one disqualifying line |
 
-**Design rule, non-negotiable:** never let Step 3 become a 14-field form. If Marco sees a form, he abandons. The engine's job is to know the framework so the avoidant founder does not have to.
+**Design rule, non-negotiable:** never let Step 3 become a 14-field form. If Alex sees a form, he abandons. The engine's job is to know the framework so the avoidant founder does not have to.
 
 ---
 

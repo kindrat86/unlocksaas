@@ -18,7 +18,7 @@ import { createClient } from "@/lib/supabase/server";
  *   3. Redirect the browser to Stripe's authorize URL.
  *
  * Standard accounts (full Stripe accounts owned by the user) are the right
- * fit here: Marco already has a Stripe account selling his own product.
+ * fit here: the founder already has a Stripe account selling his own product.
  * We don't need Express/Custom — we just want to listen to charges on his
  * existing account.
  *

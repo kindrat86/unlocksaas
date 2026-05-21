@@ -1,7 +1,7 @@
 /**
  * Social Proof Bar — Brunson Building Block #20 (honest variant).
  *
- * Block-the-fake-testimonials rule: Marco is a skeptic avatar (workbook 01 §6
+ * Block-the-fake-testimonials rule: the avatar is a skeptic (workbook 01 §6
  * Beat 4: "Cannot Code" + "Praise Junkie"). Fabricated "trusted by X founders"
  * counters destroy his trust in three seconds. So this bar carries STRUCTURAL
  * proof instead of inflated numbers:

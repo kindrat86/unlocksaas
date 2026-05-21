@@ -18,7 +18,7 @@ This follows the same lean-stance pattern as `strategy/decisions/youtube-channel
 
 ## What "quantum / value pricing" could mean here
 
-If activated, the family of variants worth testing on top of Marco's avatar:
+If activated, the family of variants worth testing on top of Alex's avatar:
 
 1. **Success pricing.** $0 until First Paying Customer Verified, then a one-time $299 unlock + $49/mo maintenance. Maximises perceived guarantee; tanks gross margin if conversion-to-success is below 25%.
 2. **Stepped/phase pricing.** Sprint phase $19/mo → post-First-Customer $49/mo → Repeatable Revenue phase $149/mo (which is already specced in `rung-2-repeatable-revenue.md`). Aligns price to the layer of value being consumed.

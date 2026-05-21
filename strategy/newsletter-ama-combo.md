@@ -22,7 +22,7 @@ This doc operationalizes item #10 from the off-page audit (2026-05-18): "Buy a t
    - Sender identity locked: `maryan@unlocksaas.com`, From "Maryan from UnlockSaaS," signed "– Maryan."
    - **Disclosure on the AMA:** if the AMA cites the newsletter sponsorship in the same week, the post discloses "I bought a small sponsorship in [newsletter] this week. The newsletter creator is not involved in this AMA. You can ask me anything about either." Reddit's anti-promo culture punishes hidden coordination; transparent disclosure converts.
 4. **One sponsorship per month, max.** The play compounds when each one anchors to a real Brunson relationship cycle (warm-up → buy → AMA → follow-up thank-you DM). Two simultaneous sponsorships dilute the cycle and read as scattershot.
-5. **Pitch gate – sponsorship spend:** budget is unlocked only after the first Verified Builder cycle has closed inside The Playbook. Until N≥1, sponsorship spend is gated to free editorial slots (guest essays, newsletter feature pitches, no money down). The reason: a sponsorship by a pre-revenue founder is allowed, but a sponsorship by a pre-revenue founder claiming customer wins is not. Either ship a verified customer first, or run the ad with the parable only (Marco's story, the Diagnostic, no count).
+5. **Pitch gate – sponsorship spend:** budget is unlocked only after the first Verified Builder cycle has closed inside The Playbook. Until N≥1, sponsorship spend is gated to free editorial slots (guest essays, newsletter feature pitches, no money down). The reason: a sponsorship by a pre-revenue founder is allowed, but a sponsorship by a pre-revenue founder claiming customer wins is not. Either ship a verified customer first, or run the ad with the parable only (Alex's story, the Diagnostic, no count).
 6. **Log every cycle.** §7 has the table. If it's not logged, the next cycle inherits no learning.
 
 ---
@@ -34,7 +34,7 @@ This doc operationalizes item #10 from the off-page audit (2026-05-18): "Buy a t
 ```
    ┌──────────────────────────────┐
    │  Newsletter sponsor slot     │  ← permanent archive backlink (DR 30-50)
-   │  (Wed send, ~Marco subs)     │     "Read Maryan's parable + free diagnostic"
+   │  (Wed send, ~Alex subs)     │     "Read Maryan's parable + free diagnostic"
    └──────────────┬───────────────┘
                   │ cites
                   ▼
@@ -71,42 +71,42 @@ They send the sponsorship pitch as the first contact, which reads as "I'm trying
 
 ## §2 – Newsletter shortlist (ranked by ICP density × warm-up distance)
 
-Source: dream-100.csv rows 56-66 + rows 31 (Anthony Castrio / Indie Worldwide) and 38 (Pat Walls / Starter Story) filtered to those that sell sponsor slots in the $50 to $300 range or offer free editorial fits. Ranked by Marco-density first, audience size second, distance-to-warm last.
+Source: dream-100.csv rows 56-66 + rows 31 (Anthony Castrio / Indie Worldwide) and 38 (Pat Walls / Starter Story) filtered to those that sell sponsor slots in the $50 to $300 range or offer free editorial fits. Ranked by Alex-density first, audience size second, distance-to-warm last.
 
 ### Tier 1 – ship in Week 1 to Week 4
 
-| # | Newsletter | Creator | Est. subs | Est. price | Marco density | Status (warm-up) | Where to pitch |
+| # | Newsletter | Creator | Est. subs | Est. price | Alex density | Status (warm-up) | Where to pitch |
 |---|---|---|---|---|---|---|---|
 | 1 | **Indie Worldwide** | Anthony Castrio | 2k to 5k | **$50 to $150** or free editorial fit | **9/10** | Dream-100 Week 1 target | DM via X `@AnthonyCastrio` after Rep 3 |
 | 2 | **MicroSaaS Idea** | Tibo Louis-Lucas | 15k to 25k | $100 to $300 | 8/10 | Dream-100 Week 2 target | Reply form on tibo.com or X DM |
 | 3 | **Bootstrapped Founder Weekly** | Arvid Kahl | 25k to 35k | $150 to $500 | 9/10 | Dream-100 Week 1 target | sponsor@thebootstrappedfounder.com or X DM |
 | 4 | **Indie Hackers Weekly** | Stripe / IH team | 100k+ | $500 to $2k | 7/10 | Dream-100 row 1, requires IH community presence | sponsor@indiehackers.com |
 | 5 | **Microconf Newsletter** | Rob Walling | 25k+ | $250 to $750 | 8/10 | Dream-100 row 60 | sponsorships@microconf.com |
-| 6 | **Trends.vc** | Dru Riley | 15k to 25k | $200 to $500 | 6/10 (operator-shaped, not Marco-shaped) | Cold-tier | sponsor form on trends.vc |
+| 6 | **Trends.vc** | Dru Riley | 15k to 25k | $200 to $500 | 6/10 (operator-shaped, not Alex-shaped) | Cold-tier | sponsor form on trends.vc |
 | 7 | **Software Social** (newsletter + podcast slot) | Colleen Schnettler + Michele Hansen | 5k to 10k | $100 to $400 | 8/10 | Dream-100 podcast target | reach via show contact form |
 
 ### Tier 2 – ship Month 2+, after first Verified Builder cycle
 
 | # | Newsletter | Why deferred |
 |---|---|---|
-| 8 | **Starter Story Daily** (Pat Walls) | 120k+ subs but the rate card is $1k+ and the audience is broader than Marco; better used as a feature pitch (free editorial) than a paid slot. |
+| 8 | **Starter Story Daily** (Pat Walls) | 120k+ subs but the rate card is $1k+ and the audience is broader than Alex; better used as a feature pitch (free editorial) than a paid slot. |
 | 9 | **Lenny's Newsletter** | Premium PM audience, adjacent not direct. Sponsorship is $5k+. Defer until pre-seed. |
 | 10 | **Houck's Newsletter** | Founder audience, but Houck pitches a specific founder-thesis angle that needs a verified customer story before fit is honest. |
-| 11 | **The Generalist** / **Not Boring** | Premium tech-narrative readers, adjacent to Marco but not him. Defer indefinitely. |
+| 11 | **The Generalist** / **Not Boring** | Premium tech-narrative readers, adjacent to Alex but not him. Defer indefinitely. |
 
 ### Tier 3 – AI-builder cross-pollination (experimental, Month 3)
 
 | # | Newsletter | Note |
 |---|---|---|
-| 12 | **Ben's Bites** | Daily AI digest. Marco reads it but as a consumer, not a buyer. Test in Month 3 with a Diagnostic-specific creative. |
+| 12 | **Ben's Bites** | Daily AI digest. Alex reads it but as a consumer, not a buyer. Test in Month 3 with a Diagnostic-specific creative. |
 | 13 | **AI Tidbits** | Same logic as Ben's Bites. |
-| 14 | **The Rundown** | Massive AI audience, low Marco density. Test only if Tier 1 underperforms. |
+| 14 | **The Rundown** | Massive AI audience, low Alex density. Test only if Tier 1 underperforms. |
 
 ### Per-target dossier: Indie Worldwide (Anthony Castrio) – the lead horse
 
 | Field | Detail |
 |---|---|
-| **Why ranked #1** | Anthony's audience is the closest one-to-one match for Marco of any newsletter on the list. His existing brand is "indie founders helping indie founders find their first traction" – the exact reading the Playbook is bought against. He is already a Dream-100 Week 1 warm-up target. The warm-up reps were going to happen anyway. The sponsorship is the same email thread, three weeks later. |
+| **Why ranked #1** | Anthony's audience is the closest one-to-one match for Alex of any newsletter on the list. His existing brand is "indie founders helping indie founders find their first traction" – the exact reading the Playbook is bought against. He is already a Dream-100 Week 1 warm-up target. The warm-up reps were going to happen anyway. The sponsorship is the same email thread, three weeks later. |
 | **Warm-up status (as of 2026-05-18)** | Not started. Begin Mon of Week 1 per dream-100-outreach.md §1 cadence. |
 | **Sponsorship vehicle** | Indie Worldwide community + newsletter. Anthony has run sponsor-of-the-week slots informally; the format is typically a 60 to 100 word write-up + one link, embedded in the issue. |
 | **Likely rate** | $50 to $150 for a one-off send, possibly free if framed as a feature trade ("I'll guest-essay something for you, you give me a slot"). Some creators in this tier prefer the trade over the cash. |
@@ -125,7 +125,7 @@ Source: dream-100.csv rows 56-66 + rows 31 (Anthony Castrio / Indie Worldwide) a
 **Subject options (A/B test, pick the one that fits the prior thread):**
 - A: "Re: [your last reply or DM]" (continuing the thread)
 - B: "Tiny sponsor-or-feature ask, no link"
-- C: "Marco's parable – paid sponsor or free guest essay, your call"
+- C: "Alex's parable – paid sponsor or free guest essay, your call"
 
 **Body (Anthony Castrio variant – substitute fields per target):**
 
@@ -189,7 +189,7 @@ Either answer is honest. Either answer is a yes to a real thing.
 
 ### §4.a Subreddit selection
 
-| Sub | Subs | Marco density | AMA culture | Verdict |
+| Sub | Subs | Alex density | AMA culture | Verdict |
 |---|---|---|---|---|
 | **r/microsaas** | ~40k | 9/10 | Friendly to founder AMAs if pre-disclosed | **Primary** |
 | **r/indiehackers** | ~15k | 9/10 | Smaller but high signal | **Crosspost** |
@@ -227,7 +227,7 @@ The disclosure paragraph in the OP also doubles as a citation back to the newsle
 
 > Disclosure: I bought a small sponsorship in Anthony Castrio's Indie Worldwide newsletter this week. Anthony is not involved in this AMA. You can ask me about either – the parable I wrote, the offer, the diagnostic, or how I picked Anthony's list specifically and how that affects what I think Reddit's reaction to this post will be.
 
-That last clause invites a meta-question Marco-shaped readers love ("how did you pick the newsletter, what's your distribution thinking") which generates the kind of substantive thread Reddit's algorithm rewards.
+That last clause invites a meta-question Alex-shaped readers love ("how did you pick the newsletter, what's your distribution thinking") which generates the kind of substantive thread Reddit's algorithm rewards.
 
 ### §4.e Crosspost cadence
 
@@ -332,7 +332,7 @@ These are honest expected ranges, not promises. The first cycle anchors the prio
 | Newsletter sends, ≤5 clicks | List was wrong, parable was wrong, or list was right but cold (low engagement creator). | Do not re-buy. Move to next newsletter; downrate creator in §7 log. |
 | AMA gets ≤10 upvotes | Title was wrong, subreddit was wrong, or the disclosure read as promo. | Read mod rules + top-10 AMA posts in the sub, rewrite title, try a smaller sub next time. |
 | AMA gets ≥50 upvotes, ≤5 clicks | Title worked, link comment was buried, or audience was curious-not-buyer. | Reply with a second link comment higher in the thread; A/B the link target (diagnostic vs stories) for next cycle. |
-| Both surfaces flat | Likely Marco-density wrong OR parable was wrong. | Stop the play for a cycle; revisit avatar with workbook 01 §6. |
+| Both surfaces flat | Likely Alex-density wrong OR parable was wrong. | Stop the play for a cycle; revisit avatar with workbook 01 §6. |
 | Both surfaces work, /diagnostic completion ≤3% | Squeeze surface is the bottleneck, not distribution. | Inbound traffic is fine; the funnel needs the diagnostic-v2 work, not more sponsorships. |
 
 ---

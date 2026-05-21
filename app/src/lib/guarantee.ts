@@ -3,7 +3,7 @@
  *
  * The promise (locked in strategy/state.json → dotcom_secrets.offer_stack.guarantee):
  *
- *   "Marco's first paying customer within 60 days. Judged AT the 60-day mark.
+ *   "The founder's first paying customer within 60 days. Judged AT the 60-day mark.
  *    Refund triggers only if (a) the tracked in-product milestones were
  *    completed AND (b) Stripe shows no new paying customer."
  *

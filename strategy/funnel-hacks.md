@@ -37,7 +37,7 @@ Seven real competitor funnels in the micro-SaaS / indie-hacker / non-engineer-fo
 - Strike-through anchor pricing with a finite-spots counter — converts the "I'll think about it" objection into a clock.
 
 **What I Would Reject:**
-- "No refunds, ever." Marco needs the opposite — a verifiable refund is THE objection-killer for our buyer. ShipFast can do no-refund because developers self-validate ("I can use this for anything"); Marco cannot.
+- "No refunds, ever." Alex needs the opposite — a verifiable refund is THE objection-killer for our buyer. ShipFast can do no-refund because developers self-validate ("I can use this for anything"); Alex cannot.
 - Pure speed/braggadocio Leader voice. Our Reluctant Hero won't earn the right to flex 16 startups; the swagger reads as gatekeeping to a pre-revenue founder.
 
 ---
@@ -71,7 +71,7 @@ Seven real competitor funnels in the micro-SaaS / indie-hacker / non-engineer-fo
 
 **What I Would Reject:**
 - One-time payment model. We're a subscription. Cargo-culting Levels here would break our $49/mo unit economics and remove the renewal moment that funds the guarantee remedy.
-- Pay-before-tour squeeze. Marco is post-launch and skeptical; he needs a free diagnostic to taste the product before paying.
+- Pay-before-tour squeeze. Alex is post-launch and skeptical; he needs a free diagnostic to taste the product before paying.
 
 ---
 
@@ -104,7 +104,7 @@ Seven real competitor funnels in the micro-SaaS / indie-hacker / non-engineer-fo
 
 **What I Would Reject:**
 - No homepage social proof / no counters. Arvid earned the right to be quiet with numbers; we haven't. We need visible proof early.
-- Fragmented monetization with no clear single hero offer up front. Marco needs ONE buy-now button on the front page, not a menu.
+- Fragmented monetization with no clear single hero offer up front. Alex needs ONE buy-now button on the front page, not a menu.
 
 ---
 
@@ -136,8 +136,8 @@ Seven real competitor funnels in the micro-SaaS / indie-hacker / non-engineer-fo
 - Curation as risk reversal. "Curated" reframes price objection into status acquisition.
 
 **What I Would Reject:**
-- Invite-only gating. Our funnel needs to convert cold Marco, who has zero indie-hacker network. Curation would suffocate our top of funnel.
-- Hidden pricing. Marco is a skeptic. Hiding price reads as "I can't defend my price" — exactly the dollar-objection we documented.
+- Invite-only gating. Our funnel needs to convert cold Alex, who has zero indie-hacker network. Curation would suffocate our top of funnel.
+- Hidden pricing. Alex is a skeptic. Hiding price reads as "I can't defend my price" — exactly the dollar-objection we documented.
 
 ---
 
@@ -151,7 +151,7 @@ Seven patterns to integrate, each mapped to the workbook section where they land
 
 3. **"As seen in" media bar above the fold** (Indie Hackers, r/SaaS, build-in-public X) → **Workbook 04 §2 Funnel Hub** (credibility row) + **Workbook 09 §4 Soap Opera Sequence** Day 1 trust hook. Steal from Nomads.com.
 
-4. **Founder signature in the footer** — handwritten-feeling Maryan note ("I built this because I was Marco. I put two years into it.") → **Workbook 05 §1 Finding Your Voice** + **Workbook 06 §1 Epiphany Bridge**. Steal from Pieter Levels.
+4. **Founder signature in the footer** — handwritten-feeling Maryan note ("I built this because I was Alex. I put two years into it.") → **Workbook 05 §1 Finding Your Voice** + **Workbook 06 §1 Epiphany Bridge**. Steal from Pieter Levels.
 
 5. **Newsletter / free diagnostic as the front door** that feeds the $49/mo core — single weekly cadence, named day → **Workbook 02 Lead Funnel ($0 rung)** + **Workbook 09 §4 Soap Opera Sequence**. Steal from Arvid Kahl.
 
@@ -198,7 +198,7 @@ Three more direct-peer funnels and one anti-hack, hacked to close out Brunson Se
 
 **What I Would Reject:**
 - **One-time pricing for the core.** Our subscription is load-bearing for the guarantee economics. The $1 Starter already covers the "one-time entry point" itch.
-- **Vanity monetization** (custom domains, leaderboards). Marco's pain is revenue, not vanity. The Verified Builder badge must always tie to a Stripe-verified result, never to "I bought The Playbook."
+- **Vanity monetization** (custom domains, leaderboards). Alex's pain is revenue, not vanity. The Verified Builder badge must always tie to a Stripe-verified result, never to "I bought The Playbook."
 
 ---
 
@@ -232,7 +232,7 @@ Three more direct-peer funnels and one anti-hack, hacked to close out Brunson Se
 **What I Would Reject:**
 - **Coming-Soon product status.** Justin can do this because his 175k newsletter forgives the delay. We have 0 subscribers — every promised product must ship within the sprint or get cut.
 - **Media logos for credibility.** We have none. Don't fake it. Replace with "Verified Builders shipped from" once we have customer logos.
-- **Worldview-only positioning.** Justin sells the philosophy; he doesn't enforce the result. Our differentiation is that the Playbook doesn't let Marco out without the result OR the refund. Reinforce that on every CTA.
+- **Worldview-only positioning.** Justin sells the philosophy; he doesn't enforce the result. Our differentiation is that the Playbook doesn't let Alex out without the result OR the refund. Reinforce that on every CTA.
 
 ---
 
@@ -258,7 +258,7 @@ Three more direct-peer funnels and one anti-hack, hacked to close out Brunson Se
 
 **Pricing Page Mechanics:** Price below fold (~$300 one-time). Single long sales page. **No drip sequence, no upsell, no OTO.** Conversion happens on-page or not at all.
 
-**Critical — Validates Our Decision:** **NO urgency, NO scarcity, NO countdown timers.** Same call we made in workbook 07. Validates the discipline — Daniel's audience (Marco-adjacent) also rejects fake scarcity. We are in good company on this rejection.
+**Critical — Validates Our Decision:** **NO urgency, NO scarcity, NO countdown timers.** Same call we made in workbook 07. Validates the discipline — Daniel's audience (Alex-adjacent) also rejects fake scarcity. We are in good company on this rejection.
 
 **OTO / Upsell:** None. Single deliverable. The community itself is the retention mechanism.
 
@@ -289,11 +289,11 @@ Three more direct-peer funnels and one anti-hack, hacked to close out Brunson Se
 
 **Why it would kill UnlockSaaS:**
 - We have 0 → growing following
-- Skeptic Marco-avatar needs more than identity to trust an offer
+- Skeptic Alex-avatar needs more than identity to trust an offer
 - Our product requires belief work the homepage MUST do — workbook 06 four core stories all need surface area
 - Pieter's funnel works *because of* the distribution he already has; we don't have it
 
-**The temptation we're refusing:** "Just ship a single-page brand and tweet from there." This is exactly Marco's avoidance pattern named in workbook 01 §6 Beat 1 Flaw 4 ("Plans Before Shipping" — defaulting to thinking-about-doing instead of doing) generalized to marketing. Anti-hack reinforces workbook 09 §1 launch-minimum channel discipline.
+**The temptation we're refusing:** "Just ship a single-page brand and tweet from there." This is exactly Alex's avoidance pattern named in workbook 01 §6 Beat 1 Flaw 4 ("Plans Before Shipping" — defaulting to thinking-about-doing instead of doing) generalized to marketing. Anti-hack reinforces workbook 09 §1 launch-minimum channel discipline.
 
 **Conclusion:** the funnel hub at `/` must do conversion work, not just identity broadcast. Confirmed correct. Hack closed.
 
@@ -308,7 +308,7 @@ Eight patterns now operationalized — five from v1 plus three new from v2.
 | 1 | Live customer counter | ShipFast (8,298), Nomads (41,571), WIP (3,702), Small Bets (7,712), IndiePage (21,807) | Plan locked: render only when N ≥ 25 (sub-25 amplifies empty-room) |
 | 2 | Revenue-screenshot testimonials | ShipFast (only) | Highest-leverage post-customer add. Coach the ask explicitly. |
 | 3 | "As seen in" media bar | Nomads.com, Justin Welsh | Defer until press exists. Never fake. |
-| 4 | Founder-signature in footer | Pieter Levels (Nomads), Arvid Kahl | **Add immediately** — current footer says "Built by a non-engineer who shipped anyway." Strengthen to "I'm Maryan. I built this because I was Marco. I put two years into it." |
+| 4 | Founder-signature in footer | Pieter Levels (Nomads), Arvid Kahl | **Add immediately** — current footer says "Built by a non-engineer who shipped anyway." Strengthen to "I'm Maryan. I built this because I was Alex. I put two years into it." |
 | 5 | Free / low-cost front door | Arvid (free NL), IndiePage (free tier) | Free Diagnostic IS this. Blocked on `/diagnostic/page.tsx` placeholder. |
 | 6 | Avatar wall of real users | WIP, IndiePage, Small Bets | Already shipped at `/builder/[slug]/opengraph-image.tsx`. Add `/builders` index when N ≥ 20. |
 | 7 | Strike-through anchor pricing | ShipFast | Adopt on `/playbook-sales` Stack: "$496 stack → $49/mo." Workbook 07 §3 already specs. |
@@ -332,7 +332,7 @@ This is the operationalization. Every row is a specific change to a specific fil
 |---|---|---|---|---|---|
 | 1 | `/diagnostic/page.tsx` | Replace Sprint 2 placeholder with actual diagnostic form (form already exists at `diagnostic-form.tsx`) | v2 Hacks 6, 7 (lead magnet must actually open) | **P0** | 2h |
 | 2 | `/playbook-sales/page.tsx` | Ship Sprint 3 long-form per workbook 07: Big Domino slides 1–6, Three Secrets 7–15, Stack with itemized values 16–30, 16 closes 31–43, FAQ from workbook 06 external rewrites + dollar-objections.md | v1 Hack 1 (ShipFast stack), v2 Hack 7 (Small Bets pricing + guarantee), v2 cross-cutting #7 (strike-through anchor) | **P0** | 1 sprint |
-| 3 | `app/src/app/page.tsx` footer | Replace "Built by a non-engineer who shipped anyway" with Pieter-style handwritten signature: "I'm Maryan. I built this because I was Marco. I put two years into it." | v2 cross-cutting #4 | **P1** | 5 min |
+| 3 | `app/src/app/page.tsx` footer | Replace "Built by a non-engineer who shipped anyway" with Pieter-style handwritten signature: "I'm Maryan. I built this because I was Alex. I put two years into it." | v2 cross-cutting #4 | **P1** | 5 min |
 | 4 | `/diagnostic/diagnostic-form.tsx` | Add "I never sell your data" trust line below email field, plus what-happens-next ("5-day sequence + weekly Friday note. Unsubscribe wipes you in 1 click.") | v2 Hack 6 (Justin Welsh) + cross-cutting #10 | **P1** | 5 min |
 | 5 | `app/src/app/page.tsx` (funnel hub) | Add italicized polarity AGAINST line under hero sentence (e.g. "This is not another marketing course.") | v1 cross-cutting + v2 Hack 7 visible-NO pattern | **P1** | 5 min |
 | 6 | `app/src/app/page.tsx` (funnel hub) | Wire `customer_count` from Supabase view; render "Joined by N Verified Builders" only when N ≥ 25 | v2 cross-cutting #1 | **P1** | 2h |

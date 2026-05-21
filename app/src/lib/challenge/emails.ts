@@ -10,7 +10,7 @@
  *   - index 2  = Day 2  (Quote Them, story 4 — Mirror in Ten Founders)
  *   - index 3  = Day 3  (The Stripe Refresh, story 2)
  *   - index 4  = Day 4  (One Real Promise, Vehicle Story)
- *   - index 5  = Day 5  (The Math of Defence, Skeptic Marco)
+ *   - index 5  = Day 5  (The Math of Defence, Skeptic Avatar)
  *   - index 6  = Day 6  (The Remedy, Internal Belief Rewrite #1)
  *   - index 7  = Day 7  (The First List — 20 names, Dream 100 mini)
  *   - index 8  = Day 8  (The First Message, story 3 — SEO Escape Hatch)
@@ -153,7 +153,7 @@ function day1(ctx: RenderContext): RenderedEmail {
       "One night I sat down to write the offer for the product I had been building for months. Features for days. Traffic tactics for days. I opened a blank doc and tried to write one sentence: who this is for, and what it does for them. I stared at it for forty minutes. I produced nothing.",
       "That was the night I realised I had been building a beautiful thing for no one in particular.",
       "Today's action: write one sentence that names one real person you built your product for. First name. Situation. Why this matters to them right now. Reply with that one sentence.",
-      "The Brunson rule that breaks Day 1 for most people: 'founders' is a category. 'Marco, 36, marketer, non-engineer, shipped a real AI product two months ago, watching Stripe stay flat' is a person. If you cannot write the WHO in one sentence, the rest of this Sprint is decoration.",
+      "The Brunson rule that breaks Day 1 for most people: 'founders' is a category. 'Alex, 36, marketer, non-engineer, shipped a real AI product two months ago, watching Stripe stay flat' is a person. If you cannot write the WHO in one sentence, the rest of this Sprint is decoration.",
       "If you cannot think of one, the customer who already paid you (even for a free coffee, or for a previous product) is a fine starting point.",
     ],
     ps: "Reply with the sentence. Even if it feels wrong. The sentence on Day 14 will not be this sentence. The sentence today is just the one you start from.",
@@ -210,7 +210,7 @@ function day4(ctx: RenderContext): RenderedEmail {
   });
 }
 
-// ── EMAIL 5 (Day 5): The Math of Defence — Skeptic Marco ────────────────────
+// ── EMAIL 5 (Day 5): The Math of Defence — Skeptic Avatar ───────────────────
 function day5(ctx: RenderContext): RenderedEmail {
   return render({
     subject: "Day 5: defend the price.",

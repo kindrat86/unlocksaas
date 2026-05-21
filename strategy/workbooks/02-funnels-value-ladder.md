@@ -56,7 +56,7 @@ Build order is not the same as ladder order. The $1 Starter ships first because 
 
 ## Section 3: $1 Starter Unboxing Funnel (Rung 1)
 
-**Purpose:** Email to first-time buyer. Marco does Playbook Steps 1 and 2 (dream customer + offer) and walks out with a real finished WHO and WHAT.
+**Purpose:** Email to first-time buyer. Alex does Playbook Steps 1 and 2 (dream customer + offer) and walks out with a real finished WHO and WHAT.
 
 ### Pages
 
@@ -132,7 +132,7 @@ The Brunson rule. One funnel at a time. For Unlock SaaS:
 
 Five reasons:
 1. Cheapest, fastest test of the actual offer copy and the Star Story Solution.
-2. Identifies real buyers. A $1 charge is the smallest possible Marco-Meter.
+2. Identifies real buyers. A $1 charge is the smallest possible Alex-Meter.
 3. Pre-qualifies ascent to $49 via the OTO.
 4. The Free Diagnostic is downstream-simple to build (squeeze + tool + emails), so it slots in second.
 5. The $49 Presentation funnel reuses about 90% of the $1 funnel's copy at longer form, so it is third and cheapest to build last.

@@ -16,7 +16,7 @@ The Perfect Webinar was built for live presentations. For Unlock SaaS, it collap
 
 > "If I can make them believe ONE thing, every other belief they have falls."
 
-### Marco's Big Domino
+### Alex's Big Domino
 
 > Your first paying customer is reachable in 60 days through software, not through more building and not through more traffic.
 
@@ -30,7 +30,7 @@ Top of the $49 sales page.
 |---|---|
 | 1. Hook | Workbook 01 Section 5 Hook #7 |
 | 2. Big Domino statement | Direct: "Here is the one belief that, if you accept it, changes everything else: ___" |
-| 3. Why this is hard to believe | Acknowledge Marco's history (a year of failed tactics) |
+| 3. Why this is hard to believe | Acknowledge Alex's history (a year of failed tactics) |
 | 4. The setup for proof | "There is one method nobody told you about. It is mechanical, it is verified, and it has a name." |
 | 5. The name | "It is called The Playbook." |
 | 6. Transition | "Here are the three things you have to believe for The Playbook to work for you." |
@@ -51,7 +51,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 | Strategy | The 7 steps, named, in order. One sentence per step. |
 | Case Study | Honest version today: founder running it on himself produced the first offer he could write in one sentence. Upgrade beat: real customer once you have one. |
 
-### Secret 2: Internal (the WHO inside Marco)
+### Secret 2: Internal (the WHO inside Alex)
 
 > "Why the work that breaks the flat line is work you have been avoiding, and how The Playbook removes the avoidance option."
 
@@ -61,7 +61,7 @@ Every Perfect Webinar has exactly three "secrets" rewriting the three belief cat
 | Strategy | Framework-into-the-engine: you do not overcome avoidance, the tool removes the option. |
 | Case Study | Founder's own SEO year reframed as evidence. |
 
-### Secret 3: External (the WORLD around Marco)
+### Secret 3: External (the WORLD around Alex)
 
 > "Why a 60-day guarantee is even possible on software (when every other guarantee in this space is a lie)."
 
@@ -150,7 +150,7 @@ Locked decision: no artificial scarcity. The avatar is a skeptic and fake scarci
 11. "Would a $98 cap on a 60-day risk be acceptable for the chance of recurring revenue?"
 12. "If you ran The Playbook on yourself today, what is the worst that happens in 60 days?"
 
-The engine rotates these as in-product nudges when Marco hesitates.
+The engine rotates these as in-product nudges when Alex hesitates.
 
 ---
 

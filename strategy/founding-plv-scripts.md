@@ -86,7 +86,7 @@ Step 5 is the one. Step 5 is where you stop reading and start sending. Step 5 is
 
 Every funnel coach has a video about outreach. They all teach the framework. None of them stand next to you while you actually do it. The Playbook does. The engine writes the message. It picks the target from your Dream 100. You post the message yourself, in the real platform, and you paste the link back into the tool. The tool fetches the link and verifies you did the thing. You cannot get to step 6 without it.
 
-That is the framework-into-the-engine principle. The framework is in the software, not on you. Marco — that's the avatar — Marco does not have to remember a framework. Marco answers human questions and the engine does the framework lifting.
+That is the framework-into-the-engine principle. The framework is in the software, not on you. Alex — that's the avatar — Alex does not have to remember a framework. Alex answers human questions and the engine does the framework lifting.
 
 **Step 6: Convert.** The OTO. The follow-up. The mini-closes.
 

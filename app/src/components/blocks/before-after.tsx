@@ -6,7 +6,7 @@
  * not vague aspirations ("more revenue", "growth"). Specificity is the entire
  * marketing for a skeptic.
  *
- * No fabricated screenshots. The dashboards described are Marco's OWN Stripe
+ * No fabricated screenshots. The dashboards described are the founder's OWN Stripe
  * dashboard — past state vs future state. The Playbook is the road between them.
  */
 import { Card, CardContent } from "@/components/ui/card";

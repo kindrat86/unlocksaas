@@ -100,7 +100,7 @@ export const metadata: Metadata = {
  *
  * Structure is locked by workbook 07 (10x Secrets / One-to-Many Selling):
  *   Block 1 — Big Domino (slides 1–6): Hook #7 as H1, Big Domino statement,
- *     acknowledgement of Marco's lost year, name reveal, three-secrets bridge.
+ *     acknowledgement of the founder's lost year, name reveal, three-secrets bridge.
  *   Block 2 — Three Secrets (slides 7–15): Vehicle / Internal / External,
  *     each with Story / Strategy / Case Study explicitly labelled.
  *   Block 3 — The Stack (slides 16–30): one Card per slide, NOT collapsed
@@ -197,7 +197,7 @@ export default async function PlaybookSalesPage() {
         properties={{ surface: "playbook_sales" }}
       />
       {/* Brunson "always-visible offer" – sticky $49 strip mounts after the
-          hero scrolls off, hides at the footer. The Marco-skeptic guardrails
+          hero scrolls off, hides at the footer. The avatar-skeptic guardrails
           (no fake countdown, no "X seats left") are enforced inside the
           component itself. */}
       <StickyPlaybookCta />
@@ -245,7 +245,7 @@ export default async function PlaybookSalesPage() {
             each, or your $49 back.
           </TldrBlock>
 
-          {/* Slide 3 — Why this is hard to believe. Acknowledge Marco's
+          {/* Slide 3 — Why this is hard to believe. Acknowledge the avatar's
               history: a year of failed tactics. Workbook 07 §1 + workbook
               01 §6 Beat 3 Story 3 (SEO escape hatch). */}
           <p className="text-muted-foreground leading-relaxed mb-6">
@@ -277,9 +277,10 @@ export default async function PlaybookSalesPage() {
         </section>
 
         {/* ============================================================ */}
-        {/* BLOCK 1.5 – MARCO MIRROR (recognition moment)                 */}
+        {/* BLOCK 1.5 – AVATAR MIRROR (recognition moment)                */}
         {/* Brunson "is this for me?" qualifier + polarity (workbook 01   */}
-        {/* §6 Beat 5). Marco hears his own ritual in his own vocabulary  */}
+        {/* §6 Beat 5). The avatar hears his own ritual in his own        */}
+        {/* vocabulary                                                    */}
         {/* before the three secrets fire. The right reader sees himself. */}
         {/* The wrong reader self-disqualifies and leaves. Both outcomes  */}
         {/* are wins. Voice: Reluctant-Hero, second-person address.       */}
@@ -415,10 +416,10 @@ export default async function PlaybookSalesPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The first person to run The Playbook on themselves was me,
-                on this product. Step 1 produced Marco — 36, non-engineer,
-                shipped with Lovable, flat Stripe line — the first dream
-                customer I had ever written who was specific enough to
-                argue with. Step 2 produced the offer you are reading
+                on this product. Step 1 produced a real person – 36,
+                non-engineer, shipped with Lovable, flat Stripe line – the
+                first dream customer I had ever written who was specific
+                enough to argue with. Step 2 produced the offer you are reading
                 right now, including this guarantee. Step 3 produced the
                 Reluctant-Hero voice this whole page is written in. The
                 page you are on is itself proof the system produces
@@ -846,7 +847,7 @@ export default async function PlaybookSalesPage() {
           {/* Mid-page CTA #1 – Brunson "buy button at the emotional peak."
               The 10.1x reveal + the restack is the first moment the math
               has fully landed. The CTA goes here, not after another wall
-              of text. Microcopy stays inside Marco's voice. */}
+              of text. Microcopy stays inside the avatar's voice. */}
           <div className="pt-6 text-center space-y-3">
             <CheckoutButton
               priceType="playbook"
@@ -863,7 +864,7 @@ export default async function PlaybookSalesPage() {
 
         <Separator className="my-12" />
 
-        {/* Building Block #17 — Comparison Table. Marco counts the green
+        {/* Building Block #17 — Comparison Table. the avatar counts the green
             checks. Polarity from workbook 01 §6 Beat 5 made visual. */}
         <ComparisonTable />
 
@@ -936,7 +937,7 @@ export default async function PlaybookSalesPage() {
           {/* Mid-page CTA #2 – Brunson "risk reversed, decision now."
               The guarantee block is the moment skepticism collapses.
               The math: $98 max downside, refund enforced by webhook,
-              no inbox between Marco and his money. The CTA goes
+              no inbox between the founder and his money. The CTA goes
               immediately after that math, before the page distracts
               with social proof and timeline. */}
           <div className="pt-8 text-center space-y-3">
@@ -957,7 +958,7 @@ export default async function PlaybookSalesPage() {
         <Separator className="my-12" />
 
         {/* Building Block #7 — Honest Testimonials (public-pain mirror).
-            Marco recognizes himself in real founder quotes from
+            The avatar recognizes himself in real founder quotes from
             strategy/dollar-objections.md. No fabricated testimonials. */}
         <HonestTestimonials />
 
@@ -1146,7 +1147,7 @@ export default async function PlaybookSalesPage() {
           {/* Category 4 – Honest scarcity. Workbook 07 §3.
 
               Originally rejected on grounds that fake scarcity destroys trust
-              with the Marco avatar. The replacement is below: three honest,
+              with the indie-founder avatar. The replacement is below: three honest,
               defensible levers (FoundingBuilder block) that can be argued
               with a calculator. No countdown timer. No "3 seats left." Just:
               founding price is finite, my reading capacity is finite, and
@@ -1291,7 +1292,7 @@ export default async function PlaybookSalesPage() {
         {/* BLOCK 8 — DISQUALIFIER + FINAL CTA                            */}
         {/* Workbook 01 §6 Beat 5 polarity AGAINST + workbook 07 §3       */}
         {/* identity close (slide 41). The disqualifier is sharpened to   */}
-        {/* a list because Marco-the-skeptic respects a list more than    */}
+        {/* a list because the avatar-skeptic respects a list more than   */}
         {/* a soft paragraph. The identity callout above the button is    */}
         {/* the polarity peak: praised builder for another year, or      */}
         {/* Verified Builder by August. Pick one.                         */}

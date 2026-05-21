@@ -20,7 +20,7 @@ Already drafted, the 5-beat Epiphany Bridge sits in workbook 01 Section 4. Not r
 
 Every hero has an internal AND external journey. The external is what looks like it changed (got the first paying customer). The internal is what really changed (stopped believing the problem was the product).
 
-### Marco's Two Journeys
+### Alex's Two Journeys
 
 | Dimension | External | Internal |
 |---|---|---|
@@ -36,9 +36,9 @@ The external sells the offer. The internal makes the customer stay.
 
 ## Section 3: Secret #9, The Full Epiphany Bridge Script (7 Elements)
 
-Workbook 01 Section 4 used the condensed 5-beat version. Below is the full 7-element script applied to Marco.
+Workbook 01 Section 4 used the condensed 5-beat version. Below is the full 7-element script applied to Alex.
 
-| # | Element | Marco's version |
+| # | Element | Alex's version |
 |---|---|---|
 | 1 | Backstory + the desire | Non-engineer who finally shipped with AI tools; desired a real product business |
 | 2 | The wall (external) | Flat Stripe line. Users praising but not paying. |
@@ -60,9 +60,9 @@ A complete belief-changing campaign needs four story TYPES, not just one Epiphan
 
 > The Playbook works because it removes the option to skip. Every founder I talked to skipped the same three things in the same order: naming one real person, writing one real promise, sending one real message. The Playbook refuses to let any of them happen out of order. Step 1 will not let you write an offer until you have pinned a real customer. Step 5 will not mark itself complete until 20 outreach actions have been verified in-tool. The 60-day guarantee is enforced by code, not promise. The reason this works where willpower fails is mechanical: the avoidant founder is not asked to overcome avoidance. The tool removes the avoidance option.
 
-### Story Type 2: Internal Beliefs Stories (rewrite Marco's locked false beliefs)
+### Story Type 2: Internal Beliefs Stories (rewrite Alex's locked false beliefs)
 
-Marco's four locked false beliefs from state.json, each rewritten with a "kinda like" bridge.
+Alex's four locked false beliefs from state.json, each rewritten with a "kinda like" bridge.
 
 | False belief | Rewrite (new belief) | Kinda-like bridge |
 |---|---|---|
@@ -75,7 +75,7 @@ Each gets one Reluctant Hero parable (from workbook 01 Section 6 Beat 3) to carr
 
 ### Story Type 3: External Beliefs Stories (rewrite the excuses)
 
-The objections Marco gives himself for not buying. Each is a story.
+The objections Alex gives himself for not buying. Each is a story.
 
 | External belief / excuse | Story rewrite |
 |---|---|
@@ -105,10 +105,10 @@ Three chains to watch for in copy and onboarding:
 | $49 sales page | Vehicle Story + 2 strongest Internal Belief rewrites + Epiphany Bridge video |
 | Free Diagnostic Soap Opera (workbook 04 Section 5) | Parables 1 to 5 plus 2 External Belief rewrites in the PS lines |
 | Onboarding email after $1 charge | Internal Belief rewrite #1 ("the problem is the product" to "built for no one in particular") |
-| Playbook Step 1 engine pushback | When Marco gives a vague dream customer, pushback uses Internal Belief rewrite #4 ("Customers exist outside your head") |
-| Playbook Step 5 friction-buster | External Belief rewrite #3 ("outreach is not your strength") fires when Marco hesitates on send |
+| Playbook Step 1 engine pushback | When Alex gives a vague dream customer, pushback uses Internal Belief rewrite #4 ("Customers exist outside your head") |
+| Playbook Step 5 friction-buster | External Belief rewrite #3 ("outreach is not your strength") fires when Alex hesitates on send |
 
-Stories are not decoration. They are the engine's argument with Marco's avoidance.
+Stories are not decoration. They are the engine's argument with Alex's avoidance.
 
 ---
 
@@ -127,7 +127,7 @@ Engine assembles. User answers human questions. Never a form.
 
 ## Status
 
-**Step 6 COMPLETE.** Epiphany Bridge full 7-element script written. Marco's Hero's Two Journeys laid out. Four Core Stories written: Vehicle, 4 Internal rewrites, **6 External rewrites** (5 from original pass + 1 added 2026-05-17 from `strategy/dollar-objections.md` Category 5), 3 chain maps. Distribution mapped to surfaces.
+**Step 6 COMPLETE.** Epiphany Bridge full 7-element script written. Alex's Hero's Two Journeys laid out. Four Core Stories written: Vehicle, 4 Internal rewrites, **6 External rewrites** (5 from original pass + 1 added 2026-05-17 from `strategy/dollar-objections.md` Category 5), 3 chain maps. Distribution mapped to surfaces.
 
 **Next:** Step 7, 10x Secrets / One-to-Many Selling.
 
