@@ -180,26 +180,58 @@ done.
    citation metrics, etc.). With them, verification completes on the
    next deploy.
 
-7. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
+7. **Generate + push C2PA signing keys for diagnostic PDF export** (EU AI Act
+   Article 50 compliance).
+
+   UnlockSaaS diagnostic PDFs now embed cryptographically signed C2PA
+   Content Credentials declarations AI authorship per EU AI Act Article 50
+   (in force August 2026). Signed PDFs build trust; unsigned ones may be
+   flagged as non-compliant by EU regulators. Setup is one command:
+
+   ```bash
+   python3 scripts/setup-c2pa-keys.py
+   ```
+
+   This generates an ECDSA P-256 self-signed certificate + private key,
+   base64-encodes both, and pushes to Vercel as `C2PA_SIGNING_CERT`,
+   `C2PA_SIGNING_KEY`, `C2PA_SIGNING_ALG` (all three environments).
+
+   Notes:
+   - **Dev fallback:** if env vars are unset in development, PDFs auto-sign
+     with a bundled test cert (shows "test signature" warning in verifiers —
+     intentional, helps catch unsigned-in-prod accidents).
+   - **Graceful degradation:** if env vars are unset in production, PDFs are
+     served unsigned with an `X-C2PA-Unsigned: true` header (not compliant,
+     but always available).
+   - **Production trust upgrade:** for real org identity (green "Signed by
+     {Org}" in verifiers), obtain a cert from DigiCert / Truepic, then
+     run the script again with the real cert + key. No code change needed.
+   - Full rationale + spec references: `strategy/decisions/c2pa-content-credentials.md`.
+
+   Until this is pushed, all diagnostic PDFs will be unsigned. Compliance
+   with Article 50 is not urgent pre-August 2026, but setting it now locks
+   in compliance on launch and avoids EU founder friction.
+
+8. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
    Page). Drop link to /diagnostic at the end. Tag two of the Dream 100.
 
-8. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
+9. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
    Show HN.** Reluctant Hero voice on all four. Workbook 09 §1 cadence
    rules apply.
 
-9. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
-   Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
+10. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
+    Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
 
-10. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
-   after the first verified-customer cycle. Subscribe + watch 5 most-recent
-   videos + 3 substantive timestamped comments each on Riley Brown
-   ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
-   ([@indydevdan](https://www.youtube.com/@indydevdan)). ~3 hours founder
-   time, Mon-Wed of any week. No link, no UnlockSaaS mention — workbook 09
-   §1 channel rules. Deployable 7-channel pitch kit at
-   `strategy/youtube-outreach.md` (B-roll library + 4-week cadence + reactive
-   cues). Host-channel deferral rationale + 4 activation conditions at
-   `strategy/decisions/youtube-channel-stance.md`.
+11. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
+    after the first verified-customer cycle. Subscribe + watch 5 most-recent
+    videos + 3 substantive timestamped comments each on Riley Brown
+    ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
+    ([@indydevdan](https://www.youtube.com/@indydevdan)). ~3 hours founder
+    time, Mon-Wed of any week. No link, no UnlockSaaS mention — workbook 09
+    §1 channel rules. Deployable 7-channel pitch kit at
+    `strategy/youtube-outreach.md` (B-roll library + 4-week cadence + reactive
+    cues). Host-channel deferral rationale + 4 activation conditions at
+    `strategy/decisions/youtube-channel-stance.md`.
 
 ---
 

@@ -374,7 +374,7 @@ function BridgePage({ row }: { row: LeadRow }) {
           30-day plan, competitors, strengths. Only present on v2 rows
           (label !== 'error' AND analysis_detail is non-null). */}
       {!isError && row.analysis_detail && (
-        <DeepReport detail={row.analysis_detail} hostname={host} />
+        <DeepReport detail={row.analysis_detail} hostname={host} diagnosticId={row.id} />
       )}
       {/* BRIDGE — the offer at the bottom. Hidden on print so the saved
           PDF is a clean teardown, not a sales page. */}
