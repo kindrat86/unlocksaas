@@ -36,8 +36,8 @@ export interface DueRow {
 
 export interface SendResult {
   email: string;
-  /** Raw email index for logging; may be out of SequenceIndex range on error paths. */
-  index: number;
+  /** Raw email index for logging. Numeric for spine (0/1/2), BranchId string for branch sends. */
+  index: number | string;
   ok: boolean;
   error?: string;
 }
