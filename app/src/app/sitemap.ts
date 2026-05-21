@@ -12,6 +12,7 @@ import { STACK_SLUGS } from "@/lib/stacks";
 import { LAUNCH_CHECKLIST_SLUGS } from "@/lib/launch-checklists";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
+import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
 import { SCRIPT_SLUGS } from "@/lib/scripts";
 import { PRICING_PAGE_PATTERN_SLUGS } from "@/lib/pricing-page-examples";
@@ -594,6 +595,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.5,
+      alternates: hreflang(`${base}/funnel-playbook/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // pSEO block #10b — funnel × niche matrix combos.
+    // Data source: src/lib/funnel-playbook-matrix.ts (synthesised from
+    // FUNNEL_PLAYBOOK_ENTRIES × NICHE_ENTRIES). Targets cohort-specific
+    // money-keyword shapes ("tripwire funnel for course creators",
+    // "VSL for AI wrappers"). Article + HowTo + FAQPage +
+    // BreadcrumbList JSON-LD per detail, same as bare-funnel pages.
+    // Priority is 0.4 (slightly below bare-funnel pages) because the
+    // funnel-level pages are the primary canonical surface for the
+    // mechanic; matrix combos serve the long-tail cohort-shape
+    // searches and crosslink upward to both parents.
+    // ---------------------------------------------------------------------
+    ...FUNNEL_MATRIX_SLUGS.map((slug) => ({
+      url: `${base}/funnel-playbook/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
       alternates: hreflang(`${base}/funnel-playbook/${slug}`),
     })),
     // ---------------------------------------------------------------------

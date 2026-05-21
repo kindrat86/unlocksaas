@@ -113,6 +113,10 @@ import {
   getFunnelPlaybookBySlug,
 } from "@/lib/funnel-playbooks";
 import {
+  getMatrixEntry,
+  type FunnelMatrixEntry,
+} from "@/lib/funnel-playbook-matrix";
+import {
   WHY_ISNT_MY_ENTRIES,
   type WhyIsntMyEntry,
   getWhyIsntMyBySlug,
@@ -1979,6 +1983,107 @@ export function renderFunnelPlaybookMarkdown(
       updated: p.lastVerified,
     }),
     buildFunnelPlaybookMarkdown(p).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
+ * Build the markdown body for a funnel × niche matrix combo. Same
+ * shape as buildFunnelPlaybookMarkdown but with the three combo
+ * sections (fit verdict, cohort adaptation, cohort failure mode)
+ * inserted alongside the universal funnel mechanics.
+ */
+function buildFunnelMatrixMarkdown(m: FunnelMatrixEntry): string {
+  const steps = m.funnel.steps
+    .map(
+      (s, i) =>
+        `### Step ${i + 1}. ${s.title}\n\n${s.description}`,
+    )
+    .join("\n\n");
+  const mistakes = m.funnel.commonMistakes.map((x) => `- ${x}`).join("\n");
+  const related =
+    m.relatedGlossary.length > 0
+      ? m.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+  const faqs = m.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  return `# ${m.displayName}
+
+> ${m.tldr}
+
+## Does ${m.funnel.displayName.toLowerCase()} fit ${m.niche.displayName}?
+
+${m.fitVerdict}
+
+## When to use this funnel
+
+${m.funnel.whenToUse}
+
+## When NOT to use this funnel
+
+${m.funnel.whenNotToUse}
+
+## How the playbook shifts for ${m.niche.displayName}
+
+${m.cohortAdaptation}
+
+## Step-by-step structure
+
+${steps}
+
+## Where ${m.niche.displayName} break this funnel
+
+${m.cohortFailureMode}
+
+## Common implementation mistakes
+
+${mistakes}
+
+## Where it sits in the value ladder
+
+${m.funnel.ladderPosition}
+
+## Read the parent guides
+
+- [${m.funnel.displayName} playbook](${BASE_URL}/funnel-playbook/${m.funnel.slug})
+- [Diagnostic for ${m.niche.displayName}](${BASE_URL}/for/${m.niche.slug})
+
+## Related terms
+
+${related}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-matrix-combo markdown body. Powers
+ * /funnel-playbook/{funnel}-for-{niche}/md.
+ */
+export function renderFunnelMatrixMarkdown(
+  comboSlug: string,
+): string | undefined {
+  const m = getMatrixEntry(comboSlug);
+  if (!m) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/funnel-playbook/${m.slug}`;
+  return [
+    frontMatter({
+      title: m.displayName,
+      summary: m.tldr,
+      canonical: canonicalUrl,
+      updated: m.lastVerified,
+    }),
+    buildFunnelMatrixMarkdown(m).trim(),
     citationFooter(canonicalUrl),
   ].join("\n");
 }
