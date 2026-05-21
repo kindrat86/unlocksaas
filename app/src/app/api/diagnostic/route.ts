@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkBotId } from "botid/server";
 import {
   assignBucket,
   deepAnalyzeUrl,
@@ -67,6 +68,18 @@ function clientIp(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  // BotID protection: blocks confirmed bot traffic (LLM-scraping / Anthropic
+  // cost prevention). Fail-open: any verification error lets the request
+  // through so a BotID outage never blocks a real founder's diagnostic.
+  try {
+    const botCheck = await checkBotId();
+    if (botCheck.isBot) {
+      return NextResponse.json({ error: "bot_detected" }, { status: 403 });
+    }
+  } catch (err) {
+    console.warn("[botid] diagnostic verification failed, proceeding fail-open", err);
+  }
+
   let body: {
     email?: unknown;
     url?: unknown;
