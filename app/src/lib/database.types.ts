@@ -521,6 +521,54 @@ export type Database = {
         }
         Relationships: []
       }
+      llmo_citations: {
+        Row: {
+          id: string
+          query_id: string
+          query_text: string
+          provider: string
+          model: string
+          run_at: string
+          url_cited: boolean
+          brand_mentioned: boolean
+          rank_in_answer: number | null
+          cited_urls: Json
+          response_text: string
+          raw: Json | null
+          latency_ms: number | null
+        }
+        Insert: {
+          id?: string
+          query_id: string
+          query_text: string
+          provider: string
+          model: string
+          run_at?: string
+          url_cited?: boolean
+          brand_mentioned?: boolean
+          rank_in_answer?: number | null
+          cited_urls?: Json
+          response_text?: string
+          raw?: Json | null
+          latency_ms?: number | null
+        }
+        Update: {
+          id?: string
+          query_id?: string
+          query_text?: string
+          provider?: string
+          model?: string
+          run_at?: string
+          url_cited?: boolean
+          brand_mentioned?: boolean
+          rank_in_answer?: number | null
+          cited_urls?: Json
+          response_text?: string
+          raw?: Json | null
+          latency_ms?: number | null
+        }
+        Relationships: []
+      }
       milestones: {
         Row: {
           achieved_at: string
