@@ -44,7 +44,7 @@
  *      Article.correction JSON-LD picks it up automatically.
  */
 
-import { BASE_URL } from "@/lib/seo/entity";
+import { BASE_URL, ID } from "@/lib/seo/entity";
 
 /**
  * One confirmed factual correction issued against a previously
@@ -238,10 +238,68 @@ export function buildCorrectionsItemList():
           name: row.title,
           datePublished: row.correctedAt,
           url: row.pageUrl,
-          text: `Originally: ${row.originalClaim} — Corrected: ${row.corrected}`,
+          text: `Originally: ${row.originalClaim} – Corrected: ${row.corrected}`,
           ...(row.sourceUrl ? { citation: row.sourceUrl } : {}),
         },
       })),
     },
   };
+}
+
+/**
+ * Serialize the corrections registry as a list of schema.org/ClaimReview
+ * nodes – one per confirmed correction.
+ *
+ * Why this exists, separate from buildCorrectionsItemList
+ * -------------------------------------------------------
+ * The CorrectionComment ItemList above is the legacy E-E-A-T anchor on the
+ * Article. ClaimReview is the canonical fact-check type Google AI Mode +
+ * Bing Copilot + Perplexity look for when grading the truthfulness of
+ * specific named claims. Both surfaces coexist on /editorial-policy: the
+ * Article carries the ItemList; the ClaimReview nodes are emitted as
+ * sibling JSON-LD blocks. Google's structured-data tooling resolves them
+ * together via the shared `url` anchor.
+ *
+ * Each ClaimReview takes the verdict `"False"` – every confirmed
+ * correction is the publisher declaring that the original claim, as
+ * published, was wrong. The corrected text travels in `reviewBody`.
+ *
+ * Returns an empty array (not undefined) when CORRECTIONS is empty so the
+ * caller can iterate without a guard. The editorial-policy component
+ * still skips rendering empty `<JsonLdScript>` blocks – an empty array is
+ * the honest no-op.
+ */
+export function buildCorrectionsClaimReviews(): ReadonlyArray<
+  Record<string, unknown>
+> {
+  if (CORRECTIONS.length === 0) return [];
+  const editorialPolicyUrl = `${BASE_URL}/editorial-policy`;
+  return CORRECTIONS.map((row, i) => ({
+    "@context": "https://schema.org",
+    "@type": "ClaimReview",
+    "@id": `${editorialPolicyUrl}#correction-${i + 1}`,
+    url: `${editorialPolicyUrl}#corrections-log`,
+    inLanguage: "en-US",
+    claimReviewed: row.originalClaim,
+    // Verdict-to-rating: every confirmed correction declares the original
+    // claim was wrong, so reviewRating is 1/5 with alternateName "False".
+    // Schema.org ClaimReview is the canonical fact-check type Google AI
+    // Mode + Bing Copilot + Perplexity read.
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: 1,
+      bestRating: 5,
+      worstRating: 1,
+      alternateName: "False",
+    },
+    datePublished: row.correctedAt,
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    reviewBody: `Corrected: ${row.corrected}${row.sourceUrl ? ` (source: ${row.sourceUrl})` : ""}`,
+    itemReviewed: {
+      "@type": "Claim",
+      appearance: row.pageUrl,
+      author: { "@id": ID.person },
+    },
+  }));
 }

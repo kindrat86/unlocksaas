@@ -7,11 +7,14 @@
  *
  * Responsibilities:
  *   1. Upsert into soap_opera_subscribers (idempotent on email).
- *   2. Send Email 1 (Day 0) via the dispatcher.
- *   3. Advance emails_sent → 1 and set next_send_at = now + 24h.
+ *   2. Send E1 (Day 0) via the dispatcher.
+ *   3. Advance emails_sent → 1 and set next_send_at = now + 48h.
  *
  * Schema reference: supabase/migrations/20260516224206_0003_soap_opera_and_ab_tests.sql
- * + 0007 (rename current_day → emails_sent).
+ *   + 0007 (rename current_day → emails_sent)
+ *   + 0020 (3-spine + 2-branch: e3_opened_at / e3_clicked_at /
+ *           branch_fired / branch_fired_at).
+ * Cadence ref: strategy/decisions/sos-3-spine-2-branch.md (day 0 / 2 / 4).
  *
  * Idempotency: repeat call with the same email resets the sequence to Day 0.
  * Intentional — most repeats are users re-taking the diagnostic with a new URL.

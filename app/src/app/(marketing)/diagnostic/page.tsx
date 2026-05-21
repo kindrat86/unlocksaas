@@ -241,6 +241,9 @@ async function DiagnosticSqueezePageBody(
           >
             How the diagnostic works, in 90 seconds
           </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+            You paste your product URL and answer four short questions. The diagnostic reads your page for three failure patterns: Wrong Person (copy aimed at a category, not a named individual), Weak Offer (features listed instead of a specific promised result), or Weak Belief (page assumes belief the visitor does not yet have). You get back a labeled diagnosis and one specific next step -- in under 90 seconds, at no cost.
+          </p>
           <p className="text-xs text-muted-foreground mb-4">
             The transcript below is the script for the walkthrough video.
             Same words I would say if you were sitting across from me.

@@ -1,3 +1,6 @@
+import { withWorkflow } from "workflow/next";
+import { withBotId } from "botid/next/config";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Next 16 removes the `eslint` config option and the `next lint` command.
@@ -423,4 +426,22 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+<<<<<<< HEAD
+/**
+ * Workflow DevKit integration (2026-05-21).
+ *
+ * `withWorkflow` wires the webpack/turbopack loader that transforms
+ * `"use workflow"` and `"use step"` directives. Without this wrapper,
+ * the Workflow DevKit primitives (sleep, createHook, start, etc.)
+ * compile but throw at runtime with "invalid workflow function".
+ *
+ * First user: lib/workflows/funnelfixer-reengagement.ts — the durable
+ * version of the testimonial-farm + SOS re-engagement flow that used
+ * to live across three crons (activate-funnelfixer-carryover,
+ * funnelfixer-tick, testimonial-farm-offer) + a Supabase row-state
+ * machine (status + emails_sent + next_send_at columns).
+ *
+ * See https://useworkflow.dev for the API reference and
+ * node_modules/@workflow/next/docs/next.mdx for setup.
+ */
+export default withBotId(withWorkflow(nextConfig));

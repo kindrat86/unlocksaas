@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,14 @@ import type {
   RecentRevenue,
   TimeSinceLaunch,
 } from "@/lib/diagnostic";
+import {
+  ReasoningStream,
+  type ReasoningStepState,
+} from "@/components/diagnostic/reasoning-stream";
+import type {
+  DiagnosticStepId,
+  DiagnosticStreamEvent,
+} from "@/lib/diagnostic-stream-types";
 
 // Google OAuth on the diagnostic squeeze is gated by an env flag so the
 // button stays hidden in environments where the Supabase Google provider
@@ -102,19 +110,16 @@ export function DiagnosticForm({
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
+  // `streaming` is the visible-reasoning phase: the email + URL have been
+  // accepted by the server and step events are arriving. We swap the form
+  // for the <ReasoningStream/> panel while this is true.
+  const [streaming, setStreaming] = useState(false);
+  const [steps, setSteps] = useState<
+    Partial<Record<DiagnosticStepId, ReasoningStepState>>
+  >({});
   const [errors, setErrors] = useState<FieldError>({});
   const [alreadyUsed, setAlreadyUsed] = useState<AlreadyUsed | null>(null);
 
-  // SSE streaming state -- populated by the /api/diagnostic/stream endpoint.
-  const [streamSteps, setStreamSteps] = useState<string[]>([]);
-  const [reasoning, setReasoning] = useState("");
-  // Auto-scroll the reasoning panel as tokens arrive.
-  const reasoningRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (reasoning) {
-      reasoningRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
-  }, [reasoning]);
   const [state, setState] = useState<SurveyState>({
     productUrl: "",
     time_since_launch: "",
@@ -227,7 +232,7 @@ export function DiagnosticForm({
     advance(2, { productUrl: normalizedUrl });
   }
 
-  // -- Step 5: Email + final submit (SSE streaming) -------------------------
+  // -- Step 5: Email + final submit ----------------------------------------
   async function handleEmailSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrors({});
@@ -240,6 +245,7 @@ export function DiagnosticForm({
       !state.recent_revenue ||
       !state.biggest_attempt
     ) {
+      // Should never happen; the steps gate this. Defensive guard.
       setErrors({
         form: "Some survey answers are missing. Refresh and start again.",
       });
@@ -247,8 +253,8 @@ export function DiagnosticForm({
     }
 
     setSubmitting(true);
-    setStreamSteps([]);
-    setReasoning("");
+    setStreaming(true);
+    setSteps({});
     track(Event.DiagnosticFormSubmitted, {
       step_completed: 5,
       email_domain: state.email.trim().split("@")[1] ?? null,
@@ -258,9 +264,70 @@ export function DiagnosticForm({
       biggest_attempt: state.biggest_attempt,
     });
 
-    let res: Response;
+    // Track which engine subsections we've seen the LLM emit a start event
+    // for. PostHog gets one event per major boundary so we can debug "where
+    // does the stream actually stall in production" without grepping logs.
+    const seenEngineStart = new Set<DiagnosticStepId>();
+
+    const handleEvent = (event: DiagnosticStreamEvent) => {
+      if (event.type === "step") {
+        setSteps((prev) => ({
+          ...prev,
+          [event.id]: {
+            id: event.id,
+            status: event.status === "done" ? "done" : "running",
+            detail:
+              event.detail ?? prev[event.id]?.detail,
+            score: event.score ?? prev[event.id]?.score,
+          },
+        }));
+        if (
+          event.status === "start" &&
+          event.id.startsWith("score_") &&
+          !seenEngineStart.has(event.id)
+        ) {
+          seenEngineStart.add(event.id);
+          track(Event.DiagnosticFormSubmitted, {
+            step_completed: 5,
+            stream_event: `${event.id}_start`,
+          });
+        }
+      } else if (event.type === "done") {
+        if (event.alreadyUsed) {
+          track(Event.DiagnosticFormSubmitted, {
+            step_completed: 5,
+            already_used: true,
+            email_domain: state.email.trim().split("@")[1] ?? null,
+          });
+          setAlreadyUsed({
+            existingId: event.id,
+            previousUrl: event.previousUrl ?? null,
+          });
+          setStreaming(false);
+          setSubmitting(false);
+          return;
+        }
+        track(Event.DiagnosticFormSubmitted, {
+          step_completed: 5,
+          stream_event: "done",
+          diagnosis_label: event.label ?? null,
+        });
+        // Navigate. We leave `streaming`/`submitting` true so the form
+        // does not flash back into edit mode during the route transition.
+        router.push(`/diagnostic/result?id=${event.id}`);
+      } else if (event.type === "error") {
+        setErrors({
+          form:
+            event.message ||
+            "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
+        });
+        setStreaming(false);
+        setSubmitting(false);
+      }
+    };
+
     try {
-      res = await fetch("/api/diagnostic/stream", {
+      const res = await fetch("/api/diagnostic/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -275,100 +342,111 @@ export function DiagnosticForm({
             typeof document !== "undefined" ? document.referrer : undefined,
         }),
       });
+
+      // Early-validation failures (bad email syntax, bad URL) come back as
+      // a JSON envelope instead of an NDJSON stream. Detect via content-type.
+      const contentType = res.headers.get("content-type") ?? "";
+      if (!contentType.includes("ndjson")) {
+        const body = (await res.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        setErrors({
+          form:
+            body.error ||
+            "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
+        });
+        setStreaming(false);
+        setSubmitting(false);
+        return;
+      }
+
+      if (!res.body) {
+        throw new Error("No response body to stream");
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let receivedDone = false;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.slice(0, nl).trim();
+          buffer = buffer.slice(nl + 1);
+          if (!line) continue;
+          try {
+            const event = JSON.parse(line) as DiagnosticStreamEvent;
+            if (event.type === "done") receivedDone = true;
+            handleEvent(event);
+            if (event.type === "error") {
+              // Stop reading on first error event.
+              try {
+                await reader.cancel();
+              } catch {
+                /* already cancelled */
+              }
+              return;
+            }
+          } catch {
+            // Malformed line — skip rather than abort the whole stream.
+          }
+        }
+      }
+      // Flush trailing partial line (no newline at EOF).
+      if (buffer.trim()) {
+        try {
+          const event = JSON.parse(buffer.trim()) as DiagnosticStreamEvent;
+          if (event.type === "done") receivedDone = true;
+          handleEvent(event);
+        } catch {
+          /* trailing garbage — ignore */
+        }
+      }
+
+      // Stream closed with no `done` event. Treat as a generic engine failure.
+      if (!receivedDone) {
+        setErrors({
+          form:
+            "The engine stopped mid-read. Try again in a minute, or email me at maryan@unlocksaas.com.",
+        });
+        setStreaming(false);
+        setSubmitting(false);
+      }
     } catch {
       setErrors({
         form:
           "Could not reach the diagnostic engine. Try again in a minute, or email me directly at maryan@unlocksaas.com.",
       });
-      setSubmitting(false);
-      return;
-    }
-
-    if (!res.ok || !res.body) {
-      // Non-streaming error from the server (validation failure etc.)
-      const body = (await res.json().catch(() => ({}))) as { error?: string };
-      setErrors({
-        form:
-          body.error ||
-          "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
-      });
-      setSubmitting(false);
-      return;
-    }
-
-    // Read SSE stream
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = "";
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buf += decoder.decode(value, { stream: true });
-        // SSE events are separated by \n\n
-        const messages = buf.split("\n\n");
-        buf = messages.pop() ?? "";
-
-        for (const msg of messages) {
-          if (!msg.startsWith("data: ")) continue;
-          let event: {
-            type: string;
-            text?: string;
-            message?: string;
-            id?: string;
-            already_used?: boolean;
-            previous_url?: string | null;
-          };
-          try {
-            event = JSON.parse(msg.slice(6));
-          } catch {
-            continue;
-          }
-
-          if (event.type === "step" && event.text) {
-            setStreamSteps((prev) => [...prev, event.text!]);
-          } else if (event.type === "reason" && event.text) {
-            setReasoning((prev) => prev + event.text);
-          } else if (event.type === "done" && event.id) {
-            if (event.already_used) {
-              track(Event.DiagnosticFormSubmitted, {
-                step_completed: 5,
-                already_used: true,
-                email_domain: state.email.trim().split("@")[1] ?? null,
-              });
-              setAlreadyUsed({
-                existingId: event.id,
-                previousUrl: event.previous_url ?? null,
-              });
-              setSubmitting(false);
-            } else {
-              router.push(`/diagnostic/result?id=${event.id}`);
-            }
-            return;
-          } else if (event.type === "error") {
-            setErrors({
-              form:
-                event.message ||
-                "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
-            });
-            setSubmitting(false);
-            return;
-          }
-        }
-      }
-    } catch {
-      setErrors({
-        form:
-          "The stream dropped mid-way. Try again in a minute, or email me directly at maryan@unlocksaas.com.",
-      });
+      setStreaming(false);
       setSubmitting(false);
     }
   }
 
   if (alreadyUsed) {
     return <AlreadyUsedPanel data={alreadyUsed} />;
+  }
+
+  if (streaming) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <Progress value={100} />
+          <p className="text-xs text-muted-foreground mt-2">
+            Running the diagnostic — typically 30 to 60 seconds. You will land
+            on your diagnosis automatically.
+          </p>
+        </div>
+        <ReasoningStream steps={steps} />
+        {errors.form && (
+          <p role="alert" className="text-sm text-destructive">
+            {errors.form}
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -449,7 +527,7 @@ export function DiagnosticForm({
         />
       )}
 
-      {step === 5 && !submitting && (
+      {step === 5 && (
         <form onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
           <div className="space-y-1.5">
             <label
@@ -471,6 +549,7 @@ export function DiagnosticForm({
                 setState((p) => ({ ...p, email: e.target.value }))
               }
               aria-invalid={errors.email ? true : undefined}
+              disabled={submitting}
               autoFocus
             />
             {errors.email && (
@@ -485,11 +564,22 @@ export function DiagnosticForm({
           )}
 
           <div className="flex gap-3">
-            <Button type="button" variant="ghost" size="lg" onClick={back}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="lg"
+              onClick={back}
+              disabled={submitting}
+            >
               Back
             </Button>
-            <Button type="submit" size="lg" className="flex-1 text-base py-6">
-              {ctaLabel}
+            <Button
+              type="submit"
+              size="lg"
+              disabled={submitting}
+              className="flex-1 text-base py-6"
+            >
+              {submitting ? "Starting the engine..." : ctaLabel}
             </Button>
           </div>
 
@@ -506,6 +596,7 @@ export function DiagnosticForm({
                 variant="outline"
                 size="lg"
                 className="w-full text-base py-6"
+                disabled={submitting}
                 onClick={continueWithGoogle}
               >
                 <GoogleGlyph />
@@ -518,14 +609,6 @@ export function DiagnosticForm({
             I email the diagnosis. No spam. Reply STOP to unsubscribe.
           </p>
         </form>
-      )}
-
-      {step === 5 && submitting && (
-        <ThinkingPanel
-          steps={streamSteps}
-          reasoning={reasoning}
-          scrollRef={reasoningRef}
-        />
       )}
     </div>
   );
@@ -633,77 +716,6 @@ function safeHost(url: string): string {
   } catch {
     return url;
   }
-}
-
-/**
- * Visible-reasoning panel shown while the SSE diagnostic stream runs.
- *
- * Displays progress step labels (dim) and the streaming AI reasoning prose
- * (full color) as tokens arrive from /api/diagnostic/stream. Replacing the
- * silent spinner with live reasoning is the 2026 "wow" UX moment -- the user
- * sees Claude actually reading their page instead of watching a generic loader.
- */
-function ThinkingPanel({
-  steps,
-  reasoning,
-  scrollRef,
-}: {
-  steps: string[];
-  reasoning: string;
-  scrollRef: React.RefObject<HTMLDivElement | null>;
-}) {
-  return (
-    <div
-      className="space-y-3"
-      role="status"
-      aria-live="polite"
-      aria-label="Diagnosis in progress"
-    >
-      {/* Step labels -- appear one by one as the engine progresses */}
-      {steps.length > 0 && (
-        <ul className="space-y-1.5">
-          {steps.map((s, i) => (
-            <li key={i} className="flex items-start gap-2">
-              <span
-                className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40"
-                aria-hidden="true"
-              />
-              <p className="text-xs text-muted-foreground leading-relaxed">{s}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* Live AI reasoning -- streams token by token */}
-      {reasoning && (
-        <div className="rounded-xl border border-border bg-muted/40 px-4 py-3">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
-            Reading your page
-          </p>
-          <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
-            {reasoning}
-            {/* Blinking cursor while streaming */}
-            <span
-              className="inline-block w-[2px] h-[1em] bg-foreground/60 animate-pulse align-middle ml-0.5"
-              aria-hidden="true"
-            />
-          </p>
-          <div ref={scrollRef} />
-        </div>
-      )}
-
-      {/* Spinner while waiting for first step / first reason token */}
-      {steps.length === 0 && !reasoning && (
-        <div className="flex items-center gap-2 py-2">
-          <span
-            className="h-1.5 w-1.5 rounded-full bg-foreground/50 animate-pulse"
-            aria-hidden="true"
-          />
-          <p className="text-xs text-muted-foreground">Starting the engine...</p>
-        </div>
-      )}
-    </div>
-  );
 }
 
 function ChoiceStep<T extends string>({

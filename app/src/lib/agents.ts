@@ -14,7 +14,7 @@
  *                      headlines + hero + OTO using the locked WHO/WHAT/VOICE.
  *                      Tier: $49 Core (Step 4 is already gated).
  *
- * Reuses the same Anthropic SDK shim + model (claude-sonnet-4-6) as the engine
+ * Reuses the same AI Gateway model (anthropic/claude-sonnet-4.6) as the engine
  * Q&A route at /api/engine. Persists runs to public.agent_runs so the UI can
  * hydrate on return, and so the operator can later score Brunson
  * Results-in-Advance: did the founder USE the agent output, or just generate
@@ -24,7 +24,8 @@
  * write like Marco's blunt friend who has already shipped.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getAnthropic } from "@/lib/anthropic";
+import { generateText } from "ai";
+import { model } from "@/lib/anthropic";
 import { loadStepOutputs, type EngineStepId } from "@/lib/step-outputs";
 
 export const AGENT_KINDS = [
@@ -34,7 +35,7 @@ export const AGENT_KINDS = [
 ] as const;
 export type AgentKind = (typeof AGENT_KINDS)[number];
 
-const MODEL = "claude-sonnet-4-6";
+const MODEL = model;
 const MAX_TOKENS = 1800;
 
 const RELUCTANT_HERO_VOICE = `Your voice: Reluctant Hero (workbook 01 §6).
@@ -58,14 +59,13 @@ interface AgentLLMArgs {
  * back to a regex match before giving up).
  */
 async function callLLM({ system, user }: AgentLLMArgs): Promise<string> {
-  const resp = await getAnthropic().messages.create({
+  const { text } = await generateText({
     model: MODEL,
-    max_tokens: MAX_TOKENS,
+    maxOutputTokens: MAX_TOKENS,
     system,
-    messages: [{ role: "user", content: user }],
+    prompt: user,
   });
-  const block = resp.content[0];
-  return block && block.type === "text" ? block.text : "";
+  return text;
 }
 
 function safeJsonParse<T>(text: string): T | null {
@@ -346,7 +346,7 @@ export async function persistAgentRun(
     input,
     output,
     duration_ms: durationMs,
-    model: MODEL,
+    model: primaryModel(),
   });
   if (error) {
     console.error("[agents] persistAgentRun failed", {

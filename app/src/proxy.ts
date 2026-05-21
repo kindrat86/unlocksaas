@@ -219,7 +219,10 @@ export const config = {
      * - _next/static, _next/image (build assets)
      * - favicon, public images
      * - api/webhooks/stripe (must not have its body wrapped/buffered by mw)
+     * - .well-known/workflow/* (Workflow DevKit internal routes — must not
+     *   pass through Supabase session refresh, A/B cookies, or canonical
+     *   header logic; see node_modules/@workflow/next/docs/next.mdx)
      */
-    "/((?!_next/static|_next/image|favicon.ico|api/webhooks|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/webhooks|\\.well-known/workflow/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
