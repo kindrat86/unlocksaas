@@ -1934,7 +1934,7 @@ const handler = createMcpHandler(
           | { plan_30_day?: DeepDiagnosticResult["plan_30_day"] }
           | null;
         const plan = detail?.plan_30_day;
-        if (!plan || !plan.weeks || plan.weeks.length === 0) {
+        if (!plan || !plan.week1) {
           return {
             content: [
               {
@@ -1952,7 +1952,7 @@ const handler = createMcpHandler(
               text: [
                 `# 30-day plan for ${data.product_url}`,
                 "",
-                ...plan.weeks.map((w, i) => {
+                ...[plan.week1, plan.week2, plan.week3, plan.week4].map((w, i) => {
                   return [
                     `**Week ${i + 1}: ${w.theme}**`,
                     ...((w.deliverables as string[]) || []).map((d) => `- ${d}`),
