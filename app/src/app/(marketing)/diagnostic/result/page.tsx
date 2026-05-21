@@ -9,11 +9,26 @@ import { Separator } from "@/components/ui/separator";
 import { createAdminClient } from "@/lib/supabase/server";
 import {
   bucketDestination,
+  isBiggestFear,
+  isHoursPerWeek,
+  isPrimaryGoal,
+  isTimeSinceLaunch,
+  type BiggestFear,
   type Bucket,
   type DiagnosticLabel,
+  type HoursPerWeek,
+  type PrimaryGoal,
+  type TimeSinceLaunch,
 } from "@/lib/diagnostic";
+import {
+  HEADLINE_COPY,
+  PLAN_EMPHASIS_COPY,
+  SCORECARD_TONE_COPY,
+  resolveAllVariants,
+} from "@/lib/diagnostic-variants";
 import { DiagnosisShareCard } from "./share-card";
 import { DeepReport, type DeepAnalysisDetail } from "./deep-report";
+import { QuizHeadlineOverlay } from "@/components/diagnostic/quiz-headline-overlay";
 import { DiagnosticResultViewedTracker } from "@/components/analytics/diagnostic-result-viewed-tracker";
 
 type ShareVisibility = "private" | "public" | "revoked";
@@ -72,6 +87,11 @@ type LeadRow = {
   recent_revenue: string | null;
   time_since_launch: string | null;
   biggest_attempt: string | null;
+  // Quiz expansion fields (2026-05-21). Nullable because legacy rows
+  // pre-date the migration and the API edge accepts a null on each.
+  primary_goal: string | null;
+  hours_per_week: string | null;
+  biggest_fear: string | null;
   created_at: string;
   share_visibility: ShareVisibility | null;
   analysis_detail: DeepAnalysisDetail | null;
@@ -249,7 +269,7 @@ async function DiagnosticResultBody(
   const { data, error } = await supabase
     .from("diagnostic_leads")
     .select(
-      "id, product_url, label, explanation, evidence, bucket, is_returning, recent_revenue, time_since_launch, biggest_attempt, created_at, share_visibility, analysis_detail",
+      "id, product_url, label, explanation, evidence, bucket, is_returning, recent_revenue, time_since_launch, biggest_attempt, primary_goal, hours_per_week, biggest_fear, created_at, share_visibility, analysis_detail",
     )
     .eq("id", id)
     .maybeSingle();
@@ -276,6 +296,38 @@ function BridgePage({ row }: { row: LeadRow }) {
   const labelBadge = LABEL_BADGE[label];
   const isError = label === "error";
   const isReturning = row.is_returning;
+
+  // Quiz-funnel variant resolution (2026-05-21). Each field is validated at
+  // read time — if a row pre-dates the migration the field will be null and
+  // the resolver returns the "default" variant. Validators guard against
+  // stray strings that don't match the enum (which would indicate a Postgres
+  // CHECK-constraint bypass, but we still fail safe).
+  const quizSignals = {
+    primary_goal: isPrimaryGoal(row.primary_goal)
+      ? (row.primary_goal as PrimaryGoal)
+      : null,
+    hours_per_week: isHoursPerWeek(row.hours_per_week)
+      ? (row.hours_per_week as HoursPerWeek)
+      : null,
+    biggest_fear: isBiggestFear(row.biggest_fear)
+      ? (row.biggest_fear as BiggestFear)
+      : null,
+  };
+  const timeSinceLaunch: TimeSinceLaunch | null = isTimeSinceLaunch(
+    row.time_since_launch,
+  )
+    ? (row.time_since_launch as TimeSinceLaunch)
+    : null;
+  const variants = resolveAllVariants(quizSignals, bucket, timeSinceLaunch);
+  const headlineCopy = HEADLINE_COPY[variants.headline];
+  const scorecardPreface = SCORECARD_TONE_COPY[variants.scorecard];
+  const planPreface = PLAN_EMPHASIS_COPY[variants.plan];
+  // Only render variant prefaces when at least one quiz-expansion signal
+  // was captured. Legacy rows show the original layout untouched.
+  const hasQuizSignal =
+    quizSignals.primary_goal !== null ||
+    quizSignals.hours_per_week !== null ||
+    quizSignals.biggest_fear !== null;
 
   // CTA URL per destination + bucket. Attribution params ride through to
   // Stripe metadata via /api/checkout (workbook 04 §3 hard rule).
@@ -334,6 +386,11 @@ function BridgePage({ row }: { row: LeadRow }) {
           is at the bottom of this page.
         </p>
       </div>
+      {/* Quiz-funnel headline overlay — sits ABOVE the Claude read-out so
+          the founder sees their stated goal mirrored back before they read
+          the diagnosis. Skipped for legacy rows (pre-2026-05-21) and for
+          rows where every quiz-expansion field was abandoned. */}
+      {hasQuizSignal && !isError && <QuizHeadlineOverlay copy={headlineCopy} />}
       {/* CLAUDE READ-OUT — the story (workbook rule: story first). */}
       <article className="mb-8">
         <Card className={isError ? "border-destructive/30" : "border-primary/30"}>
@@ -372,9 +429,24 @@ function BridgePage({ row }: { row: LeadRow }) {
       </article>
       {/* DEEP REPORT — the 10x overdeliver. Three-axis scorecard, rewrites,
           30-day plan, competitors, strengths. Only present on v2 rows
-          (label !== 'error' AND analysis_detail is non-null). */}
+          (label !== 'error' AND analysis_detail is non-null). The variant
+          prefaces are forwarded only when at least one quiz-expansion
+          signal was captured; legacy rows render the original layout. */}
       {!isError && row.analysis_detail && (
-        <DeepReport detail={row.analysis_detail} hostname={host} />
+        <DeepReport
+          detail={row.analysis_detail}
+          hostname={host}
+          scorecardPreface={
+            hasQuizSignal && quizSignals.hours_per_week !== null
+              ? scorecardPreface
+              : undefined
+          }
+          planPreface={
+            hasQuizSignal && quizSignals.biggest_fear !== null
+              ? planPreface
+              : undefined
+          }
+        />
       )}
       {/* BRIDGE — the offer at the bottom. Hidden on print so the saved
           PDF is a clean teardown, not a sales page. */}
