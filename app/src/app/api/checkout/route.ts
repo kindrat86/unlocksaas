@@ -10,9 +10,39 @@ import {
 import { REF_COOKIE } from "@/lib/affiliate";
 import { captureServer } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
+import { getOfferPriceId, type OfferId } from "@/lib/offers";
+
+/**
+ * priceType values:
+ *   starter            – $1 SLO (mode=payment); optional `bump` flag attaches
+ *                        the $27 Dream 100 bump as a second line item.
+ *   playbook           – $49/mo Core (mode=subscription).
+ *   oto_vault          – $97 Founder's Diary Vault OTO (mode=payment).
+ *   oto_downsell       – $27 Cold Email Library downsell (mode=payment).
+ *   oto_lifetime       – $297 lifetime Verified Builders OTO (mode=payment).
+ *
+ * Each OTO price type is gated by an env var (see lib/offers.ts). When the env
+ * var is unset we return 503 with a sane error code so the client can fall
+ * through to the decline path. This keeps the four extra offers behind an
+ * operator opt-in: ship the PR, paste the price ids later.
+ */
+type CheckoutPriceType =
+  | "starter"
+  | "playbook"
+  | "oto_vault"
+  | "oto_downsell"
+  | "oto_lifetime";
 
 type CheckoutBody = {
   priceType?: string;
+  /** Order bump on /starter. Ignored for any other priceType. */
+  bump?: boolean;
+  /**
+   * Forwarded onto the Stripe session metadata so the webhook can stitch a
+   * post-Starter OTO purchase back to the original $1 session for the AOV
+   * report. Set by /oto/vault, /oto/cold-emails, /oto/lifetime pages.
+   */
+  parentSessionId?: string;
   attribution?: {
     from?: string;
     label?: string;
@@ -30,6 +60,16 @@ function clampMeta(v: unknown): string | undefined {
   return s.length > 500 ? s.slice(0, 500) : s;
 }
 
+/**
+ * Map an OTO priceType to the offer id used in lib/offers.ts. Centralised so
+ * the webhook can use the same mapping when it stamps billing_payments.kind.
+ */
+const OTO_PRICE_TYPE_TO_OFFER: Record<string, OfferId> = {
+  oto_vault: "oto_vault",
+  oto_downsell: "oto_downsell",
+  oto_lifetime: "oto_lifetime",
+};
+
 export async function POST(req: NextRequest) {
   // BotID protection: blocks confirmed bot traffic (card-testing prevention).
   // Fail-open: any verification error lets the request through so a BotID
@@ -43,7 +83,8 @@ export async function POST(req: NextRequest) {
     console.warn("[botid] checkout verification failed, proceeding fail-open", err);
   }
 
-  const { priceType, attribution } = (await req.json()) as CheckoutBody;
+  const { priceType, attribution, bump, parentSessionId } =
+    (await req.json()) as CheckoutBody;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
@@ -72,6 +113,13 @@ export async function POST(req: NextRequest) {
     abMetadata.diagnostic_lead_id = diagnosticLeadId;
   }
 
+  // OTO chain: stitch each session back to the original $1 Starter session so
+  // the operator can run "AOV per Starter cart" reports without a manual join.
+  const parentSessionMeta = clampMeta(parentSessionId);
+  if (parentSessionMeta && /^cs_[a-zA-Z0-9_]+$/.test(parentSessionMeta)) {
+    abMetadata.parent_session_id = parentSessionMeta;
+  }
+
   // Affiliate attribution: read the unlocksaas_ref cookie set by /r/<code> (or
   // the proxy's ?ref= capture). The webhook's checkout.session.completed
   // handler looks for metadata.ref_code, resolves the affiliate, and writes
@@ -94,7 +142,13 @@ export async function POST(req: NextRequest) {
   // Price type stamped in Stripe metadata so the Cart Abandonment Recovery
   // cadence can branch its copy on `checkout.session.expired` events. See
   // app/src/lib/cart-recovery/subscribe.ts.
-  if (priceType === "starter" || priceType === "playbook") {
+  if (
+    priceType === "starter" ||
+    priceType === "playbook" ||
+    priceType === "oto_vault" ||
+    priceType === "oto_downsell" ||
+    priceType === "oto_lifetime"
+  ) {
     abMetadata.price_type = priceType;
   }
 
@@ -107,18 +161,29 @@ export async function POST(req: NextRequest) {
 
   try {
     if (priceType === "starter") {
+      // Resolve the order bump price id if the bump checkbox was set AND the
+      // env var is configured. Silent fallback to no-bump if the operator
+      // hasn't pasted the price id yet – the checkbox on the page is gated by
+      // the same env check via /api/offers/availability.
+      const bumpPriceId = bump ? getOfferPriceId("starter_bump") : null;
+      const lineItems: { price: string; quantity: number }[] = [
+        { price: process.env.STRIPE_STARTER_PRICE_ID!, quantity: 1 },
+      ];
+      if (bumpPriceId) {
+        lineItems.push({ price: bumpPriceId, quantity: 1 });
+        abMetadata.bump_included = "true";
+      }
+
       const session = await getStripe().checkout.sessions.create({
         mode: "payment",
-        line_items: [
-          {
-            price: process.env.STRIPE_STARTER_PRICE_ID!,
-            quantity: 1,
-          },
-        ],
+        line_items: lineItems,
+        // Brunson "always-keep-them-in-the-funnel" rule: every Stripe success
+        // returns to the next OTO. /oto is the first OTO ($49 Playbook spine).
         success_url: `${appUrl}/oto?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${appUrl}/starter`,
         metadata: abMetadata,
         payment_intent_data: { metadata: abMetadata },
+        allow_promotion_codes: false,
       });
 
       // Server-side mirror of the click. Useful when the browser event was
@@ -127,6 +192,7 @@ export async function POST(req: NextRequest) {
       captureServer(distinctId, Event.CheckoutSessionCreated, {
         price_type: "starter",
         stripe_session_id: session.id,
+        bump_included: bumpPriceId ? "true" : "false",
         ...abMetadata,
       });
 
@@ -146,7 +212,10 @@ export async function POST(req: NextRequest) {
         // The user advances to /playbook from there. session_id is preserved so
         // /onboarding can show a "processing" banner while the webhook catches up.
         success_url: `${appUrl}/onboarding?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${appUrl}/oto`,
+        // Cancel on the upgrade page → return them to the next OTO in the
+        // chain, not back to /oto. Brunson rule: once they decline the spine,
+        // keep moving down the ladder, never spin them on the same page.
+        cancel_url: `${appUrl}/oto/vault`,
         metadata: abMetadata,
         subscription_data: { metadata: abMetadata },
       });
@@ -154,6 +223,67 @@ export async function POST(req: NextRequest) {
       captureServer(distinctId, Event.CheckoutSessionCreated, {
         price_type: "playbook",
         stripe_session_id: session.id,
+        ...abMetadata,
+      });
+
+      return NextResponse.json({ url: session.url });
+    }
+
+    // OTO chain (vault → downsell → lifetime). Each is a one-time PaymentIntent
+    // session that returns to the *next* OTO on success, and to the next OTO
+    // on cancel as well – the chain never branches back upstream.
+    if (
+      priceType === "oto_vault" ||
+      priceType === "oto_downsell" ||
+      priceType === "oto_lifetime"
+    ) {
+      const offerId = OTO_PRICE_TYPE_TO_OFFER[priceType];
+      const priceId = getOfferPriceId(offerId);
+      if (!priceId) {
+        // Env var unset – the operator hasn't created the Stripe product yet.
+        // Tell the client cleanly so the page can route them to the next step
+        // without showing a Stripe error screen.
+        return NextResponse.json(
+          { error: "offer_disabled", offerId },
+          { status: 503 },
+        );
+      }
+
+      // Per-OTO routing. Success lands on the NEXT offer in the chain so the
+      // visitor always sees one more screen before /welcome. Decline buttons
+      // on each page also navigate forward to the same next-step URL.
+      const nextStep: Record<typeof priceType, { success: string; cancel: string }> = {
+        oto_vault: {
+          success: `${appUrl}/oto/lifetime?session_id={CHECKOUT_SESSION_ID}&from=vault`,
+          cancel: `${appUrl}/oto/cold-emails`,
+        },
+        oto_downsell: {
+          success: `${appUrl}/oto/lifetime?session_id={CHECKOUT_SESSION_ID}&from=downsell`,
+          cancel: `${appUrl}/oto/lifetime`,
+        },
+        oto_lifetime: {
+          success: `${appUrl}/welcome?path=lifetime&session_id={CHECKOUT_SESSION_ID}`,
+          cancel: `${appUrl}/welcome?path=starter_only`,
+        },
+      };
+
+      abMetadata.offer_id = offerId;
+
+      const session = await getStripe().checkout.sessions.create({
+        mode: "payment",
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: nextStep[priceType].success,
+        cancel_url: nextStep[priceType].cancel,
+        metadata: abMetadata,
+        payment_intent_data: { metadata: abMetadata },
+        // No promotion codes on the OTO chain – the price IS the offer.
+        allow_promotion_codes: false,
+      });
+
+      captureServer(distinctId, Event.CheckoutSessionCreated, {
+        price_type: priceType,
+        stripe_session_id: session.id,
+        offer_id: offerId,
         ...abMetadata,
       });
 
@@ -183,4 +313,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

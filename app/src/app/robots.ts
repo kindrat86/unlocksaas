@@ -96,6 +96,11 @@ export default function robots(): MetadataRoute.Robots {
     "/builder/*/opengraph-image",
     "/login",
     "/oto",
+    // OTO chain children (Brunson audit Action #4 stack). Same "no context
+    // outside the $1 purchase" rationale as /oto itself.
+    "/oto/vault",
+    "/oto/cold-emails",
+    "/oto/lifetime",
     "/welcome",
     "/onboarding",
     // Affiliate-tracking redirects (2026-05-21 GSC audit fix).

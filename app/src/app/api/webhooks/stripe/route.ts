@@ -20,6 +20,7 @@ import {
   recordPayment,
   sixtyDayExpiry,
   upsertProfileByEmail,
+  type PaymentKind,
 } from "@/lib/billing";
 import {
   recordCartAbandonment,
@@ -27,8 +28,17 @@ import {
 } from "@/lib/cart-recovery/subscribe";
 import {
   scheduleGrantForCheckout,
+  scheduleLifetimeGrantForCheckout,
   scheduleRevokeForCustomer,
 } from "@/lib/community";
+import {
+  OFFERS,
+  getOfferDeliverableUrl,
+  offerToBillingKind,
+  type OfferId,
+} from "@/lib/offers";
+import { sendOfferDeliverableEmail } from "@/lib/offer-deliverable-email";
+import { after } from "next/server";
 import {
   attachReferralFromSession,
   findReferralByCustomerId,
@@ -106,11 +116,26 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        // BILLING: upsert profile, record Starter payment, send magic link.
-        // Also schedules the Verified Builders community grant (Core only) via
-        // after() so the 200 OK to Stripe is not held by Resend / Supabase
-        // round-trips for the community email.
-        await handleCheckoutSessionCompleted(session, event.id);
+        // OTO chain branch ($97 Vault / $27 downsell / $297 lifetime). These
+        // payments do NOT create or upgrade a profile – the user already
+        // exists from the upstream Starter session. The OTO handler records
+        // the billing_payments row, fires the deliverable email, and (for
+        // lifetime) schedules the community grant.
+        const otoOfferId = readOtoOfferIdFromSession(session);
+        if (otoOfferId) {
+          await handleOfferCheckoutCompleted(session, otoOfferId, event.id);
+        } else {
+          // BILLING: upsert profile, record Starter payment, send magic link.
+          // Also schedules the Verified Builders community grant (Core only) via
+          // after() so the 200 OK to Stripe is not held by Resend / Supabase
+          // round-trips for the community email.
+          await handleCheckoutSessionCompleted(session, event.id);
+          // STARTER ORDER BUMP: when the $1 cart carried the +$27 Dream 100
+          // bump line item, record the second billing_payments row and send
+          // the deliverable email. Detection is via metadata.bump_included
+          // stamped by the checkout API.
+          await maybeHandleStarterBump(session);
+        }
         // ATTRIBUTION + ANALYTICS side-channels (preserved unchanged).
         await recordIdentityAbConversion(session);
         await recordDiagnosticAttribution(session);
@@ -569,6 +594,201 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
   });
 }
 
+// ── Post-Starter monetization stack (Brunson audit Action #4, 2026-05-21) ────
+//
+// Four extra offers wrap the existing $1 → $49 spine: a $27 order bump on the
+// Starter cart, then a $97 → $27 → $297 OTO chain on the thank-you page.
+// All four are env-gated via lib/offers.ts; absent env vars hide the offer.
+//
+// Webhook responsibilities for these payments:
+//   - record a billing_payments row with kind=<offer id> (audit + AOV reports)
+//   - dispatch the deliverable email (Notion/Drive link from env)
+//   - for oto_lifetime: stamp profiles.community_lifetime_at + grant the room
+//
+// The OTO sessions DO NOT create or upgrade a profile – the user already
+// exists from the upstream Starter session that triggered this OTO chain.
+
+const OTO_OFFER_IDS = new Set<OfferId>([
+  "oto_vault",
+  "oto_downsell",
+  "oto_lifetime",
+]);
+
+/**
+ * Pull the OTO offer id off a Stripe session's metadata. Returns null when
+ * the session is not an OTO purchase (Starter, Core, or external traffic).
+ */
+function readOtoOfferIdFromSession(
+  session: Stripe.Checkout.Session,
+): OfferId | null {
+  const priceType = session.metadata?.price_type;
+  if (typeof priceType !== "string") return null;
+  if (OTO_OFFER_IDS.has(priceType as OfferId)) return priceType as OfferId;
+  return null;
+}
+
+/**
+ * Handle one of the three OTO checkout sessions. Idempotent at every step:
+ *   - billing_payments has a UNIQUE on stripe_charge_id (replay-safe).
+ *   - stampLifetimeOnProfile / grantCoreCommunityAccess are idempotent.
+ *   - Deliverable email is fire-and-forget; double-sends are acceptable.
+ */
+async function handleOfferCheckoutCompleted(
+  session: Stripe.Checkout.Session,
+  offerId: OfferId,
+  eventId: string,
+) {
+  const email =
+    session.customer_details?.email ?? session.customer_email ?? null;
+  if (!email) {
+    console.warn(
+      `[stripe-webhook] OTO session ${session.id} (${offerId}) has no email; skipping`,
+    );
+    return;
+  }
+
+  const stripeCustomerId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.customer?.id ?? null;
+  const paymentIntentId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id ?? null;
+
+  // Locate the existing profile. The upstream Starter session has already
+  // upserted one. If for some reason we land here without a profile (cold
+  // OTO traffic via a deep-link), we still record the payment under the
+  // bare email so the audit trail is complete.
+  const adminLoose = createAdminClient() as unknown as {
+    from: (t: string) => {
+      select: (cols: string) => {
+        eq: (col: string, val: unknown) => {
+          maybeSingle: () => Promise<{ data: { id?: string } | null }>;
+        };
+      };
+    };
+  };
+  const { data: profileRow } = await adminLoose
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
+  const profileId = profileRow?.id ?? null;
+
+  await recordPayment({
+    profile_id: profileId,
+    email,
+    stripe_customer_id: stripeCustomerId,
+    stripe_payment_intent_id: paymentIntentId,
+    kind: offerToBillingKind(offerId) as PaymentKind,
+    amount_cents: session.amount_total ?? OFFERS[offerId].priceCents,
+    currency: session.currency ?? "usd",
+    status: "paid",
+    paid_at: new Date().toISOString(),
+  }).catch((err) => {
+    console.error(
+      `[stripe-webhook] recordPayment failed for OTO ${offerId} (${session.id}):`,
+      err instanceof Error ? err.message : err,
+    );
+  });
+
+  // Lifetime OTO: grant the room.
+  if (offerId === "oto_lifetime" && profileId) {
+    scheduleLifetimeGrantForCheckout({
+      profileId,
+      email,
+      stripeCustomerId,
+      stripeEventId: eventId,
+      source: "stripe_webhook",
+    });
+    // The community-invite email is sent by scheduleLifetimeGrantForCheckout
+    // → grantCoreCommunityAccess. No separate deliverable email here.
+    return;
+  }
+
+  // Vault + downsell: send the operator-pasted deliverable URL.
+  if (offerId === "oto_vault" || offerId === "oto_downsell") {
+    const url = getOfferDeliverableUrl(offerId);
+    after(async () => {
+      await sendOfferDeliverableEmail({
+        to: email,
+        offerId,
+        deliverableUrl: url,
+      });
+    });
+  }
+}
+
+/**
+ * The Starter cart can carry a $27 order bump (Dream 100 + Cold Email
+ * Library). It rides on the same Stripe session as the $1 Starter; we detect
+ * it via metadata.bump_included stamped by the checkout API. On detection:
+ *   - record a second billing_payments row with kind='starter_bump'
+ *   - send the deliverable email with the Dream 100 URL
+ */
+async function maybeHandleStarterBump(session: Stripe.Checkout.Session) {
+  if (session.mode !== "payment") return;
+  if (session.metadata?.bump_included !== "true") return;
+  const email =
+    session.customer_details?.email ?? session.customer_email ?? null;
+  if (!email) return;
+
+  const offerId: OfferId = "starter_bump";
+  const offer = OFFERS[offerId];
+  const stripeCustomerId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.customer?.id ?? null;
+  const paymentIntentId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id ?? null;
+
+  // Look up the profile created by the parent Starter flow.
+  const adminLoose = createAdminClient() as unknown as {
+    from: (t: string) => {
+      select: (cols: string) => {
+        eq: (col: string, val: unknown) => {
+          maybeSingle: () => Promise<{ data: { id?: string } | null }>;
+        };
+      };
+    };
+  };
+  const { data: profileRow } = await adminLoose
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
+  const profileId = profileRow?.id ?? null;
+
+  await recordPayment({
+    profile_id: profileId,
+    email,
+    stripe_customer_id: stripeCustomerId,
+    stripe_payment_intent_id: paymentIntentId,
+    kind: offerToBillingKind(offerId) as PaymentKind,
+    amount_cents: offer.priceCents,
+    currency: session.currency ?? "usd",
+    status: "paid",
+    paid_at: new Date().toISOString(),
+  }).catch((err) => {
+    console.error(
+      `[stripe-webhook] recordPayment failed for starter_bump (${session.id}):`,
+      err instanceof Error ? err.message : err,
+    );
+  });
+
+  const url = getOfferDeliverableUrl(offerId);
+  after(async () => {
+    await sendOfferDeliverableEmail({
+      to: email,
+      offerId,
+      deliverableUrl: url,
+    });
+  });
+}
+
 // ── Conversion capture for PostHog (the events brunson-funnel-metrics needs) ──
 //
 // On checkout.session.completed we fire ONE of:
@@ -599,18 +819,55 @@ async function capturePurchase(session: Stripe.Checkout.Session) {
   }
 
   const distinctId = stripeDistinctId(customerId, supabaseUserId);
+
+  // OTO branch: pick the dedicated *Purchased event so funnel reports can
+  // see the AOV stack without untangling starter_purchased from oto rows.
+  const otoOfferId = readOtoOfferIdFromSession(session);
   const isSubscription = session.mode === "subscription";
-  const eventName = isSubscription
-    ? Event.PlaybookSubscribed
-    : Event.StarterPurchased;
+
+  let eventName: typeof Event[keyof typeof Event];
+  let priceTypeLabel: string;
+  if (otoOfferId === "oto_vault") {
+    eventName = Event.OtoVaultPurchased;
+    priceTypeLabel = "oto_vault";
+  } else if (otoOfferId === "oto_downsell") {
+    eventName = Event.OtoDownsellPurchased;
+    priceTypeLabel = "oto_downsell";
+  } else if (otoOfferId === "oto_lifetime") {
+    eventName = Event.OtoLifetimePurchased;
+    priceTypeLabel = "oto_lifetime";
+  } else if (isSubscription) {
+    eventName = Event.PlaybookSubscribed;
+    priceTypeLabel = "playbook";
+  } else {
+    eventName = Event.StarterPurchased;
+    priceTypeLabel = "starter";
+  }
 
   await captureServerAndFlush(distinctId, eventName, {
-    price_type: isSubscription ? "playbook" : "starter",
+    price_type: priceTypeLabel,
     stripe_customer_id: customerId,
     stripe_session_id: session.id,
     amount_cents: session.amount_total ?? null,
     currency: session.currency ?? null,
+    parent_session_id: session.metadata?.parent_session_id ?? null,
   });
+
+  // Order bump add-on lights up alongside the Starter purchase. Two events
+  // fire from the same session so the operator can group bump revenue
+  // against the parent Starter cart trivially.
+  if (
+    !otoOfferId &&
+    !isSubscription &&
+    session.metadata?.bump_included === "true"
+  ) {
+    await captureServerAndFlush(distinctId, Event.StarterBumpPurchased, {
+      price_type: "starter_bump",
+      stripe_customer_id: customerId,
+      stripe_session_id: session.id,
+      currency: session.currency ?? null,
+    });
+  }
 }
 
 async function captureInvoiceEvent(
@@ -756,6 +1013,11 @@ async function handleConnectChargeSucceeded(
 async function recordIdentityAbConversion(session: Stripe.Checkout.Session) {
   const metadata = session.metadata ?? {};
   if (metadata.ab_key !== IDENTITY_AB_KEY) return;
+  // OTO sessions ride the same A/B cookie but they're not the first-touch
+  // conversion – they're downstream of an already-attributed Starter or
+  // Core session. Skip them so variant conversion rates count the original
+  // cart, not the OTO chain that follows.
+  if (readOtoOfferIdFromSession(session)) return;
 
   const variant = parseIdentityVariant(metadata.ab_variant);
   if (!variant) return;
