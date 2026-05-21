@@ -27,7 +27,7 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 - **Workbook section:** Workbook 04 §3 (Front-End Lead Funnel proof block) + Workbook 06 §3 (Vehicle Stories).
 - **File path:** `app/src/app/(marketing)/playbook-sales/page.tsx` (post-Sprint-3) — proof block above the FAQ. Also `app/src/app/(marketing)/starter/page.tsx` once the first 5 verified customers exist.
 - **Ship gate:** **First Paying Customer Verified event fires.** The "First Paying Customer Verified" milestone (workbook 05 §7) is the literal unlock for testimonial #1. The badge IS the testimonial format.
-- **Acceptance test:** Each testimonial = screenshot + named customer + product URL + one-line journey parable. Zero stock photos. Zero anonymized "verified founder" placeholder testimonials — Marco's skepticism filter will catch them.
+- **Acceptance test:** Each testimonial = screenshot + named customer + product URL + one-line journey parable. Zero stock photos. Zero anonymized "verified founder" placeholder testimonials — Alex's skepticism filter will catch them.
 - **Identity guardrail:** Use the `app/src/lib/builder-badge.ts` Verified Builder badge as the testimonial frame — the badge mechanic IS the proof mechanic. Don't reinvent.
 
 ### Swipe 3 — "As seen in" media bar above the fold
@@ -50,7 +50,7 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 - **Acceptance test:** Reads like one human wrote it for one reader. No corporate "we" / "team." No emoji. Signature visible above the © line.
 - **Identity guardrail:** This IS the Reluctant Hero moment in the footer — the place where the AC voice gets the last word. Don't out-source to a copywriter. Maryan writes it himself.
 - **Suggested copy (drop-in):**
-  > I'm Maryan. I built this because I was Marco — a non-engineer who shipped products nobody paid for, and refused to look at the flat Stripe line for almost a year. The Playbook is what I wish someone had handed me. If you take it for a spin, reply to any email and you'll get me, not a support queue. — Maryan
+  > I'm Maryan. I built this because I was Alex — a non-engineer who shipped products nobody paid for, and refused to look at the flat Stripe line for almost a year. The Playbook is what I wish someone had handed me. If you take it for a spin, reply to any email and you'll get me, not a support queue. — Maryan
 
 ### Swipe 5 — Free diagnostic as the front door feeding the $49 core
 
@@ -74,10 +74,10 @@ Each entry has: **Pattern**, **Source**, **Workbook section that owns it**, **Fi
 ### Swipe 7 — Strike-through anchor pricing — REJECTED with Phase 2 escape hatch
 
 - **Source:** ShipFast (`Was $299. Now $199. 12 spots left.`).
-- **Workbook section:** Workbook 07 §3 Category 4 — **explicitly REJECTED.** Marco is a skeptic; fabricated urgency destroys trust.
-- **Decision:** **Do not ship at launch.** Strike-through is the right move for non-skeptic developer avatars (ShipFast's audience self-validates). It is the wrong move for Marco who buys exactly when he stops smelling marketing.
+- **Workbook section:** Workbook 07 §3 Category 4 — **explicitly REJECTED.** Alex is a skeptic; fabricated urgency destroys trust.
+- **Decision:** **Do not ship at launch.** Strike-through is the right move for non-skeptic developer avatars (ShipFast's audience self-validates). It is the wrong move for Alex who buys exactly when he stops smelling marketing.
 - **Phase 2 escape hatch (re-evaluate after 25 paying customers):** test ONE real-scarcity mechanism — a "Founding 100" badge that retires the cohort name at customer #100, with no price increase, no false countdown. Disclosure: "After customer 100, the Founding badge stops being available. The price stays $49." That's real, not fabricated. Run it as an A/B against the current page; sunset whichever loses.
-- **Acceptance test for Phase 2:** Any urgency block must pass the "would Marco screenshot this with a 'gross' caption?" filter. If yes, kill it.
+- **Acceptance test for Phase 2:** Any urgency block must pass the "would Alex screenshot this with a 'gross' caption?" filter. If yes, kill it.
 
 ---
 

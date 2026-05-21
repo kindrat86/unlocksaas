@@ -56,10 +56,10 @@ Rules: one decision. Two buttons. No third option. (Same rule as the upstream OT
 
 ## What the Downsell Must NOT Be
 
-The Brunson rule is "one offer per page" — the downsell respects that, but skeptic-Marco's filter is sharper than the rule. Specifically:
+The Brunson rule is "one offer per page" — the downsell respects that, but skeptic-Alex's filter is sharper than the rule. Specifically:
 
 1. **NO fake urgency on the downsell.** "This offer disappears in 10 minutes" is exactly the energy our polarity-AGAINST list calls out. Workbook 07 §3 Category 4 stays REJECTED on the downsell too.
-2. **NO progress bars that say "you're 90% there!"** Marco knows the math. Lying about it shreds the brand.
+2. **NO progress bars that say "you're 90% there!"** Alex knows the math. Lying about it shreds the brand.
 3. **NO subscription cross-sell on the $19 path.** $19 is one-time. If a $19 buyer wants the $49/mo later, they click the upgrade door in the Starter dashboard. The $19 purchase does not get auto-converted, does not get a free-trial-with-card-on-file, does not get any other dark pattern.
 4. **NO third decision on the downsell page.** Two buttons. The moment we add a "Maybe later" toggle, we're admitting we don't trust the offer.
 

@@ -359,7 +359,7 @@ function StarterSalesPageInner() {
                   What did they say when you asked what they were stuck on?
                 </p>
                 <p className="text-muted-foreground">
-                  <span className="font-mono text-foreground">You:</span> Marco.
+                  <span className="font-mono text-foreground">You:</span> Alex.
                   He shipped a Lovable app in March. He has two paying users
                   out of twelve and he keeps refreshing Stripe.
                 </p>
@@ -492,9 +492,9 @@ function StarterSalesPageInner() {
         </section>
 
         {/* Logical Math – the Brunson "comparison" mini-close (workbook 07
-            §3 Category 2 slide 38). Marco is a skeptic. Honest math beats
-            adjectives. Three lines, three anchors, all defensible to a
-            cynic with a calculator. */}
+            §3 Category 2 slide 38). The avatar is a skeptic. Honest math
+            beats adjectives. Three lines, three anchors, all defensible to
+            a cynic with a calculator. */}
         <section className="mb-10">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
             The math, in the open

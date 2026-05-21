@@ -91,7 +91,7 @@ export function ChallengeForm({ source }: { source: string }) {
           maxLength={60}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          placeholder="Marco"
+          placeholder="Your name"
           disabled={submitting}
         />
       </div>

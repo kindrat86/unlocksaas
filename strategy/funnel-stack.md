@@ -126,7 +126,7 @@ LAYER 0  ATTENTION (cold)                     active: launch
 | Bridge OUT (failure) | Day-60 guarantee evaluation → automatic refund eligibility check → portal-driven refund |
 | Activation trigger | Launch day. SHIPPED. |
 | Attribution stamp | `project_id`, `tier`, `milestone_event`, `verified_conversion_id` |
-| Brunson rule | "Framework into the engine, not onto the user." Marco answers human questions; engine assembles the Brunson artifact. |
+| Brunson rule | "Framework into the engine, not onto the user." Alex answers human questions; engine assembles the Brunson artifact. |
 
 ### Layer 6 — ASCENSION (post-PMF stack)
 
@@ -258,7 +258,7 @@ Every previously locked decision survives this stack design intact. Checked one 
 | One Funnel Away | DotCom Secrets Secret #26 | Only the anchor funnel (Layers 1–3 + 5) is active at launch. Layers 4, 6, 7, 8 are evidence-gated. |
 | Lean Ladder | workbook 02 discipline_note | Free / $1 / $49 ladder unchanged. Layer 6 ascension prices are post-PMF, not launch. |
 | No Fake Scarcity | workbook 07 §3 + workbook 06 polarity | Stack uses evidence gates, not countdown timers. Layer 8 exit-intent voice is honest ("Mind telling me what made you stop?"), not coercive. |
-| Framework Into Engine | design_principles | Stack attribution lives in `lib/stack-attribution.ts`, NOT as user-facing UI. Marco never sees a "you are in layer 2" indicator. |
+| Framework Into Engine | design_principles | Stack attribution lives in `lib/stack-attribution.ts`, NOT as user-facing UI. Alex never sees a "you are in layer 2" indicator. |
 | Verified Builders identity | expert_secrets.movement.identity_label | `usaas_ab_identity` cookie preserved across every layer transition. Attribution stamps carry it through to the affiliate payout. |
 | Reluctant Hero voice | workbook 01 §6 | Every layer's copy passes the voice check. Layer 8's exit-intent modal text is the canonical example. |
 | Honest claims | workbook 01 §2 values_caveat | No fabricated metrics in this doc. ROI calculator inputs match workbook 10 §2. |

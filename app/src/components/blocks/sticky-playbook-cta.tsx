@@ -19,7 +19,7 @@
  * the footer so it does not double-stack with the page's bottom Final
  * CTA. Honest framing only – no countdown timer, no "X seats left"
  * counter. Per locked strategy (workbook 01 §2 honest-value rule and
- * workbook 07 §3 Category-4 rejection for the Marco avatar): manufactured
+ * workbook 07 §3 Category-4 rejection for the indie-founder avatar): manufactured
  * scarcity destroys trust faster than it sells.
  *
  * Visual treatment: restrained shadcn tokens, same aesthetic family as

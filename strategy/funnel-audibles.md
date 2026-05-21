@@ -54,7 +54,7 @@ Every step of the UnlockSaaS funnel, with the canonical event from `events.ts`, 
 | 20 | Active sub → Month 3 invoice paid | `invoice_payment_succeeded` (3rd) | 70%+ | 75% | < 55% |
 
 **The two red-lines that decide whether UnlockSaaS lives or dies:**
-- **Row 14** (Step 5 outreach completion) — if Marcos do not press send 20 times, the guarantee mechanism fires refunds at scale and the business model collapses.
+- **Row 14** (Step 5 outreach completion) — if Alexes do not press send 20 times, the guarantee mechanism fires refunds at scale and the business model collapses.
 - **Row 16** (Verified > refund at day 60) — the founding promise. If this inverts, the offer is wrong, not the funnel.
 
 Everything else is optimization. These two are existential.
@@ -104,7 +104,7 @@ For each step, the top three leak hypotheses, the audible options ranked by leve
 
 **Leak hypotheses:**
 1. The per-label handoff banner is too soft; the CTA is the same regardless of label.
-2. "$1" is being read as "trial" not "complete deliverable"; Marco fears auto-renewal.
+2. "$1" is being read as "trial" not "complete deliverable"; Alex fears auto-renewal.
 3. The result page reads as the END of the funnel rather than the MIDDLE.
 
 **Audibles:**
@@ -284,12 +284,12 @@ The Friday Audible Call reads exactly one screen: `select * from public.funnel_a
 The following look like audibles but aren't. Resist them.
 
 1. **Rebrand on launch dip.** The first dip after launch is not a positioning problem; it's a traffic problem. Audible the channel mix, not the name.
-2. **Lower the price.** Marco is a skeptic. Price reduction confirms his "this isn't real" suspicion. Lower price ≠ higher conversion in this avatar (`state.json` `values_caveat`).
+2. **Lower the price.** Alex is a skeptic. Price reduction confirms his "this isn't real" suspicion. Lower price ≠ higher conversion in this avatar (`state.json` `values_caveat`).
 3. **Add fake scarcity.** Workbook 07 explicitly REJECTED scarcity for this avatar. Reintroducing it is not an audible; it's a strategy violation.
-4. **Add testimonials before you have customers.** A staged or borrowed testimonial breaks the Reluctant Hero identity and trips Marco's "another guru" filter.
-5. **A/B test the avatar.** Marco is locked. Testing "Marco vs Bob the developer" is not an audible; it's reopening Q1 of the Secret Formula.
+4. **Add testimonials before you have customers.** A staged or borrowed testimonial breaks the Reluctant Hero identity and trips Alex's "another guru" filter.
+5. **A/B test the avatar.** Alex is locked. Testing "Alex vs Bob the developer" is not an audible; it's reopening Q1 of the Secret Formula.
 6. **A/B test the guarantee mechanic.** The 60-day-or-refund is the spine of the offer. Testing it is reopening the offer.
-7. **Polish the engine pushback to be polite.** Marco's avoidance disease is treated by friction. Removing friction in the name of "user-friendliness" treats the symptom and worsens the disease.
+7. **Polish the engine pushback to be polite.** Alex's avoidance disease is treated by friction. Removing friction in the name of "user-friendliness" treats the symptom and worsens the disease.
 
 When tempted by any of the above: re-read the workbook section that locked the decision before changing anything. If the change is real, it is a Revision, not an Audible. Document accordingly.
 
@@ -416,7 +416,7 @@ Per `project_unlocksaas_strategy.md`, the following decisions are locked. Changi
 
 | Locked decision | Source | What "audible" looks like that would actually be Revision |
 |---|---|---|
-| Avatar: Marco | workbook 01 Q1 | Targeting "developer founders" or "agency owners" |
+| Avatar: Alex | workbook 01 Q1 | Targeting "developer founders" or "agency owners" |
 | Price: $49/mo Core, $1 Starter | workbook 01 §2 + 03 | Lowering / raising / annualizing |
 | Guarantee: 60 days, $98 cap, Stripe-verified | workbook 01 §2 | Extending duration; changing remedy; manual verification |
 | Identity: Reluctant Hero | workbook 01 §6 | Switching to Leader or Adventurer voice |

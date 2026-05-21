@@ -7,8 +7,8 @@
  *   only allow iframes (Notion, Substack inline embeds, many Webflow CMS
  *   fields, Ghost), the founder can paste:
  *
- *     <iframe src="https://unlocksaas.com/builder/marco/embed.html"
- *             title="Marco – Verified Builder badge"
+ *     <iframe src="https://unlocksaas.com/builder/alex/embed.html"
+ *             title="Alex – Verified Builder badge"
  *             width="360" height="120"
  *             frameborder="0" loading="lazy"
  *             referrerpolicy="no-referrer-when-downgrade"

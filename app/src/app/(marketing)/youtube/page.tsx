@@ -7,13 +7,13 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import {
-  MARCOS_DIARY_CHANNEL,
+  FOUNDERS_DIARY_CHANNEL,
   hubDiagnosticUrl,
   liveEpisodes,
 } from "@/lib/youtube";
 
 /**
- * Marco's Diary — public hub for the faceless YouTube channel.
+ * The Founder's Diary — public hub for the faceless YouTube channel.
  *
  * Channel #5, additive to the locked launch-minimum-four (X + IH + r/SaaS +
  * r/microsaas). See strategy/youtube-faceless-channel.md for the full spec.
@@ -32,12 +32,12 @@ import {
 const HUB_URL = "https://unlocksaas.com/youtube";
 
 export const metadata: Metadata = {
-  title: "Marco's Diary on YouTube — $0 to first paying customer, in public",
+  title: "The Founder's Diary on YouTube – $0 to first paying customer, in public",
   description:
     "The faceless YouTube channel where Maryan logs the work of going from $0 to his first verified paying customer. Two short episodes a week. No talking-head, no fake urgency.",
   alternates: pageAlternates("/youtube"),
   openGraph: {
-    title: "Marco's Diary — $0 to first paying customer, in public",
+    title: "The Founder's Diary – $0 to first paying customer, in public",
     description:
       "Two short episodes a week. No talking-head, no fake urgency. Just the work, screen-recorded.",
     url: "/youtube",
@@ -56,18 +56,18 @@ export default function YoutubeHubPage() {
       <BreadcrumbJsonLd
         trail={[
           { name: "Home", url: "https://unlocksaas.com/" },
-          { name: "Marco's Diary on YouTube", url: HUB_URL },
+          { name: "The Founder's Diary on YouTube", url: HUB_URL },
         ]}
       />
       <AbExposureBeacon />
 
       <div className="max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
-          {MARCOS_DIARY_CHANNEL.name} · YouTube series
+          {FOUNDERS_DIARY_CHANNEL.name} · YouTube series
         </p>
 
         <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-6">
-          {MARCOS_DIARY_CHANNEL.tagline}
+          {FOUNDERS_DIARY_CHANNEL.tagline}
         </h1>
 
         <p className="text-base text-muted-foreground leading-relaxed mb-6">
@@ -125,12 +125,12 @@ export default function YoutubeHubPage() {
                 dry-run once end-to-end, and the channel art is live on
                 YouTube. The 30-episode arc is locked in
                 <code className="mx-1 px-1 py-0.5 rounded bg-background text-foreground text-xs">
-                  strategy/youtube-marcos-diary-backlog.md
+                  strategy/youtube-founders-diary-backlog.md
                 </code>
                 .
               </p>
               <p>
-                Cadence on launch: {MARCOS_DIARY_CHANNEL.cadence}, two short
+                Cadence on launch: {FOUNDERS_DIARY_CHANNEL.cadence}, two short
                 episodes a week. If you want the first one in your inbox the
                 day it drops, take the diagnostic above – the same email
                 list ships the launch ping.
@@ -186,9 +186,9 @@ export default function YoutubeHubPage() {
             playbook and customer outreach. So this channel is scripted,
             voiced, and edited like a documentary instead. The voice is
             mine. The script is mine. The B-roll is generated. The cuts are
-            tight. The series ends when Marco gets his first paying customer
-            – which, if you are reading this before episode 30 ships, has
-            not happened yet.
+            tight. The series ends when the founder gets his first paying
+            customer – which, if you are reading this before episode 30 ships,
+            has not happened yet.
           </p>
           <p className="text-sm text-muted-foreground leading-relaxed">
             If that sounds like a series you would actually watch, the door

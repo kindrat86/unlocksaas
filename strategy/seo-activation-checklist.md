@@ -118,7 +118,7 @@ The code at [app/src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) `buildSame
 
 ### 2.2 Indie Hackers (10 min) – audience-native anchor
 
-**Why second:** Marco-the-avatar lives on Indie Hackers (dream-customer location per workbook 08). IH is the highest-quality referral source the entity can claim.
+**Why second:** Alex-the-avatar lives on Indie Hackers (dream-customer location per workbook 08). IH is the highest-quality referral source the entity can claim.
 
 **Steps:**
 

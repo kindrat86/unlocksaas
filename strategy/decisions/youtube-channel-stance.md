@@ -28,7 +28,7 @@ It is the same pattern as `strategy/decisions/seven-phases-coverage.md`, which l
 
 1. **Production cost vs. ROI pre-PMF.** YouTube production is the most expensive content-channel-per-minute in the indie SaaS toolbox. A single 10-minute tutorial requires 4–6 hours of recording + editing + thumbnail design even on a phone-camera workflow. Pre-first-customer, that founder-time is misallocated — every hour belongs to the Step 5 outreach loop the product itself encodes.
 2. **Algorithm cold-start economics.** YouTube's algorithm rewards channels that publish weekly for 6–12 months before it surfaces them to non-subscribers. The "channel trailer + 3 tutorials and wait" approach (workbook 09 §6 row) is correct guidance — but the wait is real, and the audience served by that wait is *evergreen-search* traffic, which has the lowest conversion temperature of any channel UnlockSaaS could pursue.
-3. **Marco's avatar congregation map does not center YouTube as host's primary medium.** Marco watches YouTube as a learner, not as a discoverer-of-tools. The discovery path for Marco is X → IH long-form → newsletter → podcast → tool. YouTube enters as a *deepening* layer for tools he already heard about elsewhere. A host YouTube channel optimizes for the wrong half of his journey.
+3. **Alex's avatar congregation map does not center YouTube as host's primary medium.** Alex watches YouTube as a learner, not as a discoverer-of-tools. The discovery path for Alex is X → IH long-form → newsletter → podcast → tool. YouTube enters as a *deepening* layer for tools he already heard about elsewhere. A host YouTube channel optimizes for the wrong half of his journey.
 4. **One-funnel-away discipline (DCS Secret #26).** Sprint 1–3 ship the $1 Starter funnel + diagnostic + $49 long-form sales page. Sprint 4+ ships the Founding-Cohort PLF + downsell. A host YouTube channel is a fourth funnel surface — its content engine, thumbnail engine, comment-moderation engine — and it would compete with build attention for the funnels that are already in market.
 
 ### Part 2 — Guest channel: gated active
@@ -84,7 +84,7 @@ The guest gate flips from "first verified-customer required" to "warm-up-reps su
 2. **A mutual contact warm-introduces.** A warm intro from someone the host trusts bypasses the verification gate the host would otherwise apply.
 3. **A specific recorded asset (engine pushback transcript, founder-conversation parable, or workbook excerpt) becomes the actual subject of the episode**, not the founder's first-customer claim. If the content is the artifact rather than the founder's track record, the gate moves.
 
-For condition 3 specifically: the Marc Lou pitch shape in `strategy/youtube-outreach.md` #5 already operates this way — it's a *material contribution* pitch (the Marco dossier as raw material for a tutorial Marc records solo) rather than a guest-appearance pitch. That pitch is sendable pre-first-customer because the content is the thing being offered, not the founder's authority.
+For condition 3 specifically: the Marc Lou pitch shape in `strategy/youtube-outreach.md` #5 already operates this way — it's a *material contribution* pitch (the Alex dossier as raw material for a tutorial Marc records solo) rather than a guest-appearance pitch. That pitch is sendable pre-first-customer because the content is the thing being offered, not the founder's authority.
 
 ---
 

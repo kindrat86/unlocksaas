@@ -18,7 +18,7 @@ The first funnel to ship is the **$1 Starter Unboxing Funnel**. The other two wa
 The reasons are locked in workbook 02, Section 6. Repeated here so the build crew (you, your playbook, or Claude Code) cannot miss them:
 
 1. The $1 Starter is the cheapest, fastest test of the actual offer copy.
-2. It identifies real buyers, the smallest possible Marco-Meter.
+2. It identifies real buyers, the smallest possible Alex-Meter.
 3. It pre-qualifies the $49 with paying customers, not signups.
 4. The Free Diagnostic is downstream-cheap (build second).
 5. The $49 Presentation funnel reuses 90% of the $1 funnel's copy at longer form (build last).
@@ -86,7 +86,7 @@ The engine asks five questions, max. NOT a form, a guided conversation:
 
 The engine validates each answer. Vague input gets pushed back ("'Founders' is a category, not a person. Try again with a name and a situation."). Specific input ascends.
 
-**Output:** Marco's dream-customer one-paragraph profile, in his voice, plus a list of three to five congregations.
+**Output:** Alex's dream-customer one-paragraph profile, in his voice, plus a list of three to five congregations.
 
 **Step 2: Build the Offer.**
 
@@ -99,7 +99,7 @@ Four questions, max:
 
 The engine assembles: offer headline + stack outline + guarantee + 10x defensibility check.
 
-**Output:** Marco's irresistible offer in one paragraph plus a stack table.
+**Output:** Alex's irresistible offer in one paragraph plus a stack table.
 
 After Step 2 completes on the $1 tier, the engine surfaces: "You are done with the Starter. Your WHO and WHAT are finished. If you want the rest of the Playbook, here is the $49 link."
 
@@ -294,7 +294,7 @@ This is the load-bearing pair of in-product steps. Failure here = guarantee refu
 
 ### Step 5: Generate Outreach Assets + Target List
 
-Engine output, per Marco's dream customer:
+Engine output, per Alex's dream customer:
 
 | Asset | Engine produces |
 |---|---|
@@ -308,8 +308,8 @@ Engine output, per Marco's dream customer:
 
 Two channels:
 
-1. **Cold email.** Engine sends from Marco's connected inbox. Tracks opens, replies, conversions.
-2. **Public platforms (Indie Hackers, r/SaaS, X, Lovable Discord, etc.).** Engine generates the post. Marco posts it from his own account. Marco pastes the public link back into the tool. Tool fetches the link, verifies it is live and authored by him, logs it.
+1. **Cold email.** Engine sends from Alex's connected inbox. Tracks opens, replies, conversions.
+2. **Public platforms (Indie Hackers, r/SaaS, X, Lovable Discord, etc.).** Engine generates the post. Alex posts it from his own account. Alex pastes the public link back into the tool. Tool fetches the link, verifies it is live and authored by him, logs it.
 
 Why the manual loop on public platforms: auto-posting violates platform ToS and gets accounts banned. The guarantee needs TRACK, not SEND. Generating + verifying-the-link clears the bar without the ban risk.
 
@@ -319,7 +319,7 @@ Why the manual loop on public platforms: auto-posting violates platform ToS and 
 
 ## Section 7: Step 7 Build Spec — Convert and Verify
 
-Stripe webhook listens for the first new charge on Marco's connected Stripe account that postdates his onboarding date.
+Stripe webhook listens for the first new charge on Alex's connected Stripe account that postdates his onboarding date.
 
 When detected:
 
@@ -389,7 +389,7 @@ When you run the `brunson-funnel-hacker` skill on a competitor, drop results her
 | (ClickFunnels trial) | | | | | | | |
 | (Micro-SaaS your audience pays for) | | | | | | | |
 
-Suggested targets to hack post-launch: Lovable's own funnel (most directly modelable for Marco), ClickFunnels' free trial flow, one Indie Hackers darling charging $29 to $99 a month, one AI-native SaaS that converted from your circle.
+Suggested targets to hack post-launch: Lovable's own funnel (most directly modelable for Alex), ClickFunnels' free trial flow, one Indie Hackers darling charging $29 to $99 a month, one AI-native SaaS that converted from your circle.
 
 ---
 

@@ -52,7 +52,7 @@
 
 // ── Dream 100 — seven-category template ────────────────────────────────────
 // Brunson's Dream 100 (Traffic Secrets §1): the canonical seven gates where
-// the founder's dream customer already congregates. Marco's specific 100
+// the founder's dream customer already congregates. The avatar's specific 100
 // entries live in the private dream-100.csv; this is the framework skeleton
 // any indie founder can apply to their own niche.
 

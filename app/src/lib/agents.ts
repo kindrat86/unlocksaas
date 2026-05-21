@@ -10,7 +10,7 @@
  *   - outreach_drafter Given a logged target (channel + name + notes), draft
  *                      a Reluctant-Hero message *for that specific target*.
  *                      Tier: $49 Core (Step 6 is already gated).
- *   - page_rewriter    Given Marco's current landing-page text, rewrite
+ *   - page_rewriter    Given the founder's current landing-page text, rewrite
  *                      headlines + hero + OTO using the locked WHO/WHAT/VOICE.
  *                      Tier: $49 Core (Step 4 is already gated).
  *
@@ -21,7 +21,7 @@
  * it.
  *
  * Voice: Reluctant Hero. The agents do not write like a marketing tool; they
- * write like Marco's blunt friend who has already shipped.
+ * write like the founder's blunt friend who has already shipped.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { generateText } from "ai";

@@ -8,7 +8,7 @@
 **Scope of this mine:**
 - 6 public founder conversations on Indie Hackers + Hacker News
 - 30+ verbatim quotes from named users
-- Filtered for: solo / pre-revenue / bootstrapped / subscription-resistant founders (Marco's avatar)
+- Filtered for: solo / pre-revenue / bootstrapped / subscription-resistant founders (Alex's avatar)
 - **Not in scope:** Maryan's private 10-conversation founder set — those need a separate Slack/Gmail/Granola re-mine before launch (see Open Item 1)
 
 ---
@@ -67,7 +67,7 @@ Pre-revenue founders run on fumes. This is the cleanest "afford" objection — n
 
 ## Category 3 — Burned by Gurus ("costly mistake")
 
-Marco's skepticism toward coaches, courses, templates, and "frameworks." This is the most dangerous category for UnlockSaaS because the product LOOKS like a Brunson-framework-in-software — and these founders are already inoculated against that pattern.
+Alex's skepticism toward coaches, courses, templates, and "frameworks." This is the most dangerous category for UnlockSaaS because the product LOOKS like a Brunson-framework-in-software — and these founders are already inoculated against that pattern.
 
 **Verbatim quotes:**
 
@@ -118,7 +118,7 @@ The founder who already tried the obvious solutions, got nothing, and is now ske
 
 ## Category 5 — "I Can Build It Myself" (DIY pride)
 
-The technical/semi-technical founder who reflexively reaches for "I'll write a script." Lethal for UnlockSaaS because Marco is *non-engineer* — but his peers who comment on his work often aren't.
+The technical/semi-technical founder who reflexively reaches for "I'll write a script." Lethal for UnlockSaaS because Alex is *non-engineer* — but his peers who comment on his work often aren't.
 
 **Verbatim quotes:**
 
@@ -165,7 +165,7 @@ Even founders WHO pay for SaaS hate when the price climbs. Important because it 
 
 ## Category 7 — Praise-Without-Payment (Maryan's own pattern)
 
-Already in state.json line 101: *"Praise without payment. Across 10+ conversations, founders said the product was good but did not subscribe. 'They did not vote with dollars.'"* This is Marco's diagnostic signature. Public quotes that echo it:
+Already in state.json line 101: *"Praise without payment. Across 10+ conversations, founders said the product was good but did not subscribe. 'They did not vote with dollars.'"* This is Alex's diagnostic signature. Public quotes that echo it:
 
 | Source | User | Quote |
 |---|---|---|
@@ -261,7 +261,7 @@ Second pass after the round 1 source set was reviewed. New threads surfaced via 
 
 ### New Category Surfaced
 
-**Category 8 — "Built Beside, Not Inside" (workflow-replacement objection):** Founders who shipped a tool that adds a step rather than removing one. Marco's exact pattern: he built an AI tool, but it sits *next to* the founder's existing workflow (Notion, Stripe, Indie Hackers feed) instead of replacing a step in it. UnlockSaaS itself faces this objection — the Playbook must be the *one* place the founder does the post-launch work, not "another tab open."
+**Category 8 — "Built Beside, Not Inside" (workflow-replacement objection):** Founders who shipped a tool that adds a step rather than removing one. Alex's exact pattern: he built an AI tool, but it sits *next to* the founder's existing workflow (Notion, Stripe, Indie Hackers feed) instead of replacing a step in it. UnlockSaaS itself faces this objection — the Playbook must be the *one* place the founder does the post-launch work, not "another tab open."
 
 **Brunson classification:** New External Belief #7 — "Even good tools fail because they sit beside my real work." Engine rewrite: *"The Playbook isn't a place you visit. It's the place outreach is sent from and the place Stripe pings when your first customer pays. If those two events don't live inside it, kill the tool. Both do."*
 
@@ -309,4 +309,4 @@ Each ≤25 words. Voice: workbook 01 §6 Beat 5 — polarity AGAINST the buyer's
 
 ## Mine Status Update
 
-Total quote count after round 2: **52 verbatim quotes** (30 from round 1 + 22 new in round 2) across **8 categories** (the 7 originals + one new: "Built Beside, Not Inside"). The new category is meaningful — it names Marco's own diagnostic blindspot in his peers' words (`Astra Wysocka`: *"a second tool that sits beside the thing people already use"*) and gives the sales page a 7th FAQ that pre-empts the "this'll just be another tab" objection. Still gated by private MCP access: Maryan's Slack DMs, Gmail threads, and Granola/Fireflies recordings from his 10 founder conversations — the public mine confirms patterns but does not contain the niche-specific dollar language those private conversations almost certainly carry (launch-critical, per Open Item 1). **Highest-leverage sales-page change from round 2:** replace the current $49 FAQ #4 (cash constraint) with FAQ Q3 above ("praise without payment"). The Daniil Khanin quote — *"10,947 signups, 90 paid, nine years"* — is the single strongest dollar-objection mirror in the entire mine because it is specific, public, dated, and ends with *"nine years of proof."* That line lands harder than any rewrite the engine could synthesize.
+Total quote count after round 2: **52 verbatim quotes** (30 from round 1 + 22 new in round 2) across **8 categories** (the 7 originals + one new: "Built Beside, Not Inside"). The new category is meaningful — it names Alex's own diagnostic blindspot in his peers' words (`Astra Wysocka`: *"a second tool that sits beside the thing people already use"*) and gives the sales page a 7th FAQ that pre-empts the "this'll just be another tab" objection. Still gated by private MCP access: Maryan's Slack DMs, Gmail threads, and Granola/Fireflies recordings from his 10 founder conversations — the public mine confirms patterns but does not contain the niche-specific dollar language those private conversations almost certainly carry (launch-critical, per Open Item 1). **Highest-leverage sales-page change from round 2:** replace the current $49 FAQ #4 (cash constraint) with FAQ Q3 above ("praise without payment"). The Daniil Khanin quote — *"10,947 signups, 90 paid, nine years"* — is the single strongest dollar-objection mirror in the entire mine because it is specific, public, dated, and ends with *"nine years of proof."* That line lands harder than any rewrite the engine could synthesize.

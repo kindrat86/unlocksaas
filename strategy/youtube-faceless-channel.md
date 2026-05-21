@@ -1,4 +1,4 @@
-# YouTube (faceless) — Marco's Diary
+# YouTube (faceless) — Alex's Diary
 
 **Status:** LOCKED 2026-05-21. Channel #5, additive to the four locked launch-minimum channels (X + IH + r/SaaS + r/microsaas).
 **Canonical doc:** this file. State.json key: `traffic_secrets.fill_funnel.youtube_channel`.
@@ -8,7 +8,7 @@
 
 ## §1 Why this channel exists (the Isenberg gap)
 
-Workbook 09 §1 locked four launch-minimum channels (X build-in-public, Indie Hackers, r/SaaS, r/microsaas) and explicitly skipped **YouTube (host)** under the One Funnel Away discipline. That decision is correct for *founder-on-camera* YouTube — Marco (Maryan-as-Marco) is non-engineer, time-constrained, and on-camera production is not solo-founder scalable.
+Workbook 09 §1 locked four launch-minimum channels (X build-in-public, Indie Hackers, r/SaaS, r/microsaas) and explicitly skipped **YouTube (host)** under the One Funnel Away discipline. That decision is correct for *founder-on-camera* YouTube — Alex (Maryan-as-Alex) is non-engineer, time-constrained, and on-camera production is not solo-founder scalable.
 
 **Faceless YouTube changes the constraint.** A faceless channel is:
 - Scriptable (the entire episode is a typed script in this repo).
@@ -22,23 +22,23 @@ This unlocks the 5th channel without breaking the solo-founder constraint that g
 
 - Launch-minimum-four are UNCHANGED. X, IH, r/SaaS, r/microsaas remain the primary attention surfaces.
 - YouTube is **additive** (same pattern as the Facebook channel spec at strategy/facebook-channel.md — additive, not replacement).
-- One Funnel Away discipline preserved: anchor funnel (free diagnostic → $1 Starter → $49/mo Core) is the only conversion path. YouTube descriptions point at `/youtube` (hub) or `/diagnostic?utm_source=youtube&utm_medium=video&utm_campaign=marcos-diary&utm_content=ep<N>`.
+- One Funnel Away discipline preserved: anchor funnel (free diagnostic → $1 Starter → $49/mo Core) is the only conversion path. YouTube descriptions point at `/youtube` (hub) or `/diagnostic?utm_source=youtube&utm_medium=video&utm_campaign=founders-diary&utm_content=ep<N>`.
 - Stack layer: **Layer 0 ATTENTION** (see strategy/funnel-stack.md). YouTube does not bypass any later layer.
 
 ## §3 Channel positioning
 
-- **Channel name:** Marco's Diary
+- **Channel name:** Alex's Diary
 - **Channel tagline:** "$0 to first paying customer, in public, in real time."
-- **Voice/POV:** First-person diary, present tense, Marco's voice. Reluctant Hero archetype (workbook 02 Section 3) preserved: "I shipped, the line is flat, I am terrified, I am doing the work anyway."
+- **Voice/POV:** First-person diary, present tense, Alex's voice. Reluctant Hero archetype (workbook 02 Section 3) preserved: "I shipped, the line is flat, I am terrified, I am doing the work anyway."
 - **Production format:** Faceless. Voice-over over screen-recordings, kinetic-typography, AI-generated B-roll, real Stripe screenshots when applicable.
 - **Episode length target:** 4–7 minutes. Long enough for one Brunson beat (Hook / Story / Offer) per episode; short enough to ship 2–3/week solo.
 - **Cadence:** 2 episodes/week. Tuesday + Friday. Cap at 3/week if backlog allows.
-- **Series arc:** 30 numbered episodes (`E01`–`E30`) following Marco from $0 to his first verified paying customer. After E30, the channel renews with the next builder's diary (Verified Builder #2's arc, with permission).
+- **Series arc:** 30 numbered episodes (`E01`–`E30`) following Alex from $0 to his first verified paying customer. After E30, the channel renews with the next builder's diary (Verified Builder #2's arc, with permission).
 
 ## §4 What every episode MUST contain
 
-1. **Cold-open hook** (first 3 seconds): a Marco-verbatim line of pain or a Stripe screenshot moment. Pulled from strategy/dollar-objections.md or the founder-VSL script (strategy/founder-vsl-script.md). NEVER a generic SaaS opener.
-2. **Numbered episode badge** (top-right): `E<N> · MARCO'S DIARY`.
+1. **Cold-open hook** (first 3 seconds): a Alex-verbatim line of pain or a Stripe screenshot moment. Pulled from strategy/dollar-objections.md or the founder-VSL script (strategy/founder-vsl-script.md). NEVER a generic SaaS opener.
+2. **Numbered episode badge** (top-right): `E<N> · ALEX'S DIARY`.
 3. **The week's actual artifact** (not theory): one offer rewrite, one outreach DM sent, one objection handled, one Stripe webhook event. The Reluctant Hero is *doing the work on camera*, not teaching.
 4. **One Brunson beat** per episode, called out by name in the script comment:
    - Hook (Expert Secrets §2)
@@ -61,7 +61,7 @@ See strategy/youtube-production-runbook.md.
 - **UTM convention** (locked):
   - `utm_source=youtube`
   - `utm_medium=video` (description CTAs) | `video-pinned-comment` | `endscreen` | `video-card`
-  - `utm_campaign=marcos-diary`
+  - `utm_campaign=founders-diary`
   - `utm_content=ep<NN>` (zero-padded episode number) | `hub`
 - **PostHog event:** auto-captured via existing PostHogPageView component; episode attribution falls into the `attention` StackLayer (0).
 - **Footer link:** /youtube is added to the SignatureFooter quiet link row alongside /press, /faq, /glossary.
@@ -98,5 +98,5 @@ See strategy/youtube-production-runbook.md.
 - Hook bank: strategy/workbooks/01-*.md §5
 - Funnel stack layer 0 (ATTENTION): strategy/funnel-stack.md
 - Isenberg overlay memory: ~/.claude/projects/-Users-sipi-unlocksaas/memory/project_unlocksaas_isenberg_playbook.md
-- Episode backlog: strategy/youtube-marcos-diary-backlog.md
+- Episode backlog: strategy/youtube-founders-diary-backlog.md
 - Production runbook: strategy/youtube-production-runbook.md

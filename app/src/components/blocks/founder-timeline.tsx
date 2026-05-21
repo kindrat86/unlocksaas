@@ -3,7 +3,7 @@
  *
  * The Reluctant Hero arc (workbook 06 §2 Hero's Two Journeys) made visual.
  * External arc on top (events), internal arc beneath (what changed in his
- * head). Marco recognizes himself in the internal column. That recognition
+ * head). The founder recognizes himself in the internal column. That recognition
  * is the conversion event.
  *
  * Voice: workbook 01 §6 Beat 2 (one-line bio expanded), workbook 06 §2.

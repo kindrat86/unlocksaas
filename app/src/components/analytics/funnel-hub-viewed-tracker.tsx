@@ -7,7 +7,7 @@ import { Event } from "@/lib/analytics/events";
 /**
  * Fires Event.FunnelHubViewed once per mount on the Funnel Hub homepage.
  *
- * Why this exists: `funnel_hub_viewed` is the entry event of Marco's Path in
+ * Why this exists: `funnel_hub_viewed` is the entry event of the founder's Path in
  * PostHog (workbook 02 §1 + 04 §7). The constant was defined in events.ts but
  * never wired to a callsite, so the funnel was stuck at 0 entrants. This is
  * the missing fire.

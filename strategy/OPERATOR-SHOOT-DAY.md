@@ -238,7 +238,7 @@ If any video does NOT appear:
   voice REJECTS production polish. The whole brand argument is that the
   founder talks to the camera, not at it. Phone + lavalier mic IS the
   spec. A polished edit would actively hurt cold-traffic conversion for
-  Marco's avatar.
+  Alex's avatar.
 - **Captions.** Mux auto-generates captions from the audio after upload
   (Settings → Captions → Auto-generate). Enable it once after the first
   asset is processed; the captions apply to all future assets in the

@@ -24,7 +24,7 @@ What I see in front of me is **rare**. Most founders who quote my books have rea
 
 | # | Secret | Score | Verdict |
 |---|---|---|---|
-| 1 | The Secret Formula (Who/Where/Bait/Result) | **92** | Q1 is the strongest I've seen in months. Marco is YOU. "Your mess is your message" at max strength. Q4 result is one sentence and falsifiable. Q2 is the only weak spot — Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up. |
+| 1 | The Secret Formula (Who/Where/Bait/Result) | **92** | Q1 is the strongest I've seen in months. Alex is YOU. "Your mess is your message" at max strength. Q4 result is one sentence and falsifiable. Q2 is the only weak spot — Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up. |
 | 2 | The Value Ladder | **88** | Lean ladder. Free → $1 → $49. You correctly rejected the six-tier staircase. The $1 Starter as buyer-identifier is textbook. Missing: Rung 2 (the next thing for the founder who got their first customer) is "noted, not built" — correct discipline pre-PMF, but the moment you have one verified win, you'll lose them with nowhere to ascend. |
 | 3 | The Attractive Character | **90** | Reluctant Hero locked. Backstory in three lengths. Five named parables. Four owned flaws (no performative humility, well done — I flag that 70% of the time). Polarity FOR/AGAINST with a single enemy sentence on the homepage hero. One deduction: the six-line intro VIDEO is a placeholder. Brunson rule: founder face on the funnel hub = trust multiplier. Ship the video. |
 | 4 | Hook, Story, Offer | **78** | Hooks: 12 drafted, top 3 chosen, but zero exposure data because nothing is running. Story: Epiphany Bridge complete, but the Case Study beat in Three Secrets is honest-empty ("upgrade to real customer once one exists") — right call on integrity, wrong call on conversion. Offer: $496 / $49 = 10.1x, math defensible, guarantee enforced by code. The offer is the strongest piece of this whole stack. |
@@ -102,7 +102,7 @@ What I see in front of me is **rare**. Most founders who quote my books have rea
 | 12 | The Big Domino | **88** | "Your first paying customer is reachable in 60 days through software, not through more building and not through more traffic." That is a real Big Domino — one belief whose acceptance reorders everything else. On the sales page only as a placeholder. |
 | 13 | The Three Secrets | **85** | Each secret has Story-Strategy-Case-Study tabled. Vehicle / Internal / External clearly distinguished. Sprint 3 ships → 75 in market. |
 | 14 | The Stack & Closes | **80** | 15 stack slides spec'd, 4-category mini-close inventory (risk reversal, logic, emotion — urgency/scarcity REJECTED with reason). The rejection is the right call for a skeptic avatar. |
-| 15 | Trial Closes / Mini Closes | **82** | 12 trial closes inventoried. "Have you ever opened Stripe expecting a charge and found nothing?" is pattern-matching on Marco's exact lived experience. That's how trial closes work when they work. Zero of them deployed in copy. |
+| 15 | Trial Closes / Mini Closes | **82** | 12 trial closes inventoried. "Have you ever opened Stripe expecting a charge and found nothing?" is pattern-matching on Alex's exact lived experience. That's how trial closes work when they work. Zero of them deployed in copy. |
 
 ### Section 4: What's Next
 
@@ -124,7 +124,7 @@ What I see in front of me is **rare**. Most founders who quote my books have rea
 
 | # | Secret | Score | Verdict |
 |---|---|---|---|
-| 1 | Who Is Your Dream Customer | **95** | Same as Secret Formula Q1. Marco IS the founder. Best possible answer. |
+| 1 | Who Is Your Dream Customer | **95** | Same as Secret Formula Q1. Alex IS the founder. Best possible answer. |
 | 2 | The Dream 100 | **65** | List built, 100 entries across 7 categories. **10 influencer slots still empty (rows 31–40).** CSV exported. Zero outreach started. Pre-launch acceptable. Launch-blocker if not filled by day-of. |
 | 3 | Hook/Story/Offer & AC for Traffic | **75** | Hooks 1, 3, 10 mapped to specific traffic-temperature buckets. Cold → Hook #3 (pain mirror). Solution-aware → Hook #10 (contrarian). Product-aware → Hook #7 + guarantee. Correct Eugene Schwartz application. Not deployed in market. |
 | 4 | Work Your Way In / Buy Your Way In | **45** | Workbook says "launch = work-in only." Correct. But "work your way in" requires actual reps. Zero published value-first comments on r/SaaS or Indie Hackers. Cadence not started. |

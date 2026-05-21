@@ -35,7 +35,7 @@ SURFACE A — ORGANIC SEARCH (long-tail + brand)
   /starter           (solution-aware front-end purchase)
 
 SURFACE B — AEO / GEO (citation by AI answer engines)
-  ↓ surfaces UnlockSaaS as a cited recommendation when Marco asks
+  ↓ surfaces UnlockSaaS as a cited recommendation when Alex asks
   ChatGPT / Claude / Perplexity / Gemini / Google AI Overviews
   "I shipped a SaaS and have no customers. What do I do?"
 
@@ -66,7 +66,7 @@ Four query classes, each mapped to the landing page that already converts the vi
 |---|---|---|---|---|
 | **Brand** | `unlocksaas`, `unlocksaas.com`, `unlock saas`, `the playbook unlocksaas`, `verified builders unlocksaas` | `/` | ✓ | Brand defense; rank #1 on own name from launch day; pre-empts any future imposter or comparison-site arbitrage. |
 | **Pain-mirror long-tail** | `my saas has no customers`, `shipped product nobody buys`, `flat stripe line indie hacker`, `lovable app no users`, `built a saas with claude no revenue`, `non-engineer founder no customers`, `vibe coded app no buyers` | `/diagnostic` | ✓ | Hook #3 (pain mirror) is already the H1. SEO meta title/description aligned. The form is the conversion event. |
-| **Problem-aware cold** | `how to get first saas customer`, `pre-revenue saas what to do`, `indie hacker post launch advice`, `first paying customer 60 days`, `do customer research after launch` | `/parables` | ✓ | Reverse squeeze — value first, opt-in at the bottom. Five parables read like Marco's own story. Long-form, indexable, no email gate at the top. |
+| **Problem-aware cold** | `how to get first saas customer`, `pre-revenue saas what to do`, `indie hacker post launch advice`, `first paying customer 60 days`, `do customer research after launch` | `/parables` | ✓ | Reverse squeeze — value first, opt-in at the bottom. Five parables read like Alex's own story. Long-form, indexable, no email gate at the top. |
 | **Product-aware comparator** | `shipfast alternative`, `course vs tool for indie hackers`, `marc lou alternative no code`, `pieter levels playbook tool`, `arvid kahl tool` | `/playbook-sales` | ✓ | Comparison table block already lives here. Long-form decision page. The Big Domino does the heavy lifting once they arrive. |
 
 Two query classes that look tempting and are explicitly **NOT** targets:
@@ -100,7 +100,7 @@ Once the first verified customer cycle completes, three new content surfaces bec
 
 1. **`/founders/[slug]` public proof pages** — one page per Verified Builder who opted into a public profile. Indexable. Schema.org `Person` + `Review` markup. This is the Brunson public-proof loop (TS Secret #19 Butterfly Marketing) wired to organic SEO. Each verified builder becomes a permanent indexed proof page.
 2. **One IH long-form per week, mirrored to a public `/case-studies/[slug]` route** — the IH long-form already in the launch cadence (workbook 09 §1) is re-published with canonical to the IH URL (avoid duplicate-content penalty), with internal links to `/diagnostic` and `/starter`. **Brand-coherence guardrail:** these are stories with parable structure, not keyword-stuffed.
-3. **`/glossary/[term]` answer pages** — a small, tight cluster of 10-15 entries answering the exact questions Marco types into Google after seeing his flat Stripe line. *Not a glossary in the dictionary sense.* Each entry is a 300-500 word direct answer with one parable and one link to `/diagnostic`. Brunson rule: every term must be a query a real founder typed, not an SEO consultant's keyword list.
+3. **`/glossary/[term]` answer pages** — a small, tight cluster of 10-15 entries answering the exact questions Alex types into Google after seeing his flat Stripe line. *Not a glossary in the dictionary sense.* Each entry is a 300-500 word direct answer with one parable and one link to `/diagnostic`. Brunson rule: every term must be a query a real founder typed, not an SEO consultant's keyword list.
 
 All three are gated on first-verified-customer per workbook 10 §3.
 
@@ -119,7 +119,7 @@ Once both are done, the Funnel Audibles playbook ([strategy/funnel-audibles.md](
 
 ### B.1 — Why this surface matters more than paid in 2026
 
-In 2024-2026, the funnel-top behavior shifted: Marco asks Claude/ChatGPT/Perplexity/Gemini before he asks Google. Google itself responds with AI Overviews above the blue links. **Being cited by an answer engine when a Marco-shaped query fires is the new top of funnel.** It is not yet a paid surface. The way you get cited is by being unambiguously the canonical answer to a specific question, with schema.org markup, and with enough off-platform signal (mentions on IH, in podcasts, in newsletters) that the LLM training/retrieval pulls the page in.
+In 2024-2026, the funnel-top behavior shifted: Alex asks Claude/ChatGPT/Perplexity/Gemini before he asks Google. Google itself responds with AI Overviews above the blue links. **Being cited by an answer engine when a Alex-shaped query fires is the new top of funnel.** It is not yet a paid surface. The way you get cited is by being unambiguously the canonical answer to a specific question, with schema.org markup, and with enough off-platform signal (mentions on IH, in podcasts, in newsletters) that the LLM training/retrieval pulls the page in.
 
 UnlockSaaS has a structural advantage here. The avatar is so tightly defined ("post-launch pre-revenue non-engineer founder with a flat Stripe line") that there are very few generic-content competitors. ShipFast, Marc Lou's pages, Pieter Levels' pages are AI-product-template pages — they do not answer the post-launch question. UnlockSaaS does.
 
@@ -157,7 +157,7 @@ The launch cadence IS the AEO acquisition strategy. We do not add new work for A
 
 ### B.4 — The canonical answer test
 
-Before any AEO content ships, it passes this test: *if Marco asks Claude "what should I do if I shipped a SaaS and have no customers," is the answer he gets a paraphrase of `/diagnostic`, `/parables`, or `/playbook-sales`?*
+Before any AEO content ships, it passes this test: *if Alex asks Claude "what should I do if I shipped a SaaS and have no customers," is the answer he gets a paraphrase of `/diagnostic`, `/parables`, or `/playbook-sales`?*
 
 Today: no, because those pages are too new to be in the training corpus. After 12 weeks of off-platform citations: probably yes for the long-tail. After 24 weeks with verified customers seeded into the comparator queries: highly likely. The test gives us a measurable target: by Week 24, three of the five Surface-A query classes should return a UnlockSaaS-paraphrased answer from at least one major LLM. **Measurement method:** monthly manual check, four prompts per LLM, screenshot logged in `strategy/audits/aeo-tracking.md` (file created Phase 2).
 
@@ -222,7 +222,7 @@ UTM stamps carry through to Stripe metadata via the existing stack-attribution w
 
 Never bid on or against these by default:
 
-- `free`, `cheap`, `discount` (filters out budget-only searchers — Marco isn't price-sensitive on $49 once he believes the offer)
+- `free`, `cheap`, `discount` (filters out budget-only searchers — Alex isn't price-sensitive on $49 once he believes the offer)
 - `course`, `class`, `bootcamp` (filters out the AC-flaw audience the founder is *running away from*; this product is not a course)
 - `template`, `boilerplate`, `starter kit` (filters out the ShipFast-adjacent buyers — they want code, we sell outcome)
 - `agency`, `done for you`, `dfy`, `consulting` (founder explicitly ruled out coaching/DFY per workbook 02 §3)
@@ -288,7 +288,7 @@ Every previously locked decision survives this Google strategy intact. Checked o
 | One Funnel Away | DotCom Secrets Secret #26 | Surface A pre-stages — no new funnel. Surface C is the same anchor funnel ($1 → OTO → $49) fed by paid clicks at activation. No second funnel introduced. |
 | Lean Ladder | workbook 02 discipline_note | Free/$1/$49 unchanged. Paid Google does not introduce new price points. |
 | No Fake Scarcity | workbook 07 §3 + workbook 06 polarity | Ad copy explicitly excludes "limited spots," "ending soon," "join thousands." Brand-defense ad does not invent urgency. |
-| Framework Into Engine | design_principles | Google strategy lives in the strategy folder and the metadata layer, not in user-facing UI. Marco never sees an "SEO" promise on any page. |
+| Framework Into Engine | design_principles | Google strategy lives in the strategy folder and the metadata layer, not in user-facing UI. Alex never sees an "SEO" promise on any page. |
 | Verified Builders identity | expert_secrets.movement.identity_label | A/B `usaas_ab_identity` cookie preserved across paid landings via existing UTM-stamp infrastructure. |
 | Reluctant Hero voice | workbook 01 §6 | Every ad copy and meta description follows the voice. Every signature is `— Maryan`. |
 | Honest claims | workbook 01 §2 values_caveat | Schema.org `aggregateRating` deliberately omitted until verified customers with public ratings exist. No fabricated review counts in any structured data. |

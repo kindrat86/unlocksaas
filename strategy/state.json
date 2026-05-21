@@ -41,7 +41,7 @@
   "dotcom_secrets": {
     "secret_formula": {
       "q1_dream_customer": {
-        "name": "Marco",
+        "name": "Alex",
         "age": "36",
         "occupation": "Marketer / operator by background, NON-developer. Ships real AI products using Lovable + Claude Code. Has stable day job plus freelance income (not financially desperate).",
         "biggest_pain": "Post-launch, pre-revenue. Shipped a real working AI product, ~12 users, ~2 paying. Stripe is a flat line. He is STUCK, not broke.",
@@ -63,8 +63,8 @@
           "Half-senses the real gap is that he never knew, specifically, who the product was for"
         ],
         "avatar_origin": "Founder's own past self (your-mess-is-your-message) corroborated by 10+ real founder interviews.",
-        "live_belief_observation": "Founder described the surprise as 'even building a PERFECT product they did not subscribe' - the word 'perfect' reveals Marco's core false belief (the problem is the product) is still active in the founder. Key material for Epiphany Bridge / Skill 6.",
-        "confirmed": "LOCKED. Marco = the founder, literally. Non-developer, has never written production code. Builds with Lovable + Claude Code. No composite, no asterisk - 'your mess is your message' at maximum strength."
+        "live_belief_observation": "Founder described the surprise as 'even building a PERFECT product they did not subscribe' - the word 'perfect' reveals Alex's core false belief (the problem is the product) is still active in the founder. Key material for Epiphany Bridge / Skill 6.",
+        "confirmed": "LOCKED. Alex = the founder, literally. Non-developer, has never written production code. Builds with Lovable + Claude Code. No composite, no asterisk - 'your mess is your message' at maximum strength."
       },
       "q2_congregations": {
         "websites": [],
@@ -95,9 +95,9 @@
         "lead_magnet_ideas": [],
         "low_ticket_ideas": [],
         "top_hooks": [],
-        "dead_bait": "Anything that pattern-matches to 'validate your idea' or 'define your audience' - pre-discredited for Marco."
+        "dead_bait": "Anything that pattern-matches to 'validate your idea' or 'define your audience' - pre-discredited for Alex."
       },
-      "q4_unique_result": "Turn the product Marco already built into real, recurring revenue, and prove the launch was not wasted time.",
+      "q4_unique_result": "Turn the product Alex already built into real, recurring revenue, and prove the launch was not wasted time.",
       "observed_market_behavior": "Praise without payment. Across 10+ conversations, founders said the product was good but did not subscribe. 'They did not vote with dollars.' This is the say-do gap / validation trap - the most predictable failure mode in early SaaS, NOT a product-quality problem."
     },
     "offer_stack": {
@@ -112,7 +112,7 @@
         "Converting micro-SaaS pricing page templates",
         "AI co-pilot trained on frameworks that pushes back on vague answers",
         "Funnel-gap scanner - flags missing follow-up/hook/urgency",
-        "Marco-Meter - scores copy: one person vs vague category",
+        "Alex-Meter - scores copy: one person vs vague category",
         "Structured async offer-build session",
         "Offer teardown - submit and get notes",
         "Private room of post-launch pre-revenue founders",
@@ -122,7 +122,7 @@
         "Results-based guarantee (first new paying customer or refund)",
         "Fast-action bonus: 48h personal offer review"
       ],
-      "brainstorm_status": "TRIAGE INCOMPLETE. Founder returned 'can deliver everything / none would make Marco pay / nothing to add.' PIVOT: stop stacking ingredients, find the ONE core promise first. Stack is paused until the core promise exists.",
+      "brainstorm_status": "TRIAGE INCOMPLETE. Founder returned 'can deliver everything / none would make Alex pay / nothing to add.' PIVOT: stop stacking ingredients, find the ONE core promise first. Stack is paused until the core promise exists.",
       "core_product": {
         "name": "The Playbook (productized Unlock the Secrets path) - DRAFT, pending founder react",
         "six_steps": [
@@ -130,11 +130,11 @@
           "2. Build the irresistible offer with a guaranteed result",
           "3. Write the hook and page copy (fill-in-the-blank, non-developer safe)",
           "4. Generate outreach assets and the target list (congregations)",
-          "5. Do the outreach: tool GENERATES message + target, Marco posts it himself in the real platform, Marco logs the public LINK back into the tool, tool fetches/verifies the link is live and real. Cold email is the one channel the tool can send + track natively. NOT auto-posting (spam, platform-ToS violations, account-ban risk).",
+          "5. Do the outreach: tool GENERATES message + target, Alex posts it himself in the real platform, Alex logs the public LINK back into the tool, tool fetches/verifies the link is live and real. Cold email is the one channel the tool can send + track natively. NOT auto-posting (spam, platform-ToS violations, account-ban risk).",
           "6. Convert and verify (Stripe connected, first charge detected)"
         ],
         "note": "The playbook IS the guarantee's work-condition milestones. Core product = this 6-step doing-environment.",
-        "step5_note": "LOAD-BEARING step of the entire guarantee. Resolved a SEND-vs-TRACK conflation: the guarantee needs TRACK, not SEND. Deeper point: Step 5 is hard to BUILD because it is hard for Marco to DO - the only real-world-action step, and real-world action is Marco's avoidance disease. The product's core value / new opportunity = getting a customer-avoidant founder over the wall and actually doing outreach. Generating + tracking alone = commodity.",
+        "step5_note": "LOAD-BEARING step of the entire guarantee. Resolved a SEND-vs-TRACK conflation: the guarantee needs TRACK, not SEND. Deeper point: Step 5 is hard to BUILD because it is hard for Alex to DO - the only real-world-action step, and real-world action is Alex's avoidance disease. The product's core value / new opportunity = getting a customer-avoidant founder over the wall and actually doing outreach. Generating + tracking alone = commodity.",
         "status": "Core product (6-step playbook) LOCKED. Step 5 technical path resolved."
       },
       "core_value": "$259/mo - CONFIRMED by founder",
@@ -161,19 +161,19 @@
       "total_value": "$496 - CONFIRMED",
       "price": "$49/mo - LOCKED by founder.",
       "guarantee": {
-        "promise": "Marco's first paying customer within 60 days.",
+        "promise": "Alex's first paying customer within 60 days.",
         "timeframe": "60 days - LOCKED",
-        "work_condition": "Must be playbook-verifiable in-product actions only (founder cannot verify real-world homework). Qualifying milestones, all logged by the software: completed dream-customer module, generated offer + guarantee in-tool, generated outreach assets in-tool, sent/logged outreach to N prospects (~20) THROUGH the tool. Result auto-verified via Stripe connection (new charge on Marco's account).",
+        "work_condition": "Must be playbook-verifiable in-product actions only (founder cannot verify real-world homework). Qualifying milestones, all logged by the software: completed dream-customer module, generated offer + guarantee in-tool, generated outreach assets in-tool, sent/logged outreach to N prospects (~20) THROUGH the tool. Result auto-verified via Stripe connection (new charge on Alex's account).",
         "remedy": "LOCKED. Full refund of the 2 monthly payments ($49 x 2 = $98) made in the 60-day window.",
-        "design_principle": "If an action cannot be verified, it must happen INSIDE the product. The product must be a DOING environment, not a teaching one - outreach happens in-tool so the software both helps and witnesses. Side benefit: kills Marco's 'not another tool' objection.",
+        "design_principle": "If an action cannot be verified, it must happen INSIDE the product. The product must be a DOING environment, not a teaching one - outreach happens in-tool so the software both helps and witnesses. Side benefit: kills Alex's 'not another tool' objection.",
         "billing": "Monthly subscription.",
         "terms": "Judged AT the 60-day mark. Refund triggers only if (a) the tracked in-product milestones were completed AND (b) Stripe shows no new paying customer. Guarantee covers the 60-day window only.",
         "status": "FULLY BUILT AND LOCKED."
       },
       "urgency_scarcity": "",
-      "core_promise": "LOCKED. Marco gets his first paying customer - proven and guaranteed. This is the offer spine. All 19 brainstorm ideas are now re-scoped as 'the playbook' that delivers this promise, or they get cut.",
+      "core_promise": "LOCKED. Alex gets his first paying customer - proven and guaranteed. This is the offer spine. All 19 brainstorm ideas are now re-scoped as 'the playbook' that delivers this promise, or they get cut.",
       "ten_x_check": "$496 / $49 = 10.1x. Clears the 10x bar.",
-      "values_caveat": "Values must be DEFENSIBLE - Marco is a skeptic; inflated fantasy numbers repel him.",
+      "values_caveat": "Values must be DEFENSIBLE - Alex is a skeptic; inflated fantasy numbers repel him.",
       "status": "OFFER LOCKED. Written to workbooks/01-sales-funnel-secrets.md Section 2."
     },
     "story_selling": {
@@ -186,7 +186,7 @@
       "tiers": {
         "rung_0_free": {
           "offer": "Free standalone diagnostic tool",
-          "result": "Marco sees WHY he is stuck (clarity)",
+          "result": "Alex sees WHY he is stuck (clarity)",
           "build": "YES - launch",
           "note": "Doubles as distribution/SEO asset"
         },
@@ -219,7 +219,7 @@
         "rung_0_5_dollar_one": {
           "offer": "$1 one-time. Delivers a COMPLETE SMALL result (proposed: finished dream customer + offer, playbook steps 1-2). Pending founder confirm of exact contents.",
           "price": "$1 one-time (NOT an auto-converting trial)",
-          "result": "Marco has a finished WHO and WHAT - real, done, his to keep. Becomes a verified buyer.",
+          "result": "Alex has a finished WHO and WHAT - real, done, his to keep. Becomes a verified buyer.",
           "build": "YES - launch",
           "design_rule": "NOT 'a taste' (a fragment insults a skeptic). A complete small win. Must STOP SHORT of a paying customer - that result stays exclusive to the $49 core, so no cannibalization. 10x is trivially met at $1; the real discipline is restraint."
         }
@@ -230,7 +230,7 @@
         "founder_proposal": "A staircase of monthly tiers: $0.97, $4.97, $9.97, $19.97, $29.97/mo, each with 10x value, to identify buyers.",
         "russell_case_against": [
           "Sub-dollar recurring loses money: fixed Stripe per-charge fee (~$0.25-0.30) eats a third+ of a $0.97 charge before percentage and before compute cost.",
-          "10x value at every tier = building 5-6 distinct products solo, non-dev, pre-launch = the 'more building is avoidance' trap (Marco's own disease).",
+          "10x value at every tier = building 5-6 distinct products solo, non-dev, pre-launch = the 'more building is avoidance' trap (Alex's own disease).",
           "Six prices on one page paralyzes the buyer (a confused mind says no).",
           "Cheap tiers cannibalize the $49 core and a watered-down tier confirms a skeptic's worst belief, destroying trust with the exact customer."
         ],
@@ -275,8 +275,8 @@
           "Third-party testimonials"
         ],
         "storylines_placement": "The 6 storylines belong to STEP 4 (copy/outreach engine) as narrative templates powered by the character from step 3 - NOT a separate step-3 input.",
-        "design_principle": "FRAMEWORK INTO THE ENGINE, NOT ONTO THE USER. Marco answers ~3-4 simple questions; the engine (which knows backstory/parables/flaws/polarity/identities) assembles his Attractive Character and recommends his identity type. Reuses his Story beats + dream customer as input. Step 3 must NOT become a 14-field form, or it becomes the abandoned workbook.",
-        "dogfood_note": "The current Story Selling exercise (beats 1-5) IS Marco's AC raw material - founder is dogfooding step 3 live."
+        "design_principle": "FRAMEWORK INTO THE ENGINE, NOT ONTO THE USER. Alex answers ~3-4 simple questions; the engine (which knows backstory/parables/flaws/polarity/identities) assembles his Attractive Character and recommends his identity type. Reuses his Story beats + dream customer as input. Step 3 must NOT become a 14-field form, or it becomes the abandoned workbook.",
+        "dogfood_note": "The current Story Selling exercise (beats 1-5) IS Alex's AC raw material - founder is dogfooding step 3 live."
       },
       "locked": {
         "identity_type": {
@@ -284,12 +284,12 @@
           "anchor_reason": "Honesty makes it sustainable. Reluctant Hero is the only identity defensible without inflation today.",
           "supporting_reasons": [
             "Origin reads as Reluctant Hero, not Leader: founder did not set out to teach, was dragged here by his own flat Stripe line and ten founders' mirror moment.",
-            "Marco is a skeptic; Leader voice pre-disqualifies in three seconds; Reluctant Hero disarms him."
+            "Alex is a skeptic; Leader voice pre-disqualifies in three seconds; Reluctant Hero disarms him."
           ],
           "rejected_alternatives": {
-            "leader": "Triggers Marco's another-guru allergy.",
+            "leader": "Triggers Alex's another-guru allergy.",
             "adventurer": "Too light, does not earn trust on the pain.",
-            "reporter_evangelist": "Credible but distant; Marco does not feel 'this person is me.'"
+            "reporter_evangelist": "Credible but distant; Alex does not feel 'this person is me.'"
           }
         },
         "backstory": {
@@ -349,24 +349,24 @@
           {
             "name": "The Avoider",
             "summary": "Dresses up productive work as progress when the real work is uncomfortable.",
-            "mirror": "Marco's Stripe-refresh ritual",
+            "mirror": "Alex's Stripe-refresh ritual",
             "note": "Spine of the brand. The product treats avoidance; confessing it earns the right to sell the cure."
           },
           {
             "name": "Cannot Code",
             "summary": "Not an engineer, never wrote production code, depends on Claude when things break.",
-            "mirror": "Marco's identical skill gap",
+            "mirror": "Alex's identical skill gap",
             "doubles_as": "positioning wedge against funnel/marketing tooling that quietly assumes you can code"
           },
           {
             "name": "Praise Junkie",
             "summary": "Collected compliments and treated them like traction; retrained to ask 'did they pay.'",
-            "mirror": "Marco's flat Stripe under a wall of 'this is awesome' comments"
+            "mirror": "Alex's flat Stripe under a wall of 'this is awesome' comments"
           },
           {
             "name": "Plans Before Shipping",
             "summary": "Default is thinking about doing instead of doing; Playbook Step 5 forces real-world action.",
-            "mirror": "Marco's documented over-planning, 'more building is progress' false belief"
+            "mirror": "Alex's documented over-planning, 'more building is progress' false belief"
           }
         ],
         "rejected_flaws": {
@@ -398,7 +398,7 @@
           }
         },
         "engine_extraction_spec": {
-          "design_rule": "Framework lives in the engine. Marco answers human questions. Never sees a build-your-AC form.",
+          "design_rule": "Framework lives in the engine. Alex answers human questions. Never sees a build-your-AC form.",
           "identity_type": "2-3 origin questions map to one of the four types",
           "backstory": "3-4 turning-point questions map to the three backstory lengths",
           "parables": "5 specific-moment questions map to 5 named parables",
@@ -747,7 +747,7 @@
   },
   "traffic_secrets": {
     "dream_100": {
-      "status": "COMPLETE v2 (Category 2 LOCKED 2026-05-17). Written to workbooks/08-your-dream-customer.md. CSV at strategy/dream-100.csv now has 100 specific entries — rows 31-40 filled with Anthony Castrio, Damon Chen, Hassan El Mghari (Nutlope), Tibo Louis-Lucas, Mubashar Iqbal, Rob Walling, Sahil Lavingia, Pat Walls, Justin Jackson, Joel Gascoigne (selected for Marco-avatar overlap: 5 vibe-coder / AI-builder ICP, 5 bootstrapper authority). Podcast warm-up plan added to workbook 08 §3 (5 pre-launch targets: Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air — each with documented contact path, pitch angle, lead time, pre-pitch warm-up actions).",
+      "status": "COMPLETE v2 (Category 2 LOCKED 2026-05-17). Written to workbooks/08-your-dream-customer.md. CSV at strategy/dream-100.csv now has 100 specific entries — rows 31-40 filled with Anthony Castrio, Damon Chen, Hassan El Mghari (Nutlope), Tibo Louis-Lucas, Mubashar Iqbal, Rob Walling, Sahil Lavingia, Pat Walls, Justin Jackson, Joel Gascoigne (selected for Alex-avatar overlap: 5 vibe-coder / AI-builder ICP, 5 bootstrapper authority). Podcast warm-up plan added to workbook 08 §3 (5 pre-launch targets: Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air — each with documented contact path, pitch angle, lead time, pre-pitch warm-up actions).",
       "categories": {
         "communities_forums": [
           "Indie Hackers",
@@ -904,11 +904,11 @@
       "sections": {
         "0": "One-sentence avatar",
         "1": "10 Traffic Secrets questions (demographics, day-job, psychographics, fears, dreams, inner monologue, public mask, inoculation map, identity, transformation)",
-        "2": "Day in Marco's life by hour (6:45am to 1:00am loop the product interrupts at 7:30pm)",
+        "2": "Day in Alex's life by hour (6:45am to 1:00am loop the product interrupts at 7:30pm)",
         "3": "Avatar-level congregation map (browser tabs, podcast queue, newsletter inbox, phone home screen, midnight searches)",
         "4": "Before / After paragraphs (canonical transformation)",
         "5": "Verbatim 'this is me' language bank — 12 ranked quotes with distribution map to copy surfaces",
-        "6": "The Marco Identity Statement (Marco-voice paragraph)",
+        "6": "The Alex Identity Statement (Alex-voice paragraph)",
         "7": "Validation evidence (n=1 founder + n=10 conversations + n=30+ public verbatims + engine pushback test cases)",
         "8": "Surface-by-surface usage table (every page/email/engine prompt mapped to dossier section)",
         "9": "Audit reconciliation (Traffic Secrets Secret #1 score 96 → 100; per-section +1 close)"
@@ -923,7 +923,7 @@
       "open_items": {
         "private_re_mine": "Maryan's private 10-conversation set (Slack DMs / Gmail threads / Granola recordings) still pending. Refines dossier §1.6 (inner monologue verbatims) and §4.1 (Before-state phrasing) from 'directionally accurate' to 'verbatim.' 5-10% confidence haircut on §1.6, §4.1, §5 until done."
       },
-      "audit_delta": "Traffic Secrets Secret #1: 96 → 100. Per-section close: +1 for full 10-question framework completion; +1 for day-in-the-life by hour; +1 for avatar-level congregation map distinct from Dream 100; +1 for before/after paragraphs + identity statement Marco would write himself. Remaining ceiling-risks (private re-mine + field validation by first cold-visitor DM) carry 0 deduction at lock; would re-introduce 2-4 point haircut if unaddressed at 90 days."
+      "audit_delta": "Traffic Secrets Secret #1: 96 → 100. Per-section close: +1 for full 10-question framework completion; +1 for day-in-the-life by hour; +1 for avatar-level congregation map distinct from Dream 100; +1 for before/after paragraphs + identity statement Alex would write himself. Remaining ceiling-risks (private re-mine + field validation by first cold-visitor DM) carry 0 deduction at lock; would re-introduce 2-4 point haircut if unaddressed at 90 days."
     },
     "fill_funnel": {
       "status": "COMPLETE. Written to workbooks/09-fill-your-funnel.md.",
@@ -1061,9 +1061,9 @@
       "status": "LOCKED 2026-05-17. Traffic Secrets Secret #10 N/A -> 100 under stage-appropriate scoring. Same pattern as Affiliate Army / Summit Funnel / Funnel Stacking / PLF. Canonical doc: strategy/facebook-channel.md.",
       "launch_position": "OFF (unchanged). Reaffirmed: X + Indie Hackers + r/SaaS + r/microsaas are the locked launch-minimum channels per workbook 09 §1; this Facebook spec is additive, not replacement.",
       "launch_off_reasons": [
-        "Avatar density: Marco's per-dollar density on FB is ~1/10 of X.",
+        "Avatar density: Alex's per-dollar density on FB is ~1/10 of X.",
         "Pre-PMF + $49/mo + skeptic avatar = burn money (10%-of-MRR cap at $0 MRR = $0 spend).",
-        "Marco-verbatim dollar-objection at strategy/dollar-objections.md:100 cites real founder saying FB ads don't work for indie SaaS."
+        "Alex-verbatim dollar-objection at strategy/dollar-objections.md:100 cites real founder saying FB ads don't work for indie SaaS."
       ],
       "phases": {
         "phase_0_now": {
@@ -1170,7 +1170,7 @@
             "2x/week Page posts JK5 rotation (workbook 09 §2)",
             "Value-first engagement in 3 listening groups (30 min/week, capped)"
           ],
-          "goal": "Marco encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim)"
+          "goal": "Alex encounters Reluctant Hero voice 5x across surfaces in one month, by accident (workbook 09 §7 verbatim)"
         }
       },
       "code_pre_stage": {
@@ -1212,9 +1212,9 @@
         "Honest claims: revenue claims come from real Verified Builders with written re-permission per ad; zero fabricated metrics",
         "Don't re-litigate locked decisions: launch channels X + IH + Reddit unchanged; FB is additive only",
         "10%-of-MRR ad budget cap (workbook 09 §5): Phase 2 = 10% of MRR; Phase 3 = 10% + 14d test, auto-extend on CAC math",
-        "Avatar congregation primacy: Phases 0-1 respect Marco's primary congregations; Phase 2+ activates because buyer-list itself becomes targeting input (structural argument, not avatar-density override)"
+        "Avatar congregation primacy: Phases 0-1 respect Alex's primary congregations; Phase 2+ activates because buyer-list itself becomes targeting input (structural argument, not avatar-density override)"
       ],
-      "audit_delta": "Traffic Secrets Secret #10 (Facebook): N/A -> 100 under stage-appropriate scoring. Channel fully specified across four phases with evidence triggers, ad creative families with Reluctant Hero voice + identity guardrails, budget caps tied to 10%-of-MRR discipline, kill criteria protecting against documented Marco-experience of FB ads not working, and pre-stage code surface ready for one-button activation at the 3-verified-customer trigger.",
+      "audit_delta": "Traffic Secrets Secret #10 (Facebook): N/A -> 100 under stage-appropriate scoring. Channel fully specified across four phases with evidence triggers, ad creative families with Reluctant Hero voice + identity guardrails, budget caps tied to 10%-of-MRR discipline, kill criteria protecting against documented Alex-experience of FB ads not working, and pre-stage code surface ready for one-button activation at the 3-verified-customer trigger.",
       "canonical_doc": "strategy/facebook-channel.md",
       "next_review_trigger": "First Phase-1 trigger event (3rd verified customer cycle complete)"
     },
@@ -1224,12 +1224,12 @@
       "format": "faceless",
       "source_frame": "Greg Isenberg faceless-YouTube formula + 2026 distribution playbook, layered on top of locked Brunson strategy. Tracked in memory/project_unlocksaas_isenberg_playbook.md.",
       "why_faceless_unlocks_the_skip": "Workbook 09 §1 originally skipped YouTube (host) because founder-on-camera production breaks the solo-founder constraint. Faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) is scriptable + AI-producible + cheap to test, restoring the constraint.",
-      "channel_name": "Marco's Diary",
+      "channel_name": "Alex's Diary",
       "tagline": "$0 to first paying customer, in public, in real time.",
       "cadence": "2 episodes/week (Tuesday + Friday); cap at 3/week if backlog allows",
       "episode_length_target_seconds": [240, 420],
       "series_arc_episodes": 30,
-      "series_promise": "Marco goes from $0 to first verified paying customer, in public, in real time. Reluctant Hero archetype (workbook 02 §3).",
+      "series_promise": "Alex goes from $0 to first verified paying customer, in public, in real time. Reluctant Hero archetype (workbook 02 §3).",
       "hub_route": "/youtube",
       "registry_path": "app/src/lib/youtube.ts",
       "page_path": "app/src/app/(marketing)/youtube/page.tsx",
@@ -1237,13 +1237,13 @@
       "utm_convention": {
         "utm_source": "youtube",
         "utm_medium_values": ["video", "video-pinned-comment", "endscreen", "video-card"],
-        "utm_campaign": "marcos-diary",
+        "utm_campaign": "founders-diary",
         "utm_content_format": "ep<NN> (zero-padded) | hub"
       },
       "stack_layer": 0,
       "stack_layer_name": "ATTENTION (top of stack, cold traffic) per strategy/funnel-stack.md",
       "activation_gates_before_e01": [
-        "Full month's backlog (8 episodes) scripted in strategy/episodes/marcos-diary/ before publishing E01",
+        "Full month's backlog (8 episodes) scripted in strategy/episodes/founders-diary/ before publishing E01",
         "Production runbook dry-run once end-to-end on an E00 throwaway",
         "Channel art + banner shipped (faceless aesthetic; no Maryan face)",
         "YouTube channel description points at /youtube as canonical hub link"
@@ -1269,8 +1269,8 @@
         "Comment moderation as customer support: pinned comment redirects to maryan@unlocksaas.com"
       ],
       "tooling_stack_locked": {
-        "script": "Markdown in repo (strategy/episodes/marcos-diary/EXX-*.md)",
-        "voice_over": "ElevenLabs (single locked voice, 'Marco' preset)",
+        "script": "Markdown in repo (strategy/episodes/founders-diary/EXX-*.md)",
+        "voice_over": "ElevenLabs (single locked voice, 'Alex' preset)",
         "b_roll": "Veo 3 (preferred) -> Hailuo (fallback)",
         "screen_recordings": "macOS screencapture + ScreenStudio",
         "thumbnail": "Figma (one template, layered)",
@@ -1287,14 +1287,14 @@
         "Framework Into Engine (workbook 04): episodes show the work, never teach the framework; visitors discover the framework by watching it execute",
         "No Fake Scarcity (workbook 07 §3): no countdown timers, no fabricated 'limited time' frames",
         "No Fake Proof (workbook 08 §3): Stripe screenshots are real; E30 'first paying customer' episode is HELD until the real event fires",
-        "Polarity discipline (Cookbook Swipe 6): every episode states one against-line - which advice it rejects, in Marco's own voice",
+        "Polarity discipline (Cookbook Swipe 6): every episode states one against-line - which advice it rejects, in Alex's own voice",
         "Don't re-litigate locked decisions: launch-minimum-four unchanged; YouTube is additive only; offer/avatar/price/value-ladder untouched",
         "Honest claims: any customer testimonial or revenue figure requires written re-permission per episode (same standard as funnel-hackers-cookbook.md Swipe 6)",
         "No em dash (repo-wide rule): scripts + titles + descriptions all en dash; pre-flight check runs grep before scheduling"
       ],
       "audit_delta": "Traffic Secrets Secret #15 follow-on: workbook 09 §1 'YouTube (host)' skip is superseded for the faceless format. Channel #5 unlocked under the original solo-founder constraint by changing the production stack, not the constraint. Source-frame: Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md), layered on top of locked Brunson strategy.",
       "canonical_doc": "strategy/youtube-faceless-channel.md",
-      "backlog_doc": "strategy/youtube-marcos-diary-backlog.md",
+      "backlog_doc": "strategy/youtube-founders-diary-backlog.md",
       "production_runbook_doc": "strategy/youtube-production-runbook.md",
       "next_review_trigger": "After E03 ships (review CTR + retention; adjust hook bank from workbook 01 §5 before continuing)"
     },
@@ -1382,7 +1382,7 @@
           "break_even_CPL": 8.58
         }
       },
-      "messenger_ads": "DEFERRED indefinitely (Marco does not live in Messenger)",
+      "messenger_ads": "DEFERRED indefinitely (Alex does not live in Messenger)",
       "integration_partners": [
         {
           "partner": "Lovable",
@@ -1727,7 +1727,7 @@
           "§E Honest scope (4 things kit does NOT do)"
         ],
         "channels_in_kit": [
-          "#1 Riley Brown (@rileybrownai) — Tier A — 221K subs — literal Marco avatar (vibe-coding category)",
+          "#1 Riley Brown (@rileybrownai) — Tier A — 221K subs — literal Alex avatar (vibe-coding category)",
           "#2 Indy Dev Dan (@indydevdan) — Tier A — 80K+ subs — Claude/AI-builder technical-leaning audience",
           "#3 Build Your SaaS (@buildyoursaas) — Tier B — interview format — cross-references podcast-outreach.md #4",
           "#4 Indie Hackers YouTube (@indiehackers) — Tier B — Channing Allen-led — distinct pitch from podcast track",
@@ -1738,7 +1738,7 @@
         "pitch_gate": "First verified-customer cycle closes inside The Playbook (same as podcast-outreach.md §3 + integration partner gate)",
         "reactive_permission": "Inbound invitations may be accepted at launch with NO warm-up gate (workbook 09 §1 parity with podcast guest)",
         "visual_angle_library": {
-          "engine_pushback_demo": "60-90 sec — /playbook/step/[id] on real Marco-avatar input",
+          "engine_pushback_demo": "60-90 sec — /playbook/step/[id] on real Alex-avatar input",
           "stripe_line_cold_open": "15 sec — Maryan's flat 12-month Stripe dashboard",
           "diagnostic_walkthrough": "90 sec — /diagnostic submit → label → handoff to /starter",
           "verified_customer_celebration": "30 sec — /playbook/verified firing for first cohort customer (post-milestone)",
@@ -2057,7 +2057,7 @@
         "one_funnel_away": "Same anchor funnel; no second funnel introduced.",
         "lean_ladder": "No new price points.",
         "no_fake_scarcity": "Ad copy excludes 'limited spots' / 'ending soon' / 'join thousands'. Brand-defense ad does not invent urgency.",
-        "framework_into_engine": "Google strategy lives in strategy folder + metadata layer; Marco never sees an 'SEO' promise on any page.",
+        "framework_into_engine": "Google strategy lives in strategy folder + metadata layer; Alex never sees an 'SEO' promise on any page.",
         "verified_builders_identity": "A/B cookie preserved across paid landings via existing UTM-stamp infrastructure.",
         "reluctant_hero_voice": "Every ad signs '— Maryan'. Every meta description in Reluctant-Hero voice.",
         "honest_claims": "Schema.org aggregateRating omitted until verified customers exist.",
@@ -2088,7 +2088,7 @@
       "hook": "Fire your photographer — Take stunning photos with the first AI Photographer",
       "category": "Pay-first onboarding squeeze",
       "key_steal": "One brute-force live counter (29M photos generated; 41K members + 591 this month) as headline credibility; 'As seen in' media bar above the fold; handwritten-feeling founder signature in footer",
-      "key_reject": "Zero-story positioning (Marco needs Epiphany Bridge); pay-before-tour squeeze (Marco needs free diagnostic first); one-time payment model (would break UnlockSaaS $49/mo unit economics)",
+      "key_reject": "Zero-story positioning (Alex needs Epiphany Bridge); pay-before-tour squeeze (Alex needs free diagnostic first); one-time payment model (would break UnlockSaaS $49/mo unit economics)",
       "source": "strategy/funnel-hacks.md sec 2"
     },
     {
@@ -2106,7 +2106,7 @@
       "hook": "We're a group of makers shipping together",
       "category": "Application / Curated Membership Funnel",
       "key_steal": "Avatar wall of real recognizable users on homepage (borrowed authority); streak/daily-todo mechanic as the central ritual (same DOING-environment as Playbook Step 6)",
-      "key_reject": "Invite-only gating (kills cold Marco conversion); hidden pricing (skeptic reads as 'cannot defend the price')",
+      "key_reject": "Invite-only gating (kills cold Alex conversion); hidden pricing (skeptic reads as 'cannot defend the price')",
       "source": "strategy/funnel-hacks.md sec 4"
     },
     {
@@ -2116,7 +2116,7 @@
       "subheadline_carries": "21,807 Solopreneurs are already remarkable!",
       "category": "Free-tier-to-paid SaaS with social-proof-as-subheadline",
       "key_steal": "Count-as-subheadline (N >= 100 -> 'Joined by N Verified Builders' on funnel hub); founder-card wall (add /builders index when N >= 20, OG image route already shipped); free-tier-as-front-door pattern (make diagnostic result claimable as /builder/[slug] page for viral seeding)",
-      "key_reject": "One-time pricing for core (breaks $49/mo guarantee economics); vanity monetization like custom domains (Marco's pain is revenue not vanity)",
+      "key_reject": "One-time pricing for core (breaks $49/mo guarantee economics); vanity monetization like custom domains (Alex's pain is revenue not vanity)",
       "source": "strategy/funnel-hacks.md sec 5 (v2 pass)"
     },
     {
@@ -2145,8 +2145,8 @@
       "hook": "A few years ago I sold all my stuff to explore the world",
       "category": "Single-page identity broadcast (NOT a funnel) -- studied DELIBERATELY to NOT model",
       "why_it_works_for_him": "500k+ Twitter following does what the funnel would; consumer products buyers find via Twitter/PH not via this page; 10+ years of public building earned the right to skip funnel work",
-      "why_it_would_kill_us": "We have 0 -> growing following (no distribution to lean on); skeptic Marco-avatar needs more than identity to trust an offer; our product requires belief work the homepage MUST do (workbook 06 four core stories all need surface area)",
-      "lesson": "The temptation 'just ship a single-page brand and tweet from there' is exactly Marco's avoidance pattern (workbook 01 sec 6 Beat 1 Flaw 4 'Plans Before Shipping' generalized to marketing). Anti-hack reinforces workbook 09 sec 1 launch-minimum channel discipline. Funnel hub at / MUST do conversion work, not just identity broadcast.",
+      "why_it_would_kill_us": "We have 0 -> growing following (no distribution to lean on); skeptic Alex-avatar needs more than identity to trust an offer; our product requires belief work the homepage MUST do (workbook 06 four core stories all need surface area)",
+      "lesson": "The temptation 'just ship a single-page brand and tweet from there' is exactly Alex's avoidance pattern (workbook 01 sec 6 Beat 1 Flaw 4 'Plans Before Shipping' generalized to marketing). Anti-hack reinforces workbook 09 sec 1 launch-minimum channel discipline. Funnel hub at / MUST do conversion work, not just identity broadcast.",
       "source": "strategy/funnel-hacks.md sec 8 (v2 pass)"
     }
   ],
@@ -2291,16 +2291,16 @@
   "revision_history": [
     {
       "date": "2026-05-21",
-      "scope": "Channel #5 added: faceless YouTube (Marco's Diary). Additive to the locked launch-minimum-four (X + IH + r/SaaS + r/microsaas); workbook 09 §1 SKIP-table entry 'YouTube (host)' superseded ONLY for the faceless format.",
-      "change": "User instruction 'Proceed with this autonomously and then deploy everything autonomously' on the Isenberg-overlay recommendation 'Faceless YouTube channel. Adds a fifth channel to the locked X + IH + r/SaaS + r/microsaas mix; scriptable and AI-producible so the solo-founder constraint holds. Topic: Marco's diary $0 to first paying customer.' SHIPPED: (1) NEW FILE strategy/youtube-faceless-channel.md - canonical channel spec across 10 sections. (2) NEW FILE strategy/youtube-marcos-diary-backlog.md - 30-episode arc locked across 5 phases: Setup (E01-E05), Doing The Machine (E06-E15), Outreach + objection-handling (E16-E25), Cycle closes or fails (E26-E29), First Paying Customer Verified (E30, HELD until real event). (3) NEW FILE strategy/youtube-production-runbook.md - tooling stack (ElevenLabs / Veo 3 / Descript / Figma / YouTube Studio manual upload), per-episode operator checklist (~2h steady state), title + description templates with no-em-dash pre-flight, 8-surface repurposing per episode, kill-switch triggers. (4) NEW FILE app/src/lib/youtube.ts - typed MarcosDiaryEpisode interface, MARCOS_DIARY_EPISODES = [] (honest empty pre-launch), episodeDiagnosticUrl + hubDiagnosticUrl helpers stamping the canonical UTM, MARCOS_DIARY_CHANNEL metadata, validateRegistry() at module load. (5) NEW FILE app/src/app/(marketing)/youtube/page.tsx - public hub page, server component, fully static, BreadcrumbList JSON-LD, honest empty-state for episodes (mirrors /builders pattern). (6) EDITED app/src/components/blocks/signature-footer.tsx - added 'Marco's Diary on YouTube' link grouped after /press. (7) ADDED traffic_secrets.youtube_channel block to state.json. (8) This revision_history entry. (9) EDITED workbook 09 §1 SKIP table 'YouTube (host)' entry to note faceless supersession + pointer to the new canonical doc. (10) NEW MEMORY project_unlocksaas_youtube_channel.md + MEMORY.md index entry.",
+      "scope": "Channel #5 added: faceless YouTube (Alex's Diary). Additive to the locked launch-minimum-four (X + IH + r/SaaS + r/microsaas); workbook 09 §1 SKIP-table entry 'YouTube (host)' superseded ONLY for the faceless format.",
+      "change": "User instruction 'Proceed with this autonomously and then deploy everything autonomously' on the Isenberg-overlay recommendation 'Faceless YouTube channel. Adds a fifth channel to the locked X + IH + r/SaaS + r/microsaas mix; scriptable and AI-producible so the solo-founder constraint holds. Topic: Alex's diary $0 to first paying customer.' SHIPPED: (1) NEW FILE strategy/youtube-faceless-channel.md - canonical channel spec across 10 sections. (2) NEW FILE strategy/youtube-founders-diary-backlog.md - 30-episode arc locked across 5 phases: Setup (E01-E05), Doing The Machine (E06-E15), Outreach + objection-handling (E16-E25), Cycle closes or fails (E26-E29), First Paying Customer Verified (E30, HELD until real event). (3) NEW FILE strategy/youtube-production-runbook.md - tooling stack (ElevenLabs / Veo 3 / Descript / Figma / YouTube Studio manual upload), per-episode operator checklist (~2h steady state), title + description templates with no-em-dash pre-flight, 8-surface repurposing per episode, kill-switch triggers. (4) NEW FILE app/src/lib/youtube.ts - typed FoundersDiaryEpisode interface, FOUNDERS_DIARY_EPISODES = [] (honest empty pre-launch), episodeDiagnosticUrl + hubDiagnosticUrl helpers stamping the canonical UTM, FOUNDERS_DIARY_CHANNEL metadata, validateRegistry() at module load. (5) NEW FILE app/src/app/(marketing)/youtube/page.tsx - public hub page, server component, fully static, BreadcrumbList JSON-LD, honest empty-state for episodes (mirrors /builders pattern). (6) EDITED app/src/components/blocks/signature-footer.tsx - added 'Alex's Diary on YouTube' link grouped after /press. (7) ADDED traffic_secrets.youtube_channel block to state.json. (8) This revision_history entry. (9) EDITED workbook 09 §1 SKIP table 'YouTube (host)' entry to note faceless supersession + pointer to the new canonical doc. (10) NEW MEMORY project_unlocksaas_youtube_channel.md + MEMORY.md index entry.",
       "rationale": "The Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md) identifies faceless YouTube as the cleanest net-new distribution channel that respects the solo-founder constraint that originally gated YouTube (host) at launch. Workbook 09 §1 skipped YouTube because founder-on-camera production breaks the time budget; faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) restores it. The Brunson Reluctant Hero archetype maps cleanly onto a diary format (present-tense, first-person, doing-the-work-on-camera), and the 30-episode arc gives the audience a real narrative end-state (first verified paying customer) that closes the loop with the locked offer's guarantee. No locked decision was re-litigated: offer / avatar / price / value ladder / launch-minimum-four channels all unchanged. The channel is additive. Anti-pattern explicitly avoided: zero fake episode counts in lib/youtube.ts (registry is empty pre-launch; hub page renders honest empty state), zero invented past episodes, E30 ('first paying customer') held until the real Stripe event fires per workbook 08 §3, no autonomous status flips to 'live' (operator-only).",
       "files": [
         "strategy/youtube-faceless-channel.md (NEW - canonical 10-section channel spec, ~110 lines)",
-        "strategy/youtube-marcos-diary-backlog.md (NEW - 30-episode locked arc across 5 phases)",
+        "strategy/youtube-founders-diary-backlog.md (NEW - 30-episode locked arc across 5 phases)",
         "strategy/youtube-production-runbook.md (NEW - tooling stack + per-episode operator checklist + kill switch)",
         "app/src/lib/youtube.ts (NEW - typed registry, UTM helpers, channel metadata, validateRegistry at module load)",
         "app/src/app/(marketing)/youtube/page.tsx (NEW - public hub page, server component, fully static)",
-        "app/src/components/blocks/signature-footer.tsx (added 'Marco's Diary on YouTube' link after /press)",
+        "app/src/components/blocks/signature-footer.tsx (added 'Alex's Diary on YouTube' link after /press)",
         "strategy/workbooks/09-fill-your-funnel.md (§1 SKIP-table 'YouTube (host)' entry updated with faceless supersession note)",
         "strategy/state.json (NEW traffic_secrets.youtube_channel block + this revision_history entry)",
         "memory: project_unlocksaas_youtube_channel.md (NEW)",
@@ -2309,9 +2309,9 @@
       "follow_ups": [
         "Operator: register the YouTube channel and ship channel art (faceless aesthetic; no Maryan face).",
         "Operator: subscribe to ElevenLabs + Veo 3 + Descript (combined budget cap $80/mo per kill-criteria).",
-        "Operator: script the first month's backlog (E01-E08) under strategy/episodes/marcos-diary/ before publishing E01 (activation gate).",
+        "Operator: script the first month's backlog (E01-E08) under strategy/episodes/founders-diary/ before publishing E01 (activation gate).",
         "Operator: dry-run the full production runbook on an E00 throwaway before publishing E01.",
-        "Operator: once channel art + first 8 scripts + dry-run all done, promote E01 from backlog to lib/youtube.ts MARCOS_DIARY_EPISODES with status='live' and youtube_url set."
+        "Operator: once channel art + first 8 scripts + dry-run all done, promote E01 from backlog to lib/youtube.ts FOUNDERS_DIARY_EPISODES with status='live' and youtube_url set."
       ]
     },
     {
@@ -2404,7 +2404,7 @@
       "date": "2026-05-17",
       "scope": "Facebook channel strategy locked - Traffic Secrets Secret #10 (Facebook) lifted from N/A to 100",
       "change": "Created strategy/facebook-channel.md - four-phase evidence-gated channel strategy (Phase 0 OFF at launch; Phase 1 pixel + Conversions API + 3 custom audiences at 3 verified customer cycles; Phase 2 retargeting + lookalike-from-buyers at 50 paying customers with two ad creative families (Story Re-entry + Verified Builder Proof) and ~$208/mo budget cap; Phase 3 cold prospecting at 100 paying customers gated by 4 CAC/retention conditions with two cold-allowed creative families (Parable-Led + Bridge Long-Form); Phase 4 Conversation Domination amplification at 200 customers). Added traffic_secrets.facebook_channel block to state.json mirroring the doc with all phases, ad families, audiences, kill criteria, code pre-stage paths, env vars per phase, and full Brunson Hard-Rule reconciliation matrix (10 rules). Updated workbooks/09-fill-your-funnel.md Section 1 SKIP table Facebook entry and Section 6 platform-playbook Facebook entry from one-word stubs ('Same' / 'Likely never') to full evidence-gated descriptions pointing at the new doc. Launch position (X + IH + Reddit + r/microsaas + r/SaaS unchanged) deliberately preserved - this is additive, not replacement.",
-      "rationale": "Founder ran the v2 Russell-Brunson chapter-by-chapter audit; Traffic Secrets Secret #10 carried over as N/A from v1 with 'Correctly skipped' rationale. That scoring was structurally lossy - it conflated *deliberately gated* with *unconsidered*. Founder instructed: 'Proceed autonomously to get 100%.' Right read of 100 matches the established pattern: Affiliate Army (workbook 10 Section 3 N/A to 100 at 50 customers), Summit Funnel (DCS Secret #16 N/A to 100 at 3 verified), Funnel Stacking (DCS Secret #27 N/A to 100 with 8-layer architecture), Product Launch Funnel (DCS Secret #21 N/A to 100 with founding-cohort PLF live). Facebook is fully specified with evidence triggers, creative families with Reluctant Hero voice + identity guardrails, budget caps tied to 10-percent-of-MRR discipline (workbook 09 Section 5), kill criteria protecting against Marco-verbatim 'FB ads don't work' experience (dollar-objections.md:100), and pre-stage code paths ready for one-PR activation at each trigger. The 100 is structurally appropriate; operational 100 requires Phase 3 trigger fire + measured CAC, which is correctly gated behind 100 paying customers and the 4 retention conditions.",
+      "rationale": "Founder ran the v2 Russell-Brunson chapter-by-chapter audit; Traffic Secrets Secret #10 carried over as N/A from v1 with 'Correctly skipped' rationale. That scoring was structurally lossy - it conflated *deliberately gated* with *unconsidered*. Founder instructed: 'Proceed autonomously to get 100%.' Right read of 100 matches the established pattern: Affiliate Army (workbook 10 Section 3 N/A to 100 at 50 customers), Summit Funnel (DCS Secret #16 N/A to 100 at 3 verified), Funnel Stacking (DCS Secret #27 N/A to 100 with 8-layer architecture), Product Launch Funnel (DCS Secret #21 N/A to 100 with founding-cohort PLF live). Facebook is fully specified with evidence triggers, creative families with Reluctant Hero voice + identity guardrails, budget caps tied to 10-percent-of-MRR discipline (workbook 09 Section 5), kill criteria protecting against Alex-verbatim 'FB ads don't work' experience (dollar-objections.md:100), and pre-stage code paths ready for one-PR activation at each trigger. The 100 is structurally appropriate; operational 100 requires Phase 3 trigger fire + measured CAC, which is correctly gated behind 100 paying customers and the 4 retention conditions.",
       "files_touched": [
         "strategy/facebook-channel.md (NEW - canonical four-phase doc)",
         "strategy/state.json (NEW traffic_secrets.facebook_channel block + this revision_history entry)",
@@ -2502,17 +2502,17 @@
     {
       "date": "2026-05-17",
       "scope": "Traffic Secrets Secret #1 score push from 96 to 100",
-      "change": "Triggered by user instruction 'Proceed autonomously to 100%' on the row 'Who Is Your Dream Customer 95 96 Marco is the founder. Best possible answer.' from the v2 Brunson Trilogy audit. Identified the precise 4-point gap: workbook 08 §1 was a cross-reference stub ('Already locked. Workbook 01 Section 1 Q1.') — the four-quadrant header existed but the Russell-canonical Traffic Secrets Chapter 1 depth (10-question framework, day-in-the-life by hour, avatar-level congregation map distinct from Dream 100 gates, before/after, identity statement, verbatim quote bank, surface-usage table) was not built. Shipped: (1) strategy/dream-customer-avatar.md as the canonical avatar dossier at full Russell depth — 10 sections, ~420 lines, with surface-by-surface usage table mapping every page/email/engine prompt back to a dossier section; (2) workbook 08 §1 rewritten from cross-reference stub to a real section pointing at the dossier with table of contents and key-takeaway; (3) workbook 08 status footer bumped to v4 referencing the dossier; (4) state.json traffic_secrets.dream_customer_avatar block added with status, path, depth, sections inventory, validation evidence, open items, audit_delta; (5) this revision_history entry. Per-section close: +1 for full 10-question framework completion (dossier §1); +1 for day-in-the-life by hour (dossier §2); +1 for avatar-level congregation map distinct from Dream 100 (dossier §3); +1 for before/after paragraphs + Marco-voice identity statement (dossier §4 + §6).",
-      "rationale": "The audit verdict 'Marco is the founder. Best possible answer.' captured the Q1 strength but missed that Q1 in Russell's framework is only the header. Secret #1 of Traffic Secrets demands the full demographic + psychographic + day-in-the-life + secret-desires + inoculation-map + identity + before/after build, with verbatim-quote validation, distinct from the Dream 100 gate map (Secret #2). The dossier supplies that depth as a single load-bearing artifact rather than scattered across workbook 01 §1 Q1 + workbook 01 §6 AC + dollar-objections.md + the 10-conversation notes — and adds a surface-usage table so future audits grade copy by 'echoes which dossier section' rather than by guess.",
+      "change": "Triggered by user instruction 'Proceed autonomously to 100%' on the row 'Who Is Your Dream Customer 95 96 Alex is the founder. Best possible answer.' from the v2 Brunson Trilogy audit. Identified the precise 4-point gap: workbook 08 §1 was a cross-reference stub ('Already locked. Workbook 01 Section 1 Q1.') — the four-quadrant header existed but the Russell-canonical Traffic Secrets Chapter 1 depth (10-question framework, day-in-the-life by hour, avatar-level congregation map distinct from Dream 100 gates, before/after, identity statement, verbatim quote bank, surface-usage table) was not built. Shipped: (1) strategy/dream-customer-avatar.md as the canonical avatar dossier at full Russell depth — 10 sections, ~420 lines, with surface-by-surface usage table mapping every page/email/engine prompt back to a dossier section; (2) workbook 08 §1 rewritten from cross-reference stub to a real section pointing at the dossier with table of contents and key-takeaway; (3) workbook 08 status footer bumped to v4 referencing the dossier; (4) state.json traffic_secrets.dream_customer_avatar block added with status, path, depth, sections inventory, validation evidence, open items, audit_delta; (5) this revision_history entry. Per-section close: +1 for full 10-question framework completion (dossier §1); +1 for day-in-the-life by hour (dossier §2); +1 for avatar-level congregation map distinct from Dream 100 (dossier §3); +1 for before/after paragraphs + Alex-voice identity statement (dossier §4 + §6).",
+      "rationale": "The audit verdict 'Alex is the founder. Best possible answer.' captured the Q1 strength but missed that Q1 in Russell's framework is only the header. Secret #1 of Traffic Secrets demands the full demographic + psychographic + day-in-the-life + secret-desires + inoculation-map + identity + before/after build, with verbatim-quote validation, distinct from the Dream 100 gate map (Secret #2). The dossier supplies that depth as a single load-bearing artifact rather than scattered across workbook 01 §1 Q1 + workbook 01 §6 AC + dollar-objections.md + the 10-conversation notes — and adds a surface-usage table so future audits grade copy by 'echoes which dossier section' rather than by guess.",
       "files_changed": [
         "strategy/dream-customer-avatar.md (NEW, canonical dossier)",
         "strategy/workbooks/08-your-dream-customer.md (§1 rewritten; status v3 → v4)",
         "strategy/state.json (traffic_secrets.dream_customer_avatar block added; revision_history prepended; skill_08_status bumped)"
       ],
-      "audit_delta": "Traffic Secrets Secret #1: 96/100 → 100/100. Composite Brunson Trilogy audit score: not materially changed by this single chapter (sub-score Traffic Secrets 74 → 74.2; composite 78 → 78.0 rounded) — but the chapter that captured 'Marco is the founder' as the entire answer now has Russell-canonical depth that compounds into every customer-facing surface via the dossier §8 usage table.",
+      "audit_delta": "Traffic Secrets Secret #1: 96/100 → 100/100. Composite Brunson Trilogy audit score: not materially changed by this single chapter (sub-score Traffic Secrets 74 → 74.2; composite 78 → 78.0 rounded) — but the chapter that captured 'Alex is the founder' as the entire answer now has Russell-canonical depth that compounds into every customer-facing surface via the dossier §8 usage table.",
       "ceiling_risks_at_100": [
         "Private 10-conversation re-mine (Slack DMs / Gmail threads / Granola recordings) still pending — refines dossier §1.6 (inner monologue verbatims) and §4.1 (Before-state phrasing) from 'directionally accurate' to 'verbatim.' 5-10% confidence haircut on §1.6, §4.1, §5 until done. At 90 days unaddressed, re-introduces a 2-point haircut.",
-        "Field validation by first cold-visitor 'this is me' DM still pending — the dossier is graphite-on-paper accurate until a real Marco reads it and confirms. Until that DM arrives, the score holds at 100 by construction; after it arrives, the score is durable. At 90 days post-launch without a single 'this is me' message, re-introduces a 2-point haircut."
+        "Field validation by first cold-visitor 'this is me' DM still pending — the dossier is graphite-on-paper accurate until a real Alex reads it and confirms. Until that DM arrives, the score holds at 100 by construction; after it arrives, the score is durable. At 90 days post-launch without a single 'this is me' message, re-introduces a 2-point haircut."
       ],
       "follow_ups": [
         "When the private re-mine completes, update dossier §1.6 + §4.1 + §5 with verbatim quotes (replacing the directionally-accurate language).",
@@ -2614,7 +2614,7 @@
         "strategy/state.json"
       ],
       "follow_ups": [
-        "Dogfood Steps 1+2 end-to-end as Marco on the live deploy to confirm the persist + email side-effects fire under real production conditions.",
+        "Dogfood Steps 1+2 end-to-end as Alex on the live deploy to confirm the persist + email side-effects fire under real production conditions.",
         "Engine prompt v2: now that the validator harness defaults REJECT, sharpen the Step-3 (AC) and Step-4 (Copy) prompts against polished-bio drift — current prompts are Brunson-correct but the harness was the bottleneck.",
         "PDF export of the deliverable as a Sprint 3+ enhancement (text-download + inbox already cover the Brunson keepable-rule; PDF is polish)."
       ]
@@ -2726,8 +2726,8 @@
     {
       "date": "2026-05-17",
       "scope": "Brunson audit follow-up — Dream 100 Category 2 LOCKED + podcast warm-up plan",
-      "change": "Closed the Q2 weakness flagged in the chapter-by-chapter audit ('Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up'). (1) Filled rows 31-40 of strategy/dream-100.csv with 10 specific influencer names selected for Marco-avatar overlap: Anthony Castrio (Indie Worldwide), Damon Chen (Testimonial.to), Hassan El Mghari/Nutlope, Tibo Louis-Lucas (Tweet Hunter), Mubashar Iqbal/Mubs, Rob Walling (Microconf/TinySeed), Sahil Lavingia (Gumroad), Pat Walls (Starter Story), Justin Jackson (Transistor.fm), Joel Gascoigne (Buffer). Mixed 5 vibe-coder / AI-builder ICP entries (31-35) with 5 bootstrapper-authority entries (36-40). (2) Added §3 podcast warm-up plan to workbook 08 with 5 Tier-1 pre-launch targets — Software Social (Schnettler/Hansen), Build Your SaaS (Jackson/Buda), The Bootstrapped Founder (Kahl), Startup Ideas (Isenberg), Microconf On Air (Walling) — each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions. Enforced pitch readiness gate (do not pitch until first verified-customer cycle closes — pitch is the case study, not the framework). (3) Verified that the parallel build agent already shipped the diagnostic squeeze page (replaced Sprint 2 placeholder) and the $49 Playbook long-form sales page (replaced Sprint 3 placeholder) — the audit's #1 and #5 highest-leverage code fixes are now live in the worktree. (4) Updated traffic_secrets.dream_100.status, traffic_secrets.dream_100.categories.influencers, progress.skill_08_status, progress.founder_open_items_pre_launch (removed influencer-fill open item; added warm-up reps as new ongoing items).",
-      "rationale": "Audit (acting as Russell Brunson, full Secrets Trilogy chapter-by-chapter) scored the project 63/100 — strategy 91, execution 62, market validation 5. Secret Formula Q1-Q4 was scored 92, dragged by Q2's 10 empty influencer slots and zero warmed podcasts. Ran under 'proceed autonomously' instruction. Influencer names chosen by mapping Marco's locked avatar (non-engineer / AI builder / post-launch pre-revenue / flat Stripe / Lovable+Claude shipper) against publicly-visible audience density, weighted for reachability via X DM (workbook 09 §1 primary channel). Podcast warm-ups chosen for lead-time fit (smaller indie pods first, premium pods last) and host alignment with Reluctant Hero voice — Brunson-style 'work your way in' before any pitch.",
+      "change": "Closed the Q2 weakness flagged in the chapter-by-chapter audit ('Dream 100 has 10 empty influencer slots and zero podcasts confirmed as warmed up'). (1) Filled rows 31-40 of strategy/dream-100.csv with 10 specific influencer names selected for Alex-avatar overlap: Anthony Castrio (Indie Worldwide), Damon Chen (Testimonial.to), Hassan El Mghari/Nutlope, Tibo Louis-Lucas (Tweet Hunter), Mubashar Iqbal/Mubs, Rob Walling (Microconf/TinySeed), Sahil Lavingia (Gumroad), Pat Walls (Starter Story), Justin Jackson (Transistor.fm), Joel Gascoigne (Buffer). Mixed 5 vibe-coder / AI-builder ICP entries (31-35) with 5 bootstrapper-authority entries (36-40). (2) Added §3 podcast warm-up plan to workbook 08 with 5 Tier-1 pre-launch targets — Software Social (Schnettler/Hansen), Build Your SaaS (Jackson/Buda), The Bootstrapped Founder (Kahl), Startup Ideas (Isenberg), Microconf On Air (Walling) — each with documented contact path, pitch angle, lead time, and pre-pitch warm-up actions. Enforced pitch readiness gate (do not pitch until first verified-customer cycle closes — pitch is the case study, not the framework). (3) Verified that the parallel build agent already shipped the diagnostic squeeze page (replaced Sprint 2 placeholder) and the $49 Playbook long-form sales page (replaced Sprint 3 placeholder) — the audit's #1 and #5 highest-leverage code fixes are now live in the worktree. (4) Updated traffic_secrets.dream_100.status, traffic_secrets.dream_100.categories.influencers, progress.skill_08_status, progress.founder_open_items_pre_launch (removed influencer-fill open item; added warm-up reps as new ongoing items).",
+      "rationale": "Audit (acting as Russell Brunson, full Secrets Trilogy chapter-by-chapter) scored the project 63/100 — strategy 91, execution 62, market validation 5. Secret Formula Q1-Q4 was scored 92, dragged by Q2's 10 empty influencer slots and zero warmed podcasts. Ran under 'proceed autonomously' instruction. Influencer names chosen by mapping Alex's locked avatar (non-engineer / AI builder / post-launch pre-revenue / flat Stripe / Lovable+Claude shipper) against publicly-visible audience density, weighted for reachability via X DM (workbook 09 §1 primary channel). Podcast warm-ups chosen for lead-time fit (smaller indie pods first, premium pods last) and host alignment with Reluctant Hero voice — Brunson-style 'work your way in' before any pitch.",
       "files_touched": [
         "strategy/dream-100.csv",
         "strategy/state.json",
@@ -2874,16 +2874,16 @@
     "funnelfixer_status": "DEAD - domain access lost permanently. This product replaces it.",
     "q1_validation_status": "VERIFIED (avatar is a real, validated person: founder-self + 10+ real founder conversations). CAVEAT: founder's interpretation of those interviews was thin - extracted a known pattern, not a model-updating surprise. OFFER-STAGE TODO (PARTIAL 2026-05-17): public-source dollar-objection mine COMPLETE - 30+ verbatim quotes from 6 IH/HN threads documented in strategy/dollar-objections.md, mapped to 7 objection categories with $49 FAQ + disqualifying copy + engine pushback assignments. Surfaced one NEW External Belief (#6 'build it myself') not in workbook 06 - add on next revision pass. STILL PENDING (launch-critical): re-mine Maryan's PRIVATE 10-conversation set in Slack DMs / Gmail threads / Granola recordings - requires authenticated MCP access; the private set likely contains more niche-specific dollar language than the public mine.",
     "q1_received": "2026-05-16T13:50:34.827645",
-    "product_design_constraint": "Marco cannot code. HARD LAW for everything downstream: the SaaS must be fully usable by a non-developer and all copy must assume zero technical fluency. Also a positioning wedge - most funnel/marketing tooling quietly assumes technical comfort.",
+    "product_design_constraint": "Alex cannot code. HARD LAW for everything downstream: the SaaS must be fully usable by a non-developer and all copy must assume zero technical fluency. Also a positioning wedge - most funnel/marketing tooling quietly assumes technical comfort.",
     "secret_formula_q2_q4_status": "LOCKED. All four Secret Formula questions signed off by founder.",
     "secret_formula": "COMPLETE - Q1-Q4 locked. Workbook page written to workbooks/01-sales-funnel-secrets.md.",
     "current_exercise": "Unlock the Secrets workbook (Steps 1-10, ALL 10 chapters) COMPLETE. Next phase: BUILD via BUILD-PROMPT-CLAUDE-CODE.md.",
     "attractive_character_completion": "AC exercise ran 2026-05-16 in five beats (Identity Type, Backstory, Parables, Character Flaws, Polarity), each locked sequentially with founder confirmation. Reluctant Hero identity locked with founder's stated anchor reason: honesty makes it sustainable. Final beat (Polarity) accepted under 'proceed autonomously' instruction.",
     "steps_2_3_4_completion": "Steps 2 (Funnels in the Value Ladder), 3 (Funnel Scripts), and 4 (Building Your Funnels) completed 2026-05-16 under 'proceed autonomously with every chapter' instruction. Foundation from Step 1 was strong enough to map funnel types, write launch-critical scripts, and produce page-by-page build specs without further founder Q+A. Build order locked: $1 Starter first, then Free Diagnostic, then $49 Playbook. Outreach Step 5 send-vs-track resolution carried forward. Funnel Hacking slot reserved but deferred. Expert Secrets and Traffic Secrets (Skills 5-10) deliberately not run pre-build: Brunson's own sequence is ship-funnel first, then build movement, then drive traffic.",
-    "offer_diagnostic": "Founder (who IS Marco) could not name a single thing Marco would pay for, and could add nothing from the 10 conversations. This mirrors Marco's own documented disease (avoids the customer, reasons toward answers). Re-engagement move: ask founder to answer AS Marco - what promise would make him pay tonight. That sentence becomes the offer spine.",
+    "offer_diagnostic": "Founder (who IS Alex) could not name a single thing Alex would pay for, and could add nothing from the 10 conversations. This mirrors Alex's own documented disease (avoids the customer, reasons toward answers). Re-engagement move: ask founder to answer AS Alex - what promise would make him pay tonight. That sentence becomes the offer spine.",
     "delivery_model": "Founder states community moderation and audits will be run by AI agents (consistent with Sipi/OpenClaw/Mac Mini infrastructure). Accepted as founder's call. NOTE: AI handles LABOR, not the guaranteed RESULT - the guarantee rests on whether the playbook reliably produces a paying customer.",
     "guarantee_risk_flag": "A guaranteed RESULT on a self-serve $39 tool is risky - founder does not control whether the user does the work. Needs an airtight work-requirement OR the guarantee lives on a higher-touch tier of the value ladder.",
-    "product_design_implication": "Guarantee mechanics force the product spec: outreach/work happens inside the tool (trackable), Stripe integration verifies the result. Teaching-only = dead bait for Marco; doing-environment = new opportunity.",
+    "product_design_implication": "Guarantee mechanics force the product spec: outreach/work happens inside the tool (trackable), Stripe integration verifies the result. Teaching-only = dead bait for Alex; doing-environment = new opportunity.",
     "economics_flag": "The guarantee makes the offer a BET on the playbook's success rate. Profitability rides on the % of users who do the verified work and get a paying customer. High success rate = rocket; low = slow bankruptcy via refunds + serving costs.",
     "bonus_selection_lens": "Bonuses must be Step 5 accelerators - friction-killers, momentum, accountability. Anything that makes a scared founder press send.",
     "value_ladder_note": "Founder asked about lower tiers. CORRECTION logged: it is ascension, not 'lower ladders' - free/lower tiers are on-ramps that funnel UP to the $49 core. Sequencing: lock the $49 core offer (destination) FIRST, then map rungs. Value Ladder is the next workbook exercise.",
@@ -2907,7 +2907,7 @@
     "skill_05_status": "COMPLETE. Movement components, manifesto v1, Verified Builders identity (canonical / SSR default, LOCKED 2026-05-17; 50/50 A/B against Paid Builders LIVE in production code, awaiting Vercel deploy to start collecting exposures), framework named (The Playbook).",
     "skill_06_status": "COMPLETE. Full Epiphany Bridge (7-element), Hero's Two Journeys, Four Core Stories (Vehicle + 4 Internal + 5 External + 3 chain breakers).",
     "skill_07_status": "COMPLETE. Big Domino locked, Three Secrets fully scripted, full Stack and Closes inventory, 12 trial closes, urgency/scarcity deliberately rejected.",
-    "skill_08_status": "COMPLETE v4 (Secret #1 dossier shipped 2026-05-17). Canonical Russell-canonical avatar dossier at strategy/dream-customer-avatar.md — 10 Traffic Secrets Chapter 1 questions, day-in-the-life by hour, avatar-level congregation map distinct from Dream 100 gates, before/after paragraphs, Marco-voice identity statement, 12-quote verbatim language bank with distribution map to copy surfaces, surface-by-surface usage table, validation evidence. Closes Traffic Secrets Secret #1 from 96 → 100. Dream 100 list across 7 categories — all 100 rows now have specific names + URLs + work-in plans. CSV at strategy/dream-100.csv. Podcast warm-up plan in workbook 08 §3: 5 pre-launch targets (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) with documented contact path, pitch angle, lead time, pre-pitch warm-up actions. Pitch readiness gate: do not send the pitch until first verified-customer cycle closes — pitch is the case study, not the framework. Deployable outreach kit at strategy/dream-100-outreach.md: §0 master rules, §1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1), §2 20 per-influencer dossiers in 4 ICP-overlap tiers (each with handle, recent canon, warm-up reps, ready-to-send DM template), §3 5 Tier-1 podcast pitch templates with per-host angles, §4 5 integration partner pitches (Lovable, Stripe, IH, Bootstrapped Founder, Kit), §5 tracking table schema with controlled vocabulary, §6 affiliate army one-pager (deferred to 50+ customers per workbook 10 §3), §7 honest scope of what kit does NOT do. Sender identity locked to maryan@unlocksaas.com per email-identity memory; sending requires per-message Maryan confirmation via scripts/mail.py or manual X DM.",
+    "skill_08_status": "COMPLETE v4 (Secret #1 dossier shipped 2026-05-17). Canonical Russell-canonical avatar dossier at strategy/dream-customer-avatar.md — 10 Traffic Secrets Chapter 1 questions, day-in-the-life by hour, avatar-level congregation map distinct from Dream 100 gates, before/after paragraphs, Alex-voice identity statement, 12-quote verbatim language bank with distribution map to copy surfaces, surface-by-surface usage table, validation evidence. Closes Traffic Secrets Secret #1 from 96 → 100. Dream 100 list across 7 categories — all 100 rows now have specific names + URLs + work-in plans. CSV at strategy/dream-100.csv. Podcast warm-up plan in workbook 08 §3: 5 pre-launch targets (Software Social, Build Your SaaS, Bootstrapped Founder, Startup Ideas, Microconf On Air) with documented contact path, pitch angle, lead time, pre-pitch warm-up actions. Pitch readiness gate: do not send the pitch until first verified-customer cycle closes — pitch is the case study, not the framework. Deployable outreach kit at strategy/dream-100-outreach.md: §0 master rules, §1 4-week launch cadence (Mon-Fri shape, 5-DM/week cap per workbook 09 §1), §2 20 per-influencer dossiers in 4 ICP-overlap tiers (each with handle, recent canon, warm-up reps, ready-to-send DM template), §3 5 Tier-1 podcast pitch templates with per-host angles, §4 5 integration partner pitches (Lovable, Stripe, IH, Bootstrapped Founder, Kit), §5 tracking table schema with controlled vocabulary, §6 affiliate army one-pager (deferred to 50+ customers per workbook 10 §3), §7 honest scope of what kit does NOT do. Sender identity locked to maryan@unlocksaas.com per email-identity memory; sending requires per-message Maryan confirmation via scripts/mail.py or manual X DM.",
     "skill_09_status": "COMPLETE. Launch-minimum (X + IH/Reddit). JK5 categories. Paid ad activation criteria. Phase 2 platform playbook noted. Cross-reference added to strategy/google-strategy.md for Secret #11 Google surface coverage (Traffic Secrets §2).",
     "skill_10_status": "COMPLETE. Funnel Hub specced (build at launch). Solo ad ROI calculator. Integration partner list. Affiliate program (deferred to 50+ customers). Eugene Schwartz mapping. Butterfly marketing plays. Three-phase growth map.",
     "unlock_the_secrets_workbook": "COMPLETE. All 10 chapters of the Brunson Secrets Trilogy distilled. Ready to build.",
@@ -2926,7 +2926,7 @@
     ]
   },
   "design_principles": [
-    "Framework into the engine, not onto the user: every Brunson concept added to the product goes in as engine intelligence, not as another task/form for Marco. The product's value is that it KNOWS the framework so the avoidant founder does not have to."
+    "Framework into the engine, not onto the user: every Brunson concept added to the product goes in as engine intelligence, not as another task/form for Alex. The product's value is that it KNOWS the framework so the avoidant founder does not have to."
   ],
   "parked_decisions": {
     "quantum_value_pricing": {

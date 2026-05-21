@@ -36,7 +36,7 @@ silence you're describing is the line on my Stripe dashboard.
 
 I'm not writing because I want anything. I'm writing because the
 specific phrasing in that paragraph is the cleanest version of
-the problem I've watched ten other Marco-shaped founders sit
+the problem I've watched ten other Alex-shaped founders sit
 inside, and I keep mailing it to people instead of explaining
 in my own words.
 
@@ -60,14 +60,14 @@ This is the indie equivalent of what Embedded Entrepreneur was for
 audience-first. Different frame, same mechanic: "find your people
 before they find you."
 
-The Marco-shaped founders I sit with hit this wall around month 6.
+The Alex-shaped founders I sit with hit this wall around month 6.
 They've shipped, the line is flat, and the work they keep skipping
 is the work this thread names. Useful to have a clean reference URL.
 ```
 
 **Notes:**
 - References both Anthony's current post AND a known canonical Anthony work (Embedded Entrepreneur frame). The bridge between two of his works is a stronger signal than a generic compliment.
-- Names "Marco-shaped founders" without explaining the term, treats Anthony as someone who'd recognize the pattern. This is a small frame-test: if he replies asking who Marco is, the warm-up is working.
+- Names "Alex-shaped founders" without explaining the term, treats Anthony as someone who'd recognize the pattern. This is a small frame-test: if he replies asking who Alex is, the warm-up is working.
 
 #### Rep 3 – DM with parable (Day -7)
 
@@ -88,7 +88,7 @@ What broke the loop for me wasn't a tool. It was hearing my own
 story back in someone else's mouth – which is exactly what
 happens in a community like Indie Worldwide.
 
-A question, not a pitch: when you watch the Marco-shaped indie
+A question, not a pitch: when you watch the Alex-shaped indie
 hackers in your community burn months on tactic-shopping, what's
 the single thing you've seen actually break them out of it?
 
@@ -185,7 +185,7 @@ slightly different problem. None of us had pinned one real person and written
 one specific promise to them.
 
 I named the imaginary average composite, the way you name a pet you're keeping
-at arm's length. Marco. I started writing as if Marco were the only person who
+at arm's length. Alex. I started writing as if Alex were the only person who
 would ever read the page. The offer wrote itself in about two hours.
 
 That was the work I'd skipped.
@@ -225,7 +225,7 @@ become the answer to whatever you write next.
 ```
 
 **Why this works for Anthony's list:**
-- Indie Worldwide's audience is the closest one-to-one match for Marco. The "ten founders" passage is the mirror Anthony's readers want to hold up to themselves.
+- Indie Worldwide's audience is the closest one-to-one match for Alex. The "ten founders" passage is the mirror Anthony's readers want to hold up to themselves.
 - The Embedded-Entrepreneur audience-first frame is honored (the "imagined audience" passage).
 - The honest pre-revenue disclosure ("zero verified Stripe-cycle customers myself") puts the parable above the offer.
 - Byline link is the only call to action. The body has zero promotional surface.
@@ -517,7 +517,7 @@ Background: ten founder mirror conversations through 2025-2026. The
 pattern repeated across niches, backgrounds, and tools. Same flat
 line. Same shelf of half-built things.
 
-A question, not a pitch: what's the moment a Marco-shaped indie
+A question, not a pitch: what's the moment a Alex-shaped indie
 hacker in your audience actually internalizes the audience-first
 frame, in your experience? My current theory is that it happens
 when they hear their own avoidance from a different founder's

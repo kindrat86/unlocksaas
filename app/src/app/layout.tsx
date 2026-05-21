@@ -79,7 +79,7 @@ const THIRD_PARTY_ORIGINS = {
 
 // Mobile-first viewport. `viewportFit: cover` lets the page paint under
 // iOS notches; padding then uses safe-area-inset via Tailwind utilities.
-// `maximumScale: 5` (not 1) preserves accessibility — Marco's avatar
+// `maximumScale: 5` (not 1) preserves accessibility — the avatar
 // includes older eyes that pinch-zoom.
 export const viewport: Viewport = {
   width: "device-width",

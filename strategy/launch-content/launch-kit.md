@@ -205,7 +205,7 @@
 **Hook (single tweet):**
 > Shipping a funnel for non-engineer founders this week. The funnel diagnoses why your launch is flat in one of three ways: Wrong Person, Weak Offer, Weak Belief.
 >
-> The honest part: I built it on myself first. Step 1 produced Marco. Step 2 produced the offer for the page itself. Step 3 produced this voice. The page is the artifact.
+> The honest part: I built it on myself first. Step 1 produced Alex. Step 2 produced the offer for the page itself. Step 3 produced this voice. The page is the artifact.
 >
 > 👇 (/diagnostic)
 >
@@ -399,7 +399,7 @@ This post is not written yet — it gets written *the moment a Stripe webhook fi
 
 **Workbook 09 §1 rule:** &ldquo;DM 5 Dream 100 individuals per week (Category 2). One question per DM. No pitches.&rdquo;
 
-These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py` — these go through X, not email). Each one targets a Category 2 (Influencers) entry from `strategy/dream-100.csv` rows 31–35, picked for highest audience overlap with Marco.
+These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py` — these go through X, not email). Each one targets a Category 2 (Influencers) entry from `strategy/dream-100.csv` rows 31–35, picked for highest audience overlap with Alex.
 
 **Universal rules per DM:**
 - Reluctant Hero voice. No swagger. No name-dropping. No &ldquo;I love your work&rdquo; opener (transparent flattery).
@@ -411,7 +411,7 @@ These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py`
 
 ## DM #1 — Anthony Castrio (Indie Worldwide)
 
-**Why him:** Runs Indie Worldwide — the most pure-ICP community for Marco. Highest priority warm-up per CSV note.
+**Why him:** Runs Indie Worldwide — the most pure-ICP community for Alex. Highest priority warm-up per CSV note.
 
 **Opener:**
 > Hey Anthony — I&apos;ve been listening in on a few Indie Worldwide threads lately. One pattern I keep seeing is post-launch founders with flat Stripe lines who think the problem is the product (not the offer or the outreach). Have you noticed the same in the community, or am I projecting? Genuine curiosity — trying to figure out if this is a niche or a category.
@@ -422,7 +422,7 @@ These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py`
 
 ## DM #2 — Damon Chen (Testimonial.to)
 
-**Why him:** Bootstrapped B2B SaaS in public. His audience contains many Marcos.
+**Why him:** Bootstrapped B2B SaaS in public. His audience contains many Alexes.
 
 **Opener:**
 > Hey Damon — followed your Testimonial.to journey closely. One question I&apos;ve been chewing on for non-engineer founders: at what point in your arc did you stop iterating on the product and start spending most of your hours asking people to pay for it? I&apos;m trying to map when that switch happens for founders shipping with AI tools today. Any honest read appreciated.
@@ -433,7 +433,7 @@ These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py`
 
 ## DM #3 — Hassan El Mghari / Nutlope
 
-**Why him:** Highest-velocity AI builder on X. Has shipped RoomGPT, Restorephotos, etc. Massive overlap with the vibe-coder Marco demographic.
+**Why him:** Highest-velocity AI builder on X. Has shipped RoomGPT, Restorephotos, etc. Massive overlap with the vibe-coder Alex demographic.
 
 **Opener:**
 > Hey Hassan — you ship faster than almost anyone in AI products. One thing I&apos;m trying to figure out from the outside: when you launch a new project, do you have a default outreach motion you fire (specific people you DM, posts you make), or is it &ldquo;ship the tweet thread and see what happens&rdquo;? Asking because I&apos;m mapping what post-launch motion looks like for AI builders right now. Whatever you can share, no pressure.
@@ -444,7 +444,7 @@ These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py`
 
 ## DM #4 — Tibo Louis-Lucas (Tweet Hunter / Taplio)
 
-**Why him:** Build-in-public arc visible and emulated by Marco. Has shipped multiple SaaS products.
+**Why him:** Build-in-public arc visible and emulated by Alex. Has shipped multiple SaaS products.
 
 **Opener:**
 > Hey Tibo — the build-in-public arc you ran on Tweet Hunter is one of the cleanest I&apos;ve seen as an outside observer. One question: looking back, was there a specific moment when you knew the product had &ldquo;clicked&rdquo; vs &ldquo;just shipped&rdquo;? I&apos;m trying to understand what the actual signal was — whether it was a metric, a conversation, or just a feeling. Whatever&apos;s honest is what I want.
@@ -455,7 +455,7 @@ These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py`
 
 ## DM #5 — Mubashar Iqbal / Mubs
 
-**Why him:** Multi-product indie hacker icon. Classic Marco shape (many shipped products, looking for the one that compounds).
+**Why him:** Multi-product indie hacker icon. Classic Alex shape (many shipped products, looking for the one that compounds).
 
 **Opener:**
 > Hey Mubs — you&apos;ve shipped more products than almost anyone in this space. One question I can&apos;t answer for myself yet: of all the products you&apos;ve launched, was there a pattern that distinguished the ones that earned money from the ones that got praise but didn&apos;t? I&apos;m mapping the praise-vs-payment split right now and your portfolio is the most useful evidence base I can think of. Any honest read appreciated.
@@ -468,7 +468,7 @@ These are draft DMs to send via the X DM compose flow (not via `scripts/mail.py`
 
 **For X threads:**
 1. Compose in X native — don&apos;t paste-import (loses formatting).
-2. Post in the morning ET window (highest reach for Marco audience).
+2. Post in the morning ET window (highest reach for Alex audience).
 3. Reply to every comment within 4 hours on Day 1. After that, daily check-ins.
 4. If a thread crosses 50 likes, repost with the lead tweet pinned.
 

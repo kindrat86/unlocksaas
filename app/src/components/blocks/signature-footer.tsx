@@ -21,9 +21,9 @@ export function SignatureFooter() {
       <div className="max-w-2xl mx-auto">
         <div className="space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed mb-10">
           <p>
-            I&apos;m Maryan. I built this because I was Marco — a non-engineer
-            who shipped products nobody paid for, and refused to look at the
-            flat Stripe line for almost a year.
+            I&apos;m Maryan. I built this because I was that founder – a
+            non-engineer who shipped products nobody paid for, and refused
+            to look at the flat Stripe line for almost a year.
           </p>
           <p>
             The Playbook is what I wish someone had handed me back then. If you
@@ -69,7 +69,7 @@ export function SignatureFooter() {
               The numbers
             </Link>
             {/*
-              Marco's Diary — the faceless YouTube channel (channel #5,
+              The Founder's Diary – the faceless YouTube channel (channel #5,
               additive to the locked launch-minimum-four). Grouped with the
               other founder-authored content surfaces (Press = mentions of
               him; this = his own series) rather than the legal column.
@@ -79,7 +79,7 @@ export function SignatureFooter() {
               href="/youtube"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
             >
-              Marco&apos;s Diary on YouTube
+              The Founder&apos;s Diary on YouTube
             </Link>
             <Link
               href="/faq"

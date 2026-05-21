@@ -22,7 +22,7 @@ A movement needs a NAMED, REPEATABLE process. The framework is the artifact of t
 
 **The Playbook.** 7 steps. Capital M. Pin Dream Customer, Build Offer, Define Attractive Character, Write Copy, Generate Outreach Assets, Do Outreach (tracked), Convert and Verify (Stripe).
 
-Why this name: it is mechanical, repeatable, anti-vibes. Marco distrusts "wisdom" and trusts mechanisms. "The Playbook" signals: this is not a course, not a framework you nod at. It is something you RUN.
+Why this name: it is mechanical, repeatable, anti-vibes. Alex distrusts "wisdom" and trusts mechanisms. "The Playbook" signals: this is not a course, not a framework you nod at. It is something you RUN.
 
 ### What members do with the framework
 
@@ -32,7 +32,7 @@ Why this name: it is mechanical, repeatable, anti-vibes. Marco distrusts "wisdom
 
 ### Framework-into-the-engine (the design law, restated)
 
-The framework lives in the engine, not on the user. Marco does not "learn" The Playbook. He completes it. Teaching happens after the Stripe charge lands, when the win is the testimony.
+The framework lives in the engine, not on the user. Alex does not "learn" The Playbook. He completes it. Teaching happens after the Stripe charge lands, when the win is the testimony.
 
 ---
 
@@ -54,13 +54,13 @@ A movement survives in the niche, not the submarket. "Online business" is not sp
 
 ## Section 4: Secret #4, The New Opportunity (the single most important move)
 
-Marco is not in the market for an "improvement" (more traffic, better SEO, better landing pages). He has tried those. They failed him. An improvement offer activates the same false beliefs that already failed him, and he rejects on contact.
+Alex is not in the market for an "improvement" (more traffic, better SEO, better landing pages). He has tried those. They failed him. An improvement offer activates the same false beliefs that already failed him, and he rejects on contact.
 
 What works: a NEW OPPORTUNITY. A different category entirely.
 
 ### The opportunity switch
 
-| Old opportunity (what Marco rejects) | New opportunity (what Unlock SaaS sells) |
+| Old opportunity (what Alex rejects) | New opportunity (what Unlock SaaS sells) |
 |---|---|
 | Learn more marketing | Run a Playbook that does the marketing FOR you |
 | Validate your idea (before building) | Verify a paying customer (after building) |
@@ -72,7 +72,7 @@ What works: a NEW OPPORTUNITY. A different category entirely.
 
 > "I am not offering you better marketing. I am offering you a playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay."
 
-That is a new opportunity. Marco has not tried this category. His defenses are not pre-built.
+That is a new opportunity. Alex has not tried this category. His defenses are not pre-built.
 
 ---
 

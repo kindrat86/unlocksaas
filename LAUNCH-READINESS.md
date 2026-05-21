@@ -224,7 +224,7 @@ done.
 8. **Re-mine private 10-conversation founder set** for niche-specific
    dollar-objection language via Slack DMs / Gmail threads / Granola
    recordings. Append findings to `strategy/dollar-objections.md`. This
-   replaces the public IH/HN proxies with verbatim language from Marco-
+   replaces the public IH/HN proxies with verbatim language from Alex-
    adjacent real founders.
 
 ### Tier 3 — first 100 visitors

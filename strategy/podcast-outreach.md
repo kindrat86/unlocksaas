@@ -1,8 +1,8 @@
 # Podcast Outreach Plan — Top 5 Dream 100 Pitches
 
 **Source list:** workbook 08 §2 Category 3 (15 podcast candidates).
-**Selection lens:** smallest distance + tightest avatar fit, NOT biggest audience. Per workbook 08 §4, the trade matters more than reach — Marco's people congregate tightly, so 5,000 right listeners beats 200,000 generic ones.
-**Voice on every email:** Reluctant Hero. Lead with what Marco — not Maryan — is going through.
+**Selection lens:** smallest distance + tightest avatar fit, NOT biggest audience. Per workbook 08 §4, the trade matters more than reach — Alex's people congregate tightly, so 5,000 right listeners beats 200,000 generic ones.
+**Voice on every email:** Reluctant Hero. Lead with what Alex — not Maryan — is going through.
 **Signature on all emails:** `— Maryan, maryan@unlocksaas.com` (per Attractive Character sender identity, locked).
 
 ---
@@ -13,7 +13,7 @@ The instinct is to pitch the biggest podcast first. Wrong move. Per workbook 08 
 
 **Ranking order:** Bootstrapped Founder → Software Social → Indie Hackers → Build Your SaaS → Startup Ideas with Greg Isenberg.
 
-Bootstrapped Founder is #1 because Arvid Kahl's audience IS Marco. He's been preaching customer-centricity to indie hackers for years. The trade is symmetrical — Maryan's story validates his thesis with a fresh proof point and a new generation of builders (AI-shipped).
+Bootstrapped Founder is #1 because Arvid Kahl's audience IS Alex. He's been preaching customer-centricity to indie hackers for years. The trade is symmetrical — Maryan's story validates his thesis with a fresh proof point and a new generation of builders (AI-shipped).
 
 Greg Isenberg's show is #5 — biggest pull, weakest fit and longest warm-up distance. He'll be a Month 3 pitch, not Week 1.
 
@@ -26,7 +26,7 @@ Greg Isenberg's show is #5 — biggest pull, weakest fit and longest warm-up dis
 | **Host** | Arvid Kahl |
 | **Typical episode length** | 15-25 min (solo episodes) + occasional 45-60 min interviews |
 | **Estimated audience** | ~12,000 podcast listeners + 30,000+ newsletter subscribers |
-| **Why Marco listens** | Arvid has been the most consistent voice in indie SaaS preaching "find your customer before you build." His audience is literally post-launch pre-revenue founders looking for the next step. Marco subscribes to the newsletter. |
+| **Why Alex listens** | Arvid has been the most consistent voice in indie SaaS preaching "find your customer before you build." His audience is literally post-launch pre-revenue founders looking for the next step. Alex subscribes to the newsletter. |
 | **What Arvid gets** | A clean validation of his decade-long thesis from an unexpected angle — the AI-shipped builder. A fresh story he hasn't heard 100 times. A guest who can name specific failure patterns (not theory). Bonus: Maryan can cite his work directly and credit him publicly. |
 
 ### Pitch email
@@ -72,7 +72,7 @@ That moment is the episode. If it's a fit, my calendar is wide open.
 | **Hosts** | Colleen Schnettler + Michele Hansen |
 | **Typical episode length** | 30-45 min |
 | **Estimated audience** | ~8,000-10,000 listeners |
-| **Why Marco listens** | Two operators talking honestly about the unglamorous parts of building a SaaS while it's still small. Michele wrote Deploy Empathy, which is literally about customer conversations. Colleen ships and sells. Marco trusts both because neither is selling him a course. |
+| **Why Alex listens** | Two operators talking honestly about the unglamorous parts of building a SaaS while it's still small. Michele wrote Deploy Empathy, which is literally about customer conversations. Colleen ships and sells. Alex trusts both because neither is selling him a course. |
 | **What Michele + Colleen get** | A guest whose story validates Michele's customer-research book in a contemporary AI-builder context. A pattern they haven't covered yet (the SEO-as-avoidance angle). A founder still in the middle of the journey, not pretending to have figured everything out — fits the show's vibe exactly. |
 
 ### Pitch email
@@ -118,7 +118,7 @@ If now's not the right time, totally understood — but wanted to plant the angl
 | **Host** | Courtland Allen (or current rotation) |
 | **Typical episode length** | 60-90 min |
 | **Estimated audience** | ~50,000+ per episode |
-| **Why Marco listens** | The canonical indie hacker podcast. Marco discovered the community through it. Every founder he wants to be has been on it. |
+| **Why Alex listens** | The canonical indie hacker podcast. Alex discovered the community through it. Every founder he wants to be has been on it. |
 | **What Courtland gets** | A fresh narrative arc — most IH guests are MRR-success stories. Maryan's story is pre-success: the avoidant founder mid-pattern, with a contemporary AI-tooling angle that hasn't been covered enough. Episode could spark community discussion (good IH ratings driver). |
 
 ### Pitch email
@@ -160,7 +160,7 @@ One thing I didn't include in the first email: the parable I told at the end of 
 | **Hosts** | Justin Jackson + Jon Buda |
 | **Typical episode length** | 45-60 min |
 | **Estimated audience** | ~10,000-15,000 listeners |
-| **Why Marco listens** | Two real operators (Transistor.fm) talking about the unglamorous middle of building. Justin's been one of the most consistent voices for non-VC indie SaaS. Marco trusts the show because neither host is selling him a course. |
+| **Why Alex listens** | Two real operators (Transistor.fm) talking about the unglamorous middle of building. Justin's been one of the most consistent voices for non-VC indie SaaS. Alex trusts the show because neither host is selling him a course. |
 | **What Justin + Jon get** | A guest who fits the show's "real operators only" filter, with a contemporary angle (AI-shipped products) that distinguishes from the typical "I built a niche B2B SaaS" guest. Justin in particular has written about the "marketing-first founder" mindset, which Maryan's story directly extends. |
 
 ### Pitch email
@@ -206,7 +206,7 @@ If timing's off, no pressure. Wanted to give you the angle in case it makes the 
 | **Host** | Greg Isenberg |
 | **Typical episode length** | 45-75 min |
 | **Estimated audience** | ~80,000-150,000 per episode (largest of the five) |
-| **Why Marco listens** | Greg's been one of the loudest voices on the AI-builder economy and distribution-first thinking. The show actively covers the "vibe-coded products, no traffic" problem. |
+| **Why Alex listens** | Greg's been one of the loudest voices on the AI-builder economy and distribution-first thinking. The show actively covers the "vibe-coded products, no traffic" problem. |
 | **What Greg gets** | A specific narrative case for the "distribution-first" thesis he's been arguing. Maryan's story is concrete evidence of what happens when you skip distribution-first — flat Stripe for a year. Greg loves contrarian framings and Maryan brings one ("the bottleneck moved from building to selling, and nobody redrew the map"). |
 
 **Distance note:** This is the longest warm-up of the five. Greg's volume of pitches is high. The pitch must come AFTER demonstrable engagement on his content and ideally after Maryan has been on one or two of the other four shows on this list (Bootstrapped Founder or Build Your SaaS would be ideal warm-up credits to mention).

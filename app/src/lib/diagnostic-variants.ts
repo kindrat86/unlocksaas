@@ -217,7 +217,7 @@ export type ResolvedVariants = {
  * Map (primary_goal × bucket) to a headline variant.
  *
  * The most specific combinations win — "first_customer" × "customer_avoider"
- * is the modal Marco bucket and gets its own variant; everything else falls
+ * is the modal avatar bucket and gets its own variant; everything else falls
  * back to the primary_goal-only headline; if there's no primary_goal at all
  * (legacy row), we land on "default".
  */

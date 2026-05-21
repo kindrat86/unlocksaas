@@ -18,7 +18,7 @@ Before the first paying customer, run TWO channels and ignore all others. Master
 
 ### Channel 1: Twitter / X (build-in-public)
 
-**Why:** Marco lives here. Densest concentration of post-launch pre-revenue founders globally.
+**Why:** Alex lives here. Densest concentration of post-launch pre-revenue founders globally.
 
 **Cadence:**
 - 1 thread per week (Reluctant Hero parable from workbook 01 Section 6 Beat 3, expanded to thread form).
@@ -34,7 +34,7 @@ Before the first paying customer, run TWO channels and ignore all others. Master
 
 ### Channel 2: Indie Hackers + r/SaaS / r/microsaas
 
-**Why:** Marco's two highest-density forums after X.
+**Why:** Alex's two highest-density forums after X.
 
 **Cadence:**
 - 1 long-form post per week on Indie Hackers (parable expanded to 400 to 600 words).
@@ -49,13 +49,13 @@ Before the first paying customer, run TWO channels and ignore all others. Master
 
 | Channel | Why skipped |
 |---|---|
-| Instagram | Marco does not congregate here. |
-| Facebook | OFF at launch — Marco's density per dollar is ~1/10 of X; $0 MRR caps the 10%-of-MRR ad budget at $0; `strategy/dollar-objections.md:100` cites Marco-verbatim "FB ads don't work" experience. Full four-phase evidence-gated channel spec at `strategy/facebook-channel.md` (Phase 1 trigger: 3 verified customer cycles; Phase 2: 50 paying customers; Phase 3: 100 + CAC/retention gates; Phase 4: 200 customers for Conversation Domination amplification). |
-| TikTok | Possible Phase 2 if short-form video pulls Marco's audience; not at launch. |
+| Instagram | Alex does not congregate here. |
+| Facebook | OFF at launch — Alex's density per dollar is ~1/10 of X; $0 MRR caps the 10%-of-MRR ad budget at $0; `strategy/dollar-objections.md:100` cites Alex-verbatim "FB ads don't work" experience. Full four-phase evidence-gated channel spec at `strategy/facebook-channel.md` (Phase 1 trigger: 3 verified customer cycles; Phase 2: 50 paying customers; Phase 3: 100 + CAC/retention gates; Phase 4: 200 customers for Conversation Domination amplification). |
+| TikTok | Possible Phase 2 if short-form video pulls Alex's audience; not at launch. |
 | YouTube (host, founder-on-camera) | Phase 2 (UNCHANGED). Production cost too high pre-PMF. Full 4-condition activation rule at `strategy/decisions/youtube-channel-stance.md` (50+ customers + 3 evergreen tutorial topics + bandwidth + cohort/organic-pull). |
-| YouTube (host, **faceless**) | **SUPERSEDED 2026-05-21**: shipped as channel #5 ADDITIVE to the launch-minimum-four. Faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) restores the solo-founder constraint that originally gated the on-camera format. Series: Marco's Diary, 30-episode arc, $0 to first paying customer. Canonical doc: `strategy/youtube-faceless-channel.md`. Hub: `/youtube`. Source frame: Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md). |
+| YouTube (host, **faceless**) | **SUPERSEDED 2026-05-21**: shipped as channel #5 ADDITIVE to the launch-minimum-four. Faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) restores the solo-founder constraint that originally gated the on-camera format. Series: Alex's Diary, 30-episode arc, $0 to first paying customer. Canonical doc: `strategy/youtube-faceless-channel.md`. Hub: `/youtube`. Source frame: Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md). |
 | Google Ads | Phase 2. Cold-traffic conversion at $49 burns money pre-PMF. |
-| LinkedIn | Possible Phase 2 if B2B Marco-equivalent exists. Skip at launch. |
+| LinkedIn | Possible Phase 2 if B2B Alex-equivalent exists. Skip at launch. |
 | Podcasting (host) | Phase 2. Hard to produce, slow to compound. |
 | Podcasting (guest) | Allowed at launch but reactive only (accept invites, do not pitch). Deployable pitch kit at `strategy/podcast-outreach.md` — gate: first verified-customer cycle. |
 | YouTube (guest) | Allowed at launch (reactive accept any time; cold-outbound gated to first verified-customer). Deployable pitch kit at `strategy/youtube-outreach.md` — 7 channel dossiers (Riley Brown / Indy Dev Dan / Build Your SaaS / IH YouTube / Marc Lou contribution / Justin Welsh / Greg Isenberg). |
@@ -196,7 +196,7 @@ For Unlock SaaS, the four chapters reduce to:
 
 | Platform | Phase 2 role | First test |
 |---|---|---|
-| Instagram | Likely never (Marco does not live here) | Skip indefinitely unless data proves otherwise |
+| Instagram | Likely never (Alex does not live here) | Skip indefinitely unless data proves otherwise |
 | Facebook | Evidence-gated four-phase activation (Phase 1 pixel + Conversions API at 3 verified; Phase 2 retargeting + lookalike-from-buyers at 50 customers; Phase 3 cold prospecting at 100 + 4 CAC/retention gates; Phase 4 Conversation Domination amplification at 200) | Phase 1 first test = install Meta Pixel + Conversions API via Stripe webhook server-side, seed three custom audiences (warm / intent / buyer) from existing `diagnostic_leads` + `verified_conversions` rows, ZERO ads. Full spec at `strategy/facebook-channel.md` with ad creative families, kill criteria, and code pre-stage. |
 | Google (search) | Phase 2 paid + organic + AEO/GEO | See [strategy/google-strategy.md](../google-strategy.md). Surface A (organic) + Surface B (AEO/GEO) ship at launch via `app/src/app/sitemap.ts`, `app/src/app/robots.ts`, and schema.org JSON-LD on `/`, `/diagnostic`, `/playbook-sales`. Surface C (paid) deferred per §5 gates. |
 | YouTube | Phase 2 long-tail SEO (host) + active guesting at launch (kit at `strategy/youtube-outreach.md`) | Host: trigger conditions in `strategy/decisions/youtube-channel-stance.md` Part 1 (4 conditions, all required). Guest: Tier A pitches (Riley Brown + Indy Dev Dan) send Thu post-first-customer; Tier B-D follow per kit §A 4-week cadence. |
@@ -231,7 +231,7 @@ Each gets a deep dive in Brunson's full Traffic Secrets. For Unlock SaaS the lau
 | 50+ paying customers | Layer 1 expands to own podcast (founder-hosted weekly); paid retargeting tested |
 | 100+ cold opt-ins / week | A/B test channel-specific hooks for the same parable |
 
-Goal: Marco encounters the Reluctant Hero voice 7+ times across different surfaces, by accident, before he opts in. The MVP makes that measurable; the Phase 2 expansion makes it inevitable.
+Goal: Alex encounters the Reluctant Hero voice 7+ times across different surfaces, by accident, before he opts in. The MVP makes that measurable; the Phase 2 expansion makes it inevitable.
 
 See [strategy/conversation-domination.md](../conversation-domination.md) for the full Brunson Hard-Rule reconciliation table, the frequency-distribution SQL, the atomic-content workflow rules, and the activation-gate enumeration.
 

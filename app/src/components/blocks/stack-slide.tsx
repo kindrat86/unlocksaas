@@ -1,7 +1,7 @@
 /**
  * Stack Slide — Brunson Building Block #14 + Expert Secrets §3 Stack/Closes.
  *
- * The deliverable inventory. Every item that ships when a Marco-avatar founder
+ * The deliverable inventory. Every item that ships when an indie-founder avatar
  * upgrades from $0 (diagnostic) to $49/mo (full Playbook). The Stack does three
  * jobs in one block:
  *

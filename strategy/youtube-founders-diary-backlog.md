@@ -1,19 +1,19 @@
-# Marco's Diary — 30-Episode Backlog
+# Alex's Diary — 30-Episode Backlog
 
 **Status:** LOCKED 2026-05-21 as the initial 30-episode arc. Re-mined after E10 against actual analytics.
-**Series promise:** Marco goes from $0 to first verified paying customer, in public, in real time. Reluctant Hero archetype (workbook 02 §3).
+**Series promise:** Alex goes from $0 to first verified paying customer, in public, in real time. Reluctant Hero archetype (workbook 02 §3).
 
 **Arc structure:**
 
-| Episodes | Phase | Marco's emotional posture |
+| Episodes | Phase | Alex's emotional posture |
 |---|---|---|
 | E01–E05 | Setup | Acknowledges the flat Stripe line, takes the diagnostic, names the false belief |
-| E06–E15 | Doing The Machine | Steps 1–7 of the playbook with Marco's resistance shown beat-by-beat |
+| E06–E15 | Doing The Machine | Steps 1–7 of the playbook with Alex's resistance shown beat-by-beat |
 | E16–E25 | Outreach + objection-handling | Real DMs sent, real nos received, dollar-objection language excavated live |
 | E26–E29 | Cycle closes / cycle fails | Honest log of what's working, what isn't, what's getting cut |
 | E30 | First Paying Customer Verified | HELD until the real Stripe event fires (Brunson Hard-Rule: no fake proof) |
 
-Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_campaign=marcos-diary&utm_content=ep<NN>`.
+Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_campaign=founders-diary&utm_content=ep<NN>`.
 
 ---
 
@@ -28,13 +28,13 @@ Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_
 ### E02 · I took my own 90-second diagnostic. It said "Weak Offer." I disagreed.
 - **Hook:** "The tool said my offer was weak. I built the tool. I was furious."
 - **Brunson beat:** Story (false belief → bridge)
-- **Spine:** Screen-record the diagnostic run on the founder's own live product. Show the result. Show Marco's first reaction (denial), then the second (the work begins).
+- **Spine:** Screen-record the diagnostic run on the founder's own live product. Show the result. Show Alex's first reaction (denial), then the second (the work begins).
 - **B-roll:** diagnostic-run-screen-capture · score-card-result · post-it-with-WEAK-OFFER
 
 ### E03 · The most expensive sentence a founder ever says: "The problem is the product."
 - **Hook:** "I said this for nine months. It cost me nine months."
 - **Brunson beat:** Polarity (against-line)
-- **Spine:** Take down the most popular cope in the post-launch pre-revenue niche. Reluctant Hero authority: Marco earned the right to say this by being wrong about it for nine months.
+- **Spine:** Take down the most popular cope in the post-launch pre-revenue niche. Reluctant Hero authority: Alex earned the right to say this by being wrong about it for nine months.
 - **B-roll:** code-editor-shipping-features · cursor-deleting-paragraph
 
 ### E04 · The day I deleted my features page.
@@ -47,20 +47,20 @@ Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_
 - **Hook:** "I wrote my avatar's name on a sticky note. It's been on my monitor for eight months."
 - **Brunson beat:** Story
 - **Spine:** Workbook 01 §4 done live. Name one real person. The sticky note becomes a recurring on-screen prop for the rest of the series.
-- **B-roll:** sticky-note-being-written · monitor-with-sticky · marco-name-typed
+- **B-roll:** sticky-note-being-written · monitor-with-sticky · alex-name-typed
 
 ## Phase 2 — Doing The Machine (E06–E15)
 
 ### E06 · Step 1: pin the customer. The first time I said no to "founders."
 - **Hook:** "I tried to sell to 'founders' for a year. 'Founders' is not a person."
 - **Brunson beat:** Story (false belief)
-- **Spine:** The Machine Step 1 unpacked through Marco's mistakes.
+- **Spine:** The Machine Step 1 unpacked through Alex's mistakes.
 - **B-roll:** thesaurus-zoom-on-FOUNDER · narrowed-to-one-person
 
 ### E07 · Step 2: the irresistible offer. Mine wasn't.
 - **Hook:** "My offer was: pay me, maybe it'll help. That's not an offer."
 - **Brunson beat:** Story
-- **Spine:** Walk the rewrite of one offer using workbook 04. End on Marco's draft vs the rewrite, both on screen.
+- **Spine:** Walk the rewrite of one offer using workbook 04. End on Alex's draft vs the rewrite, both on screen.
 - **B-roll:** offer-page-before · offer-page-after · value-stack-being-typed
 
 ### E08 · The guarantee I was scared to write.
@@ -81,7 +81,7 @@ Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_
 - **Spine:** Side-by-side comparison; Reluctant Hero arc. Mid-series checkpoint: name the public progress, name what's still flat, ask the audience to take the diagnostic if they recognise themselves.
 - **B-roll:** v1-page · v2-page · highlight-edits
 
-### E11 · Step 4: building the target list. (Or: how to find 100 people who feel exactly like Marco.)
+### E11 · Step 4: building the target list. (Or: how to find 100 people who feel exactly like Alex.)
 - **Hook:** "Dream 100 sounded like a brag. It's just a spreadsheet."
 - **Brunson beat:** Story
 - **Spine:** Workbook 08 §2 done live. Open Google Sheets, name names, search public X/IH posts to seed it.
@@ -106,7 +106,7 @@ Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_
 - **B-roll:** dm-reply-screenshot · stripe-still-flat
 
 ### E15 · The first paid lead magnet I rejected. (Why a free diagnostic beats every $7 trip-wire.)
-- **Hook:** "$7 trip-wires don't filter Marco. The diagnostic does."
+- **Hook:** "$7 trip-wires don't filter Alex. The diagnostic does."
 - **Brunson beat:** Polarity
 - **Spine:** Defend the locked free diagnostic against the cheap-tripwire orthodoxy.
 - **B-roll:** $7-product-cart · diagnostic-result-page
@@ -213,6 +213,6 @@ Every episode CTA links to `/diagnostic?utm_source=youtube&utm_medium=video&utm_
 ## Backlog hygiene rules
 
 - Re-mine this list after E10 with actual analytics. Drop bottom-3-retention episodes from the lineup; replace with rewrites of the top-3-retention.
-- New episode ideas land in `strategy/episodes/marcos-diary/_inbox.md` and graduate into a numbered slot only when a retired slot opens.
+- New episode ideas land in `strategy/episodes/founders-diary/_inbox.md` and graduate into a numbered slot only when a retired slot opens.
 - Never edit a published episode's `id` or `utm_content`. Those become permanent attribution keys.
 - The Brunson beat distribution across the 30 should hold roughly: Hook 4, Story 14, Offer 2, Polarity 7, Proof 3. Re-balance if drift exceeds ±2 in any beat.

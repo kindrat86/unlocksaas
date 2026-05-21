@@ -5980,7 +5980,7 @@ const COMPARISONS_LIST: Comparison[] = [
   //
   // Strategic rationale: every prior entry compares third-party tools. These
   // three entries make Unlock SaaS the named subject of comparison against the
-  // three categories the canonical Marco-avatar buyer evaluates in parallel:
+  // three categories the canonical indie-founder buyer evaluates in parallel:
   //   - ClickFunnels: the Brunson-flagship funnel platform, the obvious
   //     reference the buyer Googles after reading DotCom Secrets.
   //   - ShipFast: Marc Lou's $299 Next.js starter kit, the bootstrapped indie-
@@ -6263,12 +6263,12 @@ const COMPARISONS_LIST: Comparison[] = [
       b: "Founders in a unique or high-stakes situation (acquisition negotiation, co-founder breakup, regulatory pivot, sub-strategy on a $1M+ ARR business) where the value of a human pattern-matcher's live judgement outweighs any productized playbook.",
     },
     pickAIf: [
-      "Your situation matches the canonical Marco profile (post-launch, pre-revenue, indie SaaS, flat Stripe line) and you suspect the bottleneck is one of the three labelled flaws.",
+      "Your situation matches the canonical indie-founder profile (post-launch, pre-revenue, indie SaaS, flat Stripe line) and you suspect the bottleneck is one of the three labelled flaws.",
       "You want a code-enforced 60-day refund tied to a real Stripe charge, not a relational refund you have to renegotiate with a coach.",
       "You want the playbook on demand at $49/mo, not 60-minute calls priced for a buyer with VC funding.",
     ],
     pickBIf: [
-      "You are in a unique situation that does not fit the canonical Marco profile, and the value of a human reading your specifics outweighs the productized playbook.",
+      "You are in a unique situation that does not fit the canonical indie-founder profile, and the value of a human reading your specifics outweighs the productized playbook.",
       "You are at $10K+ MRR and the next decision is high-stakes (raise, sell, pivot, fire) where the cost of being wrong dwarfs the cost of the coach.",
       "You learn fastest through live pushback and real-time Socratic dialogue rather than written playbooks and self-directed work.",
     ],
@@ -6334,7 +6334,7 @@ const COMPARISONS_LIST: Comparison[] = [
     faqs: [
       {
         q: "Can Unlock SaaS replace a 1-on-1 coach?",
-        a: "For the canonical Marco profile, yes. For the founder in a unique high-stakes situation that does not fit the post-launch pre-revenue indie SaaS pattern, no — and the diagnostic itself will surface that mismatch quickly. The $49/mo playbook is built for the founder whose bottleneck matches one of the three labelled diagnoses; a coach is the right call when the bottleneck does not.",
+        a: "For the canonical indie-founder profile, yes. For the founder in a unique high-stakes situation that does not fit the post-launch pre-revenue indie SaaS pattern, no — and the diagnostic itself will surface that mismatch quickly. The $49/mo playbook is built for the founder whose bottleneck matches one of the three labelled diagnoses; a coach is the right call when the bottleneck does not.",
       },
       {
         q: "Why is Unlock SaaS one-to-two orders of magnitude cheaper than coaching?",

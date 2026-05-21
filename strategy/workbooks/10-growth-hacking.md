@@ -65,7 +65,7 @@ Activation: only when funnel data confirms inputs are real, not modeled.
 
 ### Messenger Ads
 
-DEFERRED indefinitely. Marco does not live in Messenger. The pattern (engagement to DM to soft pitch) does not match a $49 SaaS sale.
+DEFERRED indefinitely. Alex does not live in Messenger. The pattern (engagement to DM to soft pitch) does not match a $49 SaaS sale.
 
 ### Integration Marketing
 
@@ -118,9 +118,9 @@ When activated:
 
 ## Section 4: Secret #19, Cold Traffic (Eugene Schwartz Awareness)
 
-### Awareness Levels (mapped to Marco)
+### Awareness Levels (mapped to Alex)
 
-| Awareness | Description | Marco's version | Copy approach |
+| Awareness | Description | Alex's version | Copy approach |
 |---|---|---|---|
 | Unaware | Doesn't know problem exists | New founder pre-launch | DO NOT TARGET. Wrong avatar. |
 | Problem-aware | Knows there is a problem | Founder with flat Stripe; blames product | "Your launch is flat. Here is what is actually causing it." (curiosity hook) |
@@ -130,7 +130,7 @@ When activated:
 
 ### Cold-Traffic Avatar
 
-Different from sales avatar. Cold Marco is problem-aware. Has not read your story. Clicks on hooks that mirror his pain, not hooks that promise results.
+Different from sales avatar. Cold Alex is problem-aware. Has not read your story. Clicks on hooks that mirror his pain, not hooks that promise results.
 
 Cold-traffic hook priority (from workbook 01 Section 5):
 1. Hook #3 (pain mirror): highest cold-traffic CTR.

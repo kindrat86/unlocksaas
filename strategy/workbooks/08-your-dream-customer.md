@@ -12,7 +12,7 @@
 
 ## Section 1: Secret #1, Who Is Your Dream Customer (Cross-Reference)
 
-Already locked. Workbook 01 Section 1 Q1. Marco, 36, non-engineer, post-launch pre-revenue, flat Stripe, lives on build-in-public X, in r/SaaS, Indie Hackers, Lovable Discord.
+Already locked. Workbook 01 Section 1 Q1. Alex, 36, non-engineer, post-launch pre-revenue, flat Stripe, lives on build-in-public X, in r/SaaS, Indie Hackers, Lovable Discord.
 
 ---
 
@@ -22,7 +22,7 @@ Launch-critical asset. Workbook 04 Section 6 (Playbook Step 5 outreach) consumes
 
 ### What it is
 
-100 specific entries (people, communities, podcasts, newsletters, products, channels) where Marco already congregates. Organized in categories. Built once, mined forever.
+100 specific entries (people, communities, podcasts, newsletters, products, channels) where Alex already congregates. Organized in categories. Built once, mined forever.
 
 ### Dream 100 v1
 
@@ -61,16 +61,16 @@ Launch-critical asset. Workbook 04 Section 6 (Playbook Step 5 outreach) consumes
 28. Greg Isenberg (community-led growth)
 29. Sahil Bloom (audience overlap)
 30. Andrew Gazdecki (Acquire.com, micro-SaaS market)
-31. **Anthony Castrio** (Indie Worldwide founder — runs the community Marco congregates in; highest-priority warm-up)
+31. **Anthony Castrio** (Indie Worldwide founder — runs the community Alex congregates in; highest-priority warm-up)
 32. **Damon Chen** (Testimonial.to founder — bootstrapped B2B SaaS shipping in public; direct ICP)
 33. **Hassan El Mghari / Nutlope** (Restorephotos, RoomGPT — highest-velocity AI builder on X; vibe-coder audience)
-34. **Tibo Louis-Lucas** (Tweet Hunter / Taplio co-founder — build-in-public arc Marco emulates)
-35. **Mubashar Iqbal / Mubs** (multi-product indie hacker — classic many-shipped-products Marco shape)
-36. **Rob Walling** (Microconf + TinySeed — bootstrapper authority; older audience but Marco-respected)
+34. **Tibo Louis-Lucas** (Tweet Hunter / Taplio co-founder — build-in-public arc Alex emulates)
+35. **Mubashar Iqbal / Mubs** (multi-product indie hacker — classic many-shipped-products Alex shape)
+36. **Rob Walling** (Microconf + TinySeed — bootstrapper authority; older audience but Alex-respected)
 37. **Sahil Lavingia** (Gumroad + "The Minimalist Entrepreneur" — solopreneur philosophy; non-engineer-friendly voice)
 38. **Pat Walls** (Starter Story founder — massive audience of would-be / current indie hackers)
 39. **Justin Jackson** (Transistor.fm + MegaMaker — serious bootstrapper voice, podcaster)
-40. **Joel Gascoigne** (Buffer — OG transparent builder; long arc visible to Marco)
+40. **Joel Gascoigne** (Buffer — OG transparent builder; long arc visible to Alex)
 
 **Category 3: Podcasts (target 15)**
 
@@ -174,7 +174,7 @@ The audit flagged "zero podcasts confirmed as warmed up." Warming a podcast is a
 
 ### Engine logic
 
-The Playbook's Step 5 (outreach) pulls from the user's own Dream 100. For Unlock SaaS itself, the founder's Dream 100 above seeds Marco's list (heavy overlap). For other users (different niche), the engine asks the same six-category prompt and builds with them.
+The Playbook's Step 5 (outreach) pulls from the user's own Dream 100. For Unlock SaaS itself, the founder's Dream 100 above seeds Alex's list (heavy overlap). For other users (different niche), the engine asks the same six-category prompt and builds with them.
 
 ---
 
@@ -282,7 +282,7 @@ Under `traffic_secrets.dream_100`:
 
 - The 100-entry list above as structured array.
 - Category 2 individuals (entries 31 to 40) LOCKED 2026-05-17: Anthony Castrio, Damon Chen, Hassan El Mghari (Nutlope), Tibo Louis-Lucas, Mubashar Iqbal (Mubs), Rob Walling, Sahil Lavingia, Pat Walls, Justin Jackson, Joel Gascoigne. All carry `not_following` status — operator begins warm-up reps next.
-- Engine reads this to seed Playbook Step 5 outreach. The 20-action minimum for the guarantee is drawn FROM this list (engine picks top 20 most-relevant entries given Marco's niche).
+- Engine reads this to seed Playbook Step 5 outreach. The 20-action minimum for the guarantee is drawn FROM this list (engine picks top 20 most-relevant entries given Alex's niche).
 
 ## Status
 

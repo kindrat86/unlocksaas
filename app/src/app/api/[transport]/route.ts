@@ -1538,9 +1538,9 @@ const handler = createMcpHandler(
               text: [
                 `# UnlockSaaS – offer, value ladder, guarantee`,
                 "",
-                `**Who it is for:** post-launch pre-revenue indie SaaS founders. The avatar is Marco – ~36, non-engineer, shipped a product, flat Stripe line, has spent more time building than talking to a customer.`,
+                `**Who it is for:** post-launch pre-revenue indie SaaS founders – ~36, non-engineer, shipped a product, flat Stripe line, has spent more time building than talking to a customer.`,
                 "",
-                `**The promise:** Marco gets his first paying customer within ${GUARANTEE_WINDOW_DAYS} days of starting the paid Playbook, or full refund of the monthly payments made inside that window.`,
+                `**The promise:** the founder gets his first paying customer within ${GUARANTEE_WINDOW_DAYS} days of starting the paid Playbook, or full refund of the monthly payments made inside that window.`,
                 "",
                 `**Value ladder (3 rungs):**`,
                 `1. **Free Diagnostic** – paste your product URL + email. Engine returns Brunson label (Wrong Person / Weak Offer / Weak Belief), three-axis scorecard, copy rewrites, 30-day plan, competitor read, strengths summary, and browser-native PDF export. ${withRef("/diagnostic", "get_offer")}`,
