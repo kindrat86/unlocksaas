@@ -25,8 +25,6 @@ import {
  * sidebar needs the freshest copy.
  */
 
-export const runtime = "nodejs";
-
 export async function GET() {
   try {
     const supabase = await createClient();
