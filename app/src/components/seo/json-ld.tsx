@@ -65,7 +65,10 @@ import {
   FOUNDER_HAS_CREDENTIAL,
   FOUNDER_MEMBER_OF,
 } from "@/lib/seo/founder-credentials";
-import { buildCorrectionsItemList } from "@/lib/seo/corrections-log";
+import {
+  buildCorrectionsClaimReviews,
+  buildCorrectionsItemList,
+} from "@/lib/seo/corrections-log";
 import {
   buildPlaybookAggregateRating,
   type PlaybookAggregateRatingNode,
@@ -773,7 +776,26 @@ function buildPlaybookProductJson(opts?: {
   url: `${BASE}/playbook-sales`,
   inLanguage: "en-US",
   applicationCategory: "BusinessApplication",
+  applicationSubCategory: "First-paying-customer playbook for indie SaaS",
   operatingSystem: "Web",
+  // SoftwareApplication canonical-fill (2026-05-21 GEO uplift). The
+  // multi-typed Product/SoftwareApplication node already carries
+  // applicationCategory + operatingSystem; adding featureList +
+  // softwareVersion completes the SaaS-canonical SoftwareApplication
+  // signal AI Mode + Perplexity look for when answering "what SaaS
+  // helps me X" queries. Every featureList entry is a real, user-visible
+  // surface in the shipped product (Brunson Hard-Rule, no marketing
+  // adjectives masquerading as features).
+  featureList: [
+    "Free Hook-Story-Offer diagnostic with deep teardown and 30-day plan",
+    "Seven-step Playbook gated by Stripe-verified first paying customer",
+    "Soap Opera Sequence and daily Seinfeld email nurture",
+    "Verified Builders community gated to first-customer cycle graduates",
+    "60-day money-back guarantee enforced at refund time inside Stripe",
+    "Read-only MCP server exposing diagnostic, Playbook, and offer tools",
+    "Affiliate program at 50% lifetime revenue share on /r/<code> tracking",
+  ].join(", "),
+  softwareVersion: "2026-Q2",
   // areaServed: explicit "Worldwide" declaration on the Product /
   // SoftwareApplication / LearningResource node. Mirrors Service.areaServed
   // (diagnostic) and Organization.areaServed. The Brunson Hard-Rule check
@@ -1516,8 +1538,41 @@ const EDITORIAL_POLICY_JSON = JSON.stringify({
   },
 });
 
+/**
+ * Sibling ClaimReview nodes – one per confirmed correction in the
+ * registry. Hoisted at module load so per-render cost is zero; the
+ * EditorialPolicyArticleJsonLd component emits them as siblings of the
+ * Article block above.
+ *
+ * The list is empty until a real correction lands. An empty list emits
+ * zero <script> tags (the .map below returns an empty array), keeping
+ * the honest empty-state contract – no fabricated review nodes.
+ *
+ * Why ClaimReview in addition to the Article.correction ItemList
+ * --------------------------------------------------------------
+ * Schema.org/ClaimReview is the canonical fact-check type Google AI
+ * Mode + Bing Copilot + Perplexity look for when grading the
+ * truthfulness of named claims on a page. The Article.correction
+ * ItemList is a softer E-E-A-T signal that the site HAS a corrections
+ * surface; the ClaimReview nodes are the structured fact-check records
+ * themselves. Both surfaces coexist on /editorial-policy and resolve
+ * to the same correction rows via shared URL anchors.
+ */
+const EDITORIAL_POLICY_CLAIM_REVIEWS: ReadonlyArray<string> =
+  buildCorrectionsClaimReviews().map((node) => JSON.stringify(node));
+
 export function EditorialPolicyArticleJsonLd() {
-  return <JsonLdScript json={EDITORIAL_POLICY_JSON} />;
+  return (
+    <>
+      <JsonLdScript json={EDITORIAL_POLICY_JSON} />
+      {EDITORIAL_POLICY_CLAIM_REVIEWS.map((json, i) => (
+        <JsonLdScript
+          key={`claim-review-${i}`}
+          json={json}
+        />
+      ))}
+    </>
+  );
 }
 
 /**
