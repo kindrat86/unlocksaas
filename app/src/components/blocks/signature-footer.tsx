@@ -55,6 +55,20 @@ export function SignatureFooter() {
               Press
             </Link>
             {/*
+              /open – build-in-public transparency dashboard. Sits next to
+              Press in the trust column: Press = what others say, Open =
+              what the numbers say. Live MRR + subscriber + churn data,
+              refreshed on every paid Stripe event. Per the 2026 indie
+              distribution research, transparent revenue pages are the
+              dominant solo-founder trust signal.
+            */}
+            <Link
+              href="/open"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              The numbers
+            </Link>
+            {/*
               Marco's Diary — the faceless YouTube channel (channel #5,
               additive to the locked launch-minimum-four). Grouped with the
               other founder-authored content surfaces (Press = mentions of
