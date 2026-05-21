@@ -1118,6 +1118,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // they are crawler bait – but lastModified ties their freshness to
     // the build.
     // -------------------------------------------------------------------------
+    // AI training consent declaration (Spawning ai.txt spec, 2026-05-21).
+    // Listed so dataset aggregators walking sitemaps discover the explicit
+    // training-opt-out signal before ingesting. Priority 0.3 matches the
+    // llms.txt cluster (machine-readable policy surfaces, not user-facing
+    // pages). No image entry -- content is policy, not editorial.
+    {
+      url: `${base}/ai.txt`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
     {
       url: `${base}/llms.txt`,
       lastModified: now,

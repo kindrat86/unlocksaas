@@ -1610,3 +1610,47 @@ The funnel labels are: `the 5-email founder breakdown series` (soap_opera), `the
 ### Next coherent unit
 
 The matching follow-up is wiring an existing-state UI for the 34 paused carry-overs: a one-time admin endpoint that flips them to `active` and triggers their first Soap Opera email when you're ready to launch the re-engagement campaign. Until then, this PR makes new signups safer without disturbing the carry-over plan.
+
+---
+
+## 2026-05-21 -- AI crawler policy follow-up: sitemap + Claude-SearchBot + strategy doc
+
+**PR:** #101 (feat/ai-crawler-policy-followup)
+**Follows:** PR #99 (feat(seo): add ai.txt + purpose-based robots.txt bot policy)
+
+### What was added
+
+Additive follow-up to PR #99. Three gaps filled:
+
+1. **`/ai.txt` added to sitemap** (`app/src/app/sitemap.ts`) -- dataset
+   aggregators walking sitemaps now discover the training opt-out signal
+   before ingesting.
+
+2. **`Claude-SearchBot` + `Claude-User` added to robots.ts allow-list** --
+   these are distinct Anthropic user-agents confirmed in nohacks.co 2026
+   crawler report: Claude-SearchBot for retrieval indexing (independently
+   controllable from ClaudeBot), Claude-User for user-triggered fetches.
+   Both are search/answer-surface bots, not training-only.
+
+3. **`strategy/decisions/ai-crawler-policy.md`** -- decision doc recording
+   the two-layer policy rationale, full allow/block tables, user-agent
+   source, and file inventory.
+
+### Policy summary (as of PR #99 + #101)
+
+- **Allowed (robots.txt):** OAI-SearchBot, ChatGPT-User, ClaudeBot,
+  Claude-SearchBot (new), Claude-Web, Claude-User (new), anthropic-ai,
+  GoogleOther, PerplexityBot, Perplexity-User, Applebot, DuckAssistBot,
+  MistralAI-User, YouBot, cohere-ai, Bravebot, MojeekBot, Kagibot,
+  search.marginalia.nu
+- **Blocked (robots.txt):** GPTBot, Google-Extended, CCBot, Bytespider,
+  Meta-ExternalAgent, FacebookBot, Applebot-Extended, Amazonbot,
+  cohere-training-data-crawler, Diffbot
+- **Training opt-out (ai.txt):** all blocked bots + `*` catch-all
+
+### Files changed
+
+- `app/src/app/robots.ts` (added Claude-SearchBot + Claude-User)
+- `app/src/app/sitemap.ts` (added /ai.txt entry)
+- `strategy/decisions/ai-crawler-policy.md` (NEW)
+- `build-log.md` (this entry)
