@@ -1218,6 +1218,86 @@
       "canonical_doc": "strategy/facebook-channel.md",
       "next_review_trigger": "First Phase-1 trigger event (3rd verified customer cycle complete)"
     },
+    "youtube_channel": {
+      "status": "LOCKED 2026-05-21. Channel #5, ADDITIVE to the locked launch-minimum-four (X + IH + r/SaaS + r/microsaas). Canonical doc: strategy/youtube-faceless-channel.md.",
+      "launch_position": "ACTIVE pre-launch (gated). Reaffirmed: X + Indie Hackers + r/SaaS + r/microsaas remain the locked launch-minimum channels per workbook 09 §1; this YouTube spec is additive, not replacement. Workbook 09 §1 SKIP-table entry 'YouTube (host)' is superseded ONLY for the faceless format; founder-on-camera YouTube remains skipped indefinitely.",
+      "format": "faceless",
+      "source_frame": "Greg Isenberg faceless-YouTube formula + 2026 distribution playbook, layered on top of locked Brunson strategy. Tracked in memory/project_unlocksaas_isenberg_playbook.md.",
+      "why_faceless_unlocks_the_skip": "Workbook 09 §1 originally skipped YouTube (host) because founder-on-camera production breaks the solo-founder constraint. Faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) is scriptable + AI-producible + cheap to test, restoring the constraint.",
+      "channel_name": "Marco's Diary",
+      "tagline": "$0 to first paying customer, in public, in real time.",
+      "cadence": "2 episodes/week (Tuesday + Friday); cap at 3/week if backlog allows",
+      "episode_length_target_seconds": [240, 420],
+      "series_arc_episodes": 30,
+      "series_promise": "Marco goes from $0 to first verified paying customer, in public, in real time. Reluctant Hero archetype (workbook 02 §3).",
+      "hub_route": "/youtube",
+      "registry_path": "app/src/lib/youtube.ts",
+      "page_path": "app/src/app/(marketing)/youtube/page.tsx",
+      "footer_link_added": true,
+      "utm_convention": {
+        "utm_source": "youtube",
+        "utm_medium_values": ["video", "video-pinned-comment", "endscreen", "video-card"],
+        "utm_campaign": "marcos-diary",
+        "utm_content_format": "ep<NN> (zero-padded) | hub"
+      },
+      "stack_layer": 0,
+      "stack_layer_name": "ATTENTION (top of stack, cold traffic) per strategy/funnel-stack.md",
+      "activation_gates_before_e01": [
+        "Full month's backlog (8 episodes) scripted in strategy/episodes/marcos-diary/ before publishing E01",
+        "Production runbook dry-run once end-to-end on an E00 throwaway",
+        "Channel art + banner shipped (faceless aesthetic; no Maryan face)",
+        "YouTube channel description points at /youtube as canonical hub link"
+      ],
+      "kill_criteria": [
+        "10 episodes shipped, zero /diagnostic UTM opt-ins attributed to youtube -> PAUSED (not killed); re-evaluate against launch-minimum-four",
+        "Per-episode production time stays above 4h after E05 -> the runbook isn't compressing; the channel is breaking the solo-founder constraint",
+        "Production tooling subscriptions exceed $80/mo total (ElevenLabs + Veo 3 + Descript + Figma) -> funding a hobby, not a channel",
+        "Voice-drift test fails: the founder-VSL script (strategy/founder-vsl-script.md) wouldn't sit naturally next to the latest episode -> retune"
+      ],
+      "promotion_gate_to_primary": "50+ verified opt-ins via youtube UTM. Until then, treat as additive support to launch-minimum-four, never replacement.",
+      "honesty_rules": {
+        "no_fake_subscriber_counts": true,
+        "no_invented_past_episodes": true,
+        "stripe_screenshots_must_be_real": true,
+        "e30_held_until_real_first_paying_customer_event": true,
+        "operator_flips_episode_status_to_live_not_autonomous": true
+      },
+      "what_does_not_ship_at_launch": [
+        "Live-streaming (host-on-camera): deferred indefinitely (founder-on-camera constraint unchanged)",
+        "YouTube Shorts: deferred until 10 long-form episodes shipped",
+        "Sponsored slots / paid YouTube ads: gated on Phase 2 paid-ad activation criteria (paid_ad_activation_criteria block)",
+        "Comment moderation as customer support: pinned comment redirects to maryan@unlocksaas.com"
+      ],
+      "tooling_stack_locked": {
+        "script": "Markdown in repo (strategy/episodes/marcos-diary/EXX-*.md)",
+        "voice_over": "ElevenLabs (single locked voice, 'Marco' preset)",
+        "b_roll": "Veo 3 (preferred) -> Hailuo (fallback)",
+        "screen_recordings": "macOS screencapture + ScreenStudio",
+        "thumbnail": "Figma (one template, layered)",
+        "edit": "Descript (script-first)",
+        "captions": "Descript auto + manual pass",
+        "upload": "YouTube Studio (manual; never auto-upload pre-flight check)"
+      },
+      "operator_time_per_episode_minutes_steady_state": 120,
+      "operator_time_per_episode_minutes_first_three_eps": 330,
+      "brunson_rules_reconciled": [
+        "One Funnel Away (DCS #26): anchor funnel unchanged; every episode CTA points at /diagnostic",
+        "Lean Ladder (workbook 02): no new product, no new price point; YouTube feeds the existing free-diagnostic squeeze",
+        "Reluctant Hero voice (workbook 02 §3): present-tense diary, 'I shipped, the line is flat, I am doing the work anyway'",
+        "Framework Into Engine (workbook 04): episodes show the work, never teach the framework; visitors discover the framework by watching it execute",
+        "No Fake Scarcity (workbook 07 §3): no countdown timers, no fabricated 'limited time' frames",
+        "No Fake Proof (workbook 08 §3): Stripe screenshots are real; E30 'first paying customer' episode is HELD until the real event fires",
+        "Polarity discipline (Cookbook Swipe 6): every episode states one against-line - which advice it rejects, in Marco's own voice",
+        "Don't re-litigate locked decisions: launch-minimum-four unchanged; YouTube is additive only; offer/avatar/price/value-ladder untouched",
+        "Honest claims: any customer testimonial or revenue figure requires written re-permission per episode (same standard as funnel-hackers-cookbook.md Swipe 6)",
+        "No em dash (repo-wide rule): scripts + titles + descriptions all en dash; pre-flight check runs grep before scheduling"
+      ],
+      "audit_delta": "Traffic Secrets Secret #15 follow-on: workbook 09 §1 'YouTube (host)' skip is superseded for the faceless format. Channel #5 unlocked under the original solo-founder constraint by changing the production stack, not the constraint. Source-frame: Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md), layered on top of locked Brunson strategy.",
+      "canonical_doc": "strategy/youtube-faceless-channel.md",
+      "backlog_doc": "strategy/youtube-marcos-diary-backlog.md",
+      "production_runbook_doc": "strategy/youtube-production-runbook.md",
+      "next_review_trigger": "After E03 ships (review CTR + retention; adjust hook bank from workbook 01 §5 before continuing)"
+    },
     "growth_hacking": {
       "status": "COMPLETE. Written to workbooks/10-growth-hacking.md.",
       "funnel_hub": {
@@ -2209,6 +2289,31 @@
     "no_fake_scarcity_rule": "Cohort cap MUST be enforced by Stripe webhook reading row count BEFORE granting founding bonus. Frontend counter MAY lag DB by a few seconds (cache TTL 30s acceptable) but cap is non-negotiable. If 51st purchase fires, founding bonus is denied silently and subscription is still honored at $49/mo evergreen."
   },
   "revision_history": [
+    {
+      "date": "2026-05-21",
+      "scope": "Channel #5 added: faceless YouTube (Marco's Diary). Additive to the locked launch-minimum-four (X + IH + r/SaaS + r/microsaas); workbook 09 §1 SKIP-table entry 'YouTube (host)' superseded ONLY for the faceless format.",
+      "change": "User instruction 'Proceed with this autonomously and then deploy everything autonomously' on the Isenberg-overlay recommendation 'Faceless YouTube channel. Adds a fifth channel to the locked X + IH + r/SaaS + r/microsaas mix; scriptable and AI-producible so the solo-founder constraint holds. Topic: Marco's diary $0 to first paying customer.' SHIPPED: (1) NEW FILE strategy/youtube-faceless-channel.md - canonical channel spec across 10 sections. (2) NEW FILE strategy/youtube-marcos-diary-backlog.md - 30-episode arc locked across 5 phases: Setup (E01-E05), Doing The Machine (E06-E15), Outreach + objection-handling (E16-E25), Cycle closes or fails (E26-E29), First Paying Customer Verified (E30, HELD until real event). (3) NEW FILE strategy/youtube-production-runbook.md - tooling stack (ElevenLabs / Veo 3 / Descript / Figma / YouTube Studio manual upload), per-episode operator checklist (~2h steady state), title + description templates with no-em-dash pre-flight, 8-surface repurposing per episode, kill-switch triggers. (4) NEW FILE app/src/lib/youtube.ts - typed MarcosDiaryEpisode interface, MARCOS_DIARY_EPISODES = [] (honest empty pre-launch), episodeDiagnosticUrl + hubDiagnosticUrl helpers stamping the canonical UTM, MARCOS_DIARY_CHANNEL metadata, validateRegistry() at module load. (5) NEW FILE app/src/app/(marketing)/youtube/page.tsx - public hub page, server component, fully static, BreadcrumbList JSON-LD, honest empty-state for episodes (mirrors /builders pattern). (6) EDITED app/src/components/blocks/signature-footer.tsx - added 'Marco's Diary on YouTube' link grouped after /press. (7) ADDED traffic_secrets.youtube_channel block to state.json. (8) This revision_history entry. (9) EDITED workbook 09 §1 SKIP table 'YouTube (host)' entry to note faceless supersession + pointer to the new canonical doc. (10) NEW MEMORY project_unlocksaas_youtube_channel.md + MEMORY.md index entry.",
+      "rationale": "The Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md) identifies faceless YouTube as the cleanest net-new distribution channel that respects the solo-founder constraint that originally gated YouTube (host) at launch. Workbook 09 §1 skipped YouTube because founder-on-camera production breaks the time budget; faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) restores it. The Brunson Reluctant Hero archetype maps cleanly onto a diary format (present-tense, first-person, doing-the-work-on-camera), and the 30-episode arc gives the audience a real narrative end-state (first verified paying customer) that closes the loop with the locked offer's guarantee. No locked decision was re-litigated: offer / avatar / price / value ladder / launch-minimum-four channels all unchanged. The channel is additive. Anti-pattern explicitly avoided: zero fake episode counts in lib/youtube.ts (registry is empty pre-launch; hub page renders honest empty state), zero invented past episodes, E30 ('first paying customer') held until the real Stripe event fires per workbook 08 §3, no autonomous status flips to 'live' (operator-only).",
+      "files": [
+        "strategy/youtube-faceless-channel.md (NEW - canonical 10-section channel spec, ~110 lines)",
+        "strategy/youtube-marcos-diary-backlog.md (NEW - 30-episode locked arc across 5 phases)",
+        "strategy/youtube-production-runbook.md (NEW - tooling stack + per-episode operator checklist + kill switch)",
+        "app/src/lib/youtube.ts (NEW - typed registry, UTM helpers, channel metadata, validateRegistry at module load)",
+        "app/src/app/(marketing)/youtube/page.tsx (NEW - public hub page, server component, fully static)",
+        "app/src/components/blocks/signature-footer.tsx (added 'Marco's Diary on YouTube' link after /press)",
+        "strategy/workbooks/09-fill-your-funnel.md (§1 SKIP-table 'YouTube (host)' entry updated with faceless supersession note)",
+        "strategy/state.json (NEW traffic_secrets.youtube_channel block + this revision_history entry)",
+        "memory: project_unlocksaas_youtube_channel.md (NEW)",
+        "memory: MEMORY.md (index entry added)"
+      ],
+      "follow_ups": [
+        "Operator: register the YouTube channel and ship channel art (faceless aesthetic; no Maryan face).",
+        "Operator: subscribe to ElevenLabs + Veo 3 + Descript (combined budget cap $80/mo per kill-criteria).",
+        "Operator: script the first month's backlog (E01-E08) under strategy/episodes/marcos-diary/ before publishing E01 (activation gate).",
+        "Operator: dry-run the full production runbook on an E00 throwaway before publishing E01.",
+        "Operator: once channel art + first 8 scripts + dry-run all done, promote E01 from backlog to lib/youtube.ts MARCOS_DIARY_EPISODES with status='live' and youtube_url set."
+      ]
+    },
     {
       "date": "2026-05-17",
       "scope": "Traffic Secrets Secret #8 (Fill Your Funnel Framework) — 78 to 100 close",

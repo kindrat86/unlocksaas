@@ -52,7 +52,8 @@ Before the first paying customer, run TWO channels and ignore all others. Master
 | Instagram | Marco does not congregate here. |
 | Facebook | OFF at launch — Marco's density per dollar is ~1/10 of X; $0 MRR caps the 10%-of-MRR ad budget at $0; `strategy/dollar-objections.md:100` cites Marco-verbatim "FB ads don't work" experience. Full four-phase evidence-gated channel spec at `strategy/facebook-channel.md` (Phase 1 trigger: 3 verified customer cycles; Phase 2: 50 paying customers; Phase 3: 100 + CAC/retention gates; Phase 4: 200 customers for Conversation Domination amplification). |
 | TikTok | Possible Phase 2 if short-form video pulls Marco's audience; not at launch. |
-| YouTube (host) | Phase 2. Production cost too high pre-PMF. Full 4-condition activation rule at `strategy/decisions/youtube-channel-stance.md` (50+ customers + 3 evergreen tutorial topics + bandwidth + cohort/organic-pull). |
+| YouTube (host, founder-on-camera) | Phase 2 (UNCHANGED). Production cost too high pre-PMF. Full 4-condition activation rule at `strategy/decisions/youtube-channel-stance.md` (50+ customers + 3 evergreen tutorial topics + bandwidth + cohort/organic-pull). |
+| YouTube (host, **faceless**) | **SUPERSEDED 2026-05-21**: shipped as channel #5 ADDITIVE to the launch-minimum-four. Faceless production (script + ElevenLabs VO + Veo 3 B-roll + Descript edit) restores the solo-founder constraint that originally gated the on-camera format. Series: Marco's Diary, 30-episode arc, $0 to first paying customer. Canonical doc: `strategy/youtube-faceless-channel.md`. Hub: `/youtube`. Source frame: Isenberg overlay (memory/project_unlocksaas_isenberg_playbook.md). |
 | Google Ads | Phase 2. Cold-traffic conversion at $49 burns money pre-PMF. |
 | LinkedIn | Possible Phase 2 if B2B Marco-equivalent exists. Skip at launch. |
 | Podcasting (host) | Phase 2. Hard to produce, slow to compound. |
