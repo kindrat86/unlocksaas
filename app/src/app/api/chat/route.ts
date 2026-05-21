@@ -8,7 +8,8 @@
  *
  * Uses AI SDK v6 + Vercel AI Gateway:
  *   - Vercel deployments: OIDC is automatic via the platform -- zero config.
- *   - Local dev: run `vercel env pull` to sync gateway credentials.
+ *   - Local dev: use `vercel dev` -- it injects OIDC tokens the same way
+ *     Vercel does in production, so the gateway works with zero extra setup.
  *
  * Model: latest Sonnet via gateway (verified 2026-05-21 -- see MODEL constant).
  */
