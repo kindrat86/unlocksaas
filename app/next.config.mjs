@@ -153,6 +153,17 @@ const nextConfig = {
       exclude: ["error", "warn"],
     },
   },
+
+  /**
+   * Turbopack configuration (Next.js 16+ default bundler).
+   *
+   * Empty config silences the "webpack config without turbopack config" error
+   * while allowing the build to proceed with Turbopack. The custom webpack
+   * config above (for c2pa-node external) is handled by withWorkflow wrapper
+   * which provides Turbopack equivalents.
+   */
+  turbopack: {},
+
   poweredByHeader: false,
 
   /**
