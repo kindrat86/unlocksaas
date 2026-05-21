@@ -194,6 +194,9 @@ async function FunnelHubBody() {
             {labels.manifestoTitle}
           </h2>
         </div>
+        <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+          Post-launch founders who built real products with AI tools, watched them flatline in Stripe, and refused to call it a product problem. We measure progress in Stripe charges, not in encouragement. The work nobody taught us to do -- name one real person, make one real promise, sell it before it felt ready -- is what this movement runs on.
+        </p>
         <blockquote className="text-muted-foreground space-y-4 leading-relaxed">
           <p>
             We are non-engineer founders who shipped real things with AI tools
