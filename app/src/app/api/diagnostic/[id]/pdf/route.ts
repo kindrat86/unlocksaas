@@ -99,16 +99,28 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
   const origin = siteOrigin(req);
 
   try {
-    // Render unsigned PDF
+    // Render unsigned PDF.
+    //
+    // Field-name contract: renderDiagnosticPdf accepts the snake_case shape
+    // declared by `DiagnosticPdfInput` (src/lib/c2pa/render-pdf.ts), which
+    // mirrors the diagnostic_leads row shape so the renderer can be passed
+    // a DB row almost verbatim. The earlier camelCase call site was a
+    // refactor regression from PR #122 (C2PA Content Credentials);
+    // explanation/evidence types are `string | null`, not coerced to "".
+    // `siteOrigin` is consumed by `buildDiagnosticManifest` below, not by
+    // the renderer. `bucket` is optional on the type; the consumer's row
+    // projection above omits it (the diagnostic_leads.bucket column is
+    // present but not queried here), so pass null.
     const pdfBuffer = await renderDiagnosticPdf({
-      diagnosticId: diagnosticRow.id,
-      productUrl: diagnosticRow.product_url,
+      id: diagnosticRow.id,
+      product_url: diagnosticRow.product_url,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       label: (diagnosticRow.label ?? "error") as any,
-      explanation: diagnosticRow.explanation ?? "",
-      evidence: diagnosticRow.evidence ?? "",
-      createdAt: diagnosticRow.created_at,
-      analysisDetail: diagnosticRow.analysis_detail,
-      siteOrigin: origin,
+      explanation: diagnosticRow.explanation,
+      evidence: diagnosticRow.evidence,
+      bucket: null,
+      created_at: diagnosticRow.created_at,
+      analysis_detail: diagnosticRow.analysis_detail,
     });
 
     // Build manifest for C2PA signing
@@ -122,8 +134,13 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
     // Sign the PDF (graceful fallback if signing is not configured)
     const signResult = await signPdf(pdfBuffer, manifest);
 
-    // Return the signed (or unsigned) PDF
-    return new NextResponse(signResult.pdf, {
+    // Return the signed (or unsigned) PDF.
+    //
+    // Buffer<ArrayBufferLike> is a structural Uint8Array at runtime and is
+    // a valid Web BodyInit, but Next 16's strict union types reject both
+    // Buffer and Uint8Array directly. Cast through `unknown as BodyInit`
+    // to satisfy the typecheck; the runtime accepts the binary view.
+    return new NextResponse(signResult.pdf as unknown as BodyInit, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

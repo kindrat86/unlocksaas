@@ -35,7 +35,7 @@
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { streamText } from "ai";
-import { model } from "@/lib/anthropic";
+import { model, MODEL_ID } from "@/lib/anthropic";
 
 export const FIRST_WIN_AGENT_KIND = "first_win_starter" as const;
 
@@ -387,7 +387,12 @@ export async function persistFirstWinRun(
       },
       output,
       duration_ms: durationMs,
-      model: MODEL,
+      // Store the canonical model id string (e.g. "anthropic/claude-sonnet-4.6")
+      // for per-row attribution. The `model` runtime instance is the
+      // LanguageModel object that streamText consumes; the string ID is what
+      // belongs in the agent_runs log row. Renamed from the pre-AI-SDK-v6
+      // `MODEL` symbol that no longer exists.
+      model: MODEL_ID,
     })
     .select("id")
     .maybeSingle();
