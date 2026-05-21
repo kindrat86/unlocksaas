@@ -25,7 +25,7 @@
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { generateText } from "ai";
-import { model } from "@/lib/anthropic";
+import { model, MODEL_ID } from "@/lib/anthropic";
 import { loadStepOutputs, type EngineStepId } from "@/lib/step-outputs";
 
 export const AGENT_KINDS = [
@@ -346,7 +346,7 @@ export async function persistAgentRun(
     input,
     output,
     duration_ms: durationMs,
-    model: primaryModel(),
+    model: MODEL_ID,
   });
   if (error) {
     console.error("[agents] persistAgentRun failed", {

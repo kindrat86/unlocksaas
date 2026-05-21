@@ -8,6 +8,7 @@ import { DiagnosticShareReferralTracker } from "@/components/analytics/diagnosti
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DiagnosticForm } from "./diagnostic-form";
+import { TldrBlock } from "@/components/tldr-block";
 import {
   DiagnosticJsonLd,
   DiagnosticWalkthroughVideoJsonLd,
@@ -181,6 +182,11 @@ async function DiagnosticSqueezePageBody(
         {/* AC three-line about. Workbook 01 §6 Beat 2. */}
         <section className="mb-10">
           <h2 className="text-lg font-bold mb-3">Who is reading your page</h2>
+          <TldrBlock>
+            I shipped five AI products with flat Stripe lines before I stopped
+            pretending the problem was the product. Now I help founders like you
+            name one real person and sell it before it feels ready.
+          </TldrBlock>
           <p className="text-sm text-muted-foreground leading-relaxed">
             I&apos;m a marketer. I have never written a line of production code.
             In 2026, Lovable and Claude opened the door and I shipped real AI
@@ -201,6 +207,12 @@ async function DiagnosticSqueezePageBody(
             contract and demotes voice-answer eligibility. */}
         <section className="aeo-diagnostic-howto mb-10">
           <h2 className="text-lg font-bold mb-3">What I am reading on your page</h2>
+          <TldrBlock>
+            Most flat SaaS pages fail for one of three reasons: they're aimed at
+            everyone (Wrong Person), they list features not results (Weak
+            Offer), or they assume belief the visitor doesn't have yet (Weak
+            Belief). I'll tell you which one.
+          </TldrBlock>
           <ul className="space-y-3 text-sm text-muted-foreground leading-relaxed">
             <li>
               <strong className="text-foreground">Wrong Person.</strong> Your
@@ -241,6 +253,11 @@ async function DiagnosticSqueezePageBody(
           >
             How the diagnostic works, in 90 seconds
           </h2>
+          <TldrBlock>
+            You paste a URL, answer four questions, and I spend five minutes
+            reading your page. Back comes a diagnosis – Wrong Person, Weak
+            Offer, or Weak Belief – plus the exact door to fix it.
+          </TldrBlock>
           <p className="text-sm text-muted-foreground leading-relaxed mb-3">
             You paste your product URL and answer four short questions. The diagnostic reads your page for three failure patterns: Wrong Person (copy aimed at a category, not a named individual), Weak Offer (features listed instead of a specific promised result), or Weak Belief (page assumes belief the visitor does not yet have). You get back a labeled diagnosis and one specific next step -- in under 90 seconds, at no cost.
           </p>

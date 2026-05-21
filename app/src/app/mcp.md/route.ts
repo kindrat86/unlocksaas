@@ -26,11 +26,11 @@ const MCP_URL = `${BASE_URL}/api/mcp`;
 
 const BODY = `# UnlockSaaS MCP server
 
-A read-only Model Context Protocol server that lets Claude, Cursor, Windsurf, and any other MCP-aware client diagnose a live SaaS landing page, pull structured data from the 157 funnel, pricing, alternative, comparison, and category teardowns UnlockSaaS publishes, and retrieve the structural Brunson canon (Dream 100 framework, four funnel archetypes, eight dollar-objection patterns with verbatim public source quotes) any indie founder can apply to their own niche.
+A Model Context Protocol server that lets Claude, Cursor, Windsurf, and any other MCP-aware client diagnose a live SaaS landing page, pull structured data from the 157 funnel, pricing, alternative, comparison, and category teardowns UnlockSaaS publishes, retrieve the structural Brunson canon (Dream 100 framework, four funnel archetypes, eight dollar-objection patterns with verbatim public source quotes), and (for authenticated founders) write back Playbook step progress.
 
 ## Endpoint
 
-One URL. Stateless Streamable HTTP transport. No auth, no rate keys, no client registration:
+One URL. Stateless Streamable HTTP transport. Read tools require no auth; the single write tool (\`update_progress\`) requires a per-founder API key:
 
 \`\`\`
 ${MCP_URL}
@@ -102,13 +102,27 @@ npx @modelcontextprotocol/inspector ${MCP_URL}
 - \`get_dream_100_template\` — seven-category Brunson Dream 100 framework (Communities, Influencers, Podcasts, Newsletters, Products, YouTube, Blogs) with target counts summing to 100, intent, worked examples, and work-your-way-in vs buy-your-way-in tactic split. Niche-agnostic structural template.
 - \`get_value_ladder_archetype\` — one of the four Brunson funnel archetypes (Lead Funnel Rung 0 free, Unboxing Funnel Rung 1 $1-$50, Presentation Funnel Rung 2 $49-$300/mo, Phone Funnel Rung 3 $2,000+) with pages, Hook/Story/Offer shape, build-order rule, worked example, common indie-scale failure.
 - \`get_objection_pattern\` — one of eight dollar-objection patterns with verbatim public source quote (Indie Hackers / Hacker News, link-attributed), Brunson External Belief classification, answer copy, sales-page disqualifier line, and funnel placement. Categories: subscription-fatigue, cash-constraint, burned-by-gurus, not-tools-job, build-it-myself, price-scales-badly, praise-without-payment, built-beside-not-inside.
+- \`get_diagnostic\` — fetch a stored, publicly-shared diagnostic by id (v1 Brunson label + headline + explanation + evidence + next step). Privacy-gated to \`share_visibility='public'\` rows only; no PII returned.
+- \`get_thirty_day_plan\` — fetch the four-week plan from a publicly-shared V2 deep diagnostic (week-by-week theme + deliverables). Graceful fallback if row ran V1 only.
+- \`get_rewrites\` — fetch the hero / primary-CTA / value-prop rewrites from a publicly-shared V2 deep diagnostic. Each includes current + 3 alternates + why-better rationale.
+- \`update_progress\` — (authenticated) record the founder's status on one of the seven Playbook steps. Requires a founder-scoped API key (\`usk_<22 chars>\`) minted from the dashboard. Returns the updated full 7-step state and a suggested next step.
+
+## Auth
+
+The read tools (25 of 30) require no auth. The one write tool, \`update_progress\`, requires a per-founder API key:
+
+- Key format: \`usk_<22 base64url chars>\`
+- Mint from the dashboard (settings → MCP key) or rotate by overwriting.
+- Pass as the \`api_key\` argument to \`update_progress\`. Never logged. Stored only on \`profiles.mcp_api_key\` behind RLS.
+- Invalid keys return a generic error; the server never reveals whether a key existed.
 
 ## What it will not do
 
-- No write operations. No checkout, no email capture, no Stripe calls.
+- No checkout, no email capture, no Stripe calls.
 - No fabricated payloads. Every teardown is sourced verbatim from the static manifest that renders the public HTML.
 - No invented diagnostic results. \`diagnose_url\` returns the same Brunson label the live diagnostic engine produces.
-- No tracking of agent identity.
+- No tracking of agent identity beyond the optional founder API key on \`update_progress\`.
+- No reads of private diagnostics. The \`get_diagnostic\` / \`get_thirty_day_plan\` / \`get_rewrites\` tools only return rows the founder explicitly shared (\`share_visibility = 'public'\`).
 
 ## Why this exists
 

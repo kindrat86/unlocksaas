@@ -59,7 +59,7 @@ const MANIFEST = {
   name: "unlocksaas",
   displayName: "UnlockSaaS",
   description:
-    "Read-only MCP server for the UnlockSaaS catalog: live one-shot AND deep V2 SaaS landing-page diagnostics, the canonical offer + value ladder + 60-day guarantee, and structured access to 33 funnel teardowns, 31 pricing teardowns, 55 head-to-head comparisons, 25 alternatives, 13 category roundups, the 7 Playbook steps, 16 Brunson glossary terms (with TTS audio per term when published), the dataset-changelog podcast (audio enclosures env-gated per episode), 8 founder-objection FAQ entries, and the structural Brunson canon any indie founder can apply to their own niche: the seven-category Dream 100 framework, the four Brunson funnel archetypes (Lead / Unboxing / Presentation / Phone), and eight dollar-objection patterns with verbatim source quotes from public Indie Hackers + Hacker News threads. Brunson Hard-Rule: every payload is sourced from the static manifests or the live diagnostic engine; no fabricated metrics, no fabricated audio surfaces; every entry carries a dated lastVerified.",
+    "MCP server for the UnlockSaaS catalog: live one-shot AND deep V2 SaaS landing-page diagnostics, the canonical offer + value ladder + 60-day guarantee, structured access to 33 funnel teardowns, 31 pricing teardowns, 55 head-to-head comparisons, 25 alternatives, 13 category roundups, the 7 Playbook steps, 16 Brunson glossary terms (with TTS audio per term when published), the dataset-changelog podcast (audio enclosures env-gated per episode), 8 founder-objection FAQ entries, the structural Brunson canon (Dream 100 framework, four funnel archetypes, eight dollar-objection patterns), plus three new founder-scoped write tools: get_diagnostic (fetch stored v1 diagnostics), get_thirty_day_plan (fetch 4-week plans from shared deep diagnostics), get_rewrites (fetch hero/CTA/value-prop rewrites), and update_progress (record Playbook step status via founder API key). Read tools require no auth; update_progress requires per-founder key (usk_<22 chars>). Brunson Hard-Rule: every payload is sourced from the static manifests or the live diagnostic engine; no fabricated metrics, no fabricated audio surfaces; every entry carries a dated lastVerified.",
   homepageUrl: `${BASE}/mcp`,
   contactEmail: "maryan@unlocksaas.com",
   publisher: {
@@ -195,6 +195,26 @@ const MANIFEST = {
       name: "get_objection_pattern",
       summary:
         "Get one of eight dollar-objection patterns with verbatim public source quote (Indie Hackers / Hacker News, link-attributed), Brunson External Belief classification, answer copy, sales-page disqualifier line, and funnel placement. Categories: subscription-fatigue, cash-constraint, burned-by-gurus, not-tools-job, build-it-myself, price-scales-badly, praise-without-payment, built-beside-not-inside.",
+    },
+    {
+      name: "get_diagnostic",
+      summary:
+        "Fetch a stored, publicly-shared diagnostic by id: v1 Brunson label (Wrong Person / Weak Offer / Weak Belief), headline, explanation, evidence quotes, and next step. Privacy-gated to share_visibility='public' rows only; no PII returned.",
+    },
+    {
+      name: "get_thirty_day_plan",
+      summary:
+        "Fetch the four-week plan from a publicly-shared V2 deep diagnostic: week-by-week theme + deliverables. Graceful fallback if row ran V1 only.",
+    },
+    {
+      name: "get_rewrites",
+      summary:
+        "Fetch hero headline, primary CTA, and value-prop rewrites from a publicly-shared V2 deep diagnostic. Each includes current + 3 alternates + why-better rationale.",
+    },
+    {
+      name: "update_progress",
+      summary:
+        "Record founder Playbook step status (not_started/in_progress/completed). Requires per-founder API key (usk_<22 chars>). Returns full 7-step state + suggested next step. First write tool in the server.",
     },
   ],
   install: {

@@ -3,6 +3,24 @@ import { withBotId } from "botid/next/config";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /**
+   * c2pa-node native module handling.
+   *
+   * c2pa-node ships native .node binaries that need to be externalized
+   * from the bundle. This ensures they're loaded at runtime rather than
+   * bundled with the code. Turbopack doesn't support native modules yet,
+   * so we configure webpack to handle them properly.
+   *
+   * See: https://nextjs.org/docs/architecture/turbopack#known-issues
+   */
+  webpack: (config, { isServer }) => {
+    // Mark c2pa-node as external so webpack doesn't try to bundle it
+    if (isServer) {
+      config.externals = [...(config.externals || []), "c2pa-node"];
+    }
+    return config;
+  },
+
   // Next 16 removes the `eslint` config option and the `next lint` command.
   // Lint runs through the ESLint CLI directly (out of the Next.js build) and
   // is not configured in this baseline migration; the existing
@@ -426,7 +444,6 @@ const nextConfig = {
   },
 };
 
-<<<<<<< HEAD
 /**
  * Workflow DevKit integration (2026-05-21).
  *

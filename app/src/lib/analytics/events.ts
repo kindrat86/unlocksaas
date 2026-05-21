@@ -75,6 +75,19 @@ export const Event = {
   PlaybookAgentInvoked: "playbook_agent_invoked",
   PlaybookAgentCompleted: "playbook_agent_completed",
 
+  // First-Win onboarding agent — fires after $1 Starter checkout. The
+  // five-step funnel (page_viewed → stream_started → drafts_revealed →
+  // draft_accepted | draft_regenerated | skipped) tells us whether the
+  // 5-minute TTFV bet is paying out. `stream_failed` lets us spot model
+  // outages without grepping logs.
+  FirstWinPageViewed: "first_win_page_viewed",
+  FirstWinStreamStarted: "first_win_stream_started",
+  FirstWinDraftsRevealed: "first_win_drafts_revealed",
+  FirstWinDraftAccepted: "first_win_draft_accepted",
+  FirstWinDraftRegenerated: "first_win_draft_regenerated",
+  FirstWinSkipped: "first_win_skipped",
+  FirstWinStreamFailed: "first_win_stream_failed",
+
   // Conversion (server-side, Stripe webhook is source of truth)
   CheckoutSessionCreated: "checkout_session_created",
   CheckoutSessionExpired: "checkout_session_expired",
