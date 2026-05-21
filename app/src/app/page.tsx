@@ -32,6 +32,7 @@ import {
   FaqPageJsonLd,
   FounderVslAudioJsonLd,
   PersonJsonLd,
+  SoftwareApplicationJsonLd,
 } from "@/components/seo/json-ld";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { createAdminClient } from "@/lib/supabase/server";
@@ -137,6 +138,7 @@ async function FunnelHubBody() {
         inlining the full Person block.
       */}
       <PersonJsonLd />
+      <SoftwareApplicationJsonLd />
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
       <DefinedTermSetJsonLd />
       {/* Founder VSL audio rendition — declares schema.org/AudioObject when
