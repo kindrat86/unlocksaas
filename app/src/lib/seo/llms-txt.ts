@@ -131,6 +131,11 @@ The diagnostic flow is identical across surfaces: the GPT Action calls POST /api
 - [Stack hub](${BASE_URL}/stack-for): Twelve opinionated indie SaaS tool rosters – one per cohort. Each stack draws 6-8 tools in funnel order from the Unlock SaaS pricing-teardown catalog, with a stated role per tool, why-this-tool-not-a-generic-alternative reasoning, and swap notes for category-equivalent options. Cross-links into the matching /for/<niche> diagnostic page and into every tool's /pricing-teardown/<slug>.
 - Per-niche stacks at \`${BASE_URL}/stack-for/<slug>\` – course-creators, agency-owners, saas-founders, coaches, consultants, ecommerce, no-code-builders, indie-hackers, ai-wrappers, info-product-creators, newsletter-operators, freelancers. Stack-shopping intent is its own search behavior: "saas stack for [niche]", "what tools do [niche] need", "[niche] tech stack". Each entry names what to build first, the common stack-building mistake for that cohort, and a 4-FAQ tail.
 
+## Programmatic SEO surfaces – pre-revenue launch checklists
+
+- [Launch checklist hub](${BASE_URL}/launch-checklist): Twelve niche-tuned 14-day launch checklists for post-launch pre-revenue founders. Each checklist is 10 ordered moves – Foundation, Offer, Proof, Traffic, Follow-up – with founder-readable time estimates and a final-step diagnostic CTA. Carries CollectionPage + ItemList JSON-LD on the hub and Article + HowTo + FAQPage + BreadcrumbList per detail page.
+- Per-niche checklists at \`${BASE_URL}/launch-checklist/<slug>\` – same 12 slugs as the niche hub (course-creators, agency-owners, saas-founders, coaches, consultants, ecommerce, no-code-builders, indie-hackers, ai-wrappers, info-product-creators, newsletter-operators, freelancers). Built for intent-shaped queries like "how to launch [niche] saas" and "[cohort] pre-revenue checklist".
+
 ## Programmatic SEO surfaces – funnel metric benchmarks
 
 - [Benchmarks hub](${BASE_URL}/benchmarks): Directional ranges for twenty of the most-asked indie SaaS funnel metrics. Each entry carries an AEO-formatted direct answer, three-band breakdown ('underperforming / typical / outperforming'), drivers in order of impact, common misreadings, and source attribution.
@@ -229,6 +234,7 @@ Every public marketing surface also has a clean markdown mirror, served with \`c
 - Per-element diagnostic markdown mirror: \`${BASE_URL}/why-isnt-my/<slug>/md\` – e.g. /why-isnt-my/landing-page/md.
 - Per-niche markdown mirror: \`${BASE_URL}/for/<slug>/md\` – e.g. /for/course-creators/md.
 - Per-niche stack markdown mirror: \`${BASE_URL}/stack-for/<slug>/md\` – e.g. /stack-for/course-creators/md.
+- Per-launch-checklist markdown mirror: \`${BASE_URL}/launch-checklist/<slug>/md\` – e.g. /launch-checklist/course-creators/md.
 
 Content negotiation: every HTML page on this site also serves its markdown twin via \`?format=md\` or \`Accept: text/markdown\`. AI agents that don't know the mirror URL shape can request the canonical HTML URL with either signal and get the corresponding markdown back.
 

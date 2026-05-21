@@ -255,7 +255,7 @@ Every defined term, benchmark, and dataset version has a stable, format-multiple
 
 - [\`${BASE_URL}/llms-full.txt\`](${BASE_URL}/llms-full.txt) – full concatenated corpus, one file.
 - Per-page mirrors at \`<page>.md\` (e.g. /index.md, /diagnostic.md, /faq.md, /glossary.md, /benchmarks.md, /editorial-policy.md).
-- Per-detail markdown mirrors: \`/alternatives-to/<slug>/md\`, \`/funnel-teardown/<slug>/md\`, \`/pricing-teardown/<slug>/md\`, \`/vs/<slug>/md\`, \`/glossary/<slug>/md\`, \`/benchmarks/<slug>/md\`, \`/answers/<slug>/md\`, \`/funnel-playbook/<slug>/md\`, \`/why-isnt-my/<slug>/md\`, \`/for/<slug>/md\`, \`/category/<slug>/md\`.
+- Per-detail markdown mirrors: \`/alternatives-to/<slug>/md\`, \`/funnel-teardown/<slug>/md\`, \`/pricing-teardown/<slug>/md\`, \`/vs/<slug>/md\`, \`/glossary/<slug>/md\`, \`/benchmarks/<slug>/md\`, \`/answers/<slug>/md\`, \`/funnel-playbook/<slug>/md\`, \`/why-isnt-my/<slug>/md\`, \`/for/<slug>/md\`, \`/launch-checklist/<slug>/md\`, \`/category/<slug>/md\`.
 
 Content negotiation: every HTML page also serves its markdown twin via \`?format=md\` or \`Accept: text/markdown\`.
 
