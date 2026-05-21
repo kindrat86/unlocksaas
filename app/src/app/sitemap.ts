@@ -734,6 +734,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
       alternates: hreflang(`${base}/about`),
     },
+    // /open – build-in-public transparency dashboard. Live MRR, subscriber
+    // counts, signups, churn, last-10 builders. Updated automatically on
+    // every paid Stripe event via revalidateTag("billing-mutation", "max").
+    // Higher priority than /about because the GEO research (2026-05-21)
+    // shows original-stats pages with Dataset JSON-LD get the strongest
+    // AI-citation lift; this is the canonical original-data surface.
+    {
+      url: `${base}/open`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.6,
+      alternates: hreflang(`${base}/open`),
+    },
     // Press / media kit. Off-page lift surface – built so journalists,
     // podcasters, and newsletter writers can self-serve canonical
     // descriptions, fast facts, and brand assets without having to
