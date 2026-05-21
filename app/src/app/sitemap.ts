@@ -184,7 +184,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/glossary",
     "/benchmarks",
     "/alternatives-to",
-    "/compare",
+    "/vs",
     "/funnel-teardown",
     "/pricing-teardown",
     "/category",

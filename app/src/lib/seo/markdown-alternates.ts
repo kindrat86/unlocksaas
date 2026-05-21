@@ -78,7 +78,7 @@ const HUBS_WITH_DETAIL_LOCALE_INHERITANCE: readonly string[] = [
   // hreflang resolution needs zero further wiring. Keep in lockstep
   // with the same constant in app/src/app/sitemap.ts.
   "/alternatives-to",
-  "/compare",
+  "/vs",
   "/funnel-teardown",
   "/pricing-teardown",
   "/category",
