@@ -444,7 +444,6 @@ const nextConfig = {
   },
 };
 
-<<<<<<< HEAD
 /**
  * Workflow DevKit integration (2026-05-21).
  *
