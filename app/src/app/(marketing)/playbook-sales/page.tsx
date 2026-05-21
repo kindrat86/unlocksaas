@@ -15,6 +15,7 @@ import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { StickyPlaybookCta } from "@/components/blocks/sticky-playbook-cta";
 import { VslBlock } from "@/components/blocks/vsl-block";
+import { TldrBlock } from "@/components/tldr-block";
 import {
   PlaybookProductJsonLd,
   PlaybookHowToJsonLd,
@@ -126,6 +127,16 @@ export const metadata: Metadata = {
  * description + canonical, not the layout-template fallback).
  */
 export default async function PlaybookSalesPage() {
+  "use cache";
+  // Cache the rendered page shell for 1 day with 1-week expiry.
+  // Safe because: the only dynamic data read is getVerifiedBadgeCount(), which
+  // is itself 'use cache' + tagged with 'verified-builder-count'. When a new
+  // Verified Builder is added, revalidateTag('verified-builder-count') is called
+  // via the webhook at /api/webhooks/revalidate-badges, which invalidates both
+  // the count function cache AND this page cache in a single round-trip.
+  // No cookies, headers, or searchParams are read at this level.
+  cacheLife("days");
+  cacheTag("playbook-sales-page");
   // Stripe-verified, public-shared Verified Builder count. Drives the
   // AggregateRating sub-graph on the SoftwareApplication schema below.
   // Read via the service-role admin client (the same client every other
@@ -212,6 +223,11 @@ export default async function PlaybookSalesPage() {
             software, not through more building and not through more
             traffic.
           </h2>
+          <TldrBlock>
+            The breakthrough happens when you stop shipping features and
+            start naming one real person. Seven mechanical steps, seven days
+            each, or your $49 back.
+          </TldrBlock>
 
           {/* Slide 3 — Why this is hard to believe. Acknowledge Marco's
               history: a year of failed tactics. Workbook 07 §1 + workbook
@@ -256,10 +272,13 @@ export default async function PlaybookSalesPage() {
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
             Before you keep reading
           </p>
-          <h2 className="text-xl sm:text-2xl font-bold leading-snug mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold leading-snug mb-3">
             If the next paragraph reads like a transcript of your week,
             stay. If it doesn&apos;t, close the tab.
           </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+            This page is written for one specific founder: already shipped, already has a flat Stripe line, has tried more traffic and more features, and has not yet named one real person this product is for. If that is not you, the tab-close is the honest move. If it is you, keep reading -- because the next 60 days do not have to look like the last 60.
+          </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             You shipped with Lovable or Cursor. The product works. People
             who try it tell you it is good. Your Stripe dashboard is a flat
@@ -302,6 +321,11 @@ export default async function PlaybookSalesPage() {
         {/* ============================================================ */}
         <section className="space-y-14 mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold">The Three Secrets</h2>
+          <TldrBlock>
+            The Playbook wins because it removes avoidance. You name one
+            person, write one promise, send one message – in that order, with
+            the tool enforcing each step before you skip to the next.
+          </TldrBlock>
 
           {/* SECRET 1 — VEHICLE (slides 7–9) */}
           <article className="space-y-5">
@@ -309,6 +333,11 @@ export default async function PlaybookSalesPage() {
             <h3 className="text-2xl font-bold leading-snug">
               Why The Playbook works where every other tool failed you.
             </h3>
+            <TldrBlock>
+              Tools without checkpoints let you skip. This one doesn't – Step 5
+              won't mark complete until 20 real outreach actions are logged
+              inside the tool.
+            </TldrBlock>
 
             {/* Story — Vehicle Story from workbook 06 §4 */}
             <div>
@@ -395,6 +424,15 @@ export default async function PlaybookSalesPage() {
               Why the work that breaks the flat line is work you have been
               avoiding, and how The Playbook removes the avoidance option.
             </h3>
+            <TldrBlock>
+              You haven't failed at outreach – you've succeeded at avoiding it.
+              The Playbook doesn't ask you to overcome that. It makes avoidance
+              structurally impossible.
+            </TldrBlock>
+
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              The work that breaks the flat line is outreach -- naming one specific person, writing one specific message, sending it before it feels ready. Most founders skip it because it is the only step that cannot be faked as progress. The Playbook removes the option to skip: Step 5 does not mark complete until 20 outreach actions are logged inside the tool. The refund does not fire without those logs. Avoidance is not overcome. It is made structurally impossible.
+            </p>
 
             {/* Story — Story 2 (Stripe Refresh) + Story 3 (SEO Escape
                 Hatch) from workbook 01 §6 Beat 3. */}
@@ -466,6 +504,15 @@ export default async function PlaybookSalesPage() {
               Why a 60-day guarantee is even possible on software, when
               every other guarantee in this space is a lie.
             </h3>
+            <TldrBlock>
+              The guarantee is enforced by code, not by trust. Your Stripe
+              webhook watches for the charge. If it doesn't show up in 60 days,
+              the refund fires automatically.
+            </TldrBlock>
+
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              The guarantee is possible because both sides of it are verified by code, not by trust. The work conditions -- Steps 1 through 5 complete, 20 outreach actions logged -- are recorded inside the tool. The result -- a new paying customer -- is watched by a Stripe webhook. If 60 days pass and Stripe shows nothing, the refund fires automatically. Your maximum downside is $98. Neither side of that contract requires you to email me and ask nicely.
+            </p>
 
             {/* Story — guarantee mechanics from workbook 01 §2:
                 work conditions playbook-verifiable, Stripe-verified result */}
@@ -1168,9 +1215,12 @@ export default async function PlaybookSalesPage() {
         {/* refresh-tweak-close ritual.                                  */}
         {/* ============================================================ */}
         <section className="mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-5">
+          <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-3">
             The cost of waiting, in writing.
           </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+            Waiting costs two things: time and another 60 Tuesdays of the refresh-tweak-close ritual. The maximum cost of not waiting is $98 -- two months, refunded by code if the Playbook produces nothing. The math does not allow for a third outcome. Either the Stripe charge lands, or the $98 returns to your card automatically. The cost of doing nothing is not zero. It is another quarter of your life spent on a flat line you already know.
+          </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             If you close this tab without joining, here is what the next 60
             days look like. You already know them. Day job. Dinner. Laptop

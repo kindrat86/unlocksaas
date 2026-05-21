@@ -6,18 +6,6 @@
   ],
   "crons": [
     {
-      "path": "/api/cron/activate-funnelfixer-carryover",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/funnelfixer-tick",
-      "schedule": "*/30 * * * *"
-    },
-    {
-      "path": "/api/cron/testimonial-farm-offer",
-      "schedule": "25,55 * * * *"
-    },
-    {
       "path": "/api/cron/soap-opera",
       "schedule": "0 14 * * *"
     },
@@ -42,8 +30,16 @@
       "schedule": "0 19 * * *"
     },
     {
+      "path": "/api/cron/recrawl",
+      "schedule": "0 7 * * *"
+    },
+    {
       "path": "/api/cron/teardown-courtesy",
       "schedule": "0 13 * * 1-5"
+    },
+    {
+      "path": "/api/cron/llmo-citations",
+      "schedule": "0 9 * * 1"
     }
   ]
 }

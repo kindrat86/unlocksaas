@@ -5,6 +5,7 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import {
   BreadcrumbListJsonLd,
   FaqPageJsonLd,
+  QAFaqPageJsonLd,
 } from "@/components/seo/json-ld";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
@@ -88,6 +89,13 @@ export default function FaqPage() {
         items={FAQ_ENTRIES}
         speakableSelectors={[".aeo-q", ".aeo-a"]}
       />
+      {/* QAFaqPageJsonLd: merged FAQPage + QAPage signal. The questions here
+          are verbatim from public Indie Hackers / HN threads (community-
+          sourced), making this a hybrid editorial+community Q&A surface.
+          QAPage upvoteCount signals lift this page into AI Mode and Perplexity
+          answer panels alongside FAQPage's editorial-curation signal.
+          Both blocks import from the same FAQ_ENTRIES array -- no drift. */}
+      <QAFaqPageJsonLd items={FAQ_ENTRIES} />
       <BreadcrumbListJsonLd trail={BREADCRUMB_TRAIL} />
       <AbExposureBeacon />
 

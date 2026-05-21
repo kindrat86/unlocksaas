@@ -35,6 +35,7 @@
  *   - app/(marketing)/funnel-playbook/[slug]/md/route.ts (per-pSEO mirrors, batch 3)
  *   - app/(marketing)/why-isnt-my/[slug]/md/route.ts   (per-pSEO mirrors, batch 3)
  *   - app/(marketing)/for/[slug]/md/route.ts           (per-pSEO mirrors, batch 3)
+ *   - app/(marketing)/swipe-file/[slug]/md/route.ts    (per-pSEO mirrors, batch 4)
  *
  * Content negotiation (added with batch 3): src/proxy.ts rewrites any
  * HTML request carrying `?format=md` or `Accept: text/markdown` to the
@@ -153,6 +154,12 @@ import {
   type LaunchChecklistEntry,
   getLaunchChecklistBySlug,
 } from "@/lib/launch-checklists";
+import {
+  SWIPE_FILE_ENTRIES,
+  type SwipeFileEntry,
+  getSwipeFileBySlug,
+  resolveSwipeFileRealExamples,
+} from "@/lib/swipe-files";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -2088,6 +2095,98 @@ export function renderFunnelMatrixMarkdown(
   ].join("\n");
 }
 
+function buildSwipeFileMarkdown(s: SwipeFileEntry): string {
+  const examples = s.examples
+    .map(
+      (ex, i) =>
+        `### ${i + 1}. ${ex.pattern}\n\n**Formula.** ${ex.formula}\n\n**Example.** ${ex.example}\n\n**Why it works.** ${ex.notes}`,
+    )
+    .join("\n\n");
+  const mistakes = s.commonMistakes.map((m) => `- ${m}`).join("\n");
+  const related =
+    s.relatedGlossary.length > 0
+      ? s.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+  const faqs = s.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+
+  const realExamples = resolveSwipeFileRealExamples(s);
+  const realExamplesBlock =
+    realExamples.length > 0
+      ? realExamples
+          .map(
+            (r) =>
+              `### [${r.displayName}](${BASE_URL}${r.url}) – ${r.patternName}\n\n_${r.oneLine}_\n\n**Why this is a reference for ${s.element}.** ${r.ref.why}\n\n**From the ${r.ref.lens} lens analysis.** ${r.analysis}`,
+          )
+          .join("\n\n")
+      : "_No real-example citations curated for this swipe file._";
+
+  return `# ${s.displayName}
+
+> ${s.tldr}
+
+## Brunson lens
+
+${s.brunsonLens}
+
+## When this is the right thing to rewrite
+
+${s.whenToUse}
+
+## When the ${s.element} is NOT the constraint
+
+${s.whenNotToUse}
+
+## Pattern library
+
+${examples}
+
+## Common implementation mistakes
+
+${mistakes}
+
+## Real examples from indie SaaS teardowns
+
+${realExamplesBlock}
+
+## Related terms
+
+${related}
+
+## FAQ
+
+${faqs}
+`;
+}
+
+/**
+ * Render a per-swipe-file markdown body. Powers /swipe-file/<slug>/md.
+ */
+export function renderSwipeFileMarkdown(
+  slug: string,
+): string | undefined {
+  const s = getSwipeFileBySlug(slug);
+  if (!s) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/swipe-file/${s.slug}`;
+  return [
+    frontMatter({
+      title: s.displayName,
+      summary: s.tldr,
+      canonical: canonicalUrl,
+      updated: s.lastVerified,
+    }),
+    buildSwipeFileMarkdown(s).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
 function buildWhyIsntMyMarkdown(w: WhyIsntMyEntry): string {
   const diagnoses = w.diagnoses
     .map(
@@ -2776,6 +2875,21 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     ].join("\n");
   }).join("\n");
 
+  const swipeFiles = SWIPE_FILE_ENTRIES.map((s) => {
+    const canonical = `${BASE_URL}/swipe-file/${s.slug}`;
+    const mirror = `${BASE_URL}/swipe-file/${s.slug}/md`;
+    return [
+      `## ${s.displayName}`,
+      "",
+      `Canonical URL: ${canonical}`,
+      `Markdown mirror: ${mirror}`,
+      "",
+      buildSwipeFileMarkdown(s).trim(),
+      "",
+      "---",
+    ].join("\n");
+  }).join("\n");
+
   return [
     header,
     surfaces,
@@ -2827,6 +2941,10 @@ Per-surface markdown mirrors are also available at the URLs noted in each sectio
     "# Launch Checklists – Pre-Revenue Founder Plans, Tuned per Cohort",
     "",
     launchChecklists,
+    "",
+    "# Swipe Files – Copy and UI Pattern Libraries by Funnel Element",
+    "",
+    swipeFiles,
     "",
     citationFooter(BASE_URL),
   ].join("\n");

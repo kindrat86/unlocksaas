@@ -36,7 +36,12 @@ done.
 - `/builder/[slug]` — Public Verified Builder badge OG-image route.
 
 ### Email + scheduling
-- 5-email Soap Opera Sequence (code-complete, awaits CRON_SECRET).
+- 3-email Soap Opera Sequence spine + 2 behavioral branches
+  (`soft_sell`, `objection_handler`). Day 0 / 2 / 4 spine + day 6
+  branch pass gated on E3 open/click. Code-complete; awaits
+  `CRON_SECRET` for the spine cron and `RESEND_WEBHOOK_SECRET` +
+  Resend dashboard configuration for the engagement-routing webhook.
+  Decision doc: `strategy/decisions/sos-3-spine-2-branch.md`.
 - Seinfeld daily nurture (code-complete, awaits CRON_SECRET).
 - `/api/unsubscribe` with HMAC tokens + RFC 8058 one-click POST.
 
@@ -66,7 +71,24 @@ done.
 
 ### Tier 1 — blocks revenue today
 
-1. **Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel** (all
+1. **Generate + push `AI_GATEWAY_API_KEY` to Vercel** (all 3 environments).
+
+   Generate a key at: https://vercel.com/[team]/~/ai-gateway/api-keys
+   Then push to all three environments:
+
+   ```bash
+   vercel env add AI_GATEWAY_API_KEY production
+   # CLI bug for preview: use Vercel dashboard or REST API (see feedback_vercel_cli_preview_env_bug.md)
+   vercel env add AI_GATEWAY_API_KEY development
+   ```
+
+   Until set, all LLM calls fall back to direct Anthropic via `ANTHROPIC_API_KEY`
+   (safe zero-state -- no revenue impact). When set, all calls route through
+   Vercel AI Gateway with token observability in the Vercel dashboard (AI > Observability).
+   Model fallback chain: Claude Sonnet 4.6 (primary) -- gateway auto-retries
+   across Anthropic direct, Bedrock Anthropic, and Vertex Anthropic on failure.
+
+2. **Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel** (all
    3 environments — production, preview, development).
 
    Per the secret-entry convention (locked 2026-05-17 after the zsh-leak
@@ -102,6 +124,45 @@ done.
    token with scopes `project:releases` + `project:read` → run
    `scripts/setup-sentry.py` → push `NEXT_PUBLIC_SENTRY_DSN`,
    `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` to Vercel.
+
+4. **Configure the Resend webhook + push `RESEND_WEBHOOK_SECRET`.**
+   The SOS day-6 branch pass needs to know whether E3 was opened or
+   clicked. That signal arrives through the Resend webhook at
+   `/api/webhooks/resend`. Without it the spine still ships, but the
+   `branch_fired` column stays `'none'` forever (no soft_sell, no
+   objection_handler).
+
+   ```
+   1. Resend dashboard (https://resend.com/webhooks) → Add endpoint
+        URL:    https://unlocksaas.com/api/webhooks/resend
+        Events: email.opened, email.clicked, email.delivered,
+                email.bounced, email.complained
+   2. Copy the generated signing secret (starts with whsec_…).
+   3. Push to Vercel for all 3 environments:
+        vercel env add RESEND_WEBHOOK_SECRET production --sensitive
+        vercel env add RESEND_WEBHOOK_SECRET preview --sensitive
+        vercel env add RESEND_WEBHOOK_SECRET development --sensitive
+   4. Mirror to .env.development.local so `vercel env pull` doesn't
+      strip it (per feedback_local_only_secrets_in_vercel_dev.md).
+   ```
+
+   Smoke test after the env var is set: `curl -X POST
+   https://unlocksaas.com/api/webhooks/resend` should return 400
+   (`missing_svix_headers`), not 503 (`not_configured`).
+
+5. **Apply migration `20260521000020_sos_three_spine_two_branch` to
+   prod Supabase.** Per project memory
+   (`feedback_supabase_postgrest_quirks.md`), the Supabase MCP does NOT
+   auto-apply repo migrations to prod. Run:
+
+   ```
+   supabase db push
+   ```
+
+   from the repo root after the PR merges. This adds the four new
+   columns (`e3_opened_at`, `e3_clicked_at`, `branch_fired`,
+   `branch_fired_at`) and the partial index
+   `soap_opera_branch_pending_idx`.
 
 ### Tier 2 — blocks the Reluctant-Hero proof, not revenue
 
@@ -180,58 +241,40 @@ done.
    citation metrics, etc.). With them, verification completes on the
    next deploy.
 
-7. **Generate + push C2PA signing keys for diagnostic PDF export** (EU AI Act
-   Article 50 compliance).
-
-   UnlockSaaS diagnostic PDFs now embed cryptographically signed C2PA
-   Content Credentials declarations AI authorship per EU AI Act Article 50
-   (in force August 2026). Signed PDFs build trust; unsigned ones may be
-   flagged as non-compliant by EU regulators. Setup is one command:
-
-   ```bash
-   python3 scripts/setup-c2pa-keys.py
-   ```
-
-   This generates an ECDSA P-256 self-signed certificate + private key,
-   base64-encodes both, and pushes to Vercel as `C2PA_SIGNING_CERT`,
-   `C2PA_SIGNING_KEY`, `C2PA_SIGNING_ALG` (all three environments).
-
-   Notes:
-   - **Dev fallback:** if env vars are unset in development, PDFs auto-sign
-     with a bundled test cert (shows "test signature" warning in verifiers —
-     intentional, helps catch unsigned-in-prod accidents).
-   - **Graceful degradation:** if env vars are unset in production, PDFs are
-     served unsigned with an `X-C2PA-Unsigned: true` header (not compliant,
-     but always available).
-   - **Production trust upgrade:** for real org identity (green "Signed by
-     {Org}" in verifiers), obtain a cert from DigiCert / Truepic, then
-     run the script again with the real cert + key. No code change needed.
-   - Full rationale + spec references: `strategy/decisions/c2pa-content-credentials.md`.
-
-   Until this is pushed, all diagnostic PDFs will be unsigned. Compliance
-   with Article 50 is not urgent pre-August 2026, but setting it now locks
-   in compliance on launch and avoids EU founder friction.
-
-8. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
+7. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
    Page). Drop link to /diagnostic at the end. Tag two of the Dream 100.
 
-9. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
+8. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
    Show HN.** Reluctant Hero voice on all four. Workbook 09 §1 cadence
    rules apply.
 
-10. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
-    Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
+9. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
+   Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
 
-11. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
-    after the first verified-customer cycle. Subscribe + watch 5 most-recent
-    videos + 3 substantive timestamped comments each on Riley Brown
-    ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
-    ([@indydevdan](https://www.youtube.com/@indydevdan)). ~3 hours founder
-    time, Mon-Wed of any week. No link, no UnlockSaaS mention — workbook 09
-    §1 channel rules. Deployable 7-channel pitch kit at
-    `strategy/youtube-outreach.md` (B-roll library + 4-week cadence + reactive
-    cues). Host-channel deferral rationale + 4 activation conditions at
-    `strategy/decisions/youtube-channel-stance.md`.
+11. **Publish /numbers transparency page.** Once week-1 data is in, update
+   `app/data/public-metrics.json` with real numbers and a founder note, then
+   flip the env gate:
+
+   ```bash
+   vercel env add NEXT_PUBLIC_NUMBERS_VISIBLE production
+   # (enter: true)
+   ```
+
+   The URL `/numbers` is always live -- it shows a placeholder until this
+   env var is set to `'true'`. After setting, redeploy (or let the next
+   git push trigger a build). Update the JSON file weekly: edit
+   `app/data/public-metrics.json` -- git commit -- git push -- done.
+
+10. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
+   after the first verified-customer cycle. Subscribe + watch 5 most-recent
+   videos + 3 substantive timestamped comments each on Riley Brown
+   ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
+   ([@indydevdan](https://www.youtube.com/@indydevdan)). ~3 hours founder
+   time, Mon-Wed of any week. No link, no UnlockSaaS mention — workbook 09
+   §1 channel rules. Deployable 7-channel pitch kit at
+   `strategy/youtube-outreach.md` (B-roll library + 4-week cadence + reactive
+   cues). Host-channel deferral rationale + 4 activation conditions at
+   `strategy/decisions/youtube-channel-stance.md`.
 
 ---
 

@@ -352,6 +352,97 @@ export type Database = {
           },
         ]
       }
+      diagnostic_snapshots: {
+        Row: {
+          analysis_detail: Json | null
+          created_at: string
+          email: string
+          id: string
+          label: string
+          product_url: string
+          scores: Json
+          scored_at: string
+          user_id: string
+          week_of: string
+        }
+        Insert: {
+          analysis_detail?: Json | null
+          created_at?: string
+          email: string
+          id?: string
+          label: string
+          product_url: string
+          scores: Json
+          scored_at: string
+          user_id: string
+          week_of?: string
+        }
+        Update: {
+          analysis_detail?: Json | null
+          created_at?: string
+          email?: string
+          id?: string
+          label?: string
+          product_url?: string
+          scores?: Json
+          scored_at?: string
+          user_id?: string
+          week_of?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "diagnostic_snapshots_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recrawl_alerts: {
+        Row: {
+          created_at: string
+          decision: string
+          email: string
+          error_detail: Json | null
+          id: string
+          reason: string | null
+          sent_at: string | null
+          user_id: string
+          week_of: string
+        }
+        Insert: {
+          created_at?: string
+          decision: string
+          email: string
+          error_detail?: Json | null
+          id?: string
+          reason?: string | null
+          sent_at?: string | null
+          user_id: string
+          week_of: string
+        }
+        Update: {
+          created_at?: string
+          decision?: string
+          email?: string
+          error_detail?: Json | null
+          id?: string
+          reason?: string | null
+          sent_at?: string | null
+          user_id?: string
+          week_of?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recrawl_alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dream_100_entries: {
         Row: {
           audience_size: number | null
@@ -518,6 +609,54 @@ export type Database = {
           source?: string | null
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      llmo_citations: {
+        Row: {
+          id: string
+          query_id: string
+          query_text: string
+          provider: string
+          model: string
+          run_at: string
+          url_cited: boolean
+          brand_mentioned: boolean
+          rank_in_answer: number | null
+          cited_urls: Json
+          response_text: string
+          raw: Json | null
+          latency_ms: number | null
+        }
+        Insert: {
+          id?: string
+          query_id: string
+          query_text: string
+          provider: string
+          model: string
+          run_at?: string
+          url_cited?: boolean
+          brand_mentioned?: boolean
+          rank_in_answer?: number | null
+          cited_urls?: Json
+          response_text?: string
+          raw?: Json | null
+          latency_ms?: number | null
+        }
+        Update: {
+          id?: string
+          query_id?: string
+          query_text?: string
+          provider?: string
+          model?: string
+          run_at?: string
+          url_cited?: boolean
+          brand_mentioned?: boolean
+          rank_in_answer?: number | null
+          cited_urls?: Json
+          response_text?: string
+          raw?: Json | null
+          latency_ms?: number | null
         }
         Relationships: []
       }

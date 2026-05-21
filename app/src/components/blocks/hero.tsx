@@ -3,24 +3,46 @@
  * Cookbook §1), reshaped 2026-05-17 to lead with the FREE DIAGNOSTIC instead
  * of the 5-email opt-in.
  *
- * Why the pivot: Maryan's product decision is to make the diagnostic the
- * primary outcome on the home surface. The 5 emails are still available
- * (footer of hero + exit-intent popup) but they are no longer the primary
- * conversion target – they were eating clicks the diagnostic should be
- * taking.
+ * 2026-05-21 source-aware variant pass: the Hero now reads a HeroVariant
+ * copy deck (eyebrow + headline + scar-tissue subhead + primary CTA) so the
+ * home page surfaces channel-native copy to the visitor's acquisition
+ * source (IndieHackers, Marc Lou, X, HN, LinkedIn, MicroConf, Reddit,
+ * launch directory, organic). Default variant preserves the originally
+ * shipped copy verbatim — organic / direct / unknown traffic gets the
+ * exact same page as before. See src/lib/acquisition-source.ts for the
+ * variant catalog + first-touch cookie discipline. The source cookie is
+ * written sticky for 90 days in proxy.ts; the homepage server component
+ * reads it via readSourceFromCookies() and passes the resolved variant
+ * down here.
  *
- * New composition (emotion → logic, Brunson Expert Secrets §2):
- *   1. Eyebrow chip with live pulse + scarcity cue ("17 of 100 founding spots
- *      taken") – the visitor sees the urgency BEFORE the hook.
- *   2. H1 Hook – the emotional promise + the polarity move ("or refunded
- *      automatically"). Same as before, this is the most-tested line on the
- *      page.
+ * Why the lift exists: 2026 distribution research flagged dynamic-by-
+ * referrer landing pages converting at 37.1% vs 19.2% for static — near-
+ * 2x conversion lift. This is the cheapest possible version of that play:
+ * one cookie, one Server Component, no JS, SSR-perfect, indexable HTML
+ * stays identical for organic Googlebot/Bingbot/Perplexity (default
+ * variant).
+ *
+ * Why the pivot to diagnostic (2026-05-17 origin): Maryan's product
+ * decision is to make the diagnostic the primary outcome on the home
+ * surface. The 5 emails are still available (footer of hero + exit-intent
+ * popup) but they are no longer the primary conversion target – they were
+ * eating clicks the diagnostic should be taking.
+ *
+ * Composition (emotion → logic, Brunson Expert Secrets §2):
+ *   1. Eyebrow chip with live pulse + scarcity/channel cue – the visitor
+ *      sees the urgency (or the channel signal) BEFORE the hook.
+ *   2. H1 Hook – the emotional promise + the polarity move. Source-aware
+ *      lead and tail; default preserves the originally shipped wording.
  *   3. Scar-tissue subhead – founder authority in two short paragraphs.
- *      Marco trusts founders who failed publicly, not coaches who never did.
+ *      Marco trusts founders who failed publicly, not coaches who never
+ *      did. Source-aware first paragraph; closer (founder credit) is
+ *      variant-specific.
  *   4. PRIMARY CTA – "Get my free 2-minute diagnosis" → /diagnostic. The
  *      diagnostic is the lead funnel now. One large primary button.
- *   5. Secondary door – "Start the Playbook for $1" for the visitor who is
- *      already further down the ladder.
+ *      Source-aware verb so the button copy matches the channel-native
+ *      eyebrow without breaking the destination (/diagnostic).
+ *   5. Secondary door – "Start the Playbook for $1" for the visitor who
+ *      is already further down the ladder.
  *   6. Tertiary text links – the full $49/mo page AND the newsletter
  *      subscribe link, both subordinated to the diagnostic.
  *   7. Reverse-squeeze bridge – "read the five stories first" gives the
@@ -32,8 +54,26 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  HERO_VARIANTS,
+  type HeroVariant,
+} from "@/lib/acquisition-source";
 
-export function Hero() {
+type HeroProps = {
+  /**
+   * Optional variant override. When omitted, the `default` variant ships
+   * (matches the originally shipped copy). Callers (the homepage Server
+   * Component) read the source cookie via readSourceFromCookies() and
+   * pass the resolved HeroVariant down. Passing the resolved variant as
+   * a prop keeps this component free of next/headers imports so it can
+   * still be rendered in tests / Storybook without a real request.
+   */
+  variant?: HeroVariant;
+};
+
+export function Hero({ variant }: HeroProps = {}) {
+  const copy = variant ?? HERO_VARIANTS.default;
+
   return (
     <header className="relative overflow-hidden">
       {/* Subtle radial spotlight – anchors the hero visually without
@@ -53,7 +93,7 @@ export function Hero() {
 
       <div className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
-          {/* Eyebrow + scarcity cue */}
+          {/* Eyebrow + scarcity/channel cue – source-aware. */}
           <Badge
             variant="secondary"
             className="mb-7 gap-2 px-3 py-1 text-xs uppercase tracking-widest font-medium"
@@ -62,34 +102,37 @@ export function Hero() {
               aria-hidden="true"
               className="inline-block h-1.5 w-1.5 rounded-full bg-primary animate-pulse"
             />
-            Founding rate · first 100 builders only
+            {copy.eyebrow}
           </Badge>
 
-          {/* Hook – emotional promise + polarity move. */}
+          {/* Hook – emotional promise + polarity move. Source-aware. */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6 text-balance">
-            Your first paying customer{" "}
-            <span className="text-muted-foreground">in 60 days.</span>
+            {copy.headlineLead}{" "}
+            <span className="text-muted-foreground">
+              {copy.headlineLeadMuted}
+            </span>
             <br />
-            Or your money back,{" "}
-            <span className="text-muted-foreground">automatically.</span>
+            {copy.headlineTailLead}{" "}
+            <span className="text-muted-foreground">
+              {copy.headlineTailMuted}
+            </span>
           </h1>
 
-          {/* Scar-tissue subhead – founder authority. Emotional first. */}
+          {/* Scar-tissue subhead – founder authority. Source-aware first
+              paragraph; closer (founder credit) is variant-specific. */}
           <p className="text-base sm:text-lg text-muted-foreground mb-2 max-w-2xl mx-auto leading-relaxed">
-            I shipped 12 AI products and nobody paid for any of them. Then I
-            figured out why – and I built the playbook I wish someone had
-            handed me before I burned a year of evenings on the wrong work.
+            {copy.subheadOpener}
           </p>
           <p className="text-sm text-foreground/80 mb-10">
-            – Maryan, non-engineer founder
+            {copy.subheadCloser}
           </p>
 
-          {/* PRIMARY CTA – the free diagnostic. One large button. */}
+          {/* PRIMARY CTA – the free diagnostic. One large button. Source-
+              aware verb so the button copy matches the channel-native
+              eyebrow without breaking the destination (/diagnostic). */}
           <div className="mx-auto max-w-md mb-3">
             <Button asChild size="lg" className="w-full text-base sm:text-lg py-7">
-              <Link href="/diagnostic">
-                Get my free 2-minute diagnosis →
-              </Link>
+              <Link href="/diagnostic">{copy.primaryCta}</Link>
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mb-8 leading-relaxed max-w-md mx-auto">

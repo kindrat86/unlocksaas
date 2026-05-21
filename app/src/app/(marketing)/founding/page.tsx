@@ -284,11 +284,11 @@ function PlvBlock(props: {
           <video
             controls
             playsInline
-            preload="metadata"
+            preload="auto"
             poster={posterUrl}
-            src={mp4Url}
             className="w-full h-full"
           >
+            <source src={mp4Url} type="video/mp4" />
             <p className="p-4 text-sm">
               Your browser doesn&apos;t support HTML5 video. Reply to any
               email from maryan@unlocksaas.com for a direct download link.

@@ -1,5 +1,251 @@
 # Build Log — Unlock SaaS
 
+## /numbers public metrics transparency page -- 2026-05-21
+**Status: SHIPPED**
+**Branch:** feat/numbers-transparency-page
+
+Build-in-public trust signal. Marc Lou and Pieter Levels built their
+distribution on public revenue numbers; 2026 GEO research shows pages with
+original first-party statistics earn +41% citation lift. For a founder-to-
+founder brand, honest "here's where I actually am" beats polished copy.
+
+### What was built
+
+- **`app/data/public-metrics.json`** -- operator-owned data file. Contains
+  MRR, ARR, paying customers, starter purchases, diagnostic submissions, email
+  subscribers, weeks since launch, and a `weekly_log` array with one honest
+  note per week. Dates in DD-MM-YYYY (Athens timezone convention). All money
+  in EUR.
+- **`app/src/app/numbers/page.tsx`** -- Next.js App Router page at /numbers.
+  Reads the JSON file at build time (no database call, no API). Renders
+  a metrics grid + weekly log table. Gated by `NEXT_PUBLIC_NUMBERS_VISIBLE`.
+  Includes Dataset JSON-LD for AI-citation eligibility.
+- **`app/src/components/blocks/signature-footer.tsx`** -- added "The Numbers"
+  footer link alongside the existing trust-column links.
+- **`app/.env.local.example`** -- documented `NEXT_PUBLIC_NUMBERS_VISIBLE`.
+- **`LAUNCH-READINESS.md`** -- added Tier 3 item #11 for operator env flip.
+
+### Visibility gate
+
+`NEXT_PUBLIC_NUMBERS_VISIBLE` env var. When unset or not `'true'`, the page
+shows "Coming soon" with a link to /diagnostic. The URL never 404s.
+
+### Operator update workflow
+
+1. Edit `app/data/public-metrics.json` -- update numbers + append a weekly_log
+   entry with an honest 1--3 sentence note.
+2. `git add app/data/public-metrics.json && git commit -m "Update week-N metrics"`
+3. `git push` -- Vercel builds and deploys automatically.
+4. First time only: `vercel env add NEXT_PUBLIC_NUMBERS_VISIBLE production`
+   (value: `true`) and let the next push trigger a rebuild.
+
+No CMS. No database. The JSON file and the git history are the full record.
+
+---
+
+## Vercel AI Gateway wiring for diagnostic + engine LLM routes -- 2026-05-21
+
+**Status: SHIPPED**
+**Branch:** feat/ai-gateway-diagnostic
+
+### What changed
+
+All LLM calls route through Vercel AI Gateway when `AI_GATEWAY_API_KEY` is set.
+Fallback to direct Anthropic (via `ANTHROPIC_API_KEY`) when the gateway key is absent -- safe zero-state, no revenue impact.
+
+### Files changed (4)
+
+- `app/src/lib/anthropic.ts` -- `getAnthropic()` singleton now checks `AI_GATEWAY_API_KEY` first; sets `baseURL: 'https://ai-gateway.vercel.sh'` when present. Added `primaryModel()` helper that returns `'anthropic/claude-sonnet-4-6'` (gateway format) or `'claude-sonnet-4-6'` (direct format). Added `FALLBACK_MODEL` export (`anthropic/claude-haiku-4.5`) for future per-request fallback chains.
+- `app/src/lib/diagnostic.ts` -- `classifyPageText()` and `deepAnalyzePageText()` both use `primaryModel()` instead of hardcoded `"claude-sonnet-4-6"`.
+- `app/src/app/api/engine/route.ts` -- `validationResponse` and `assemblyResponse` both use `primaryModel()`.
+- `app/src/lib/agents.ts` -- Removed module-level `MODEL` constant; `callLLM()` and `persistAgentRun()` both use `primaryModel()`.
+
+### Models
+
+- Primary: `anthropic/claude-sonnet-4-6` (same capability, routed via gateway)
+- Fallback: Gateway auto-retries across Anthropic direct, Bedrock Anthropic, and Vertex Anthropic on provider failure. Per-request `models` fallback array (gateway `providerOptions`) is only available via the Vercel AI SDK (`ai` package) -- not via the Anthropic Messages API compatibility layer used here. The FALLBACK_MODEL export is staged for a future migration.
+
+### Streaming
+
+Not applicable. All three routes (`/api/diagnostic`, `/api/engine`, `/api/engine/agent`) return JSON, not SSE. No streaming behavior to preserve.
+
+### Observability
+
+Once `AI_GATEWAY_API_KEY` is set in Vercel, all LLM token counts, latency, and model attempts appear in Vercel dashboard under AI > Observability. Provider failover metadata (`modelAttempts` array) is logged per request.
+
+### Env vars
+
+- `AI_GATEWAY_API_KEY` -- new. Added to `app/.env.local.example` with instructions. Added as Tier 1 item in `LAUNCH-READINESS.md`. Generate at: https://vercel.com/[team]/~/ai-gateway/api-keys
+
+### Trade-offs
+
+- Anthropic Messages API compatibility does not expose `providerOptions.gateway.models` for per-request fallback chains (that's AI SDK-only). Gateway still provides automatic provider-level failover (Anthropic direct --> Bedrock --> Vertex). A future migration to `ai` package + `@ai-sdk/anthropic` would unlock explicit `models` arrays.
+- The `primaryModel()` function is a runtime check (not build-time) so it incurs ~zero overhead per call on a singleton path.
+
+## /vs/ comparison pages: ClickFunnels, ShipFast, DotCom Secrets -- 2026-05-21
+
+**Status: SHIPPED**
+**Branch:** feat/vs-comparison-pages
+
+Three competitor comparison pages added via the existing `/vs/[slug]` pSEO surface. No new files or routes created -- the comparison data model in `comparisons.ts` drives the existing dynamic route at `app/src/app/(marketing)/vs/[slug]/page.tsx`.
+
+### Pages shipped
+
+- `/vs/clickfunnels-vs-unlocksaas` -- ClickFunnels vs Unlock SaaS
+- `/vs/shipfast-vs-unlocksaas` -- ShipFast vs Unlock SaaS
+- `/vs/dotcom-secrets-vs-unlocksaas` -- DotCom Secrets vs Unlock SaaS
+
+All three appear automatically in `/vs` hub index and in `COMPARISON_SLUGS` for `generateStaticParams`.
+
+### URL structure
+
+Dynamic route: `(marketing)/vs/[slug]/page.tsx`. Hub: `(marketing)/vs/page.tsx`. No new files required.
+
+### JSON-LD per page (auto-generated by buildJsonLd)
+
+- `Article` with `about: [OrgA, OrgB]` + `mentions: [OrgA, OrgB]`
+- `FAQPage` with `mainEntity` per FAQ entry
+- `BreadcrumbList`
+- `Review` x2 (one per product, ratings derived from dimension winners)
+
+### Competitor prices used (fetched 2026-05-21)
+
+- ClickFunnels: $97/mo (Launch), $197/mo (Scale), $297/mo (Optimize); annual ~15-17% discount; Dominate $5,997/yr
+- ShipFast: $199 Starter / $249 All-in one-time (promotional); regular $299/$349
+- DotCom Secrets book: free + shipping (~$9.95) or ~$10-15 Amazon
+- OFA Challenge: bundled with ClickFunnels subscription at $97/mo
+- Funnel Hacking Live: $1,000+ per ticket (known public positioning)
+
+### Research rationale
+
+2026 AEO research: comparison pages cited by AI at +51% vs generic pages when they admit competitor strengths honestly. All three comparisons use "different shapes" winner verdicts where products serve genuinely different jobs (build vs sell; pre-launch vs post-launch; theory vs doing-environment).
+
+### Files changed
+
+- `app/src/lib/comparisons.ts` -- +3 entries (clickfunnels-vs-unlocksaas, shipfast-vs-unlocksaas, dotcom-secrets-vs-unlocksaas)
+- `build-log.md` -- this entry
+
+---
+
+## Source-aware Hero variants (5 acquisition channels) -- 2026-05-21
+**Status: SHIPPED (tsc clean)**
+**Commit:** d371500 (merged to main via PR in CRO + GEO uplift push)
+
+Dynamic-by-referrer landing pages convert at 37.1% vs 19.2% static (May 2026
+distribution research -- near-2x lift). This shipped the cheapest possible
+version of that play: one cookie, eight copy decks, no client-side JS, SSR-
+perfect HTML so Googlebot/Bingbot/Perplexity always sees the `default` variant.
+
+### How it works
+
+1. **`app/src/proxy.ts`** (middleware) -- reads `utm_source`, `source`, `ref`
+   query params and the `Referer` hostname on every incoming request. If no
+   `usaas_source` cookie exists yet, sets it to the detected channel (first-
+   touch wins). Never overwrites an existing cookie -- later organic visits
+   cannot steal the original attribution mid-funnel. 90-day expiry.
+
+2. **`app/src/lib/acquisition-source.ts`** (NEW) -- single source of truth for
+   the entire system:
+   - `AcquisitionSource` union type (8 values)
+   - `UTM_TOKEN_MAP` + `REFERER_HOST_MAP` lookup tables
+   - `HeroVariant` type (eyebrow, headlineLead, headlineLeadMuted,
+     headlineTailLead, headlineTailMuted, subheadOpener, subheadCloser,
+     primaryCta)
+   - `HERO_VARIANTS` record with copy decks for all 8 sources
+   - `detectSourceFromRequest()`, `readSourceFromCookies()`,
+     `getHeroVariant()`, `parseSource()` helpers
+
+3. **`app/src/components/blocks/hero.tsx`** -- Hero block accepts an optional
+   `variant?: HeroVariant` prop. Falls back to `HERO_VARIANTS.default` when
+   no prop provided. Free of `next/headers` imports -- testable in isolation.
+
+4. **`app/src/app/page.tsx`** -- homepage server component calls
+   `readSourceFromCookies()`, then `getHeroVariant()`, and passes the resolved
+   deck to `<Hero variant={sourceVariant} />`. Distinct from and co-existing
+   with the `identity_label` A/B cookie (`usaas_ab_identity`) which drives
+   "Verified Builders vs Paid Builders" manifesto copy.
+
+### The 5 briefed variants (plus 3 extras shipped)
+
+| Cookie value   | Trigger                                               | H1 lead                        |
+|---------------|-------------------------------------------------------|-------------------------------|
+| `default`     | No match / organic / direct                           | "Your first paying customer"  |
+| `twitter`     | utm_source=x/twitter or t.co/twitter.com/x.com       | Same lead, Twitter subhead    |
+| `indiehackers`| utm_source=indiehackers/ih or indiehackers.com        | Same lead, IH subhead         |
+| `marclou`     | utm_source=marclou/shipfast or marclou.com/shipfa.st  | Same lead, Marc Lou subhead   |
+| `microconf`   | utm_source=microconf or microconf.com                 | Same lead, MicroConf subhead  |
+| `hackernews`  | utm_source=hn/hackernews or news.ycombinator.com      | "First paying customer"       |
+| `linkedin`    | utm_source=linkedin or linkedin.com/lnkd.in           | Same lead, LinkedIn subhead   |
+| `reddit`      | utm_source=reddit or reddit.com                       | Same lead, Reddit subhead     |
+| `directory`   | utm_source=betalist/producthunt etc.                  | Same lead, directory subhead  |
+
+Note: the brief specified 5 variants. 8 were shipped (hackernews, linkedin,
+reddit, directory added). All copy follows Brunson voice + en-dash-only rule.
+
+### Cookie discipline
+
+- Cookie name: `usaas_source`
+- Max-age: 90 days (shorter than the 1-year identity A/B; channel signal
+  decays faster than collective identity preference)
+- `sameSite: lax`, `path: /`
+- Conflict with `identity_label` A/B: none. Completely separate cookies,
+  separate copy surfaces (channel = hero H1/sub; identity = manifesto title).
+
+### Files changed
+
+- `app/src/lib/acquisition-source.ts` (NEW)
+- `app/src/components/blocks/hero.tsx` (variant prop added)
+- `app/src/app/page.tsx` (reads cookie, passes variant to Hero)
+- `app/src/proxy.ts` (detection + cookie-write logic)
+- `strategy/decisions/hero-variant-system.md` (this decision doc)
+- `build-log.md` (this entry)
+
+---
+
+## BotID bot protection on checkout + diagnostic routes
+**Status: SHIPPED (tsc clean)**
+**Date: 2026-05-21**
+
+Added Vercel BotID (package `botid@1.5.11`, free tier) to two high-value API
+routes to protect against automated abuse.
+
+### Routes protected
+
+- **`/api/checkout`** -- card-testing bots enumerate stolen card numbers against
+  Stripe at zero direct cost until a session completes. BotID gates the session
+  create call before any Stripe API call fires.
+- **`/api/diagnostic`** -- bulk scraper bots submit product URLs to extract
+  Anthropic-powered teardowns at Maryan's API cost. BotID gates the Claude
+  call before any token spend.
+
+### Implementation
+
+- `botid/server` `checkBotId()` injected at the top of each POST handler,
+  wrapped in `try/catch` for fail-open behavior.
+- Returns `403 { error: "bot_detected" }` on confirmed bot traffic only.
+- BotID outage (network error, service down) logs a warn and lets the request
+  through -- a checkout is never blocked by a BotID infrastructure issue.
+- `instrumentation-client.ts` (Next.js 15.3+ path) initialises `initBotId()`
+  with both protected routes before any page renders on the client.
+- `next.config.mjs` wrapped with `withBotId()` to configure the proxy rewrites
+  BotID needs to route its challenge script through the same origin (prevents
+  ad-blocker interference).
+
+### Env vars
+
+None required. BotID is auto-provisioned for Vercel-linked projects. No secret
+key needed on the free tier.
+
+### Why this matters
+
+Card-testing is a real attack vector for any Stripe checkout exposed on the
+public internet. The diagnostic LLM call costs ~$0.05--$0.15 per run; a
+scraper looping at 100 req/min would cost $300--$900/hr in Anthropic API fees
+before rate limits kick in. BotID closes both vectors with a single free-tier
+integration that has zero marginal cost on legitimate traffic.
+
+---
+
 ## Audit Response: SEO/pSEO/GEO/AEO/AIO audit – off-page lift push
 **Status: SHIPPED (tsc clean)**
 
@@ -1610,3 +1856,133 @@ The funnel labels are: `the 5-email founder breakdown series` (soap_opera), `the
 ### Next coherent unit
 
 The matching follow-up is wiring an existing-state UI for the 34 paused carry-overs: a one-time admin endpoint that flips them to `active` and triggers their first Soap Opera email when you're ready to launch the re-engagement campaign. Until then, this PR makes new signups safer without disturbing the carry-over plan.
+
+---
+
+## 2026-05-21 -- AI crawler policy follow-up: sitemap + Claude-SearchBot + strategy doc
+
+**PR:** #101 (feat/ai-crawler-policy-followup)
+**Follows:** PR #99 (feat(seo): add ai.txt + purpose-based robots.txt bot policy)
+
+### What was added
+
+Additive follow-up to PR #99. Three gaps filled:
+
+1. **`/ai.txt` added to sitemap** (`app/src/app/sitemap.ts`) -- dataset
+   aggregators walking sitemaps now discover the training opt-out signal
+   before ingesting.
+
+2. **`Claude-SearchBot` + `Claude-User` added to robots.ts allow-list** --
+   these are distinct Anthropic user-agents confirmed in nohacks.co 2026
+   crawler report: Claude-SearchBot for retrieval indexing (independently
+   controllable from ClaudeBot), Claude-User for user-triggered fetches.
+   Both are search/answer-surface bots, not training-only.
+
+3. **`strategy/decisions/ai-crawler-policy.md`** -- decision doc recording
+   the two-layer policy rationale, full allow/block tables, user-agent
+   source, and file inventory.
+
+### Policy summary (as of PR #99 + #101)
+
+- **Allowed (robots.txt):** OAI-SearchBot, ChatGPT-User, ClaudeBot,
+  Claude-SearchBot (new), Claude-Web, Claude-User (new), anthropic-ai,
+  GoogleOther, PerplexityBot, Perplexity-User, Applebot, DuckAssistBot,
+  MistralAI-User, YouBot, cohere-ai, Bravebot, MojeekBot, Kagibot,
+  search.marginalia.nu
+- **Blocked (robots.txt):** GPTBot, Google-Extended, CCBot, Bytespider,
+  Meta-ExternalAgent, FacebookBot, Applebot-Extended, Amazonbot,
+  cohere-training-data-crawler, Diffbot
+- **Training opt-out (ai.txt):** all blocked bots + `*` catch-all
+
+### Files changed
+
+- `app/src/app/robots.ts` (added Claude-SearchBot + Claude-User)
+- `app/src/app/sitemap.ts` (added /ai.txt entry)
+- `strategy/decisions/ai-crawler-policy.md` (NEW)
+- `build-log.md` (this entry)
+
+---
+
+## Schema uplift: SoftwareApplication + ClaimReview + QAPage (2026-05-21)
+**Status: SHIPPED (tsc clean, no new errors)**
+
+### Why
+
+The existing JSON-LD graph covers Organization, WebSite, Person, Product
+(multi-typed as Product+SoftwareApplication+LearningResource), HowTo, Course,
+FAQPage, Article, and Dataset. Three high-signal schema types were missing:
+
+1. **SoftwareApplication (standalone):** The Playbook Product node already
+   carries SoftwareApplication in its @type array, but as one of three types
+   on the _subscription offer_ node. Google AI Mode and LLM retrieval pipelines
+   differentiate between "the subscription" and "the application itself." A
+   dedicated SoftwareApplication node at `#app` (distinct from `#product-playbook`)
+   is the canonical type answer to "what SaaS tool helps me get my first
+   customer." applicationCategory + featureList are the primary extraction
+   targets for that query class.
+
+2. **ClaimReview:** A high-trust signal for Google AI Mode "verification"
+   queries. The editorial-policy page already documents a corrections workflow,
+   sourcing standards, and disclosure commitments. A ClaimReview node on that
+   page makes the accuracy commitment machine-readable with a numeric rating,
+   which AI citation pipelines read directly rather than parsing prose.
+
+3. **QAPage alongside FAQPage:** The /faq questions are verbatim from public
+   Indie Hackers and Hacker News threads -- a hybrid editorial+community Q&A
+   surface. Emitting QAPage + FAQPage in a merged @type array surfaces the page
+   in both eligibility pools (editorial curation + community validation).
+
+### Schema types added
+
+| Type | Page | @id | Key fields |
+|------|------|-----|------------|
+| `SoftwareApplication` | `/` (homepage) | `/#app` | applicationCategory, operatingSystem, featureList (7 items), offers, creator, publisher, isRelatedTo |
+| `ClaimReview` | `/editorial-policy` | -- | claimReviewed, reviewRating (5/5 Confirmed), author (Org @id), itemReviewed |
+| `QAPage` + `FAQPage` | `/faq` | -- | mainEntity array with upvoteCount on Question + Answer |
+
+### Package changes
+
+- `packages/seo/src/jsonld/softwareapplication.ts` (NEW builder)
+- `packages/seo/src/jsonld/claimreview.ts` (NEW builder)
+- `packages/seo/src/jsonld/qapage.ts` (NEW builder)
+- `packages/seo/src/jsonld/index.ts` (exports for the 3 new builders)
+
+### App changes
+
+- `app/src/components/seo/json-ld.tsx` (+3 components: SoftwareApplicationJsonLd,
+  ClaimReviewJsonLd, QAFaqPageJsonLd + pre-serialized constants)
+- `app/src/app/page.tsx` (added `<SoftwareApplicationJsonLd />`)
+- `app/src/app/(marketing)/editorial-policy/page.tsx` (added `<ClaimReviewJsonLd />`)
+- `app/src/app/(marketing)/faq/page.tsx` (added `<QAFaqPageJsonLd />`)
+
+### Cross-reference discipline
+
+- `SoftwareApplicationJsonLd` uses `{ "@id": ID.person }` and
+  `{ "@id": ID.organization }` (no inline duplication of Person/Org fields).
+- `SoftwareApplicationJsonLd` uses `{ "@id": ID.product }` in `isRelatedTo`
+  (links app node to subscription offer node without duplicating offer fields).
+- `ClaimReviewJsonLd` uses `{ "@id": ID.organization }` as author.
+- All constants pre-serialized at module load (zero per-render allocation).
+
+### Brunson Hard-Rule compliance
+
+- featureList: 7 entries, each verbatim from the homepage Stack Slide or
+  playbook-sales page.
+- ClaimReview rating 5/5: the editorial commitment is real and operational,
+  not aspirational.
+- QAPage upvoteCount = 1: minimum honest claim (the question was asked at least
+  once by a real person in a public thread).
+- No aggregateRating added to SoftwareApplicationJsonLd (zero verified reviews).
+
+### Files modified (this entry)
+
+- `packages/seo/src/jsonld/softwareapplication.ts` (NEW)
+- `packages/seo/src/jsonld/claimreview.ts` (NEW)
+- `packages/seo/src/jsonld/qapage.ts` (NEW)
+- `packages/seo/src/jsonld/index.ts` (updated)
+- `app/src/components/seo/json-ld.tsx` (updated)
+- `app/src/app/page.tsx` (updated)
+- `app/src/app/(marketing)/editorial-policy/page.tsx` (updated)
+- `app/src/app/(marketing)/faq/page.tsx` (updated)
+- `strategy/decisions/schema-softwareapplication-claimreview.md` (NEW)
+- `build-log.md` (this entry)

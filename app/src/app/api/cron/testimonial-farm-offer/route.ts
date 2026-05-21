@@ -19,9 +19,14 @@ export const maxDuration = 60;
  *      (memory: project_funnelfixer_carryover_list.md).
  *   2. /api/cron/activate-funnelfixer-carryover activates 5/day with
  *      bounce-tier ordering.
- *   3. Each activated row flows through the 5-email Soap Opera at one
- *      send per 24 hours (dispatched by /api/cron/funnelfixer-tick).
- *   4. After Email 5 the row's status flips to 'complete'.
+ *   3. Each activated row flows through the 3-email Soap Opera spine at
+ *      one send per 30 minutes (dispatched by /api/cron/funnelfixer-tick;
+ *      48h cadence between sends to the same subscriber).
+ *   4. After E3 the row's status flips to 'complete'. Behavioral
+ *      branches (soft_sell / objection_handler) are intentionally NOT
+ *      run for funnelfixer carry-over – they are a recovery cohort, not
+ *      a cold-traffic cohort, and the day-6 branch pass is for the
+ *      latter. See strategy/decisions/sos-3-spine-2-branch.md.
  *   5. THIS cron picks up complete funnelfixer rows and sends the one-shot
  *      reactivation offer – $1 Starter at $0 for 14 days via the
  *      operator-configured Stripe Payment Link – then stamps the row so

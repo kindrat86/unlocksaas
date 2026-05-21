@@ -34,6 +34,15 @@ export type {
   AggregateRatingInput,
 } from "./product.js";
 
+export { buildSoftwareApplication } from "./softwareapplication.js";
+export type { SoftwareApplicationInput } from "./softwareapplication.js";
+
+export { buildClaimReview } from "./claimreview.js";
+export type { ClaimReviewInput, ClaimReviewRatingInput } from "./claimreview.js";
+
+export { buildQAPage } from "./qapage.js";
+export type { QAPageInput, QAEntry } from "./qapage.js";
+
 export { buildReview } from "./review.js";
 export type { ReviewInput } from "./review.js";
 

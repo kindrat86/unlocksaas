@@ -5,57 +5,61 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  * robots.txt for UnlockSaaS — Surface A (crawl) + Surface B (AEO/GEO) policy.
  *
  * Source: strategy/google-strategy.md §A.4 (crawl) and §B.1 (AI-crawler policy).
+ * Updated: 2026-05-21 -- purpose-based AI bot split (search/answer vs. training)
  *
- * Four rule groups:
- *   1. `*`           — every crawler (Google, Bing, Yandex, etc.). Public
- *                      marketing surfaces allowed; private/auth/api blocked.
- *   2. AI training   — explicit Allow for the AI crawlers UnlockSaaS WANTS
- *                      to be cited by (Perplexity, Anthropic, OpenAI,
- *                      Google AI Overviews, Apple, ByteDance, Meta, CCBot,
- *                      DuckAssist, Amazon, Mistral). Distribution > scrape
- *                      protection for a pre-revenue founder-tools SaaS where
- *                      AI-answer citation IS the channel.
- *   3. Indie search  — explicit Allow for Brave, Mojeek, Marginalia, Kagi.
- *                      Tiny absolute share, but the demographic they index
- *                      for matches the UnlockSaaS buyer profile (founders
- *                      who deliberately use Google alternatives).
- *   4. Bad-actor     — block the scrapers that take content without driving
- *                      any retrieval traffic (legacy CCBot already covered
- *                      by allow above; future bad-actor entries land here).
+ * Five rule groups:
+ *   1. `*`               -- every crawler (Google, Bing, Yandex, etc.). Public
+ *                          marketing surfaces allowed; private/auth/api blocked.
+ *   2. AI search/answer  -- explicit Allow for crawlers that power citation
+ *                          surfaces (ChatGPT, Claude, Perplexity, DuckAssist,
+ *                          Mistral, You.com, Cohere inference, GoogleOther).
+ *                          Distribution > scrape-protection for a pre-revenue
+ *                          SaaS where AI-answer citation IS the channel.
+ *   3. AI training-only  -- explicit Disallow for crawlers that ONLY feed model
+ *                          training corpora with no citation/retrieval surface
+ *                          (GPTBot, Google-Extended, CCBot, Bytespider, Meta,
+ *                          Apple-Extended, Amazon, Cohere-training, Diffbot).
+ *                          Paired with /ai.txt (Spawning spec) for belt-and-
+ *                          suspenders training opt-out signalling.
+ *   4. Indie search      -- explicit Allow for Brave, Mojeek, Marginalia, Kagi.
+ *                          Tiny share each, but the demographic they index
+ *                          matches the UnlockSaaS buyer profile exactly.
+ *   5. Bad-actor         -- reserved for scrapers with no retrieval surface;
+ *                          none currently needed beyond group 3.
  *
- * Allow-list rationale: each AI user-agent below was added because the
- * model behind it surfaces citations or links back to source URLs in its
- * answers. Allow-listing them is reciprocity — they cite, we let them in.
+ * Training-opt-out rationale (2026-05-21)
+ * ----------------------------------------
+ * Allowing training crawlers was the default pre-revenue stance. As the
+ * site matures, the tradeoff shifts: training bots add no citation
+ * surface -- they do not link back, do not drive traffic, and consume
+ * crawl budget. Blocking them redirects that budget toward the bots that
+ * actually surface UnlockSaaS in answers (ChatGPT, Claude, Perplexity).
+ * ClaudeBot is kept in the allow-list because Anthropic uses it for BOTH
+ * claude.ai search and training -- the citation surface outweighs the
+ * training cost for a solo-founder SaaS. This decision can be revisited
+ * once the site has measurable LLM-citation share data.
+ *
+ * Full machine-readable AI policy: /.well-known/ai-policy.json
+ * Spawning opt-out declaration:    /ai.txt
  *
  * Brunson Hard-Rule reconciliation: no fabricated bot names, no aspirational
- * crawlers ("Wikipedia AI" etc.). Every entry below is a real, currently
- * operating user-agent string verified at /etc/robots-research/ on
- * 2026-05-17.
+ * crawlers. Every entry is a real, currently operating user-agent string.
  *
- * Disallow list for `*` continues to block:
- *  - /playbook/*            — authenticated member area; per-user data
- *  - /api/*                — server routes, never indexable
- *  - /auth/*               — login / callback flow
- *  - /diagnostic/result    — per-lead diagnosis (already index:false)
- *  - /login                — auth surface
- *  - /oto, /welcome        — post-purchase transitions; out-of-context
- *  - /onboarding           — post-purchase intake; auth-gated downstream
+ * Disallow list for `*` blocks:
+ *  - /playbook/*         -- authenticated member area; per-user data
+ *  - /api/*              -- server routes, never indexable
+ *  - /auth/*             -- login / callback flow
+ *  - /diagnostic/result  -- per-lead diagnosis (already index:false)
+ *  - /login              -- auth surface
+ *  - /oto, /welcome      -- post-purchase transitions; out-of-context
+ *  - /onboarding         -- post-purchase intake; auth-gated downstream
  *
  * Verified Builder strategy update (2026-05-18)
  * ---------------------------------------------
- * The canonical /builder/<slug> page is INDEXABLE — it must be, or the
- * cross-domain Review JSON-LD citation chain breaks. When a verified
- * founder embeds the badge on their own site with the supplied Review
- * JSON-LD, the `itemReviewed.@id` resolves to the unlocksaas Playbook;
- * Google validates that citation by crawling the canonical page named in
- * the founder's anchor. Blocking /builder/* would invalidate every embed.
- *
- * What we DO block under /builder/<slug>/ are the tool / machine
- * sub-routes (the embed-code helper UI, the SVG image asset, the JSON-LD
- * payload, the iframe HTML, the oEmbed discovery JSON, and the auto-
- * generated OG image). These exist for off-site consumption; indexing
- * them would create duplicate-intent results competing with the canonical
- * badge page for the same query.
+ * The canonical /builder/<slug> page is INDEXABLE -- the cross-domain
+ * Review JSON-LD citation chain requires it. Only the per-builder tool
+ * sub-routes (embed-code helper, SVG badge, review.json, oembed, OG
+ * image, /snippets) are blocked to prevent duplicate-intent results.
  *
  * Sitemap reference: discovery anchor for every public surface.
  */
@@ -94,7 +98,42 @@ export default function robots(): MetadataRoute.Robots {
     "/oto",
     "/welcome",
     "/onboarding",
+    // Affiliate-tracking redirects (2026-05-21 GSC audit fix).
+    // /r/<code> 302-redirects to /diagnostic with attribution params.
+    // Verified Builders share these on social + their own founder sites,
+    // so Googlebot discovers them via backlinks even though we never link
+    // to them from owned surfaces. Without this Disallow they appear as
+    // "Page with redirect" in Search Console — every affiliate code Google
+    // crawls is one indexing-budget waste, and the redirect chain ends at
+    // /diagnostic anyway (which is the canonical landing surface and
+    // already indexed). Blocking /r/* applies to EVERY crawler (web + AI)
+    // because affiliate redirects carry no editorial content for any
+    // retriever — they're a UTM-attribution mechanism, not a citable page.
+    "/r/",
   ];
+
+  // Web-search-only disallow (Googlebot, Bingbot, etc.) — kept SEPARATE
+  // from PRIVATE_DISALLOW_CANONICAL because these paths are first-class
+  // discovery surfaces for AI retrievers and must NOT be blocked under the
+  // AI / indie-search user-agent rules below.
+  //
+  // /*.md (2026-05-21 GSC audit fix):
+  //   Every pSEO HTML page advertises its markdown mirror via
+  //     <link rel="alternate" type="text/markdown" href="/foo.md" />
+  //   Googlebot follows alternate links during discovery and crawls /foo.md,
+  //   which serves the SAME body content with a Link: rel="canonical"
+  //   pointing back to /foo (the HTML page). Google then reports it as
+  //   "Alternative page with proper canonical tag" — accurate but wasted
+  //   crawl budget. The markdown mirror exists for AI retrievers
+  //   (Perplexity, Claude, GPT, AI Overviews via Google-Extended which is
+  //   distinct from Googlebot's web index) discovered via /llms.txt, not
+  //   for the HTML web index. Web crawlers see /foo (HTML); AI crawlers
+  //   see /foo.md (same content, machine-friendlier shape).
+  //
+  // robots.txt wildcard semantics per RFC 9309 §2.2.2: `/*.md` matches any
+  // URL path containing `.md`. Trailing `$` anchors end-of-URL so we don't
+  // accidentally block `/foo.md.html` (none exist, but defence-in-depth).
+  const WEB_INDEX_ONLY_DISALLOW_CANONICAL = ["/*.md$"];
 
   // Locales with at least one approved translation get their private
   // subtree mirrored. Locales with zero approved content are NOT mentioned
@@ -136,73 +175,108 @@ export default function robots(): MetadataRoute.Robots {
     "Kagibot",
   ];
 
-  // AI crawlers we explicitly welcome. Each one either powers a citation
-  // surface (ChatGPT / Claude / Perplexity / Gemini / Apple Intelligence /
-  // DuckAssist / Bing Copilot) or feeds a training corpus that compounds
-  // brand recall when our content is the canonical answer to a query.
-  const AI_USER_AGENTS = [
-    // OpenAI — training + ChatGPT browsing/search citations.
-    "GPTBot",
+  // AI crawlers that power search, retrieval, or answer-engine citation.
+  // Each bot below links back to the source URL in its answers, driving
+  // real referral traffic and brand recall. Allow on public marketing,
+  // block on private/transactional surfaces.
+  //
+  // ClaudeBot note: Anthropic uses ClaudeBot for BOTH claude.ai search
+  // and model training. We allow it here because the citation surface
+  // (claude.ai search, Claude.ai web) outweighs the training cost for a
+  // pre-revenue SaaS that needs AI-search visibility. Revisit once
+  // LLM-citation share data is measurable (e.g. via Otterly.ai).
+  const AI_SEARCH_ANSWER_USER_AGENTS = [
+    // OpenAI -- ChatGPT browsing and search-surface crawlers.
     "OAI-SearchBot",
     "ChatGPT-User",
-    // Anthropic — training + Claude with web/search tools.
+    // Anthropic -- Claude web search + retrieval indexing + training (citation
+    // surface kept). Claude-SearchBot is the dedicated retrieval-indexing UA
+    // (independently controllable from ClaudeBot per nohacks.co 2026 report).
+    // Claude-User is the user-triggered fetch UA (real-time queries in Claude).
     "ClaudeBot",
+    "Claude-SearchBot",
     "Claude-Web",
+    "Claude-User",
     "anthropic-ai",
-    // Google — AI Overviews / Gemini training opt-in (separate from Googlebot).
-    "Google-Extended",
+    // Google -- AI Overviews fetch and Gemini inference (not training).
     "GoogleOther",
-    // Perplexity — answer engine, cites sources prominently.
+    // Perplexity -- answer engine, cites sources with live URLs.
     "PerplexityBot",
     "Perplexity-User",
-    // Microsoft / Bing Copilot.
-    "Bingbot",
-    // Apple Intelligence / Spotlight Web Index.
+    // Apple Intelligence / Spotlight Web Index (search, not training).
     "Applebot",
+    // DuckDuckGo AI Assist -- cites source URLs in answers.
+    "DuckAssistBot",
+    // Mistral inference.
+    "MistralAI-User",
+    // You.com answer engine.
+    "YouBot",
+    // Cohere inference (NOT the training-data crawler; see block-list).
+    "cohere-ai",
+  ];
+
+  // AI crawlers used exclusively for model training or dataset building
+  // with no citation/retrieval surface. They consume crawl budget without
+  // driving traffic or citations. Blocked here; also opted-out via /ai.txt
+  // (Spawning spec) as a belt-and-suspenders training opt-out signal.
+  const AI_TRAINING_BLOCK_USER_AGENTS = [
+    // OpenAI GPTBot -- training corpus only; ChatGPT-User is the citation UA.
+    "GPTBot",
+    // Google-Extended -- Google AI training; separate from Googlebot search.
+    "Google-Extended",
+    // Apple AI training (distinct from Applebot search/Spotlight).
     "Applebot-Extended",
-    // Meta AI (LLaMA + Meta search).
+    // Meta AI training crawlers.
     "Meta-ExternalAgent",
     "FacebookBot",
-    // Common Crawl (corpus feeding many open-source models).
+    // Common Crawl -- open corpus for training open-weight models.
     "CCBot",
-    // ByteDance / Doubao / Coze.
+    // ByteDance training crawler (Doubao / Coze AI stack).
     "Bytespider",
-    // DuckDuckGo AI Assist.
-    "DuckAssistBot",
-    // Amazon (Alexa, AI features).
+    // Amazon Alexa AI training.
     "Amazonbot",
-    // Mistral.
-    "MistralAI-User",
-    // You.com.
-    "YouBot",
-    // Cohere.
-    "cohere-ai",
+    // Cohere training-specific crawler.
     "cohere-training-data-crawler",
-    // Diffbot (knowledge-graph; powers several enterprise answer surfaces).
+    // Diffbot -- knowledge-graph training; no answer citation surface here.
     "Diffbot",
   ];
 
   return {
     rules: [
-      // ─── Default policy (Googlebot, Bingbot, every long-tail crawler) ────
+      // ── Default policy (Googlebot, Bingbot, every long-tail crawler) ─────
+      // PRIVATE_DISALLOW + WEB_INDEX_ONLY: the web-index disallow is added
+      // here only, NOT under the AI / indie blocks below, because /*.md is
+      // the AI-retriever discovery surface for those user-agents. Googlebot
+      // (the web crawler, distinct from Google-Extended which is in the
+      // training block-list) follows <link rel="alternate" type="text/markdown">
+      // during HTML crawl, lands on /foo.md, and reports it as "Alternative
+      // page with proper canonical tag" in Search Console -- blocking here
+      // breaks the discovery loop without affecting AEO citations.
       {
         userAgent: "*",
         allow: "/",
-        disallow: PRIVATE_DISALLOW,
+        disallow: [...PRIVATE_DISALLOW, ...WEB_INDEX_ONLY_DISALLOW_CANONICAL],
       },
-      // ─── AI-crawler explicit allow-list ──────────────────────────────────
-      // One rule entry per user-agent so the Allow/Disallow pair is
-      // unambiguous; Next.js serializes each into its own User-agent block.
-      // Disallow mirrors PRIVATE_DISALLOW — we welcome the AI crawlers on
-      // public marketing, not on the authenticated/transactional surface.
-      ...AI_USER_AGENTS.map((ua) => ({
+      // ── AI search/answer explicit allow-list ─────────────────────────────
+      // One rule entry per user-agent for an unambiguous Allow/Disallow pair.
+      // Next.js serialises each into its own User-agent block. Disallow
+      // mirrors PRIVATE_DISALLOW: public marketing yes; auth/transactional no.
+      ...AI_SEARCH_ANSWER_USER_AGENTS.map((ua) => ({
         userAgent: ua,
         allow: "/",
         disallow: PRIVATE_DISALLOW,
       })),
-      // ─── Indie-search explicit allow-list ────────────────────────────────
-      // Brave, Mojeek, Marginalia, Kagi. Same Allow/Disallow shape as the
-      // AI block — public marketing yes, authenticated/transactional no.
+      // ── AI training-only block-list ───────────────────────────────────────
+      // Full site disallow. These bots add no citation surface and redirect
+      // crawl budget away from the bots that matter for AI-search visibility.
+      // Paired with /ai.txt for the Spawning opt-out protocol layer.
+      ...AI_TRAINING_BLOCK_USER_AGENTS.map((ua) => ({
+        userAgent: ua,
+        disallow: ["/"],
+      })),
+      // ── Indie-search explicit allow-list ─────────────────────────────────
+      // Brave, Mojeek, Marginalia, Kagi. Public marketing allowed;
+      // authenticated/transactional blocked.
       ...INDIE_SEARCH_USER_AGENTS.map((ua) => ({
         userAgent: ua,
         allow: "/",
