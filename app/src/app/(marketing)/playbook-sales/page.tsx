@@ -131,10 +131,14 @@ export default async function PlaybookSalesPage() {
   // Cache the rendered page shell for 1 day with 1-week expiry.
   // Safe because: the only dynamic data read is getVerifiedBadgeCount(), which
   // is itself 'use cache' + tagged with 'verified-builder-count'. When a new
-  // Verified Builder is added, revalidateTag('verified-builder-count') is called
-  // via the webhook at /api/webhooks/revalidate-badges, which invalidates both
-  // the count function cache AND this page cache in a single round-trip.
-  // No cookies, headers, or searchParams are read at this level.
+  // Verified Builder is added, the webhook at /api/webhooks/revalidate-badges
+  // fires `revalidatePath()` on every page that embeds the count (this page
+  // included) — path-level invalidation is what Route Handlers can do under
+  // Next 16. The `verified-builder-count` cache tag is reserved for a future
+  // Server Action which can call `revalidateTag('verified-builder-count', 'max')`
+  // (two-arg form is mandatory under Next 16). The 1-hour `cacheLife` ceiling
+  // on getVerifiedBadgeCount() is the freshness fallback if the webhook ever
+  // misfires. No cookies, headers, or searchParams are read at this level.
   cacheLife("days");
   cacheTag("playbook-sales-page");
   // Stripe-verified, public-shared Verified Builder count. Drives the
