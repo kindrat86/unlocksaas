@@ -15,6 +15,10 @@ import type {
   RecentRevenue,
   TimeSinceLaunch,
 } from "@/lib/diagnostic";
+import {
+  DiagnosticReasoningPanel,
+  useStreamingDiagnostic,
+} from "./reasoning-panel";
 
 // Google OAuth on the diagnostic squeeze is gated by an env flag so the
 // button stays hidden in environments where the Supabase Google provider
@@ -102,34 +106,40 @@ export function DiagnosticForm({
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
-  const [submitElapsed, setSubmitElapsed] = useState(0);
   const [errors, setErrors] = useState<FieldError>({});
   const [alreadyUsed, setAlreadyUsed] = useState<AlreadyUsed | null>(null);
+  const streaming = useStreamingDiagnostic();
 
-  // Cycle a stage-of-work hint while the engine reads + analyzes. The deep
-  // analysis call runs ~30-45 s and a silent button is worse UX than a stale
-  // counter — the user wants to know something is happening.
+  // React to terminal events from the streaming engine. The hook surfaces
+  // 'done' (navigate to result), 'already_used' (show the second-attempt
+  // door), and 'error' (re-enable the form with a message). The visible-
+  // reasoning panel rendered during step 5 replaces the previous stale
+  // submitStage timer — every transition now corresponds to a real server
+  // event instead of a guess at the elapsed clock.
   useEffect(() => {
-    if (!submitting) {
-      setSubmitElapsed(0);
+    if (!streaming.terminal) return;
+    if (streaming.terminal.kind === "done") {
+      router.push(streaming.terminal.redirectTo);
       return;
     }
-    setSubmitElapsed(0);
-    const start = Date.now();
-    const t = setInterval(() => {
-      setSubmitElapsed(Math.round((Date.now() - start) / 1000));
-    }, 1000);
-    return () => clearInterval(t);
-  }, [submitting]);
-
-  const submitStage = (() => {
-    if (submitElapsed < 5) return "Fetching your page...";
-    if (submitElapsed < 15) return "Reading the hero, offer, and copy...";
-    if (submitElapsed < 30) return "Scoring three failure modes...";
-    if (submitElapsed < 45) return "Drafting rewrites + 30-day plan...";
-    if (submitElapsed < 60) return "Naming competitors...";
-    return "Almost there. Finalizing the teardown...";
-  })();
+    if (streaming.terminal.kind === "already_used") {
+      track(Event.DiagnosticFormSubmitted, {
+        step_completed: 5,
+        already_used: true,
+      });
+      setAlreadyUsed({
+        existingId: streaming.terminal.id,
+        previousUrl: streaming.terminal.previousUrl,
+      });
+      setSubmitting(false);
+      return;
+    }
+    if (streaming.terminal.kind === "error") {
+      setErrors({ form: streaming.terminal.message });
+      setSubmitting(false);
+      return;
+    }
+  }, [streaming.terminal, router]);
   const [state, setState] = useState<SurveyState>({
     productUrl: "",
     time_since_launch: "",
@@ -271,58 +281,24 @@ export function DiagnosticForm({
       recent_revenue: state.recent_revenue,
       biggest_attempt: state.biggest_attempt,
     });
-    try {
-      const res = await fetch("/api/diagnostic", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: state.email.trim(),
-          productUrl: state.productUrl,
-          survey: {
-            time_since_launch: state.time_since_launch,
-            recent_revenue: state.recent_revenue,
-            biggest_attempt: state.biggest_attempt,
-          },
-          referrer:
-            typeof document !== "undefined" ? document.referrer : undefined,
-        }),
-      });
-      const body = (await res.json().catch(() => ({}))) as {
-        id?: string;
-        error?: string;
-        already_used?: boolean;
-        previous_url?: string | null;
-      };
-      if (!res.ok || !body.id) {
-        setErrors({
-          form:
-            body.error ||
-            "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
-        });
-        setSubmitting(false);
-        return;
-      }
-      if (body.already_used) {
-        track(Event.DiagnosticFormSubmitted, {
-          step_completed: 5,
-          already_used: true,
-          email_domain: state.email.trim().split("@")[1] ?? null,
-        });
-        setAlreadyUsed({
-          existingId: body.id,
-          previousUrl: body.previous_url ?? null,
-        });
-        setSubmitting(false);
-        return;
-      }
-      router.push(`/diagnostic/result?id=${body.id}`);
-    } catch {
-      setErrors({
-        form:
-          "Could not reach the diagnostic engine. Try again in a minute, or email me directly at maryan@unlocksaas.com.",
-      });
-      setSubmitting(false);
-    }
+
+    // Switch from the silent 30-45 s "Running the diagnostic..." spinner to
+    // the streaming visible-reasoning endpoint. The reasoning panel renders
+    // below this form as soon as setSubmitting(true) flips. The useEffect
+    // watching streaming.terminal handles the redirect / already-used /
+    // error cases. The legacy /api/diagnostic POST is preserved as the
+    // no-JS fallback and the Google-OAuth /diagnostic/finish hand-off.
+    streaming.run({
+      email: state.email.trim(),
+      productUrl: state.productUrl,
+      survey: {
+        time_since_launch: state.time_since_launch,
+        recent_revenue: state.recent_revenue,
+        biggest_attempt: state.biggest_attempt,
+      },
+      referrer:
+        typeof document !== "undefined" ? document.referrer : undefined,
+    });
   }
 
   if (alreadyUsed) {
@@ -407,7 +383,20 @@ export function DiagnosticForm({
         />
       )}
 
-      {step === 5 && (
+      {step === 5 && submitting && (
+        <DiagnosticReasoningPanel
+          hostname={streaming.hostname}
+          reasoning={streaming.reasoning}
+          reachedSteps={streaming.reachedSteps}
+          error={
+            streaming.terminal?.kind === "error"
+              ? streaming.terminal.message
+              : null
+          }
+        />
+      )}
+
+      {step === 5 && !submitting && (
         <form onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
           <div className="space-y-1.5">
             <label
@@ -459,7 +448,7 @@ export function DiagnosticForm({
               disabled={submitting}
               className="flex-1 text-base py-6"
             >
-              {submitting ? submitStage : ctaLabel}
+              {ctaLabel}
             </Button>
           </div>
 

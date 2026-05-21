@@ -858,6 +858,214 @@ Run the deep analysis now. Respond with ONLY the JSON object. No text before or 
   return validateDeep(parsed);
 }
 
+// ---------------------------------------------------------------------------
+// Streaming deep analysis (visible-reasoning UX).
+//
+// 2026-05-21 — 72.4% of ChatGPT-cited pages have a direct answer in the first
+// 60 words; visible agentic reasoning is the 2026 wow moment. The squeeze
+// used to sit on a 30-45 s spinner with a rotating fake stage label. This
+// streaming variant emits real phase boundaries (fetch / parse / analyze /
+// save) and pipes ~120 words of HONEST Claude reasoning to the client while
+// the JSON teardown is being produced in the same response.
+//
+// The prompt is the same DEEP_SYSTEM contract, but the OUTPUT section asks
+// for a two-part response: PART 1 is plain-text reasoning streamed to the
+// founder live; PART 2 is the JSON teardown after a "---TEARDOWN---" marker.
+// The server splits on the marker, pipes the reasoning to the SSE stream,
+// and parses the JSON exactly as deepAnalyzePageText does today.
+// ---------------------------------------------------------------------------
+
+const DEEP_STREAM_OUTPUT_NOTE = `OUTPUT — your response has TWO parts, in this exact order:
+
+PART 1 (READING). Open with 100-150 words of plain-text reasoning. Reluctant Hero voice. No greeting. No exclamation marks. No "Hey there", no "Let me", no "I'll". Talk the founder through what you see in 4-6 short sentences: the hero, the offer, the audience signals, the upstream failure. The founder is watching you produce this live. End PART 1 with a single newline.
+
+PART 2 (TEARDOWN). On a new line emit exactly this marker on its own line: ---TEARDOWN---
+
+Then on the line after the marker emit ONE JSON object only, no prose around it, no markdown fence. The JSON shape is the one specified earlier in this prompt. Do not skip PART 1. Do not include the marker anywhere inside PART 1. Do not emit any text after the closing brace of the JSON.`;
+
+/**
+ * Streaming variant of deepAnalyzePageText. Pipes plain-text reasoning to
+ * the caller via onReasoning() while accumulating the response. After the
+ * stream completes, splits on the "---TEARDOWN---" marker, parses the JSON
+ * suffix, and returns the validated DeepDiagnosticResult. Falls back to
+ * whole-text JSON extraction if the marker is missing (e.g. the model
+ * decided to skip PART 1).
+ */
+export async function deepAnalyzePageTextStreaming(
+  url: string,
+  pageText: string,
+  onReasoning: (delta: string) => void,
+): Promise<DeepDiagnosticResult> {
+  const systemPrompt = DEEP_SYSTEM.replace(
+    /OUTPUT — return ONE JSON object only[\s\S]*$/,
+    DEEP_STREAM_OUTPUT_NOTE,
+  );
+
+  const stream = getAnthropic().messages.stream({
+    model: primaryModel(),
+    max_tokens: 4096,
+    system: systemPrompt,
+    messages: [
+      {
+        role: "user",
+        content: `URL submitted: ${url}
+
+PAGE CONTENT (title, meta, body, truncated):
+${pageText}
+
+Run the streaming deep analysis now. PART 1 first (plain-text reasoning), then "---TEARDOWN---" on its own line, then the JSON.`,
+      },
+    ],
+  });
+
+  // Split mode: reasoning chunks before the marker get streamed to the
+  // client; everything from the marker onward accumulates server-side for
+  // JSON parsing. A small look-back buffer guards against the marker being
+  // split across two token deltas.
+  let accumulated = "";
+  let inTeardown = false;
+  let reasoningSent = 0;
+  const MARKER = "---TEARDOWN---";
+
+  stream.on("text", (textDelta: string) => {
+    accumulated += textDelta;
+
+    if (!inTeardown) {
+      const markerAt = accumulated.indexOf(MARKER);
+      if (markerAt >= 0) {
+        // Emit any reasoning text up to (but not including) the marker that
+        // hasn't been sent yet, then flip into teardown mode.
+        const remainingReasoning = accumulated.slice(reasoningSent, markerAt);
+        if (remainingReasoning.length > 0) onReasoning(remainingReasoning);
+        reasoningSent = markerAt;
+        inTeardown = true;
+      } else {
+        // Hold back the last MARKER.length-1 chars so a split marker doesn't
+        // leak into the reasoning stream. Anything before that boundary is
+        // safe to ship.
+        const safeUpTo = Math.max(0, accumulated.length - (MARKER.length - 1));
+        if (safeUpTo > reasoningSent) {
+          onReasoning(accumulated.slice(reasoningSent, safeUpTo));
+          reasoningSent = safeUpTo;
+        }
+      }
+    }
+  });
+
+  await stream.finalMessage();
+
+  // Marker-aware parse. If the marker is missing, treat the whole text as
+  // legacy JSON-only output and extract the first object — this preserves
+  // graceful behavior when the model ignores PART 1 entirely.
+  const markerAt = accumulated.indexOf(MARKER);
+  const jsonText =
+    markerAt >= 0 ? accumulated.slice(markerAt + MARKER.length) : accumulated;
+  const cleaned = jsonText
+    .replace(/^\s*```(?:json)?\s*/i, "")
+    .replace(/\s*```\s*$/i, "")
+    .trim();
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) {
+    throw new Error("Deep analysis (stream): engine returned no JSON object");
+  }
+  const slice = cleaned.slice(start, end + 1);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(slice);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    throw new Error(`Deep analysis (stream): JSON parse failed (${reason})`);
+  }
+
+  return validateDeep(parsed);
+}
+
+/** Phase event emitted by deepAnalyzeUrlStreaming. */
+export type StreamingPhase =
+  | { phase: "fetching"; hostname: string }
+  | { phase: "parsed"; chars: number }
+  | { phase: "analyzing" }
+  | { phase: "thinking"; delta: string }
+  | { phase: "compiling" };
+
+/**
+ * Streaming end-to-end deep analysis. Same throw-on-error contract as
+ * deepAnalyzeUrl(), but emits StreamingPhase events to onProgress as each
+ * real phase boundary is crossed, plus per-token reasoning during the
+ * analyze phase. The route handler wraps onProgress around a ReadableStream
+ * controller; the squeeze form renders the events as visible reasoning.
+ */
+export async function deepAnalyzeUrlStreaming(
+  rawUrl: string,
+  onProgress: (event: StreamingPhase) => void,
+): Promise<DeepDiagnosticResult> {
+  const url = normalizeUrl(rawUrl);
+  if (!url) {
+    const err: DiagnosticError = {
+      kind: "invalid_url",
+      message:
+        "That does not look like a URL I can read. Paste a full https:// link.",
+    };
+    throw err;
+  }
+  if (isBlockedHost(url.hostname)) {
+    const err: DiagnosticError = {
+      kind: "blocked_host",
+      message:
+        "I cannot read internal or local addresses. Use your public product URL.",
+    };
+    throw err;
+  }
+
+  onProgress({ phase: "fetching", hostname: url.hostname });
+
+  let html: string;
+  try {
+    html = await fetchPage(url);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "fetch_failed",
+      message: `I could not load that page (${reason}). If it is behind login or Cloudflare's challenge, paste a public version.`,
+    };
+    throw err;
+  }
+
+  const text = htmlToText(html);
+  if (
+    text.replace(/^(TITLE|META DESCRIPTION|OG DESCRIPTION|BODY):/gm, "").trim()
+      .length < 200
+  ) {
+    const err: DiagnosticError = {
+      kind: "empty_page",
+      message:
+        "That page had almost no readable copy. The diagnostic needs real text to read.",
+    };
+    throw err;
+  }
+  onProgress({ phase: "parsed", chars: text.length });
+
+  onProgress({ phase: "analyzing" });
+  try {
+    const result = await deepAnalyzePageTextStreaming(
+      url.toString(),
+      text,
+      (delta) => onProgress({ phase: "thinking", delta }),
+    );
+    onProgress({ phase: "compiling" });
+    return result;
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "engine_failed",
+      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+    };
+    throw err;
+  }
+}
+
 /**
  * End-to-end deep analysis: validate URL, fetch, strip, deep-analyze.
  * Throws a `DiagnosticError`-shaped object on failure (same shape as
