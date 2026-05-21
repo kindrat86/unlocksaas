@@ -174,5 +174,8 @@ function labelForSurface(
       return "benchmark";
     case "dataset":
       return "dataset";
+    case "research":
+      // Research pieces are derived datasets at the citation layer.
+      return "dataset";
   }
 }
