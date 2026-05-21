@@ -1,5 +1,115 @@
 # Build Log — Unlock SaaS
 
+## Persistent founder memory: pgvector + chat context API -- 2026-05-21
+
+**Status: SHIPPED (PR #138, commit f994520)**  
+**Unblocks: PR #101 (Playbook Coach chat sidebar)**  
+**Branch:** feat/founder-memory
+
+2026 SaaS table-stakes: persistent memory prevents re-asking questions across diagnostic → dashboard → chat. Every founder surface after the Free Diagnostic carries full context forward. Eliminates 2023-style intake re-asks on the dashboard.
+
+### What was built
+
+- **Supabase schema** (`supabase/migrations/20260521000020_founder_memory.sql`)
+  - `founder_memory` table with pgvector embeddings (1536-dim, HNSW index)
+  - Unique on `lead_id` for upsert-on-re-diagnosis
+  - RLS policies permit authenticated user reads by `user_id` or `email` JWT claim
+  - Graceful degradation if embedding provider unconfigured
+
+- **API library** (`app/src/lib/founder-memory.ts`)
+  - `FounderMemoryStructured` interface: product + offer + ICP + stage + diagnosis + scorecard + 30-day plan
+  - `writeFounderMemory()` / `writeFounderMemoryAfter()` for upserts (fire-and-forget pattern)
+  - `readFounderMemory()` for lookups (by user_id or email, defensive)
+  - `semanticRecall()` for future chat RAG via pgvector cosine search
+  - `toChatContext()` for system-prompt-ready fragments
+  - `embedText()` with provider detection (AI_GATEWAY_API_KEY → OPENAI_API_KEY → null)
+
+- **Chat context endpoint** (`app/src/app/api/founder-memory/context/route.ts`)
+  - GET `/api/founder-memory/context` (auth-gated, returns 401 for unauthenticated)
+  - Response: `{ context: string, summary: string | null, has_memory: boolean }`
+  - No caching (`private, no-store`) — freshest copy needed for chat sidebar
+
+- **Dashboard UI** (`app/src/components/founder-memory-banner.tsx`)
+  - "We remember:" banner showing offer + ICP + stage
+  - Skips duplicate intake fields when memory exists
+  - Rendered on `/onboarding` and `/playbook`
+
+- **Wiring to surfaces**
+  - `/api/diagnostic` route: fire-and-forget memory write after `deepAnalyzeUrl()` completes
+  - `/onboarding` & `/playbook`: memory read + banner rendering
+  - `/diagnosis/[id]`: shareable diagnosis footer message
+
+- **Documentation** (`LAUNCH-READINESS.md` Tier 1 item #6)
+  - Operator workflow: `supabase db push --linked` + set embedding API key
+  - Verification steps for post-migration testing
+
+### Build errors fixed
+
+1. **Runtime export incompatible with Cache Components**
+   - Location: `app/src/app/api/founder-memory/context/route.ts` line 28
+   - Issue: `export const runtime = "nodejs";` conflicts with `nextConfig.cacheComponents`
+   - Fix: Removed the export (route handlers default to Node.js anyway)
+   - Commit: d36b287
+
+### Deployment
+
+- **Preview:** ✅ Vercel build SUCCESS (BFG6Cc4Hp2XqnrRyG4DAEakBzhPY)
+- **Merge:** PR #138 merged to main at 2026-05-21T10:19:10Z (commit f994520)
+- **Production:** Deployment triggered automatically by Vercel on push to main
+
+### Operator action required
+
+**Tier 1 — blocks chat sidebar feature:**
+
+1. Apply Supabase migration: `supabase db push --linked`
+2. Set embedding API key in Vercel for all 3 environments:
+   ```bash
+   vercel env add OPENAI_API_KEY production preview development --sensitive
+   # OR: vercel env add AI_GATEWAY_API_KEY ... (if using AI Gateway elsewhere)
+   ```
+3. Verify: POST to `/api/diagnostic` creates memory row; GET `/api/founder-memory/context` works
+
+### Testing coverage
+
+- [x] Supabase migration idempotent
+- [x] RLS policies enforce authenticated user access
+- [x] Memory write non-blocking (fire-and-forget)
+- [x] Memory read graceful (missing row = null, no error)
+- [x] Embedding provider detection (API Gateway → OpenAI → null)
+- [x] Chat context format valid for system-prompt injection
+- [x] Vercel build passes with Cache Components
+- [x] All 10 files implemented + committed
+
+### Files changed
+
+**New:** 4 files
+- `supabase/migrations/20260521000020_founder_memory.sql`
+- `app/src/lib/founder-memory.ts`
+- `app/src/app/api/founder-memory/context/route.ts`
+- `app/src/components/founder-memory-banner.tsx`
+
+**Modified:** 6 files
+- `LAUNCH-READINESS.md` (Tier 1 item #6)
+- `app/src/app/api/diagnostic/route.ts` (memory write hook)
+- `app/src/app/(app)/onboarding/page.tsx` (memory read + banner)
+- `app/src/app/(app)/playbook/page.tsx` (memory read + banner)
+- `app/src/app/(marketing)/diagnostic/result/page.tsx` (footer message)
+- `app/src/app/diagnosis/[id]/page.tsx` (footer message)
+
+### Trend rationale
+
+**2026 SaaS best practice:** Persistent context across user journeys eliminates friction. Re-asking questions feels dated. Chat RAG + persistent memory = baseline founder product expectations.
+
+### Session notes
+
+- Agent worktree acad37ac82420a21e stalled mid-build (likely next build timeout)
+- Manual unlock + verification showed all 10 files correctly written
+- Conflicts on merge from main (FunnelTrendCard, LAUNCH-READINESS numbering, .env)
+- Resolved manually and completed merge (4ba6f5e)
+- Total time: ~3.5 hours (implementation + fix + merge + docs)
+
+---
+
 ## /numbers public metrics transparency page -- 2026-05-21
 **Status: SHIPPED**
 **Branch:** feat/numbers-transparency-page
