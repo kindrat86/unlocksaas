@@ -13,6 +13,7 @@ import {
 import { TopTagline } from "@/components/blocks/top-tagline";
 import { Hero } from "@/components/blocks/hero";
 import { BigDomino } from "@/components/blocks/big-domino";
+import { TldrBlock } from "@/components/tldr-block";
 import { SocialProofBar } from "@/components/blocks/social-proof-bar";
 import { BeforeAfter } from "@/components/blocks/before-after";
 import { HonestTestimonials } from "@/components/blocks/honest-testimonials";
@@ -112,6 +113,11 @@ async function ManifestoSection({ manifestoTitle }: { manifestoTitle: string }) 
           {manifestoTitle}
         </h2>
       </div>
+      <TldrBlock>
+        We stopped pretending the product was the problem. The missing piece
+        was naming one real person and making one real promise before we were
+        ready to sell it.
+      </TldrBlock>
       <p className="text-sm text-muted-foreground leading-relaxed mb-5">
         Post-launch founders who built real products with AI tools, watched them flatline in Stripe, and refused to call it a product problem. We measure progress in Stripe charges, not in encouragement. The work nobody taught us to do -- name one real person, make one real promise, sell it before it felt ready -- is what this movement runs on.
       </p>
@@ -157,6 +163,11 @@ async function TimelineSection() {
           How a flat Stripe line became this page.
         </h2>
       </div>
+      <TldrBlock>
+        Five shipped products, three years of learning traffic tactics, one year
+        of sitting with founders, and one code-locked system that removes
+        avoidance.
+      </TldrBlock>
       <ol className="space-y-5 sm:space-y-4">
         {[
           {
@@ -215,6 +226,11 @@ async function ComparisonSection() {
           None of these remove the one thing that keeps the line flat.
         </h2>
       </div>
+      <TldrBlock>
+        Courses teach. Consultants understand. Tools assume you did the work
+        already. The Playbook removes the avoidance option – outreach happens
+        inside the software, not on your willpower.
+      </TldrBlock>
       <div className="overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">
           <thead className="bg-muted/40 text-foreground">
@@ -287,6 +303,11 @@ async function FaqSection() {
         <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
           What founders push back on — answered straight.
         </h2>
+        <TldrBlock>
+          Real doubts from real founders. Every objection below came from
+          Indie Hackers or Hacker News threads written by someone exactly like
+          you.
+        </TldrBlock>
         <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto leading-relaxed">
           Mined from public Indie Hackers and Hacker News threads written by
           founders matching the Marco avatar. Full sources:{" "}
@@ -321,6 +342,11 @@ async function NewsletterTailSection() {
       <h2 className="text-lg sm:text-xl font-bold mb-3 leading-tight text-balance">
         Get the 5-email arc instead.
       </h2>
+      <TldrBlock>
+        Five letters in five days from one founder who lived your year and
+        built the way out. No sales pitch. Just answers to the questions every
+        flat-line founder asks.
+      </TldrBlock>
       <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
         One short letter a day for five days. Written like one founder to
         another, not a marketing sequence. By Friday you will know whether

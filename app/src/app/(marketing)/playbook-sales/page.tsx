@@ -15,6 +15,7 @@ import { FounderTimeline } from "@/components/blocks/founder-timeline";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { StickyPlaybookCta } from "@/components/blocks/sticky-playbook-cta";
 import { VslBlock } from "@/components/blocks/vsl-block";
+import { TldrBlock } from "@/components/tldr-block";
 import {
   PlaybookProductJsonLd,
   PlaybookHowToJsonLd,
@@ -222,6 +223,11 @@ export default async function PlaybookSalesPage() {
             software, not through more building and not through more
             traffic.
           </h2>
+          <TldrBlock>
+            The breakthrough happens when you stop shipping features and
+            start naming one real person. Seven mechanical steps, seven days
+            each, or your $49 back.
+          </TldrBlock>
 
           {/* Slide 3 — Why this is hard to believe. Acknowledge Marco's
               history: a year of failed tactics. Workbook 07 §1 + workbook
@@ -315,6 +321,11 @@ export default async function PlaybookSalesPage() {
         {/* ============================================================ */}
         <section className="space-y-14 mb-16">
           <h2 className="text-2xl sm:text-3xl font-bold">The Three Secrets</h2>
+          <TldrBlock>
+            The Playbook wins because it removes avoidance. You name one
+            person, write one promise, send one message – in that order, with
+            the tool enforcing each step before you skip to the next.
+          </TldrBlock>
 
           {/* SECRET 1 — VEHICLE (slides 7–9) */}
           <article className="space-y-5">
@@ -322,6 +333,11 @@ export default async function PlaybookSalesPage() {
             <h3 className="text-2xl font-bold leading-snug">
               Why The Playbook works where every other tool failed you.
             </h3>
+            <TldrBlock>
+              Tools without checkpoints let you skip. This one doesn't – Step 5
+              won't mark complete until 20 real outreach actions are logged
+              inside the tool.
+            </TldrBlock>
 
             {/* Story — Vehicle Story from workbook 06 §4 */}
             <div>
@@ -408,6 +424,11 @@ export default async function PlaybookSalesPage() {
               Why the work that breaks the flat line is work you have been
               avoiding, and how The Playbook removes the avoidance option.
             </h3>
+            <TldrBlock>
+              You haven't failed at outreach – you've succeeded at avoiding it.
+              The Playbook doesn't ask you to overcome that. It makes avoidance
+              structurally impossible.
+            </TldrBlock>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
               The work that breaks the flat line is outreach -- naming one specific person, writing one specific message, sending it before it feels ready. Most founders skip it because it is the only step that cannot be faked as progress. The Playbook removes the option to skip: Step 5 does not mark complete until 20 outreach actions are logged inside the tool. The refund does not fire without those logs. Avoidance is not overcome. It is made structurally impossible.
@@ -483,6 +504,11 @@ export default async function PlaybookSalesPage() {
               Why a 60-day guarantee is even possible on software, when
               every other guarantee in this space is a lie.
             </h3>
+            <TldrBlock>
+              The guarantee is enforced by code, not by trust. Your Stripe
+              webhook watches for the charge. If it doesn't show up in 60 days,
+              the refund fires automatically.
+            </TldrBlock>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
               The guarantee is possible because both sides of it are verified by code, not by trust. The work conditions -- Steps 1 through 5 complete, 20 outreach actions logged -- are recorded inside the tool. The result -- a new paying customer -- is watched by a Stripe webhook. If 60 days pass and Stripe shows nothing, the refund fires automatically. Your maximum downside is $98. Neither side of that contract requires you to email me and ask nicely.
