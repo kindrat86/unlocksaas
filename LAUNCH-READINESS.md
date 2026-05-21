@@ -103,9 +103,36 @@ done.
    `scripts/setup-sentry.py` → push `NEXT_PUBLIC_SENTRY_DSN`,
    `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` to Vercel.
 
+4. **Apply founder-memory Supabase migration + embedding API key.**
+   Persistent founder context is required before chat sidebar (PR #101)
+   ships. Two steps:
+
+   A. Apply migration to production database:
+   ```bash
+   supabase db push --remote
+   ```
+   This creates the `founder_memory` table with pgvector embeddings,
+   indexes, and RLS policies. The schema is idempotent and safe to
+   re-run.
+
+   B. Configure the embedding API (set in Vercel for all 3 environments):
+   ```bash
+   # Option 1: Direct OpenAI (recommended for simplicity)
+   vercel env add OPENAI_API_KEY production preview development --sensitive
+
+   # Option 2: Via Vercel AI Gateway (recommended if using AI Gateway elsewhere)
+   # Set AI_GATEWAY_API_KEY instead. The code checks for AI_GATEWAY_API_KEY
+   # first, falls back to direct OpenAI, then gracefully skips embedding if
+   # neither is set. Memory reads still work, but semantic recall is off.
+   ```
+
+   Verify after prod migration: POST to `/api/diagnostic` should succeed
+   and create a founder_memory row in Supabase. GET `/api/founder-memory/context`
+   should return 401 (if unauthenticated) or 200 with context (if authed).
+
 ### Tier 2 — blocks the Reluctant-Hero proof, not revenue
 
-4. **Record the VSL + 3 Founding PLVs in ONE shoot.** Single shoot,
+5. **Record the VSL + 3 Founding PLVs in ONE shoot.** Single shoot,
    same shirt, same lighting, same camera angle. Four outputs:
 
    - VSL (3–5 min) — script at `strategy/founder-vsl-script.md`
@@ -133,7 +160,7 @@ done.
    player consumes `NEXT_PUBLIC_VSL_URL` directly. The 45s `/` cut and the
    90s SOS Email 1 cut are derivative edits — defer to post-launch.
 
-5. **Re-mine private 10-conversation founder set** for niche-specific
+6. **Re-mine private 10-conversation founder set** for niche-specific
    dollar-objection language via Slack DMs / Gmail threads / Granola
    recordings. Append findings to `strategy/dollar-objections.md`. This
    replaces the public IH/HN proxies with verbatim language from Marco-
@@ -141,7 +168,7 @@ done.
 
 ### Tier 3 — first 100 visitors
 
-6. **Generate + push `INDEXNOW_KEY` and claim webmaster consoles.**
+7. **Generate + push `INDEXNOW_KEY` and claim webmaster consoles.**
    Two parts, both cheap, both unlock AI-Overview citation parity on the
    non-Google engines. Roughly 30 minutes total.
 
@@ -180,17 +207,17 @@ done.
    citation metrics, etc.). With them, verification completes on the
    next deploy.
 
-7. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
+8. **Post the launch X thread.** Lead with Story #1 (The Blank Offer
    Page). Drop link to /diagnostic at the end. Tag two of the Dream 100.
 
-8. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
+9. **Submit to Indie Hackers /show, r/microsaas, r/SaaS, Hacker News
    Show HN.** Reluctant Hero voice on all four. Workbook 09 §1 cadence
    rules apply.
 
-9. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
+10. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
    Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
 
-10. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
+11. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
    after the first verified-customer cycle. Subscribe + watch 5 most-recent
    videos + 3 substantive timestamped comments each on Riley Brown
    ([@rileybrownai](https://www.youtube.com/@rileybrownai)) and Indy Dev Dan
