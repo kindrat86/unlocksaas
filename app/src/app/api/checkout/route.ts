@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getStripe } from "@/lib/stripe";
+import { checkBotId } from "botid/server";
 import {
   IDENTITY_AB_KEY,
   readIdentityFromCookies,
@@ -30,6 +31,18 @@ function clampMeta(v: unknown): string | undefined {
 }
 
 export async function POST(req: NextRequest) {
+  // BotID protection: blocks confirmed bot traffic (card-testing prevention).
+  // Fail-open: any verification error lets the request through so a BotID
+  // outage never blocks a legitimate checkout.
+  try {
+    const botCheck = await checkBotId();
+    if (botCheck.isBot) {
+      return NextResponse.json({ error: "bot_detected" }, { status: 403 });
+    }
+  } catch (err) {
+    console.warn("[botid] checkout verification failed, proceeding fail-open", err);
+  }
+
   const { priceType, attribution } = (await req.json()) as CheckoutBody;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";

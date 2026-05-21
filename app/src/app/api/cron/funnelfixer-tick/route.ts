@@ -15,11 +15,15 @@ export const maxDuration = 60;
  * dispatch for the entire FunnelFixer carry-over cohort:
  *
  *   - Picks the single most-overdue funnelfixer subscriber whose
- *     next_send_at <= now and status='active' and emails_sent < 5.
- *   - Calls sendNextAndAdvance, which renders the right email (Email 1
- *     uses the bridge variant for source LIKE 'funnelfixer_%'), sends via
- *     Resend, advances emails_sent, and either schedules next_send_at = now
- *     + 24h or flips status='complete' if it was Email 5.
+ *     next_send_at <= now and status='active' and emails_sent < 3.
+ *   - Calls sendNextAndAdvance, which renders the right email (E1 uses the
+ *     bridge variant for source LIKE 'funnelfixer_%'), sends via Resend,
+ *     advances emails_sent, and either schedules next_send_at = now + 48h
+ *     or flips status='complete' if it was E3.
+ *
+ * Spine length flipped from 5 to 3 on 2026-05-21 (SOS 3-spine-2-branch
+ * restructure). The throttle is unchanged: one row per tick = at most
+ * one funnelfixer send per 30 minutes across the whole cohort.
  *
  * One row per tick = at most one funnelfixer send per 30 minutes across
  * the whole cohort. That is the deliverability throttle the operator set
@@ -47,7 +51,7 @@ export async function GET(req: NextRequest) {
     .select("id, email, diagnostic_result, emails_sent, source")
     .eq("status", "active")
     .ilike("source", "funnelfixer_%")
-    .lt("emails_sent", 5)
+    .lt("emails_sent", 3)
     .not("next_send_at", "is", null)
     .lte("next_send_at", nowIso)
     .order("next_send_at", { ascending: true })

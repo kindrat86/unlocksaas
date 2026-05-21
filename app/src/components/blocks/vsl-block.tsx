@@ -65,20 +65,18 @@ export function VslBlock(_props: Props = {}) {
       </div>
 
       <div className="mx-auto mb-8 w-full max-w-xs">
-        <div className="relative aspect-[9/16] overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
-            src={VIDEO_SRC}
-            poster={POSTER_SRC}
-            controls
-            preload="metadata"
-            playsInline
-          >
-            <track kind="captions" />
-            Your browser does not support embedded video. The full story is in
-            the caption below.
-          </video>
-        </div>
+        <video
+          className="block w-full rounded-xl border border-border bg-muted shadow-sm"
+          poster={POSTER_SRC}
+          controls
+          preload="auto"
+          playsInline
+        >
+          <source src={VIDEO_SRC} type="video/mp4" />
+          <track kind="captions" />
+          Your browser does not support embedded video. The full story is in
+          the caption below.
+        </video>
         <p className="mt-2 text-center text-xs text-muted-foreground italic">
           3:35 · sound on
         </p>

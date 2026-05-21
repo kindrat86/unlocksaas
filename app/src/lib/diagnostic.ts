@@ -1,4 +1,10 @@
-import { getAnthropic } from "@/lib/anthropic";
+import { generateText, streamText } from "ai";
+import { model } from "@/lib/anthropic";
+import {
+  DIAGNOSTIC_STEP_LABELS,
+  type DiagnosticStepId,
+  type DiagnosticStreamEmit,
+} from "@/lib/diagnostic-stream-types";
 
 /**
  * Diagnostic engine for the Free Diagnostic Lead Funnel.
@@ -403,25 +409,17 @@ export async function classifyPageText(
   url: string,
   pageText: string,
 ): Promise<DiagnosticResult> {
-  const response = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 700,
+  const { text } = await generateText({
+    model: model,
+    maxOutputTokens: 700,
     system: CLASSIFIER_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: `URL submitted: ${url}
+    prompt: `URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
 ${pageText}
 
 Diagnose this page now. Respond with ONLY the JSON object.`,
-      },
-    ],
   });
-
-  const text =
-    response.content[0]?.type === "text" ? response.content[0].text : "";
 
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
@@ -927,25 +925,19 @@ export async function deepAnalyzePageText(
   surveyContext?: SurveyAnswers | null,
 ): Promise<DeepDiagnosticResult> {
   const founderContext = buildFounderContext(surveyContext);
-  const response = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 4096,
+  const { text } = await generateText({
+    model: model,
+    maxOutputTokens: 4096,
     system: DEEP_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: `URL submitted: ${url}
+    prompt: `${founderContext}
+
+URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
 ${pageText}${founderContext}
 
 Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
-      },
-    ],
   });
-
-  const text =
-    response.content[0]?.type === "text" ? response.content[0].text : "";
 
   // Strip optional markdown fence if the model added one despite the prompt.
   const cleaned = text
@@ -1029,6 +1021,321 @@ export async function deepAnalyzeUrl(
 
   try {
     return await deepAnalyzePageText(url.toString(), text, surveyContext);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "engine_failed",
+      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+    };
+    throw err;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Streaming variants — emit step events as work happens, instead of blocking
+// the form for 30-45 s with a faked progress cycler.
+//
+// The non-LLM steps (validate, fetch, parse) emit `start` + `done` events
+// at the obvious boundaries. The LLM step is a single Anthropic `messages.stream`
+// call; we watch the streamed JSON for next-sibling-key anchors to derive
+// section-level progress (real reasoning visibility, not a timer).
+//
+// Anchor sequence — each "from" step completes the moment its "anchor" key
+// appears in the accumulated buffer. The ordering matches the DEEP_SYSTEM
+// JSON shape verbatim.
+//
+// Section          | Done-anchor (next sibling key)
+// ---------------- | --------------------------------
+// product_snapshot | "scores":
+// score_wrong_person | "weak_offer":
+// score_weak_offer   | "weak_belief":
+// score_weak_belief  | "rewrites":
+// rewrite_hero       | "primary_cta":
+// rewrite_cta        | "value_props":
+// rewrite_value_props | "plan_30_day":
+// plan               | "competitors":
+// competitors        | "strengths":
+//
+// `strengths` is the last top-level key; we treat the stream's natural close
+// as its done-marker rather than chasing the closing `}`.
+//
+// We do NOT stream individual tokens to the client. The UI shows a list of
+// labelled steps that light up as each section completes — denser and more
+// readable than scrolling raw JSON. The full structured result is parsed
+// from the accumulated buffer on close and returned by deepAnalyzePageTextStream.
+// ---------------------------------------------------------------------------
+
+const ENGINE_START_MARKERS: Array<{ marker: string; id: DiagnosticStepId }> = [
+  { marker: '"wrong_person":', id: "score_wrong_person" },
+  { marker: '"weak_offer":', id: "score_weak_offer" },
+  { marker: '"weak_belief":', id: "score_weak_belief" },
+  { marker: '"hero_headline":', id: "rewrite_hero" },
+  { marker: '"primary_cta":', id: "rewrite_cta" },
+  { marker: '"value_props":', id: "rewrite_value_props" },
+  { marker: '"plan_30_day":', id: "plan" },
+  { marker: '"competitors":', id: "competitors" },
+];
+
+const ENGINE_DONE_ANCHORS: Array<{ id: DiagnosticStepId; anchor: string }> = [
+  { id: "score_wrong_person", anchor: '"weak_offer":' },
+  { id: "score_weak_offer", anchor: '"weak_belief":' },
+  { id: "score_weak_belief", anchor: '"rewrites":' },
+  { id: "rewrite_hero", anchor: '"primary_cta":' },
+  { id: "rewrite_cta", anchor: '"value_props":' },
+  { id: "rewrite_value_props", anchor: '"plan_30_day":' },
+  { id: "plan", anchor: '"competitors":' },
+  { id: "competitors", anchor: '"strengths":' },
+];
+
+/** Pull the integer "score" value out of a just-completed axis block. */
+function extractAxisScore(
+  accumulated: string,
+  axisKey: "wrong_person" | "weak_offer" | "weak_belief",
+): number | undefined {
+  // The axis block has no nested `{}`, so `[^}]` suffices.
+  const re = new RegExp(`"${axisKey}":\\s*\\{[^}]*?"score":\\s*(\\d+)`);
+  const m = accumulated.match(re);
+  if (!m) return undefined;
+  const n = Number.parseInt(m[1], 10);
+  return Number.isFinite(n) && n >= 1 && n <= 10 ? n : undefined;
+}
+
+/**
+ * Stream a deep analysis of `pageText` and emit step events as each section
+ * of the response JSON completes. Returns the validated structured result.
+ *
+ * `signal` (optional) is forwarded to the Anthropic SDK so a client
+ * disconnection (the visitor closes the tab) cancels the LLM call instead
+ * of burning CPU under Vercel Active CPU pricing.
+ */
+export async function deepAnalyzePageTextStream(
+  url: string,
+  pageText: string,
+  emit: DiagnosticStreamEmit,
+  signal?: AbortSignal,
+): Promise<DeepDiagnosticResult> {
+  const aiResult = streamText({
+    model,
+    maxOutputTokens: 4096,
+    system: DEEP_SYSTEM,
+    prompt: `URL submitted: ${url}
+
+PAGE CONTENT (title, meta, body, truncated):
+${pageText}
+
+Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
+    abortSignal: signal,
+  });
+
+  let accumulated = "";
+  let engineStartDone = false;
+  const startedSteps = new Set<DiagnosticStepId>();
+  const doneSteps = new Set<DiagnosticStepId>();
+
+  try {
+    for await (const textDelta of aiResult.textStream) {
+      {
+        accumulated += textDelta;
+
+        // First token arrived — the engine is producing. Close `engine_start`.
+        if (!engineStartDone) {
+          emit({
+            type: "step",
+            id: "engine_start",
+            label: DIAGNOSTIC_STEP_LABELS.engine_start,
+            status: "done",
+          });
+          engineStartDone = true;
+        }
+
+        // Emit `start` events when each section's key first appears.
+        for (const { marker, id } of ENGINE_START_MARKERS) {
+          if (!startedSteps.has(id) && accumulated.includes(marker)) {
+            startedSteps.add(id);
+            emit({
+              type: "step",
+              id,
+              label: DIAGNOSTIC_STEP_LABELS[id],
+              status: "start",
+            });
+          }
+        }
+
+        // Emit `done` events when the next sibling key appears.
+        for (const { id, anchor } of ENGINE_DONE_ANCHORS) {
+          if (!doneSteps.has(id) && accumulated.includes(anchor)) {
+            doneSteps.add(id);
+            let score: number | undefined;
+            if (id === "score_wrong_person") {
+              score = extractAxisScore(accumulated, "wrong_person");
+            } else if (id === "score_weak_offer") {
+              score = extractAxisScore(accumulated, "weak_offer");
+            } else if (id === "score_weak_belief") {
+              score = extractAxisScore(accumulated, "weak_belief");
+            }
+            emit({
+              type: "step",
+              id,
+              label: DIAGNOSTIC_STEP_LABELS[id],
+              status: "done",
+              ...(score !== undefined ? { score } : {}),
+            });
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // If `engine_start` never closed (zero tokens before the failure), close
+    // it now so the UI doesn't show a stuck spinner on that row. We re-throw
+    // so the route handler can surface the failure mode.
+    if (!engineStartDone) {
+      emit({
+        type: "step",
+        id: "engine_start",
+        label: DIAGNOSTIC_STEP_LABELS.engine_start,
+        status: "done",
+      });
+    }
+    throw e;
+  }
+
+  // Parse + validate the accumulated JSON. Same cleaning rules as
+  // deepAnalyzePageText — strip optional ```json fences, slice to outermost
+  // braces, then run the strict validator.
+  const cleaned = accumulated
+    .replace(/^\s*```(?:json)?\s*/i, "")
+    .replace(/\s*```\s*$/i, "")
+    .trim();
+
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) {
+    throw new Error("Deep analysis: engine returned no JSON object");
+  }
+  const slice = cleaned.slice(start, end + 1);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(slice);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    throw new Error(`Deep analysis: JSON parse failed (${reason})`);
+  }
+
+  return validateDeep(parsed);
+}
+
+/**
+ * End-to-end streaming deep analysis: validate URL, fetch, strip, then run
+ * `deepAnalyzePageTextStream`. Emits step events at each boundary. Throws a
+ * `DiagnosticError`-shaped object on failure (matching `deepAnalyzeUrl` so
+ * the route handler's error path stays uniform across streaming and
+ * non-streaming entry points).
+ */
+export async function deepAnalyzeUrlStream(
+  rawUrl: string,
+  emit: DiagnosticStreamEmit,
+  signal?: AbortSignal,
+): Promise<DeepDiagnosticResult> {
+  // ---- validate ----------------------------------------------------------
+  emit({
+    type: "step",
+    id: "validate",
+    label: DIAGNOSTIC_STEP_LABELS.validate,
+    status: "start",
+  });
+  const url = normalizeUrl(rawUrl);
+  if (!url) {
+    const err: DiagnosticError = {
+      kind: "invalid_url",
+      message:
+        "That does not look like a URL I can read. Paste a full https:// link.",
+    };
+    throw err;
+  }
+  if (isBlockedHost(url.hostname)) {
+    const err: DiagnosticError = {
+      kind: "blocked_host",
+      message:
+        "I cannot read internal or local addresses. Use your public product URL.",
+    };
+    throw err;
+  }
+  emit({
+    type: "step",
+    id: "validate",
+    label: DIAGNOSTIC_STEP_LABELS.validate,
+    status: "done",
+    detail: url.hostname,
+  });
+
+  // ---- fetch -------------------------------------------------------------
+  emit({
+    type: "step",
+    id: "fetch",
+    label: DIAGNOSTIC_STEP_LABELS.fetch,
+    status: "start",
+  });
+  let html: string;
+  try {
+    html = await fetchPage(url);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "fetch_failed",
+      message: `I could not load that page (${reason}). If it is behind login or Cloudflare's challenge, paste a public version.`,
+    };
+    throw err;
+  }
+  emit({
+    type: "step",
+    id: "fetch",
+    label: DIAGNOSTIC_STEP_LABELS.fetch,
+    status: "done",
+    detail: `${html.length.toLocaleString("en-US")} chars of HTML`,
+  });
+
+  // ---- parse -------------------------------------------------------------
+  emit({
+    type: "step",
+    id: "parse",
+    label: DIAGNOSTIC_STEP_LABELS.parse,
+    status: "start",
+  });
+  const text = htmlToText(html);
+  const readableLen = text
+    .replace(/^(TITLE|META DESCRIPTION|OG DESCRIPTION|BODY):/gm, "")
+    .trim().length;
+  if (readableLen < 200) {
+    const err: DiagnosticError = {
+      kind: "empty_page",
+      message:
+        "That page had almost no readable copy. The diagnostic needs real text to read.",
+    };
+    throw err;
+  }
+  emit({
+    type: "step",
+    id: "parse",
+    label: DIAGNOSTIC_STEP_LABELS.parse,
+    status: "done",
+    detail: `${readableLen.toLocaleString("en-US")} chars of readable copy`,
+  });
+
+  // ---- LLM ---------------------------------------------------------------
+  emit({
+    type: "step",
+    id: "engine_start",
+    label: DIAGNOSTIC_STEP_LABELS.engine_start,
+    status: "start",
+  });
+  try {
+    return await deepAnalyzePageTextStream(
+      url.toString(),
+      text,
+      emit,
+      signal,
+    );
   } catch (e) {
     const reason = e instanceof Error ? e.message : "unknown";
     const err: DiagnosticError = {

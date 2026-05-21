@@ -211,19 +211,34 @@ function RewriteBlockView({
   );
 }
 
-function PrintButton() {
+function PrintButton({ diagnosticId }: { diagnosticId: string }) {
   return (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      className="print:hidden"
-      onClick={() => {
-        if (typeof window !== "undefined") window.print();
-      }}
-    >
-      Download as PDF
-    </Button>
+    <div className="flex items-center gap-2 print:hidden">
+      {/* Signed PDF download — C2PA Content Credentials embedded */}
+      <Button
+        type="button"
+        variant="default"
+        size="sm"
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            window.location.href = `/api/diagnostic/${diagnosticId}/pdf`;
+          }
+        }}
+      >
+        Download Signed PDF
+      </Button>
+      {/* Browser-native print fallback */}
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => {
+          if (typeof window !== "undefined") window.print();
+        }}
+      >
+        Print Page
+      </Button>
+    </div>
   );
 }
 
@@ -243,23 +258,25 @@ export function DeepReport({
   hostname,
   scorecardPreface,
   planPreface,
+  diagnosticId,
 }: {
   detail: DeepAnalysisDetail;
   hostname: string;
   scorecardPreface?: VariantPreface;
   planPreface?: VariantPreface;
+  diagnosticId: string;
 }) {
   const { product_snapshot, scores, rewrites, plan_30_day, competitors, strengths } =
     detail;
 
   return (
     <section className="space-y-10 mb-10" aria-label="Deep analysis report">
-      {/* Header strip + print CTA */}
+      {/* Header strip + download CTA */}
       <div className="flex items-center justify-between gap-4 print:hidden">
         <p className="text-xs uppercase tracking-widest text-muted-foreground">
           The full teardown
         </p>
-        <PrintButton />
+        <PrintButton diagnosticId={diagnosticId} />
       </div>
 
       {/* PRODUCT SNAPSHOT */}
