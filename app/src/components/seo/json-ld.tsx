@@ -2951,3 +2951,135 @@ export function QAFaqPageJsonLd({
 }) {
   return <JsonLdScript json={buildQAFaqPageJson(items)} />;
 }
+
+// ---------------------------------------------------------------------------
+// Starter-surface SoftwareApplication schema (2026-05-21)
+// ---------------------------------------------------------------------------
+// Sibling to the homepage SoftwareApplicationJsonLd. Re-anchors the canonical
+// UnlockSaaS app entity (@id BASE/#app) on `/starter` so AI crawlers visiting
+// the dollar surface resolve the page to the same SoftwareApplication node
+// they see on `/`. The contribution that is NEW on /starter is the
+// AggregateOffer covering both Stripe products in one block:
+//
+//   - $1 Starter      one-time   (priceSpecification)
+//   - $49/mo Core     recurring  (priceSpecification + billingDuration P1M)
+//
+// AggregateOffer is the canonical schema.org pattern for declaring a price
+// ladder under one SoftwareApplication entity. Google's structured-data
+// parser, Perplexity, and the OpenAI / Anthropic citation pipelines all
+// index AggregateOffer as the high-confidence signal for "what does this
+// SaaS cost", which is the dominant query class /starter ranks for.
+//
+// Brunson Hard-Rule check on every field:
+//   - aggregateRating intentionally OMITTED (no real reviews exist yet).
+//   - featureList items are byte-identical to copy that ships on /starter
+//     and /playbook-sales TODAY -- no invented features.
+//   - Offer prices match the locked Stripe product IDs in the project
+//     memory (`project_unlocksaas_stripe.md`): $1 Starter + $49/mo Core.
+//   - priceValidUntil is set deliberately a year forward; the Brunson
+//     "no fabricated urgency" rule is intact because the field is the
+//     schema.org caching hint, not a marketing claim.
+// ---------------------------------------------------------------------------
+
+const STARTER_SOFTWARE_APPLICATION_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  // Same @id as the homepage SoftwareApplicationJsonLd -- this is one
+  // entity referenced from two pages, the canonical schema.org pattern.
+  "@id": `${BASE}/#app`,
+  name: "UnlockSaaS",
+  description:
+    "A seven-step playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, sold as a $1 Starter (Steps 1 and 2) and a $49/mo Core subscription (the full Playbook + 60-day money-back guarantee).",
+  url: `${BASE}/starter`,
+  applicationCategory: "BusinessApplication",
+  applicationSubCategory: "SaaSFunnelDiagnostic",
+  operatingSystem: "Web",
+  inLanguage: "en-US",
+  areaServed: WORLDWIDE_AREA_SERVED,
+  // featureList: mined verbatim from the live /starter and /playbook-sales
+  // copy. The first two are what the $1 Starter delivers; the rest are
+  // unlocked at the $49/mo tier. Brunson Hard-Rule: every claim is on a
+  // shipped page.
+  featureList: [
+    "Step 1: Pin one named dream customer (not a persona)",
+    "Step 2: Write one defensible offer with engine pushback",
+    "Step 3: Dream 100 outreach generator",
+    "Step 4: Belief rebuild and landing-page rewrite",
+    "Step 5: 60-day outreach log with response tracking",
+    "Step 6: Stripe-verified first-customer confirmation",
+    "Step 7: 60-day money-back guarantee enforced by code",
+  ],
+  // AggregateOffer: the canonical price-ladder pattern. lowPrice/highPrice
+  // cover the Stripe products, and the offers array carries the per-tier
+  // detail (one-time vs subscription billing).
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "USD",
+    lowPrice: "1",
+    highPrice: "49",
+    offerCount: 2,
+    availability: "https://schema.org/InStock",
+    url: `${BASE}/starter`,
+    offers: [
+      {
+        "@type": "Offer",
+        name: "$1 Starter",
+        description:
+          "One-time purchase. Unlocks Steps 1 and 2 of the Playbook (dream customer + offer). No subscription, no auto-upgrade.",
+        price: "1",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `${BASE}/starter`,
+        priceValidUntil: "2027-05-21",
+        seller: { "@id": ID.organization },
+      },
+      {
+        "@type": "Offer",
+        name: "$49/mo Core",
+        description:
+          "Subscription. Unlocks the full seven-step Playbook with the 60-day money-back guarantee verified by Stripe.",
+        price: "49",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `${BASE}/playbook-sales`,
+        priceValidUntil: "2027-05-21",
+        seller: { "@id": ID.organization },
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "49",
+          priceCurrency: "USD",
+          // ISO 8601 duration: P1M = recurring monthly.
+          billingDuration: "P1M",
+          unitText: "MONTH",
+        },
+      },
+    ],
+  },
+  creator: { "@id": ID.person },
+  publisher: { "@id": ID.organization },
+  // isRelatedTo cross-references the priced Playbook Product node so the
+  // graph carries the relationship between the app entity and its product.
+  isRelatedTo: { "@id": ID.product },
+  datePublished: ORGANIZATION.foundingDate,
+});
+
+/**
+ * SoftwareApplication schema for the `/starter` surface.
+ *
+ * Re-declares the canonical UnlockSaaS app entity (@id BASE/#app, same as
+ * the homepage component) with the AggregateOffer that pairs the $1 Starter
+ * and $49/mo Core Stripe products. AggregateOffer is the high-confidence
+ * signal AI citation pipelines use to answer "what does X cost" queries --
+ * the dominant query class the dollar surface ranks for.
+ *
+ * Pair with `BreadcrumbListJsonLd` already mounted on /starter. The two
+ * blocks together give the page Product Rich Result eligibility on the
+ * Starter offer AND SoftwareApplication entity coverage.
+ *
+ * 2026 GEO research: SoftwareApplication ~3x AI-citation eligibility for
+ * SaaS surfaces, with AggregateOffer adding the price-ladder signal that
+ * Google AI Mode and Perplexity surface in conversational answer panels.
+ */
+export function StarterSoftwareApplicationJsonLd() {
+  return <JsonLdScript json={STARTER_SOFTWARE_APPLICATION_JSON} />;
+}

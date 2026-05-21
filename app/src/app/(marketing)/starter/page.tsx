@@ -8,7 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2 } from "lucide-react";
 import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
-import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import {
+  BreadcrumbListJsonLd,
+  StarterSoftwareApplicationJsonLd,
+} from "@/components/seo/json-ld";
 import { VslPlayer } from "@/components/vsl/vsl-player";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { track } from "@/lib/analytics/client";
@@ -181,6 +184,14 @@ function StarterSalesPageInner() {
           { name: "$1 Starter", url: "https://unlocksaas.com/starter" },
         ]}
       />
+      {/* SoftwareApplication + AggregateOffer ($1 Starter + $49/mo Core).
+          Re-anchors the canonical UnlockSaaS app @id (BASE/#app) on the
+          dollar surface and gives AI citation pipelines the price-ladder
+          signal for "what does UnlockSaaS cost" queries. See json-ld.tsx
+          StarterSoftwareApplicationJsonLd for the Brunson Hard-Rule
+          reconciliation notes (no fabricated aggregateRating, every
+          featureList item is on a shipped page). */}
+      <StarterSoftwareApplicationJsonLd />
       <AbExposureBeacon />
       <div className="max-w-2xl mx-auto">
         {/* Handoff acknowledgment — only renders when ?from=diagnostic. */}
