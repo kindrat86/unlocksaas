@@ -1,5 +1,49 @@
 # Build Log — Unlock SaaS
 
+## BotID bot protection on checkout + diagnostic routes
+**Status: SHIPPED (tsc clean)**
+**Date: 2026-05-21**
+
+Added Vercel BotID (package `botid@1.5.11`, free tier) to two high-value API
+routes to protect against automated abuse.
+
+### Routes protected
+
+- **`/api/checkout`** -- card-testing bots enumerate stolen card numbers against
+  Stripe at zero direct cost until a session completes. BotID gates the session
+  create call before any Stripe API call fires.
+- **`/api/diagnostic`** -- bulk scraper bots submit product URLs to extract
+  Anthropic-powered teardowns at Maryan's API cost. BotID gates the Claude
+  call before any token spend.
+
+### Implementation
+
+- `botid/server` `checkBotId()` injected at the top of each POST handler,
+  wrapped in `try/catch` for fail-open behavior.
+- Returns `403 { error: "bot_detected" }` on confirmed bot traffic only.
+- BotID outage (network error, service down) logs a warn and lets the request
+  through -- a checkout is never blocked by a BotID infrastructure issue.
+- `instrumentation-client.ts` (Next.js 15.3+ path) initialises `initBotId()`
+  with both protected routes before any page renders on the client.
+- `next.config.mjs` wrapped with `withBotId()` to configure the proxy rewrites
+  BotID needs to route its challenge script through the same origin (prevents
+  ad-blocker interference).
+
+### Env vars
+
+None required. BotID is auto-provisioned for Vercel-linked projects. No secret
+key needed on the free tier.
+
+### Why this matters
+
+Card-testing is a real attack vector for any Stripe checkout exposed on the
+public internet. The diagnostic LLM call costs ~$0.05--$0.15 per run; a
+scraper looping at 100 req/min would cost $300--$900/hr in Anthropic API fees
+before rate limits kick in. BotID closes both vectors with a single free-tier
+integration that has zero marginal cost on legitimate traffic.
+
+---
+
 ## Audit Response: SEO/pSEO/GEO/AEO/AIO audit – off-page lift push
 **Status: SHIPPED (tsc clean)**
 
