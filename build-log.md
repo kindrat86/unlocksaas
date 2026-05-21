@@ -1698,3 +1698,89 @@ Additive follow-up to PR #99. Three gaps filled:
 - `app/src/app/sitemap.ts` (added /ai.txt entry)
 - `strategy/decisions/ai-crawler-policy.md` (NEW)
 - `build-log.md` (this entry)
+
+---
+
+## Schema uplift: SoftwareApplication + ClaimReview + QAPage (2026-05-21)
+**Status: SHIPPED (tsc clean, no new errors)**
+
+### Why
+
+The existing JSON-LD graph covers Organization, WebSite, Person, Product
+(multi-typed as Product+SoftwareApplication+LearningResource), HowTo, Course,
+FAQPage, Article, and Dataset. Three high-signal schema types were missing:
+
+1. **SoftwareApplication (standalone):** The Playbook Product node already
+   carries SoftwareApplication in its @type array, but as one of three types
+   on the _subscription offer_ node. Google AI Mode and LLM retrieval pipelines
+   differentiate between "the subscription" and "the application itself." A
+   dedicated SoftwareApplication node at `#app` (distinct from `#product-playbook`)
+   is the canonical type answer to "what SaaS tool helps me get my first
+   customer." applicationCategory + featureList are the primary extraction
+   targets for that query class.
+
+2. **ClaimReview:** A high-trust signal for Google AI Mode "verification"
+   queries. The editorial-policy page already documents a corrections workflow,
+   sourcing standards, and disclosure commitments. A ClaimReview node on that
+   page makes the accuracy commitment machine-readable with a numeric rating,
+   which AI citation pipelines read directly rather than parsing prose.
+
+3. **QAPage alongside FAQPage:** The /faq questions are verbatim from public
+   Indie Hackers and Hacker News threads -- a hybrid editorial+community Q&A
+   surface. Emitting QAPage + FAQPage in a merged @type array surfaces the page
+   in both eligibility pools (editorial curation + community validation).
+
+### Schema types added
+
+| Type | Page | @id | Key fields |
+|------|------|-----|------------|
+| `SoftwareApplication` | `/` (homepage) | `/#app` | applicationCategory, operatingSystem, featureList (7 items), offers, creator, publisher, isRelatedTo |
+| `ClaimReview` | `/editorial-policy` | -- | claimReviewed, reviewRating (5/5 Confirmed), author (Org @id), itemReviewed |
+| `QAPage` + `FAQPage` | `/faq` | -- | mainEntity array with upvoteCount on Question + Answer |
+
+### Package changes
+
+- `packages/seo/src/jsonld/softwareapplication.ts` (NEW builder)
+- `packages/seo/src/jsonld/claimreview.ts` (NEW builder)
+- `packages/seo/src/jsonld/qapage.ts` (NEW builder)
+- `packages/seo/src/jsonld/index.ts` (exports for the 3 new builders)
+
+### App changes
+
+- `app/src/components/seo/json-ld.tsx` (+3 components: SoftwareApplicationJsonLd,
+  ClaimReviewJsonLd, QAFaqPageJsonLd + pre-serialized constants)
+- `app/src/app/page.tsx` (added `<SoftwareApplicationJsonLd />`)
+- `app/src/app/(marketing)/editorial-policy/page.tsx` (added `<ClaimReviewJsonLd />`)
+- `app/src/app/(marketing)/faq/page.tsx` (added `<QAFaqPageJsonLd />`)
+
+### Cross-reference discipline
+
+- `SoftwareApplicationJsonLd` uses `{ "@id": ID.person }` and
+  `{ "@id": ID.organization }` (no inline duplication of Person/Org fields).
+- `SoftwareApplicationJsonLd` uses `{ "@id": ID.product }` in `isRelatedTo`
+  (links app node to subscription offer node without duplicating offer fields).
+- `ClaimReviewJsonLd` uses `{ "@id": ID.organization }` as author.
+- All constants pre-serialized at module load (zero per-render allocation).
+
+### Brunson Hard-Rule compliance
+
+- featureList: 7 entries, each verbatim from the homepage Stack Slide or
+  playbook-sales page.
+- ClaimReview rating 5/5: the editorial commitment is real and operational,
+  not aspirational.
+- QAPage upvoteCount = 1: minimum honest claim (the question was asked at least
+  once by a real person in a public thread).
+- No aggregateRating added to SoftwareApplicationJsonLd (zero verified reviews).
+
+### Files modified (this entry)
+
+- `packages/seo/src/jsonld/softwareapplication.ts` (NEW)
+- `packages/seo/src/jsonld/claimreview.ts` (NEW)
+- `packages/seo/src/jsonld/qapage.ts` (NEW)
+- `packages/seo/src/jsonld/index.ts` (updated)
+- `app/src/components/seo/json-ld.tsx` (updated)
+- `app/src/app/page.tsx` (updated)
+- `app/src/app/(marketing)/editorial-policy/page.tsx` (updated)
+- `app/src/app/(marketing)/faq/page.tsx` (updated)
+- `strategy/decisions/schema-softwareapplication-claimreview.md` (NEW)
+- `build-log.md` (this entry)
