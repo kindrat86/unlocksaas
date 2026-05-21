@@ -1,4 +1,5 @@
-import { getAnthropic } from "@/lib/anthropic";
+import { generateText, streamText } from "ai";
+import { model } from "@/lib/anthropic";
 import {
   DIAGNOSTIC_STEP_LABELS,
   type DiagnosticStepId,
@@ -990,25 +991,18 @@ export async function deepAnalyzePageTextStream(
   emit: DiagnosticStreamEmit,
   signal?: AbortSignal,
 ): Promise<DeepDiagnosticResult> {
-  const stream = getAnthropic().messages.stream(
-    {
-      model: "claude-sonnet-4-6",
-      max_tokens: 4096,
-      system: DEEP_SYSTEM,
-      messages: [
-        {
-          role: "user",
-          content: `URL submitted: ${url}
+  const aiResult = streamText({
+    model,
+    maxOutputTokens: 4096,
+    system: DEEP_SYSTEM,
+    prompt: `URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
 ${pageText}
 
 Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
-        },
-      ],
-    },
-    signal ? { signal } : undefined,
-  );
+    abortSignal: signal,
+  });
 
   let accumulated = "";
   let engineStartDone = false;
@@ -1016,12 +1010,9 @@ Run the deep analysis now. Respond with ONLY the JSON object. No text before or 
   const doneSteps = new Set<DiagnosticStepId>();
 
   try {
-    for await (const event of stream) {
-      if (
-        event.type === "content_block_delta" &&
-        event.delta.type === "text_delta"
-      ) {
-        accumulated += event.delta.text;
+    for await (const textDelta of aiResult.textStream) {
+      {
+        accumulated += textDelta;
 
         // First token arrived — the engine is producing. Close `engine_start`.
         if (!engineStartDone) {
@@ -1084,10 +1075,6 @@ Run the deep analysis now. Respond with ONLY the JSON object. No text before or 
     }
     throw e;
   }
-
-  // Ensure the SDK's internal state is flushed and any final message-level
-  // errors surface here rather than at JSON.parse time below.
-  await stream.finalMessage();
 
   // Parse + validate the accumulated JSON. Same cleaning rules as
   // deepAnalyzePageText — strip optional ```json fences, slice to outermost
