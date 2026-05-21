@@ -42,6 +42,7 @@ import {
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
 import { DateStampedAnswer } from "@/components/seo/date-stamped-answer";
+import { getRelatedClustersForWhyIsntMy } from "@/lib/seo/cluster-relations";
 
 
 export function generateStaticParams() {
@@ -385,6 +386,79 @@ export default async function WhyIsntMyDetailPage(props: {
           </ul>
         </section>
       ) : null}
+
+      {/* ----- Cross-cluster sidebar (2026-05-21 audit fix #1):
+            tie this diagnostic to the directional metric founders
+            should aim for and the canonical playbook that fixes the
+            element. Every link is derived from the manifest by
+            token-sequence matching (lib/seo/cluster-relations.ts); a
+            stale or missing sibling silently drops out. ----- */}
+      {(() => {
+        const related = getRelatedClustersForWhyIsntMy(e.slug);
+        if (!related) return null;
+        if (!related.benchmark && !related.funnelPlaybook) return null;
+        return (
+          <section
+            className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+            aria-labelledby="cross-cluster"
+          >
+            <h2
+              id="cross-cluster"
+              className="text-lg font-bold mb-4 leading-tight"
+            >
+              Where this diagnostic shows up across the rest of the site
+            </h2>
+            <ul className="space-y-2">
+              {related.benchmark ? (
+                <li>
+                  <Link
+                    href={`/benchmarks/${related.benchmark.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="text-muted-foreground group-hover:text-primary shrink-0"
+                    >
+                      →
+                    </span>
+                    <span>
+                      <span className="font-semibold capitalize">
+                        {related.benchmark.metric}
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — directional range you should be hitting
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+              {related.funnelPlaybook ? (
+                <li>
+                  <Link
+                    href={`/funnel-playbook/${related.funnelPlaybook.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="text-muted-foreground group-hover:text-primary shrink-0"
+                    >
+                      →
+                    </span>
+                    <span>
+                      <span className="font-semibold">
+                        {related.funnelPlaybook.displayName} playbook
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — the step-by-step build that fixes this element
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+          </section>
+        );
+      })()}
 
       <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"

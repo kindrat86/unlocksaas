@@ -32,6 +32,7 @@ import {
   paaForFunnelPlaybook,
   mergePaaIntoFaqs,
 } from "@/lib/seo/paa-questions";
+import { getRelatedClustersForFunnelPlaybook } from "@/lib/seo/cluster-relations";
 
 
 export function generateStaticParams() {
@@ -394,6 +395,79 @@ export default async function FunnelPlaybookDetailPage(props: {
           </ul>
         </section>
       ) : null}
+
+      {/* ----- Cross-cluster sidebar (2026-05-21 audit fix #1):
+            tie this playbook to the directional metric it moves and
+            the founder diagnostic that triggers running it. Token-
+            sequence matching against the canonical manifests
+            (lib/seo/cluster-relations.ts); a stale or missing sibling
+            silently drops out. ----- */}
+      {(() => {
+        const related = getRelatedClustersForFunnelPlaybook(e.slug);
+        if (!related) return null;
+        if (!related.benchmark && !related.whyIsntMy) return null;
+        return (
+          <section
+            className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+            aria-labelledby="cross-cluster"
+          >
+            <h2
+              id="cross-cluster"
+              className="text-lg font-bold mb-4 leading-tight"
+            >
+              Where this playbook shows up across the rest of the site
+            </h2>
+            <ul className="space-y-2">
+              {related.benchmark ? (
+                <li>
+                  <Link
+                    href={`/benchmarks/${related.benchmark.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="text-muted-foreground group-hover:text-primary shrink-0"
+                    >
+                      →
+                    </span>
+                    <span>
+                      <span className="font-semibold capitalize">
+                        {related.benchmark.metric}
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — the metric this playbook moves
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+              {related.whyIsntMy ? (
+                <li>
+                  <Link
+                    href={`/why-isnt-my/${related.whyIsntMy.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="text-muted-foreground group-hover:text-primary shrink-0"
+                    >
+                      →
+                    </span>
+                    <span>
+                      <span className="font-semibold">
+                        Why isn&apos;t my {related.whyIsntMy.element} converting
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — the founder diagnostic that triggers this playbook
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+          </section>
+        );
+      })()}
 
       <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"

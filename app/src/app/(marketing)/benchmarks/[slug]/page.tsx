@@ -34,6 +34,8 @@ import {
   buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { ArrowRight } from "lucide-react";
+import { getRelatedClustersForBenchmark } from "@/lib/seo/cluster-relations";
 
 
 export function generateStaticParams() {
@@ -420,6 +422,91 @@ export default async function BenchmarkDetailPage(props: {
           {e.sourceNote}
         </p>
       </section>
+
+      {/* ----- Cross-cluster sidebar (2026-05-21 audit fix #1):
+            tie this benchmark to the canonical "why isn't my X
+            converting" diagnostic, the playbook that produces the
+            metric, and answer pages that quote the same range. Every
+            link is derived from the manifest by token-sequence
+            matching (see lib/seo/cluster-relations.ts) so the failure
+            mode is "fewer links," not "broken links." ----- */}
+      {(() => {
+        const related = getRelatedClustersForBenchmark(e.slug);
+        if (!related) return null;
+        const hasAny =
+          related.whyIsntMy ||
+          related.funnelPlaybook ||
+          related.answers.length > 0;
+        if (!hasAny) return null;
+        return (
+          <section
+            className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+            aria-labelledby="cross-cluster"
+          >
+            <h2
+              id="cross-cluster"
+              className="text-lg font-bold mb-4 leading-tight"
+            >
+              Where this metric shows up across the rest of the site
+            </h2>
+            <ul className="space-y-2">
+              {related.whyIsntMy ? (
+                <li>
+                  <Link
+                    href={`/why-isnt-my/${related.whyIsntMy.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
+                    <span>
+                      <span className="font-semibold">
+                        {related.whyIsntMy.metaTitle.replace(
+                          / \(.+$/,
+                          "",
+                        )}
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — the founder diagnostic that uses this metric
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+              {related.funnelPlaybook ? (
+                <li>
+                  <Link
+                    href={`/funnel-playbook/${related.funnelPlaybook.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
+                    <span>
+                      <span className="font-semibold">
+                        {related.funnelPlaybook.displayName} playbook
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — the step-by-step build that moves this metric
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+              {related.answers.map((a) => (
+                <li key={a.slug}>
+                  <Link
+                    href={`/answers/${a.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <ArrowRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground group-hover:text-primary" />
+                    <span>
+                      <span className="font-semibold">{a.question}</span>{" "}
+                      <span className="text-muted-foreground">— direct answer</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })()}
 
       {/* Citation – formal citation strings for academic / agent re-use. */}
       <section className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40">

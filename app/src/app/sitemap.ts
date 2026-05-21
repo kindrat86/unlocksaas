@@ -87,7 +87,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/dont-buy-unlock-saas",
     "/four-indie-search-engines",
     "/state-of-saas",
-    "/state-of-saas/snapshot",
   ]);
   const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
     /^\/alternatives-to\/[^/]+$/,
@@ -96,6 +95,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     /^\/funnel-teardown\/[^/]+$/,
     /^\/pricing-teardown\/[^/]+$/,
     /^\/press\/topics\/[^/]+$/,
+    // Canonical (en-US) benchmark detail cards added 2026-05-21 after
+    // the audit flagged that /benchmarks/<slug> – the highest-AEO-
+    // intent surface on the site – inherited the root OG fallback when
+    // shared on Twitter / X / LinkedIn. Card files now live at
+    // app/src/app/(marketing)/benchmarks/[slug]/opengraph-image.tsx
+    // and surface the metric H1 + SEO meta description, matching the
+    // shape the /es/benchmarks/<slug> and /pt-BR/benchmarks/<slug>
+    // cards already used. The en-US asymmetry the locale-card comment
+    // flagged as a follow-up is closed in the same commit.
+    /^\/benchmarks\/[^/]+$/,
     // Annual report editions ship per-year OG cards under
     // app/src/app/state-of-saas/[year]/opengraph-image.tsx — the card
     // surfaces the headline figure (or cohort-progress when below
@@ -143,9 +152,47 @@ export default function sitemap(): MetadataRoute.Sitemap {
    * the same intent in src/lib/seo/markdown-alternates.ts so the
    * sitemap hreflang map matches the canonical-page hreflang map.
    */
+  /**
+   * 2026-05-21 audit fix #3 – plumbing-only expansion. Before this
+   * commit, only /glossary and /benchmarks declared that hub-level
+   * approval applies to every detail slug under them. The other ten
+   * pSEO hubs each have a /[locale]/<hub>/page.tsx + /[locale]/<hub>/
+   * [slug]/page.tsx shell on disk (see the per-hub "pSEO surface
+   * plumbing extension" log in src/lib/i18n/registry.ts) but the
+   * inheritance map didn't list them, so when the founder later
+   * approves, say, /es/alternatives-to, none of the 231 detail slugs
+   * would auto-inherit and the registry would need 231 extra rows.
+   *
+   * Adding all 12 pSEO hubs here is safe-by-default: localesForPath()
+   * falls back to approvedLocalesForPath(hub), which returns [] for
+   * any hub without an approved row. No fabricated URLs ship; the
+   * sitemap and hreflang map for those clusters stays byte-identical
+   * until a real approval lands. The change is pure forward-
+   * compatibility – the plumbing is ready when the translation work
+   * is.
+   *
+   * Brunson Hard-Rule reconciliation: this is the structural
+   * pre-wiring criterion from src/lib/seo/markdown-alternates.ts ("Add
+   * a hub here when… The detail-page locale routes already exist
+   * under app/src/app/[locale]/<hub>/[slug]/page.tsx"). All twelve
+   * hubs now satisfy that criterion. None of them satisfy the
+   * "translation file carries every child slug" criterion yet, but
+   * that's an honest constraint enforced by the empty registry – not
+   * a reason to leave the plumbing partial.
+   */
   const HUBS_WITH_DETAIL_LOCALE_INHERITANCE: readonly string[] = [
     "/glossary",
     "/benchmarks",
+    "/alternatives-to",
+    "/vs",
+    "/funnel-teardown",
+    "/pricing-teardown",
+    "/category",
+    "/for",
+    "/funnel-playbook",
+    "/answers",
+    "/why-isnt-my",
+    "/press/topics",
   ];
   /**
    * Hubs whose approved-locale detail slugs ship dedicated per-locale
@@ -1011,35 +1058,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.3,
     })),
-    // -------------------------------------------------------------------------
-    // State of UnlockSaaS snapshot – live monthly editorial dashboard.
-    //
-    // /state-of-saas/snapshot is the single dated machine- and human-
-    // readable citation surface for every editorial signal UnlockSaaS
-    // exposes: pSEO surface counts, Brunson glossary depth, dataset row
-    // counts, Knowledge-Graph anchor counts, locale coverage, earned-
-    // media count, and the shipped/operator/gated activation state of
-    // every surface. Carries Dataset + DataFeed + BreadcrumbList JSON-LD
-    // so Google Dataset Search and AI Overviews can ingest the same
-    // dated observations in one fetch.
-    //
-    // Companion to the annual report index at /state-of-saas (which
-    // lists per-year `State of Post-Launch Pre-Revenue SaaS` editions).
-    // The annual report is the SO WHAT narrative; this snapshot is the
-    // live monthly numbers feed.
-    //
-    // Priority 0.55 sits just above the /dataset bundle download URLs
-    // (0.5) and below the /dataset canonical landing (0.7) – the
-    // dashboard is a citable artifact in its own right, but the
-    // underlying dataset bundle remains the canonical research deliverable.
-    // -------------------------------------------------------------------------
-    {
-      url: `${base}/state-of-saas/snapshot`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.55,
-      alternates: hreflang(`${base}/state-of-saas/snapshot`),
-    },
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers

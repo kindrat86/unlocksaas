@@ -36,6 +36,7 @@ import {
   buildSpeakable,
   ACCESS_MODE_TEXTUAL,
 } from "@/components/seo/json-ld";
+import { getRelatedClustersForAnswer } from "@/lib/seo/cluster-relations";
 
 
 export function generateStaticParams() {
@@ -381,6 +382,80 @@ export default async function AnswerDetailPage(props: {
           </ul>
         </section>
       ) : null}
+
+      {/* ----- Cross-cluster sidebar (2026-05-21 audit fix #1):
+            tie this answer to the canonical benchmark (when the
+            answer is about a metric) and the funnel playbook (when
+            the answer is about a funnel mechanic). Token-overlap
+            matching against the canonical manifests
+            (lib/seo/cluster-relations.ts); a stale or missing sibling
+            silently drops out. ----- */}
+      {(() => {
+        const crossed = getRelatedClustersForAnswer(e.slug);
+        if (!crossed) return null;
+        if (!crossed.benchmark && !crossed.funnelPlaybook) return null;
+        return (
+          <section
+            className="max-w-3xl mx-auto px-6 py-8 border-t border-border/40"
+            aria-labelledby="cross-cluster"
+          >
+            <h2
+              id="cross-cluster"
+              className="text-base font-semibold mb-3 leading-tight"
+            >
+              Where this question shows up across the rest of the site
+            </h2>
+            <ul className="space-y-2">
+              {crossed.benchmark ? (
+                <li>
+                  <Link
+                    href={`/benchmarks/${crossed.benchmark.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="text-muted-foreground group-hover:text-primary shrink-0"
+                    >
+                      →
+                    </span>
+                    <span>
+                      <span className="font-semibold capitalize">
+                        {crossed.benchmark.metric}
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — directional range and bands for this metric
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+              {crossed.funnelPlaybook ? (
+                <li>
+                  <Link
+                    href={`/funnel-playbook/${crossed.funnelPlaybook.slug}`}
+                    className="group flex items-start gap-2 text-sm hover:text-primary transition"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="text-muted-foreground group-hover:text-primary shrink-0"
+                    >
+                      →
+                    </span>
+                    <span>
+                      <span className="font-semibold">
+                        {crossed.funnelPlaybook.displayName} playbook
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        — the step-by-step build behind this answer
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+          </section>
+        );
+      })()}
 
       <section
         className="max-w-3xl mx-auto px-6 py-12 border-t border-border/40"
