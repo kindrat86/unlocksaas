@@ -59,7 +59,7 @@ const MANIFEST = {
   name: "unlocksaas",
   displayName: "UnlockSaaS",
   description:
-    "Read-only MCP server for the UnlockSaaS catalog: live one-shot AND deep V2 SaaS landing-page diagnostics, the canonical offer + value ladder + 60-day guarantee, and structured access to 33 funnel teardowns, 31 pricing teardowns, 55 head-to-head comparisons, 25 alternatives, 13 category roundups, the 7 Playbook steps, and 8 founder-objection FAQ entries. Brunson Hard-Rule: every payload is sourced from the static manifests or the live diagnostic engine; no fabricated metrics, no slag, every entry carries a dated lastVerified.",
+    "Read-only MCP server for the UnlockSaaS catalog: live one-shot AND deep V2 SaaS landing-page diagnostics, the canonical offer + value ladder + 60-day guarantee, and structured access to 33 funnel teardowns, 31 pricing teardowns, 55 head-to-head comparisons, 25 alternatives, 13 category roundups, the 7 Playbook steps, 16 Brunson glossary terms (with TTS audio per term when published), the dataset-changelog podcast (audio enclosures env-gated per episode), and 8 founder-objection FAQ entries. Brunson Hard-Rule: every payload is sourced from the static manifests or the live diagnostic engine; no fabricated metrics, no slag, no fabricated audio surfaces; every entry carries a dated lastVerified.",
   homepageUrl: `${BASE}/mcp`,
   contactEmail: "maryan@unlocksaas.com",
   publisher: {
@@ -150,6 +150,26 @@ const MANIFEST = {
       name: "get_glossary_term",
       summary:
         "Get the working definition of one Brunson term by slug (e.g. 'hook', 'value-ladder', 'big-domino').",
+    },
+    {
+      name: "list_podcast_episodes",
+      summary:
+        "List every episode of the Indie SaaS Teardowns dataset-changelog podcast.",
+    },
+    {
+      name: "get_podcast_episode",
+      summary:
+        "Get one dataset-changelog episode by slug, with env-gated audio enclosure metadata when shipped.",
+    },
+    {
+      name: "list_media_assets",
+      summary:
+        "Unified inventory of every audio/video asset on the site (dataset-changelog podcast + glossary TTS audio); filter by kind.",
+    },
+    {
+      name: "get_glossary_audio",
+      summary:
+        "Get the TTS-rendered audio episode metadata for one Brunson glossary term by slug.",
     },
     {
       name: "get_faq",

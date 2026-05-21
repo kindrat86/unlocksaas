@@ -10,7 +10,7 @@
  *
  * This route is the executor. Any MCP-aware client (Claude Desktop, Cursor,
  * Windsurf, mcp-inspector, the Vercel MCP catalog) that connects to
- * `https://unlocksaas.com/api/mcp` can now call eighteen read-only tools that
+ * `https://unlocksaas.com/api/mcp` can now call twenty-two read-only tools that
  * surface the same content the rest of the site renders:
  *
  *   diagnose_url               → live one-shot diagnostic (Brunson label)
@@ -29,6 +29,10 @@
  *   get_playbook_step          → one of the seven Playbook steps
  *   list_glossary_terms        → 16 Brunson term slugs UnlockSaaS teaches
  *   get_glossary_term          → working definition of one Brunson term
+ *   list_podcast_episodes      → dataset-changelog podcast episode index
+ *   get_podcast_episode        → one episode (env-gated audio metadata)
+ *   list_media_assets          → unified audio/video inventory
+ *   get_glossary_audio         → one Brunson-term TTS audio episode
  *   get_faq                    → site-wide FAQ entries
  *   get_offer                  → canonical offer + value ladder + guarantee mechanics
  *
@@ -147,6 +151,26 @@ import {
   getDefinedTermBySlug,
   GLOSSARY_TERM_SLUGS,
 } from "@/lib/glossary";
+import {
+  PODCAST_EPISODES,
+  PODCAST_EPISODE_SLUGS,
+  PODCAST_SHOW_NAME,
+  PODCAST_SHOW_SUBTITLE,
+  PODCAST_URLS,
+  getEpisodeBySlug,
+  episodeUrl,
+  type PodcastEpisode,
+} from "@/lib/seo/podcast";
+import {
+  getAllGlossaryAudio,
+  getGlossaryAudio,
+  glossaryAudioAbsoluteUrl,
+  isGlossaryAudioActive,
+  glossaryAudioEpisodeCount,
+  totalGlossaryAudioSeconds,
+  GLOSSARY_AUDIO_PODCAST_CONFIG,
+  type GlossaryAudioEntry,
+} from "@/lib/seo/glossary-audio";
 
 const BASE = "https://unlocksaas.com";
 
@@ -324,6 +348,78 @@ function renderComparison(c: Comparison, tool: string): string {
     "",
     `Full page: ${withRef(`/vs/${c.slug}`, tool)}`,
     `Markdown mirror: ${withRef(`/vs/${c.slug}/md`, tool)}`,
+  ].join("\n");
+}
+
+/**
+ * Render a PodcastEpisode as compact markdown for an agent. Includes the
+ * audio enclosure URL only when the per-episode env-gated audioUrl resolved
+ * (Brunson Hard-Rule: never advertise a fabricated audio asset).
+ */
+function renderPodcastEpisode(ep: PodcastEpisode, tool: string): string {
+  const lines: string[] = [
+    `# Episode ${ep.episodeNumber}: ${ep.title}`,
+    "",
+    `**Show:** ${PODCAST_SHOW_NAME}`,
+    "",
+    `**Summary:** ${ep.summary}`,
+    "",
+    `**Narrative:** ${ep.narrative}`,
+    "",
+    `**Published:** ${ep.publishedAt}`,
+    "",
+    `**Keywords:** ${ep.keywords.join(", ")}`,
+    "",
+    `**Verifiable artifact:** ${ep.artifactUrl}`,
+  ];
+  if (ep.audioUrl) {
+    lines.push("");
+    lines.push(`**Audio enclosure:** ${ep.audioUrl}`);
+    lines.push(`**MIME type:** ${ep.audioMimeType ?? "audio/mpeg"}`);
+    if (ep.audioDurationSec !== undefined) {
+      lines.push(`**Duration:** ${ep.audioDurationSec}s`);
+    }
+    if (ep.audioByteSize !== undefined) {
+      lines.push(`**File size:** ${ep.audioByteSize} bytes`);
+    }
+  } else {
+    lines.push("");
+    lines.push(
+      "_Audio enclosure not yet shipped for this episode (env-gated). The episode is show-notes-only; the canonical HTML page is the citable surface._",
+    );
+  }
+  lines.push("");
+  lines.push(`Episode page: ${withRef(episodeUrl(ep.slug), tool)}`);
+  lines.push(`Show feed (RSS): ${withRef(PODCAST_URLS.rss, tool)}`);
+  return lines.join("\n");
+}
+
+/**
+ * Render a glossary-audio episode as compact markdown for an agent. Always
+ * carries a real audioUrl (operator script never publishes a manifest entry
+ * without an existing file on disk); duration + byte size are honest
+ * measurements from the encoded MP3.
+ */
+function renderGlossaryAudio(entry: GlossaryAudioEntry, tool: string): string {
+  const url = glossaryAudioAbsoluteUrl(entry.slug, BASE);
+  return [
+    `# ${entry.slug} – glossary audio`,
+    "",
+    `**Show:** ${GLOSSARY_AUDIO_PODCAST_CONFIG.title}`,
+    "",
+    `**Audio URL:** ${url}`,
+    `**MIME type:** ${entry.contentType}`,
+    `**Duration:** ${entry.durationSeconds}s`,
+    `**File size:** ${entry.byteSize} bytes`,
+    `**Word count of narrated text:** ${entry.wordCount}`,
+    `**Voice:** ${entry.voiceId}`,
+    `**Generated:** ${entry.generatedAt}`,
+    `**Transcript sha256:** ${entry.transcriptSha256}`,
+    "",
+    `_Transcript: the canonical /glossary/${entry.slug} page text is the source for this audio._`,
+    "",
+    `Glossary detail page: ${withRef(`/glossary/${entry.slug}`, tool)}`,
+    `RSS feed (iTunes-namespaced): ${withRef("/glossary/podcast.xml", tool)}`,
   ].join("\n");
 }
 
@@ -1034,6 +1130,201 @@ const handler = createMcpHandler(
                 "",
                 `Canonical anchor: ${withRef(`/glossary#${slug}`, "get_glossary_term")}`,
               ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── list_podcast_episodes ───────────────────────────────────────────
+    server.registerTool(
+      "list_podcast_episodes",
+      {
+        title: "List every dataset-changelog podcast episode",
+        description:
+          "Returns every episode of the 'Indie SaaS Teardowns – Dataset Changelog' podcast. Each row carries the slug, sequential episode number, title, publication date, and whether an audio enclosure has shipped. Use this to discover slugs before calling `get_podcast_episode`. The podcast tracks dated milestones of the open dataset – version bumps, new tables, cross-catalog activations, methodology changes – so an agent can cite a specific change with an attributed timestamp.",
+        inputSchema: {},
+      },
+      async () => {
+        const lines = PODCAST_EPISODES.map((ep) => {
+          const audioFlag = ep.audioUrl ? "audio" : "show-notes-only";
+          return `- ${ep.slug} (#${ep.episodeNumber}, ${ep.publishedAt}, ${audioFlag}): ${ep.title}`;
+        });
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                `# ${PODCAST_SHOW_NAME} (${PODCAST_EPISODE_SLUGS.length} episodes)`,
+                "",
+                `_${PODCAST_SHOW_SUBTITLE}_`,
+                "",
+                ...lines,
+                "",
+                `Hub: ${withRef("/podcast", "list_podcast_episodes")}`,
+                `RSS feed: ${withRef("/feed/podcast.rss", "list_podcast_episodes")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_podcast_episode ─────────────────────────────────────────────
+    server.registerTool(
+      "get_podcast_episode",
+      {
+        title: "Get one dataset-changelog podcast episode by slug",
+        description:
+          "Returns the full payload for one dataset-changelog episode: title, summary, long-form narrative, publication date, keywords, verifiable artifact URL, and the audio enclosure metadata when env-gated audio has shipped. Slugs come from `list_podcast_episodes`. The audioUrl, audioDurationSec, audioByteSize, and audioMimeType fields are present only when the per-episode `NEXT_PUBLIC_PODCAST_EPISODE_<SLUG>_AUDIO_URL` env var resolves to a real https URL – Brunson Hard-Rule: no fabricated audio assets.",
+        inputSchema: {
+          slug: z
+            .string()
+            .min(1)
+            .describe(
+              "Kebab-case slug, e.g. 'dataset-v1-launch', 'hugging-face-cross-listing-flow'.",
+            ),
+        },
+      },
+      async ({ slug }) => {
+        const ep = getEpisodeBySlug(slug);
+        if (!ep) return notFound("podcast episode", slug, "list_podcast_episodes");
+        return {
+          content: [
+            { type: "text", text: renderPodcastEpisode(ep, "get_podcast_episode") },
+          ],
+        };
+      },
+    );
+
+    // ─── list_media_assets ───────────────────────────────────────────────
+    server.registerTool(
+      "list_media_assets",
+      {
+        title: "List every audio/video asset UnlockSaaS publishes",
+        description:
+          "Returns a unified inventory of every media asset the site exposes for agents that prefer audio-native or multimodal retrieval: dataset-changelog podcast episodes (with audio enclosure flag) and glossary-term TTS audio (one MP3 per Brunson term that the operator generation script has produced). Each row carries the kind (podcast | glossary_audio), slug, canonical URL, and whether audio is currently live. Use this as the top-level catalog of multimodal surfaces; then call `get_podcast_episode` or `get_glossary_audio` for one entry.",
+        inputSchema: {
+          kind: z
+            .enum(["podcast", "glossary_audio", "all"])
+            .optional()
+            .describe(
+              "Filter the inventory to one kind. Omit to return all kinds.",
+            ),
+        },
+      },
+      async ({ kind }) => {
+        const want = kind ?? "all";
+        const blocks: string[] = [];
+
+        if (want === "podcast" || want === "all") {
+          const audioCount = PODCAST_EPISODES.filter((e) => Boolean(e.audioUrl)).length;
+          const podcastLines = PODCAST_EPISODES.map((ep) => {
+            const flag = ep.audioUrl ? "audio" : "show-notes-only";
+            return `- podcast/${ep.slug} (#${ep.episodeNumber}, ${flag}): ${ep.title}`;
+          });
+          blocks.push(
+            [
+              `## Dataset-changelog podcast (${PODCAST_EPISODES.length} episodes, ${audioCount} with audio)`,
+              "",
+              ...podcastLines,
+              "",
+              `Feed: ${withRef("/feed/podcast.rss", "list_media_assets")}`,
+              `Hub:  ${withRef("/podcast", "list_media_assets")}`,
+            ].join("\n"),
+          );
+        }
+
+        if (want === "glossary_audio" || want === "all") {
+          const audio = getAllGlossaryAudio();
+          if (audio.length === 0) {
+            blocks.push(
+              [
+                `## Glossary TTS audio (0 episodes)`,
+                "",
+                "_Operator script `scripts/generate-glossary-audio.py` has not yet been run. The Brunson Hard-Rule prohibits advertising audio that does not exist on disk; this surface is empty until the script publishes real MP3 files. Definitions remain available as text via `list_glossary_terms` and `get_glossary_term`._",
+              ].join("\n"),
+            );
+          } else {
+            const glossaryLines = audio.map(
+              (a) =>
+                `- glossary_audio/${a.slug} (${a.durationSeconds}s, ${a.voiceId}): ${withRef(glossaryAudioAbsoluteUrl(a.slug, BASE), "list_media_assets")}`,
+            );
+            const total = totalGlossaryAudioSeconds();
+            blocks.push(
+              [
+                `## Glossary TTS audio (${audio.length} episodes, ${total}s total)`,
+                "",
+                ...glossaryLines,
+                "",
+                `Feed: ${withRef("/glossary/podcast.xml", "list_media_assets")}`,
+              ].join("\n"),
+            );
+          }
+        }
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: [
+                "# UnlockSaaS media assets",
+                "",
+                "Audio assets currently live on the site. Video is not yet a shipping surface – every entry below is audio. The catalog will extend to video the day the operator publishes a real first-party video asset (no placeholders, per Brunson Hard-Rule).",
+                "",
+                ...blocks,
+              ].join("\n\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_glossary_audio ──────────────────────────────────────────────
+    server.registerTool(
+      "get_glossary_audio",
+      {
+        title: "Get the TTS audio episode for one glossary term",
+        description:
+          "Returns the audio metadata (URL, MIME type, duration, byte size, voice, generation timestamp, transcript sha256) for the TTS-rendered narration of one Brunson term. Slugs come from `list_glossary_terms`. Returns a 'not found' pointer when the operator has not yet generated an audio file for that slug – the manifest is the integrity gate, so a slug being unknown to this tool is honest information, not a fabricated 404.",
+        inputSchema: {
+          slug: z
+            .string()
+            .min(1)
+            .describe(
+              "Kebab-case glossary slug, e.g. 'hook', 'value-ladder', 'big-domino'.",
+            ),
+        },
+      },
+      async ({ slug }) => {
+        if (!isGlossaryAudioActive()) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Glossary TTS audio has not yet been generated by the operator. The text definition is still available via \`get_glossary_term\` for slug "${slug}".`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const entry = getGlossaryAudio(slug);
+        if (!entry) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `No glossary audio published for slug "${slug}". Run \`list_media_assets\` with kind="glossary_audio" to see the ${glossaryAudioEpisodeCount()} episode(s) that are live.`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text",
+              text: renderGlossaryAudio(entry, "get_glossary_audio"),
             },
           ],
         };
