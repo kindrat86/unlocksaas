@@ -142,7 +142,8 @@ export async function GET(req: NextRequest) {
       const rows = await runQueryAllProviders(q);
       if (rows.length === 0) continue;
 
-      const { error } = await supabase.from("llmo_citations").insert(rows);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await supabase.from("llmo_citations").insert(rows as any);
       if (error) {
         summary.failed += rows.length;
         summary.errors.push({
@@ -184,7 +185,7 @@ export async function GET(req: NextRequest) {
             rank_in_answer: r.rank_in_answer,
             brand_mentioned: r.brand_mentioned,
           };
-          captureServer(LLMO_DISTINCT_ID, Event.LlmoCitationWon, props as Record<string, unknown>);
+          captureServer(LLMO_DISTINCT_ID, Event.LlmoCitationWon, props as unknown as Record<string, unknown>);
         }
       }
     } catch (err) {
