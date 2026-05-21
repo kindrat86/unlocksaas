@@ -223,9 +223,29 @@ async function stampGrantOnProfile(profileId: string): Promise<boolean | null> {
 /**
  * Stamp profiles.community_access_revoked_at = now() so the operator
  * dashboard query "who has live access" excludes this row.
+ *
+ * SHORT-CIRCUIT: if the profile holds a lifetime seat (community_lifetime_at
+ * is non-null) the revoke is silently skipped. The $297 OTO promises lifetime
+ * access regardless of any subsequent Core subscription state, and the audit
+ * + onboarding card still need to read "live access" as true for the row.
  */
 async function stampRevokeOnProfile(profileId: string): Promise<void> {
   try {
+    // Read lifetime flag first – if set, do NOT touch revoked_at.
+    const { data: row } = await db()
+      .from("profiles")
+      .select("community_lifetime_at")
+      .eq("id", profileId)
+      .maybeSingle();
+    const lifetimeAt = (row as { community_lifetime_at?: string | null } | null)
+      ?.community_lifetime_at;
+    if (lifetimeAt) {
+      console.log(
+        `[community] stampRevokeOnProfile skipped for ${profileId}: lifetime seat at ${lifetimeAt}`,
+      );
+      return;
+    }
+
     const { error } = await db()
       .from("profiles")
       .update({ community_access_revoked_at: new Date().toISOString() })
@@ -238,6 +258,58 @@ async function stampRevokeOnProfile(profileId: string): Promise<void> {
       "[community] stampRevokeOnProfile threw:",
       err instanceof Error ? err.message : err,
     );
+  }
+}
+
+/**
+ * Stamp profiles.community_lifetime_at = now() if it is null. Idempotent –
+ * already-set rows return true without re-stamping. Returns null when the
+ * column does not exist yet (migration pending) so the caller can degrade.
+ *
+ * The lifetime stamp is intentionally separate from community_access_granted_at:
+ *   - community_access_granted_at = "currently has access" (subscription-linked)
+ *   - community_lifetime_at = "paid for permanent access via the $297 OTO"
+ * Both can be set simultaneously; the union "has access" is computed at the
+ * onboarding-card layer.
+ */
+async function stampLifetimeOnProfile(profileId: string): Promise<boolean | null> {
+  try {
+    const { data: row, error: readErr } = await db()
+      .from("profiles")
+      .select("community_lifetime_at")
+      .eq("id", profileId)
+      .maybeSingle();
+    if (readErr) {
+      console.warn(`[community] stampLifetimeOnProfile read error: ${readErr.message}`);
+      return null;
+    }
+    if (!row) return null;
+    const existing = (row as { community_lifetime_at?: string | null })
+      .community_lifetime_at;
+    if (existing) return true; // already lifetime; idempotent
+
+    const nowIso = new Date().toISOString();
+    const { error: writeErr } = await db()
+      .from("profiles")
+      .update({
+        community_lifetime_at: nowIso,
+        // Also clear any prior revoke + (re)stamp granted_at so the dashboard
+        // reads "live access" without having to special-case the lifetime row.
+        community_access_granted_at: nowIso,
+        community_access_revoked_at: null,
+      })
+      .eq("id", profileId);
+    if (writeErr) {
+      console.warn(`[community] stampLifetimeOnProfile write error: ${writeErr.message}`);
+      return null;
+    }
+    return true;
+  } catch (err) {
+    console.warn(
+      "[community] stampLifetimeOnProfile threw:",
+      err instanceof Error ? err.message : err,
+    );
+    return null;
   }
 }
 
@@ -462,6 +534,63 @@ export function scheduleGrantForCheckout(opts: {
     } catch (err) {
       console.error(
         "[community] scheduleGrantForCheckout failed:",
+        err instanceof Error ? err.message : err,
+      );
+    }
+  });
+}
+
+/**
+ * Webhook glue: grant LIFETIME community access for the $297 OTO #2 buyer.
+ *
+ * Two stamps land on the profile:
+ *   - community_lifetime_at  → permanent; survives subscription cancel
+ *   - community_access_granted_at → re-stamped so the onboarding card reads
+ *                                    "live access" immediately
+ *
+ * Then we call the same grantCoreCommunityAccess() helper Core uses so the
+ * invite email + audit event fire through the same Resend template and audit
+ * row. Both writes are idempotent; replaying the same Stripe event is safe.
+ *
+ * Wrapped in `after()` so the 200 OK to Stripe is not held by Resend +
+ * Supabase round-trips for the email send.
+ */
+export function scheduleLifetimeGrantForCheckout(opts: {
+  profileId: string;
+  email: string;
+  stripeCustomerId: string | null;
+  stripeEventId: string | null;
+  source: CommunityEventSource;
+}): void {
+  const { profileId, email, stripeCustomerId, stripeEventId, source } = opts;
+  after(async () => {
+    try {
+      const stamped = await stampLifetimeOnProfile(profileId);
+      if (stamped === null) {
+        console.warn(
+          `[community] lifetime stamp skipped for ${profileId}: migration pending`,
+        );
+        // Fall through – we still want to fire the invite email so the
+        // buyer isn't left hanging while the operator applies the migration.
+      }
+      const { data: row } = await db()
+        .from("profiles")
+        .select("id,email,builder_name,product_name")
+        .eq("id", profileId)
+        .maybeSingle();
+      const profile: CommunityProfile = (row as CommunityProfile | null) ?? {
+        id: profileId,
+        email,
+      };
+      await grantCoreCommunityAccess({
+        profile,
+        source,
+        stripeCustomerId,
+        stripeEventId,
+      });
+    } catch (err) {
+      console.error(
+        "[community] scheduleLifetimeGrantForCheckout failed:",
         err instanceof Error ? err.message : err,
       );
     }

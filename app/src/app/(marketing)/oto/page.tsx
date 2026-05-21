@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -9,6 +10,21 @@ import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
 export default function OTOPage() {
+  // Suspense boundary required because the inner component reads session_id
+  // from useSearchParams; the rule survives the Next 16 migration.
+  return (
+    <Suspense fallback={null}>
+      <OTOPageInner />
+    </Suspense>
+  );
+}
+
+function OTOPageInner() {
+  const params = useSearchParams();
+  // Forwarded to every subsequent OTO step so the webhook can stitch every
+  // OTO purchase back to the original $1 Starter cart for AOV reports.
+  const parentSessionId = params.get("session_id") ?? "";
+
   useEffect(() => {
     track(Event.OtoPageViewed);
   }, []);
@@ -21,7 +37,10 @@ export default function OTOPage() {
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ priceType: "playbook" }),
+      body: JSON.stringify({
+        priceType: "playbook",
+        parentSessionId,
+      }),
     });
     const { url } = await res.json();
     if (url) window.location.href = url;
@@ -30,6 +49,14 @@ export default function OTOPage() {
   function handleDecline() {
     track(Event.OtoDeclined);
   }
+
+  // Decline routes to the next OTO in the chain. Brunson rule: never end on a
+  // dead-end "thanks anyway" page – every "no" carries the visitor forward to
+  // the next yes. /oto/vault gates on its own env var (OTO_VAULT price id)
+  // and silently routes to /oto/cold-emails if the vault offer is disabled.
+  const declineHref = parentSessionId
+    ? `/oto/vault?session_id=${encodeURIComponent(parentSessionId)}`
+    : "/oto/vault";
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
@@ -60,13 +87,14 @@ export default function OTOPage() {
           Continue the Playbook. $49/mo. 60-day guarantee.
         </Button>
 
-        {/* Secondary link — Profit Maximizer Return Path */}
+        {/* Secondary link — Profit Maximizer Return Path. Walks the visitor
+            into the next OTO ($97 Vault) instead of dead-ending on /welcome. */}
         <Link
-          href="/welcome?path=starter_only"
+          href={declineHref}
           onClick={handleDecline}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
         >
-          No thanks, deliver just the Starter.
+          Not the Playbook. Show me the next thing.
         </Link>
 
         {/* Reassurance: the no-vote does not get punished. Workbook 04 §4 Return Path. */}

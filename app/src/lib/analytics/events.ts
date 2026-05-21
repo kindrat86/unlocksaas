@@ -61,6 +61,27 @@ export const Event = {
   OtoUpgradeClicked: "oto_upgrade_clicked",
   OtoDeclined: "oto_declined",
 
+  // Post-Starter monetization stack (2026-05-21 audit Action #4).
+  // Order bump on /starter + three-step OTO chain after the $1 charge:
+  //   $1 cart  →  +$27 bump  →  $97 Vault  →  $27 downsell  →  $297 lifetime.
+  // Each step emits a *Viewed → *Accepted | *Declined triplet so the operator
+  // can see funnel drop-off without joining tables. Server-side *Purchased
+  // events fire from the Stripe webhook (source of truth).
+  StarterBumpToggled: "starter_bump_toggled",       // checkbox flipped
+  StarterBumpPurchased: "starter_bump_purchased",   // webhook (bump line item paid)
+  OtoVaultPageViewed: "oto_vault_page_viewed",
+  OtoVaultAccepted: "oto_vault_accepted",
+  OtoVaultDeclined: "oto_vault_declined",
+  OtoVaultPurchased: "oto_vault_purchased",
+  OtoDownsellPageViewed: "oto_downsell_page_viewed",
+  OtoDownsellAccepted: "oto_downsell_accepted",
+  OtoDownsellDeclined: "oto_downsell_declined",
+  OtoDownsellPurchased: "oto_downsell_purchased",
+  OtoLifetimePageViewed: "oto_lifetime_page_viewed",
+  OtoLifetimeAccepted: "oto_lifetime_accepted",
+  OtoLifetimeDeclined: "oto_lifetime_declined",
+  OtoLifetimePurchased: "oto_lifetime_purchased",
+
   // Mid-funnel (authenticated, client-side)
   PlaybookStepStarted: "playbook_step_started",
   PlaybookStepAnswerSubmitted: "playbook_step_answer_submitted",

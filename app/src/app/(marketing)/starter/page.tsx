@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,6 +14,7 @@ import {
 } from "@/components/seo/json-ld";
 import { VslPlayer } from "@/components/vsl/vsl-player";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
+import { OrderBumpBlock } from "@/components/checkout/order-bump-block";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
@@ -127,6 +128,9 @@ export default function StarterSalesPage() {
 
 function StarterSalesPageInner() {
   const params = useSearchParams();
+  // Order bump state. Owned at the page level (not inside OrderBumpBlock) so
+  // both CTAs (above and below the fold) submit the same flag to checkout.
+  const [bumpChecked, setBumpChecked] = useState(false);
 
   // Stable across renders so the click handler closes over the right values.
   // The bucket joins label as a first-class attribution key so the Stripe
@@ -154,6 +158,7 @@ function StarterSalesPageInner() {
     track(Event.StarterCheckoutClicked, {
       price_type: "starter",
       surface: "starter",
+      bump_included: bumpChecked,
       ...(attribution ?? {}),
     });
     const res = await fetch("/api/checkout", {
@@ -161,6 +166,9 @@ function StarterSalesPageInner() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         priceType: "starter",
+        // Stripe webhook reads bump_included from session metadata to know
+        // whether to record a starter_bump row in billing_payments.
+        bump: bumpChecked,
         // Forwarded to Stripe session metadata so the webhook can stamp
         // diagnostic_leads.converted_to_starter_at on this row.
         attribution,
@@ -579,10 +587,20 @@ function StarterSalesPageInner() {
           </p>
         </section>
 
+        {/* Order Bump – Brunson DCS Secret 14 (Cart Funnel). Renders only when
+            STRIPE_BUMP_DREAM100_PRICE_ID is set; otherwise this block silently
+            collapses and the page reads exactly as before. */}
+        <OrderBumpBlock
+          checked={bumpChecked}
+          onCheckedChange={setBumpChecked}
+        />
+
         {/* CTA */}
         <div className="text-center mb-2">
           <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-            Start the Playbook for $1
+            {bumpChecked
+              ? "Start the Playbook + add the bump – $28"
+              : "Start the Playbook for $1"}
           </Button>
           <p className="text-xs text-muted-foreground mt-3">
             One-time payment. No subscription. No auto-upgrade.
@@ -615,7 +633,9 @@ function StarterSalesPageInner() {
           yours to keep – whether you upgrade or not.
         </p>
         <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-          Start the Playbook for $1
+          {bumpChecked
+            ? "Start the Playbook + add the bump – $28"
+            : "Start the Playbook for $1"}
         </Button>
         <p className="text-xs text-muted-foreground mt-3">
           One-time payment. No subscription. No auto-upgrade.

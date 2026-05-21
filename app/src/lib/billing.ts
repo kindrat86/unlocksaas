@@ -35,7 +35,29 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/server";
 
 export type Tier = "none" | "starter" | "core";
-export type PaymentKind = "starter" | "core_initial" | "core_renewal" | "other";
+/**
+ * Discriminator for billing_payments rows. Mirrors the CHECK constraint on
+ * billing_payments.kind in the schema (extended 2026-05-21 for the OTO stack
+ * in migration 20260521040000_oto_stack.sql).
+ *
+ *   starter         – $1 Starter SLO line item
+ *   core_initial    – first $49 Core subscription invoice
+ *   core_renewal    – every subsequent Core subscription invoice
+ *   starter_bump    – $27 Dream 100 + Cold Email Library add-on on the Starter cart
+ *   oto_vault       – $97 Founder's Diary Vault OTO #1
+ *   oto_downsell    – $27 Cold Email Library downsell (post-vault decline)
+ *   oto_lifetime    – $297 Lifetime Verified Builders OTO #2
+ *   other           – catch-all (legacy + unknown)
+ */
+export type PaymentKind =
+  | "starter"
+  | "core_initial"
+  | "core_renewal"
+  | "starter_bump"
+  | "oto_vault"
+  | "oto_downsell"
+  | "oto_lifetime"
+  | "other";
 export type PaymentStatus = "paid" | "failed" | "refunded" | "partial_refund";
 
 const SIXTY_DAYS_MS = 60 * 24 * 60 * 60 * 1000;
