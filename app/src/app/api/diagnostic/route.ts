@@ -270,7 +270,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Subscribe to the 5-email Soap Opera sequence and fire Email 1 (Day 0).
+  // Subscribe to the Soap Opera Sequence and fire E1 (Day 0). Sequence
+  // shape is 3 spine emails (day 0/2/4) + up to one behavioral branch
+  // (soft_sell or objection_handler) on day 6 gated on E3 engagement.
+  // Decision: strategy/decisions/sos-3-spine-2-branch.md
   // Skipped when the diagnostic itself failed — sending "Your diagnosis came
   // back: X" when there was no real diagnosis would be a lie. The lead is
   // still captured in diagnostic_leads below for manual retargeting.

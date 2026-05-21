@@ -36,7 +36,12 @@ done.
 - `/builder/[slug]` — Public Verified Builder badge OG-image route.
 
 ### Email + scheduling
-- 5-email Soap Opera Sequence (code-complete, awaits CRON_SECRET).
+- 3-email Soap Opera Sequence spine + 2 behavioral branches
+  (`soft_sell`, `objection_handler`). Day 0 / 2 / 4 spine + day 6
+  branch pass gated on E3 open/click. Code-complete; awaits
+  `CRON_SECRET` for the spine cron and `RESEND_WEBHOOK_SECRET` +
+  Resend dashboard configuration for the engagement-routing webhook.
+  Decision doc: `strategy/decisions/sos-3-spine-2-branch.md`.
 - Seinfeld daily nurture (code-complete, awaits CRON_SECRET).
 - `/api/unsubscribe` with HMAC tokens + RFC 8058 one-click POST.
 
@@ -102,6 +107,45 @@ done.
    token with scopes `project:releases` + `project:read` → run
    `scripts/setup-sentry.py` → push `NEXT_PUBLIC_SENTRY_DSN`,
    `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` to Vercel.
+
+4. **Configure the Resend webhook + push `RESEND_WEBHOOK_SECRET`.**
+   The SOS day-6 branch pass needs to know whether E3 was opened or
+   clicked. That signal arrives through the Resend webhook at
+   `/api/webhooks/resend`. Without it the spine still ships, but the
+   `branch_fired` column stays `'none'` forever (no soft_sell, no
+   objection_handler).
+
+   ```
+   1. Resend dashboard (https://resend.com/webhooks) → Add endpoint
+        URL:    https://unlocksaas.com/api/webhooks/resend
+        Events: email.opened, email.clicked, email.delivered,
+                email.bounced, email.complained
+   2. Copy the generated signing secret (starts with whsec_…).
+   3. Push to Vercel for all 3 environments:
+        vercel env add RESEND_WEBHOOK_SECRET production --sensitive
+        vercel env add RESEND_WEBHOOK_SECRET preview --sensitive
+        vercel env add RESEND_WEBHOOK_SECRET development --sensitive
+   4. Mirror to .env.development.local so `vercel env pull` doesn't
+      strip it (per feedback_local_only_secrets_in_vercel_dev.md).
+   ```
+
+   Smoke test after the env var is set: `curl -X POST
+   https://unlocksaas.com/api/webhooks/resend` should return 400
+   (`missing_svix_headers`), not 503 (`not_configured`).
+
+5. **Apply migration `20260521000020_sos_three_spine_two_branch` to
+   prod Supabase.** Per project memory
+   (`feedback_supabase_postgrest_quirks.md`), the Supabase MCP does NOT
+   auto-apply repo migrations to prod. Run:
+
+   ```
+   supabase db push
+   ```
+
+   from the repo root after the PR merges. This adds the four new
+   columns (`e3_opened_at`, `e3_clicked_at`, `branch_fired`,
+   `branch_fired_at`) and the partial index
+   `soap_opera_branch_pending_idx`.
 
 ### Tier 2 — blocks the Reluctant-Hero proof, not revenue
 
