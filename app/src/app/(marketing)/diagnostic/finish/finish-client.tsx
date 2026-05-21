@@ -67,6 +67,12 @@ type Pending = {
     time_since_launch: string;
     recent_revenue: string;
     biggest_attempt: string;
+    // Quiz expansion (2026-05-21). Optional — a pre-expansion stash
+    // produced before the user updated their tab still works because the
+    // API edge treats every quiz-expansion field as optional.
+    primary_goal?: string | null;
+    hours_per_week?: string | null;
+    biggest_fear?: string | null;
   };
   referrer: string | null;
   ts: number;

@@ -55,6 +55,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { cacheLife, cacheTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
@@ -77,12 +78,21 @@ interface Props {
  * builder page for invalidation: `revalidateTag('builder:tally', 'max')`.
  * Without the tag a builder edit would have to wait for the 1-hour
  * cacheLife window or trigger a full deploy.
+ *
+ * Cache Components re-enabled 2026-05-21 (see next.config.mjs comment block).
+ * The deferred TODO from #7cf382f is now actioned: `'use cache' + cacheLife +
+ * cacheTag` are live so a verified-conversion webhook can invalidate a single
+ * embed page via `revalidateTag('builder:tally', 'max')` (Next 16 two-arg
+ * form: tag + cacheLife profile) without redeploying. The embed page is one
+ * of the highest-leverage cache targets — a verified founder pastes the
+ * snippet on their own site, the resulting backlink + SVG + Review JSON-LD
+ * lookup hammers this surface on every cold visitor that crawls the
+ * founder's homepage.
  */
-// Cache Components migration paused (#7cf382f) — per-request Supabase read.
-// Re-enable later wraps this in `'use cache' + cacheTag(`builder:${slug}`)`
-// so the verified-conversion webhook can target a specific slug via
-// revalidateTag without a full deploy.
 async function getBadge(slug: string) {
+  "use cache";
+  cacheLife({ revalidate: 3600 });
+  cacheTag(`builder:${slug}`);
   return loadPublicBadge(createAdminClient(), slug);
 }
 

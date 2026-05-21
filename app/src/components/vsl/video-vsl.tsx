@@ -137,13 +137,14 @@ export function VideoVsl({ src, poster, surface, onReachedOffer }: Props) {
         src={src}
         poster={poster}
         controls
-        preload="metadata"
+        preload="auto"
         playsInline
         onPlay={handlePlay}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
         aria-label="Founder VSL: The Playbook in 110 seconds"
       />
+
       {showSkip ? (
         <Button
           type="button"

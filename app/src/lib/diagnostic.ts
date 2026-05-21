@@ -1,4 +1,10 @@
-import { getAnthropic } from "@/lib/anthropic";
+import { generateText, streamText } from "ai";
+import { model } from "@/lib/anthropic";
+import {
+  DIAGNOSTIC_STEP_LABELS,
+  type DiagnosticStepId,
+  type DiagnosticStreamEmit,
+} from "@/lib/diagnostic-stream-types";
 
 /**
  * Diagnostic engine for the Free Diagnostic Lead Funnel.
@@ -43,6 +49,24 @@ export type BiggestAttempt =
   | "customer_conversations"
   | "nothing_yet";
 
+// Quiz expansion (2026-05-21). Three orthogonal segmenting signals that
+// drive the per-answer variant resolver in lib/diagnostic-variants.ts.
+// All three are nullable at the API edge — legacy callers still work.
+export type PrimaryGoal =
+  | "first_customer"
+  | "replace_income"
+  | "scale_revenue"
+  | "validate_pmf"
+  | "build_audience";
+export type HoursPerWeek = "under_5" | "five_to_fifteen" | "fifteen_plus";
+export type BiggestFear =
+  | "wrong_audience"
+  | "no_distribution"
+  | "not_ready"
+  | "ad_waste"
+  | "not_expert"
+  | "none";
+
 export const TIME_VALUES: readonly TimeSinceLaunch[] = [
   "under_30",
   "30_to_90",
@@ -61,11 +85,37 @@ export const ATTEMPT_VALUES: readonly BiggestAttempt[] = [
   "customer_conversations",
   "nothing_yet",
 ] as const;
+export const PRIMARY_GOAL_VALUES: readonly PrimaryGoal[] = [
+  "first_customer",
+  "replace_income",
+  "scale_revenue",
+  "validate_pmf",
+  "build_audience",
+] as const;
+export const HOURS_PER_WEEK_VALUES: readonly HoursPerWeek[] = [
+  "under_5",
+  "five_to_fifteen",
+  "fifteen_plus",
+] as const;
+export const BIGGEST_FEAR_VALUES: readonly BiggestFear[] = [
+  "wrong_audience",
+  "no_distribution",
+  "not_ready",
+  "ad_waste",
+  "not_expert",
+  "none",
+] as const;
 
 export type SurveyAnswers = {
   time_since_launch: TimeSinceLaunch;
   recent_revenue: RecentRevenue;
   biggest_attempt: BiggestAttempt;
+  // Quiz expansion fields are optional so the API still accepts the
+  // legacy 3-question shape. assignBucket() ignores them; the variant
+  // resolver consumes them when present.
+  primary_goal?: PrimaryGoal | null;
+  hours_per_week?: HoursPerWeek | null;
+  biggest_fear?: BiggestFear | null;
 };
 
 export type Bucket =
@@ -196,6 +246,24 @@ export function isRecentRevenue(v: unknown): v is RecentRevenue {
 export function isBiggestAttempt(v: unknown): v is BiggestAttempt {
   return (
     typeof v === "string" && (ATTEMPT_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isPrimaryGoal(v: unknown): v is PrimaryGoal {
+  return (
+    typeof v === "string" &&
+    (PRIMARY_GOAL_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isHoursPerWeek(v: unknown): v is HoursPerWeek {
+  return (
+    typeof v === "string" &&
+    (HOURS_PER_WEEK_VALUES as readonly string[]).includes(v)
+  );
+}
+export function isBiggestFear(v: unknown): v is BiggestFear {
+  return (
+    typeof v === "string" &&
+    (BIGGEST_FEAR_VALUES as readonly string[]).includes(v)
   );
 }
 
@@ -341,25 +409,17 @@ export async function classifyPageText(
   url: string,
   pageText: string,
 ): Promise<DiagnosticResult> {
-  const response = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 700,
+  const { text } = await generateText({
+    model: model,
+    maxOutputTokens: 700,
     system: CLASSIFIER_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: `URL submitted: ${url}
+    prompt: `URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
 ${pageText}
 
 Diagnose this page now. Respond with ONLY the JSON object.`,
-      },
-    ],
   });
-
-  const text =
-    response.content[0]?.type === "text" ? response.content[0].text : "";
 
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
@@ -809,29 +869,75 @@ function validateDeep(parsed: unknown): DeepDiagnosticResult {
   };
 }
 
+/**
+ * Build the optional "Founder context" block we append to the deep-analysis
+ * prompt when the quiz-expansion fields are present. The LLM uses this to
+ * tune (a) the plan emphasis (distribution-first / ship-imperfect / etc.)
+ * and (b) the headline framing so the deliverables align with the variant
+ * preface the result page renders. Pure string builder — returns "" when
+ * no signal is present so the legacy code path is byte-identical.
+ */
+function buildFounderContext(survey: SurveyAnswers | null | undefined): string {
+  if (!survey) return "";
+  const lines: string[] = [];
+  if (survey.primary_goal) {
+    const goalLabels: Record<PrimaryGoal, string> = {
+      first_customer: "first paying customer in the next 60 days",
+      replace_income: "replace day-job income",
+      scale_revenue: "scale revenue past where it is now",
+      validate_pmf: "validate product-market fit",
+      build_audience: "build an audience before monetizing",
+    };
+    lines.push(`- Stated goal: ${goalLabels[survey.primary_goal]}.`);
+  }
+  if (survey.hours_per_week) {
+    const hoursLabels: Record<HoursPerWeek, string> = {
+      under_5: "under 5",
+      five_to_fifteen: "5 to 15",
+      fifteen_plus: "15 or more",
+    };
+    lines.push(
+      `- Hours per week available: ${hoursLabels[survey.hours_per_week]}. Scale deliverables to fit; do not over-schedule.`,
+    );
+  }
+  if (survey.biggest_fear && survey.biggest_fear !== "none") {
+    const fearGuidance: Record<Exclude<BiggestFear, "none">, string> = {
+      wrong_audience:
+        "Front-load named-customer conversations. The plan must produce one named buyer by end of week 2.",
+      no_distribution:
+        "Treat distribution as the first deliverable, not the last. Week 1 ships the smallest distribution loop; weeks 2-4 sharpen the offer the loop sends traffic to.",
+      not_ready:
+        "Assume shipped beats perfect. Shrink the offer to the smallest thing one named buyer would pay for in week 1.",
+      ad_waste:
+        "No paid deliverables until week 4, and only if the offer has converted at least one organic customer first.",
+      not_expert:
+        "Build credibility surface in parallel. Each week ships one public artifact under the founder's own name.",
+    };
+    lines.push(`- Biggest fear: ${survey.biggest_fear}. ${fearGuidance[survey.biggest_fear]}`);
+  }
+  if (lines.length === 0) return "";
+  return `\n\nFOUNDER CONTEXT (use to tune plan_30_day deliverables; do NOT echo verbatim):\n${lines.join("\n")}`;
+}
+
 export async function deepAnalyzePageText(
   url: string,
   pageText: string,
+  surveyContext?: SurveyAnswers | null,
 ): Promise<DeepDiagnosticResult> {
-  const response = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 4096,
+  const founderContext = buildFounderContext(surveyContext);
+  const { text } = await generateText({
+    model: model,
+    maxOutputTokens: 4096,
     system: DEEP_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: `URL submitted: ${url}
+    prompt: `${founderContext}
+
+URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
-${pageText}
+${pageText}${founderContext}
 
 Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
-      },
-    ],
   });
-
-  const text =
-    response.content[0]?.type === "text" ? response.content[0].text : "";
 
   // Strip optional markdown fence if the model added one despite the prompt.
   const cleaned = text
@@ -862,9 +968,16 @@ Run the deep analysis now. Respond with ONLY the JSON object. No text before or 
  * End-to-end deep analysis: validate URL, fetch, strip, deep-analyze.
  * Throws a `DiagnosticError`-shaped object on failure (same shape as
  * classifyUrl, so the route's error path stays uniform).
+ *
+ * The optional `surveyContext` is the quiz-funnel-expansion signal block
+ * (primary_goal / hours_per_week / biggest_fear) that tunes plan_30_day
+ * deliverables to match the variant preface rendered on the result page.
+ * When omitted or null the prompt is byte-identical to the legacy version,
+ * so the existing single-arg callers continue to work unchanged.
  */
 export async function deepAnalyzeUrl(
   rawUrl: string,
+  surveyContext?: SurveyAnswers | null,
 ): Promise<DeepDiagnosticResult> {
   const url = normalizeUrl(rawUrl);
   if (!url) {
@@ -907,7 +1020,322 @@ export async function deepAnalyzeUrl(
   }
 
   try {
-    return await deepAnalyzePageText(url.toString(), text);
+    return await deepAnalyzePageText(url.toString(), text, surveyContext);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "engine_failed",
+      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+    };
+    throw err;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Streaming variants — emit step events as work happens, instead of blocking
+// the form for 30-45 s with a faked progress cycler.
+//
+// The non-LLM steps (validate, fetch, parse) emit `start` + `done` events
+// at the obvious boundaries. The LLM step is a single Anthropic `messages.stream`
+// call; we watch the streamed JSON for next-sibling-key anchors to derive
+// section-level progress (real reasoning visibility, not a timer).
+//
+// Anchor sequence — each "from" step completes the moment its "anchor" key
+// appears in the accumulated buffer. The ordering matches the DEEP_SYSTEM
+// JSON shape verbatim.
+//
+// Section          | Done-anchor (next sibling key)
+// ---------------- | --------------------------------
+// product_snapshot | "scores":
+// score_wrong_person | "weak_offer":
+// score_weak_offer   | "weak_belief":
+// score_weak_belief  | "rewrites":
+// rewrite_hero       | "primary_cta":
+// rewrite_cta        | "value_props":
+// rewrite_value_props | "plan_30_day":
+// plan               | "competitors":
+// competitors        | "strengths":
+//
+// `strengths` is the last top-level key; we treat the stream's natural close
+// as its done-marker rather than chasing the closing `}`.
+//
+// We do NOT stream individual tokens to the client. The UI shows a list of
+// labelled steps that light up as each section completes — denser and more
+// readable than scrolling raw JSON. The full structured result is parsed
+// from the accumulated buffer on close and returned by deepAnalyzePageTextStream.
+// ---------------------------------------------------------------------------
+
+const ENGINE_START_MARKERS: Array<{ marker: string; id: DiagnosticStepId }> = [
+  { marker: '"wrong_person":', id: "score_wrong_person" },
+  { marker: '"weak_offer":', id: "score_weak_offer" },
+  { marker: '"weak_belief":', id: "score_weak_belief" },
+  { marker: '"hero_headline":', id: "rewrite_hero" },
+  { marker: '"primary_cta":', id: "rewrite_cta" },
+  { marker: '"value_props":', id: "rewrite_value_props" },
+  { marker: '"plan_30_day":', id: "plan" },
+  { marker: '"competitors":', id: "competitors" },
+];
+
+const ENGINE_DONE_ANCHORS: Array<{ id: DiagnosticStepId; anchor: string }> = [
+  { id: "score_wrong_person", anchor: '"weak_offer":' },
+  { id: "score_weak_offer", anchor: '"weak_belief":' },
+  { id: "score_weak_belief", anchor: '"rewrites":' },
+  { id: "rewrite_hero", anchor: '"primary_cta":' },
+  { id: "rewrite_cta", anchor: '"value_props":' },
+  { id: "rewrite_value_props", anchor: '"plan_30_day":' },
+  { id: "plan", anchor: '"competitors":' },
+  { id: "competitors", anchor: '"strengths":' },
+];
+
+/** Pull the integer "score" value out of a just-completed axis block. */
+function extractAxisScore(
+  accumulated: string,
+  axisKey: "wrong_person" | "weak_offer" | "weak_belief",
+): number | undefined {
+  // The axis block has no nested `{}`, so `[^}]` suffices.
+  const re = new RegExp(`"${axisKey}":\\s*\\{[^}]*?"score":\\s*(\\d+)`);
+  const m = accumulated.match(re);
+  if (!m) return undefined;
+  const n = Number.parseInt(m[1], 10);
+  return Number.isFinite(n) && n >= 1 && n <= 10 ? n : undefined;
+}
+
+/**
+ * Stream a deep analysis of `pageText` and emit step events as each section
+ * of the response JSON completes. Returns the validated structured result.
+ *
+ * `signal` (optional) is forwarded to the Anthropic SDK so a client
+ * disconnection (the visitor closes the tab) cancels the LLM call instead
+ * of burning CPU under Vercel Active CPU pricing.
+ */
+export async function deepAnalyzePageTextStream(
+  url: string,
+  pageText: string,
+  emit: DiagnosticStreamEmit,
+  signal?: AbortSignal,
+): Promise<DeepDiagnosticResult> {
+  const aiResult = streamText({
+    model,
+    maxOutputTokens: 4096,
+    system: DEEP_SYSTEM,
+    prompt: `URL submitted: ${url}
+
+PAGE CONTENT (title, meta, body, truncated):
+${pageText}
+
+Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
+    abortSignal: signal,
+  });
+
+  let accumulated = "";
+  let engineStartDone = false;
+  const startedSteps = new Set<DiagnosticStepId>();
+  const doneSteps = new Set<DiagnosticStepId>();
+
+  try {
+    for await (const textDelta of aiResult.textStream) {
+      {
+        accumulated += textDelta;
+
+        // First token arrived — the engine is producing. Close `engine_start`.
+        if (!engineStartDone) {
+          emit({
+            type: "step",
+            id: "engine_start",
+            label: DIAGNOSTIC_STEP_LABELS.engine_start,
+            status: "done",
+          });
+          engineStartDone = true;
+        }
+
+        // Emit `start` events when each section's key first appears.
+        for (const { marker, id } of ENGINE_START_MARKERS) {
+          if (!startedSteps.has(id) && accumulated.includes(marker)) {
+            startedSteps.add(id);
+            emit({
+              type: "step",
+              id,
+              label: DIAGNOSTIC_STEP_LABELS[id],
+              status: "start",
+            });
+          }
+        }
+
+        // Emit `done` events when the next sibling key appears.
+        for (const { id, anchor } of ENGINE_DONE_ANCHORS) {
+          if (!doneSteps.has(id) && accumulated.includes(anchor)) {
+            doneSteps.add(id);
+            let score: number | undefined;
+            if (id === "score_wrong_person") {
+              score = extractAxisScore(accumulated, "wrong_person");
+            } else if (id === "score_weak_offer") {
+              score = extractAxisScore(accumulated, "weak_offer");
+            } else if (id === "score_weak_belief") {
+              score = extractAxisScore(accumulated, "weak_belief");
+            }
+            emit({
+              type: "step",
+              id,
+              label: DIAGNOSTIC_STEP_LABELS[id],
+              status: "done",
+              ...(score !== undefined ? { score } : {}),
+            });
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // If `engine_start` never closed (zero tokens before the failure), close
+    // it now so the UI doesn't show a stuck spinner on that row. We re-throw
+    // so the route handler can surface the failure mode.
+    if (!engineStartDone) {
+      emit({
+        type: "step",
+        id: "engine_start",
+        label: DIAGNOSTIC_STEP_LABELS.engine_start,
+        status: "done",
+      });
+    }
+    throw e;
+  }
+
+  // Parse + validate the accumulated JSON. Same cleaning rules as
+  // deepAnalyzePageText — strip optional ```json fences, slice to outermost
+  // braces, then run the strict validator.
+  const cleaned = accumulated
+    .replace(/^\s*```(?:json)?\s*/i, "")
+    .replace(/\s*```\s*$/i, "")
+    .trim();
+
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start < 0 || end <= start) {
+    throw new Error("Deep analysis: engine returned no JSON object");
+  }
+  const slice = cleaned.slice(start, end + 1);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(slice);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    throw new Error(`Deep analysis: JSON parse failed (${reason})`);
+  }
+
+  return validateDeep(parsed);
+}
+
+/**
+ * End-to-end streaming deep analysis: validate URL, fetch, strip, then run
+ * `deepAnalyzePageTextStream`. Emits step events at each boundary. Throws a
+ * `DiagnosticError`-shaped object on failure (matching `deepAnalyzeUrl` so
+ * the route handler's error path stays uniform across streaming and
+ * non-streaming entry points).
+ */
+export async function deepAnalyzeUrlStream(
+  rawUrl: string,
+  emit: DiagnosticStreamEmit,
+  signal?: AbortSignal,
+): Promise<DeepDiagnosticResult> {
+  // ---- validate ----------------------------------------------------------
+  emit({
+    type: "step",
+    id: "validate",
+    label: DIAGNOSTIC_STEP_LABELS.validate,
+    status: "start",
+  });
+  const url = normalizeUrl(rawUrl);
+  if (!url) {
+    const err: DiagnosticError = {
+      kind: "invalid_url",
+      message:
+        "That does not look like a URL I can read. Paste a full https:// link.",
+    };
+    throw err;
+  }
+  if (isBlockedHost(url.hostname)) {
+    const err: DiagnosticError = {
+      kind: "blocked_host",
+      message:
+        "I cannot read internal or local addresses. Use your public product URL.",
+    };
+    throw err;
+  }
+  emit({
+    type: "step",
+    id: "validate",
+    label: DIAGNOSTIC_STEP_LABELS.validate,
+    status: "done",
+    detail: url.hostname,
+  });
+
+  // ---- fetch -------------------------------------------------------------
+  emit({
+    type: "step",
+    id: "fetch",
+    label: DIAGNOSTIC_STEP_LABELS.fetch,
+    status: "start",
+  });
+  let html: string;
+  try {
+    html = await fetchPage(url);
+  } catch (e) {
+    const reason = e instanceof Error ? e.message : "unknown";
+    const err: DiagnosticError = {
+      kind: "fetch_failed",
+      message: `I could not load that page (${reason}). If it is behind login or Cloudflare's challenge, paste a public version.`,
+    };
+    throw err;
+  }
+  emit({
+    type: "step",
+    id: "fetch",
+    label: DIAGNOSTIC_STEP_LABELS.fetch,
+    status: "done",
+    detail: `${html.length.toLocaleString("en-US")} chars of HTML`,
+  });
+
+  // ---- parse -------------------------------------------------------------
+  emit({
+    type: "step",
+    id: "parse",
+    label: DIAGNOSTIC_STEP_LABELS.parse,
+    status: "start",
+  });
+  const text = htmlToText(html);
+  const readableLen = text
+    .replace(/^(TITLE|META DESCRIPTION|OG DESCRIPTION|BODY):/gm, "")
+    .trim().length;
+  if (readableLen < 200) {
+    const err: DiagnosticError = {
+      kind: "empty_page",
+      message:
+        "That page had almost no readable copy. The diagnostic needs real text to read.",
+    };
+    throw err;
+  }
+  emit({
+    type: "step",
+    id: "parse",
+    label: DIAGNOSTIC_STEP_LABELS.parse,
+    status: "done",
+    detail: `${readableLen.toLocaleString("en-US")} chars of readable copy`,
+  });
+
+  // ---- LLM ---------------------------------------------------------------
+  emit({
+    type: "step",
+    id: "engine_start",
+    label: DIAGNOSTIC_STEP_LABELS.engine_start,
+    status: "start",
+  });
+  try {
+    return await deepAnalyzePageTextStream(
+      url.toString(),
+      text,
+      emit,
+      signal,
+    );
   } catch (e) {
     const reason = e instanceof Error ? e.message : "unknown";
     const err: DiagnosticError = {

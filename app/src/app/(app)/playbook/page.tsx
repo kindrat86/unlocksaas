@@ -5,8 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
+import { FunnelTrendCard } from "@/components/blocks/funnel-trend-card";
 import { FounderMemoryBanner } from "@/components/founder-memory-banner";
-
 
 // Cache Components: Supabase auth + verified_conversions reads are
 // request-time inputs. Outer export is a synchronous Suspense wrapper; the
@@ -30,6 +30,12 @@ async function PlaybookDashboardBody() {
   const { data: userData } = await supabase.auth.getUser();
 
   let verified = false;
+  let snapshots: Array<{
+    scored_at: string;
+    label: string;
+    scores: Record<string, number>;
+  }> = [];
+
   if (userData?.user) {
     try {
       const { data: profile } = await supabase
@@ -48,6 +54,18 @@ async function PlaybookDashboardBody() {
           .select("id", { count: "exact", head: true })
           .eq("profile_id" as never, profile.id);
         verified = (count ?? 0) > 0;
+
+        // Fetch the last 12 diagnostic snapshots for the trend card
+        const { data: snapshotData } = await supabase
+          .from("diagnostic_snapshots")
+          .select("scored_at, label, scores")
+          .eq("user_id", profile.id)
+          .order("scored_at", { ascending: false })
+          .limit(12);
+
+        if (snapshotData && Array.isArray(snapshotData)) {
+          snapshots = snapshotData as typeof snapshots;
+        }
       }
     } catch {
       verified = false;
@@ -97,6 +115,8 @@ async function PlaybookDashboardBody() {
           were taught to skip. Let&apos;s do it.
         </p>
       </div>
+
+      {snapshots.length > 0 && <FunnelTrendCard snapshots={snapshots} />}
 
       <Card>
         <CardHeader>

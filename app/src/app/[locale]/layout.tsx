@@ -14,7 +14,11 @@ import { localesWithRenderableContent } from "@/lib/i18n/registry";
  *
  * Locale validation is strict: `generateStaticParams` returns only
  * locales with at least one approved translation row. Unknown segments
- * 404 via `dynamicParams = false` declared below.
+ * (`/de/faq`, `/en/faq`, `/random/foo`) hit the dynamic render path,
+ * fail the `isLocale()` check in the default export, and 404 via
+ * `notFound()`. Per-route `dynamicParams = false` cannot be declared on
+ * this segment because `cacheComponents: true` rejects route segment
+ * config — the runtime `notFound()` check is the equivalent gate.
  *
  * Brunson Hard-Rule: a locale with zero approved translations does not
  * pre-render. Its routes simply do not exist publicly.

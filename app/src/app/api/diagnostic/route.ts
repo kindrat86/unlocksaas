@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkBotId } from "botid/server";
 import {
   assignBucket,
   deepAnalyzeUrl,
   isBiggestAttempt,
+  isBiggestFear,
   isDiagnosticError,
+  isHoursPerWeek,
+  isPrimaryGoal,
   isRecentRevenue,
   isTimeSinceLaunch,
   normalizeUrl,
@@ -68,6 +72,18 @@ function clientIp(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  // BotID protection: blocks confirmed bot traffic (LLM-scraping / Anthropic
+  // cost prevention). Fail-open: any verification error lets the request
+  // through so a BotID outage never blocks a real founder's diagnostic.
+  try {
+    const botCheck = await checkBotId();
+    if (botCheck.isBot) {
+      return NextResponse.json({ error: "bot_detected" }, { status: 403 });
+    }
+  } catch (err) {
+    console.warn("[botid] diagnostic verification failed, proceeding fail-open", err);
+  }
+
   let body: {
     email?: unknown;
     url?: unknown;
@@ -99,15 +115,28 @@ export async function POST(req: NextRequest) {
       ? body.source.trim()
       : null;
 
-  // Survey answers (Brunson Survey Funnel — DCS Secret 15). All three fields
-  // optional at the API edge so the old 2-field shape still works; the bucket
-  // assignment short-circuits to a label-only fallback if survey is missing.
+  // Survey answers (Brunson Survey Funnel — DCS Secret 15).
+  //
+  // The legacy three fields (time_since_launch, recent_revenue, biggest_attempt)
+  // are still required to populate the `survey` block — they drive the bucket
+  // assignment. The 2026-05-21 quiz-funnel expansion adds three more fields
+  // (primary_goal, hours_per_week, biggest_fear) which are OPTIONAL at the API
+  // edge so:
+  //   - legacy callers (the Google OAuth round-trip handed off pre-expansion
+  //     leads, or any external script hitting /api/diagnostic) keep working
+  //     unchanged
+  //   - the variant resolver in lib/diagnostic-variants.ts gracefully degrades
+  //     to "default" headline / "sober" tone / "default" plan emphasis when
+  //     a field is missing
   let survey: SurveyAnswers | null = null;
   if (body.survey && typeof body.survey === "object") {
     const s = body.survey as {
       time_since_launch?: unknown;
       recent_revenue?: unknown;
       biggest_attempt?: unknown;
+      primary_goal?: unknown;
+      hours_per_week?: unknown;
+      biggest_fear?: unknown;
     };
     if (
       isTimeSinceLaunch(s.time_since_launch) &&
@@ -118,6 +147,11 @@ export async function POST(req: NextRequest) {
         time_since_launch: s.time_since_launch,
         recent_revenue: s.recent_revenue,
         biggest_attempt: s.biggest_attempt,
+        primary_goal: isPrimaryGoal(s.primary_goal) ? s.primary_goal : null,
+        hours_per_week: isHoursPerWeek(s.hours_per_week)
+          ? s.hours_per_week
+          : null,
+        biggest_fear: isBiggestFear(s.biggest_fear) ? s.biggest_fear : null,
       };
     }
   }
@@ -193,7 +227,12 @@ export async function POST(req: NextRequest) {
         nextStep: string;
       };
   try {
-    diagnosis = await deepAnalyzeUrl(productUrl);
+    // Quiz expansion (2026-05-21): pass the survey context so the LLM can
+    // tune plan_30_day deliverables to match the variant preface the result
+    // page will render. When `survey` is null (legacy 2-field caller) the
+    // helper returns "" and the prompt is byte-identical to the pre-expansion
+    // version.
+    diagnosis = await deepAnalyzeUrl(productUrl, survey);
   } catch (err) {
     if (isDiagnosticError(err)) {
       diagnosis = {
@@ -271,7 +310,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Subscribe to the 5-email Soap Opera sequence and fire Email 1 (Day 0).
+  // Subscribe to the Soap Opera Sequence and fire E1 (Day 0). Sequence
+  // shape is 3 spine emails (day 0/2/4) + up to one behavioral branch
+  // (soft_sell or objection_handler) on day 6 gated on E3 engagement.
+  // Decision: strategy/decisions/sos-3-spine-2-branch.md
   // Skipped when the diagnostic itself failed — sending "Your diagnosis came
   // back: X" when there was no real diagnosis would be a lie. The lead is
   // still captured in diagnostic_leads below for manual retargeting.
@@ -349,6 +391,13 @@ export async function POST(req: NextRequest) {
     time_since_launch: survey?.time_since_launch ?? null,
     recent_revenue: survey?.recent_revenue ?? null,
     biggest_attempt: survey?.biggest_attempt ?? null,
+    // Quiz expansion (2026-05-21). Columns added by migration
+    // 20260521000020_diagnostic_quiz_expansion.sql. Nullable on the DB side so
+    // legacy rows (and the legacy 3-field API caller) keep working unchanged;
+    // PostgREST will write NULL for any field the caller did not supply.
+    primary_goal: survey?.primary_goal ?? null,
+    hours_per_week: survey?.hours_per_week ?? null,
+    biggest_fear: survey?.biggest_fear ?? null,
     bucket,
     is_returning: isReturning,
     analysis_detail: analysisDetail,

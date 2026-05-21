@@ -228,6 +228,9 @@ function StarterSalesPageInner() {
               change the founder will notice. */}
           <div>
             <h2 className="text-xl font-bold mb-3">The Destination</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+              One verified paying customer in your Stripe within 60 days, or you do not pay. The $1 below buys the first two steps of that road: pinning one real named customer and writing one real defensible offer. Those two steps are the only reason a post-launch product stays flat -- and the only two pieces of work the $1 finishes for you tonight.
+            </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Picture sixty days from now. You open Stripe on a Tuesday
               morning, the same way you have opened it on every Tuesday

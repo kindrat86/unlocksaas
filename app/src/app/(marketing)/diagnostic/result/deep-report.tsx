@@ -211,40 +211,72 @@ function RewriteBlockView({
   );
 }
 
-function PrintButton() {
+function PrintButton({ diagnosticId }: { diagnosticId: string }) {
   return (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      className="print:hidden"
-      onClick={() => {
-        if (typeof window !== "undefined") window.print();
-      }}
-    >
-      Download as PDF
-    </Button>
+    <div className="flex items-center gap-2 print:hidden">
+      {/* Signed PDF download — C2PA Content Credentials embedded */}
+      <Button
+        type="button"
+        variant="default"
+        size="sm"
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            window.location.href = `/api/diagnostic/${diagnosticId}/pdf`;
+          }
+        }}
+      >
+        Download Signed PDF
+      </Button>
+      {/* Browser-native print fallback */}
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => {
+          if (typeof window !== "undefined") window.print();
+        }}
+      >
+        Print Page
+      </Button>
+    </div>
   );
 }
+
+/**
+ * Optional preface block (label + 2-sentence preamble) injected above the
+ * scorecard grid and the 30-day plan grid. Produced by the variant resolver
+ * in lib/diagnostic-variants.ts; passed in as plain strings so this client
+ * component never pulls the engine module into the bundle.
+ */
+type VariantPreface = {
+  label: string;
+  preface: string;
+};
 
 export function DeepReport({
   detail,
   hostname,
+  scorecardPreface,
+  planPreface,
+  diagnosticId,
 }: {
   detail: DeepAnalysisDetail;
   hostname: string;
+  scorecardPreface?: VariantPreface;
+  planPreface?: VariantPreface;
+  diagnosticId: string;
 }) {
   const { product_snapshot, scores, rewrites, plan_30_day, competitors, strengths } =
     detail;
 
   return (
     <section className="space-y-10 mb-10" aria-label="Deep analysis report">
-      {/* Header strip + print CTA */}
+      {/* Header strip + download CTA */}
       <div className="flex items-center justify-between gap-4 print:hidden">
         <p className="text-xs uppercase tracking-widest text-muted-foreground">
           The full teardown
         </p>
-        <PrintButton />
+        <PrintButton diagnosticId={diagnosticId} />
       </div>
 
       {/* PRODUCT SNAPSHOT */}
@@ -297,6 +329,19 @@ export function DeepReport({
           One = catastrophic. Ten = world-class. The lowest score is the
           upstream gap — fix that one first and the others get easier.
         </p>
+        {/* Quiz-funnel variant preface — chosen by hours_per_week ×
+            time_since_launch. Renders only when the founder completed the
+            new quiz steps; legacy rows skip it. */}
+        {scorecardPreface && (
+          <div className="mb-4 rounded-md border border-border bg-muted/50 px-4 py-3">
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+              {scorecardPreface.label}
+            </p>
+            <p className="text-sm leading-relaxed text-foreground/90">
+              {scorecardPreface.preface}
+            </p>
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <AxisCard title="Wrong Person" axis={scores.wrong_person} />
           <AxisCard title="Weak Offer" axis={scores.weak_offer} />
@@ -393,6 +438,20 @@ export function DeepReport({
           about&rdquo; or &ldquo;explore&rdquo; — every line starts with a
           verb you can finish today.
         </p>
+        {/* Quiz-funnel variant preface — chosen by biggest_fear. The plan
+            deliverables themselves are also tuned via the founder-context
+            block we pass to the LLM in lib/diagnostic.ts, so this preface
+            and the LLM output rhyme. Legacy rows skip the preface. */}
+        {planPreface && (
+          <div className="mb-4 rounded-md border border-primary/30 bg-primary/5 px-4 py-3">
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+              {planPreface.label}
+            </p>
+            <p className="text-sm leading-relaxed text-foreground/90">
+              {planPreface.preface}
+            </p>
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <WeekCard idx={1} plan={plan_30_day.week1} />
           <WeekCard idx={2} plan={plan_30_day.week2} />

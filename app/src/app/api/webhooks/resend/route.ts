@@ -1,30 +1,40 @@
 /**
  * POST /api/webhooks/resend
  *
- * Receives delivery-status events from Resend (Svix-signed). Two roles:
+ * Receives delivery-status events from Resend (Svix-signed). Three roles:
  *
  *   1. Suppression: `email.bounced` and `email.complained` flip the
  *      corresponding subscriber row across all 4 funnel tables to
  *      status='bounced' or 'complained'. Cron senders already filter
  *      status='active', so the flip is enough to stop the sequence.
  *
- *   2. Engagement: `email.opened`, `email.clicked`, `email.delivered` are
- *      written as one row each into `funnel_email_events`. The dashboard
- *      builder aggregates these into per-subscriber open and click rates,
- *      deduping multi-fires by resend_email_id.
+ *   2. Engagement event log: `email.opened`, `email.clicked`,
+ *      `email.delivered` are written as one row each into
+ *      `funnel_email_events`. The dashboard aggregates these into
+ *      per-subscriber open and click rates, deduping by resend_email_id.
  *
- * Idempotent for suppression: re-receiving a bounce is a no-op if the row is
- * already in the target status. Engagement events are append-only — opens
- * fire multiple times via pixel reloads, and the dashboard dedupes by
- * resend_email_id at query time rather than enforcing a unique constraint.
+ *   3. SOS branch routing: when an opened/clicked event carries the
+ *      tags `sequence=soap_opera`, `email_index=3`, and `subscriber_id`,
+ *      the matching soap_opera_subscribers row gets its e3_opened_at /
+ *      e3_clicked_at stamp set (idempotent: only if currently null).
+ *      The day-6 SOS cron pass uses these stamps to fire branch_a
+ *      (opened only) or branch_b (clicked). A click implies an open,
+ *      so a click sets both columns.
+ *
+ * Idempotent for suppression: re-receiving a bounce is a no-op if the row
+ * is already in the target status. Engagement events are append-only –
+ * opens fire multiple times via pixel reloads, and the dashboard dedupes
+ * by resend_email_id at query time rather than enforcing a unique
+ * constraint. SOS branch stamps are idempotent at the column level
+ * (only write if currently null), so duplicate webhook fires are safe.
  *
  * Configuration (manual, one-time):
- *   1. Add env var RESEND_WEBHOOK_SECRET (starts with `whsec_…`) to Vercel
- *      preview + production environments.
+ *   1. Add env var RESEND_WEBHOOK_SECRET (starts with `whsec_…`) to
+ *      Vercel preview + production environments.
  *   2. In the Resend dashboard, add an endpoint pointing to
  *      https://unlocksaas.com/api/webhooks/resend and subscribe it to
- *      `email.bounced`, `email.complained`, `email.opened`, `email.clicked`,
- *      `email.delivered` events.
+ *      `email.bounced`, `email.complained`, `email.opened`,
+ *      `email.clicked`, `email.delivered` events.
  *
  * Svix signature scheme (verbatim from Resend/Svix docs):
  *   - Headers: svix-id, svix-timestamp, svix-signature
@@ -42,6 +52,11 @@ import { FUNNEL_TABLES } from "@/lib/double-opt-in";
 /** Tolerate up to 5 minutes of clock skew between Resend and us. */
 const MAX_TIMESTAMP_SKEW_S = 5 * 60;
 
+interface ResendTag {
+  name?: string;
+  value?: string;
+}
+
 interface ResendEvent {
   type: string;
   data?: {
@@ -52,6 +67,12 @@ interface ResendEvent {
     bounce?: { type?: string; subType?: string };
     /** Present on email.clicked events. */
     click?: { link?: string };
+    /**
+     * Resend forwards the tags we set at send time. Used to route SOS
+     * engagement events back to soap_opera_subscribers without a
+     * reverse-lookup on `to`.
+     */
+    tags?: ResendTag[];
   };
 }
 
@@ -114,6 +135,97 @@ function verifySvixSignature(
   return false;
 }
 
+/**
+ * Look up a tag value by name. Resend sends tags as
+ * `[{ name: 'subscriber_id', value: '...' }, ...]`.
+ */
+function tagValue(tags: ResendTag[] | undefined, name: string): string | null {
+  if (!Array.isArray(tags)) return null;
+  for (const t of tags) {
+    if (t && t.name === name && typeof t.value === "string") {
+      return t.value;
+    }
+  }
+  return null;
+}
+
+/**
+ * Route an SOS engagement event back to soap_opera_subscribers by
+ * subscriber_id + email_index tags. Idempotent: only writes if the
+ * target column is currently null. A click implies an open, so a
+ * click event sets both columns when e3_opened_at is still null.
+ *
+ * Tag conventions (see lib/soap-opera/dispatch.ts):
+ *   sequence       = "soap_opera"
+ *   email_index    = "1" | "2" | "3" | "branch_a" | "branch_b"
+ *   subscriber_id  = uuid of the soap_opera_subscribers row
+ */
+async function recordSosEngagement(
+  subscriberId: string,
+  emailIndex: string,
+  eventType: "opened" | "clicked"
+): Promise<void> {
+  // We only need to route E3 engagement for the day-6 branch pass.
+  // E1 / E2 / branch_a / branch_b engagement is captured in
+  // funnel_email_events but does not gate any downstream decision.
+  if (emailIndex !== "3") return;
+
+  const supabase = createAdminClient() as unknown as {
+    from: (t: string) => {
+      update: (vals: Record<string, unknown>) => {
+        eq: (col: string, val: string) => {
+          is: (col: string, val: null) => Promise<{
+            error: { message: string } | null;
+          }>;
+        };
+      };
+    };
+  };
+
+  const nowIso = new Date().toISOString();
+
+  if (eventType === "clicked") {
+    // Click implies open. Set both columns when null. Two separate
+    // updates so each .is(col, null) guard fires independently – a
+    // single update with .or() would clobber a non-null e3_opened_at.
+    const clickUpdate = await supabase
+      .from("soap_opera_subscribers")
+      .update({ e3_clicked_at: nowIso })
+      .eq("id", subscriberId)
+      .is("e3_clicked_at", null);
+    if (clickUpdate.error) {
+      console.error("[resend-webhook] sos_e3_click_update_failed", {
+        subscriberId,
+        error: clickUpdate.error.message,
+      });
+    }
+    const openUpdate = await supabase
+      .from("soap_opera_subscribers")
+      .update({ e3_opened_at: nowIso })
+      .eq("id", subscriberId)
+      .is("e3_opened_at", null);
+    if (openUpdate.error) {
+      console.error("[resend-webhook] sos_e3_open_update_failed", {
+        subscriberId,
+        error: openUpdate.error.message,
+      });
+    }
+    return;
+  }
+
+  const openUpdate = await supabase
+    .from("soap_opera_subscribers")
+    .update({ e3_opened_at: nowIso })
+    .eq("id", subscriberId)
+    .is("e3_opened_at", null);
+  if (openUpdate.error) {
+    console.error("[resend-webhook] sos_e3_open_update_failed", {
+      subscriberId,
+      error: openUpdate.error.message,
+    });
+  }
+}
+
 export async function POST(req: NextRequest) {
   const secret = process.env.RESEND_WEBHOOK_SECRET;
   if (!secret) {
@@ -152,9 +264,8 @@ export async function POST(req: NextRequest) {
 
   const type = event?.type ?? "";
 
-  // Engagement events: opened / clicked / delivered → append-only event log.
-  // These don't mutate subscriber status; the dashboard aggregates from
-  // funnel_email_events. Return early after logging.
+  // Engagement events: opened / clicked / delivered → append-only event log
+  // PLUS optional SOS-branch routing when tagged.
   const engagementMap: Record<string, "opened" | "clicked" | "delivered"> = {
     "email.opened": "opened",
     "email.clicked": "clicked",
@@ -191,7 +302,32 @@ export async function POST(req: NextRequest) {
       });
       return jsonResponse({ error: "insert_failed" }, 500);
     }
-    return jsonResponse({ ok: true, type, event_type: engagementType, email: emailE });
+
+    // SOS branch routing: only opened/clicked, only when tagged
+    // sequence=soap_opera with a subscriber_id + email_index.
+    if (engagementType !== "delivered") {
+      const sequence = tagValue(event?.data?.tags, "sequence");
+      const subscriberId = tagValue(event?.data?.tags, "subscriber_id");
+      const emailIndex = tagValue(event?.data?.tags, "email_index");
+      if (
+        sequence === "soap_opera" &&
+        subscriberId &&
+        emailIndex
+      ) {
+        await recordSosEngagement(
+          subscriberId,
+          emailIndex,
+          engagementType
+        );
+      }
+    }
+
+    return jsonResponse({
+      ok: true,
+      type,
+      event_type: engagementType,
+      email: emailE,
+    });
   }
 
   let targetStatus: "bounced" | "complained" | null = null;

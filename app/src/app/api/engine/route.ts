@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAnthropic } from "@/lib/anthropic";
+import { generateText } from "ai";
+import { model } from "@/lib/anthropic";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import {
   MILESTONE_KEYS,
@@ -342,8 +343,8 @@ export async function POST(req: NextRequest) {
   // 500 with no operator signal. Brunson's Results-in-Advance contract
   // requires that the engine either pushes back hard or refuses to run —
   // never that it silently accepts everything.
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error("[engine] ANTHROPIC_API_KEY missing — refusing to run");
+  if (!process.env.VERCEL_OIDC_TOKEN && !process.env.AI_GATEWAY_API_KEY) {
+    console.error("[engine] AI Gateway not configured — set AI_GATEWAY_API_KEY or run `vercel env pull`");
     return NextResponse.json(
       {
         error:
@@ -369,26 +370,16 @@ export async function POST(req: NextRequest) {
     const isLastQuestion = questionIndex === totalQuestions - 1;
 
     // Validate the current answer.
-    const validationResponse = await getAnthropic().messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 400,
+    const { text: validationText } = await generateText({
+      model: model,
+      maxOutputTokens: 400,
       system: stepPrompt.validate,
-      messages: [
-        {
-          role: "user",
-          content: `Question ${(questionIndex ?? 0) + 1}: The user answered: "${answer}"
+      prompt: `Question ${(questionIndex ?? 0) + 1}: The user answered: "${answer}"
 
 Previous answers in this step: ${JSON.stringify(previousAnswers)}
 
 Validate this answer. Respond ONLY with JSON.`,
-        },
-      ],
     });
-
-    const validationText =
-      validationResponse.content[0].type === "text"
-        ? validationResponse.content[0].text
-        : "";
 
     // Brunson Reluctant-Hero default: when the engine cannot read its own
     // validator output, REJECT, do not accept. Accepting on parse failure
@@ -452,26 +443,16 @@ Validate this answer. Respond ONLY with JSON.`,
 
     if (isLastQuestion) {
       const allAnswers = [...(previousAnswers ?? []), answer];
-      const assemblyResponse = await getAnthropic().messages.create({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1500,
+      const { text: outputText } = await generateText({
+        model: model,
+        maxOutputTokens: 1500,
         system: stepPrompt.assemble,
-        messages: [
-          {
-            role: "user",
-            content: `Here are the user's answers to all questions in this step:\n\n${allAnswers
-              .map((a: string, i: number) => `Q${i + 1}: ${a}`)
-              .join("\n\n")}
+        prompt: `Here are the user's answers to all questions in this step:\n\n${allAnswers
+          .map((a: string, i: number) => `Q${i + 1}: ${a}`)
+          .join("\n\n")}
 
 Assemble the output now.`,
-          },
-        ],
       });
-
-      const outputText =
-        assemblyResponse.content[0].type === "text"
-          ? assemblyResponse.content[0].text
-          : "";
 
       // Refuse to fire the milestone or deliver the email if the engine
       // produced an empty body — that's a degenerate run, not a success.

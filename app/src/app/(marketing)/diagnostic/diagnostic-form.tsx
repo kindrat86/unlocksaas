@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,20 @@ import { Event } from "@/lib/analytics/events";
 import { createClient as createSupabaseBrowserClient } from "@/lib/supabase/client";
 import type {
   BiggestAttempt,
+  BiggestFear,
+  HoursPerWeek,
+  PrimaryGoal,
   RecentRevenue,
   TimeSinceLaunch,
 } from "@/lib/diagnostic";
+import {
+  ReasoningStream,
+  type ReasoningStepState,
+} from "@/components/diagnostic/reasoning-stream";
+import type {
+  DiagnosticStepId,
+  DiagnosticStreamEvent,
+} from "@/lib/diagnostic-stream-types";
 
 // Google OAuth on the diagnostic squeeze is gated by an env flag so the
 // button stays hidden in environments where the Supabase Google provider
@@ -29,15 +40,28 @@ const GOOGLE_OAUTH_ENABLED =
 const PENDING_KEY = "diagnostic_pending";
 
 /**
- * Free Diagnostic — Brunson Survey Funnel (DCS Secret 15).
+ * Free Diagnostic — Brunson Survey Funnel (DCS Secret 15) + quiz expansion
+ * (2026-05-21 trend synthesis: quiz funnels avg 40.1% conversion on cold
+ * traffic vs 3–10% for static lead magnets).
  *
- * One decision per screen. The order is deliberate:
+ * One decision per screen. The order is deliberate — each step escalates
+ * commitment from low-friction factual answers to deeper self-disclosure:
  *
- *   1. Product URL (commitment-light: paste a link)
- *   2. Time since launch (one tap)
- *   3. Recent revenue (one tap — easy because $0 is the most common honest answer)
- *   4. Biggest attempt (one tap — pattern interrupt: name the avoidance)
- *   5. Email (last, after they've invested attention)
+ *   1. Product URL              (commitment-light: paste a link)
+ *   2. Time since launch        (factual, one tap)
+ *   3. Recent revenue           (factual, one tap — $0 is the honest default)
+ *   4. Primary goal             (motivational, one tap — what they want)
+ *   5. Biggest attempt          (pattern interrupt #1 — name the avoidance)
+ *   6. Hours per week           (factual constraint, one tap)
+ *   7. Biggest fear             (pattern interrupt #2 — name the fear)
+ *   8. Email                    (final commit, after they've invested attention)
+ *
+ * Steps 4, 6, 7 are the quiz-funnel expansion fields. They feed
+ * lib/diagnostic-variants.ts, which renders per-answer template overlays
+ * on /diagnostic/result and /diagnosis/[id] (headline / scorecard tone /
+ * 30-day plan emphasis). Each new step abandons cleanly — `back` works at
+ * every step, and the API edge accepts a null on every quiz field so a
+ * partial completion via the Google OAuth round-trip still produces a row.
  *
  * Brunson rule: don't ask for the email up front. The survey itself is the
  * commitment-build that earns the right to ask. We track partial completions
@@ -47,7 +71,8 @@ const PENDING_KEY = "diagnostic_pending";
  *         strategy/workbooks/01-sales-funnel-secrets.md §6 (Reluctant Hero voice).
  */
 
-type Step = 1 | 2 | 3 | 4 | 5;
+type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+const TOTAL_STEPS = 8;
 type FieldError = {
   email?: string;
   productUrl?: string;
@@ -58,7 +83,10 @@ type SurveyState = {
   productUrl: string;
   time_since_launch: TimeSinceLaunch | "";
   recent_revenue: RecentRevenue | "";
+  primary_goal: PrimaryGoal | "";
   biggest_attempt: BiggestAttempt | "";
+  hours_per_week: HoursPerWeek | "";
+  biggest_fear: BiggestFear | "";
   email: string;
 };
 
@@ -83,6 +111,32 @@ const ATTEMPT_OPTIONS: Array<{ value: BiggestAttempt; label: string }> = [
   { value: "nothing_yet", label: "Honestly, nothing meaningful yet" },
 ];
 
+// Quiz expansion options (2026-05-21). These three questions are NEW;
+// each one feeds one axis of the per-answer variant resolver in
+// lib/diagnostic-variants.ts.
+const PRIMARY_GOAL_OPTIONS: Array<{ value: PrimaryGoal; label: string }> = [
+  { value: "first_customer", label: "First paying customer in the next 60 days" },
+  { value: "replace_income", label: "Replace my day-job income" },
+  { value: "scale_revenue", label: "Scale revenue past where it is now" },
+  { value: "validate_pmf", label: "Validate product–market fit" },
+  { value: "build_audience", label: "Build the audience first, monetize later" },
+];
+
+const HOURS_PER_WEEK_OPTIONS: Array<{ value: HoursPerWeek; label: string }> = [
+  { value: "under_5", label: "Under 5 hours a week" },
+  { value: "five_to_fifteen", label: "5 to 15 hours a week" },
+  { value: "fifteen_plus", label: "15 or more hours a week" },
+];
+
+const BIGGEST_FEAR_OPTIONS: Array<{ value: BiggestFear; label: string }> = [
+  { value: "wrong_audience", label: "Picking the wrong audience" },
+  { value: "no_distribution", label: "I have no distribution" },
+  { value: "not_ready", label: "The product is not ready yet" },
+  { value: "ad_waste", label: "Wasting money on ads" },
+  { value: "not_expert", label: "Not being seen as the expert" },
+  { value: "none", label: "Honestly, none of these" },
+];
+
 type AlreadyUsed = {
   existingId: string;
   previousUrl: string | null;
@@ -102,39 +156,24 @@ export function DiagnosticForm({
   const router = useRouter();
   const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
-  const [submitElapsed, setSubmitElapsed] = useState(0);
+  // `streaming` is the visible-reasoning phase: the email + URL have been
+  // accepted by the server and step events are arriving. We swap the form
+  // for the <ReasoningStream/> panel while this is true.
+  const [streaming, setStreaming] = useState(false);
+  const [steps, setSteps] = useState<
+    Partial<Record<DiagnosticStepId, ReasoningStepState>>
+  >({});
   const [errors, setErrors] = useState<FieldError>({});
   const [alreadyUsed, setAlreadyUsed] = useState<AlreadyUsed | null>(null);
 
-  // Cycle a stage-of-work hint while the engine reads + analyzes. The deep
-  // analysis call runs ~30-45 s and a silent button is worse UX than a stale
-  // counter — the user wants to know something is happening.
-  useEffect(() => {
-    if (!submitting) {
-      setSubmitElapsed(0);
-      return;
-    }
-    setSubmitElapsed(0);
-    const start = Date.now();
-    const t = setInterval(() => {
-      setSubmitElapsed(Math.round((Date.now() - start) / 1000));
-    }, 1000);
-    return () => clearInterval(t);
-  }, [submitting]);
-
-  const submitStage = (() => {
-    if (submitElapsed < 5) return "Fetching your page...";
-    if (submitElapsed < 15) return "Reading the hero, offer, and copy...";
-    if (submitElapsed < 30) return "Scoring three failure modes...";
-    if (submitElapsed < 45) return "Drafting rewrites + 30-day plan...";
-    if (submitElapsed < 60) return "Naming competitors...";
-    return "Almost there. Finalizing the teardown...";
-  })();
   const [state, setState] = useState<SurveyState>({
     productUrl: "",
     time_since_launch: "",
     recent_revenue: "",
+    primary_goal: "",
     biggest_attempt: "",
+    hours_per_week: "",
+    biggest_fear: "",
     email: "",
   });
 
@@ -158,6 +197,12 @@ export function DiagnosticForm({
     }
     setSubmitting(true);
     try {
+      // Quiz-expansion fields (primary_goal / hours_per_week / biggest_fear)
+      // are stashed alongside the legacy three so /diagnostic/finish can
+      // replay them after the Google OAuth round-trip. They are optional in
+      // the stash schema and on the API edge — if a returning OAuth user
+      // arrives with an old pre-expansion stash, the API still accepts the
+      // shape and the variant resolver falls back to "default".
       window.localStorage.setItem(
         PENDING_KEY,
         JSON.stringify({
@@ -166,6 +211,9 @@ export function DiagnosticForm({
             time_since_launch: state.time_since_launch,
             recent_revenue: state.recent_revenue,
             biggest_attempt: state.biggest_attempt,
+            primary_goal: state.primary_goal || null,
+            hours_per_week: state.hours_per_week || null,
+            biggest_fear: state.biggest_fear || null,
           },
           referrer:
             typeof document !== "undefined" ? document.referrer : null,
@@ -173,7 +221,7 @@ export function DiagnosticForm({
         }),
       );
       track(Event.DiagnosticFormSubmitted, {
-        step_completed: 5,
+        step_completed: TOTAL_STEPS,
         auth_method: "google",
         product_url: state.productUrl,
       });
@@ -206,7 +254,13 @@ export function DiagnosticForm({
     }
   }
 
-  const progress = useMemo(() => (step - 1) * 25, [step]);
+  // Linear progress across all eight steps. Step 1 = 0%, Step 8 = ~88% (the
+  // last 12% is reserved for the actual submit so the bar never sits at 100%
+  // while the request is in flight — visual signal that there's work left).
+  const progress = useMemo(
+    () => Math.round(((step - 1) / (TOTAL_STEPS - 1)) * 88),
+    [step],
+  );
 
   function advance(toStep: Step, partial: Partial<SurveyState>) {
     setState((prev) => ({ ...prev, ...partial }));
@@ -242,7 +296,7 @@ export function DiagnosticForm({
     advance(2, { productUrl: normalizedUrl });
   }
 
-  // -- Step 5: Email + final submit ----------------------------------------
+  // -- Step 8: Email + final submit ----------------------------------------
   async function handleEmailSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrors({});
@@ -255,7 +309,11 @@ export function DiagnosticForm({
       !state.recent_revenue ||
       !state.biggest_attempt
     ) {
-      // Should never happen; the steps gate this. Defensive guard.
+      // Should never happen; the steps gate this. Defensive guard. We
+      // intentionally don't check the three quiz-expansion fields here —
+      // they are OPTIONAL on the API edge and the variant resolver falls
+      // back gracefully when missing. A user who manages to skip them
+      // (e.g. via browser back/forward) still gets a valid diagnosis.
       setErrors({
         form: "Some survey answers are missing. Refresh and start again.",
       });
@@ -263,16 +321,84 @@ export function DiagnosticForm({
     }
 
     setSubmitting(true);
+    setStreaming(true);
+    setSteps({});
     track(Event.DiagnosticFormSubmitted, {
-      step_completed: 5,
+      step_completed: TOTAL_STEPS,
       email_domain: state.email.trim().split("@")[1] ?? null,
       product_url: state.productUrl,
       time_since_launch: state.time_since_launch,
       recent_revenue: state.recent_revenue,
       biggest_attempt: state.biggest_attempt,
+      primary_goal: state.primary_goal || null,
+      hours_per_week: state.hours_per_week || null,
+      biggest_fear: state.biggest_fear || null,
     });
+
+    // Track which engine subsections we've seen the LLM emit a start event
+    // for. PostHog gets one event per major boundary so we can debug "where
+    // does the stream actually stall in production" without grepping logs.
+    const seenEngineStart = new Set<DiagnosticStepId>();
+
+    const handleEvent = (event: DiagnosticStreamEvent) => {
+      if (event.type === "step") {
+        setSteps((prev) => ({
+          ...prev,
+          [event.id]: {
+            id: event.id,
+            status: event.status === "done" ? "done" : "running",
+            detail:
+              event.detail ?? prev[event.id]?.detail,
+            score: event.score ?? prev[event.id]?.score,
+          },
+        }));
+        if (
+          event.status === "start" &&
+          event.id.startsWith("score_") &&
+          !seenEngineStart.has(event.id)
+        ) {
+          seenEngineStart.add(event.id);
+          track(Event.DiagnosticFormSubmitted, {
+            step_completed: 5,
+            stream_event: `${event.id}_start`,
+          });
+        }
+      } else if (event.type === "done") {
+        if (event.alreadyUsed) {
+          track(Event.DiagnosticFormSubmitted, {
+            step_completed: 5,
+            already_used: true,
+            email_domain: state.email.trim().split("@")[1] ?? null,
+          });
+          setAlreadyUsed({
+            existingId: event.id,
+            previousUrl: event.previousUrl ?? null,
+          });
+          setStreaming(false);
+          setSubmitting(false);
+          return;
+        }
+        track(Event.DiagnosticFormSubmitted, {
+          step_completed: 5,
+          stream_event: "done",
+          diagnosis_label: event.label ?? null,
+        });
+        // Navigate. We leave `streaming`/`submitting` true so the form
+        // does not flash back into edit mode during the route transition.
+        router.push(`/diagnostic/result?id=${event.id}`);
+      } else if (event.type === "error") {
+        setErrors({
+          form:
+            event.message ||
+            "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
+        });
+        setStreaming(false);
+        setSubmitting(false);
+      }
+    };
+
     try {
-      const res = await fetch("/api/diagnostic", {
+      const res = await fetch("/api/diagnostic/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -282,45 +408,111 @@ export function DiagnosticForm({
             time_since_launch: state.time_since_launch,
             recent_revenue: state.recent_revenue,
             biggest_attempt: state.biggest_attempt,
+            // Quiz-expansion fields. Sent only when populated — the API
+            // validator on the other end keeps everything optional.
+            primary_goal: state.primary_goal || null,
+            hours_per_week: state.hours_per_week || null,
+            biggest_fear: state.biggest_fear || null,
           },
           referrer:
             typeof document !== "undefined" ? document.referrer : undefined,
         }),
       });
-      const body = (await res.json().catch(() => ({}))) as {
-        id?: string;
-        error?: string;
-        already_used?: boolean;
-        previous_url?: string | null;
-      };
-      if (!res.ok || !body.id) {
+
+      // Early-validation failures (bad email syntax, bad URL) come back as
+      // a JSON envelope instead of an NDJSON stream. Detect via content-type.
+      const contentType = res.headers.get("content-type") ?? "";
+      if (!contentType.includes("ndjson")) {
+        const body = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          already_used?: boolean;
+          id?: string;
+          previous_url?: string | null;
+        };
+        if (body.already_used) {
+          track(Event.DiagnosticFormSubmitted, {
+            step_completed: TOTAL_STEPS,
+            already_used: true,
+            email_domain: state.email.trim().split("@")[1] ?? null,
+          });
+          setAlreadyUsed({
+            existingId: body.id ?? "",
+            previousUrl: body.previous_url ?? null,
+          });
+          setSubmitting(false);
+          return;
+        }
         setErrors({
           form:
             body.error ||
             "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
         });
+        setStreaming(false);
         setSubmitting(false);
         return;
       }
-      if (body.already_used) {
-        track(Event.DiagnosticFormSubmitted, {
-          step_completed: 5,
-          already_used: true,
-          email_domain: state.email.trim().split("@")[1] ?? null,
-        });
-        setAlreadyUsed({
-          existingId: body.id,
-          previousUrl: body.previous_url ?? null,
-        });
-        setSubmitting(false);
-        return;
+
+      if (!res.body) {
+        throw new Error("No response body to stream");
       }
-      router.push(`/diagnostic/result?id=${body.id}`);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let receivedDone = false;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.slice(0, nl).trim();
+          buffer = buffer.slice(nl + 1);
+          if (!line) continue;
+          try {
+            const event = JSON.parse(line) as DiagnosticStreamEvent;
+            if (event.type === "done") receivedDone = true;
+            handleEvent(event);
+            if (event.type === "error") {
+              // Stop reading on first error event.
+              try {
+                await reader.cancel();
+              } catch {
+                /* already cancelled */
+              }
+              return;
+            }
+          } catch {
+            // Malformed line — skip rather than abort the whole stream.
+          }
+        }
+      }
+      // Flush trailing partial line (no newline at EOF).
+      if (buffer.trim()) {
+        try {
+          const event = JSON.parse(buffer.trim()) as DiagnosticStreamEvent;
+          if (event.type === "done") receivedDone = true;
+          handleEvent(event);
+        } catch {
+          /* trailing garbage — ignore */
+        }
+      }
+
+      // Stream closed with no `done` event. Treat as a generic engine failure.
+      if (!receivedDone) {
+        setErrors({
+          form:
+            "The engine stopped mid-read. Try again in a minute, or email me at maryan@unlocksaas.com.",
+        });
+        setStreaming(false);
+        setSubmitting(false);
+      }
     } catch {
       setErrors({
         form:
           "Could not reach the diagnostic engine. Try again in a minute, or email me directly at maryan@unlocksaas.com.",
       });
+      setStreaming(false);
       setSubmitting(false);
     }
   }
@@ -329,14 +521,34 @@ export function DiagnosticForm({
     return <AlreadyUsedPanel data={alreadyUsed} />;
   }
 
+  if (streaming) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <Progress value={100} />
+          <p className="text-xs text-muted-foreground mt-2">
+            Running the diagnostic — typically 30 to 60 seconds. You will land
+            on your diagnosis automatically.
+          </p>
+        </div>
+        <ReasoningStream steps={steps} />
+        {errors.form && (
+          <p role="alert" className="text-sm text-destructive">
+            {errors.form}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
         <Progress value={progress} />
         <p className="text-xs text-muted-foreground mt-2">
-          Step {step} of 5 — about 90 seconds total. The engine reads your
-          page, scores three failure modes, drafts rewrites, and writes you
-          a 30-day plan.
+          Step {step} of {TOTAL_STEPS} — under two minutes. The engine reads
+          your page, scores three failure modes, drafts rewrites, and writes
+          you a 30-day plan tuned to your answers.
         </p>
       </div>
 
@@ -407,7 +619,44 @@ export function DiagnosticForm({
         />
       )}
 
+      {/* Quiz expansion steps 5–7 (2026-05-21). New questions feed the per-
+          answer variant resolver in lib/diagnostic-variants.ts:
+            step 5 (primary_goal)   → headline overlay on result page
+            step 6 (hours_per_week) → scorecard tone preface
+            step 7 (biggest_fear)   → 30-day plan emphasis preface
+          Each is one-tap, optional on the API edge, and falls through to
+          "default" copy if the visitor abandons mid-quiz via OAuth. */}
       {step === 5 && (
+        <ChoiceStep
+          title="What would the next 60 days mean if it actually worked?"
+          subtitle="Pick the one you would trade three months of comfort for."
+          options={PRIMARY_GOAL_OPTIONS}
+          onChoose={(value) => advance(6, { primary_goal: value })}
+          onBack={back}
+        />
+      )}
+
+      {step === 6 && (
+        <ChoiceStep
+          title="How many hours a week can you actually put into this?"
+          subtitle="Real hours. Not the hours you wish you had."
+          options={HOURS_PER_WEEK_OPTIONS}
+          onChoose={(value) => advance(7, { hours_per_week: value })}
+          onBack={back}
+        />
+      )}
+
+      {step === 7 && (
+        <ChoiceStep
+          title="What stops you most often when you try to fix this?"
+          subtitle="The honest one. The one you would not say at a meetup."
+          options={BIGGEST_FEAR_OPTIONS}
+          onChoose={(value) => advance(8, { biggest_fear: value })}
+          onBack={back}
+        />
+      )}
+
+      {step === 8 && (
         <form onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
           <div className="space-y-1.5">
             <label
@@ -459,7 +708,7 @@ export function DiagnosticForm({
               disabled={submitting}
               className="flex-1 text-base py-6"
             >
-              {submitting ? submitStage : ctaLabel}
+              {submitting ? "Starting the engine..." : ctaLabel}
             </Button>
           </div>
 
