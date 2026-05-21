@@ -142,7 +142,13 @@ export async function GET(req: NextRequest) {
       const rows = await runQueryAllProviders(q);
       if (rows.length === 0) continue;
 
-      const { error } = await supabase.from("llmo_citations").insert(rows);
+      // Cast: CitationRow.raw is unknown (provider responses vary by SDK), but
+      // the Supabase column is `jsonb` typed as Json | undefined. The values
+      // are always JSON-serialisable provider responses, so the cast is safe.
+      const { error } = await supabase
+        .from("llmo_citations")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .insert(rows as unknown as any);
       if (error) {
         summary.failed += rows.length;
         summary.errors.push({
@@ -184,7 +190,7 @@ export async function GET(req: NextRequest) {
             rank_in_answer: r.rank_in_answer,
             brand_mentioned: r.brand_mentioned,
           };
-          captureServer(LLMO_DISTINCT_ID, Event.LlmoCitationWon, props as Record<string, unknown>);
+          captureServer(LLMO_DISTINCT_ID, Event.LlmoCitationWon, props as unknown as Record<string, unknown>);
         }
       }
     } catch (err) {
@@ -212,7 +218,7 @@ export async function GET(req: NextRequest) {
     citations_won: citationsWon,
     elapsed_ms: summary.duration_ms,
   };
-  await captureServerAndFlush(LLMO_DISTINCT_ID, Event.LlmoCitationsSynced, syncedProps as Record<string, unknown>);
+  await captureServerAndFlush(LLMO_DISTINCT_ID, Event.LlmoCitationsSynced, syncedProps as unknown as Record<string, unknown>);
 
   // Vercel function logs: single grep-able line for quick health checks.
   console.log(

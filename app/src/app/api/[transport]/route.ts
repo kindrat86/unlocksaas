@@ -1934,7 +1934,16 @@ const handler = createMcpHandler(
           | { plan_30_day?: DeepDiagnosticResult["plan_30_day"] }
           | null;
         const plan = detail?.plan_30_day;
-        if (!plan || !plan.weeks || plan.weeks.length === 0) {
+        // Plan30Day is keyed { week1, week2, week3, week4 } (see lib/diagnostic.ts),
+        // not an array. Project to an array here for ordered rendering. Missing
+        // weeks are filtered out so a partially-populated plan still renders the
+        // weeks that exist.
+        const weeks = plan
+          ? [plan.week1, plan.week2, plan.week3, plan.week4].filter(
+              (w): w is NonNullable<typeof w> => Boolean(w),
+            )
+          : [];
+        if (!plan || weeks.length === 0) {
           return {
             content: [
               {
@@ -1952,7 +1961,7 @@ const handler = createMcpHandler(
               text: [
                 `# 30-day plan for ${data.product_url}`,
                 "",
-                ...plan.weeks.map((w, i) => {
+                ...weeks.map((w, i) => {
                   return [
                     `**Week ${i + 1}: ${w.theme}**`,
                     ...((w.deliverables as string[]) || []).map((d) => `- ${d}`),
