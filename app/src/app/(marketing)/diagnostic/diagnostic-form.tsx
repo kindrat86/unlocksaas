@@ -425,27 +425,29 @@ export function DiagnosticForm({
       if (!contentType.includes("ndjson")) {
         const body = (await res.json().catch(() => ({}))) as {
           error?: string;
+          already_used?: boolean;
+          id?: string;
+          previous_url?: string | null;
         };
+        if (body.already_used) {
+          track(Event.DiagnosticFormSubmitted, {
+            step_completed: TOTAL_STEPS,
+            already_used: true,
+            email_domain: state.email.trim().split("@")[1] ?? null,
+          });
+          setAlreadyUsed({
+            existingId: body.id ?? "",
+            previousUrl: body.previous_url ?? null,
+          });
+          setSubmitting(false);
+          return;
+        }
         setErrors({
           form:
             body.error ||
             "Something went sideways. Try once more, then email me at maryan@unlocksaas.com.",
         });
         setStreaming(false);
-        setSubmitting(false);
-        return;
-      }
-
-      if (body.already_used) {
-        track(Event.DiagnosticFormSubmitted, {
-          step_completed: TOTAL_STEPS,
-          already_used: true,
-          email_domain: state.email.trim().split("@")[1] ?? null,
-        });
-        setAlreadyUsed({
-          existingId: body.id,
-          previousUrl: body.previous_url ?? null,
-        });
         setSubmitting(false);
         return;
       }
