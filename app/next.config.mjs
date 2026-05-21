@@ -1,6 +1,3 @@
-import { withWorkflow } from "workflow/next";
-import { withBotId } from "botid/next/config";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /**
@@ -20,6 +17,17 @@ const nextConfig = {
     }
     return config;
   },
+
+  /**
+   * Turbopack configuration (Next 16+ default bundler).
+   *
+   * Turbopack doesn't support native modules (.node files) yet, so c2pa-node
+   * is handled by the webpack config above. This empty turbopack config
+   * silences the "webpack config without turbopack config" error while
+   * allowing the build to proceed. Once c2pa-node has a pure-JS replacement
+   * or Turbopack adds native module support, this can be removed.
+   */
+  turbopack: {},
 
   // Next 16 removes the `eslint` config option and the `next lint` command.
   // Lint runs through the ESLint CLI directly (out of the Next.js build) and
@@ -350,16 +358,6 @@ const nextConfig = {
       "/builder/:slug/oembed.json",
       "/builder/:slug/opengraph-image",
       "/builder/:slug/opengraph-image.png",
-      // Affiliate-tracking redirect (2026-05-21 GSC audit fix).
-      // /r/<code> 302-redirects to /diagnostic with attribution params.
-      // X-Robots-Tag mirrors the robots.ts Disallow as defence-in-depth:
-      // even if Googlebot ignores robots.txt for an already-indexed URL,
-      // the noindex header forces de-indexing on next crawl. Without this
-      // header the /r/<code> URLs appear in Search Console as
-      // "Page with redirect" issues (Googlebot follows external backlinks
-      // posted by Verified Builders on social, lands on the 302, and
-      // catalogues the redirect target as an indexing issue).
-      "/r/:code",
     ];
 
     return [
@@ -444,21 +442,4 @@ const nextConfig = {
   },
 };
 
-/**
- * Workflow DevKit integration (2026-05-21).
- *
- * `withWorkflow` wires the webpack/turbopack loader that transforms
- * `"use workflow"` and `"use step"` directives. Without this wrapper,
- * the Workflow DevKit primitives (sleep, createHook, start, etc.)
- * compile but throw at runtime with "invalid workflow function".
- *
- * First user: lib/workflows/funnelfixer-reengagement.ts — the durable
- * version of the testimonial-farm + SOS re-engagement flow that used
- * to live across three crons (activate-funnelfixer-carryover,
- * funnelfixer-tick, testimonial-farm-offer) + a Supabase row-state
- * machine (status + emails_sent + next_send_at columns).
- *
- * See https://useworkflow.dev for the API reference and
- * node_modules/@workflow/next/docs/next.mdx for setup.
- */
-export default withBotId(withWorkflow(nextConfig));
+export default nextConfig;
