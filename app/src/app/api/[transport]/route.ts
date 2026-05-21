@@ -10,8 +10,9 @@
  *
  * This route is the executor. Any MCP-aware client (Claude Desktop, Cursor,
  * Windsurf, mcp-inspector, the Vercel MCP catalog) that connects to
- * `https://unlocksaas.com/api/mcp` can now call twenty-six read-only tools
- * that surface the same content the rest of the site renders:
+ * `https://unlocksaas.com/api/mcp` can now call thirty tools (26
+ * read-only + 4 founder-scoped) that surface the same content the rest of
+ * the site renders:
  *
  *   diagnose_url               → live one-shot diagnostic (Brunson label)
  *   deep_diagnose_url          → live full V2 teardown (scorecard + rewrites + 30-day plan)
@@ -39,6 +40,10 @@
  *   get_value_ladder_archetype → one of four Brunson funnel-type patterns
  *   get_objection_pattern      → one of eight dollar-objection patterns with verbatim source
  *   nlweb_ask                  → natural-language search across the full schema.org corpus (Microsoft NLWeb compatible)
+ *   get_diagnostic             → fetch a stored, publicly-shared diagnostic by id (v1 Brunson label + evidence)
+ *   get_thirty_day_plan        → fetch the 4-week plan from a shared deep diagnostic
+ *   get_rewrites               → fetch the hero/CTA/value-prop rewrites from a shared deep diagnostic
+ *   update_progress            → write Playbook step status for an authenticated founder (api-key gated; first write tool)
  *
  * Every tool that returns a URL appends a `?utm_source=mcp&utm_medium=...`
  * query so PostHog can attribute the resulting human click back to the
@@ -188,8 +193,14 @@ import {
 import { NLWEB_CORPUS, NLWEB_CORPUS_SIZE } from "@/lib/nlweb/corpus";
 import { buildIndex, rank } from "@/lib/nlweb/bm25";
 import { summarise } from "@/lib/nlweb/summary";
+import { createAdminClient } from "@/lib/supabase/server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 const BASE = "https://unlocksaas.com";
+
+function looseAdminDb(): SupabaseClient {
+  return createAdminClient() as unknown as SupabaseClient;
+}
 
 /**
  * Pre-built BM25 index for NLWeb retrieval. Built once at module load,
@@ -1792,11 +1803,458 @@ const handler = createMcpHandler(
         };
       },
     );
+
+    // ─── get_diagnostic ──────────────────────────────────────────────────
+    // Fetch the v1 Brunson diagnostic (label + headline + explanation +
+    // evidence + next_step) for a publicly-shared diagnostic_leads row.
+    // No PII (email, IP, user_agent) is ever returned.
+    server.registerTool(
+      "get_diagnostic",
+      {
+        title: "Fetch a stored, publicly-shared diagnostic by id",
+        description:
+          "Returns the v1 Brunson diagnostic (Wrong Person / Weak Offer / Weak Belief label, headline, explanation, evidence quotes, and next step) for a lead_id where share_visibility='public'. PII fields (email, ip, user_agent, timezone) are never returned. Same privacy gate as the public /diagnosis/<id> page.",
+        inputSchema: {
+          lead_id: z
+            .string()
+            .uuid()
+            .describe(
+              "UUID of the diagnostic lead row. Same id used by the public /diagnosis/<id> page.",
+            ),
+        },
+      },
+      async ({ lead_id }) => {
+        const supabase = looseAdminDb();
+        const { data, error } = await supabase
+          .from("diagnostic_leads")
+          .select(
+            "id, product_url, label, headline, explanation, evidence, next_step, share_visibility",
+          )
+          .eq("id", lead_id)
+          .eq("share_visibility", "public")
+          .maybeSingle();
+        if (error) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Failed to load diagnostic ${lead_id}: ${error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        if (!data) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `No publicly-shared diagnostic found with id "${lead_id}". The row may not exist, or its owner has not opted into public visibility. View the full catalog: ${withRef("/diagnostic", "get_diagnostic")}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: [
+                `# Diagnostic result for ${data.product_url}`,
+                "",
+                `**Label:** ${data.label}`,
+                "",
+                `**Headline:** ${data.headline}`,
+                "",
+                `**Explanation:** ${data.explanation}`,
+                "",
+                `**Evidence:**`,
+                ...((data.evidence as string[]) || []).map((e) => `- ${e}`),
+                "",
+                `**Next step:** ${data.next_step}`,
+                "",
+                `This is the v1 engine result (Brunson label only). For the full V2 teardown (3-axis scorecard, hero/CTA/value-prop rewrites, 4-week plan, competitor analysis, strengths), call \`get_thirty_day_plan\` or \`get_rewrites\`, or visit: ${withRef(`/diagnosis/${data.id}`, "get_diagnostic")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_thirty_day_plan ─────────────────────────────────────────────
+    // Fetch the four-week plan from diagnostic_leads.analysis_detail.plan_30_day
+    // for a publicly-shared deep diagnostic. Gracefully fall back if the row
+    // ran the V1 engine only (analysis_detail is null).
+    server.registerTool(
+      "get_thirty_day_plan",
+      {
+        title: "Get the 4-week plan from a shared diagnostic",
+        description:
+          "Returns the week-by-week 30-day action plan from a publicly-shared V2 deep diagnostic: week 1-4 theme + deliverables. Gracefully falls back if the diagnostic ran V1 only (no plan generated). Only returns plans from rows the founder publicly shared.",
+        inputSchema: {
+          lead_id: z
+            .string()
+            .uuid()
+            .describe(
+              "UUID of the diagnostic lead row. Same id used by /diagnosis/<id>.",
+            ),
+        },
+      },
+      async ({ lead_id }) => {
+        const supabase = looseAdminDb();
+        const { data, error } = await supabase
+          .from("diagnostic_leads")
+          .select("id, product_url, analysis_detail, share_visibility")
+          .eq("id", lead_id)
+          .eq("share_visibility", "public")
+          .maybeSingle();
+        if (error) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Failed to load diagnostic ${lead_id}: ${error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        if (!data) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `No publicly-shared diagnostic found with id "${lead_id}". The row may not exist, or its owner has not opted into public visibility.`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const detail = data.analysis_detail as
+          | { plan_30_day?: DeepDiagnosticResult["plan_30_day"] }
+          | null;
+        const plan = detail?.plan_30_day;
+        if (!plan || !plan.weeks || plan.weeks.length === 0) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Diagnostic ${lead_id} ran the V1 engine only; no 4-week plan was generated. Re-run the diagnostic to get the V2 deep teardown: ${withRef("/diagnostic", "get_thirty_day_plan")}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: [
+                `# 30-day plan for ${data.product_url}`,
+                "",
+                ...plan.weeks.map((w, i) => {
+                  return [
+                    `**Week ${i + 1}: ${w.theme}**`,
+                    ...((w.deliverables as string[]) || []).map((d) => `- ${d}`),
+                    "",
+                  ].join("\n");
+                }),
+                `Full teardown: ${withRef(`/diagnosis/${data.id}`, "get_thirty_day_plan")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── get_rewrites ────────────────────────────────────────────────────
+    // Fetch the hero / primary-CTA / value-prop rewrites stored in
+    // diagnostic_leads.analysis_detail.rewrites for a publicly-shared deep
+    // diagnostic. Each rewrite carries the current text plus three alternates
+    // and a why-better explanation.
+    server.registerTool(
+      "get_rewrites",
+      {
+        title: "Get the hero/CTA/value-prop rewrites from a shared diagnostic",
+        description:
+          "Returns the copy rewrites from a publicly-shared deep diagnostic: hero headline (current + 3 alternates), primary CTA (current + 3 alternates), value props (current + rewritten). Each block carries the rationale for why the alternates score higher on the Brunson scorecard. Only returns rewrites from rows the founder publicly shared.",
+        inputSchema: {
+          lead_id: z
+            .string()
+            .uuid()
+            .describe(
+              "UUID of the diagnostic lead row. Same id used by /diagnosis/<id>.",
+            ),
+        },
+      },
+      async ({ lead_id }) => {
+        const supabase = createAdminClient();
+        const { data, error } = await supabase
+          .from("diagnostic_leads")
+          .select("id, product_url, analysis_detail, share_visibility")
+          .eq("id", lead_id)
+          .eq("share_visibility", "public")
+          .maybeSingle();
+        if (error) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Failed to load diagnostic ${lead_id}: ${error.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        if (!data) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `No publicly-shared diagnostic found with id "${lead_id}". The row may not exist, or its owner has not opted into public visibility.`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        const detail = data.analysis_detail as
+          | { rewrites?: DeepDiagnosticResult["rewrites"] }
+          | null;
+        const rw = detail?.rewrites;
+        if (
+          !rw ||
+          !rw.hero_headline ||
+          !rw.primary_cta ||
+          !rw.value_props
+        ) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Diagnostic ${lead_id} ran the V1 engine only; no rewrites were generated. Re-run the diagnostic to get the V2 deep teardown: ${withRef("/diagnostic", "get_rewrites")}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: [
+                `# Copy rewrites for ${data.product_url}`,
+                "",
+                `**Hero headline**`,
+                `- Current: ${rw.hero_headline.current}`,
+                ...rw.hero_headline.alternates.map(
+                  (a, i) => `- Alternate ${i + 1}: ${a}`,
+                ),
+                `- Why better: ${rw.hero_headline.why_better}`,
+                "",
+                `**Primary CTA**`,
+                `- Current: ${rw.primary_cta.current}`,
+                ...rw.primary_cta.alternates.map(
+                  (a, i) => `- Alternate ${i + 1}: ${a}`,
+                ),
+                `- Why better: ${rw.primary_cta.why_better}`,
+                "",
+                `**Value props**`,
+                `- Current: ${rw.value_props.current.map((c) => `"${c}"`).join("; ")}`,
+                `- Rewritten: ${rw.value_props.rewritten.map((c) => `"${c}"`).join("; ")}`,
+                `- Why better: ${rw.value_props.why_better}`,
+                "",
+                `Full teardown: ${withRef(`/diagnosis/${data.id}`, "get_rewrites")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
+
+    // ─── update_progress ─────────────────────────────────────────────────
+    // First MCP **write** tool. Authenticated via per-founder API key
+    // (profiles.mcp_api_key, minted by public.mint_mcp_api_key()). The
+    // key is presented as a tool argument because the MCP transport in
+    // most current clients (Claude Desktop, Cursor, Windsurf) doesn't
+    // surface request headers to tools; it does surface arguments.
+    //
+    // Auth flow: look up profile by exact key match (unique partial index
+    // on profiles.mcp_api_key). On miss, return a generic "invalid api_key"
+    // — never reveal whether a key existed but didn't match a step, etc.
+    //
+    // The response always includes the FULL 7-step state map so the
+    // calling agent can render a useful summary to the founder without
+    // a second read call.
+    server.registerTool(
+      "update_progress",
+      {
+        title: "Update Playbook step status for an authenticated founder",
+        description:
+          "Records the founder's status on one of the seven UnlockSaaS Playbook steps. Requires a founder-scoped API key (settings → MCP key in the dashboard; format usk_<22 chars>). Returns the updated full 7-step state and a suggested next step. Use this when a founder asks an agent to 'mark step N as done', 'I started step N', or 'reset step N'. Status is one of 'not_started' | 'in_progress' | 'completed'.",
+        inputSchema: {
+          api_key: z
+            .string()
+            .regex(/^usk_[A-Za-z0-9_-]{20,48}$/, {
+              message: "API key must start with 'usk_' followed by 20-48 url-safe chars.",
+            })
+            .describe(
+              "Per-founder MCP API key. Format: usk_<22 base64url chars>. Mint or rotate from the dashboard.",
+            ),
+          step: z
+            .number()
+            .int()
+            .min(1)
+            .max(PLAYBOOK_STEPS.length)
+            .describe(
+              `Playbook step number, 1 through ${PLAYBOOK_STEPS.length}. Use list_playbook_steps to discover the names.`,
+            ),
+          status: z
+            .enum(["not_started", "in_progress", "completed"])
+            .describe(
+              "Step status. 'not_started' clears a prior status; 'in_progress' marks active work; 'completed' marks the step finished.",
+            ),
+          notes: z
+            .string()
+            .max(2000)
+            .optional()
+            .describe(
+              "Optional free-text note attached to the status change (up to 2000 chars). E.g. 'Picked Acme Inc. as the pinned customer.'",
+            ),
+        },
+      },
+      async ({ api_key, step, status, notes }) => {
+        const supabase = looseAdminDb();
+
+        // Resolve api_key → profile_id.
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("id, email")
+          .eq("mcp_api_key", api_key)
+          .maybeSingle();
+        if (profileError) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Failed to look up api_key: ${profileError.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+        if (!profile) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Invalid api_key. Mint or rotate one from the dashboard, then retry.`,
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        // Upsert progress row (composite primary key on (profile_id, step)).
+        const { error: upsertError } = await supabase
+          .from("playbook_progress")
+          .upsert(
+            {
+              profile_id: profile.id,
+              step,
+              status,
+              notes: notes ?? null,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "profile_id,step" },
+          );
+        if (upsertError) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Failed to record progress: ${upsertError.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        // Read back the full 7-step state so the agent can render a
+        // useful summary without a second read call.
+        const { data: rows, error: readError } = await supabase
+          .from("playbook_progress")
+          .select("step, status, updated_at, notes")
+          .eq("profile_id", profile.id);
+        if (readError) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: `Recorded the update, but failed to read back the full state: ${readError.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        // Build a summary object showing all 7 steps + status.
+        const stateMap = new Map(
+          (rows || []).map((r) => [r.step, r.status as string]),
+        );
+        const stateItems = PLAYBOOK_STEPS.map((ps, idx) => {
+          const stepNum = idx + 1;
+          const currentStatus = stateMap.get(stepNum) || "not_started";
+          const icon =
+            currentStatus === "completed"
+              ? "✓"
+              : currentStatus === "in_progress"
+                ? "→"
+                : "○";
+          return `${icon} **Step ${stepNum}: ${ps.name}** (${currentStatus})`;
+        });
+
+        // Suggest the next incomplete step.
+        let suggestedNext = null;
+        for (const row of rows || []) {
+          if (row.status === "in_progress") {
+            suggestedNext = `Continue with Step ${row.step}: ${PLAYBOOK_STEPS[row.step - 1]?.name}.`;
+            break;
+          }
+        }
+        if (!suggestedNext) {
+          const firstIncomplete = PLAYBOOK_STEPS.findIndex(
+            (_, idx) => !(stateMap.get(idx + 1) === "completed"),
+          );
+          if (firstIncomplete >= 0 && firstIncomplete < PLAYBOOK_STEPS.length) {
+            const nextNum = firstIncomplete + 1;
+            suggestedNext = `Next: Step ${nextNum}: ${PLAYBOOK_STEPS[nextNum - 1].name}.`;
+          }
+        }
+
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: [
+                `# Playbook progress updated for ${profile.email}`,
+                "",
+                `**7-step state:**`,
+                ...stateItems,
+                "",
+                suggestedNext || "All steps completed!",
+                "",
+                `Dashboard: ${withRef("/playbook", "update_progress")}`,
+              ].join("\n"),
+            },
+          ],
+        };
+      },
+    );
   },
   {
     serverInfo: {
       name: "unlocksaas",
-      version: "1.3.0",
+      version: "1.4.0",
     },
   },
   {
