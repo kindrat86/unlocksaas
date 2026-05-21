@@ -1,5 +1,80 @@
 # Build Log — Unlock SaaS
 
+## Source-aware Hero variants (5 acquisition channels) -- 2026-05-21
+**Status: SHIPPED (tsc clean)**
+**Commit:** d371500 (merged to main via PR in CRO + GEO uplift push)
+
+Dynamic-by-referrer landing pages convert at 37.1% vs 19.2% static (May 2026
+distribution research -- near-2x lift). This shipped the cheapest possible
+version of that play: one cookie, eight copy decks, no client-side JS, SSR-
+perfect HTML so Googlebot/Bingbot/Perplexity always sees the `default` variant.
+
+### How it works
+
+1. **`app/src/proxy.ts`** (middleware) -- reads `utm_source`, `source`, `ref`
+   query params and the `Referer` hostname on every incoming request. If no
+   `usaas_source` cookie exists yet, sets it to the detected channel (first-
+   touch wins). Never overwrites an existing cookie -- later organic visits
+   cannot steal the original attribution mid-funnel. 90-day expiry.
+
+2. **`app/src/lib/acquisition-source.ts`** (NEW) -- single source of truth for
+   the entire system:
+   - `AcquisitionSource` union type (8 values)
+   - `UTM_TOKEN_MAP` + `REFERER_HOST_MAP` lookup tables
+   - `HeroVariant` type (eyebrow, headlineLead, headlineLeadMuted,
+     headlineTailLead, headlineTailMuted, subheadOpener, subheadCloser,
+     primaryCta)
+   - `HERO_VARIANTS` record with copy decks for all 8 sources
+   - `detectSourceFromRequest()`, `readSourceFromCookies()`,
+     `getHeroVariant()`, `parseSource()` helpers
+
+3. **`app/src/components/blocks/hero.tsx`** -- Hero block accepts an optional
+   `variant?: HeroVariant` prop. Falls back to `HERO_VARIANTS.default` when
+   no prop provided. Free of `next/headers` imports -- testable in isolation.
+
+4. **`app/src/app/page.tsx`** -- homepage server component calls
+   `readSourceFromCookies()`, then `getHeroVariant()`, and passes the resolved
+   deck to `<Hero variant={sourceVariant} />`. Distinct from and co-existing
+   with the `identity_label` A/B cookie (`usaas_ab_identity`) which drives
+   "Verified Builders vs Paid Builders" manifesto copy.
+
+### The 5 briefed variants (plus 3 extras shipped)
+
+| Cookie value   | Trigger                                               | H1 lead                        |
+|---------------|-------------------------------------------------------|-------------------------------|
+| `default`     | No match / organic / direct                           | "Your first paying customer"  |
+| `twitter`     | utm_source=x/twitter or t.co/twitter.com/x.com       | Same lead, Twitter subhead    |
+| `indiehackers`| utm_source=indiehackers/ih or indiehackers.com        | Same lead, IH subhead         |
+| `marclou`     | utm_source=marclou/shipfast or marclou.com/shipfa.st  | Same lead, Marc Lou subhead   |
+| `microconf`   | utm_source=microconf or microconf.com                 | Same lead, MicroConf subhead  |
+| `hackernews`  | utm_source=hn/hackernews or news.ycombinator.com      | "First paying customer"       |
+| `linkedin`    | utm_source=linkedin or linkedin.com/lnkd.in           | Same lead, LinkedIn subhead   |
+| `reddit`      | utm_source=reddit or reddit.com                       | Same lead, Reddit subhead     |
+| `directory`   | utm_source=betalist/producthunt etc.                  | Same lead, directory subhead  |
+
+Note: the brief specified 5 variants. 8 were shipped (hackernews, linkedin,
+reddit, directory added). All copy follows Brunson voice + en-dash-only rule.
+
+### Cookie discipline
+
+- Cookie name: `usaas_source`
+- Max-age: 90 days (shorter than the 1-year identity A/B; channel signal
+  decays faster than collective identity preference)
+- `sameSite: lax`, `path: /`
+- Conflict with `identity_label` A/B: none. Completely separate cookies,
+  separate copy surfaces (channel = hero H1/sub; identity = manifesto title).
+
+### Files changed
+
+- `app/src/lib/acquisition-source.ts` (NEW)
+- `app/src/components/blocks/hero.tsx` (variant prop added)
+- `app/src/app/page.tsx` (reads cookie, passes variant to Hero)
+- `app/src/proxy.ts` (detection + cookie-write logic)
+- `strategy/decisions/hero-variant-system.md` (this decision doc)
+- `build-log.md` (this entry)
+
+---
+
 ## BotID bot protection on checkout + diagnostic routes
 **Status: SHIPPED (tsc clean)**
 **Date: 2026-05-21**
