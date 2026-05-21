@@ -190,6 +190,20 @@ done.
 9. **DM the first 5 Dream 100 entries.** One question per DM. No pitch.
    Workbook 09 §1 + Dream 100 CSV row 1–10 for the warmest targets.
 
+11. **Publish /numbers transparency page.** Once week-1 data is in, update
+   `app/data/public-metrics.json` with real numbers and a founder note, then
+   flip the env gate:
+
+   ```bash
+   vercel env add NEXT_PUBLIC_NUMBERS_VISIBLE production
+   # (enter: true)
+   ```
+
+   The URL `/numbers` is always live -- it shows a placeholder until this
+   env var is set to `'true'`. After setting, redeploy (or let the next
+   git push trigger a build). Update the JSON file weekly: edit
+   `app/data/public-metrics.json` -- git commit -- git push -- done.
+
 10. **Tier A YouTube warm-up reps** — pre-positions guest spots for the week
    after the first verified-customer cycle. Subscribe + watch 5 most-recent
    videos + 3 substantive timestamped comments each on Riley Brown

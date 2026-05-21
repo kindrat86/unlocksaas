@@ -1,5 +1,48 @@
 # Build Log — Unlock SaaS
 
+## /numbers public metrics transparency page -- 2026-05-21
+**Status: SHIPPED**
+**Branch:** feat/numbers-transparency-page
+
+Build-in-public trust signal. Marc Lou and Pieter Levels built their
+distribution on public revenue numbers; 2026 GEO research shows pages with
+original first-party statistics earn +41% citation lift. For a founder-to-
+founder brand, honest "here's where I actually am" beats polished copy.
+
+### What was built
+
+- **`app/data/public-metrics.json`** -- operator-owned data file. Contains
+  MRR, ARR, paying customers, starter purchases, diagnostic submissions, email
+  subscribers, weeks since launch, and a `weekly_log` array with one honest
+  note per week. Dates in DD-MM-YYYY (Athens timezone convention). All money
+  in EUR.
+- **`app/src/app/numbers/page.tsx`** -- Next.js App Router page at /numbers.
+  Reads the JSON file at build time (no database call, no API). Renders
+  a metrics grid + weekly log table. Gated by `NEXT_PUBLIC_NUMBERS_VISIBLE`.
+  Includes Dataset JSON-LD for AI-citation eligibility.
+- **`app/src/components/blocks/signature-footer.tsx`** -- added "The Numbers"
+  footer link alongside the existing trust-column links.
+- **`app/.env.local.example`** -- documented `NEXT_PUBLIC_NUMBERS_VISIBLE`.
+- **`LAUNCH-READINESS.md`** -- added Tier 3 item #11 for operator env flip.
+
+### Visibility gate
+
+`NEXT_PUBLIC_NUMBERS_VISIBLE` env var. When unset or not `'true'`, the page
+shows "Coming soon" with a link to /diagnostic. The URL never 404s.
+
+### Operator update workflow
+
+1. Edit `app/data/public-metrics.json` -- update numbers + append a weekly_log
+   entry with an honest 1--3 sentence note.
+2. `git add app/data/public-metrics.json && git commit -m "Update week-N metrics"`
+3. `git push` -- Vercel builds and deploys automatically.
+4. First time only: `vercel env add NEXT_PUBLIC_NUMBERS_VISIBLE production`
+   (value: `true`) and let the next push trigger a rebuild.
+
+No CMS. No database. The JSON file and the git history are the full record.
+
+---
+
 ## /vs/ comparison pages: ClickFunnels, ShipFast, DotCom Secrets -- 2026-05-21
 
 **Status: SHIPPED**

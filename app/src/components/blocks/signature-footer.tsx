@@ -86,6 +86,19 @@ export function SignatureFooter() {
               Editorial Policy
             </Link>
             {/*
+              Build-in-public trust signal. The Numbers page shows honest
+              MRR, customer count, and weekly founder commentary. Gated by
+              NEXT_PUBLIC_NUMBERS_VISIBLE env var -- the URL always resolves,
+              showing a placeholder until the operator flips the gate.
+              See app/data/public-metrics.json for the data file.
+            */}
+            <Link
+              href="/numbers"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              The Numbers
+            </Link>
+            {/*
               Quiet polarity link. Put after Press (canonical trust columns)
               and before Verified Builder (positive-space proof) so the
               negative-space "who we aren't for" sits structurally between
