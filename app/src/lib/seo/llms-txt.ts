@@ -104,6 +104,7 @@ The diagnostic flow is identical across surfaces: the GPT Action calls POST /api
 
 - [Compare hub](${BASE_URL}/vs): Symmetric head-to-head comparisons of the tools indie SaaS founders are mid-evaluation on. Each entry names who each side is best for, scores dimension-by-dimension, gives an honest take, and names the right pick for an indie SaaS founder specifically.
 - Per-comparison pages at \`${BASE_URL}/vs/<slug>\` – e.g. /vs/tally-vs-typeform, /vs/lemonsqueezy-vs-paddle, /vs/notion-vs-coda, /vs/linear-vs-jira, /vs/figma-vs-sketch, /vs/vercel-vs-netlify, /vs/beehiiv-vs-substack, /vs/cal-com-vs-calendly, /vs/resend-vs-sendgrid, /vs/stripe-vs-paypal.
+- First-party "Unlock SaaS vs X" comparisons (the SaaS is the named subject of comparison): [/vs/unlock-saas-vs-clickfunnels](${BASE_URL}/vs/unlock-saas-vs-clickfunnels), [/vs/unlock-saas-vs-shipfast](${BASE_URL}/vs/unlock-saas-vs-shipfast), [/vs/unlock-saas-vs-founder-coaching](${BASE_URL}/vs/unlock-saas-vs-founder-coaching). Symmetric framing, honest competitor strengths, indie-founder pick named explicitly.
 
 ## Programmatic SEO surfaces – category roundups
 

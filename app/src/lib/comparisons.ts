@@ -5974,6 +5974,394 @@ const COMPARISONS_LIST: Comparison[] = [
     tags: ["work-os", "no-code", "database-vs-workflow", "different-strengths"],
     lastVerified: "2026-05-18",
   },
+
+  // ---------------------------------------------------------------------------
+  // First-party "Unlock SaaS vs X" comparisons (2026-05-21).
+  //
+  // Strategic rationale: every prior entry compares third-party tools. These
+  // three entries make Unlock SaaS the named subject of comparison against the
+  // three categories the canonical Marco-avatar buyer evaluates in parallel:
+  //   - ClickFunnels: the Brunson-flagship funnel platform, the obvious
+  //     reference the buyer Googles after reading DotCom Secrets.
+  //   - ShipFast: Marc Lou's $299 Next.js starter kit, the bootstrapped indie-
+  //     hacker default for shipping a first SaaS without the funnel layer.
+  //   - 1-on-1 founder coaching: the high-ticket human alternative the buyer
+  //     considers when they suspect the bottleneck is themselves, not tooling.
+  //
+  // The 2026-05-21 distribution research (research stream "GEO/LLMO trends
+  // 2026") flagged comparison pages getting a +51% ChatGPT citation lift when
+  // the page admits competitor strengths honestly. All three entries follow
+  // the symmetric-honesty rule: each competitor's `bestFor` and `pickBIf`
+  // sections are written with full conviction, not as straw-men.
+  //
+  // None of the three competitors have an Unlock SaaS funnel/pricing teardown
+  // (those manifests catalog third-party SaaS only), so teardownSlug is
+  // omitted on side B. The funnel hub itself is the canonical Unlock SaaS
+  // surface — the comparison page deep-links to /diagnostic + /starter via
+  // the shared CTA card the /vs/[slug] page renders.
+  // ---------------------------------------------------------------------------
+
+  {
+    slug: "unlock-saas-vs-clickfunnels",
+    a: {
+      name: "Unlock SaaS",
+      url: "https://unlocksaas.com/",
+    },
+    b: {
+      name: "ClickFunnels",
+      url: "https://www.clickfunnels.com/",
+    },
+    category: "Funnel and offer tooling",
+    oneLine:
+      "Unlock SaaS and ClickFunnels both come out of the Brunson framework, but they solve different stages of the same founder journey.",
+    tldr:
+      "ClickFunnels is the full funnel-builder platform Russell Brunson built — drag-and-drop pages, email, members area, payments — priced for marketers who already know who they sell to. Unlock SaaS is a diagnostic + playbook for post-launch pre-revenue SaaS founders who have shipped a product, posted on launch day, and have a flat Stripe line. The bottleneck Unlock SaaS targets is upstream of any page builder. Indie founders pre-MRR pick Unlock SaaS; teams running an existing funnel that needs more pages pick ClickFunnels.",
+    bestFor: {
+      a: "Post-launch pre-revenue SaaS founders who already have a product live, do not need another page builder, and need to name the upstream offer flaw before any funnel software helps.",
+      b: "Marketers, coaches, course creators, and product teams who already have a validated offer and a buyer they can name, and need a mature funnel-building platform with pages, email, members area, and payments under one roof.",
+    },
+    pickAIf: [
+      "You already shipped a SaaS, posted launch day, and watched Stripe stay flat. The bottleneck is not your page builder.",
+      "You want a diagnostic that labels what is actually wrong (Wrong Person, Weak Offer, Weak Belief) before any tool change.",
+      "You want a code-enforced 60-day refund tied to a real Stripe charge, not a money-back policy you have to email support to claim.",
+    ],
+    pickBIf: [
+      "You already know exactly who you sell to and what you sell, and you need a mature drag-and-drop builder to ship pages, email, and members area without stitching tools together.",
+      "You run an existing offer with positive ROAS and the next constraint is funnel A/B testing infrastructure, not the upstream offer.",
+      "You sell info products, coaching, or e-commerce funnels — categories where ClickFunnels has years of template depth that a SaaS-focused playbook cannot match.",
+    ],
+    dimensions: [
+      {
+        name: "Pricing",
+        a: "Free diagnostic, $1 Starter tripwire, $49/mo Playbook. No annual contract.",
+        b: "$97–$297/mo across Startup / Pro / Funnel Hacker tiers (verified 2026-05-21). Higher tiers unlock additional funnels, contacts, domains.",
+        winner: "A",
+        note: "Different shapes of value; Unlock SaaS is a fraction of the monthly cost because it is not a page-builder platform.",
+      },
+      {
+        name: "What you get",
+        a: "A diagnostic that labels the upstream flaw, a 30-day plan that names the next move, and code-enforced verification of every funnel step in Stripe.",
+        b: "A full funnel-building platform: drag-and-drop page builder, email automation, members area, A/B testing, integrated payments, affiliate tracking.",
+        winner: "different",
+        note: "Page-builder platform vs diagnostic-and-playbook. Not directly comparable; different layer of the stack.",
+      },
+      {
+        name: "Brunson lineage",
+        a: "Built on the Brunson framework chain end-to-end: Hook/Story/Offer, Soap Opera Sequence, Value Ladder, Expert Secrets identity, Perfect Webinar arc. Workbook chain locked in source.",
+        b: "Brunson's own platform; he wrote the books to teach the framework and built ClickFunnels to execute it. Canonical implementation.",
+        winner: "tie",
+        note: "Both are Brunson-native. Unlock SaaS uses the framework as a diagnostic engine; ClickFunnels uses it as a build-pattern library.",
+      },
+      {
+        name: "Time to first measurable outcome",
+        a: "Free 2-minute diagnostic returns a labelled flaw before any commit. $1 Starter ships the first concrete fix within 24 hours.",
+        b: "Full funnel build typically takes a weekend to a week depending on offer complexity. Templates accelerate this but a real ship still requires hours of work.",
+        winner: "A",
+        note: "Unlock SaaS optimizes for fast diagnosis; ClickFunnels optimizes for shipping a polished funnel.",
+      },
+      {
+        name: "Audience fit",
+        a: "Narrowly built for post-launch pre-revenue SaaS founders with a live product and zero MRR. Disqualifies pre-launch, $10K+ MRR, agencies.",
+        b: "Wide: course creators, coaches, e-commerce operators, B2B SaaS marketers, agencies, info-product sellers. Brand recognition is strongest in info-product world.",
+        winner: "different",
+      },
+      {
+        name: "Guarantee",
+        a: "60-day code-enforced refund. A Stripe webhook checks for a verified customer charge on day 60. If none, refund fires automatically without a support ticket.",
+        b: "30-day money-back guarantee, claimed via support. Standard SaaS refund flow.",
+        winner: "A",
+      },
+      {
+        name: "What it does NOT replace",
+        a: "Does not replace your page builder, email tool, or payments processor. Lives upstream of those.",
+        b: "Does not replace the diagnostic work of naming the buyer and the offer. The platform assumes you already did that work.",
+        winner: "different",
+      },
+      {
+        name: "Ecosystem and templates",
+        a: "Small — every artifact is hand-built around the Brunson workbook chain. No marketplace.",
+        b: "Huge — Funnel Hacker community, marketplace of templates and consultants, certified partner program, annual Funnel Hacking Live event.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "ClickFunnels and Unlock SaaS sit at different layers of the same founder journey, both descended from the same Brunson framework. ClickFunnels is the platform you reach for once you can name your buyer and your offer with conviction. Unlock SaaS is the diagnostic that fires before that point — when you have a live product and a flat Stripe line and cannot name what is wrong. The honest verdict is that they are not substitutes. A post-launch pre-revenue SaaS founder who pays $297/mo for ClickFunnels before they can answer the upstream questions has bought a more expensive instance of the same problem. A team already running a profitable funnel that wants a deeper page builder does not need a diagnostic — they need the platform.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "An indie SaaS founder who is post-launch and pre-revenue should not be paying $97–$297/mo for a page builder before they have named the buyer and the offer. The diagnostic labels the upstream flaw for free; the $49 playbook ships the next move. If MRR is positive and the bottleneck is genuinely funnel infrastructure, ClickFunnels becomes the right tool — but that is a different stage.",
+    },
+    faqs: [
+      {
+        q: "Does Unlock SaaS replace ClickFunnels?",
+        a: "No. Unlock SaaS is a diagnostic and playbook that lives upstream of any funnel-builder platform. It tells you who to sell to and what to promise; it does not build the funnel pages. A founder who knows both the answer and the question can use both — Unlock SaaS to validate the offer, ClickFunnels to host the pages.",
+      },
+      {
+        q: "If I already use ClickFunnels, can Unlock SaaS still help?",
+        a: "Yes, if your funnel is built but the line is flat. The diagnostic does not care which platform your offer page lives on — it scores the offer itself. The $1 Starter ships a specific fix you can paste into any page builder, ClickFunnels included.",
+      },
+      {
+        q: "How does the price gap make sense — $49 vs $97 to $297?",
+        a: "Different shapes of value. ClickFunnels charges for software (pages, email, members area, A/B testing, payments). Unlock SaaS charges for a diagnostic + playbook backed by a code-enforced guarantee. You are paying ClickFunnels to host infrastructure; you are paying Unlock SaaS to label what is broken upstream of any infrastructure.",
+      },
+      {
+        q: "Is the 60-day Stripe-verified refund really automatic?",
+        a: "Yes. A scheduled Stripe webhook checks for a verified customer charge on day 60. If the founder did not hit a real paying customer in that window, the refund fires automatically — no support email, no claim form, no escalation. The mechanism is published in the editorial policy and the corrections log.",
+      },
+      {
+        q: "What is the Brunson lens on Unlock SaaS vs ClickFunnels?",
+        a: "Both are Brunson-native. ClickFunnels is the canonical implementation Russell built — the platform that hosts the funnel he taught the world to build. Unlock SaaS uses the same framework chain (Hook/Story/Offer, Soap Opera, Value Ladder, Expert Secrets, Perfect Webinar) as a diagnostic engine on the upstream question: did the founder name the buyer and the promise with enough conviction to deserve the funnel? Different layers, same lineage.",
+      },
+    ],
+    tags: [
+      "brunson",
+      "funnel-platform",
+      "diagnostic",
+      "indie-saas",
+      "first-party",
+    ],
+    lastVerified: "2026-05-21",
+  },
+
+  {
+    slug: "unlock-saas-vs-shipfast",
+    a: {
+      name: "Unlock SaaS",
+      url: "https://unlocksaas.com/",
+    },
+    b: {
+      name: "ShipFast",
+      url: "https://shipfa.st/",
+    },
+    category: "Indie SaaS launch tooling",
+    oneLine:
+      "ShipFast and Unlock SaaS both target indie SaaS founders, but ShipFast ships the code and Unlock SaaS ships the conversation that follows launch day.",
+    tldr:
+      "ShipFast is Marc Lou's Next.js boilerplate ($299 lifetime) that gets a SaaS from zero to deployed in days — auth, payments, emails, SEO, landing page templates all wired. Unlock SaaS is a diagnostic and playbook for the next problem: the SaaS is live, the launch tweet went out, and Stripe is still flat. The two are complementary, not substitutes. Founders pre-ship pick ShipFast; founders post-ship-pre-revenue pick Unlock SaaS; founders mid-cycle often need both.",
+    bestFor: {
+      a: "Post-launch pre-revenue indie SaaS founders whose product is already live and whose Stripe line is flat, regardless of which starter kit shipped the code.",
+      b: "Pre-launch indie SaaS founders who want a battle-tested Next.js boilerplate with auth, Stripe, Resend, SEO, blog, and landing templates so they can ship a working product in days, not weeks.",
+    },
+    pickAIf: [
+      "Your product is already live (built with ShipFast or anything else) and the bottleneck is not code — it is that nobody is paying.",
+      "You need to name your buyer and your offer with enough specificity that a stranger can decide in 90 seconds whether to pay.",
+      "You want a code-enforced 60-day Stripe-verified guarantee tied to a real customer charge, not just a refund policy.",
+    ],
+    pickBIf: [
+      "You have not shipped your SaaS yet, you want a clean Next.js + Stripe + Supabase + Resend starter, and you value the time saved over building from scratch.",
+      "You want Marc Lou's curated component library, SEO blog template, and one-shot deployment workflow so you can focus on the product, not the plumbing.",
+      "You want the lifetime-deal price model and indie-friendly Discord community around the kit.",
+    ],
+    dimensions: [
+      {
+        name: "What you get",
+        a: "A diagnostic that labels the upstream offer flaw, a 30-day plan that names the next move, and a $49/mo playbook with code-enforced verification of every step in Stripe.",
+        b: "A complete Next.js 14+ boilerplate: auth, Stripe payments, Mailgun/Resend integration, SEO, blog, landing page template, components library. Lifetime updates.",
+        winner: "different",
+        note: "Code starter vs diagnostic-and-playbook. Not directly comparable; different stage of the founder journey.",
+      },
+      {
+        name: "Pricing",
+        a: "Free diagnostic, $1 Starter tripwire, $49/mo Playbook. Recurring.",
+        b: "$299 one-time (lifetime) for the boilerplate + updates. No subscription.",
+        winner: "different",
+        note: "Different revenue models for different problems. ShipFast monetizes time saved during the build; Unlock SaaS monetizes the work that begins after ship.",
+      },
+      {
+        name: "Stage of founder journey",
+        a: "Post-launch. The product exists; nobody is paying; the bottleneck is upstream of the code.",
+        b: "Pre-launch. The product does not exist yet; the bottleneck is the weeks of plumbing between idea and live deployment.",
+        winner: "different",
+      },
+      {
+        name: "What it does NOT do",
+        a: "Does not generate code, does not deploy anything, does not replace any starter kit. Lives downstream of ship.",
+        b: "Does not name your buyer, does not write your offer, does not guarantee a paying customer. Assumes the founder already did that work.",
+        winner: "different",
+      },
+      {
+        name: "Founder voice",
+        a: "Maryan — non-engineer founder, 12 shipped products, 2 paid. Brunson framework, build-in-public on receipts not vibes.",
+        b: "Marc Lou — $5M+ ARR solo founder, hyper-pragmatic, ships-first style, dominant on X for the indie-hacker audience.",
+        winner: "tie",
+        note: "Both are honest, build-in-public founders with public receipts. Different beats; same authenticity.",
+      },
+      {
+        name: "Community",
+        a: "Verified Builder directory + corrections-log + open editorial policy. Smaller, narrower (post-launch pre-revenue SaaS only).",
+        b: "Discord with thousands of indie founders shipping with ShipFast variants. Wider, deeper, more peer-to-peer activity.",
+        winner: "B",
+      },
+      {
+        name: "Guarantee",
+        a: "60-day code-enforced refund. Stripe webhook checks for a verified customer charge on day 60; if none, refund fires automatically without a support ticket.",
+        b: "Standard SaaS refund window via Stripe. No outcome guarantee (the kit ships code, not customers).",
+        winner: "A",
+      },
+      {
+        name: "Reuse with the other tool",
+        a: "Works on top of any product, including SaaS shipped with ShipFast. The diagnostic does not care which framework the page is built on.",
+        b: "Boilerplate generates code regardless of what diagnostic the founder later runs. Fully composable.",
+        winner: "tie",
+      },
+    ],
+    honestTake:
+      "ShipFast is the canonical indie-SaaS boilerplate in 2026; Marc Lou built it because the answer to 'why am I not paying customers' was almost never 'because the auth flow took a week.' Unlock SaaS exists for the founder who used ShipFast (or anything like it), shipped fast, posted the launch tweet, and now stares at a flat Stripe line wondering what to do. The two are stage-complementary, not substitutes. A founder who buys ShipFast at zero MRR and then buys Unlock SaaS at zero MRR has spent $348 and gained the two distinct primitives that the rest of the year either compounds or wastes: a shipped product and a labelled flaw to work on next.",
+    forIndieFounders: {
+      pick: "depends",
+      reasoning:
+        "Pre-launch indie founders pick ShipFast. Post-launch pre-revenue indie founders pick Unlock SaaS. Founders mid-cycle (shipped via ShipFast, no MRR yet) get the highest combined value from running the free Unlock SaaS diagnostic on the live ShipFast deployment, then deciding whether to invest in the $49 playbook or to iterate on the offer themselves.",
+    },
+    faqs: [
+      {
+        q: "Is Unlock SaaS a replacement for ShipFast?",
+        a: "No. ShipFast ships your code; Unlock SaaS ships the diagnostic and playbook that comes after. The two solve different problems on different days of the founder journey. A founder using ShipFast can run the free Unlock SaaS diagnostic on the deployed product without changing a line of code.",
+      },
+      {
+        q: "I already shipped with ShipFast. Where do I start with Unlock SaaS?",
+        a: "Run the free 2-minute diagnostic on your live URL. It labels what is actually wrong with one of three diagnoses: Wrong Person, Weak Offer, or Weak Belief. If the label resonates and you want the fix, the $1 Starter ships it; if not, no ask, no email, no card.",
+      },
+      {
+        q: "Why is Unlock SaaS recurring when ShipFast is lifetime?",
+        a: "Different value shapes. ShipFast is a one-shot artifact: a working boilerplate the founder either uses or does not. Unlock SaaS is a coaching playbook with a working diagnostic that updates against the founder's evolving offer — recurring access mirrors the recurring nature of offer iteration. Lifetime would mis-price the resource.",
+      },
+      {
+        q: "Does Unlock SaaS work for SaaS not built with ShipFast?",
+        a: "Yes. The diagnostic scores the live offer page, not the code that built it. Whether the SaaS was scaffolded with ShipFast, Indie Maker Pro, ShipKit, ShipperHQ, or hand-written from scratch is irrelevant to the upstream question.",
+      },
+      {
+        q: "What is the Brunson lens on Unlock SaaS vs ShipFast?",
+        a: "ShipFast is a 'New Opportunity' for the engineer-founder who refuses to spend weeks on plumbing — a Brunson move executed at the meta-level on tooling. Unlock SaaS is a 'New Opportunity' for the founder who already shipped and discovered the line stays flat — same move executed at the offer level. Both are honest re-framings; they just point at different bottlenecks.",
+      },
+    ],
+    tags: [
+      "indie-saas",
+      "ship-fast",
+      "boilerplate",
+      "post-launch",
+      "first-party",
+    ],
+    lastVerified: "2026-05-21",
+  },
+
+  {
+    slug: "unlock-saas-vs-founder-coaching",
+    a: {
+      name: "Unlock SaaS",
+      url: "https://unlocksaas.com/",
+    },
+    b: {
+      name: "1-on-1 Founder Coaching",
+    },
+    category: "Founder support and coaching",
+    oneLine:
+      "Unlock SaaS and 1-on-1 founder coaching both target the founder who has shipped and is stuck, but they price and deliver at different orders of magnitude.",
+    tldr:
+      "1-on-1 founder coaching ($300–$1,500/hr in the indie-SaaS world) is a live human reading your business and pushing back in real time. Unlock SaaS is a productized diagnostic + playbook + Brunson framework chain at $49/mo with a 60-day Stripe-verified guarantee. The honest verdict: coaching wins on context and pushback; Unlock SaaS wins on cost, speed, and code-enforced accountability. Founders pick coaching when the bottleneck is genuinely human judgement on a unique situation; founders pick Unlock SaaS when the bottleneck is the work that the framework already names.",
+    bestFor: {
+      a: "Post-launch pre-revenue indie SaaS founders who recognize their bottleneck in one of three labelled diagnoses (Wrong Person, Weak Offer, Weak Belief) and want a productized playbook before they commit to a high-ticket human relationship.",
+      b: "Founders in a unique or high-stakes situation (acquisition negotiation, co-founder breakup, regulatory pivot, sub-strategy on a $1M+ ARR business) where the value of a human pattern-matcher's live judgement outweighs any productized playbook.",
+    },
+    pickAIf: [
+      "Your situation matches the canonical Marco profile (post-launch, pre-revenue, indie SaaS, flat Stripe line) and you suspect the bottleneck is one of the three labelled flaws.",
+      "You want a code-enforced 60-day refund tied to a real Stripe charge, not a relational refund you have to renegotiate with a coach.",
+      "You want the playbook on demand at $49/mo, not 60-minute calls priced for a buyer with VC funding.",
+    ],
+    pickBIf: [
+      "You are in a unique situation that does not fit the canonical Marco profile, and the value of a human reading your specifics outweighs the productized playbook.",
+      "You are at $10K+ MRR and the next decision is high-stakes (raise, sell, pivot, fire) where the cost of being wrong dwarfs the cost of the coach.",
+      "You learn fastest through live pushback and real-time Socratic dialogue rather than written playbooks and self-directed work.",
+    ],
+    dimensions: [
+      {
+        name: "Price",
+        a: "$49/mo. Free diagnostic, $1 Starter tripwire, recurring.",
+        b: "$300–$1,500/hr for credible indie-SaaS coaches in 2026; typical engagement is 4–8 hours/month, $1,200–$12,000/mo all-in.",
+        winner: "A",
+        note: "Unlock SaaS is one to two orders of magnitude cheaper. The honest tradeoff is depth of personalisation, not value.",
+      },
+      {
+        name: "Personalisation depth",
+        a: "Diagnostic personalises against the founder's live URL; 30-day plan is generated against the diagnosis. Static after that — no live pushback on edge cases.",
+        b: "Fully personalised to the founder, the business, the cap table, the co-founder dynamic, and the deal on the table. Live pushback in real time.",
+        winner: "B",
+        note: "Coaching wins decisively on personalisation; this is the entire reason coaching exists at the price point.",
+      },
+      {
+        name: "Pushback in real time",
+        a: "None — playbook is asynchronous. Founder runs the work and reports back.",
+        b: "Real-time. A good coach reads the founder's tone, names what is unsaid, and pushes back on rationalisations live.",
+        winner: "B",
+      },
+      {
+        name: "Speed to first result",
+        a: "Free diagnostic returns a labelled flaw in 2 minutes. $1 Starter ships the first concrete fix within 24 hours.",
+        b: "First call typically 1–2 weeks out depending on the coach's calendar. First useful output after the call, often 1–2 weeks after engagement starts.",
+        winner: "A",
+      },
+      {
+        name: "Risk model",
+        a: "60-day Stripe-verified code-enforced refund. A webhook checks for a verified customer charge on day 60; if none, refund fires automatically with no support ticket.",
+        b: "Refund is a relational negotiation. Some coaches offer satisfaction guarantees, most do not. The buyer carries most of the downside.",
+        winner: "A",
+      },
+      {
+        name: "Brunson framework coverage",
+        a: "Complete Brunson workbook chain (10 workbooks, locked in source): Hook/Story/Offer, Soap Opera, Value Ladder, Expert Secrets, Perfect Webinar.",
+        b: "Variable. Some coaches are Brunson-native; most apply their own framework or stitch together pieces. No guarantee.",
+        winner: "A",
+      },
+      {
+        name: "Scalability",
+        a: "Productized: the founder consumes the diagnostic and playbook at their own pace, regardless of the coach's calendar.",
+        b: "Hard-capped by the coach's hours. Premium coaches are typically booked out 1–3 months ahead.",
+        winner: "A",
+      },
+      {
+        name: "Edge-case coverage",
+        a: "Disqualifies pre-launch, $10K+ MRR, agencies, ecommerce. Narrow ICP by design.",
+        b: "Handles any situation a competent human can think about. No structural disqualifier beyond the coach's expertise.",
+        winner: "B",
+      },
+    ],
+    honestTake:
+      "Coaching and Unlock SaaS are not the same product priced differently — they are different products that overlap on a small slice of the founder journey. A live human coach who has shipped multiple SaaS, raised capital, and exited can deliver pattern-match value that no productized playbook can match — and they price accordingly. Unlock SaaS productizes the slice of that work that maps to a labelled, repeatable diagnostic: the canonical post-launch pre-revenue indie SaaS founder whose offer is broken in one of three ways. For that founder, paying a coach $1,500/hr to confirm what the diagnostic returns for free is bad capital allocation. For the founder whose situation does not fit the diagnostic — late-stage decisions, unique market dynamics, founder-psychology work that requires a relationship — the coach is the right call and the productized playbook will under-serve.",
+    forIndieFounders: {
+      pick: "A",
+      reasoning:
+        "An indie SaaS founder at zero MRR cannot afford 1-on-1 coaching at indie-SaaS market rates and rarely needs a coach's full bandwidth — the bottleneck is almost always the work the framework already names, not bespoke pattern-match. The honest sequence is: run the free diagnostic, run the $1 Starter, commit to the $49/mo playbook for 60 days under the code-enforced guarantee. If after 60 days the founder hit a customer, the work continues; if not, the refund fires automatically and a coach becomes the right next call.",
+    },
+    faqs: [
+      {
+        q: "Can Unlock SaaS replace a 1-on-1 coach?",
+        a: "For the canonical Marco profile, yes. For the founder in a unique high-stakes situation that does not fit the post-launch pre-revenue indie SaaS pattern, no — and the diagnostic itself will surface that mismatch quickly. The $49/mo playbook is built for the founder whose bottleneck matches one of the three labelled diagnoses; a coach is the right call when the bottleneck does not.",
+      },
+      {
+        q: "Why is Unlock SaaS one-to-two orders of magnitude cheaper than coaching?",
+        a: "Because it productizes the slice of coaching work that is repeatable: the diagnostic engine, the Brunson framework chain, the verification of every step in Stripe. The slice that cannot be productized — bespoke pattern-matching on unique situations, live pushback, founder-psychology work — is left to coaches who can price for it. Unlock SaaS does not pretend to deliver that slice.",
+      },
+      {
+        q: "If the diagnostic returns a label I do not recognize, should I hire a coach?",
+        a: "Possibly. The diagnostic is built around a tight canonical profile (post-launch pre-revenue indie SaaS). If the diagnosis does not resonate, the bottleneck is probably not what the playbook addresses, and a coach who reads your specific situation is the better next investment. The diagnostic is free for this reason — to filter out the mismatched founders before they spend.",
+      },
+      {
+        q: "How is the 60-day Stripe-verified refund different from a coach's satisfaction guarantee?",
+        a: "It is code-enforced rather than relational. A scheduled Stripe webhook checks for a verified customer charge on day 60; if none, the refund fires automatically with no support ticket, no email, no negotiation. Coaches sometimes offer satisfaction guarantees but the buyer carries the conversation and the relationship cost. Unlock SaaS moves the refund decision out of the relationship and into the code.",
+      },
+      {
+        q: "What is the Brunson lens on Unlock SaaS vs a coach?",
+        a: "Brunson taught that the right move at every stage is to productize what you can and reserve human attention for what is genuinely bespoke — the Value Ladder concept. Unlock SaaS sits on the Value Ladder where the framework chain can be productized: diagnostic, plan, playbook, framework. A coach sits where it cannot: bespoke judgement on unique situations. Both are honest rungs of the same ladder.",
+      },
+    ],
+    tags: [
+      "founder-coaching",
+      "productized-vs-bespoke",
+      "indie-saas",
+      "guarantee",
+      "first-party",
+    ],
+    lastVerified: "2026-05-21",
+  },
 ];
 
 // Indexed lookup.
