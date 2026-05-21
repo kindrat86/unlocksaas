@@ -6,6 +6,10 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { FunnelHubViewedTracker } from "@/components/analytics/funnel-hub-viewed-tracker";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
+import {
+  getHeroVariant,
+  readSourceFromCookies,
+} from "@/lib/acquisition-source";
 import { TopTagline } from "@/components/blocks/top-tagline";
 import { Hero } from "@/components/blocks/hero";
 import { BigDomino } from "@/components/blocks/big-domino";
@@ -97,6 +101,19 @@ export default function FunnelHub() {
 async function FunnelHubBody() {
   const variant = await readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
+  // Source-aware Hero variant: first-touch acquisition channel resolved
+  // from the usaas_source cookie that proxy.ts writes on first visit
+  // (utm_source / source / ref / Referer host → AcquisitionSource). The
+  // Hero block receives the resolved HeroVariant copy deck and renders
+  // channel-native eyebrow + headline + subhead + CTA. Default variant
+  // ships unchanged copy to organic / direct / unknown traffic.
+  //
+  // See src/lib/acquisition-source.ts for the variant catalog and the
+  // first-touch attribution discipline (existing source cookie wins;
+  // proxy never overwrites). Distinct from the identity_label A/B
+  // above — identity is collective ("Verified vs Paid Builders"), source
+  // is per-visitor channel — both can and do co-exist on a single page.
+  const sourceVariant = getHeroVariant(await readSourceFromCookies());
   // Stripe-verified Verified Builder count. Powers the visible
   // "N Verified Builders" slot in SocialProofBar AND keeps the funnel
   // hub in lock-step with the AggregateRating ratingCount that ships
@@ -133,7 +150,7 @@ async function FunnelHubBody() {
       <TopTagline />
 
       {/* ---------------- 1. HOOK ---------------- */}
-      <Hero />
+      <Hero variant={sourceVariant} />
 
       {/* ---------------- 2. BIG DOMINO ---------------- */}
       <BigDomino />
