@@ -27,13 +27,22 @@
  *
  * Caching
  * -------
- * Per-request deduplication via `React.cache()`. Page-level revalidation
- * via `export const revalidate = 3600` on the consuming route (1-hour
- * ISR). `'use cache'` is intentionally NOT used here because
- * `cacheComponents: false` in next.config — see the comment block in
- * next.config.ts. When Cache Components is re-enabled, this file becomes
- * one `'use cache' + cacheTag("diagnostic_leads_aggregate")` addition
- * and the underlying caller stays unchanged.
+ * Two-layer strategy:
+ *   1. `React.cache()` wraps the underlying Supabase fetch for per-request
+ *      deduplication so the page body, metadata generator, and OG image
+ *      route share one round-trip within a single render.
+ *   2. `loadEditionFindings` itself is wrapped in `'use cache' +
+ *      cacheLife({ revalidate: 3600 }) + cacheTag(\`state-of-saas:\${year}\`)`
+ *      + a broader `cacheTag("diagnostic_leads_aggregate")` so the
+ *      Cache Components pipeline can serve the aggregate from the build-time
+ *      cache and revalidate hourly. Either tag lets a future post-diagnostic
+ *      webhook flush the aggregate via `revalidateTag` without a full deploy.
+ *
+ * Updated 2026-05-21: cacheComponents was re-enabled in next.config.mjs (see
+ * comment block there). The prior deferral note was removed; the two-tag
+ * cacheTag pattern shipped alongside the re-enable so /state-of-saas/[year]
+ * picks up the aggregate without per-request Supabase calls once the cache
+ * is warm.
  */
 
 import { cache } from "react";
