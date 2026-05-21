@@ -1,4 +1,3 @@
-import { withWorkflow } from "workflow/next";
 import { withBotId } from "botid/next/config";
 
 /** @type {import('next').NextConfig} */
