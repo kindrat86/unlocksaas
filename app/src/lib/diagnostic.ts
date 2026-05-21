@@ -1,4 +1,5 @@
-import { getAnthropic, primaryModel } from "@/lib/anthropic";
+import { generateText } from "ai";
+import { model } from "@/lib/anthropic";
 
 /**
  * Diagnostic engine for the Free Diagnostic Lead Funnel.
@@ -341,25 +342,17 @@ export async function classifyPageText(
   url: string,
   pageText: string,
 ): Promise<DiagnosticResult> {
-  const response = await getAnthropic().messages.create({
-    model: primaryModel(),
-    max_tokens: 700,
+  const { text } = await generateText({
+    model: model,
+    maxOutputTokens: 700,
     system: CLASSIFIER_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: `URL submitted: ${url}
+    prompt: `URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
 ${pageText}
 
 Diagnose this page now. Respond with ONLY the JSON object.`,
-      },
-    ],
   });
-
-  const text =
-    response.content[0]?.type === "text" ? response.content[0].text : "";
 
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
@@ -813,25 +806,17 @@ export async function deepAnalyzePageText(
   url: string,
   pageText: string,
 ): Promise<DeepDiagnosticResult> {
-  const response = await getAnthropic().messages.create({
-    model: primaryModel(),
-    max_tokens: 4096,
+  const { text } = await generateText({
+    model: model,
+    maxOutputTokens: 4096,
     system: DEEP_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: `URL submitted: ${url}
+    prompt: `URL submitted: ${url}
 
 PAGE CONTENT (title, meta, body, truncated):
 ${pageText}
 
 Run the deep analysis now. Respond with ONLY the JSON object. No text before or after.`,
-      },
-    ],
   });
-
-  const text =
-    response.content[0]?.type === "text" ? response.content[0].text : "";
 
   // Strip optional markdown fence if the model added one despite the prompt.
   const cleaned = text
