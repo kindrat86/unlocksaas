@@ -26,7 +26,7 @@ const MCP_URL = `${BASE_URL}/api/mcp`;
 
 const BODY = `# UnlockSaaS MCP server
 
-A read-only Model Context Protocol server that lets Claude, Cursor, Windsurf, and any other MCP-aware client diagnose a live SaaS landing page and pull structured data from the 157 funnel, pricing, alternative, comparison, and category teardowns UnlockSaaS publishes.
+A read-only Model Context Protocol server that lets Claude, Cursor, Windsurf, and any other MCP-aware client diagnose a live SaaS landing page, pull structured data from the 157 funnel, pricing, alternative, comparison, and category teardowns UnlockSaaS publishes, and retrieve the structural Brunson canon (Dream 100 framework, four funnel archetypes, eight dollar-objection patterns with verbatim public source quotes) any indie founder can apply to their own niche.
 
 ## Endpoint
 
@@ -98,8 +98,10 @@ npx @modelcontextprotocol/inspector ${MCP_URL}
 - \`list_media_assets\` — unified inventory of every audio/video asset on the site (dataset-changelog podcast + glossary TTS audio); filter by kind.
 - \`get_glossary_audio\` — TTS audio metadata for one Brunson term (URL, duration, byte size, voice, transcript sha256). Empty until the operator runs the generation script.
 - \`get_faq\` — search or list UnlockSaaS FAQ entries (objection answers, guarantee mechanics).
-- \`get_offer\` — canonical answer to "what is UnlockSaaS, what does it cost, what is the guarantee" – three-rung value ladder, 60-day guarantee mechanics.
 - \`get_offer\` — canonical UnlockSaaS offer in one call: who it is for, three-rung value ladder (free Diagnostic → $1 Starter → $49/mo Playbook with 60-day guarantee), guarantee mechanics (window length, refund cap, required milestones), and clickable URLs.
+- \`get_dream_100_template\` — seven-category Brunson Dream 100 framework (Communities, Influencers, Podcasts, Newsletters, Products, YouTube, Blogs) with target counts summing to 100, intent, worked examples, and work-your-way-in vs buy-your-way-in tactic split. Niche-agnostic structural template.
+- \`get_value_ladder_archetype\` — one of the four Brunson funnel archetypes (Lead Funnel Rung 0 free, Unboxing Funnel Rung 1 $1-$50, Presentation Funnel Rung 2 $49-$300/mo, Phone Funnel Rung 3 $2,000+) with pages, Hook/Story/Offer shape, build-order rule, worked example, common indie-scale failure.
+- \`get_objection_pattern\` — one of eight dollar-objection patterns with verbatim public source quote (Indie Hackers / Hacker News, link-attributed), Brunson External Belief classification, answer copy, sales-page disqualifier line, and funnel placement. Categories: subscription-fatigue, cash-constraint, burned-by-gurus, not-tools-job, build-it-myself, price-scales-badly, praise-without-payment, built-beside-not-inside.
 
 ## What it will not do
 
