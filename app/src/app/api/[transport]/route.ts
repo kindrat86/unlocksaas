@@ -171,8 +171,19 @@ import {
   GLOSSARY_AUDIO_PODCAST_CONFIG,
   type GlossaryAudioEntry,
 } from "@/lib/seo/glossary-audio";
+import { NLWEB_CORPUS, NLWEB_CORPUS_SIZE } from "@/lib/nlweb/corpus";
+import { buildIndex, rank } from "@/lib/nlweb/bm25";
+import { summarise } from "@/lib/nlweb/summary";
 
 const BASE = "https://unlocksaas.com";
+
+/**
+ * BM25 index over the NLWeb corpus. Built once at module load and reused
+ * across every `nlweb_ask` invocation in the lifetime of the function
+ * instance. Same instance is used here and at /api/nlweb/ask – two
+ * surfaces, one in-memory index.
+ */
+const NLWEB_BM25_INDEX = buildIndex(NLWEB_CORPUS);
 
 /**
  * Append the canonical MCP attribution params to a URL. Every tool that
@@ -1447,11 +1458,82 @@ const handler = createMcpHandler(
         };
       },
     );
+
+    // ─── nlweb_ask ───────────────────────────────────────────────────────
+    // Surface E (NLWeb /ask) wrapped as an MCP tool. Same BM25 corpus
+    // and same deterministic summary template the /api/nlweb/ask
+    // endpoint returns; an MCP-only agent that does not separately
+    // speak NLWeb can still ask natural-language questions across the
+    // 700-ish item static corpus through this tool. Returns the top-k
+    // matching items as a compact markdown block followed by the
+    // deterministic NL summary. Brunson Hard-Rule: every entry is
+    // sourced from the static catalogs that render the public HTML;
+    // no fabricated answers.
+    server.registerTool(
+      "nlweb_ask",
+      {
+        title: "Ask UnlockSaaS in natural language (NLWeb /ask via MCP)",
+        description:
+          "Natural-language search across the full UnlockSaaS schema.org corpus: funnel teardowns, pricing teardowns, head-to-head comparisons, alternatives, category roundups, Playbook steps, Brunson glossary, FAQ entries, direct answers, and indie SaaS benchmarks. Returns the top-k matching items with name, description, and clickable URL, plus a one-paragraph deterministic NL summary. Use this when an agent needs to find content across surfaces (e.g. 'pricing for Stripe alternatives', 'what is Hook-Story-Offer', 'benchmarks for landing page conversion') and does not already know which catalog tool to call. Backed by the same BM25 ranker as the public /api/nlweb/ask endpoint.",
+        inputSchema: {
+          query: z
+            .string()
+            .min(1)
+            .max(500)
+            .describe(
+              "Natural-language query, 1-500 chars. Tokens are case-insensitive; multi-word queries score higher when more tokens hit the same item.",
+            ),
+          top_k: z
+            .number()
+            .int()
+            .min(1)
+            .max(20)
+            .optional()
+            .describe(
+              "How many items to return. Defaults to 5 in MCP context (smaller than the HTTP default so the agent can quote them all). Max 20.",
+            ),
+        },
+      },
+      async ({ query, top_k }) => {
+        const k = top_k ?? 5;
+        const ranked = rank(NLWEB_BM25_INDEX, NLWEB_CORPUS, query, k);
+        if (ranked.length === 0) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `No items in the UnlockSaaS corpus match "${query}". Corpus contains ${NLWEB_CORPUS_SIZE} items across funnel/pricing teardowns, comparisons, alternatives, category roundups, Playbook steps, glossary terms, FAQ entries, direct answers, and benchmarks. Try a more specific keyword or browse via \`list_*\` tools.`,
+              },
+            ],
+          };
+        }
+        const items = ranked.map((r) => r.item);
+        const lines = items.map((it, i) => {
+          // Reuse the MCP `withRef` so the link carries utm_source=mcp,
+          // utm_medium=ai-agent, utm_campaign=nlweb_ask – the click is
+          // attributed to the MCP channel even though the retrieval
+          // mechanism mirrors the NLWeb endpoint.
+          return `${i + 1}. **${it.name}** (${it.surface}) – ${it.description}\n   URL: ${withRef(it.url, "nlweb_ask")}`;
+        });
+        const text = [
+          `# NLWeb ask results for "${query}"`,
+          "",
+          `**Summary:** ${summarise(query, items)}`,
+          "",
+          `**Top ${items.length} items:**`,
+          "",
+          ...lines,
+          "",
+          `_Retrieved via the same BM25 ranker that powers ${BASE}/api/nlweb/ask. Corpus size: ${NLWEB_CORPUS_SIZE} items._`,
+        ].join("\n");
+        return { content: [{ type: "text", text }] };
+      },
+    );
   },
   {
     serverInfo: {
       name: "unlocksaas",
-      version: "1.1.0",
+      version: "1.2.0",
     },
   },
   {
