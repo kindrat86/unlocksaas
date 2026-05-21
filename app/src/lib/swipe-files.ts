@@ -1,3 +1,5 @@
+import { getTeardownBySlug } from "@/lib/funnel-teardowns";
+
 /**
  * /swipe-file/[element] pSEO catalog – copy and UI pattern libraries
  * for the twenty highest-search-intent funnel elements an indie SaaS
@@ -30,6 +32,26 @@ export interface SwipeFileExample {
   notes: string;
 }
 
+/**
+ * Citation to a real indie SaaS funnel from the teardown set. Pattern
+ * name and analysis text are NOT duplicated here – they're pulled from
+ * the canonical teardown entry at render time via getTeardownBySlug.
+ * This keeps the swipe-file pages in sync with the teardown set
+ * automatically when a teardown's analysis is revised.
+ *
+ * This is the Brunson "funnel-hacking" surface: each swipe-file
+ * pattern is grounded in a real, named, dated funnel the founder can
+ * study at /funnel-teardown/[slug].
+ */
+export interface SwipeFileTeardownRef {
+  /** Slug of the FunnelTeardown entry in src/lib/funnel-teardowns.ts. */
+  teardownSlug: string;
+  /** Which lens (hook/story/offer) of that teardown demonstrates this element. */
+  lens: "hook" | "story" | "offer";
+  /** One-line operator note explaining why this teardown is a useful reference. */
+  why: string;
+}
+
 export interface SwipeFileEntry {
   /** URL slug, kebab-case. */
   slug: string;
@@ -59,6 +81,13 @@ export interface SwipeFileEntry {
   relatedGlossary: ReadonlyArray<string>;
   /** Which Brunson lens this element belongs to (Hook / Story / Offer). */
   brunsonLens: "Hook" | "Story" | "Offer" | "Story + Offer" | "Hook + Offer";
+  /**
+   * Real funnel-hacked examples from the indie SaaS teardown set.
+   * Each ref points to a /funnel-teardown/[slug] page where the named
+   * lens (hook/story/offer) demonstrates the swipe-file pattern in a
+   * shipping product. 3-5 refs per swipe file.
+   */
+  realExamples: ReadonlyArray<SwipeFileTeardownRef>;
   /** ISO date last verified. */
   lastVerified: string;
 }
@@ -195,6 +224,13 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["hook"],
     brunsonLens: "Hook",
+    realExamples: [
+      { teardownSlug: "tally", lens: "hook", why: "The freemium ceiling IS the headline. One structural promise (free forever, unlimited) replaces a feature list." },
+      { teardownSlug: "plausible", lens: "hook", why: "Named villain (Google Analytics) plus principle (privacy). The cohort-match happens in the named villain alone." },
+      { teardownSlug: "lemonsqueezy", lens: "hook", why: "Category reframe ('merchant of record') turns a feature into the whole positioning." },
+      { teardownSlug: "resend", lens: "hook", why: "Code snippet as the hero block. The audience self-qualifies on whether the code is legible to them." },
+      { teardownSlug: "polar", lens: "hook", why: "Named-segment bundle hook ('for open-source maintainers'). Cohort word does the qualification." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -331,6 +367,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["hook"],
     brunsonLens: "Hook",
+    realExamples: [
+      { teardownSlug: "beehiiv", lens: "hook", why: "Subhead carries the future-identity claim the headline only gestures at ('the creator who scales')." },
+      { teardownSlug: "cal-com", lens: "hook", why: "Subhead names the structural differentiator (open-source, self-host) so the headline's promise lands." },
+      { teardownSlug: "senja", lens: "hook", why: "Subhead names the universal pain (collecting testimonials) the headline's promise resolves." },
+      { teardownSlug: "loops", lens: "hook", why: "Subhead specifies the buyer-by-job-title (founders, marketers, devs) so the cohort word is unambiguous." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -460,6 +502,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["hook", "offer"],
     brunsonLens: "Hook + Offer",
+    realExamples: [
+      { teardownSlug: "senja", lens: "offer", why: "CTA is outcome-first ('get my first testimonial'), not action-first. Buyer reads it as completing a desire." },
+      { teardownSlug: "resend", lens: "offer", why: "CTA is the first product action ('send your first email'). The button IS the trial." },
+      { teardownSlug: "tally", lens: "story", why: "The CTA is the product launch – click is the demo. Zero gap between intent and product experience." },
+      { teardownSlug: "cal-com", lens: "offer", why: "Two-CTA branching (hosted / self-host) lets each cohort claim their path without diluting the primary." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -601,6 +649,13 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["value-ladder", "offer"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "tally", lens: "offer", why: "Price ladder where the floor IS the offer. Free tier is not a trial, it's the product." },
+      { teardownSlug: "cal-com", lens: "offer", why: "Hosted plus self-host two-track. Both paths are first-class, not 'enterprise vs SMB'." },
+      { teardownSlug: "mintlify", lens: "offer", why: "Free for open source plus seat-based for teams. Cohort-tiered pricing without forcing the matrix." },
+      { teardownSlug: "loops", lens: "offer", why: "All-in-one priced like a single SaaS tool. Three columns would have diluted the positioning." },
+      { teardownSlug: "polar", lens: "offer", why: "Single price line for a bundled outcome. The bundle does the value-stack math implicitly." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -749,6 +804,13 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["story", "weak-belief"],
     brunsonLens: "Story",
+    realExamples: [
+      { teardownSlug: "beehiiv", lens: "story", why: "Named-creator testimonials with photos and verifiable handles. The cohort match is built in." },
+      { teardownSlug: "mintlify", lens: "story", why: "Customer aesthetic IS the testimonial – buyers see the logos of docs they already use and trust." },
+      { teardownSlug: "cal-com", lens: "story", why: "Developer-credibility through artifacts: GitHub stars, contributors, public commits replace text testimonials." },
+      { teardownSlug: "polar", lens: "story", why: "Maintainer narratives from named open-source projects, linked back to verifiable repos." },
+      { teardownSlug: "senja", lens: "story", why: "Demo-by-existence – the product collects testimonials, so the page shows real collected ones in the wild." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -886,6 +948,11 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["hook", "soap-opera-sequence"],
     brunsonLens: "Hook + Offer",
+    realExamples: [
+      { teardownSlug: "senja", lens: "offer", why: "Free entry plus brand-customization upsell trades a low-friction asset for cohort identification." },
+      { teardownSlug: "tella", lens: "offer", why: "Free-with-watermark plus brand-removal paid trigger – the popup mechanic compressed into the product." },
+      { teardownSlug: "tally", lens: "offer", why: "Asset-trade equivalent at the offer layer: free unlocks the product, not a generic discount code." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1039,6 +1106,13 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["value-ladder", "offer", "weak-offer"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "beehiiv", lens: "offer", why: "Monetization stack AS the upsell ladder. Each upgrade rung is a different revenue mechanic, not a feature toggle." },
+      { teardownSlug: "senja", lens: "offer", why: "Brand-customization upsell at the post-signup moment. Buyer just collected one testimonial, now wants their logo on it." },
+      { teardownSlug: "tella", lens: "offer", why: "Watermark removal as the explicit OTO trigger. The need surfaces inside the product, not on a sales page." },
+      { teardownSlug: "lemonsqueezy", lens: "offer", why: "Bundled compliance plus tooling. The bundle IS the upsell over a bare payment processor." },
+      { teardownSlug: "tally", lens: "offer", why: "Inverted upsell ladder – free floor, paid is the user-driven discovery, not a forced post-purchase step." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1168,6 +1242,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["story", "weak-belief"],
     brunsonLens: "Story",
+    realExamples: [
+      { teardownSlug: "mintlify", lens: "story", why: "Visible customer aesthetic strip under the hero. Logos buyers already use, mono, well-spaced." },
+      { teardownSlug: "cal-com", lens: "story", why: "Developer credibility strip: GitHub star count + contributor count + commit cadence as the proof bar." },
+      { teardownSlug: "polar", lens: "story", why: "Maintainer narratives plus GitHub-native UX. The proof bar is a list of named maintainers." },
+      { teardownSlug: "beehiiv", lens: "story", why: "Creator-success showcase strip – named creators with newsletters the buyer can verify." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1311,6 +1391,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["weak-belief", "value-ladder"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "tally", lens: "offer", why: "Free forever IS the strongest risk reversal. Counter-example: no guarantee needed when the floor is the offer." },
+      { teardownSlug: "cal-com", lens: "offer", why: "Self-host option is the ultimate risk reversal. Buyer owns the data, no vendor lock-in to refund." },
+      { teardownSlug: "lemonsqueezy", lens: "offer", why: "Bundled compliance reduces post-purchase risk surface – buyer can't get burned by tax misconfig." },
+      { teardownSlug: "resend", lens: "offer", why: "Free-tier-led means risk is asymmetric – buyer can validate before any payment ever happens." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1464,6 +1550,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["story"],
     brunsonLens: "Story",
+    realExamples: [
+      { teardownSlug: "tella", lens: "story", why: "Founder-demos-the-product as story. The founder's own videos ARE the about page proof." },
+      { teardownSlug: "loops", lens: "story", why: "Founder-led with category jargon. The voice tells you exactly which cohort the founder writes for." },
+      { teardownSlug: "lemonsqueezy", lens: "story", why: "Pain narrative tied to a specific indie audience. The about page IS the cohort-match document." },
+      { teardownSlug: "plausible", lens: "story", why: "Operational transparency as proof. Public roadmap, public revenue, public team – the about page is the receipts." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1607,6 +1699,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["weak-belief"],
     brunsonLens: "Story",
+    realExamples: [
+      { teardownSlug: "plausible", lens: "story", why: "Operational transparency carries into FAQs – every common objection is answered with verifiable specifics." },
+      { teardownSlug: "tally", lens: "story", why: "FAQs handle the 'why no long sales page' objection head-on. Disqualifies the wrong cohort honestly." },
+      { teardownSlug: "cal-com", lens: "story", why: "Self-host FAQ doubles as a trust signal – the answer alone makes the buyer feel safer." },
+      { teardownSlug: "senja", lens: "story", why: "FAQs re-state the universal pain in the user's own words, so the cohort match compounds through the page." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1758,6 +1856,11 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["weak-belief"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "tally", lens: "offer", why: "Counter-example: zero scarcity tactic, free-forever floor – conversion comes from the offer, not pressure." },
+      { teardownSlug: "plausible", lens: "offer", why: "Counter-example: two-track close (cloud / self-host) earns conversion through choice, not deadline." },
+      { teardownSlug: "cal-com", lens: "offer", why: "Counter-example: no time-pressure mechanic. The differentiator (open source) does the conversion work." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -1910,6 +2013,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["offer", "value-ladder"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "lemonsqueezy", lens: "offer", why: "They ARE a checkout product. Their own checkout is the canonical reference – one page, clean trust strip, no upsell-spam." },
+      { teardownSlug: "tally", lens: "offer", why: "Checkout happens at the floor (signup is checkout for free, $-paid is one click later). No friction surface." },
+      { teardownSlug: "polar", lens: "offer", why: "Single price line for bundled outcome. Buyer sees one price, one CTA, one trust strip." },
+      { teardownSlug: "resend", lens: "offer", why: "Free-tier-led signup = no payment checkout for the activation event. Card moment is deferred to value-discovery." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2063,6 +2172,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["soap-opera-sequence", "offer"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "tally", lens: "offer", why: "Thank-you IS the first form built. Zero gap between purchase and product experience." },
+      { teardownSlug: "beehiiv", lens: "story", why: "Thank-you = creator dashboard with onboarding cards. First successful action is set up on the same surface." },
+      { teardownSlug: "mintlify", lens: "story", why: "Output-as-proof: thank-you = first generated doc preview. Buyer sees the result before they finish onboarding." },
+      { teardownSlug: "senja", lens: "story", why: "Thank-you = first testimonial collection link. Action surface, not a victory lap." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2216,6 +2331,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["value-ladder"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "lemonsqueezy", lens: "offer", why: "Explicit bundled value – the offer is 'payments + tax + compliance + analytics' in one stack-line." },
+      { teardownSlug: "loops", lens: "offer", why: "All-in-one priced like a single SaaS tool. The stack math is implicit in the comparative anchor." },
+      { teardownSlug: "beehiiv", lens: "offer", why: "Monetization stack as upsell ladder. Each rung is a value-stack item priced separately but framed as one offer." },
+      { teardownSlug: "polar", lens: "offer", why: "Single price line for a bundled outcome – the bundle does the math the buyer would otherwise have to do." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2369,6 +2490,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["offer", "value-ladder"],
     brunsonLens: "Offer",
+    realExamples: [
+      { teardownSlug: "beehiiv", lens: "offer", why: "Monetization stack rungs ARE the order bumps – ad-network, paid subs, referral program added as opt-ins." },
+      { teardownSlug: "senja", lens: "offer", why: "Brand-removal is the canonical bump trigger – appears at the natural usage moment, single checkbox." },
+      { teardownSlug: "tella", lens: "offer", why: "Free-with-watermark plus brand-removal paid trigger – the bump opportunity is the watermark itself." },
+      { teardownSlug: "mintlify", lens: "offer", why: "Seat-add as bump – the team-tier upgrade fires when usage hits the seat ceiling, not on a fixed cycle." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2522,6 +2649,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["soap-opera-sequence", "seinfeld-email"],
     brunsonLens: "Story",
+    realExamples: [
+      { teardownSlug: "loops", lens: "story", why: "Loops IS an email tool. Their own welcome email is the canonical founder-led, plain-text, single-CTA reference." },
+      { teardownSlug: "tella", lens: "story", why: "Founder voice carries into the welcome email. The same voice that shipped the demo videos signs the first email." },
+      { teardownSlug: "beehiiv", lens: "story", why: "Creator-success showcase is the welcome – first email points at named creators succeeding in the product." },
+      { teardownSlug: "plausible", lens: "story", why: "Operational transparency as the welcome – first email is dated, signed, and pointed at the public dashboard." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2675,6 +2808,11 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["soap-opera-sequence", "weak-belief"],
     brunsonLens: "Story",
+    realExamples: [
+      { teardownSlug: "loops", lens: "story", why: "Loops, again – their email-product dogfood for abandoned-cart sequences is the canonical reference." },
+      { teardownSlug: "lemonsqueezy", lens: "story", why: "Pain narrative tied to indie audience – cart-recovery emails restate the specific pain the buyer felt before bouncing." },
+      { teardownSlug: "resend", lens: "story", why: "Pain-of-the-incumbent narrative – abandoned-cart emails name the friction that made the buyer leave incumbent tools." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2828,6 +2966,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["perfect-webinar"],
     brunsonLens: "Hook",
+    realExamples: [
+      { teardownSlug: "beehiiv", lens: "hook", why: "Future-identity positioning – the waitlist is the identity claim ('I'm a creator who scales')." },
+      { teardownSlug: "polar", lens: "hook", why: "Named-segment bundle hook drives waitlist segmentation – the segment name does the cohort filter." },
+      { teardownSlug: "cal-com", lens: "hook", why: "Open-source as differentiator – waitlist for self-host capability filters for the operator cohort that wants control." },
+      { teardownSlug: "plausible", lens: "hook", why: "Named villain plus principle – waitlist is the principle-claim ('I want to leave Google Analytics')." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 
@@ -2981,6 +3125,12 @@ export const SWIPE_FILE_ENTRIES: ReadonlyArray<SwipeFileEntry> = [
     ],
     relatedGlossary: ["soap-opera-sequence", "seinfeld-email"],
     brunsonLens: "Hook + Offer",
+    realExamples: [
+      { teardownSlug: "tally", lens: "hook", why: "Show, do not tell – the form IS the lead magnet. Tally's product is the meta-lead-magnet for indie form builders." },
+      { teardownSlug: "senja", lens: "offer", why: "Free entry plus brand-customization upsell – the asset trade has a natural upgrade trigger built in." },
+      { teardownSlug: "resend", lens: "offer", why: "React Email ecosystem AS the lead magnet – an open-source library buyers adopt before they ever buy." },
+      { teardownSlug: "mintlify", lens: "offer", why: "Free for open source path as a lead magnet for the team-tier upgrade. Long activation window, high conversion." },
+    ],
     lastVerified: LAST_VERIFIED,
   },
 ];
@@ -3000,4 +3150,59 @@ export function getSwipeFileBySlug(
   slug: string,
 ): SwipeFileEntry | undefined {
   return SWIPE_FILE_ENTRIES.find((e) => e.slug === slug);
+}
+
+/**
+ * Shape returned by resolveSwipeFileTeardownRef. Carries everything the
+ * detail-page render needs without re-walking the FunnelTeardown object.
+ */
+export interface ResolvedSwipeFileTeardownRef {
+  ref: SwipeFileTeardownRef;
+  teardownSlug: string;
+  displayName: string;
+  oneLine: string;
+  patternName: string;
+  analysis: string;
+  url: string;
+}
+
+/**
+ * Resolve a SwipeFileTeardownRef into the renderable shape: the
+ * teardown's display name, its one-line summary, the relevant lens's
+ * pattern name + analysis paragraph, and the canonical URL. Returns
+ * undefined if the teardown slug doesn't resolve (defensive – the
+ * curated data should never produce this in practice).
+ *
+ * Reads from the canonical teardown set, so editing a teardown's
+ * analysis automatically updates every swipe-file page that cites it.
+ */
+export function resolveSwipeFileTeardownRef(
+  ref: SwipeFileTeardownRef,
+): ResolvedSwipeFileTeardownRef | undefined {
+  const t = getTeardownBySlug(ref.teardownSlug);
+  if (!t) return undefined;
+  const lensBlock = t[ref.lens];
+  return {
+    ref,
+    teardownSlug: t.slug,
+    displayName: t.displayName,
+    oneLine: t.oneLine,
+    patternName: lensBlock.pattern,
+    analysis: lensBlock.analysis,
+    url: `/funnel-teardown/${t.slug}`,
+  };
+}
+
+/**
+ * Resolve all real-example refs for a swipe-file entry, dropping any
+ * that fail to resolve (so the render is robust to data drift).
+ */
+export function resolveSwipeFileRealExamples(
+  entry: SwipeFileEntry,
+): ReadonlyArray<ResolvedSwipeFileTeardownRef> {
+  return entry.realExamples
+    .map((r) => resolveSwipeFileTeardownRef(r))
+    .filter(
+      (x): x is ResolvedSwipeFileTeardownRef => x !== undefined,
+    );
 }

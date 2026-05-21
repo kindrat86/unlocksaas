@@ -158,6 +158,7 @@ import {
   SWIPE_FILE_ENTRIES,
   type SwipeFileEntry,
   getSwipeFileBySlug,
+  resolveSwipeFileRealExamples,
 } from "@/lib/swipe-files";
 
 /**
@@ -2115,6 +2116,17 @@ function buildSwipeFileMarkdown(s: SwipeFileEntry): string {
       : "_No related glossary terms documented._";
   const faqs = s.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
 
+  const realExamples = resolveSwipeFileRealExamples(s);
+  const realExamplesBlock =
+    realExamples.length > 0
+      ? realExamples
+          .map(
+            (r) =>
+              `### [${r.displayName}](${BASE_URL}${r.url}) – ${r.patternName}\n\n_${r.oneLine}_\n\n**Why this is a reference for ${s.element}.** ${r.ref.why}\n\n**From the ${r.ref.lens} lens analysis.** ${r.analysis}`,
+          )
+          .join("\n\n")
+      : "_No real-example citations curated for this swipe file._";
+
   return `# ${s.displayName}
 
 > ${s.tldr}
@@ -2138,6 +2150,10 @@ ${examples}
 ## Common implementation mistakes
 
 ${mistakes}
+
+## Real examples from indie SaaS teardowns
+
+${realExamplesBlock}
 
 ## Related terms
 

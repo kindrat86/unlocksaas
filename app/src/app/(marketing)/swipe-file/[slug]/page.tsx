@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   SWIPE_FILE_SLUGS,
   getSwipeFileBySlug,
+  resolveSwipeFileRealExamples,
   type SwipeFileEntry,
 } from "@/lib/swipe-files";
 import { getGlossaryBySlug } from "@/lib/glossary";
@@ -196,6 +197,8 @@ export default async function SwipeFileDetailPage(props: {
     })
     .filter((x): x is { slug: string; term: string } => x !== null);
 
+  const realExamples = resolveSwipeFileRealExamples(e);
+
   return (
     <article className="min-h-screen">
       <JsonLdBlock json={articleJson} />
@@ -362,6 +365,69 @@ export default async function SwipeFileDetailPage(props: {
           ))}
         </ul>
       </section>
+
+      {realExamples.length > 0 ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-8"
+          aria-labelledby="real-examples"
+        >
+          <h2
+            id="real-examples"
+            className="text-2xl font-bold mb-4 leading-tight"
+          >
+            Real examples from indie SaaS teardowns
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            Pattern names above are illustrative. These are real,
+            named, dated funnels from the Unlock SaaS teardown set
+            where the {e.element} demonstrates the pattern in a
+            shipping product. Funnel-hack the real ones.
+          </p>
+          <ul className="space-y-4">
+            {realExamples.map((r) => (
+              <li key={`${r.teardownSlug}-${r.ref.lens}`}>
+                <Card>
+                  <CardContent className="pt-6">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
+                      {r.ref.lens} lens
+                    </p>
+                    <h3 className="text-lg font-semibold mb-1 leading-tight">
+                      <Link
+                        href={r.url}
+                        className="text-primary hover:underline"
+                      >
+                        {r.displayName}
+                      </Link>
+                      {" "}
+                      <span className="text-foreground font-normal italic">
+                        – {r.patternName}
+                      </span>
+                    </h3>
+                    <p className="text-xs text-muted-foreground italic leading-relaxed mb-3">
+                      {r.oneLine}
+                    </p>
+                    <p className="text-sm text-foreground leading-relaxed mb-3">
+                      {r.ref.why}
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      From the teardown:{" "}
+                      <span className="italic">{r.analysis}</span>
+                    </p>
+                    <p className="mt-3">
+                      <Link
+                        href={r.url}
+                        className="text-xs text-primary hover:underline"
+                      >
+                        Read the full {r.displayName} teardown →
+                      </Link>
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section
         className="max-w-3xl mx-auto px-6 py-8"
