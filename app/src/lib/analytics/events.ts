@@ -121,6 +121,16 @@ export const Event = {
   // called out as a gap in the Surface-13 audit row.
   GscSearchQueryObserved: "gsc_search_query_observed",
   GscFeedbackSynced: "gsc_feedback_synced",
+
+  // LLM-citation tracker (server-side, weekly cron at 09:00 UTC Mon —
+  // /api/cron/llmo-citations). One `LlmoCitationWon` per (query,
+  // provider) pair where unlocksaas.com appeared as a citation, so a
+  // PostHog dashboard can chart "Brunson framework software for indie
+  // SaaS founders" citation share over time. One `LlmoCitationsSynced`
+  // summary per tick (success/skip/error counts). Closes the GEO/AEO/
+  // LLMO measurement loop called out in the 2026 trend research.
+  LlmoCitationWon: "llmo_citation_won",
+  LlmoCitationsSynced: "llmo_citations_synced",
 } as const;
 
 export type EventName = (typeof Event)[keyof typeof Event];
@@ -352,4 +362,43 @@ export interface GscFeedbackSyncedProps {
   top_query?: string;
   /** Worst-CTR query in the window (omitted when zero rows). */
   worst_ctr_query?: string;
+}
+
+// ── LLM-citation tracker ──────────────────────────────────────────────
+// Mirrors `llmo_citations` rows for the PostHog side of the dashboard.
+// Fired by /api/cron/llmo-citations every Monday 09:00 UTC.
+
+/** Server-side distinct id used by the LLMO cron (matches gsc pattern). */
+export const LLMO_DISTINCT_ID = "server:llmo";
+
+export interface LlmoCitationWonProps {
+  /** Q01..Q20 — matches strategy/llmo/priority-queries.csv. */
+  query_id: string;
+  /** The exact prompt text sent to the provider. */
+  query_text: string;
+  /** openai | perplexity | anthropic | google. */
+  provider: string;
+  /** Provider-specific model identifier. */
+  model: string;
+  /** 1-based ordinal among cited sources, null if cited without rank. */
+  rank_in_answer: number | null;
+  /** True when the response body also mentions the brand verbatim. */
+  brand_mentioned: boolean;
+}
+
+export interface LlmoCitationsSyncedProps {
+  /** Total provider responses inserted into llmo_citations this tick. */
+  inserted: number;
+  /** Total provider calls that errored or returned an empty body. */
+  failed: number;
+  /** How many of the 20 queries ran. */
+  queries: number;
+  /** Comma-joined list of providers used (e.g. "openai,perplexity"). */
+  providers_used: string;
+  /** Comma-joined list of providers skipped (no API key configured). */
+  providers_skipped: string;
+  /** Count of rows where unlocksaas.com was cited this tick. */
+  citations_won: number;
+  /** Wall-clock duration of the cron tick, milliseconds. */
+  elapsed_ms: number;
 }
