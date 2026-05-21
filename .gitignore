@@ -22,3 +22,6 @@ monitoring/dashboard.html
 .vercel
 .forks/
 .env*.local
+
+# Supabase CLI per-machine cache (project-ref, pooler URL, version metadata)
+supabase/.temp/
