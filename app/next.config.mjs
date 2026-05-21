@@ -7,14 +7,24 @@ const nextConfig = {
    * c2pa-node native module handling.
    *
    * c2pa-node ships native .node binaries that need to be externalized
-   * from the bundle. This ensures they're loaded at runtime rather than
-   * bundled with the code. Turbopack doesn't support native modules yet,
-   * so we configure webpack to handle them properly.
+   * from the server bundle so the binary is required at runtime rather
+   * than bundled. Two mechanisms are required:
    *
-   * See: https://nextjs.org/docs/architecture/turbopack#known-issues
+   * 1. `serverExternalPackages` — the Next 16 / Turbopack-aware setting.
+   *    This is the authoritative config for both Turbopack and webpack
+   *    builds. Without it, Turbopack fails with:
+   *      "non-ecmascript placeable asset -- asset is not placeable in
+   *       ESM chunks, so it doesn't have a module id"
+   *
+   * 2. `webpack.externals` — kept as defence-in-depth for any build path
+   *    that falls through to webpack (e.g. a future `--no-turbopack` flag
+   *    in local dev). Harmless when Turbopack is active.
+   *
+   * See: https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages
    */
+  serverExternalPackages: ["c2pa-node"],
   webpack: (config, { isServer }) => {
-    // Mark c2pa-node as external so webpack doesn't try to bundle it
+    // Defence-in-depth: also mark external for webpack codepath.
     if (isServer) {
       config.externals = [...(config.externals || []), "c2pa-node"];
     }
