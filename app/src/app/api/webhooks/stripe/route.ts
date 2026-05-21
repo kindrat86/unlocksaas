@@ -297,6 +297,16 @@ async function handleCheckoutSessionCompleted(
     });
   }
 
+  // FUNNELFIXER WORKFLOW: Signal early exit for any FunnelFixer reengagement
+  // workflow waiting on conversion. This is fire-and-forget; if the subscriber
+  // is not in an active workflow, the resumeHook call is a no-op.
+  await maybeSignalFunnelfixerConversion(email).catch((err) => {
+    console.warn(
+      `[stripe-webhook] funnelfixer conversion signal error for ${email}:`,
+      err
+    );
+  });
+
   // Land the user where the Stripe success_url already pointed them:
   //   Starter (mode=payment)      → /oto → /playbook (auth-gated)
   //   Core    (mode=subscription) → /onboarding (auth-gated)
@@ -1086,6 +1096,78 @@ async function notifyAffiliateOfCommission(
     console.error(
       `[affiliate] notify email failed for ${affiliateId}:`,
       err instanceof Error ? err.message : err,
+    );
+  }
+}
+
+// ── FunnelFixer reengagement workflow integration ────────────────────────────
+//
+// When a FunnelFixer subscriber completes a checkout (converts), signal the
+// reengagement workflow to exit early. The workflow can skip the grace period
+// and testimonial offer since the user is now a paying customer.
+//
+// This is a best-effort async operation; failures don't block the checkout
+// completion. The function queries for a matching FunnelFixer subscriber by
+// email and calls the /api/workflow/funnelfixer/graduate endpoint.
+async function maybeSignalFunnelfixerConversion(email: string) {
+  const supabase = createAdminClient();
+
+  // Check if this email is in the FunnelFixer cohort (source ILIKE 'funnelfixer_%')
+  // and has an active workflow (status = 'active' or 'paused').
+  const { data: rows, error } = await supabase
+    .from("soap_opera_subscribers")
+    .select("id")
+    .eq("email", email)
+    .ilike("source", "funnelfixer_%")
+    .in("status", ["paused", "active"])
+    .limit(1);
+
+  if (error) {
+    console.warn("[stripe-webhook] funnelfixer lookup error:", error.message);
+    return;
+  }
+
+  if (!rows || rows.length === 0) {
+    // Not a FunnelFixer subscriber, or already completed/bounced.
+    return;
+  }
+
+  const subscriberId = rows[0].id;
+
+  // Call the graduate endpoint to resume the converted hook.
+  // This is fire-and-forget; if the hook isn't active, it's a no-op.
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL || "https://unlocksaas.com";
+    const response = await fetch(
+      `${baseUrl}/api/workflow/funnelfixer/graduate`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subscriberId,
+          convertedAt: new Date().toISOString(),
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      console.warn(
+        "[stripe-webhook] funnelfixer-graduate failed:",
+        response.status,
+        response.statusText
+      );
+      return;
+    }
+
+    console.log("[stripe-webhook] funnelfixer-converted hook resumed", {
+      subscriberId,
+      email,
+    });
+  } catch (err) {
+    console.warn(
+      "[stripe-webhook] funnelfixer-graduate fetch error:",
+      err instanceof Error ? err.message : err
     );
   }
 }
