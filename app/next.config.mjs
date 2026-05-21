@@ -1,4 +1,3 @@
-import { withWorkflow } from "workflow/next";
 import { withBotId } from "botid/next/config";
 
 /** @type {import('next').NextConfig} */
@@ -471,4 +470,4 @@ const nextConfig = {
  * See https://useworkflow.dev for the API reference and
  * node_modules/@workflow/next/docs/next.mdx for setup.
  */
-export default withBotId(withWorkflow(nextConfig));
+export default withBotId(nextConfig);

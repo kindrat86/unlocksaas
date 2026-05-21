@@ -34,11 +34,11 @@
  * row on revisit so the founder never re-runs the same generation on F5.
  */
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getAnthropic } from "@/lib/anthropic";
+import { streamText } from "ai";
+import { model } from "@/lib/anthropic";
 
 export const FIRST_WIN_AGENT_KIND = "first_win_starter" as const;
 
-const MODEL = "claude-sonnet-4-6";
 const MAX_TOKENS_AC = 1800;
 const MAX_TOKENS_SOS = 1600;
 
@@ -234,7 +234,7 @@ Do not include any preamble. Respond with ONLY the email markdown.`;
 export async function* streamFirstWin(
   input: FirstWinInput
 ): AsyncGenerator<FirstWinEvent, void, unknown> {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.VERCEL_OIDC_TOKEN && !process.env.AI_GATEWAY_API_KEY) {
     yield {
       type: "error",
       message:
@@ -263,22 +263,16 @@ export async function* streamFirstWin(
   let acDraft = "";
   try {
     const { system, user } = acPrompt(input);
-    const stream = getAnthropic().messages.stream({
-      model: MODEL,
-      max_tokens: MAX_TOKENS_AC,
+    const acStream = streamText({
+      model,
+      maxOutputTokens: MAX_TOKENS_AC,
       system,
-      messages: [{ role: "user", content: user }],
+      prompt: user,
     });
 
-    for await (const event of stream) {
-      if (
-        event.type === "content_block_delta" &&
-        event.delta.type === "text_delta"
-      ) {
-        const text = event.delta.text;
-        acDraft += text;
-        yield { type: "token", section: "ac", text };
-      }
+    for await (const textDelta of acStream.textStream) {
+      acDraft += textDelta;
+      yield { type: "token", section: "ac", text: textDelta };
     }
     acDraft = acDraft.trim();
     if (!acDraft) {
@@ -307,22 +301,16 @@ export async function* streamFirstWin(
   let sosDraft = "";
   try {
     const { system, user } = sosPrompt(input, acDraft);
-    const stream = getAnthropic().messages.stream({
-      model: MODEL,
-      max_tokens: MAX_TOKENS_SOS,
+    const sosStream = streamText({
+      model,
+      maxOutputTokens: MAX_TOKENS_SOS,
       system,
-      messages: [{ role: "user", content: user }],
+      prompt: user,
     });
 
-    for await (const event of stream) {
-      if (
-        event.type === "content_block_delta" &&
-        event.delta.type === "text_delta"
-      ) {
-        const text = event.delta.text;
-        sosDraft += text;
-        yield { type: "token", section: "sos1", text };
-      }
+    for await (const textDelta of sosStream.textStream) {
+      sosDraft += textDelta;
+      yield { type: "token", section: "sos1", text: textDelta };
     }
     sosDraft = sosDraft.trim();
     if (!sosDraft) {
