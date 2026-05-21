@@ -66,7 +66,24 @@ done.
 
 ### Tier 1 — blocks revenue today
 
-1. **Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel** (all
+1. **Generate + push `AI_GATEWAY_API_KEY` to Vercel** (all 3 environments).
+
+   Generate a key at: https://vercel.com/[team]/~/ai-gateway/api-keys
+   Then push to all three environments:
+
+   ```bash
+   vercel env add AI_GATEWAY_API_KEY production
+   # CLI bug for preview: use Vercel dashboard or REST API (see feedback_vercel_cli_preview_env_bug.md)
+   vercel env add AI_GATEWAY_API_KEY development
+   ```
+
+   Until set, all LLM calls fall back to direct Anthropic via `ANTHROPIC_API_KEY`
+   (safe zero-state -- no revenue impact). When set, all calls route through
+   Vercel AI Gateway with token observability in the Vercel dashboard (AI > Observability).
+   Model fallback chain: Claude Sonnet 4.6 (primary) -- gateway auto-retries
+   across Anthropic direct, Bedrock Anthropic, and Vertex Anthropic on failure.
+
+2. **Generate + push `CRON_SECRET` and `UNSUBSCRIBE_SECRET` to Vercel** (all
    3 environments — production, preview, development).
 
    Per the secret-entry convention (locked 2026-05-17 after the zsh-leak

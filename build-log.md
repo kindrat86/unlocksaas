@@ -43,6 +43,45 @@ No CMS. No database. The JSON file and the git history are the full record.
 
 ---
 
+## Vercel AI Gateway wiring for diagnostic + engine LLM routes -- 2026-05-21
+
+**Status: SHIPPED**
+**Branch:** feat/ai-gateway-diagnostic
+
+### What changed
+
+All LLM calls route through Vercel AI Gateway when `AI_GATEWAY_API_KEY` is set.
+Fallback to direct Anthropic (via `ANTHROPIC_API_KEY`) when the gateway key is absent -- safe zero-state, no revenue impact.
+
+### Files changed (4)
+
+- `app/src/lib/anthropic.ts` -- `getAnthropic()` singleton now checks `AI_GATEWAY_API_KEY` first; sets `baseURL: 'https://ai-gateway.vercel.sh'` when present. Added `primaryModel()` helper that returns `'anthropic/claude-sonnet-4-6'` (gateway format) or `'claude-sonnet-4-6'` (direct format). Added `FALLBACK_MODEL` export (`anthropic/claude-haiku-4.5`) for future per-request fallback chains.
+- `app/src/lib/diagnostic.ts` -- `classifyPageText()` and `deepAnalyzePageText()` both use `primaryModel()` instead of hardcoded `"claude-sonnet-4-6"`.
+- `app/src/app/api/engine/route.ts` -- `validationResponse` and `assemblyResponse` both use `primaryModel()`.
+- `app/src/lib/agents.ts` -- Removed module-level `MODEL` constant; `callLLM()` and `persistAgentRun()` both use `primaryModel()`.
+
+### Models
+
+- Primary: `anthropic/claude-sonnet-4-6` (same capability, routed via gateway)
+- Fallback: Gateway auto-retries across Anthropic direct, Bedrock Anthropic, and Vertex Anthropic on provider failure. Per-request `models` fallback array (gateway `providerOptions`) is only available via the Vercel AI SDK (`ai` package) -- not via the Anthropic Messages API compatibility layer used here. The FALLBACK_MODEL export is staged for a future migration.
+
+### Streaming
+
+Not applicable. All three routes (`/api/diagnostic`, `/api/engine`, `/api/engine/agent`) return JSON, not SSE. No streaming behavior to preserve.
+
+### Observability
+
+Once `AI_GATEWAY_API_KEY` is set in Vercel, all LLM token counts, latency, and model attempts appear in Vercel dashboard under AI > Observability. Provider failover metadata (`modelAttempts` array) is logged per request.
+
+### Env vars
+
+- `AI_GATEWAY_API_KEY` -- new. Added to `app/.env.local.example` with instructions. Added as Tier 1 item in `LAUNCH-READINESS.md`. Generate at: https://vercel.com/[team]/~/ai-gateway/api-keys
+
+### Trade-offs
+
+- Anthropic Messages API compatibility does not expose `providerOptions.gateway.models` for per-request fallback chains (that's AI SDK-only). Gateway still provides automatic provider-level failover (Anthropic direct --> Bedrock --> Vertex). A future migration to `ai` package + `@ai-sdk/anthropic` would unlock explicit `models` arrays.
+- The `primaryModel()` function is a runtime check (not build-time) so it incurs ~zero overhead per call on a singleton path.
+
 ## /vs/ comparison pages: ClickFunnels, ShipFast, DotCom Secrets -- 2026-05-21
 
 **Status: SHIPPED**
