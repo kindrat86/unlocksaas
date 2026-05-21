@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfileByUserId } from "@/lib/onboarding";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ChatSidebar } from "@/components/chat/chat-sidebar";
 import {
   Target,
   Gift,
@@ -29,11 +30,11 @@ const steps = [
 
 /**
  * Top-level layout component. Under Cache Components (Next 16+) this MUST
- * be synchronous and free of top-level dynamic-data reads; all of
- * `cookies()` / Supabase auth / profile reads happen inside the
- * Suspense-wrapped <PlaybookShell> below. The Suspense fallback is `null`
- * because the shell is mostly the sidebar — a flash of empty space is
- * preferable to a skeleton that doesn't match the final layout.
+ * be synchronous and free of top-level dynamic-data reads; all auth and
+ * Supabase profile reads happen inside the Suspense-wrapped PlaybookShell
+ * below. The Suspense fallback is null because the shell is mostly the
+ * sidebar -- a flash of empty space is preferable to a skeleton that
+ * doesn't match the final layout.
  */
 export default function PlaybookLayout({
   children,
@@ -222,6 +223,10 @@ async function PlaybookShell({
       <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
         {children}
       </main>
+
+      {/* Playbook Coach -- floating chat panel grounded in the 10 workbooks
+          and this founder's diagnostic. Auth is already confirmed above. */}
+      <ChatSidebar />
     </div>
   );
 }

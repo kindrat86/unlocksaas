@@ -4,11 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/build-workbook-bundle.mjs",
     "build": "next build",
     "start": "next start",
-    "validate:jsonld": "node scripts/validate-jsonld.mjs"
+    "validate:jsonld": "node scripts/validate-jsonld.mjs",
+    "workbooks:bundle": "node scripts/build-workbook-bundle.mjs"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.78",
+    "@ai-sdk/react": "^3.0.190",
     "@anthropic-ai/sdk": "^0.96.0",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -20,6 +24,7 @@
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.105.4",
     "@vercel/speed-insights": "^2.0.0",
+    "ai": "^6.0.188",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "geist": "^1.7.0",
