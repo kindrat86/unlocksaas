@@ -21,6 +21,7 @@ import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
 import {
   buildSpeakable,
   ACCESS_MODE_TEXTUAL,
@@ -306,6 +307,15 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
         </p>
       </header>
       <Separator className="my-2" />
+      {/* Direct answer – speakable verdict paragraph for AI Overviews,
+          Perplexity, ChatGPT browse, Claude search. Sits between the page
+          header and the TldrSummary key/value table. */}
+      <DirectAnswer
+        lastVerified={alt.lastVerified}
+        variant="verdict"
+      >
+        {alt.honestVerdict}
+      </DirectAnswer>
       <TldrSummary
         headingLabel={`${alt.displayName} key facts`}
         items={[

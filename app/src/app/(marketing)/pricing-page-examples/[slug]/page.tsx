@@ -14,6 +14,7 @@ import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -208,6 +209,12 @@ export default async function PricingPagePatternDetailPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      {/* Direct answer – speakable TL;DR paragraph for AI Overviews,
+          Perplexity, ChatGPT browse, Claude search. */}
+      <DirectAnswer lastVerified={e.lastVerified} variant="tldr">
+        {e.tldr}
+      </DirectAnswer>
 
       <TldrSummary
         headingLabel={`${e.displayName} TL;DR`}

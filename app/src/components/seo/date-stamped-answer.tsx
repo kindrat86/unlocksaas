@@ -54,7 +54,9 @@ export type DateStampedVariant =
   | "definition"
   | "benchmark"
   | "diagnosis"
-  | "verdict";
+  | "verdict"
+  | "tldr"
+  | "takeaway";
 
 const LEAD_PHRASES: Record<DateStampedVariant, string> = {
   answer: "the answer is",
@@ -62,6 +64,8 @@ const LEAD_PHRASES: Record<DateStampedVariant, string> = {
   benchmark: "the benchmark is",
   diagnosis: "the diagnosis is",
   verdict: "the verdict is",
+  tldr: "the short version is",
+  takeaway: "the takeaway is",
 };
 
 export interface DateStampedAnswerProps {

@@ -15,6 +15,7 @@ import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
 import {
   buildSpeakable,
   ACCESS_MODE_TEXTUAL,
@@ -261,6 +262,11 @@ export default async function PostMortemPage(props: {
         </p>
       </header>
       <Separator className="my-2" />
+      {/* Direct answer – speakable takeaway paragraph for AI Overviews,
+          Perplexity, ChatGPT browse, Claude search. */}
+      <DirectAnswer lastVerified={p.lastVerified} variant="takeaway">
+        {p.tldr}
+      </DirectAnswer>
       {/* TL;DR */}
       <TldrSummary
         headingLabel={`${p.displayName} post-mortem TL;DR`}

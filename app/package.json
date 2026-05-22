@@ -9,6 +9,7 @@
     "audit:prod": "npm audit --omit=dev --audit-level=low",
     "start": "next start",
     "validate:jsonld": "node scripts/validate-jsonld.mjs",
+    "audit:tldr": "node scripts/audit-direct-answers.mjs",
     "workbooks:bundle": "node scripts/build-workbook-bundle.mjs"
   },
   "dependencies": {

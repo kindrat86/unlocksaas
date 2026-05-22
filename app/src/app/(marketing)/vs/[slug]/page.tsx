@@ -19,6 +19,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { deriveComparisonRatings } from "@/lib/seo/review-rating";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
 import {
   buildSpeakable,
   ACCESS_MODE_TEXTUAL,
@@ -451,6 +452,15 @@ export default async function ComparePage(props: { params: Promise<RouteParams> 
         </p>
       </header>
       <Separator className="my-2" />
+      {/* Direct answer – speakable verdict paragraph for AI Overviews,
+          Perplexity, ChatGPT browse, Claude search. Sits between the page
+          header and the TldrSummary key/value table. */}
+      <DirectAnswer
+        lastVerified={c.lastVerified}
+        variant="verdict"
+      >
+        {c.tldr}
+      </DirectAnswer>
       {/* TL;DR – structured key/value summary for AI summarizers + voice engines */}
       <TldrSummary
         headingLabel={`${c.a.name} vs ${c.b.name} TL;DR`}
