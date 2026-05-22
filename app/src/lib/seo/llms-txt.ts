@@ -45,6 +45,7 @@ Unlock SaaS is a guided seven-step system that names one real person, writes one
 - [The $1 Starter funnel](${BASE_URL}/starter): The entry rung. A real Stripe charge proves intent and unlocks Playbook Steps 1 and 2 – pin one real customer, write one real offer.
 - [The Playbook ($49/month)](${BASE_URL}/playbook-sales): The full seven-step system. 60-day money-back guarantee tied to the first verified Stripe payment.
 - [Verified Builders](${BASE_URL}/builders): Founders whose first paying customer was verified inside Stripe, not self-reported. Directory grows only when Stripe confirms the cycle.
+- [Verified Builders cohorts (quarterly)](${BASE_URL}/cohort): Time-segmented view of the Verified Builders directory bucketed by the calendar quarter the first Stripe-verified customer cleared. Each /cohort/<YYYY-qN> URL is a permanent class-of-the-quarter history record plus a recruiting page for the open window. Members are read live from builder_badges; pre-launch quarters render honest empty states.
 - [Repeatable Revenue (Rung 2 spec)](${BASE_URL}/repeatable): Published specification for the next product. Build is gated on three Core customer cycles completing.
 
 ## Trust and E-E-A-T surfaces

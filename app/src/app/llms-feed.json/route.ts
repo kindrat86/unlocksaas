@@ -36,6 +36,7 @@ import { ANSWER_SLUGS } from "@/lib/answers";
 import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
+import { COHORT_SLUGS } from "@/lib/cohorts";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -154,6 +155,7 @@ const PSEO_COUNTS = Object.freeze({
   shouldI: SHOULD_I_SLUGS.length,
   swipeFile: SWIPE_FILE_SLUGS.length,
   mcpTools: MCP_TOOL_SLUGS.length,
+  cohort: COHORT_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -173,7 +175,8 @@ const PSEO_TOTAL =
   PSEO_COUNTS.answers +
   PSEO_COUNTS.shouldI +
   PSEO_COUNTS.swipeFile +
-  PSEO_COUNTS.mcpTools;
+  PSEO_COUNTS.mcpTools +
+  PSEO_COUNTS.cohort;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -429,6 +432,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Per-funnel-element copy and UI pattern libraries (hero headline, hero subhead, CTA button, pricing table, testimonial block, exit-intent popup, post-purchase upsell, social proof bar, money-back guarantee, founder letter, FAQ section, urgency/scarcity, checkout, thank-you page, value stack, order bump, welcome email, abandoned cart email, waitlist signup, lead magnet opt-in). Each page ships 12 named patterns with formulas, examples, and structural notes, mapped to Russell Brunson's Hook / Story / Offer lens.",
     slugs: SWIPE_FILE_SLUGS,
     count: PSEO_COUNTS.swipeFile,
+  },
+  cohort: {
+    hub: "/cohort",
+    slugPattern: "/cohort/{YYYY-qN}",
+    markdownPattern: null,
+    description:
+      "Quarterly Verified Builders cohort pages. Each /cohort/<YYYY-qN> URL bundles the founders who shipped a Stripe-verified first paying customer inside the calendar quarter. Members are read from the builder_badges view bounded by the quarter window; pre-launch quarters render polarity empty states (no fabricated counts). Article + Event + CollectionPage + ItemList + BreadcrumbList JSON-LD per detail. Greg Isenberg community-moat overlay: time-segmented social-proof bundle plus permanent recruiting page per quarter.",
+    slugs: COHORT_SLUGS,
+    count: PSEO_COUNTS.cohort,
   },
   answers: {
     hub: "/answers",

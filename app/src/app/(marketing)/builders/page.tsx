@@ -408,6 +408,17 @@ export default async function BuildersDirectoryPage() {
             </Link>
             .
           </p>
+          <p className="leading-relaxed">
+            See the directory by quarter:{" "}
+            <Link
+              href="/cohort"
+              className="underline underline-offset-4 text-foreground hover:text-foreground"
+            >
+              Verified Builders cohorts
+            </Link>
+            . Each /cohort/&lt;YYYY-qN&gt; URL is the permanent class-of-the-quarter
+            record for the founders who shipped a Stripe-verified customer inside the window.
+          </p>
           <p className="text-xs leading-relaxed">
             Every row above is opt-in — verified builders flip{" "}
             <code className="text-foreground">share_visibility</code> to public

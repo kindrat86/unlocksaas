@@ -25,6 +25,7 @@ import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { OUTCOME_SLUGS } from "@/lib/outcomes";
 import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
+import { COHORT_SLUGS } from "@/lib/cohorts";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
@@ -910,6 +911,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.45,
       alternates: hreflang(`${base}/partners/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #19 – quarterly Verified Builders cohorts.
+    // Data source: src/lib/cohorts.ts. Greg Isenberg community-moat
+    // overlay (project_unlocksaas_isenberg_playbook): time-segmented
+    // social-proof bundle + permanent recruiting page per quarter. Each
+    // /cohort/<YYYY-qN> URL keeps earning links after the quarter closes
+    // because it is the canonical history record for the class. Members
+    // are read from the `builder_badges` view bounded by the quarter
+    // window; pre-launch the pages render polarity empty states (no
+    // fabricated counts). Article + Event + CollectionPage + ItemList +
+    // BreadcrumbList JSON-LD per detail.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/cohort`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/cohort`),
+    },
+    ...COHORT_SLUGS.map((slug) => ({
+      url: `${base}/cohort/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/cohort/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
