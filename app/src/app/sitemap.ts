@@ -28,7 +28,10 @@ import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
 import { COHORT_SLUGS } from "@/lib/cohorts";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
-import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
+import {
+  FOUNDERS_DIARY_SLUGS,
+  liveEpisodesWithTranscript,
+} from "@/lib/youtube";
 import { DIARY_DATES } from "@/lib/founder-diary";
 import { allCitationIds } from "@/lib/citations";
 import {
@@ -1367,6 +1370,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.45,
       alternates: hreflang(`${base}/youtube/${slug}`),
+    })),
+    // Per-episode transcript pages (VEO/AEO uplift). Mirrors the podcast
+    // transcript shape at /podcast/<slug>/transcript. Schema.org
+    // VideoObject.transcript points at these URLs; AI summarisers and
+    // voice engines follow them to pull verbatim text without re-
+    // transcribing the video. Brunson Hard-Rule: only emit URLs for
+    // episodes with status="live" AND a hand-pasted transcript field,
+    // so we never advertise a phantom URL.
+    //   - /youtube/<slug>/transcript at 0.42 matches /podcast/<slug>/
+    //     transcript – sibling AEO surface.
+    //   - /youtube/<slug>/transcript/md at 0.35 matches the markdown
+    //     mirror tier (machine-readable, lower than HTML siblings).
+    ...liveEpisodesWithTranscript().map((ep) => ({
+      url: `${base}/youtube/${ep.slug}/transcript`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.42,
+      alternates: hreflang(`${base}/youtube/${ep.slug}/transcript`),
+    })),
+    ...liveEpisodesWithTranscript().map((ep) => ({
+      url: `${base}/youtube/${ep.slug}/transcript/md`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.35,
     })),
     // Alexa Flash Briefing JSON feed (VEO uplift landing 2026-05-21).
     // Documented at strategy/voice-assistants-playbook.md. Listed in

@@ -1371,14 +1371,17 @@ export type VideoSchemaInput = {
   durationISO8601?: string; // e.g. "PT4M30S"
   contentUrl?: string;
   embedUrl?: string;
-  /** URL of a transcript document. Honored only when `transcriptText`
-   *  is unset – inline text takes precedence because it is what voice
-   *  engines and AI summarisers cite verbatim. */
+  /** URL of a transcript document. Schema.org permits URL on
+   *  `VideoObject.transcript` (alongside Text and MediaObject). When the
+   *  caller pairs this with `transcriptText`, both ship as an array so
+   *  AI retrievers can walk the URL to a richer Article surface AND
+   *  voice/summariser engines still get the inline verbatim citation. */
   transcriptUrl?: string;
   /** Inline verbatim transcript text. Schema.org permits Text on the
-   *  `VideoObject.transcript` field (alongside URL and MediaObject), and
-   *  inline text is the strongest signal for AI Overview citations and
-   *  voice-engine readouts because it removes the second-hop fetch. */
+   *  `VideoObject.transcript` field. Inline text is the strongest signal
+   *  for AI Overview citations and voice-engine readouts because it
+   *  removes the second-hop fetch. Emitted alongside `transcriptUrl`
+   *  when both are provided. */
   transcriptText?: string;
   /** Optional stable @id anchor so other schemas (Article, WebPage,
    *  Service) can cross-reference this VideoObject as a connected node
@@ -1390,7 +1393,23 @@ export type VideoSchemaInput = {
 }
 
 function buildVideoJson(input: VideoSchemaInput): string {
-  const transcript = input.transcriptText ?? input.transcriptUrl;
+  // Schema.org VideoObject.transcript accepts Text, URL, or MediaObject –
+  // and is multi-valued. When the caller has both a transcript URL (a
+  // dedicated transcript page with Article schema + breadcrumb) AND
+  // inline verbatim text, we ship both as an array so:
+  //   - AI retrievers and AEO crawlers walk the URL to a richer entity
+  //   - voice engines and inline summarisers still cite verbatim text
+  // Single-value callers (the common case) keep emitting a string.
+  const transcriptValues: string[] = [];
+  if (input.transcriptUrl) transcriptValues.push(input.transcriptUrl);
+  if (input.transcriptText) transcriptValues.push(input.transcriptText);
+  const transcript =
+    transcriptValues.length === 0
+      ? undefined
+      : transcriptValues.length === 1
+        ? transcriptValues[0]
+        : transcriptValues;
+
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "VideoObject",
@@ -1405,7 +1424,7 @@ function buildVideoJson(input: VideoSchemaInput): string {
     ...(input.durationISO8601 ? { duration: input.durationISO8601 } : {}),
     ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
     ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
-    ...(transcript ? { transcript } : {}),
+    ...(transcript !== undefined ? { transcript } : {}),
   });
 }
 
