@@ -120,6 +120,16 @@ The diagnostic flow is identical across surfaces: the GPT Action calls POST /api
 - Per-term pages at \`${BASE_URL}/glossary/<slug>\` – hook, story, offer, big-domino, value-ladder, stack-slide, perfect-webinar, soap-opera-sequence, seinfeld-email, reluctant-hero, dream-100, wrong-person, weak-offer, weak-belief, verified-builder, brunson-hard-rule.
 - Audio versions of every term ship as TTS-rendered MP3 episodes – inline player on each detail page (\`AudioObject\` JSON-LD anchored to the page's Article \`@id\` via \`isPartOf\`), plus an RSS 2.0 + iTunes-namespace podcast feed at [\`${BASE_URL}/glossary/podcast.xml\`](${BASE_URL}/glossary/podcast.xml) discoverable by Apple Podcasts, Spotify, Google Podcasts, Pocket Casts, and AI audio-search pipelines (Whisper-based crawlers, Google's audio carousel). The visible long-form glossary page is the canonical transcript for every episode. Empty episode list until the operator runs \`scripts/generate-glossary-audio.py\`; no fabricated audio surfaces.
 
+## Free SaaS calculators
+
+- [Free tools hub](${BASE_URL}/tools): Five free SaaS unit-economics calculators. No email gate, no signup wall. Pure browser math; same formulas the $49 Playbook walks paid customers through.
+- Per-calculator pages at \`${BASE_URL}/tools/<slug>\`:
+  - [/tools/ltv-calculator](${BASE_URL}/tools/ltv-calculator): Customer lifetime value from ARPU, gross margin, and monthly churn. Formula: LTV = (ARPU × Gross Margin) / Monthly Churn.
+  - [/tools/churn-cost-calculator](${BASE_URL}/tools/churn-cost-calculator): Monthly + annual revenue lost to churn at current customer count and ARPU. Formula: Monthly $ lost = Customers × Churn × ARPU.
+  - [/tools/revenue-projector](${BASE_URL}/tools/revenue-projector): Twelve-month MRR projection from starting customers, monthly new-customer rate, monthly churn, and ARPU. Surfaces the steady-state cap where new acquisitions equal customers lost.
+  - [/tools/cac-payback-calculator](${BASE_URL}/tools/cac-payback-calculator): Months until a paid customer recovers their acquisition cost. Formula: Payback = CAC / (ARPU × Gross Margin). Zone semantics: <12mo healthy, 12-18 yellow, >18 unprofitable.
+  - [/tools/pricing-power-calculator](${BASE_URL}/tools/pricing-power-calculator): Side-by-side comparison of two prices on LTV, CAC payback, and LTV-to-CAC ratio. Shows what a price change actually does to unit economics.
+
 ## Programmatic SEO surfaces – panic-mode diagnostics
 
 - [Why isn't my funnel converting hub](${BASE_URL}/why-isnt-my): Eight per-element diagnostic pages for indie SaaS founders. Each labels the issue as Wrong Person, Weak Offer, or Weak Belief, names the most common cause, and gives the one fix to ship this week.

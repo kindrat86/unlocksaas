@@ -25,6 +25,7 @@ import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { OUTCOME_SLUGS } from "@/lib/outcomes";
 import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
+import { TOOL_SLUGS } from "@/lib/tools-catalog";
 import { COHORT_SLUGS } from "@/lib/cohorts";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
@@ -99,6 +100,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/dont-buy-unlock-saas",
     "/four-indie-search-engines",
     "/state-of-saas",
+    // /tools – free SaaS calculator hub (2026-05-22 editorial-backlink
+    // play). Dedicated card surfaces the headline "five calculators,
+    // no email gate" claim that earns the share.
+    "/tools",
   ]);
   const DEDICATED_OG_DETAIL_PATTERNS: ReadonlyArray<RegExp> = [
     /^\/alternatives-to\/[^/]+$/,
@@ -124,6 +129,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // number without clicking. Pattern matches /state-of-saas/2026,
     // /state-of-saas/2027, etc.
     /^\/state-of-saas\/\d{4}$/,
+    // /tools/<slug> – per-calculator dedicated cards (LTV, churn cost,
+    // revenue projector, CAC payback, pricing power). Each card surfaces
+    // its own headline + formula tagline so X / LinkedIn / Bluesky share
+    // previews don't collapse into the hub card.
+    /^\/tools\/[^/]+$/,
     // /builder/[slug] + /diagnosis/[id] also carry dedicated cards but
     // they are NOT sitemap-listed (Verified Builder backlink farm
     // discovery via inbound links only; diagnosis pages are per-user
@@ -1075,6 +1085,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
       alternates: hreflang(`${base}/four-indie-search-engines`),
     },
+    // -------------------------------------------------------------------------
+    // /tools – free SaaS calculator hub (2026-05-22 editorial-backlink play).
+    //
+    // Static pSEO surfaces earn citations; interactive calculators earn
+    // *editorial backlinks* (the cite-able kind: "use this LTV calculator
+    // to see how churn destroys SaaS unit economics"). One hub + five
+    // detail pages, each with a dedicated OG card + FAQPage JSON-LD.
+    //
+    // Priority alignment:
+    //   - /tools at 0.6 — same tier as /glossary, /benchmarks, /alternatives-to
+    //     hubs. Real conversion-supporting destination, not a thin index.
+    //   - /tools/<slug> at 0.55 — slightly above pSEO detail (0.5) because
+    //     the calculator pages are direct-answer surfaces with their own
+    //     unique formula card + FAQ trio + interactive widget. Each is a
+    //     ranking surface for its own commercial-intent head term
+    //     ("LTV calculator", "CAC payback period", etc.).
+    //
+    // Data source: src/lib/tools-catalog.ts. Adding a new calculator there
+    // auto-extends this block on the next build.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/tools`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/tools`),
+    },
+    ...TOOL_SLUGS.map((slug) => ({
+      url: `${base}/tools/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/tools/${slug}`),
+    })),
     {
       url: `${base}/contact`,
       lastModified: now,
