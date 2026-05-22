@@ -18,6 +18,7 @@ import { SCRIPT_SLUGS } from "@/lib/scripts";
 import { PRICING_PAGE_PATTERN_SLUGS } from "@/lib/pricing-page-examples";
 import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
+import { OUTCOME_SLUGS } from "@/lib/outcomes";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { allCitationIds } from "@/lib/citations";
@@ -730,6 +731,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/swipe-file/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #16 – outcome-promise landing pages.
+    // Data source: src/lib/outcomes.ts. Targets the canonical
+    // result-shaped Google query class the post-launch pre-revenue
+    // founder makes: "get first paying customer", "get to 1k mrr",
+    // "get 30 warm leads from cold outreach". URL shape preserves the
+    // outcome-as-one-segment ranking signal: /get-<slug> via a mixed
+    // static-dynamic folder name, NOT /get/<slug>. Article + HowTo +
+    // FAQPage + BreadcrumbList JSON-LD per detail page; CollectionPage +
+    // ItemList on the hub. Slightly higher priority than the niche
+    // cluster (0.55 vs 0.5) because outcome-shaped intent is more
+    // commercial than identity-shaped intent ("for course creators").
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/get`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/get`),
+    },
+    ...OUTCOME_SLUGS.map((slug) => ({
+      url: `${base}/get-${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/get-${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
