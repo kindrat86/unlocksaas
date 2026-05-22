@@ -363,6 +363,20 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level question + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /pt-BR/answers before flipping to approved.",
   },
   {
+    path: "/should-i",
+    locale: "es",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-22 (drafted by Claude per founder autonomous directive). Slug-level question + verdictHeadline + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /es/should-i before flipping to approved.",
+  },
+  {
+    path: "/should-i",
+    locale: "pt-BR",
+    status: "pending-review",
+    reviewNote:
+      "Chrome localized 2026-05-22 (drafted by Claude per founder autonomous directive). Slug-level question + verdictHeadline + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /pt-BR/should-i before flipping to approved.",
+  },
+  {
     path: "/why-isnt-my",
     locale: "es",
     status: "pending-review",

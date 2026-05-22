@@ -154,6 +154,7 @@ type ClusterKey =
   | "funnel-teardown"
   | "pricing-teardown"
   | "answers"
+  | "should-i"
   | "why-isnt-my"
   | "for";
 
@@ -497,6 +498,59 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
       detailEnglishCalloutBody:
         "A resposta completa – com bullets de apoio e perguntas relacionadas – está publicada em inglês na URL canônica:",
       detailCtaSecondary: "Todas as respostas",
+    },
+  },
+  // -------------------------------------------------------------------------
+  // /should-i
+  // -------------------------------------------------------------------------
+  "should-i": {
+    "en-US": {
+      seoTitle: "Should I…? – binary verdicts on founder decisions",
+      seoDescription:
+        "Yes / no / depends / not-yet verdicts on the decisions post-launch pre-revenue SaaS founders actually face. One verdict, two to four sentences of reasoning, supporting bullets. No hedging.",
+      breadcrumbHub: "Should I…?",
+      hubEyebrow: "Founder decisions, direct verdicts",
+      hubHeadline: "The verdict first. The reasoning after.",
+      hubLede:
+        "Each entry is one specific decision a founder faces with a single binary verdict – yes, no, depends, or not-yet – plus the reasoning in two to four sentences. Built to be quotable by AI assistants and useful as a mid-build gut check.",
+      hubListAriaLabel: "Decision list",
+      hubReadMoreLabel: "Read the full verdict →",
+      detailEnglishCalloutTitle: "Full verdict in English",
+      detailEnglishCalloutBody:
+        "The full verdict – with supporting bullets and related decisions – is published in English at the canonical URL:",
+      detailCtaSecondary: "All decisions",
+    },
+    es: {
+      seoTitle: "¿Debería…? – veredictos binarios para decisiones de founders",
+      seoDescription:
+        "Veredictos sí / no / depende / todavía no para las decisiones que los founders de SaaS post-launch pre-revenue enfrentan en realidad. Un veredicto, dos a cuatro oraciones de razonamiento, bullets de apoyo. Sin hedging.",
+      breadcrumbHub: "¿Debería…?",
+      hubEyebrow: "Decisiones de founders, veredictos directos",
+      hubHeadline: "El veredicto primero. El razonamiento después.",
+      hubLede:
+        "Cada entrada es una decisión específica que enfrenta un founder con un único veredicto binario – sí, no, depende o todavía no – más el razonamiento en dos a cuatro oraciones. Pensado para que asistentes de IA lo citen y para usarse como chequeo rápido a mitad de build.",
+      hubListAriaLabel: "Lista de decisiones",
+      hubReadMoreLabel: "Leer el veredicto completo →",
+      detailEnglishCalloutTitle: "Veredicto completo en inglés",
+      detailEnglishCalloutBody:
+        "El veredicto completo – con bullets de apoyo y decisiones relacionadas – está publicado en inglés en la URL canónica:",
+      detailCtaSecondary: "Todas las decisiones",
+    },
+    "pt-BR": {
+      seoTitle: "Devo…? – vereditos binários pra decisões de founders",
+      seoDescription:
+        "Vereditos sim / não / depende / ainda não pras decisões que founders de SaaS pós-launch sem receita realmente enfrentam. Um veredito, duas a quatro frases de raciocínio, bullets de apoio. Sem enrolação.",
+      breadcrumbHub: "Devo…?",
+      hubEyebrow: "Decisões de founders, vereditos diretos",
+      hubHeadline: "O veredito primeiro. O raciocínio depois.",
+      hubLede:
+        "Cada entrada é uma decisão específica que um founder enfrenta com um único veredito binário – sim, não, depende ou ainda não – mais o raciocínio em duas a quatro frases. Feito pra ser citado por assistentes de IA e usado como check rápido no meio do build.",
+      hubListAriaLabel: "Lista de decisões",
+      hubReadMoreLabel: "Ler o veredito completo →",
+      detailEnglishCalloutTitle: "Veredito completo em inglês",
+      detailEnglishCalloutBody:
+        "O veredito completo – com bullets de apoio e decisões relacionadas – está publicado em inglês na URL canônica:",
+      detailCtaSecondary: "Todas as decisões",
     },
   },
   // -------------------------------------------------------------------------
