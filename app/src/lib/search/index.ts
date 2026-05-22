@@ -41,6 +41,7 @@ import { TEARDOWNS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWNS } from "@/lib/pricing-teardowns";
 import { COMPARISONS } from "@/lib/comparisons";
 import { CATEGORIES } from "@/lib/categories";
+import { POST_MORTEMS } from "@/lib/post-mortems";
 
 export interface SearchResult {
   id: string;
@@ -56,6 +57,7 @@ export type SearchSurface =
   | "compare"
   | "funnel-teardown"
   | "pricing-teardown"
+  | "post-mortem"
   | "alternatives-to"
   | "category"
   | "static";
@@ -65,6 +67,7 @@ export const SURFACE_LABELS: Readonly<Record<SearchSurface, string>> =
     compare: "Head-to-head comparisons",
     "funnel-teardown": "Funnel teardowns",
     "pricing-teardown": "Pricing teardowns",
+    "post-mortem": "Post-mortems",
     "alternatives-to": "Alternatives",
     category: "Category roundups",
     static: "Main pages",
@@ -244,6 +247,26 @@ const PRICING_RESULTS: ReadonlyArray<SearchResult> = Object.freeze(
   })),
 );
 
+const POST_MORTEM_RESULTS: ReadonlyArray<SearchResult> = Object.freeze(
+  POST_MORTEMS.map((p): SearchResult => ({
+    id: p.slug,
+    title: `${p.displayName} post-mortem`,
+    description: p.oneLine,
+    url: `/post-mortem/${p.slug}`,
+    surface: "post-mortem",
+    category: p.category,
+    terms: buildTerms([
+      p.slug,
+      p.displayName,
+      p.category,
+      p.shutdownReason,
+      p.unlockSaaSWouldHaveCaught.diagnosis,
+      p.oneLine,
+      p.tldr,
+    ]),
+  })),
+);
+
 const COMPARISON_RESULTS: ReadonlyArray<SearchResult> = Object.freeze(
   COMPARISONS.map((c): SearchResult => ({
     id: c.slug,
@@ -293,6 +316,7 @@ export const SEARCH_INDEX: ReadonlyArray<SearchResult> = Object.freeze([
   ...COMPARISON_RESULTS,
   ...TEARDOWN_RESULTS,
   ...PRICING_RESULTS,
+  ...POST_MORTEM_RESULTS,
   ...ALTERNATIVE_RESULTS,
   ...CATEGORY_RESULTS,
   ...STATIC_RESULTS,
@@ -351,6 +375,7 @@ export function groupBySurface(
     "compare",
     "funnel-teardown",
     "pricing-teardown",
+    "post-mortem",
     "alternatives-to",
     "category",
     "static",

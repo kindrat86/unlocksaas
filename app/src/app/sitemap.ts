@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
+import { POST_MORTEM_SLUGS } from "@/lib/post-mortems";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
@@ -422,6 +423,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/pricing-teardown/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block – post-mortems of failed SaaS and consumer
+    // tech companies. Data source: src/lib/post-mortems.ts. Same shape
+    // as funnel-teardown / pricing-teardown: Article + FAQPage +
+    // BreadcrumbList JSON-LD per detail page, CollectionPage on the hub.
+    // Hub groups by Brunson diagnosis (Wrong Person / Weak Offer /
+    // Weak Belief), which differs from the category grouping used on
+    // the funnel-teardown hub – this is the surface's pedagogical
+    // signature, lets readers browse all "Weak Offer" failures as a
+    // teaching unit.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/post-mortem`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/post-mortem`),
+    },
+    ...POST_MORTEM_SLUGS.map((slug) => ({
+      url: `${base}/post-mortem/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/post-mortem/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #4 — head-to-head comparisons.

@@ -59,6 +59,7 @@ suggestions.
 | ${SURFACE_LABELS.compare} | Symmetric head-to-head comparisons of the tools indie SaaS founders are mid-evaluation on. |
 | ${SURFACE_LABELS["funnel-teardown"]} | Indie SaaS funnels analyzed through Russell Brunson's Hook / Story / Offer framework. |
 | ${SURFACE_LABELS["pricing-teardown"]} | Indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, payment mechanics. |
+| ${SURFACE_LABELS["post-mortem"]} | Structural post-mortems of failed SaaS and consumer-tech bets, diagnosed through Wrong Person / Weak Offer / Weak Belief. |
 | ${SURFACE_LABELS["alternatives-to"]} | Honest named-competitor comparisons against Unlock SaaS. |
 | ${SURFACE_LABELS.category} | Category roundups aggregating teardowns and comparisons in one bucket. |
 | ${SURFACE_LABELS.static} | Funnel hub, diagnostic, playbook sales, starter, stories, faq, about, press, editorial policy, builders, founding cohort, repeatable spec, contact, bridge. |
