@@ -57,7 +57,7 @@ export async function generateMetadata({
   const localised = localizedPath(path, locale);
   const approved = isApproved(PATH, locale);
 
-  const title = `Unlock SaaS for ${e.displayName}`;
+  const title = e.metaTitle;
   const description = e.heroSubhead;
 
   return {

@@ -22,12 +22,12 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
  * counsel before scaling or accepting customers in regulated jurisdictions.
  */
 export const metadata: Metadata = {
-  title: "Terms of Service — Unlock SaaS",
+  title: "Terms of Service",
   description:
     "The terms you accept when you use Unlock SaaS. Plain English. Covers the free diagnostic, the $1 Starter, the $49/mo Playbook, and the 60-day guarantee.",
   alternates: pageAlternates("/terms"),
   openGraph: {
-    title: "Terms of Service — Unlock SaaS",
+    title: "Terms of Service",
     description: "What you agree to when you use Unlock SaaS. Plain English.",
     url: "/terms",
   },

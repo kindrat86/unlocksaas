@@ -21,7 +21,7 @@ import { DiagnosticFinish } from "./finish-client";
  */
 
 export const metadata: Metadata = {
-  title: "Finishing your diagnosis — Unlock SaaS",
+  title: "Finishing your diagnosis",
   description: "Reading your page now. This takes about a minute.",
   robots: { index: false, follow: false },
 };

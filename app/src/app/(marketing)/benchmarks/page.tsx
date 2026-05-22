@@ -13,14 +13,14 @@ const CANONICAL = "/benchmarks";
 
 export const metadata: Metadata = {
   title:
-    "Indie SaaS Funnel Benchmarks (20 Directional Ranges) – Unlock SaaS",
+    "Indie SaaS Funnel Benchmarks (20 Directional Ranges)",
   description:
     "Directional benchmarks for the 20 most-asked indie SaaS metrics: conversion rate, churn, AOV, LTV:CAC, trial conversion, email open rate, and more.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Indie SaaS Funnel Benchmarks – Unlock SaaS",
+    title: "Indie SaaS Funnel Benchmarks",
     description:
       "Directional ranges for the 20 most-asked indie SaaS funnel metrics, with source attribution and 'where you fall' diagnosis.",
     url: CANONICAL,

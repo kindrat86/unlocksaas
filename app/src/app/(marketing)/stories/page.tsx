@@ -73,7 +73,7 @@ const PARABLES_PUBLISHED_AT = "2026-05-17";
 const PARABLES_URL = "https://unlocksaas.com/stories";
 
 export const metadata: Metadata = {
-  title: "Five Stories for the Flat Stripe Line — Unlock SaaS",
+  title: "Five Stories for the Flat Stripe Line",
   description:
     "Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. Read free. No email required.",
   alternates: pageAlternates("/stories"),

@@ -49,13 +49,13 @@ import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
  * data.
  */
 export const metadata: Metadata = {
-  title: "Press and Media Kit – Unlock SaaS",
+  title: "Press and Media Kit",
   description:
     "Brand facts, founder bio, descriptions in three lengths, and contact details for journalists, podcasters, and newsletter writers covering Unlock SaaS.",
   alternates: markdownAlternate("/press", "/press.md"),
   openGraph: {
     type: "website",
-    title: "Press and Media Kit – Unlock SaaS",
+    title: "Press and Media Kit",
     description:
       "Brand facts, founder bio, descriptions, and contact details for media coverage of Unlock SaaS.",
     url: "/press",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Press and Media Kit – Unlock SaaS",
+    title: "Press and Media Kit",
     description:
       "Brand facts, founder bio, descriptions, and contact for media coverage of Unlock SaaS.",
   },

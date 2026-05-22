@@ -68,7 +68,7 @@ function siteOriginFromEnv(): string {
  */
 
 export const metadata: Metadata = {
-  title: "Your Diagnosis — Unlock SaaS",
+  title: "Your Diagnosis",
   description:
     "Why your launch is flat — and the specific door that fixes it.",
   robots: { index: false, follow: false },

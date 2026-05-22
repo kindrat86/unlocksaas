@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "One dollar. One week. Steps 1 and 2 of The Playbook: pin one real customer, write one real offer for them. The two pieces of work most founders quietly skip between launch and revenue.",
   alternates: pageAlternates("/starter"),
   openGraph: {
-    title: "The $1 Starter — Unlock SaaS",
+    title: "The $1 Starter",
     description:
       "One dollar. One week. Pin one real customer. Write one real offer. Steps 1 and 2 of The Playbook.",
     url: "/starter",

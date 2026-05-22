@@ -35,15 +35,14 @@ import { BASE_URL } from "@/lib/seo/entity";
 
 
 export const metadata: Metadata = {
-  title:
-    "Story angles for journalists — Unlock SaaS press topics",
+  title: "Story angles for journalists",
   description:
     "Pre-built story packages for writers covering the post-launch pre-revenue SaaS cohort: thesis, pre-approved quotes, verifiable data points, honest counter-points, and embed code.",
   alternates: pageAlternates("/press/topics"),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Press topics — Unlock SaaS",
+    title: "Press topics",
     description:
       "Pre-assembled story packages for journalists, podcasters, and AI summarisers covering Unlock SaaS.",
     url: "/press/topics",
@@ -51,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Press topics — Unlock SaaS",
+    title: "Press topics",
     description:
       "Pre-assembled story packages for journalists covering Unlock SaaS.",
   },

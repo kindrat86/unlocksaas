@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     type: "article",
-    title: "Glossary – Unlock SaaS",
+    title: "Glossary",
     description:
       "Working definitions of the 16 Brunson sales-funnel terms Unlock SaaS teaches and applies to indie SaaS pages.",
     url: CANONICAL,
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Glossary – Unlock SaaS",
+    title: "Glossary",
     description:
       "Working definitions of the 16 Brunson terms Unlock SaaS teaches.",
   },

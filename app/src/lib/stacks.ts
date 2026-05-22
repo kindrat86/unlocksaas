@@ -92,7 +92,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 1. course-creators --------------------------------------------------
   {
     slug: "course-creators",
-    metaTitle: "The Indie SaaS Stack for Course Creators – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Course Creators",
     metaDescription:
       "Seven tools post-launch course creators actually need: newsletter, sales page, checkout, video, testimonials, analytics, and the workspace tying them together.",
     heroSubhead:
@@ -174,7 +174,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 2. agency-owners ---------------------------------------------------
   {
     slug: "agency-owners",
-    metaTitle: "The Indie SaaS Stack for Agency Owners – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Agency Owners",
     metaDescription:
       "Eight tools agency owners actually need: site, scheduling, proposals, async video, testimonials, analytics, billing, and project management.",
     heroSubhead:
@@ -261,7 +261,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 3. saas-founders ---------------------------------------------------
   {
     slug: "saas-founders",
-    metaTitle: "The Indie SaaS Stack for SaaS Founders – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for SaaS Founders",
     metaDescription:
       "Seven tools post-launch pre-revenue SaaS founders actually need: hosting, payments, transactional email, analytics, project tracking, marketing site, social proof.",
     heroSubhead:
@@ -342,7 +342,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 4. coaches ---------------------------------------------------------
   {
     slug: "coaches",
-    metaTitle: "The Indie SaaS Stack for Coaches – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Coaches",
     metaDescription:
       "Seven tools post-launch coaches actually need: scheduling, sales page, checkout, async video, social proof, list-building, and the client workspace.",
     heroSubhead:
@@ -423,7 +423,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 5. consultants -----------------------------------------------------
   {
     slug: "consultants",
-    metaTitle: "The Indie SaaS Stack for Consultants – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Consultants",
     metaDescription:
       "Seven tools independent consultants actually need: site, scheduling, async video, proposal docs, checkout for paid audits, social proof, analytics.",
     heroSubhead:
@@ -504,7 +504,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 6. ecommerce -------------------------------------------------------
   {
     slug: "ecommerce",
-    metaTitle: "The Indie SaaS Stack for Ecommerce Founders – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Ecommerce Founders",
     metaDescription:
       "Seven tools post-launch ecommerce founders actually need beyond Shopify: payments, email, transactional, analytics, social proof, marketing site, design.",
     heroSubhead:
@@ -585,7 +585,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 7. no-code-builders ------------------------------------------------
   {
     slug: "no-code-builders",
-    metaTitle: "The Indie SaaS Stack for No-Code Builders – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for No-Code Builders",
     metaDescription:
       "Seven tools no-code founders actually need on top of Bubble or Lovable: marketing site, payments, analytics, list, forms, social proof, video.",
     heroSubhead:
@@ -666,7 +666,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 8. indie-hackers --------------------------------------------------
   {
     slug: "indie-hackers",
-    metaTitle: "The Indie SaaS Stack for Indie Hackers – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Indie Hackers",
     metaDescription:
       "Eight tools indie hackers actually need post-launch: hosting, payments, analytics, email, list, social proof, project tracking, demo video.",
     heroSubhead:
@@ -753,7 +753,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 9. ai-wrappers ----------------------------------------------------
   {
     slug: "ai-wrappers",
-    metaTitle: "The Indie SaaS Stack for AI Wrapper Founders – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for AI Wrapper Founders",
     metaDescription:
       "Seven tools AI wrapper founders actually need: hosting, payments, analytics, list, transactional, documentation, social proof.",
     heroSubhead:
@@ -834,7 +834,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 10. info-product-creators ----------------------------------------
   {
     slug: "info-product-creators",
-    metaTitle: "The Indie SaaS Stack for Info Product Creators – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Info Product Creators",
     metaDescription:
       "Seven tools info product creators actually need: checkout, email, lead capture, social proof, demo video, analytics, workspace.",
     heroSubhead:
@@ -915,7 +915,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 11. newsletter-operators -----------------------------------------
   {
     slug: "newsletter-operators",
-    metaTitle: "The Indie SaaS Stack for Newsletter Operators – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Newsletter Operators",
     metaDescription:
       "Seven tools newsletter operators actually need to monetize: ESP, paid newsletter, checkout, forms, social proof, analytics.",
     heroSubhead:
@@ -996,7 +996,7 @@ export const STACK_ENTRIES: ReadonlyArray<StackEntry> = [
   // -- 12. freelancers ---------------------------------------------------
   {
     slug: "freelancers",
-    metaTitle: "The Indie SaaS Stack for Freelancers – Unlock SaaS",
+    metaTitle: "The Indie SaaS Stack for Freelancers",
     metaDescription:
       "Seven tools freelancers actually need to escape hourly billing: site, scheduling, payments, async video, workspace, social proof.",
     heroSubhead:

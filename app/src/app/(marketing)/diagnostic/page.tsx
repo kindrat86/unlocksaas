@@ -35,7 +35,7 @@ import { DIAGNOSTIC_WALKTHROUGH } from "@/lib/diagnostic-walkthrough";
 //   bait result via Butterfly-Marketing Loop 1)
 
 export const metadata: Metadata = {
-  title: "Free Launch Diagnostic — Unlock SaaS",
+  title: "Free Launch Diagnostic",
   description:
     "Paste your live product page. In 90 seconds I tell you why it is flat: Wrong Person, Weak Offer, or Weak Belief. Then I hand you the door.",
   // Self-referencing canonical + registry-driven hreflang. pageAlternates

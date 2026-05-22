@@ -50,13 +50,13 @@ const POLICY_PUBLISHED_AT = "2026-05-17";
 const POLICY_LAST_REVIEWED_AT = "2026-05-17";
 
 export const metadata: Metadata = {
-  title: "Editorial Policy — Unlock SaaS",
+  title: "Editorial Policy",
   description:
     "How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log.",
   alternates: pageAlternates("/editorial-policy"),
   openGraph: {
     type: "article",
-    title: "Editorial Policy — Unlock SaaS",
+    title: "Editorial Policy",
     description:
       "How Unlock SaaS sources, dates, signs, and corrects every public claim.",
     url: "/editorial-policy",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Editorial Policy — Unlock SaaS",
+    title: "Editorial Policy",
     description:
       "How Unlock SaaS sources, dates, signs, and corrects every public claim.",
   },

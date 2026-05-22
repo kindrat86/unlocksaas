@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "You shipped a real product. The Stripe line is flat. The 90-second free diagnostic labels what is actually broken — Wrong Person, Weak Offer, or Weak Belief — and hands you the door that fixes it.",
   alternates: pageAlternates("/bridge"),
   openGraph: {
-    title: "For founders who already shipped — Unlock SaaS",
+    title: "For founders who already shipped",
     description:
       "You shipped a real product. The Stripe line is flat. Get the labeled diagnosis that fixes it.",
     url: "/bridge",

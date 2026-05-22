@@ -17,14 +17,14 @@ const CANONICAL = "/funnel-playbook";
 
 export const metadata: Metadata = {
   title:
-    "Brunson Funnel Playbooks (Tripwire, VSL, Webinar, OTO, Ladder) – Unlock SaaS",
+    "Brunson Funnel Playbooks (Tripwire, VSL, Webinar, OTO, Ladder)",
   description:
     "Step-by-step playbooks for the eight Brunson funnel archetypes: tripwire, VSL, challenge, Perfect Webinar, Soap Opera, OTO, Seinfeld Email, and Value Ladder.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Brunson Funnel Playbooks – Unlock SaaS",
+    title: "Brunson Funnel Playbooks",
     description:
       "Eight step-by-step funnel playbooks for indie SaaS founders, with common mistakes and ladder-position guidance.",
     url: CANONICAL,

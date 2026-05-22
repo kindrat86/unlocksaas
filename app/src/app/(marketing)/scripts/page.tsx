@@ -12,14 +12,14 @@ import { HubTldr } from "@/components/seo/hub-tldr";
 const CANONICAL = "/scripts";
 
 export const metadata: Metadata = {
-  title: "Funnel Scripts (VSL, Perfect Webinar, SOS, Tripwire) – Unlock SaaS",
+  title: "Funnel Scripts (VSL, Perfect Webinar, SOS, Tripwire)",
   description:
     "Ready-to-record funnel scripts: VSL, Perfect Webinar, Soap Opera Sequence, tripwire sales page, OTO, Seinfeld email, 5-day challenge, lead magnet opt-in.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Funnel Scripts – Unlock SaaS",
+    title: "Funnel Scripts",
     description:
       "Recordable funnel scripts with timing markers, founder notes, and the variables you swap in. Built on Brunson Hook / Story / Offer structure.",
     url: CANONICAL,

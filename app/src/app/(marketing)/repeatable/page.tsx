@@ -14,7 +14,7 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
 // (c) preserve the Reluctant Hero rule of no-fake-doors.
 
 export const metadata: Metadata = {
-  title: "The Repeatable Revenue Layer — Rung 2 | Unlock SaaS",
+  title: "The Repeatable Revenue Layer — Rung 2",
   description:
     "What ships after your first paying customer: a self-serve layer that carries dream customer, attractive character, outreach, and Stripe pattern across Product 2. Spec published; build gated on three Core customer cycles.",
   robots: { index: true, follow: true },

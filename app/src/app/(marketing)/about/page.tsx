@@ -27,7 +27,7 @@ import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
  * BreadcrumbList.
  */
 export const metadata: Metadata = {
-  title: "About Maryan – Unlock SaaS",
+  title: "About Maryan",
   description:
     "I'm a marketer. I never wrote a line of production code. Then Lovable and Claude let me ship – and now I have fifteen years of Brunson-style funnels plus a real shipped product in one head. Almost nobody in the post-launch pre-revenue niche has both.",
   // markdownAlternate emits canonical + per-page hreflang + the
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/about", "/about.md"),
   openGraph: {
     type: "profile",
-    title: "About Maryan – Unlock SaaS",
+    title: "About Maryan",
     description:
       "Funnel marketer + non-engineer who shipped a real AI product. Almost nobody in the post-launch pre-revenue niche has both, in one head.",
     url: "/about",
   },
   twitter: {
     card: "summary",
-    title: "About Maryan – Unlock SaaS",
+    title: "About Maryan",
     description:
       "Funnel marketer + non-engineer who shipped a real AI product. Builder of Unlock SaaS.",
   },

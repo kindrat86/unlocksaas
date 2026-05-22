@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     "14 days. 14 actions. One per day. By Day 14 you will have done more selling than in the last six months — or proven to yourself that you will not. Free, email-only, no card, no course.",
   alternates: pageAlternates("/challenge"),
   openGraph: {
-    title: "The 14-Day First-Customer Sprint — Unlock SaaS",
+    title: "The 14-Day First-Customer Sprint",
     description:
       "14 days. 14 actions. One per day. The work most founders skip between launch and revenue, broken into one-email-a-day. Free.",
     url: "/challenge",

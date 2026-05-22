@@ -13,14 +13,14 @@ const CANONICAL = "/conversion-rate";
 
 export const metadata: Metadata = {
   title:
-    "Conversion Rate Benchmarks by Niche (SaaS, Course, Agency, etc.) – Unlock SaaS",
+    "Conversion Rate Benchmarks by Niche (SaaS, Course, Agency, etc.)",
   description:
     "Directional conversion-rate ranges by founder cohort: SaaS, course creators, agencies, coaches, consultants, ecommerce, no-code, indie hackers, AI wrappers, info products, newsletters, freelancers.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Conversion Rate Benchmarks by Niche – Unlock SaaS",
+    title: "Conversion Rate Benchmarks by Niche",
     description:
       "Niche-specific conversion ranges across funnel stages for indie founder cohorts.",
     url: CANONICAL,

@@ -22,7 +22,7 @@ import { SEARCH_INDEX_SIZE, SURFACE_LABELS } from "@/lib/search";
 const TODAY = "2026-05-17";
 
 const BODY = `---
-title: "Search — Unlock SaaS"
+title: "Search"
 summary: "Site-wide search across every shipped marketing surface on unlocksaas.com."
 canonical: ${BASE_URL}/search
 updated: ${TODAY}

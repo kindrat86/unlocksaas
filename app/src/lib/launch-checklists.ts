@@ -63,7 +63,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "course-creators": {
     slug: "course-creators",
     displayName: "course creators",
-    metaTitle: "Launch Checklist for Course Creators – Unlock SaaS",
+    metaTitle: "Launch Checklist for Course Creators",
     metaDescription:
       "Ten-step pre-revenue checklist for course creators with a flat launch. Brunson Hook / Story / Offer frame, tuned to launches and cohort sales.",
     heroSubhead:
@@ -162,7 +162,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "agency-owners": {
     slug: "agency-owners",
     displayName: "agency owners",
-    metaTitle: "Launch Checklist for Agency Owners – Unlock SaaS",
+    metaTitle: "Launch Checklist for Agency Owners",
     metaDescription:
       "Ten-step pre-revenue checklist for agency owners stuck attracting wrong-fit leads. Brunson positioning frame for one qualified discovery call.",
     heroSubhead:
@@ -261,7 +261,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "saas-founders": {
     slug: "saas-founders",
     displayName: "SaaS founders",
-    metaTitle: "Launch Checklist for SaaS Founders – Unlock SaaS",
+    metaTitle: "Launch Checklist for SaaS Founders",
     metaDescription:
       "Ten-step pre-revenue checklist for SaaS founders with a flat Stripe MRR line. Brunson Hook / Story / Offer applied to trial-to-paid conversion.",
     heroSubhead:
@@ -360,7 +360,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "coaches": {
     slug: "coaches",
     displayName: "coaches",
-    metaTitle: "Launch Checklist for Coaches – Unlock SaaS",
+    metaTitle: "Launch Checklist for Coaches",
     metaDescription:
       "Ten-step pre-revenue checklist for coaches with empty calendars. Brunson Attractive Character + Hook / Story / Offer for one paid client.",
     heroSubhead:
@@ -459,7 +459,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "consultants": {
     slug: "consultants",
     displayName: "consultants",
-    metaTitle: "Launch Checklist for Consultants – Unlock SaaS",
+    metaTitle: "Launch Checklist for Consultants",
     metaDescription:
       "Ten-step pre-revenue checklist for independent consultants attracting wrong-fit RFPs. Brunson positioning frame for premium engagements.",
     heroSubhead:
@@ -558,7 +558,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "ecommerce": {
     slug: "ecommerce",
     displayName: "ecommerce founders",
-    metaTitle: "Launch Checklist for Ecommerce Founders – Unlock SaaS",
+    metaTitle: "Launch Checklist for Ecommerce Founders",
     metaDescription:
       "Ten-step pre-revenue checklist for ecommerce founders stuck under 1% conversion. Brunson Stack + post-purchase ladder for repeat customers.",
     heroSubhead:
@@ -657,7 +657,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "no-code-builders": {
     slug: "no-code-builders",
     displayName: "no-code builders",
-    metaTitle: "Launch Checklist for No-Code Builders – Unlock SaaS",
+    metaTitle: "Launch Checklist for No-Code Builders",
     metaDescription:
       "Ten-step pre-revenue checklist for no-code founders shipped on Webflow, Bubble, Softr, Lovable. Brunson frame for one paying customer.",
     heroSubhead:
@@ -756,7 +756,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "indie-hackers": {
     slug: "indie-hackers",
     displayName: "indie hackers",
-    metaTitle: "Launch Checklist for Indie Hackers – Unlock SaaS",
+    metaTitle: "Launch Checklist for Indie Hackers",
     metaDescription:
       "Ten-step pre-revenue checklist for indie hackers post-ship, pre-MRR. Brunson Hook / Story / Offer applied to bootstrapped SaaS launches.",
     heroSubhead:
@@ -855,7 +855,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "ai-wrappers": {
     slug: "ai-wrappers",
     displayName: "AI wrapper builders",
-    metaTitle: "Launch Checklist for AI Wrapper Founders – Unlock SaaS",
+    metaTitle: "Launch Checklist for AI Wrapper Founders",
     metaDescription:
       "Ten-step pre-revenue checklist for GPT/Claude wrapper founders. Brunson Hook / Story / Offer + COGS-aware pricing for AI-powered SaaS.",
     heroSubhead:
@@ -954,7 +954,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "info-product-creators": {
     slug: "info-product-creators",
     displayName: "info product creators",
-    metaTitle: "Launch Checklist for Info Product Creators – Unlock SaaS",
+    metaTitle: "Launch Checklist for Info Product Creators",
     metaDescription:
       "Ten-step pre-revenue checklist for eBook, template, swipe-file creators. Brunson value-ladder for compounding info-product sales.",
     heroSubhead:
@@ -1053,7 +1053,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "newsletter-operators": {
     slug: "newsletter-operators",
     displayName: "newsletter operators",
-    metaTitle: "Launch Checklist for Newsletter Operators – Unlock SaaS",
+    metaTitle: "Launch Checklist for Newsletter Operators",
     metaDescription:
       "Ten-step pre-revenue checklist for newsletter operators with real audience and no paid product. Brunson value-ladder for newsletter monetization.",
     heroSubhead:
@@ -1152,7 +1152,7 @@ const ENTRIES_BY_SLUG: Record<string, LaunchChecklistEntry> = {
   "freelancers": {
     slug: "freelancers",
     displayName: "freelancers",
-    metaTitle: "Launch Checklist for Freelancers – Unlock SaaS",
+    metaTitle: "Launch Checklist for Freelancers",
     metaDescription:
       "Ten-step pre-revenue checklist for freelancers stuck on hourly rate competition. Brunson positioning for productised premium offers.",
     heroSubhead:

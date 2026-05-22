@@ -69,7 +69,7 @@ const PAGE_DESCRIPTION =
   "On 21-05-2026 I shipped UnlockSaaS to four search engines with under 1 percent market share each. By share-axis math that was a waste of an afternoon. By buyer-density math it was the smartest distribution move of the quarter. Signed by the founder.";
 
 export const metadata: Metadata = {
-  title: `${FOUR_INDIE_TITLE} — Unlock SaaS`,
+  title: `${FOUR_INDIE_TITLE}`,
   description: PAGE_DESCRIPTION,
   alternates: markdownAlternate(FOUR_INDIE_PATH, `${FOUR_INDIE_PATH}.md`),
   openGraph: {

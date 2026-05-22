@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/vs", "/vs.md"),
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Compare — Unlock SaaS",
+    title: "Compare",
     description:
       "Honest head-to-head comparisons of the tools indie SaaS founders evaluate.",
     type: "website",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Compare — Unlock SaaS",
+    title: "Compare",
     description:
       "Honest head-to-head comparisons of the tools indie SaaS founders evaluate.",
   },

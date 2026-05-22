@@ -46,7 +46,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "course-creators",
     displayName: "course creators",
-    metaTitle: "Funnel Diagnostic for Course Creators – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Course Creators",
     metaDescription:
       "If your course landing page gets traffic but no enrollments, the Brunson Hook / Story / Offer triage finds what's broken in 90 seconds.",
     heroSubhead:
@@ -89,7 +89,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "agency-owners",
     displayName: "agency owners",
-    metaTitle: "Funnel Diagnostic for Agency Owners – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Agency Owners",
     metaDescription:
       "If your agency site gets traffic but no qualified leads, the Brunson Hook / Story / Offer triage finds what's broken before the discovery call.",
     heroSubhead:
@@ -132,7 +132,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "saas-founders",
     displayName: "SaaS founders",
-    metaTitle: "Funnel Diagnostic for SaaS Founders – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for SaaS Founders",
     metaDescription:
       "If your SaaS is shipped but the dashboard is flat, the Brunson Hook / Story / Offer triage labels what's broken in 90 seconds.",
     heroSubhead:
@@ -182,7 +182,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "coaches",
     displayName: "coaches",
-    metaTitle: "Funnel Diagnostic for Coaches – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Coaches",
     metaDescription:
       "If your coaching practice is live but bookings are flat, the Brunson Hook / Story / Offer triage labels what's broken in 90 seconds.",
     heroSubhead:
@@ -225,7 +225,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "consultants",
     displayName: "consultants",
-    metaTitle: "Funnel Diagnostic for Consultants – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Consultants",
     metaDescription:
       "If your consulting practice attracts the wrong RFPs, the Brunson Hook / Story / Offer triage finds what's broken before the next discovery call.",
     heroSubhead:
@@ -268,7 +268,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "ecommerce",
     displayName: "ecommerce founders",
-    metaTitle: "Funnel Diagnostic for Ecommerce Founders – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Ecommerce Founders",
     metaDescription:
       "If your store gets traffic but won't convert, the Brunson Hook / Story / Offer triage labels what's broken in 90 seconds.",
     heroSubhead:
@@ -312,7 +312,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "no-code-builders",
     displayName: "no-code builders",
-    metaTitle: "Funnel Diagnostic for No-Code Builders – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for No-Code Builders",
     metaDescription:
       "Built it on Webflow, Bubble, or Softr. Got traffic but no customers. The Brunson Hook / Story / Offer triage tells you what's broken in 90 seconds.",
     heroSubhead:
@@ -356,7 +356,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "indie-hackers",
     displayName: "indie hackers",
-    metaTitle: "Funnel Diagnostic for Indie Hackers – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Indie Hackers",
     metaDescription:
       "Shipped the app, posted on Indie Hackers, got the cheers but not the customers. The Brunson triage finds what's broken in 90 seconds.",
     heroSubhead:
@@ -399,7 +399,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "ai-wrappers",
     displayName: "AI wrapper builders",
-    metaTitle: "Funnel Diagnostic for AI Wrapper Founders – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for AI Wrapper Founders",
     metaDescription:
       "If your GPT/Claude wrapper has traffic but won't convert, the Brunson Hook / Story / Offer triage labels what's broken in 90 seconds.",
     heroSubhead:
@@ -442,7 +442,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "info-product-creators",
     displayName: "info product creators",
-    metaTitle: "Funnel Diagnostic for Info Product Creators – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Info Product Creators",
     metaDescription:
       "If your eBook, template pack, or digital download won't convert, the Brunson Hook / Story / Offer triage labels what's broken in 90 seconds.",
     heroSubhead:
@@ -485,7 +485,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "newsletter-operators",
     displayName: "newsletter operators",
-    metaTitle: "Funnel Diagnostic for Newsletter Operators – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Newsletter Operators",
     metaDescription:
       "If your newsletter has subscribers but no paid product attached, the Brunson Hook / Story / Offer triage finds your monetization path.",
     heroSubhead:
@@ -532,7 +532,7 @@ export const NICHE_ENTRIES: ReadonlyArray<NicheEntry> = [
   {
     slug: "freelancers",
     displayName: "freelancers",
-    metaTitle: "Funnel Diagnostic for Freelancers – Unlock SaaS",
+    metaTitle: "Funnel Diagnostic for Freelancers",
     metaDescription:
       "If you're freelancing on Upwork or LinkedIn and the leads keep low-balling you, the Brunson positioning triage finds what's broken.",
     heroSubhead:

@@ -26,14 +26,14 @@ const CANONICAL = "/why-isnt-my";
 
 export const metadata: Metadata = {
   title:
-    "Why Isn't My Funnel Converting? Eight Founder Diagnostics – Unlock SaaS",
+    "Why Isn't My Funnel Converting? Eight Founder Diagnostics",
   description:
     "Panic-mode diagnostic guides for indie SaaS founders. Eight specific funnel-element pages, each labeling the issue Wrong Person, Weak Offer, or Weak Belief, with the fix to ship this week.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Why Isn't My Funnel Converting? – Unlock SaaS",
+    title: "Why Isn't My Funnel Converting?",
     description:
       "Eight per-element diagnostic pages: landing page, checkout, upsell, opt-in, VSL, tripwire, webinar registration, and email open rate.",
     url: CANONICAL,

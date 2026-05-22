@@ -12,8 +12,7 @@ import { HubTldr } from "@/components/seo/hub-tldr";
 const CANONICAL = "/for";
 
 export const metadata: Metadata = {
-  title:
-    "Unlock SaaS for Course Creators, Agency Owners, Coaches, and 9 Other Niches",
+  title: "Founder Funnel Diagnostics by Niche",
   description:
     "Twelve niche-specific landing pages. Same Hook / Story / Offer diagnostic, tuned to the vocabulary, money mechanics, and common mistakes of each cohort.",
   alternates: pageAlternates(CANONICAL),

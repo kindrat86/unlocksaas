@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/category", "/category.md"),
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Categories — Unlock SaaS",
+    title: "Categories",
     description:
       "Curated category roundups across every SaaS tool we have analyzed.",
     type: "website",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Categories — Unlock SaaS",
+    title: "Categories",
     description:
       "Curated category roundups across every SaaS tool we have analyzed.",
   },

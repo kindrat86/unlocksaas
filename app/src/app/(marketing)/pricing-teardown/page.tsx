@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/pricing-teardown", "/pricing-teardown.md"),
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Pricing Teardowns — Unlock SaaS",
+    title: "Pricing Teardowns",
     description:
       "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens.",
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pricing Teardowns — Unlock SaaS",
+    title: "Pricing Teardowns",
     description:
       "Pattern-level teardowns of indie SaaS pricing models.",
   },

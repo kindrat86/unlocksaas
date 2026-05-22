@@ -25,7 +25,7 @@ const CANONICAL = "/swipe-file";
 
 export const metadata: Metadata = {
   title:
-    "Swipe Files – 20 Indie SaaS Funnel Element Pattern Libraries | Unlock SaaS",
+    "Swipe Files – 20 Indie SaaS Funnel Element Pattern Libraries",
   description:
     "Twenty swipe files of named copy + UI patterns for every indie SaaS funnel element: hero headlines, CTAs, pricing tables, testimonials, OTOs, and more.",
   alternates: pageAlternates(CANONICAL),

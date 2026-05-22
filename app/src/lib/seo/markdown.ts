@@ -348,7 +348,7 @@ The full mechanics live at ${BASE_URL}/playbook-sales and ${BASE_URL}/faq. Found
 Apply at ${BASE_URL}/founding. The form is short; the bar is real product shipped and willingness to do the work. Maryan personally reviews every application.
 `;
 
-const ABOUT_BODY = `# About Unlock SaaS
+const ABOUT_BODY = `# About Maryan
 
 > Built by a non-engineer founder for non-engineer founders shipping with AI tools.
 
@@ -406,7 +406,7 @@ We do not publish testimonials, reviews, customer counts, or aggregate ratings u
 - Pricing and guarantee facts on this page mirror ${BASE_URL}/playbook-sales and ${BASE_URL}/faq verbatim. If they ever disagree, the canonical HTML page wins and this mirror is a bug.
 `;
 
-const DIAGNOSTIC_BODY = `# Free Launch Diagnostic — Unlock SaaS
+const DIAGNOSTIC_BODY = `# Free Launch Diagnostic
 
 > Paste your live product URL. In about 90 seconds, the diagnostic labels what is actually wrong with one of three diagnoses: Wrong Person, Weak Offer, or Weak Belief — and hands you the door that fixes it.
 
@@ -558,7 +558,7 @@ Because tools like Lovable and Claude opened the door to shipping real software 
 Read on ${BASE_URL}/stories.
 `;
 
-const PRESS_BODY = `# Press and Media Kit – Unlock SaaS
+const PRESS_BODY = `# Press and Media Kit
 
 > Brand facts, founder bio, descriptions in three lengths, and contact for journalists, podcasters, and newsletter writers covering Unlock SaaS.
 
@@ -638,7 +638,7 @@ Email ${FOUNDER.email}. One inbox, one human, real replies. Time zone: EU. Typic
 // /press: every claim is something the operator already does in practice,
 // not aspirational standards we have not shipped. Wired into the surface
 // registry below so /editorial-policy.md serves alongside the HTML page.
-const EDITORIAL_POLICY_BODY = `# Editorial Policy — Unlock SaaS
+const EDITORIAL_POLICY_BODY = `# Editorial Policy
 
 > How Unlock SaaS sources, dates, signs, and corrects every public claim.
 
@@ -777,7 +777,7 @@ ${DEFINED_TERMS.map(
 Every entry in this file is the verbatim text from \`DEFINED_TERMS\` in src/lib/seo/entity.ts. The glossary HTML page (${BASE_URL}/glossary) renders the same data structure. Drift between this markdown and the HTML is a maintenance bug, not a stylistic choice. Brunson Hard-Rule: no paraphrasing on the canonical reference surface.
 `;
 
-const ALTERNATIVES_HUB_BODY = `# Alternatives to Unlock SaaS — Honest Comparisons
+const ALTERNATIVES_HUB_BODY = `# Honest Alternatives — Why Most Are Different Products
 
 > Named-competitor comparison pages. No slagging, no fabricated prices, no fake quotes.
 
@@ -1428,7 +1428,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
   {
     path: "/about",
     mdPath: "/about.md",
-    title: "About Unlock SaaS",
+    title: "About Maryan",
     summary:
       "Built by a non-engineer founder for non-engineer founders shipping with AI tools.",
     body: ABOUT_BODY,
@@ -1436,7 +1436,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
   {
     path: "/press",
     mdPath: "/press.md",
-    title: "Press and Media Kit – Unlock SaaS",
+    title: "Press and Media Kit",
     summary:
       "Brand facts, founder bio, descriptions in three lengths, and contact for media coverage.",
     body: PRESS_BODY,
@@ -1444,7 +1444,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
   {
     path: "/editorial-policy",
     mdPath: "/editorial-policy.md",
-    title: "Editorial Policy — Unlock SaaS",
+    title: "Editorial Policy",
     summary:
       "How Unlock SaaS sources, dates, signs, and corrects every public claim.",
     body: EDITORIAL_POLICY_BODY,
@@ -1473,7 +1473,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
   {
     path: "/diagnostic",
     mdPath: "/diagnostic.md",
-    title: "Free Launch Diagnostic — Unlock SaaS",
+    title: "Free Launch Diagnostic",
     summary:
       "Paste your live product URL. In 90 seconds, get one of three diagnoses: Wrong Person, Weak Offer, Weak Belief.",
     body: DIAGNOSTIC_BODY,
@@ -1522,7 +1522,7 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
   {
     path: "/alternatives-to",
     mdPath: "/alternatives-to.md",
-    title: "Alternatives to Unlock SaaS — Honest Comparisons",
+    title: "Honest Alternatives — Why Most Are Different Products",
     summary:
       "Honest named-competitor comparisons. No slagging, no fabricated prices, no fake quotes.",
     body: ALTERNATIVES_HUB_BODY,

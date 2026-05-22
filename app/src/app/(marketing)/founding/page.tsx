@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "50 Founding Verified Builders. 7-day window. Same $49/mo as the eventual evergreen price, locked for the life of your subscription. Founding-variant Verified Builder badge. The founder's email for 30 days.",
   alternates: pageAlternates("/founding"),
   openGraph: {
-    title: "The Founding Cohort — Unlock SaaS",
+    title: "The Founding Cohort",
     description:
       "50 Founding Verified Builders. 7-day window. Lifetime price lock. After 50 seats or 7 days, the founding bonuses retire forever.",
     url: "/founding",

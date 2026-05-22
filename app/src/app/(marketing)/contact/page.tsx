@@ -21,12 +21,12 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
  * do not answer.
  */
 export const metadata: Metadata = {
-  title: "Contact — Unlock SaaS",
+  title: "Contact",
   description:
     "One inbox, one human, real replies. Email maryan@unlocksaas.com. Diagnostic, refund, partnership, press — all the same address.",
   alternates: pageAlternates("/contact"),
   openGraph: {
-    title: "Contact — Unlock SaaS",
+    title: "Contact",
     description: "One inbox, one human. Email maryan@unlocksaas.com.",
     url: "/contact",
   },

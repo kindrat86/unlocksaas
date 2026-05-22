@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/funnel-teardown", "/funnel-teardown.md"),
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Funnel Teardowns — Unlock SaaS",
+    title: "Funnel Teardowns",
     description:
       "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking.",
     type: "website",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Funnel Teardowns — Unlock SaaS",
+    title: "Funnel Teardowns",
     description:
       "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking.",
   },

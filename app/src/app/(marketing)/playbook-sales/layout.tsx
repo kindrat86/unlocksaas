@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     "A seven-step playbook that turns your already-shipped SaaS into a verified paying customer in 60 days. Built by a non-engineer for non-engineer founders shipping with Lovable, Claude, and Replit. $49/mo. 60-day money-back guarantee.",
   alternates: pageAlternates("/playbook-sales"),
   openGraph: {
-    title: "The Playbook — Unlock SaaS",
+    title: "The Playbook",
     description:
       "Your first paying customer in 60 days, or you do not pay. $49/mo. Built by a non-engineer for non-engineer founders shipping with AI tools.",
     url: "/playbook-sales",

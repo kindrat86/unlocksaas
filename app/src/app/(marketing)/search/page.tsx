@@ -50,7 +50,7 @@ import {
 } from "@/lib/search";
 
 export const metadata: Metadata = {
-  title: "Search — Unlock SaaS",
+  title: "Search",
   description: `Search ${SEARCH_INDEX_SIZE} pages across funnel teardowns, pricing teardowns, head-to-head comparisons, alternatives, category roundups, and the main marketing surfaces.`,
   // markdownAlternate emits canonical + self-referencing hreflang + the
   // text/markdown alternate link in one fragment; no need to merge with
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   alternates: markdownAlternate("/search", "/search.md"),
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Search — Unlock SaaS",
+    title: "Search",
     description: `Search ${SEARCH_INDEX_SIZE} pages across the Unlock SaaS site.`,
     url: "/search",
     type: "website",

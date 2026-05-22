@@ -17,14 +17,14 @@ const CANONICAL = "/answers";
 
 export const metadata: Metadata = {
   title:
-    "Indie SaaS Founder Answers (30 Direct Questions) – Unlock SaaS",
+    "Indie SaaS Founder Answers (30 Direct Questions)",
   description:
     "Direct AEO-formatted answers to the 30 most-asked indie SaaS funnel questions. Built for citation by ChatGPT, Perplexity, Claude, and Google AI Overviews.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "Indie SaaS Founder Answers – Unlock SaaS",
+    title: "Indie SaaS Founder Answers",
     description:
       "Direct answers to 30 specific founder questions about funnels, pricing, email, metrics, and the value ladder.",
     url: CANONICAL,

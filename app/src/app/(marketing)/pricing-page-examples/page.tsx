@@ -13,14 +13,14 @@ const CANONICAL = "/pricing-page-examples";
 
 export const metadata: Metadata = {
   title:
-    "SaaS Pricing Page Examples (Tiered, Decoy, Usage-Based, Freemium) – Unlock SaaS",
+    "SaaS Pricing Page Examples (Tiered, Decoy, Usage-Based, Freemium)",
   description:
     "Twelve SaaS pricing page patterns with real-world examples, mechanics, and the Brunson lens: tiered, decoy, usage-based, freemium, single-price, per-seat, LTD, annual, founding-tier, anchor-and-contrast.",
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    title: "SaaS Pricing Page Examples – Unlock SaaS",
+    title: "SaaS Pricing Page Examples",
     description:
       "Pricing-page patterns with real-world examples and the Brunson lens. Tiered, decoy, usage-based, freemium, single-price, per-seat, and more.",
     url: CANONICAL,

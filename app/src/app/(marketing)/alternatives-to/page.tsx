@@ -33,13 +33,13 @@ const BASE = "https://unlocksaas.com";
 
 
 export const metadata: Metadata = {
-  title: "Honest Alternatives to Unlock SaaS — and Why Most Are Different Products",
+  title: "Honest Alternatives — Why Most Are Different Products",
   description:
     "Side-by-side comparisons against ShipFast, Lovable, the One Funnel Away Challenge, Starter Story, and other tools the typical post-launch pre-revenue SaaS founder evaluates. Honest framing, no slag.",
   alternates: markdownAlternate("/alternatives-to", "/alternatives-to.md"),
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Honest Alternatives Comparisons — Unlock SaaS",
+    title: "Honest Alternatives Comparisons",
     description:
       "Side-by-side comparisons against the tools indie SaaS founders actually evaluate.",
     type: "website",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Honest Alternatives — Unlock SaaS",
+    title: "Honest Alternatives",
     description:
       "Side-by-side comparisons against the tools indie SaaS founders actually evaluate.",
   },

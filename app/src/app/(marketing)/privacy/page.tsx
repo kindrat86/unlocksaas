@@ -25,12 +25,12 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
  * lives under version control so amendments leave an audit trail.
  */
 export const metadata: Metadata = {
-  title: "Privacy Policy — Unlock SaaS",
+  title: "Privacy Policy",
   description:
     "What data Unlock SaaS collects, why, who processes it, how long it lives, and how to ask for it back. Plain English, every processor named.",
   alternates: pageAlternates("/privacy"),
   openGraph: {
-    title: "Privacy Policy — Unlock SaaS",
+    title: "Privacy Policy",
     description:
       "What data we collect, why, who processes it, and how to ask for it back. Plain English.",
     url: "/privacy",

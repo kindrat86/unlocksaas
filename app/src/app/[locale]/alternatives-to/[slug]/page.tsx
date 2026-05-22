@@ -63,7 +63,7 @@ export async function generateMetadata({
   const localised = localizedPath(path, locale);
   const approved = isApproved(PATH, locale);
 
-  const title = `${alt.displayName} vs Unlock SaaS – Honest Comparison`;
+  const title = `${alt.displayName} Alternative – Honest Comparison`;
   const description = alt.oneLine;
 
   return {

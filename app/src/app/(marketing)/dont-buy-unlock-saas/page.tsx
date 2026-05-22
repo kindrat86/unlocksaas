@@ -57,7 +57,7 @@ const PAGE_LAST_REVIEWED_AT = "2026-05-18";
 // lib/seo/serp-variants for this path – also feeds the active variant
 // since the baseline is the first entry there.
 const SERP_FALLBACK = {
-  title: "Don't buy Unlock SaaS",
+  title: "Eight Honest Disqualifiers",
   description:
     "Eight honest disqualifiers and one canonical fit profile. If any disqualifier matches, the Playbook is the wrong tool for you. Said out loud, before checkout.",
 } as const;

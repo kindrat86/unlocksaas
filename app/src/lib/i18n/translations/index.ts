@@ -281,7 +281,7 @@ export const PAGE_CHROME_CONTACT: Record<Locale, PageChromeContact> = {
     relatedAbout: "About Maryan",
     relatedPrivacy: "Privacy",
     relatedTerms: "Terms",
-    seoTitle: "Contact – Unlock SaaS",
+    seoTitle: "Contact",
     seoDescription:
       "One inbox, one human, real replies. Email maryan@unlocksaas.com. Diagnostic, refund, partnership, press – all the same address.",
   },
@@ -309,7 +309,7 @@ export const PAGE_CHROME_CONTACT: Record<Locale, PageChromeContact> = {
     relatedAbout: "Sobre Maryan",
     relatedPrivacy: "Privacidad",
     relatedTerms: "Términos",
-    seoTitle: "Contacto – Unlock SaaS",
+    seoTitle: "Contacto",
     seoDescription:
       "Una bandeja, un humano, respuestas reales. Escribí a maryan@unlocksaas.com. Diagnóstico, reembolso, partnership, prensa – todo a la misma dirección.",
   },
@@ -337,7 +337,7 @@ export const PAGE_CHROME_CONTACT: Record<Locale, PageChromeContact> = {
     relatedAbout: "Sobre Maryan",
     relatedPrivacy: "Privacidade",
     relatedTerms: "Termos",
-    seoTitle: "Contato – Unlock SaaS",
+    seoTitle: "Contato",
     seoDescription:
       "Uma caixa, um humano, respostas reais. Escreva pra maryan@unlocksaas.com. Diagnóstico, reembolso, partnership, imprensa – tudo no mesmo endereço.",
   },
@@ -424,7 +424,7 @@ export const PAGE_CHROME_REPEATABLE: Record<Locale, PageChromeRepeatable> = {
     ctaSecondaryLink: "$1 Starter",
     ctaSecondaryPost: "and earn your way to this page.",
     signoff: "– Maryan",
-    seoTitle: "The Repeatable Revenue Layer – Rung 2 | Unlock SaaS",
+    seoTitle: "The Repeatable Revenue Layer – Rung 2",
     seoDescription:
       "What ships after your first paying customer: a self-serve layer that carries dream customer, Attractive Character, outreach, and Stripe pattern across Product 2. Spec published; build gated on three Core customer cycles.",
   },
@@ -463,7 +463,7 @@ export const PAGE_CHROME_REPEATABLE: Record<Locale, PageChromeRepeatable> = {
     ctaSecondaryLink: "Starter de $1",
     ctaSecondaryPost: "y ganate el paso a esta página.",
     signoff: "– Maryan",
-    seoTitle: "La Capa de Ingresos Repetibles – Rung 2 | Unlock SaaS",
+    seoTitle: "La Capa de Ingresos Repetibles – Rung 2",
     seoDescription:
       "Lo que se lanza después de tu primer cliente que paga: una capa self-serve que lleva al dream customer, el Attractive Character, el outreach y el patrón de Stripe a través de Product 2. Spec publicado; build bloqueado por tres ciclos de clientes Core.",
   },
@@ -502,7 +502,7 @@ export const PAGE_CHROME_REPEATABLE: Record<Locale, PageChromeRepeatable> = {
     ctaSecondaryLink: "Starter de $1",
     ctaSecondaryPost: "e ganhe o passo até essa página.",
     signoff: "– Maryan",
-    seoTitle: "A Camada de Receita Repetível – Rung 2 | Unlock SaaS",
+    seoTitle: "A Camada de Receita Repetível – Rung 2",
     seoDescription:
       "O que é lançado depois do seu primeiro cliente pagante: uma camada self-serve que carrega o dream customer, o Attractive Character, o outreach e o padrão do Stripe pelo Product 2. Spec publicado; build travado por três ciclos de clientes Core.",
   },
@@ -692,7 +692,7 @@ export const PAGE_CHROME_EDITORIAL_POLICY: Record<
     footerLinkPress: "Press",
     footerLinkContact: "Contact",
 
-    seoTitle: "Editorial Policy – Unlock SaaS",
+    seoTitle: "Editorial Policy",
     seoDescription:
       "How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log.",
   },
@@ -785,7 +785,7 @@ export const PAGE_CHROME_EDITORIAL_POLICY: Record<
     footerLinkPress: "Press",
     footerLinkContact: "Contacto",
 
-    seoTitle: "Política Editorial – Unlock SaaS",
+    seoTitle: "Política Editorial",
     seoDescription:
       "Cómo Unlock SaaS obtiene fuentes, fecha, firma y corrige cada afirmación pública. Estándares editoriales, divulgaciones financieras y el registro de correcciones en curso.",
   },
@@ -878,7 +878,7 @@ export const PAGE_CHROME_EDITORIAL_POLICY: Record<
     footerLinkPress: "Press",
     footerLinkContact: "Contato",
 
-    seoTitle: "Política Editorial – Unlock SaaS",
+    seoTitle: "Política Editorial",
     seoDescription:
       "Como o Unlock SaaS pesquisa fontes, data, assina e corrige cada afirmação pública. Padrões editoriais, divulgações financeiras e o registro de correções em curso.",
   },

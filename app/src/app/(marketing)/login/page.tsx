@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { LoginForm } from "./login-form";
 
 export const metadata = {
-  title: "Sign in — Unlock SaaS",
+  title: "Sign in",
   description: "Sign in to your Unlock SaaS account with a one-time email link.",
 };
 
