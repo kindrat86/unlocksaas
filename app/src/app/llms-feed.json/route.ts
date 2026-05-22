@@ -23,6 +23,7 @@ import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
+import { COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
@@ -136,6 +137,7 @@ const PSEO_COUNTS = Object.freeze({
   funnelTeardown: TEARDOWN_SLUGS.length,
   pricingTeardown: PRICING_TEARDOWN_SLUGS.length,
   compare: COMPARISON_SLUGS.length,
+  compareShop: COMPARE_SLUGS.length,
   category: CATEGORY_SLUGS.length,
   whyIsntMy: WHY_ISNT_MY_SLUGS.length,
   niches: NICHE_SLUGS.length,
@@ -152,6 +154,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.funnelTeardown +
   PSEO_COUNTS.pricingTeardown +
   PSEO_COUNTS.compare +
+  PSEO_COUNTS.compareShop +
   PSEO_COUNTS.category +
   PSEO_COUNTS.whyIsntMy +
   PSEO_COUNTS.niches +
@@ -326,6 +329,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Symmetric head-to-head comparisons. Each entry names who each side is best for, scores dimension-by-dimension, and names the right pick for an indie SaaS founder specifically.",
     slugs: COMPARISON_SLUGS,
     count: PSEO_COUNTS.compare,
+  },
+  compareShop: {
+    hub: "/compare",
+    slugPattern: "/compare/{slug}",
+    markdownPattern: "/compare/{slug}/md",
+    description:
+      "Switzerland-style shopping comparator. Lighter sister surface to /vs: 5-7 criteria scored symmetrically, pick-A-if / pick-B-if bullets, an honest 'when neither fits' callout that earns trust by admitting both can be wrong, and an indie-founder pick. Non-overlapping slugs to extend head-to-head SERP coverage without duplicating editorial work.",
+    slugs: COMPARE_SLUGS,
+    count: PSEO_COUNTS.compareShop,
   },
   category: {
     hub: "/category",
