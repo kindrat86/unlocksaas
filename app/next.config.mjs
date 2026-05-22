@@ -41,37 +41,51 @@ const nextConfig = {
   // `eslint.config.mjs` per the v16 codemod (`next-lint-to-eslint-cli`).
 
   /**
-   * Cache Components (Next 16+) — DEFERRED 2026-05-20.
+   * Cache Components (Next 16+) — ENABLED.
    *
-   * Initially enabled 2026-05-20 alongside the SEO audit batch, but four
-   * consecutive prod deploys failed at the prerender step with:
+   * Originally enabled 2026-05-20 with the SEO audit batch, briefly reverted
+   * (7cf382f) when four prod deploys failed at the prerender step with
+   * "Uncached data was accessed outside of <Suspense>" on auth-gated routes,
+   * then permanently re-enabled in PR #78 (805c022) once the full Suspense +
+   * connection() migration landed across the prerender-blocker list.
    *
-   *   Error: Route "<path>": Uncached data was accessed outside of
-   *   <Suspense>. This delays the entire page from rendering...
+   * Route inventory (verified 2026-05-22, build oyu9ldcck Ready in 2m):
    *
-   * The strict cacheComponents:true rule requires every uncached data read
-   * to be inside a <Suspense> boundary. Many existing auth-gated and
-   * personalised routes (/onboarding, /playbook, /playbook/verified,
-   * /diagnostic, /login, plus likely more) call `await createClient()` +
-   * `await getUser()` at the top level — the old escape hatch
-   * `export const dynamic = "force-dynamic"` was already removed in the
-   * directive cleanup, and the new Suspense + connection() pattern needs
-   * to be applied per-route. Two partial-fix commits (#12dc333 onboarding,
-   * #173cd49 (app) layouts) chipped at the list but new failures kept
-   * surfacing.
+   *   Auth-gated routes — synchronous outer page exports wrap an async body
+   *   in <Suspense>; the body starts with `await connection()` to defer to
+   *   request time before reading cookies/headers/Supabase auth:
+   *     - /onboarding                       (page.tsx)
+   *     - /playbook                         (page.tsx + layout.tsx)
+   *     - /playbook/verified                (page.tsx)
+   *     - /diagnostic                       (page.tsx)
+   *     - /diagnostic/result                (page.tsx)
+   *     - /login                            (page.tsx)
+   *     - /founding, /diagnosis/[id], /builder/[slug] — same pattern.
    *
-   * To unblock production deploys, cacheComponents is OFF here. Without it
-   * Next 16 falls back to the auto-dynamic detection it had pre-16: routes
-   * that read cookies/headers/auth render dynamically without the explicit
-   * directive. The Suspense wrapping already added in #12dc333 / #173cd49
-   * stays in place — Suspense without cacheComponents is harmless.
+   *   Public cached routes — async body wrapped in `"use cache"` with
+   *   `cacheLife()` + `cacheTag()`, no Suspense needed because there is no
+   *   uncached data read:
+   *     - /builders                         (loadPublicBuilders() use cache,
+   *                                          cacheTag "builder_badges",
+   *                                          revalidate 3600s — invalidated
+   *                                          by the verified-conversion
+   *                                          webhook on flip-to-public).
    *
-   * Re-enable plan: convert each remaining auth/personalised route to the
-   * Suspense + connection() pattern on a focused feature branch, verify the
-   * full prerender pass locally with `next build`, then flip this back to
-   * `cacheComponents: true` in a single atomic commit. The original audit
-   * target (per-tag invalidation for pSEO surfaces via cacheTag/revalidateTag)
-   * is preserved as the destination — just not on the launch path.
+   *   Static / client routes — naturally compatible, no migration needed:
+   *     - /playbook/step/[id]               ("use client")
+   *     - /playbook/workbook/[slug]         (generateStaticParams + build-
+   *                                          time WORKBOOKS bundle).
+   *
+   * Re-enable invariant (must stay true on every new route):
+   *   - No top-level `await createClient()`, `await getUser()`, `cookies()`,
+   *     `headers()`, or `searchParams` reads outside <Suspense>.
+   *   - Per-user / per-request reads → Suspense + connection() pattern.
+   *   - Public, request-shared reads → `"use cache"` directive with
+   *     cacheLife + cacheTag for webhook-driven invalidation.
+   *
+   * If a new route ships and prod build regresses, add `runtime` to the
+   * route's segment exports BEFORE flipping this flag — the global revert
+   * is heavier than the per-route Suspense fix.
    *
    * SXO / CWV bundle wins (kept from 2026-05-17):
    *
@@ -107,18 +121,9 @@ const nextConfig = {
    *     has had a history of CI flakiness (multiple 14.x patch cycles). Next
    *     16's CSS pipeline already inlines critical CSS via the Turbopack
    *     graph for app/ routes, so the marginal lift from optimizeCss is
-   *     small on this codebase. Re-evaluate together with the cacheComponents
-   *     re-enable above, not before — adding a second experimental during a
-   *     paused migration would muddy attribution if a build regresses.
+   *     small on this codebase. Re-evaluate together with a fresh prerender
+   *     baseline, not on a hot launch path.
    */
-  // Re-enabled 2026-05-21 — picks up the parallel session's full Suspense +
-  // 'use cache' migration (#dd22051 / #173cd49 / #12dc333 + restored cache
-  // wrappers from feat/re-enable-cache-components). Every previously
-  // failing auth-gated route (/onboarding, /playbook, /playbook/verified,
-  // /diagnostic, /login, /builders) now reads cookies/headers behind
-  // Suspense + connection(); the homepage, /founding, /diagnostic/result,
-  // /builder/[slug], /diagnosis/[id] wrap their async bodies in Suspense.
-  // Verified clean by 668-page local prerender pass before re-enable.
   cacheComponents: true,
   experimental: {
     optimizePackageImports: [
