@@ -7,8 +7,10 @@
     "prebuild": "node scripts/build-workbook-bundle.mjs",
     "build": "next build",
     "audit:prod": "npm audit --omit=dev --audit-level=low",
+    "audit:crawlers": "node scripts/audit-crawler-citation.mjs",
     "start": "next start",
     "validate:jsonld": "node scripts/validate-jsonld.mjs",
+    "validate:richresults": "node scripts/rich-results-eligibility.mjs",
     "audit:tldr": "node scripts/audit-direct-answers.mjs",
     "workbooks:bundle": "node scripts/build-workbook-bundle.mjs"
   },

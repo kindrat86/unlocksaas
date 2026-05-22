@@ -20,6 +20,7 @@ async function getCachedEntry(slug: string): Promise<BenchmarkEntry | undefined>
 
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import {
@@ -123,6 +124,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: e.metaTitle,
+    image: articleImageFor(canonicalUrl),
     description: e.metaDescription,
     abstract: e.aeoAnswer,
     author: { "@id": ID.person },

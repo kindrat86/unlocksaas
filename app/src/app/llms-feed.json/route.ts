@@ -537,11 +537,8 @@ const KEY_FACTS = Object.freeze({
 const WELCOMED_AI_USER_AGENTS = Object.freeze([
   "OAI-SearchBot",
   "ChatGPT-User",
-  "ClaudeBot",
   "Claude-SearchBot",
-  "Claude-Web",
   "Claude-User",
-  "anthropic-ai",
   "GoogleOther",
   "PerplexityBot",
   "Perplexity-User",

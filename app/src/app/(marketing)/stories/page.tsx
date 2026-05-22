@@ -12,6 +12,7 @@ import {
   type FaqItem,
 } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 
 /**
  * Question schema for the five stories (AEO uplift, 2026-05-17).
@@ -85,6 +86,7 @@ export const metadata: Metadata = {
     url: "/stories",
     publishedTime: PARABLES_PUBLISHED_AT,
     authors: ["Maryan"],
+    images: DEFAULT_OG_IMAGES,
   },
   robots: { index: true, follow: true },
 };

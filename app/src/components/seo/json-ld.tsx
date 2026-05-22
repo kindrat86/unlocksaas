@@ -35,6 +35,7 @@ import {
   KNOWS_ABOUT,
   MENTIONED_ENTITIES,
   ORGANIZATION,
+  ORGANIZATION_IDENTIFIERS,
   ORGANIZATION_MAIN_ENTITY_OF_PAGE,
   ORGANIZATION_SAME_AS,
   PUBLISHING_PRINCIPLES_URL,
@@ -56,6 +57,7 @@ import {
   FOUNDER_AWARDS,
   FOUNDER_KNOWS_ABOUT,
   FOUNDER_SAME_AS,
+  FOUNDER_WIKIDATA_QID,
 } from "@/lib/seo/founder";
 import {
   FOUNDER_WORK_EXAMPLES,
@@ -265,9 +267,17 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
  *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL        (YouTube)
  *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL     (Crunchbase company)
  *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL   (Product Hunt)
- *   8. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
- *   9. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
- *  10. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
+ *   8. NEXT_PUBLIC_UNLOCKSAAS_BETALIST_URL       (BetaList)
+ *   9. NEXT_PUBLIC_UNLOCKSAAS_G2_URL             (G2 reviews)
+ *  10. NEXT_PUBLIC_UNLOCKSAAS_CAPTERRA_URL       (Capterra reviews)
+ *  11. NEXT_PUBLIC_UNLOCKSAAS_ALTERNATIVETO_URL  (AlternativeTo)
+ *  12. NEXT_PUBLIC_UNLOCKSAAS_SAASHUB_URL        (SaaSHub)
+ *  13. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
+ *  14. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
+ *  15. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
+ *
+ * The aggregator slots (8-12) are operator-activated via the workflow at
+ * strategy/aggregator-listings-runbook.md and visualised on /press/listings.
  *
  * Defaults to a frozen empty array in a fresh checkout. That is honest:
  * no env vars set = no off-platform anchors claimed. strategy/google-
@@ -406,7 +416,7 @@ const ORGANIZATION_JSON = JSON.stringify({
   legalName: ORGANIZATION.legalName,
   // alternateName declares every public spelling resolves to one entity.
   // Without this, "UnlockSaaS" and "Unlock SaaS" can split into two weak
-  // entity clusters in LLM training corpora. See entity.ALTERNATE_NAMES.
+  // entity clusters in LLM retrieval systems. See entity.ALTERNATE_NAMES.
   alternateName: ALTERNATE_NAMES,
   url: BASE,
   logo: `${BASE}/icon.svg`,
@@ -481,26 +491,15 @@ const ORGANIZATION_JSON = JSON.stringify({
   // pattern for stable IDs that are not URLs. Knowledge Graph and LLM
   // retrieval pipelines walk Organization.identifier[] to confirm an
   // entity card is keyed to the same domain / founding date / canonical
-  // manifest URL the body content names. Mirrors the identifier array on
-  // /.well-known/entity.jsonld so both surfaces declare the same machine
-  // IDs for the entity.
-  identifier: [
-    {
-      "@type": "PropertyValue",
-      propertyID: "domain",
-      value: "unlocksaas.com",
-    },
-    {
-      "@type": "PropertyValue",
-      propertyID: "foundingDate",
-      value: ORGANIZATION.foundingDate,
-    },
-    {
-      "@type": "PropertyValue",
-      propertyID: "canonical-manifest",
-      value: `${BASE}/.well-known/entity.jsonld`,
-    },
-  ],
+  // manifest URL / Wikidata Q-ID the body content names.
+  //
+  // Source-of-truth is ORGANIZATION_IDENTIFIERS in src/lib/seo/entity.ts –
+  // the same constant feeds /.well-known/entity.jsonld so both surfaces
+  // declare byte-identical identifier[] rows. The Wikidata PropertyValue
+  // row (propertyID="wikidata") appears conditionally when the operator
+  // has activated NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL with a valid Q-URL;
+  // omitted entirely when unset (Brunson Hard-Rule, no fabricated IDs).
+  identifier: ORGANIZATION_IDENTIFIERS,
   sameAs: SAME_AS,
 });
 
@@ -564,6 +563,40 @@ const WEBSITE_JSON = JSON.stringify({
         "@type": "Answer",
         text:
           "One of three diagnoses (Wrong Person, Weak Offer, Weak Belief) plus the specific next step that fixes the labeled problem.",
+      },
+    },
+    /**
+     * Third potentialAction (2026-05-22): natural-language ask over the
+     * full Unlock SaaS corpus. Backed by app/(marketing)/ask/page.tsx,
+     * which is the human-facing companion to /api/nlweb/ask (the NLWeb
+     * protocol endpoint). Semantically distinct from the /diagnostic
+     * AskAction above — that one takes a product URL and returns a
+     * three-axis labeled diagnosis; this one takes a free-form query
+     * and returns a grounded paragraph plus numbered citations to the
+     * canonical Unlock SaaS pages the answer is built from.
+     *
+     * Brunson Hard-Rule: the page resolves for any submitted query
+     * (BM25 retrieval over the static corpus, deterministic summary).
+     * An AskAction that 404s would demote the WebSite block; this one
+     * is verifiable end-to-end against the live route.
+     */
+    {
+      "@type": "AskAction",
+      name: "Ask Unlock SaaS any question about the corpus",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${BASE}/ask?q={search_term_string}`,
+        inLanguage: "en-US",
+        actionPlatform: [
+          "https://schema.org/DesktopWebPlatform",
+          "https://schema.org/MobileWebPlatform",
+        ],
+      },
+      "query-input": "required name=search_term_string",
+      result: {
+        "@type": "Answer",
+        text:
+          "A grounded paragraph plus numbered citations to the canonical Unlock SaaS pages the answer is built from. NLWeb-compatible: agents can call /api/nlweb/ask for the protocol response.",
       },
     },
   ],
@@ -731,13 +764,13 @@ const PLAYBOOK_HOWTO_JSON = JSON.stringify({
 });
 
 // Multi-typed as Product + SoftwareApplication + LearningResource: schema.org
-// allows array @type and Google + LLM training corpora index all three.
+// allows array @type and Google + LLM retrieval systems index all three.
 //   - Product keeps the priced offer Rich Result eligible.
 //   - SoftwareApplication lets LLMs answer "what SaaS tool helps me get my
 //     first paying customer" with the entity name.
 //   - LearningResource (added 2026-05-17 AIO uplift) declares the Playbook
-//     as a structured learning resource; AI training pipelines for
-//     educational corpora prioritise this type. Honest: the Playbook IS
+//     as a structured learning resource; AI retrieval pipelines for
+//     educational queries prioritise this type. Honest: the Playbook IS
 //     a seven-step instructional surface, this is not stretching the type.
 //
 // aggregateRating wiring (2026-05-18 off-page uplift)
@@ -805,7 +838,7 @@ function buildPlaybookProductJson(opts?: {
   // for the full rationale.
   areaServed: WORLDWIDE_AREA_SERVED,
   // LearningResource fields. educationalUse + learningResourceType + about
-  // give training corpora a clean handle on what the Playbook teaches.
+  // give retrieval systems a clean handle on what the Playbook teaches.
   learningResourceType: "Playbook",
   educationalUse: "Professional skill development",
   teaches: [
@@ -1168,8 +1201,34 @@ function buildPersonJson(): string {
           })),
         }
       : {};
+  // identifier[] – machine-readable Person cross-references. Knowledge
+  // Graph walks Person.identifier[propertyID="wikidata"] to resolve the
+  // entity card to the canonical Wikidata item without URL-parsing the
+  // sameAs row. Conditional: omitted entirely when FOUNDER_WIKIDATA_QID
+  // is undefined (no Wikidata Q-item yet for the founder). Brunson
+  // Hard-Rule: never ship an empty identifier[] – the key is dropped
+  // when the array would have zero real rows.
+  //
+  // Adjacent future slots (intentionally omitted for this iteration to
+  // keep scope narrow – each requires its own env-driven plumbing):
+  //   - propertyID="orcid"          – when NEXT_PUBLIC_UNLOCKSAAS_FOUNDER_ORCID
+  //                                   is exposed via founder.ts as a constant.
+  //   - propertyID="github"         – GitHub username slug.
+  //   - propertyID="twitter"        – X / Twitter handle.
+  const identifier = FOUNDER_WIKIDATA_QID
+    ? {
+        identifier: [
+          {
+            "@type": "PropertyValue",
+            propertyID: "wikidata",
+            value: FOUNDER_WIKIDATA_QID,
+          },
+        ],
+      }
+    : {};
   return JSON.stringify({
     ...base,
+    ...identifier,
     ...sameAs,
     ...alumniOf,
     ...award,
@@ -1371,14 +1430,17 @@ export type VideoSchemaInput = {
   durationISO8601?: string; // e.g. "PT4M30S"
   contentUrl?: string;
   embedUrl?: string;
-  /** URL of a transcript document. Honored only when `transcriptText`
-   *  is unset – inline text takes precedence because it is what voice
-   *  engines and AI summarisers cite verbatim. */
+  /** URL of a transcript document. Schema.org permits URL on
+   *  `VideoObject.transcript` (alongside Text and MediaObject). When the
+   *  caller pairs this with `transcriptText`, both ship as an array so
+   *  AI retrievers can walk the URL to a richer Article surface AND
+   *  voice/summariser engines still get the inline verbatim citation. */
   transcriptUrl?: string;
   /** Inline verbatim transcript text. Schema.org permits Text on the
-   *  `VideoObject.transcript` field (alongside URL and MediaObject), and
-   *  inline text is the strongest signal for AI Overview citations and
-   *  voice-engine readouts because it removes the second-hop fetch. */
+   *  `VideoObject.transcript` field. Inline text is the strongest signal
+   *  for AI Overview citations and voice-engine readouts because it
+   *  removes the second-hop fetch. Emitted alongside `transcriptUrl`
+   *  when both are provided. */
   transcriptText?: string;
   /** Optional stable @id anchor so other schemas (Article, WebPage,
    *  Service) can cross-reference this VideoObject as a connected node
@@ -1390,7 +1452,23 @@ export type VideoSchemaInput = {
 }
 
 function buildVideoJson(input: VideoSchemaInput): string {
-  const transcript = input.transcriptText ?? input.transcriptUrl;
+  // Schema.org VideoObject.transcript accepts Text, URL, or MediaObject –
+  // and is multi-valued. When the caller has both a transcript URL (a
+  // dedicated transcript page with Article schema + breadcrumb) AND
+  // inline verbatim text, we ship both as an array so:
+  //   - AI retrievers and AEO crawlers walk the URL to a richer entity
+  //   - voice engines and inline summarisers still cite verbatim text
+  // Single-value callers (the common case) keep emitting a string.
+  const transcriptValues: string[] = [];
+  if (input.transcriptUrl) transcriptValues.push(input.transcriptUrl);
+  if (input.transcriptText) transcriptValues.push(input.transcriptText);
+  const transcript =
+    transcriptValues.length === 0
+      ? undefined
+      : transcriptValues.length === 1
+        ? transcriptValues[0]
+        : transcriptValues;
+
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "VideoObject",
@@ -1405,7 +1483,7 @@ function buildVideoJson(input: VideoSchemaInput): string {
     ...(input.durationISO8601 ? { duration: input.durationISO8601 } : {}),
     ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
     ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
-    ...(transcript ? { transcript } : {}),
+    ...(transcript !== undefined ? { transcript } : {}),
   });
 }
 
@@ -1948,7 +2026,7 @@ export function PodcastEpisodeJsonLd({
 
 /**
  * DefinedTermSet — declares UnlockSaaS as the publisher of a glossary
- * of Brunson terms the site teaches. LLM training corpora that ingest
+ * of Brunson terms the site teaches. LLM retrieval systems that ingest
  * DefinedTermSet treat the publisher as a primary citation source for
  * the term. Pre-revenue, this is one of the few entity-graph anchors
  * a brand-new site CAN claim honestly: "we teach this term, here is
@@ -2000,8 +2078,8 @@ export function DefinedTermSetJsonLd() {
  * defined schema, dated entries, and a stable distribution URL. Declaring
  * them as schema.org Dataset lifts AIO because:
  *   - Google Dataset Search discovers them.
- *   - LLM training corpora that prioritise structured data (Common Crawl
- *     dataset detection, academic crawlers) ingest them at a higher tier.
+ *   - LLM retrieval systems that prioritise structured data discover
+ *     them at a higher tier.
  *   - The `distribution` field points at the markdown mirror, so retrieval
  *     pipelines find the JS-free corpus directly.
  *

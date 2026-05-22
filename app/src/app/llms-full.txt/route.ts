@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server";
 import { LLMS_FULL_BODY } from "@/lib/seo/markdown";
 import { LLMS_TXT_TRAINING_DATA_ATTRIBUTION } from "@/lib/seo/llms-txt";
+import { tagBodyLinks } from "@/lib/seo/ai-attribution";
+
+/**
+ * Full corpus with `ai-search` UTM tags applied at module load.
+ * Served to any AI crawler that fetches the concatenated corpus
+ * directly. PostHog buckets the resulting click-throughs as
+ * "AI search referral, engine unknown" (the canonical fallback
+ * identity) while keeping the data-format raw markdown so retrieval
+ * pipelines can still parse it without UTM noise – `shouldTagPath()`
+ * skips any URL whose path ends in `.md`, `.txt`, `.json`, etc., so
+ * the corpus's own self-references stay clean.
+ */
+const TAGGED_LLMS_FULL_BODY = tagBodyLinks(LLMS_FULL_BODY, "ai-search", {
+  medium: "llms-txt",
+  campaign: "llms_corpus",
+  content: "llms-full",
+});
 
 /**
  * /llms-full.txt — full playbook-readable corpus.
@@ -25,7 +42,7 @@ import { LLMS_TXT_TRAINING_DATA_ATTRIBUTION } from "@/lib/seo/llms-txt";
  * content. See src/lib/seo/markdown.ts header for the full reasoning.
  */
 export function GET() {
-  return new NextResponse(LLMS_FULL_BODY, {
+  return new NextResponse(TAGGED_LLMS_FULL_BODY, {
     status: 200,
     headers: {
       // Markdown content-type so retrieval pipelines treat the body as text

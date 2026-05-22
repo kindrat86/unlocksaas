@@ -28,9 +28,13 @@ import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
 import { COHORT_SLUGS } from "@/lib/cohorts";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
-import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
+import {
+  FOUNDERS_DIARY_SLUGS,
+  liveEpisodesWithTranscript,
+} from "@/lib/youtube";
 import { DIARY_DATES } from "@/lib/founder-diary";
 import { allCitationIds } from "@/lib/citations";
+import { SHOWCASE_QUERIES } from "@/lib/nlweb/showcase-queries";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -979,6 +983,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/press`),
     },
     // ---------------------------------------------------------------------
+    // Aggregator / review-directory listings status board – Isenberg
+    // overlay #2 (2026-05-22). Public hub listing every off-platform
+    // directory we target (Product Hunt, BetaList, G2, Capterra,
+    // AlternativeTo, SaaSHub, Indie Hackers). Doubles as an LLM-citable
+    // editorial surface ("where is UnlockSaaS listed?") and an operator
+    // status board (env-driven row resolution). Data source:
+    // src/lib/seo/directory-listings.ts.
+    //
+    // Priority matches /press (0.4) — moderate standalone SERP value,
+    // high citation value for AI Overviews answering category /
+    // alternative queries.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/press/listings`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/press/listings`),
+    },
+    // ---------------------------------------------------------------------
     // Reverse press kit – pre-assembled story packages for journalists.
     // Off-page lift item #7 of the 2026-05-18 plan. Hub + per-topic detail
     // pages, each pre-built around a recognisable story angle with
@@ -1109,6 +1133,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
       alternates: hreflang(`${base}/search`),
     },
+    // /ask — NLWeb-compatible conversational search hub. Higher priority
+    // than /search because it surfaces grounded answers (one paragraph
+    // + numbered citations) rather than a flat link list, and the
+    // showcase URLs below are pre-answered Q&A pages AI Overviews can
+    // cite directly. Backed by app/(marketing)/ask/page.tsx.
+    {
+      url: `${base}/ask`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/ask`),
+    },
+    // Pre-rendered Q&A URLs for the curated showcase queries. Each one
+    // is a server-rendered page with QAPage + ItemList JSON-LD and a
+    // grounded BM25 answer, so AI crawlers landing here get the full
+    // answer surface — same content as /ask?q=… typed manually but
+    // discoverable via sitemap. Brunson Hard-Rule: every query in
+    // SHOWCASE_QUERIES maps to corpus surfaces with real matches; no
+    // keyword bait.
+    ...SHOWCASE_QUERIES.map((q) => ({
+      url: `${base}/ask?q=${encodeURIComponent(q.query)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/ask`),
+    })),
     {
       url: `${base}/privacy`,
       lastModified: now,
@@ -1368,6 +1418,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.45,
       alternates: hreflang(`${base}/youtube/${slug}`),
     })),
+    // Per-episode transcript pages (VEO/AEO uplift). Mirrors the podcast
+    // transcript shape at /podcast/<slug>/transcript. Schema.org
+    // VideoObject.transcript points at these URLs; AI summarisers and
+    // voice engines follow them to pull verbatim text without re-
+    // transcribing the video. Brunson Hard-Rule: only emit URLs for
+    // episodes with status="live" AND a hand-pasted transcript field,
+    // so we never advertise a phantom URL.
+    //   - /youtube/<slug>/transcript at 0.42 matches /podcast/<slug>/
+    //     transcript – sibling AEO surface.
+    //   - /youtube/<slug>/transcript/md at 0.35 matches the markdown
+    //     mirror tier (machine-readable, lower than HTML siblings).
+    ...liveEpisodesWithTranscript().map((ep) => ({
+      url: `${base}/youtube/${ep.slug}/transcript`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.42,
+      alternates: hreflang(`${base}/youtube/${ep.slug}/transcript`),
+    })),
+    ...liveEpisodesWithTranscript().map((ep) => ({
+      url: `${base}/youtube/${ep.slug}/transcript/md`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.35,
+    })),
     // Alexa Flash Briefing JSON feed (VEO uplift landing 2026-05-21).
     // Documented at strategy/voice-assistants-playbook.md. Listed in
     // the sitemap so retrievers discover it without depending on the
@@ -1405,8 +1479,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers
-    // (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI Overviews,
-    // Gemini, You.com) treat as the canonical paraphrase target for the
+    // (Perplexity, Claude-SearchBot / Claude-User, OAI-SearchBot,
+    // ChatGPT-User, Google AI Overviews, Gemini, You.com) treat as the canonical paraphrase target for the
     // site. /llms.txt is the curated markdown index; /llms-full.txt is
     // the concatenated corpus; /llms-feed.json is the machine-typed JSON
     // sibling for retrievers that prefer JSON over markdown (added

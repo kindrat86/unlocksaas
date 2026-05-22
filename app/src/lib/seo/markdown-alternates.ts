@@ -3,8 +3,8 @@
  *
  * Why this module exists
  * ----------------------
- * GEO/AEO crawlers (Perplexity, Anthropic ClaudeBot, OpenAI's OAI-SearchBot,
- * Google AI Overviews, Gemini, You.com, Diffbot) prefer playbook-readable
+ * GEO/AEO crawlers (Perplexity, Anthropic Claude-SearchBot / Claude-User,
+ * OpenAI's OAI-SearchBot, Google AI Overviews, Gemini, You.com) prefer playbook-readable
  * markdown over JS-rendered HTML when both exist. The discovery convention
  * for "this HTML page has a markdown mirror" is the standard W3C content-
  * negotiation alternate link:

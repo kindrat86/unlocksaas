@@ -189,7 +189,7 @@ function buildEnvGatedWorks(): readonly FounderWorkExample[] {
 
   // Zenodo DOI – mints a citable academic identifier. Highest GEO
   // leverage of the optional rows because Google Dataset Search,
-  // academic citation pipelines, and LLM training corpora all weight
+  // academic citation pipelines, and LLM retrieval systems all weight
   // DOI-bearing artifacts above bare URLs.
   const zenodo = DATASET_EXTERNAL_REGISTRATIONS.find((r) => r.name === "Zenodo");
   if (zenodo && DATASET_DOI_URL) {

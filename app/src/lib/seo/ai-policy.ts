@@ -11,7 +11,7 @@
  *     route (/llms.txt, /.well-known/llms.txt, /llms-full.txt,
  *     /llms-feed.json), which declares retrieval/citation consent and
  *     model-training reservation in one compact header value.
- *   - The 24-agent AI user-agent allow-list in /robots.txt, mirrored as
+ *   - The AI search/answer user-agent allow-list in /robots.txt, mirrored as
  *     `welcomedAiUserAgents` inside /llms-feed.json.
  *   - The `citationGuidance` block inside /llms-feed.json that names the
  *     preferred canonical paraphrase targets.
@@ -19,7 +19,7 @@
  *     on /dataset and mirrored as DATASET_LICENSE_SPDX in @/lib/seo/dataset.
  *
  * None of those tell a crawler – in one canonical, dereferenceable URL –
- * the answer to the four questions a careful AI ingestion pipeline asks
+ * the answer to the five questions a careful AI ingestion pipeline asks
  * before quoting, indexing, or training:
  *
  *   1. Are you OK with retrieval, search indexing, summarization, snippet,
@@ -325,7 +325,7 @@ export const AI_POLICY = Object.freeze({
   preferences: {
     training: {
       default: "deny",
-      attributionRequired: true,
+      attributionRequired: false,
       scope:
         "model-weight-training-and-third-party-training-dataset-redistribution",
       note:
@@ -333,7 +333,7 @@ export const AI_POLICY = Object.freeze({
     },
     trainingDatasetStorage: {
       default: "deny",
-      attributionRequired: true,
+      attributionRequired: false,
       scope: "third-party-training-corpora",
       note:
         "Archival storage for citation, compliance, cache, or search indexing is allowed when it supports retrieval/citation. Storage inside datasets whose purpose is model training is not allowed.",

@@ -17,6 +17,7 @@ import { getCategoryByRawString } from "@/lib/categories";
 import { hasAlternative } from "@/lib/alternatives";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import { DirectAnswer } from "@/components/seo/direct-answer";
@@ -120,6 +121,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${t.displayName} Pricing Teardown — Model, Tiers, and Strategy`,
+    image: articleImageFor(canonicalUrl),
     description: t.oneLine,
     abstract: t.tldr,
     // @id references to the canonical Organization / Person / WebSite

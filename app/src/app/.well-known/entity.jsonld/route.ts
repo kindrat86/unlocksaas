@@ -63,12 +63,14 @@ import {
   KNOWS_ABOUT,
   MENTIONED_ENTITIES,
   ORGANIZATION,
+  ORGANIZATION_IDENTIFIERS,
   ORGANIZATION_MAIN_ENTITY_OF_PAGE,
   ORGANIZATION_SAME_AS,
   PRIMARY_AUDIENCE_TYPE,
   PUBLISHING_PRINCIPLES_URL,
   WORLDWIDE_AREA_SERVED,
 } from "@/lib/seo/entity";
+import { FOUNDER_SAME_AS, FOUNDER_WIKIDATA_QID } from "@/lib/seo/founder";
 
 /**
  * The canonical @graph. One @context at the root, every node carries
@@ -102,25 +104,18 @@ const ENTITY_GRAPH = {
       // Machine-readable internal identifiers. PropertyValue rows are the
       // schema.org pattern for stable IDs that are not URLs. Knowledge
       // Graph and LLM retrieval pipelines walk `identifier[]` to confirm
-      // an entity card is keyed to the same domain / founding date the
-      // body content names.
-      identifier: [
-        {
-          "@type": "PropertyValue",
-          propertyID: "domain",
-          value: "unlocksaas.com",
-        },
-        {
-          "@type": "PropertyValue",
-          propertyID: "foundingDate",
-          value: ORGANIZATION.foundingDate,
-        },
-        {
-          "@type": "PropertyValue",
-          propertyID: "canonical-manifest",
-          value: `${BASE_URL}/.well-known/entity.jsonld`,
-        },
-      ],
+      // an entity card is keyed to the same domain / founding date /
+      // canonical manifest / Wikidata Q-ID the body content names.
+      //
+      // Source-of-truth is `ORGANIZATION_IDENTIFIERS` in
+      // `src/lib/seo/entity.ts` – the same constant feeds the in-page
+      // Organization JSON-LD on every route via `src/components/seo/json-ld.tsx`,
+      // so this manifest and the embedded schema declare byte-identical
+      // identifier rows (a crawler that diffs them sees no drift). The
+      // wikidata PropertyValue appears conditionally when the operator
+      // has activated NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL with a valid
+      // Q-URL.
+      identifier: ORGANIZATION_IDENTIFIERS,
       // Drop mainEntityOfPage if no Wikipedia URL is set – undefined
       // serializes cleanly because JSON.stringify omits undefined fields.
       ...(ORGANIZATION_MAIN_ENTITY_OF_PAGE
@@ -156,7 +151,42 @@ const ENTITY_GRAPH = {
       description: FOUNDER.description,
       worksFor: { "@id": ID.organization },
       knowsAbout: KNOWS_ABOUT,
-      sameAs: ORGANIZATION_SAME_AS,
+      // Person.sameAs MUST resolve to founder-specific profile URLs, NOT
+      // the Organization sameAs array. Maryan-the-Person and Unlock-SaaS-
+      // the-Organization are SEPARATE entities in the Knowledge Graph:
+      // LinkedIn-the-Person ≠ LinkedIn-the-Company, Wikidata Q139863921
+      // (Unlock SaaS) ≠ Maryan's eventual Person Q-item. Declaring the
+      // org's anchors on the Person fabricates founder-level identity
+      // claims (KG reads Person.sameAs as "this human's off-platform
+      // profiles" – mixing entities corrupts the signal).
+      //
+      // FOUNDER_SAME_AS reads founder-specific env vars (the
+      // NEXT_PUBLIC_FOUNDER_SAMEAS_* family + NEXT_PUBLIC_FOUNDER_WIKIDATA_URL
+      // + NEXT_PUBLIC_FOUNDER_WIKIPEDIA_URL) and stays empty until each
+      // profile actually exists. Per the doc-block at the head of
+      // src/lib/seo/founder.ts: consumers MUST omit the sameAs key
+      // entirely when the array is empty – an empty array is a
+      // fabrication tell to KG validators. The conditional spread below
+      // mirrors the gating already used by the on-page Person block in
+      // src/components/seo/json-ld.tsx so the two surfaces never drift.
+      ...(FOUNDER_SAME_AS.length > 0 ? { sameAs: FOUNDER_SAME_AS } : {}),
+      // Person.identifier[] – machine-readable cross-references. Built
+      // inline because Person identifiers don't share the four-row
+      // baseline Organization uses (domain / foundingDate / canonical-
+      // manifest are entity-level, not person-level). Conditional on
+      // FOUNDER_WIKIDATA_QID; omitted entirely when the founder has no
+      // Q-item yet. Brunson Hard-Rule: no fabricated Person identifiers.
+      ...(FOUNDER_WIKIDATA_QID
+        ? {
+            identifier: [
+              {
+                "@type": "PropertyValue",
+                propertyID: "wikidata",
+                value: FOUNDER_WIKIDATA_QID,
+              },
+            ],
+          }
+        : {}),
     },
     {
       "@type": "WebSite",

@@ -13,6 +13,7 @@ import {
 } from "@/lib/glossary";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   buildSpeakable,
@@ -141,6 +142,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${g.term} – Definition for Indie SaaS Founders`,
+    image: articleImageFor(canonicalUrl),
     description: g.shortDefinition,
     abstract: g.longDefinition,
     author: { "@id": ID.person },
@@ -164,7 +166,7 @@ function buildJsonLd(
     // `citation` field points at the stable /cite/[id] permalink.
     // The permalink view itself emits a WebPage schema with
     // mainEntity back to this canonical URL, completing the
-    // bidirectional citation graph LLM training corpora index.
+    // bidirectional citation graph LLM retrieval systems index.
     citation: {
       "@type": "CreativeWork",
       "@id": `${BASE}/cite/glossary-${g.slug}`,

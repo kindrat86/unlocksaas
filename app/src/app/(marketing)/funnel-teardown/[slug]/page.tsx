@@ -17,6 +17,7 @@ import { getComparisonsForProductSlug } from "@/lib/comparisons";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import { DirectAnswer } from "@/components/seo/direct-answer";
@@ -124,6 +125,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${t.displayName} Funnel Teardown — What Indie SaaS Founders Can Learn`,
+    image: articleImageFor(canonicalUrl),
     description: t.oneLine,
     abstract: t.tldr,
     // Author + publisher now point at the canonical @ids declared on the

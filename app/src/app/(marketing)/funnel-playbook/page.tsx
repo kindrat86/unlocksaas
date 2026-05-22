@@ -10,6 +10,7 @@ import {
 } from "@/lib/funnel-playbook-matrix";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
       "Eight step-by-step funnel playbooks for indie SaaS founders, with common mistakes and ladder-position guidance.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

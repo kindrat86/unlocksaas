@@ -10,6 +10,18 @@ import {
   LLMS_TXT_MODELS,
 } from "@/lib/seo/llms-txt-per-model";
 import { BASE_URL } from "@/lib/seo/entity";
+import { tagBodyLinks } from "@/lib/seo/ai-attribution";
+
+/**
+ * Canonical alias body with `ai-search` UTM tagging applied once at
+ * module load. Matches the tagging applied by the canonical
+ * /llms.txt route (see that file for the rationale).
+ */
+const TAGGED_LLMS_TXT_BODY = tagBodyLinks(LLMS_TXT_BODY, "ai-search", {
+  medium: "llms-txt",
+  campaign: "llms_corpus",
+  content: "well-known-alias",
+});
 
 /**
  * /.well-known/llms.txt – alias for /llms.txt.
@@ -79,7 +91,7 @@ export async function GET(request: Request) {
   // back at the llmstxt.org §1 URL via Link header so this alias never
   // becomes a separately-weighted citation surface.
   if (resolved === null) {
-    return new NextResponse(LLMS_TXT_BODY, {
+    return new NextResponse(TAGGED_LLMS_TXT_BODY, {
       status: 200,
       headers: {
         ...ALIAS_HEADERS,

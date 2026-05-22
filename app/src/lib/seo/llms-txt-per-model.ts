@@ -3,7 +3,16 @@ import {
   NEXT_REVIEW_DATE,
   STRATEGY_LOCK_DATE,
 } from "@/lib/seo/freshness";
-import { BASE_URL } from "@/lib/seo/entity";
+import {
+  BASE_URL,
+  ORGANIZATION_WIKIDATA_QID,
+  ORGANIZATION_WIKIDATA_URL,
+} from "@/lib/seo/entity";
+import {
+  ENGINE_BY_LLMS_TXT_MODEL,
+  tagBodyLinks,
+  type AiEngine,
+} from "@/lib/seo/ai-attribution";
 
 /**
  * Per-model curated /llms.txt feeds.
@@ -20,7 +29,7 @@ import { BASE_URL } from "@/lib/seo/entity";
  *     density. They preferentially cite pages with stable @id anchors and
  *     dated lastVerified. ARTICLES + DATASET first; conversational FAQ
  *     last.
- *   - Claude (Anthropic) crawler + ClaudeBot weight markdown-first
+ *   - Claude (Anthropic) search/user-fetch surfaces weight markdown-first
  *     content and explicit citation surfaces. They preferentially cite
  *     /cite/<id> permalinks and markdown twins.
  *   - PerplexityBot weights freshness signals + multi-source corroboration.
@@ -131,9 +140,8 @@ const ALIAS_MAP: Record<string, LlmsTxtModel> = {
   // Anthropic
   claude: "claude",
   anthropic: "claude",
-  "claude-web": "claude",
-  claudebot: "claude",
-  "anthropic-ai": "claude",
+  "claude-searchbot": "claude",
+  "claude-user": "claude",
   // OpenAI
   gpt: "gpt",
   openai: "gpt",
@@ -440,6 +448,18 @@ ${sharedFooter()}
 }
 
 function geminiBody(): string {
+  // Wikidata bullet is conditional on the operator-activated Q-URL env. In
+  // production the env is set (Q139863921 / activated 21-05-2026); in a
+  // fresh checkout it's undefined and the line is omitted entirely –
+  // Brunson Hard-Rule, no hardcoded Q-ID drift between this body and
+  // the canonical entity.ts source of truth.
+  const wikidataEntityLine =
+    ORGANIZATION_WIKIDATA_QID && ORGANIZATION_WIKIDATA_URL
+      ? `- **Wikidata** – ${ORGANIZATION_WIKIDATA_QID} (UnlockSaaS). Resolves at ${ORGANIZATION_WIKIDATA_URL}. Bidirectional sameAs claim with the Organization JSON-LD on the canonical homepage.\n`
+      : "";
+  const wikidataSameAsLine = ORGANIZATION_WIKIDATA_QID
+    ? `- Wikidata: ${ORGANIZATION_WIKIDATA_QID}\n`
+    : "";
   return `${sharedHeader("Gemini / GoogleOther")}
 
 ## Why this view is ordered for Gemini
@@ -448,8 +468,7 @@ Google's search and answer retrievers (Gemini, AI Overviews, GoogleOther) weight
 
 ## Entity graph
 
-- **Wikidata** – Q139863921 (UnlockSaaS). Resolves at https://www.wikidata.org/wiki/Q139863921. Bidirectional sameAs claim with the Organization JSON-LD on the canonical homepage.
-- **Entity JSON-LD** – [\`${BASE_URL}/.well-known/entity.jsonld\`](${BASE_URL}/.well-known/entity.jsonld) – Organization, Person, WebSite, Product blocks with stable \`@id\` fragments (\`#organization\`, \`#founder\`, \`#website\`, \`#product-playbook\`, \`#service-diagnostic\`).
+${wikidataEntityLine}- **Entity JSON-LD** – [\`${BASE_URL}/.well-known/entity.jsonld\`](${BASE_URL}/.well-known/entity.jsonld) – Organization, Person, WebSite, Product blocks with stable \`@id\` fragments (\`#organization\`, \`#founder\`, \`#website\`, \`#product-playbook\`, \`#service-diagnostic\`).
 - **DefinedTermSet** – [\`${BASE_URL}/glossary\`](${BASE_URL}/glossary) declares one DefinedTermSet with sixteen DefinedTerm children, each with stable \`@id\` (\`#hook\`, \`#story\`, \`#offer\`, \`#big-domino\`, …).
 - **Dataset** – Dataset JSON-LD on [\`${BASE_URL}/dataset\`](${BASE_URL}/dataset). Eligible for Google Dataset Search. Includes \`includedInDataCatalog\` cross-references for Hugging Face + Zenodo (env-gated until activated).
 - **PodcastSeries + PodcastEpisode** – anchored on \`#podcast\` @id across the press page and per-episode pages at \`${BASE_URL}/podcast/<slug>\`.
@@ -457,8 +476,7 @@ Google's search and answer retrievers (Gemini, AI Overviews, GoogleOther) weight
 ## Knowledge Graph anchors (sameAs)
 
 Organization sameAs array includes (env-gated; populated as live):
-- Wikidata: Q139863921
-- Wikipedia: stub draft submitted; awaiting patrol
+${wikidataSameAsLine}- Wikipedia: stub draft submitted; awaiting patrol
 - Founder profiles: Indie Hackers, Product Hunt, GitHub, X, LinkedIn
 - Public dataset: Zenodo DOI (when published), Hugging Face dataset (when published)
 
@@ -801,17 +819,37 @@ export function renderLlmsTxtForModel(model: LlmsTxtModel): string {
 }
 
 /**
+ * Resolve the AiEngine that a given llms-txt model variant belongs
+ * to. Used by `getCachedLlmsTxtForModel()` to tag every link in the
+ * rendered body with the engine that's about to receive it.
+ */
+function engineForModel(model: LlmsTxtModel): AiEngine {
+  return ENGINE_BY_LLMS_TXT_MODEL[model] ?? "ai-search";
+}
+
+/**
  * Memoised cache of rendered bodies. The bodies are pure functions of
  * the freshness constants and base URL – they only change at deploy
  * time (when LAST_VERIFIED_DATE bumps) or at module reload. Caching
  * the strings avoids re-running the template literals on every request.
+ *
+ * Each cached body has already passed through `tagBodyLinks()` so the
+ * markdown-link targets carry engine-specific UTM tags. The display
+ * text and code-fenced URLs stay untouched (Brunson Hard-Rule: no
+ * per-model exclusive content, and a clean URL visible to the user
+ * when an engine quotes the body verbatim).
  */
 const RENDER_CACHE = new Map<LlmsTxtModel, string>();
 
 export function getCachedLlmsTxtForModel(model: LlmsTxtModel): string {
   const cached = RENDER_CACHE.get(model);
   if (cached !== undefined) return cached;
-  const body = renderLlmsTxtForModel(model);
+  const engine = engineForModel(model);
+  const body = tagBodyLinks(renderLlmsTxtForModel(model), engine, {
+    medium: "llms-txt",
+    campaign: "llms_corpus",
+    content: model,
+  });
   RENDER_CACHE.set(model, body);
   return body;
 }

@@ -115,6 +115,178 @@ function readDoiEnv(key: string): string | undefined {
 }
 
 /**
+ * Knowledge-Graph anchors – strongest AIO multipliers in the entity graph.
+ *
+ * Wikidata Q-URL is the canonical machine-readable entity ID Google's
+ * Knowledge Graph uses to disambiguate brands. A single populated Q-URL
+ * is worth more for AI Overviews than every social profile combined.
+ * Wikipedia URL is the second strongest signal because every major LLM
+ * training corpus includes Wikipedia as a primary source.
+ *
+ * Both are env-driven and stay empty until a real entry exists – we
+ * never fabricate a Wikidata Q-ID. The operator path is documented in
+ * strategy/wikidata-application/README.md (Wikidata) and
+ * strategy/sameas-activation-playbook.md §Wikipedia (Wikipedia).
+ *
+ * Hoisted to module-scope exports (above buildSameAs) so consumers
+ * other than sameAs can resolve the same source-of-truth values:
+ *   - ORGANIZATION_WIKIDATA_URL  – consumed by Organization.sameAs.
+ *   - ORGANIZATION_WIKIDATA_QID  – consumed by Organization.identifier[]
+ *     as a PropertyValue with propertyID="wikidata" (bare Q-ID is the
+ *     stronger machine-readable signal than a URL alone; KG resolves it
+ *     to the canonical Wikidata item without URL parsing).
+ *   - ORGANIZATION_WIKIPEDIA_URL – consumed by Organization.sameAs AND
+ *     by Organization.mainEntityOfPage (one-to-one authoritative anchor,
+ *     stronger than a sameAs row).
+ */
+export const ORGANIZATION_WIKIDATA_URL: string | undefined = readSocialEnv(
+  "NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL",
+);
+
+export const ORGANIZATION_WIKIPEDIA_URL: string | undefined = readSocialEnv(
+  "NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL",
+);
+
+/**
+ * Extract a bare Wikidata Q-ID (e.g. "Q139863921") from a Wikidata URL.
+ *
+ * Accepted URL shapes – every canonical Wikidata entity URL ends in a
+ * path segment matching `/Q<digits>` (or `/Property:P<digits>` etc. –
+ * we only extract Q-items here):
+ *
+ *   - https://www.wikidata.org/wiki/Q139863921
+ *   - https://www.wikidata.org/entity/Q139863921
+ *   - https://m.wikidata.org/wiki/Q139863921
+ *
+ * Rejected (returns undefined):
+ *   - Empty / undefined input.
+ *   - URLs whose last path segment does not match `^Q\d+$`.
+ *   - Malformed URLs (URL constructor throws).
+ *
+ * Brunson Hard-Rule: a malformed Wikidata URL must not leak a bogus
+ * QID into the identifier[] PropertyValue array. Bad inputs silently
+ * drop so the consumer omits the wikidata identifier entirely – never
+ * ships an empty-string or null value that looks like a fabrication
+ * to KG validators.
+ */
+export function extractWikidataQid(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url);
+    const segments = parsed.pathname.split("/").filter((s) => s.length > 0);
+    const last = segments[segments.length - 1];
+    if (last && /^Q\d+$/.test(last)) return last;
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Bare Wikidata Q-ID for the Unlock SaaS Organization (e.g. "Q139863921").
+ *
+ * Derived from ORGANIZATION_WIKIDATA_URL at module load. Exposed so the
+ * Organization JSON-LD identifier[] array can emit a PropertyValue with
+ * propertyID="wikidata" – the schema.org pattern Google's Knowledge Graph
+ * walks to cross-reference an entity card with the canonical Wikidata
+ * item without having to URL-parse the sameAs row.
+ *
+ * Stays undefined in a fresh checkout (no env var) OR when the env URL
+ * doesn't match the Wikidata Q-URL shape. The consumer must omit the
+ * wikidata PropertyValue entirely when undefined – never ship an empty
+ * value.
+ */
+export const ORGANIZATION_WIKIDATA_QID: string | undefined = extractWikidataQid(
+  ORGANIZATION_WIKIDATA_URL,
+);
+
+// ---------------------------------------------------------------------------
+// Organization identifier[] – machine-readable cross-references
+// ---------------------------------------------------------------------------
+
+/**
+ * Schema.org PropertyValue subobject shape. Exported so consumers that
+ * spread these into Organization / Person blocks get a stable type.
+ */
+export interface OrganizationIdentifier {
+  readonly "@type": "PropertyValue";
+  readonly propertyID: string;
+  readonly value: string;
+}
+
+/**
+ * Single source of truth for the founding date.
+ *
+ * Hoisted above `buildOrganizationIdentifiers()` so the builder can read it
+ * at module load without a TDZ violation. Re-used by the `ORGANIZATION`
+ * literal below so the same string never lives in two places.
+ */
+const ORGANIZATION_FOUNDING_DATE = "2026-05-17" as const;
+
+/**
+ * Build the Organization.identifier[] array.
+ *
+ * PropertyValue is the schema.org pattern for stable, non-URL identifiers
+ * that an entity exposes for cross-reference. Knowledge Graph and LLM
+ * retrieval pipelines walk identifier[] to confirm an entity card is
+ * keyed to the same domain / founding date / canonical manifest / Wikidata
+ * Q-ID the body content names.
+ *
+ * Three always-present rows + one conditional row:
+ *
+ *   1. propertyID="domain"             – unlocksaas.com (canonical key).
+ *   2. propertyID="foundingDate"       – ORGANIZATION_FOUNDING_DATE.
+ *   3. propertyID="canonical-manifest" – /.well-known/entity.jsonld URL.
+ *   4. propertyID="wikidata" (conditional) – bare Q-ID like "Q139863921"
+ *      when ORGANIZATION_WIKIDATA_QID resolves. This is the strongest
+ *      identifier KG recognises; pairing it with the Wikidata sameAs URL
+ *      row gives the entity a one-to-one machine-readable anchor AND a
+ *      crawlable URL, the canonical pattern Google's KG documentation
+ *      recommends.
+ *
+ * Brunson Hard-Rule: the wikidata row only appears when the env-driven
+ * URL resolves to a valid Q-shape. Misconfigured env (typo, missing
+ * URL) silently drops the row – never ships an empty value.
+ *
+ * Hoisted to module scope. Single allocation per cold start; consumers
+ * share the same frozen array. Both Organization JSON-LD surfaces
+ * (the homepage `json-ld.tsx` Organization block AND the canonical
+ * manifest at `/.well-known/entity.jsonld`) MUST use this constant –
+ * if the two surfaces ship different identifier[] rows, a crawler
+ * comparing them flags the entity for verification failure.
+ */
+function buildOrganizationIdentifiers(): readonly OrganizationIdentifier[] {
+  const rows: OrganizationIdentifier[] = [
+    {
+      "@type": "PropertyValue",
+      propertyID: "domain",
+      value: "unlocksaas.com",
+    },
+    {
+      "@type": "PropertyValue",
+      propertyID: "foundingDate",
+      value: ORGANIZATION_FOUNDING_DATE,
+    },
+    {
+      "@type": "PropertyValue",
+      propertyID: "canonical-manifest",
+      value: `${BASE_URL}/.well-known/entity.jsonld`,
+    },
+  ];
+  if (ORGANIZATION_WIKIDATA_QID) {
+    rows.push({
+      "@type": "PropertyValue",
+      propertyID: "wikidata",
+      value: ORGANIZATION_WIKIDATA_QID,
+    });
+  }
+  return Object.freeze(rows);
+}
+
+export const ORGANIZATION_IDENTIFIERS: readonly OrganizationIdentifier[] =
+  buildOrganizationIdentifiers();
+
+/**
  * Build the sameAs array from env at module load. Each entry corresponds
  * to a single real, operator-controlled profile. Add a new social network
  * here only when (a) the operator has created the account, and (b) the
@@ -127,24 +299,30 @@ function readDoiEnv(key: string): string | undefined {
  */
 function buildSameAs(): readonly string[] {
   const candidates = [
-    // Knowledge-Graph anchors — strongest AIO multipliers in the array.
-    // Wikidata Q-URL: the canonical machine-readable entity ID Google's
-    // Knowledge Graph uses to disambiguate brands. A single populated
-    // Q-URL is worth more for AI Overviews than every social profile
-    // combined. Wikipedia URL is the second strongest signal because
-    // every major LLM training corpus includes Wikipedia as a primary
-    // source. Both are env-driven and stay empty until a real entry
-    // exists – we never fabricate a Wikidata Q-ID. The operator path
-    // is documented in strategy/google-strategy.md §B.4 (entity-graph
-    // activation).
-    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL"),
-    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL"),
+    // Knowledge-Graph anchors first – strongest AIO multipliers in the
+    // array. Both consumed from the hoisted exports above so the
+    // source-of-truth env reads happen exactly once per module load.
+    ORGANIZATION_WIKIDATA_URL,
+    ORGANIZATION_WIKIPEDIA_URL,
     // Founder/owner profiles – primary entity anchors.
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_X_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL"),
+    // Aggregator / review-directory anchors. These are the surfaces
+    // ChatGPT, Perplexity, and Google AI Overviews cite when answering
+    // "what is X?" or "X alternatives" – every live listing is a permanent
+    // candidate citation that loops back to unlocksaas.com via sameAs.
+    // Source of truth for which directories we're targeting + submission
+    // URLs + operator runbook: src/lib/seo/directory-listings.ts.
+    // Brunson Hard-Rule: a slot stays unset until the directory team
+    // approves the listing and the URL is live. No aspirational entries.
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_G2_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CAPTERRA_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_BETALIST_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_ALTERNATIVETO_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_SAASHUB_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL"),
     // Company-entity registry anchors – fed directly into Google's
     // Knowledge Graph as primary entity sources. Heavier weight than
@@ -186,13 +364,14 @@ export const ORGANIZATION_SAME_AS: readonly string[] = Object.freeze(
  * just another sameAs row, because Knowledge Graph treats mainEntityOfPage
  * as a one-to-one anchor and sameAs as one-to-many.
  *
- * Resolves at module load; undefined until NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL
- * is set. JSON-LD consumers MUST omit the field when undefined – a
+ * Resolves at module load via the hoisted ORGANIZATION_WIKIPEDIA_URL
+ * constant; undefined until NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL is set.
+ * JSON-LD consumers MUST omit the field when undefined – a
  * `mainEntityOfPage: undefined` serializes to `"mainEntityOfPage": null` in
  * some JSON.stringify paths and looks like a fabrication to validators.
  */
 export const ORGANIZATION_MAIN_ENTITY_OF_PAGE: string | undefined =
-  readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL");
+  ORGANIZATION_WIKIPEDIA_URL;
 
 // ---------------------------------------------------------------------------
 // External dataset catalog registrations (env-driven, empty until activated)
@@ -291,6 +470,29 @@ export const DATASET_DOI_URL: string | undefined = DATASET_DOI
 
 function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration[] {
   const rows: DatasetCatalogRegistration[] = [];
+
+  // GitHub mirror — a public mirror repository with a weekly auto-PR refresh
+  // workflow. The mirror is the strongest off-platform backlink for the
+  // canonical landing because GitHub's domain authority is among the highest
+  // on the web, AI Overviews / Perplexity cite GitHub repos frequently, and
+  // every fork of the mirror creates an inbound link back to /dataset. The
+  // mirror repo itself runs a weekly cron that pulls the canonical files
+  // from this site, so the dataset declared here is by construction a
+  // verbatim copy of the canonical artifact, not a forked snapshot.
+  //
+  // Activation: create the public mirror repo, then set
+  // NEXT_PUBLIC_UNLOCKSAAS_GITHUB_DATASET_URL on Vercel to the repo URL
+  // (e.g. https://github.com/<owner>/indie-saas-teardowns-dataset). The
+  // canonical Dataset JSON-LD then declares the GitHub mirror as another
+  // `includedInDataCatalog` row + appends it to `sameAs`.
+  const github = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_GITHUB_DATASET_URL");
+  if (github) {
+    rows.push({
+      name: "GitHub",
+      url: github,
+      catalogUrl: "https://github.com/",
+    });
+  }
 
   const hf = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL");
   if (hf) {
@@ -501,7 +703,7 @@ export const MENTIONED_ENTITIES: ReadonlyArray<{
  * as schema.org `DefinedTermSet` from the funnel hub – it declares
  * UnlockSaaS as a topical authority on this specific glossary.
  *
- * LLM training corpora that ingest DefinedTermSet treat the publisher
+ * LLM retrieval systems that ingest DefinedTermSet treat the publisher
  * as a primary citation source for the term. Pre-revenue, this is one
  * of the few entity-graph anchors a brand-new site CAN claim honestly:
  * "we teach this term, here is our definition, in our own words".
@@ -634,7 +836,10 @@ export const ORGANIZATION = {
   logo: `${BASE_URL}/icon`, // Next.js dynamic icon at app/icon.tsx serves PNG at /icon
   email: "maryan@unlocksaas.com",
   slogan: "Your first paying customer in 60 days, or you do not pay.",
-  foundingDate: "2026-05-17",
+  // Source-of-truth string lives at ORGANIZATION_FOUNDING_DATE above –
+  // both this literal AND the identifier[] PropertyValue row consume it,
+  // so a future date change is a one-line edit.
+  foundingDate: ORGANIZATION_FOUNDING_DATE,
   description:
     "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
   // Schema.org expects ISO 3166 region codes or named places. SaaS sold

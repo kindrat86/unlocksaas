@@ -7,6 +7,8 @@ import {
 } from "@/components/seo/json-ld";
 import { Separator } from "@/components/ui/separator";
 import { BASE_URL, ORGANIZATION } from "@/lib/seo/entity";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import {
   PODCAST_EPISODES,
   PODCAST_SHOW_DESCRIPTION,
@@ -65,13 +67,20 @@ export const metadata: Metadata = {
     description: PODCAST_SHOW_SUBTITLE,
     url: "/podcast",
     siteName: ORGANIZATION.name,
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title: PODCAST_SHOW_NAME,
     description: PODCAST_SHOW_SUBTITLE,
   },
+  // Merge canonical + self-hreflang with the RSS type alternate so search
+  // engines see a canonical URL for the hub AND podcast directories still
+  // pick up the application/rss+xml link. Without pageAlternates the page
+  // was missing both rel="canonical" and any hreflang declaration — caught
+  // by the 2026-05-22 crawler citation audit.
   alternates: {
+    ...pageAlternates("/podcast"),
     types: {
       "application/rss+xml": PODCAST_URLS.rss,
     },

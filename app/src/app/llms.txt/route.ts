@@ -10,6 +10,24 @@ import {
   LLMS_TXT_MODELS,
 } from "@/lib/seo/llms-txt-per-model";
 import { BASE_URL } from "@/lib/seo/entity";
+import { tagBodyLinks } from "@/lib/seo/ai-attribution";
+
+/**
+ * Canonical /llms.txt body with `ai-search` UTM tagging applied
+ * once at module load. The canonical body is served to ANY crawler
+ * (including agents that never sent a `?model=` hint), so the
+ * fallback engine identity is "ai-search" – PostHog buckets these
+ * sessions as "AI search referral, engine unknown" rather than
+ * leaving them untagged.
+ *
+ * Per-model bodies are tagged with their specific engine inside
+ * `getCachedLlmsTxtForModel()`.
+ */
+const TAGGED_LLMS_TXT_BODY = tagBodyLinks(LLMS_TXT_BODY, "ai-search", {
+  medium: "llms-txt",
+  campaign: "llms_corpus",
+  content: "canonical",
+});
 
 /**
  * /llms.txt – playbook-readable index for LLM crawlers (Anthropic,
@@ -49,9 +67,10 @@ import { BASE_URL } from "@/lib/seo/entity";
  *   /llms.txt?model=mistral    – schema-typed catalogs first
  *   /llms.txt?model=apple      – AEO direct answers + FAQ first
  *
- * Aliases map onto canonical keys. `?model=anthropic`, `?model=claudebot`,
- * `?model=claude-web` all resolve to `claude`. `?model=openai`, `?model=gptbot`,
- * `?model=oai-searchbot` all resolve to `gpt`. Unknown values gracefully fall
+ * Aliases map onto canonical keys. `?model=anthropic`, `?model=claude-user`,
+ * and `?model=claude-searchbot` all resolve to `claude`. `?model=openai`,
+ * `?model=chatgpt-user`, and `?model=oai-searchbot` all resolve to `gpt`.
+ * Unknown values gracefully fall
  * back to the canonical body. Comparison is case-insensitive.
  *
  * Brunson Hard-Rule reconciliation
@@ -111,7 +130,7 @@ export async function GET(request: Request) {
   // Unrecognised values fall back gracefully so a typo'd `?model=clade`
   // still returns useful content rather than 404'ing.
   if (resolved === null) {
-    return new NextResponse(LLMS_TXT_BODY, {
+    return new NextResponse(TAGGED_LLMS_TXT_BODY, {
       status: 200,
       headers: {
         ...CANONICAL_HEADERS,

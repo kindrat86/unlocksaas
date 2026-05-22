@@ -13,8 +13,18 @@ import {
   detectSourceFromRequest,
   parseSource,
 } from "@/lib/acquisition-source";
-import { toMarkdownPath, wantsMarkdown } from "@/lib/seo/markdown-path";
+import {
+  isMarkdownMirrorPath,
+  toMarkdownPath,
+  wantsMarkdown,
+} from "@/lib/seo/markdown-path";
 import { BASE_URL } from "@/lib/seo/entity";
+import {
+  AI_ENGINE_COOKIE,
+  AI_ENGINE_COOKIE_MAX_AGE,
+  isAiEngine,
+  resolveEngineFromUtmSource,
+} from "@/lib/seo/ai-attribution";
 
 // Affiliate program (see lib/affiliate.ts). Re-declared here to avoid importing
 // the full lib (which transitively pulls Supabase + crypto) into the proxy
@@ -22,6 +32,30 @@ import { BASE_URL } from "@/lib/seo/entity";
 const REF_COOKIE = "unlocksaas_ref";
 const REF_COOKIE_MAX_AGE = 60 * 60 * 24 * 90; // 90 days
 const REF_CODE_RE = /^[a-z0-9]{6,16}$/i; // permissive: matches lib/affiliate's CODE_ALPHABET
+const MACHINE_READABLE_FILE_EXT_RE =
+  /\.(?:atom|bib|csv|html|ics|json|jsonld|m4a|md|mp3|mp4|pdf|ris|rss|txt|webmanifest|xml)$/i;
+const MACHINE_READABLE_PATH_PREFIXES = [
+  "/.well-known/",
+  "/feed/",
+] as const;
+const MACHINE_READABLE_EXACT_PATHS = new Set([
+  "/dataset/huggingface/raw",
+  "/dataset/zenodo/raw",
+  "/glossary/podcast-cover",
+  "/glossary/podcast.xml",
+]);
+
+function isMachineReadablePath(pathname: string): boolean {
+  if (pathname.startsWith("/api/")) return false;
+  if (pathname === "/dataset") return false;
+  if (pathname.endsWith("/md")) return true;
+  if (MACHINE_READABLE_FILE_EXT_RE.test(pathname)) return true;
+  if (MACHINE_READABLE_EXACT_PATHS.has(pathname)) return true;
+
+  return MACHINE_READABLE_PATH_PREFIXES.some((prefix) =>
+    pathname.startsWith(prefix),
+  );
+}
 
 /**
  * Emit an explicit `Link: <…>; rel="canonical"` HTTP header on every proxied
@@ -44,6 +78,9 @@ const REF_CODE_RE = /^[a-z0-9]{6,16}$/i; // permissive: matches lib/affiliate's 
  *   – `/cite/*` already emits its own canonical pointing to the HUMAN page
  *     rather than to itself; overriding here would create two competing
  *     rel="canonical" Link values.
+ *   – markdown mirror routes (dot-md suffixes and slash-md children)
+ *     already emit their own canonical from the route handler, pointing
+ *     back to the HTML page.
  *
  * For markdown-rewrite responses, the canonical points to the ORIGINAL HTML
  * URL (e.g., /about), not the rewritten .md path, because /about is the
@@ -59,6 +96,7 @@ function setCanonicalLinkHeader(
 ): void {
   if (originalPathname.startsWith("/api/")) return;
   if (originalPathname.startsWith("/cite/")) return;
+  if (isMarkdownMirrorPath(originalPathname)) return;
   const path =
     originalPathname.length > 1 && originalPathname.endsWith("/")
       ? originalPathname.slice(0, -1)
@@ -102,11 +140,18 @@ export async function proxy(request: NextRequest) {
       rewriteUrl.pathname = mdPath;
       // Strip the `format` param so the rewritten URL is cache-key clean.
       rewriteUrl.searchParams.delete("format");
-      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
-      // Canonical points to the original HTML URL, not the .md mirror.
-      setCanonicalLinkHeader(rewriteResponse, originalPathname);
-      return rewriteResponse;
+      // The markdown route handler owns the canonical Link header. Adding
+      // another one here duplicates the final response header.
+      return NextResponse.rewrite(rewriteUrl);
     }
+  }
+
+  // Public machine-readable surfaces are cacheable crawler/agent resources,
+  // not visitor sessions. Let the route handler answer directly so llms.txt,
+  // markdown mirrors, feeds, manifests, dataset assets, and similar URLs do
+  // not receive Supabase refresh cookies or sticky A/B attribution cookies.
+  if (isMachineReadablePath(originalPathname)) {
+    return NextResponse.next();
   }
 
   const response = await updateSession(request);
@@ -166,6 +211,40 @@ export async function proxy(request: NextRequest) {
       request.cookies.set(SOURCE_COOKIE, detectedSource);
       response.cookies.set(SOURCE_COOKIE, detectedSource, {
         maxAge: SOURCE_COOKIE_MAX_AGE,
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+  }
+
+  // AI engine attribution: first-touch sticky cookie that drives the
+  // PostHog `ai_engine` super-property (see components/analytics/
+  // posthog-provider.tsx). Captured from the `utm_source` query
+  // parameter we publish in llms.txt + llms-*.txt + MCP tool returns
+  // (see src/lib/seo/ai-attribution.ts).
+  //
+  // Decoupled from `usaas_source` (acquisition-source.ts) because
+  // those tag indie-channel attribution (Twitter, IndieHackers, etc.)
+  // while this one tags WHICH AI ENGINE drove the click. The two
+  // co-exist on a single visit; a click from Claude posted on Twitter
+  // gets `ai_engine=claude` AND `source=twitter`.
+  //
+  // First-touch wins. We do NOT overwrite an existing cookie – a
+  // later utm_source on the same browser cannot steal attribution
+  // mid-funnel.
+  //
+  // resolveEngineFromUtmSource() returns null when no rule matches
+  // (organic, direct, or a utm_source from a non-AI channel like
+  // twitter/indiehackers). In that case we leave the cookie alone –
+  // the acquisition-source pipeline handles non-AI channels.
+  const existingAiEngine = request.cookies.get(AI_ENGINE_COOKIE)?.value;
+  if (!existingAiEngine || !isAiEngine(existingAiEngine)) {
+    const utmSourceRaw = request.nextUrl.searchParams.get("utm_source");
+    const detectedEngine = resolveEngineFromUtmSource(utmSourceRaw);
+    if (detectedEngine) {
+      request.cookies.set(AI_ENGINE_COOKIE, detectedEngine);
+      response.cookies.set(AI_ENGINE_COOKIE, detectedEngine, {
+        maxAge: AI_ENGINE_COOKIE_MAX_AGE,
         sameSite: "lax",
         path: "/",
       });

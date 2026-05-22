@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ALTERNATIVES } from "@/lib/alternatives";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
@@ -45,6 +46,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "/alternatives-to",
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
@@ -113,7 +115,7 @@ export default function AlternativesHub() {
       />
       {/* AIO uplift: Dataset schema declares the alternatives catalog as
           a dated, dual-distribution dataset. Google Dataset Search indexes
-          it; LLM training corpora that prioritise structured data ingest
+          it; LLM retrieval systems that prioritise structured data discover
           it at a higher tier. */}
       <HubDatasetJsonLd
         name="Honest Indie SaaS Alternatives Catalog"

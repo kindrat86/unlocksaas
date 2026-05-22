@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { WHY_ISNT_MY_ENTRIES } from "@/lib/why-isnt-my";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
       "Eight per-element diagnostic pages: landing page, checkout, upsell, opt-in, VSL, tripwire, webinar registration, and email open rate.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

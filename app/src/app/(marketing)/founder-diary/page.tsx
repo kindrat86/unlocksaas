@@ -18,8 +18,8 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
  * Lists every diary entry in reverse-chronological order with the hook
  * + first paragraph of the story as the card body. CollectionPage +
  * Blog + BreadcrumbList JSON-LD so retrievers (Google AI Overviews,
- * Perplexity, ClaudeBot) can model the surface as a blog cluster, and
- * speakable on the H1 + intro for voice surfaces.
+ * Perplexity, Claude-SearchBot/Claude-User) can model the surface as a blog
+ * cluster, and speakable on the H1 + intro for voice surfaces.
  *
  * Why a hub vs raw chronological list: the hub becomes the recurring
  * backlink target for cross-posts on X / IH / r/saas. Every external

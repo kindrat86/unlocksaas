@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { STACK_ENTRIES, getNicheForStack } from "@/lib/stacks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 const CANONICAL = "/stack-for";
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
       "Twelve opinionated tool rosters – one per cohort. Pick the closest fit.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
