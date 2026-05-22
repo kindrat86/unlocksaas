@@ -14,6 +14,7 @@ import {
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { formatVerifiedDate } from "@/lib/seo/dates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
   SPEAKABLE_SPEC,
@@ -60,6 +61,7 @@ export async function generateMetadata(props: {
       description: s.metaDescription,
       url: canonical,
       siteName: "Unlock SaaS",
+      images: DEFAULT_OG_IMAGES,
     },
     twitter: {
       card: "summary_large_image",

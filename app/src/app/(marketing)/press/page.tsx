@@ -18,6 +18,7 @@ import {
   ALTERNATE_NAMES,
 } from "@/lib/seo/entity";
 import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 
 /**
  * Press / media kit page.
@@ -60,6 +61,7 @@ export const metadata: Metadata = {
       "Brand facts, founder bio, descriptions, and contact details for media coverage of Unlock SaaS.",
     url: "/press",
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary",

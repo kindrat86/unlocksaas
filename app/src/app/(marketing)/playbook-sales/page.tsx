@@ -28,6 +28,7 @@ import { PLAYBOOK_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { cacheLife, cacheTag } from "next/cache";
 
@@ -87,6 +88,7 @@ export const metadata: Metadata = {
     description:
       "Seven steps. Sixty days. $49/month. A verified paying customer or your money back.",
     url: "/playbook-sales",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

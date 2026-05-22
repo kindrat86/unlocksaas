@@ -10,6 +10,7 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { FoundingCohortMeter } from "@/components/founding-cohort-meter";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { FoundingWaitlistForm } from "./waitlist-form";
 import { FoundingClaimButton } from "./claim-button";
 import { cartWindow, seatsClaimed, FOUNDING_COHORT_CAP } from "@/lib/founding/cohort";
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
       "50 Founding Verified Builders. 7-day window. Lifetime price lock. After 50 seats or 7 days, the founding bonuses retire forever.",
     url: "/founding",
     type: "website",
+    images: DEFAULT_OG_IMAGES,
   },
 };
 

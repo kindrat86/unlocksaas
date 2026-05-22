@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { NICHE_ENTRIES } from "@/lib/niches";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
       "Niche-specific funnel diagnostics for course creators, agency owners, SaaS founders, coaches, consultants, and 7 other cohorts.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

@@ -7,6 +7,7 @@ import {
   EditorialPolicyArticleJsonLd,
 } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import {
   CORRECTIONS,
   CORRECTIONS_LOG_SINCE,
@@ -62,6 +63,7 @@ export const metadata: Metadata = {
     url: "/editorial-policy",
     publishedTime: POLICY_PUBLISHED_AT,
     authors: ["Maryan"],
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary",
