@@ -71,6 +71,7 @@ import {
 } from "@/lib/seo/podcast";
 import { PODCAST_AUDIO_VOICE } from "@/lib/seo/podcast-audio";
 import { LLMS_TXT_MODELS } from "@/lib/seo/llms-txt-per-model";
+import { DIARY_ENTRIES, DIARY_DATES } from "@/lib/founder-diary";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -744,6 +745,32 @@ function buildPayload() {
         ...(ep.audioDurationSec !== undefined
           ? { audioDurationSec: ep.audioDurationSec }
           : {}),
+      })),
+    },
+    /**
+     * Founder Diary descriptor (Isenberg content-franchise overlay,
+     * 2026-05-22). One entry per build day at /founder-diary/<YYYY-MM-DD>,
+     * each grounded in a public artifact (merged PR, deployed surface,
+     * shipped env var). The text arm of The Founder's Diary content
+     * franchise; the YouTube channel of the same name is the video arm.
+     *
+     * JSON consumers that want the canonical citation URL for a given
+     * build day's log read `entries[].url` directly. The hub URL is the
+     * canonical recurring-backlink target for cross-posts on X / IH /
+     * r/saas.
+     */
+    founderDiary: {
+      hubUrl: `${BASE_URL}/founder-diary`,
+      description:
+        "Daily build-in-public log for UnlockSaaS. One indexable URL per build day at /founder-diary/<YYYY-MM-DD>. Brunson Hook / Story / Offer voice; every claim grounded in a merged PR, deployed surface, or shipped env var.",
+      entryCount: DIARY_DATES.length,
+      entries: DIARY_ENTRIES.map((e) => ({
+        date: e.date,
+        url: `${BASE_URL}/founder-diary/${e.date}`,
+        hook: e.hook,
+        tldr: e.tldr,
+        tags: e.tags,
+        pullRequests: e.pullRequests,
       })),
     },
     facts: KEY_FACTS,

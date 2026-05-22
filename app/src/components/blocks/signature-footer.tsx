@@ -81,6 +81,19 @@ export function SignatureFooter() {
             >
               The Founder&apos;s Diary on YouTube
             </Link>
+            {/*
+              Founder Diary – the text/blog arm of the same content
+              franchise the YouTube channel covers. One indexable URL per
+              build day. Grouped with the founder-authored surfaces above
+              (YouTube = video, Diary = text, Numbers = data) rather than
+              the legal column.
+            */}
+            <Link
+              href="/founder-diary"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Founder Diary
+            </Link>
             <Link
               href="/faq"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
