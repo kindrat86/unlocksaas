@@ -21,6 +21,7 @@ import { PRICING_PAGE_PATTERN_SLUGS } from "@/lib/pricing-page-examples";
 import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { OUTCOME_SLUGS } from "@/lib/outcomes";
+import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
@@ -806,6 +807,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.55,
       alternates: hreflang(`${base}/get-${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #17 – MCP server directory.
+    // Data source: src/lib/mcp-tools.ts. Isenberg overlay defensive play:
+    // own the "MCP server directory" / "best MCP for X" / "is there an
+    // MCP for Y" search surface before the field crowds. Article +
+    // SoftwareApplication + FAQPage + BreadcrumbList JSON-LD per detail.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/mcp-tools`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/mcp-tools`),
+    },
+    ...MCP_TOOL_SLUGS.map((slug) => ({
+      url: `${base}/mcp-tools/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/mcp-tools/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
