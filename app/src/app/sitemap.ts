@@ -14,6 +14,7 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SCRIPT_SLUGS } from "@/lib/scripts";
 import { PRICING_PAGE_PATTERN_SLUGS } from "@/lib/pricing-page-examples";
 import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
@@ -647,6 +648,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/answers/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #11b — Should I…? decision-helper AEO pages.
+    // Data source: src/lib/should-i.ts. Pure AEO play targeting the
+    // "should I X?" query shape that ChatGPT / Perplexity / Claude cite
+    // verbatim (decision-tree response shape). Each page carries a
+    // single yes / no / depends / not-yet verdict plus reasoning.
+    // QAPage + Article + FAQPage + BreadcrumbList JSON-LD.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/should-i`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/should-i`),
+    },
+    ...SHOULD_I_SLUGS.map((slug) => ({
+      url: `${base}/should-i/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/should-i/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #12 – recordable funnel scripts.

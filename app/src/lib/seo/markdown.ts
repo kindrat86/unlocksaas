@@ -109,6 +109,11 @@ import {
   getAnswerBySlug,
 } from "@/lib/answers";
 import {
+  type ShouldIEntry,
+  getShouldIBySlug,
+  SHOULD_I_VERDICT_LABELS,
+} from "@/lib/should-i";
+import {
   FUNNEL_PLAYBOOK_ENTRIES,
   type FunnelPlaybookEntry,
   getFunnelPlaybookBySlug,
@@ -1913,6 +1918,58 @@ export function renderAnswerMarkdown(slug: string): string | undefined {
       updated: a.lastVerified,
     }),
     buildAnswerMarkdown(a).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+function buildShouldIMarkdown(e: ShouldIEntry): string {
+  const supporting = e.supporting.map((s) => `- ${s}`).join("\n");
+  const related =
+    e.relatedGlossary.length > 0
+      ? e.relatedGlossary
+          .map((slug) => {
+            const g = getGlossaryBySlug(slug);
+            if (!g) return null;
+            return `- [${g.term}](${BASE_URL}/glossary/${g.slug}) – ${g.shortDefinition}`;
+          })
+          .filter((line): line is string => line !== null)
+          .join("\n")
+      : "_No related glossary terms documented._";
+
+  const verdictLabel = SHOULD_I_VERDICT_LABELS[e.verdict];
+
+  return `# ${e.question}
+
+**Verdict: ${verdictLabel}** – ${e.verdictHeadline}
+
+> ${e.directAnswer}
+
+## Why
+
+${supporting}
+
+## Related terms
+
+${related}
+`;
+}
+
+/**
+ * Render a per-decision markdown body. Powers /should-i/<slug>/md.
+ */
+export function renderShouldIMarkdown(slug: string): string | undefined {
+  const e = getShouldIBySlug(slug);
+  if (!e) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/should-i/${e.slug}`;
+  return [
+    frontMatter({
+      title: e.question,
+      summary: `${SHOULD_I_VERDICT_LABELS[e.verdict]} – ${e.verdictHeadline}`,
+      canonical: canonicalUrl,
+      updated: e.lastVerified,
+    }),
+    buildShouldIMarkdown(e).trim(),
     citationFooter(canonicalUrl),
   ].join("\n");
 }
