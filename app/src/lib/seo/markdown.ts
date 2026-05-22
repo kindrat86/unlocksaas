@@ -174,6 +174,11 @@ import {
   renderCursorSnippet,
   latestMcpToolsVerifiedDate,
 } from "@/lib/mcp-tools";
+import {
+  POST_MORTEMS,
+  type PostMortem,
+  getPostMortemBySlug,
+} from "@/lib/post-mortems";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -845,6 +850,41 @@ ${TEARDOWNS.map(
 Indie SaaS founders funnel-hack the products they admire — that's the search behavior. The honest response is to teach the framework rather than slag the target, and to point the lesson back at the reader's own page. Each teardown ends with the same implicit invitation: run this same lens against your own product. The Unlock SaaS Playbook is the tool that does it.
 `;
 
+const POST_MORTEM_HUB_BODY = `# Post-Mortems – Why SaaS and Consumer-Tech Companies Failed, Through the Brunson Lens
+
+> Structural post-mortems of well-known failed companies, diagnosed through the same Brunson Hook / Story / Offer framework the Unlock SaaS Playbook runs against your own live page.
+
+## TL;DR
+
+The post-mortem surface is a pSEO library that walks the timeline, root causes, and structural failure modes of well-known SaaS and consumer-tech companies that shut down. Every entry maps the failure to one of three diagnoses the Unlock SaaS V2 audit assigns to live founder pages: Wrong Person, Weak Offer, or Weak Belief. The lessons are framework-level so they transfer to a pre-revenue indie SaaS, not just to a venture-scale flameout.
+
+## How to read these post-mortems
+
+Every entry follows the same structure:
+- **Timeline** — public events from founding to shutdown, facts only.
+- **Structural root causes** — framework-agnostic reasons the company failed.
+- **What Unlock SaaS would have caught** — the Brunson diagnosis (Wrong Person / Weak Offer / Weak Belief), the diagnostic signal, the Machine-step gap, and the structural fix.
+- **Transferable lessons** — what an indie SaaS founder can take from a venture-scale failure at indie-SaaS size.
+- **What not to copy** — specific moves that should not be copied as if they were lessons.
+- **FAQs** — questions a researcher actually types.
+- **Sources** — public reporting backing every claim.
+
+Every entry has a \`lastVerified\` date. Funding totals, shutdown facts, and timeline events are widely-reported public facts; uncertain numbers are described qualitatively rather than guessed.
+
+## Current post-mortems
+
+${POST_MORTEMS.map(
+  (p) =>
+    `### ${p.displayName} (${p.category}, shutdown ${p.shutdownYear})\n\n${p.oneLine}\n\nUnlock SaaS diagnosis: **${p.unlockSaaSWouldHaveCaught.diagnosis}**\n\nFull post-mortem: ${BASE_URL}/post-mortem/${p.slug}`,
+).join("\n\n")}
+
+## Why this surface exists
+
+Every founder studying a failed company is implicitly asking the same question: "what would my product look like if it failed the same way". The honest response is to map each historical failure to the same three diagnoses Unlock SaaS uses on live founder pages – which lets the reader transpose the lesson onto their own product immediately rather than admiring the wreckage from a safe distance.
+
+The companion surface at ${BASE_URL}/funnel-teardown studies indie SaaS funnels that are working. Read the two together: the post-mortems show what to avoid, the funnel teardowns show what to copy. Both run on the same Brunson framework so the vocabulary stays consistent across the surface.
+`;
+
 const CATEGORY_HUB_BODY = `# Categories — Best SaaS Tools by Category, Analyzed for Indie Founders
 
 > Curated category roundups across every SaaS tool we have analyzed, organized by the category you are searching in.
@@ -1007,6 +1047,91 @@ ${faqs}
 ---
 
 If you want this same Hook-Story-Offer lens applied to *your* product page (not ${t.displayName}'s), the Unlock SaaS Playbook does exactly that at ${BASE_URL}/playbook-sales. The free diagnostic at ${BASE_URL}/diagnostic is the first door.
+`;
+}
+
+/**
+ * Per-post-mortem markdown body. Generated from the PostMortem entry the
+ * HTML page also renders, so drift between the HTML page, the schema, and
+ * the markdown mirror is impossible by construction. Mirrors the shape of
+ * buildTeardownMarkdown so the response contract across pSEO blocks stays
+ * uniform for downstream retrieval pipelines.
+ */
+function buildPostMortemMarkdown(p: PostMortem): string {
+  const timeline = p.timeline
+    .map((b) => `- **${b.period}** – ${b.event}`)
+    .join("\n");
+  const faqs = p.faqs.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n");
+  const sources = p.sources
+    .map((s) => `- [${s.label}](${s.url})`)
+    .join("\n");
+  const fundingLine = p.fundingRaisedNote
+    ? `\n**Funding raised:** ${p.fundingRaisedNote}\n`
+    : "";
+  const valuationLine = p.peakValuationNote
+    ? `\n**Peak valuation:** ${p.peakValuationNote}\n`
+    : "";
+
+  return `# ${p.displayName} Post-Mortem
+
+> ${p.oneLine}
+
+## TL;DR
+
+${p.tldr}
+
+## What ${p.displayName} sold
+
+${p.productSnapshot.whatTheySold}
+
+**Who it was for:** ${p.productSnapshot.whoFor}
+
+**Pricing observed:** ${p.productSnapshot.pricingNote}
+
+**Years active:** ${p.yearsActive}
+
+**Shutdown year:** ${p.shutdownYear}
+
+**Shutdown reason:** ${p.shutdownReason}
+${fundingLine}${valuationLine}
+
+## Timeline
+
+${timeline}
+
+## Structural root causes
+
+${p.rootCauses.map((c) => `- ${c}`).join("\n")}
+
+## What Unlock SaaS would have caught
+
+**Brunson diagnosis:** ${p.unlockSaaSWouldHaveCaught.diagnosis}
+
+**Diagnostic signal:** ${p.unlockSaaSWouldHaveCaught.diagnosticSignal}
+
+**Machine gap:** ${p.unlockSaaSWouldHaveCaught.machineGap}
+
+**Structural fix:** ${p.unlockSaaSWouldHaveCaught.counterfactual}
+
+## Transferable lessons for an indie SaaS
+
+${p.lessons.map((l) => `- ${l}`).join("\n")}
+
+## What not to copy as a lesson
+
+${p.whatToAvoid.map((l) => `- ${l}`).join("\n")}
+
+## FAQ
+
+${faqs}
+
+## Sources
+
+${sources}
+
+---
+
+If you want the same Brunson Hook / Story / Offer audit run against your live page before you become a post-mortem, the free diagnostic at ${BASE_URL}/diagnostic is the first door. The Unlock SaaS Playbook at ${BASE_URL}/playbook-sales runs the full audit and ships the fix.
 `;
 }
 
@@ -1411,6 +1536,15 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     body: FUNNEL_TEARDOWN_HUB_BODY,
   },
   {
+    path: "/post-mortem",
+    mdPath: "/post-mortem.md",
+    title:
+      "Post-Mortems – Why SaaS and Consumer-Tech Companies Failed, Through the Brunson Lens",
+    summary:
+      "Structural post-mortems of failed SaaS and consumer-tech bets, diagnosed through the same Brunson Hook / Story / Offer framework Unlock SaaS runs against live founder pages.",
+    body: POST_MORTEM_HUB_BODY,
+  },
+  {
     path: "/pricing-teardown",
     mdPath: "/pricing-teardown.md",
     title: "Pricing Teardowns — Indie SaaS Pricing Models Through the Brunson Stack Lens",
@@ -1523,6 +1657,27 @@ export function renderTeardownMarkdown(slug: string): string | undefined {
       updated: t.lastVerified,
     }),
     buildTeardownMarkdown(t).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
+ * Render a per-post-mortem markdown body. Same render contract as
+ * renderTeardownMarkdown; powers /post-mortem/<slug>/md.
+ */
+export function renderPostMortemMarkdown(slug: string): string | undefined {
+  const p = getPostMortemBySlug(slug);
+  if (!p) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/post-mortem/${p.slug}`;
+  return [
+    frontMatter({
+      title: `${p.displayName} Post-Mortem`,
+      summary: p.oneLine,
+      canonical: canonicalUrl,
+      updated: p.lastVerified,
+    }),
+    buildPostMortemMarkdown(p).trim(),
     citationFooter(canonicalUrl),
   ].join("\n");
 }

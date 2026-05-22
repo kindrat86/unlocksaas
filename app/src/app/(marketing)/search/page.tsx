@@ -380,6 +380,8 @@ function SurfaceShortLabel(s: SearchSurface): string {
       return "funnel";
     case "pricing-teardown":
       return "pricing";
+    case "post-mortem":
+      return "post-mortem";
     case "alternatives-to":
       return "alternative";
     case "category":

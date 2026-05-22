@@ -22,6 +22,7 @@ import { getEarnedMentions } from "@/lib/media-mentions";
 import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
+import { POST_MORTEM_SLUGS } from "@/lib/post-mortems";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
 import { COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
@@ -139,6 +140,7 @@ const PSEO_COUNTS = Object.freeze({
   alternativesTo: ALTERNATIVE_SLUGS.length,
   funnelTeardown: TEARDOWN_SLUGS.length,
   pricingTeardown: PRICING_TEARDOWN_SLUGS.length,
+  postMortem: POST_MORTEM_SLUGS.length,
   compare: COMPARISON_SLUGS.length,
   compareShop: COMPARE_SLUGS.length,
   category: CATEGORY_SLUGS.length,
@@ -158,6 +160,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.alternativesTo +
   PSEO_COUNTS.funnelTeardown +
   PSEO_COUNTS.pricingTeardown +
+  PSEO_COUNTS.postMortem +
   PSEO_COUNTS.compare +
   PSEO_COUNTS.compareShop +
   PSEO_COUNTS.category +
@@ -327,6 +330,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Indie SaaS pricing models broken down by tier structure, anchor mechanics, upgrade triggers, and payment mechanics. Approximate prices with dated lastVerified.",
     slugs: PRICING_TEARDOWN_SLUGS,
     count: PSEO_COUNTS.pricingTeardown,
+  },
+  postMortem: {
+    hub: "/post-mortem",
+    slugPattern: "/post-mortem/{slug}",
+    markdownPattern: "/post-mortem/{slug}/md",
+    description:
+      "Structural post-mortems of failed SaaS and consumer-tech bets, diagnosed through Russell Brunson's Hook / Story / Offer framework. Each entry maps the failure to Wrong Person, Weak Offer, or Weak Belief and names the structural fix.",
+    slugs: POST_MORTEM_SLUGS,
+    count: PSEO_COUNTS.postMortem,
   },
   compare: {
     hub: "/vs",
