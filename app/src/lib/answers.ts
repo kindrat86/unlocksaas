@@ -546,6 +546,531 @@ export const ANSWER_ENTRIES: ReadonlyArray<AnswerEntry> = [
     category: "funnel-mechanics",
     lastVerified: "2026-05-19",
   },
+
+  // ----- PAA expansion batch 2026-05-22 (commercial-intent gaps) -----
+
+  // Pricing expansion
+  {
+    slug: "should-i-offer-a-free-trial-or-freemium",
+    question: "Should I offer a free trial or freemium for my SaaS?",
+    metaTitle: "Free Trial or Freemium for SaaS? (Answer)",
+    metaDescription:
+      "Free trial converts better for time-to-value under 14 days; freemium converts better when the product has network effects or genuine free-tier utility.",
+    directAnswer:
+      "Free trial converts better when the product reaches first value within 7 to 14 days; freemium converts better when the product has network effects, viral loops, or genuine standalone utility at the free tier. Most indie SaaS should default to a 7 or 14 day free trial – it filters serious evaluators from tire-kickers and shortens the cash-collection cycle.",
+    supporting: [
+      "Freemium suits collaboration tools and viral mechanics; free trial suits productivity and conversion tools where the value is solo.",
+      "Freemium's hidden cost is support burden – free users generate 60 to 80% of support tickets with zero revenue.",
+      "Hybrid (limited freemium plus paid trial of premium features) often outperforms pure freemium or pure trial for sub-$100/mo products.",
+    ],
+    relatedGlossary: ["offer", "value-ladder", "weak-offer"],
+    category: "pricing",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-long-should-a-saas-free-trial-be",
+    question: "How long should a SaaS free trial be?",
+    metaTitle: "Ideal SaaS Free Trial Length (Answer)",
+    metaDescription:
+      "7 days for narrow-purpose tools, 14 days for general SaaS, 30 days only for enterprise. Longer trials lower urgency and convert worse.",
+    directAnswer:
+      "7 days for narrow single-purpose tools, 14 days for general-purpose indie SaaS, 30 days only for enterprise products with multi-stakeholder evaluation. Longer trials lower urgency: a user who hasn't activated in 14 days rarely activates in 30. The trial length should match how long it actually takes to reach first value, plus a small buffer.",
+    supporting: [
+      "Most indie SaaS users decide to buy or churn within the first 72 hours of trial start, regardless of trial length.",
+      "Trial extension on request often outperforms a longer default. Extending one trial signals you value the evaluator; defaulting to 30 days signals you doubt activation.",
+      "Credit-card-required trials convert 2 to 4x higher than no-card trials but cut top-of-funnel signups by 40 to 70%. Choose based on whether you need volume or quality.",
+    ],
+    relatedGlossary: ["offer", "weak-offer"],
+    category: "pricing",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-to-raise-saas-prices-without-churning-customers",
+    question:
+      "How do I raise SaaS prices without churning existing customers?",
+    metaTitle: "Raise SaaS Prices Without Churn (Answer)",
+    metaDescription:
+      "Grandfather existing customers, announce the increase 30+ days ahead, raise pricing only on new accounts. Churn from a well-handled increase is typically 1-5%.",
+    directAnswer:
+      "Grandfather existing customers at their current rate, announce the change to new signups 30 days ahead, and only raise prices on new accounts. Churn from a price increase that grandfathers existing customers is typically 1% to 5%. Raising prices on existing customers without grandfathering is the move that actually triggers serious churn, often 10% to 20%.",
+    supporting: [
+      "Anchor the price change with new value: ship a feature, publish a roadmap, or expand the offer in the same window. The increase reads as 'product is growing,' not 'cash grab.'",
+      "When raising on existing customers, offer a 12-month lock at the old rate as an opt-in. The 30 to 50% who lock in stay; the rest decide quietly.",
+      "Price-increase emails should be plain-text from the founder, not marketing-formatted. The transactional tone signals respect.",
+    ],
+    relatedGlossary: ["offer", "value-ladder"],
+    category: "pricing",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "usage-based-vs-seat-based-pricing",
+    question: "Should my SaaS use usage-based or seat-based pricing?",
+    metaTitle: "Usage vs Seat-Based SaaS Pricing (Answer)",
+    metaDescription:
+      "Seat-based scales with team size and predicts revenue better. Usage-based scales with value delivered but creates buyer anxiety at large invoices.",
+    directAnswer:
+      "Seat-based pricing scales with team size, predicts revenue best, and matches how procurement budgets work. Usage-based scales with value delivered but creates buyer anxiety at large invoices and complicates forecasting. Most indie SaaS should default to seat-based with optional usage caps; pure usage-based suits infrastructure tools where the customer expects metered billing.",
+    supporting: [
+      "Hybrid (seat plus usage overage) is the most common SaaS pricing pattern at scale. It captures both predictability and value-aligned expansion.",
+      "Usage-based requires a metered billing system (Stripe Meters, Orb, Metronome). Implementing it adds 1 to 4 weeks of engineering work most indie SaaS underestimate.",
+      "Buyer anxiety from usage-based is largest at month-end when invoices arrive. Real-time usage dashboards reduce anxiety but rarely eliminate it.",
+    ],
+    relatedGlossary: ["offer", "value-ladder"],
+    category: "pricing",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-do-i-ab-test-saas-pricing",
+    question: "How do I A/B test SaaS pricing?",
+    metaTitle: "How to A/B Test SaaS Pricing (Answer)",
+    metaDescription:
+      "Test by cohort over time, not concurrent split (Stripe disallows different prices to similar users). Need 200+ signups per cohort to read.",
+    directAnswer:
+      "Test pricing by cohort over time, not by concurrent A/B split – Stripe terms forbid showing different prices to similar users on the same offer. Run price A for 4 weeks, price B for the next 4 weeks, compare LTV. Need at least 200 signups per cohort before the difference is reliable enough to act on.",
+    supporting: [
+      "Test conversion rate AND LTV together. A price that converts 30% better but churns 50% sooner is a worse business outcome.",
+      "Hold everything else constant: same landing page, same traffic source, same offer copy. Changing pricing and copy at the same time invalidates the read.",
+      "If you must split-test concurrently, segment by geography or by a clean acquisition channel. The cohorts have to be statistically independent.",
+    ],
+    relatedGlossary: ["offer", "value-ladder"],
+    category: "pricing",
+    lastVerified: "2026-05-22",
+  },
+
+  // Funnel mechanics expansion
+  {
+    slug: "what-is-a-good-opt-in-conversion-rate",
+    question: "What is a good email opt-in conversion rate?",
+    metaTitle: "Good Email Opt-In Conversion Rate (Answer)",
+    metaDescription:
+      "Cold traffic to opt-in: 2-8% is typical. Warm traffic: 15-35%. Below 2% on cold means the lead magnet's promise isn't specific enough.",
+    directAnswer:
+      "Cold traffic to email opt-in typically runs at 2% to 8%. Warm traffic (referrals, retargeting, direct visits) runs at 15% to 35%. Below 2% on cold almost always means the lead magnet's promise isn't specific enough – generic 'newsletter' or 'updates' opt-ins convert near zero. Specific deliverable plus specific outcome converts.",
+    supporting: [
+      "Exit-intent opt-ins capture 3 to 8% of would-be bouncers. Worth shipping but rarely the load-bearing opt-in surface.",
+      "Two-step opt-in (button click then form) often outperforms one-step by 10 to 30%. The micro-commitment of the first click increases form-submit rates.",
+      "Promised deliverable timing matters: 'instant access' converts better than 'check your email in 24 hours'. If the delivery is delayed, name the delay honestly.",
+    ],
+    relatedGlossary: ["offer", "wrong-person"],
+    category: "funnel-mechanics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-long-should-a-sales-page-be",
+    question: "How long should a SaaS sales page be?",
+    metaTitle: "Ideal SaaS Sales Page Length (Answer)",
+    metaDescription:
+      "Short (1-2 screens) for under $20/mo offers. Long-form (8-15 sections) for $50+/mo. The price point and audience awareness set the length.",
+    directAnswer:
+      "Short sales pages (1 to 2 screens) work for under $20/month offers where the value is obvious. Long-form sales pages (8 to 15 sections including hero, problem, solution, proof, stack, FAQ, guarantee, CTA) work for $50/month and above where belief-building is required. The price point and audience awareness level determine length, not the founder's preference.",
+    supporting: [
+      "Cold traffic needs longer pages because the visitor arrives with zero context. Warm traffic (referrals, podcast appearances) can convert on a shorter page.",
+      "Sales page length matters less than section quality. Eight excellent sections outperform sixteen mediocre ones.",
+      "Long-form pages should include genuine in-page navigation (sticky CTA, anchor links) so high-intent visitors can skip to checkout without scrolling through the full pitch.",
+    ],
+    relatedGlossary: ["hook", "story", "offer", "stack-slide"],
+    category: "funnel-mechanics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "whats-the-difference-between-lead-magnet-and-tripwire",
+    question: "What's the difference between a lead magnet and a tripwire?",
+    metaTitle: "Lead Magnet vs Tripwire (Answer)",
+    metaDescription:
+      "A lead magnet is free in exchange for email. A tripwire is a low-priced ($1-$27) paid offer that converts prospects into customers.",
+    directAnswer:
+      "A lead magnet is free in exchange for an email address; the visitor leaves the funnel as a subscriber. A tripwire is a low-priced paid offer ($1 to $27) that converts the prospect into a customer – fundamentally different psychology than a free download. Tripwires filter serious buyers; lead magnets gather a wider list.",
+    supporting: [
+      "Tripwire buyers convert to core offer at 5 to 15x the rate of lead magnet subscribers. The first transaction is the trust-anchor that compounds.",
+      "Lead magnets work for top-of-funnel content marketing. Tripwires work for direct-response paid acquisition where you need to recover ad spend faster.",
+      "You can combine them: lead magnet captures email, Soap Opera Sequence pitches a tripwire, tripwire upsells to core. This is the canonical Brunson stack.",
+    ],
+    relatedGlossary: ["offer", "value-ladder", "soap-opera-sequence"],
+    category: "funnel-mechanics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "should-i-use-a-countdown-timer-on-my-sales-page",
+    question: "Should I use a countdown timer on my sales page?",
+    metaTitle: "Countdown Timer on Sales Pages? (Answer)",
+    metaDescription:
+      "Honest deadlines lift conversion 15-30%. Fake evergreen timers (reset per visitor) work short-term but damage trust and underperform real urgency.",
+    directAnswer:
+      "Honest deadlines (launch close, price-increase date, cohort start) lift conversion 15% to 30%. Fake evergreen timers that reset per visitor work short-term but damage trust when visitors notice and underperform real urgency. The lift comes from the honest deadline itself, not from the timer widget – the widget just makes the deadline visible.",
+    supporting: [
+      "Real deadlines compound: each honest deadline reinforces trust for the next launch. Each fake deadline burns trust permanently.",
+      "Cart-close emails on the deadline day move 30 to 50% of the cart's eventual revenue. The timer's job is to make the cart-close email feel earned.",
+      "If you don't have a real deadline, manufacture one honestly: 'first 50 customers' or 'closing for the cohort start'. Don't fabricate scarcity that doesn't exist.",
+    ],
+    relatedGlossary: ["offer", "weak-belief"],
+    category: "funnel-mechanics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "where-should-the-cta-be-on-a-saas-landing-page",
+    question: "Where should the CTA be on a SaaS landing page?",
+    metaTitle: "Where to Place SaaS Landing Page CTA (Answer)",
+    metaDescription:
+      "Above the fold, after the stack, after the guarantee, plus sticky in the nav. Most indie SaaS under-CTA, not over-CTA.",
+    directAnswer:
+      "Place the primary CTA above the fold (visible without scrolling), repeat after the stack section, repeat after the guarantee, and pin a sticky CTA in the nav for long pages. Most indie SaaS under-CTA, not over-CTA – three to five CTAs on a long-form page is normal. The CTA should appear right after each belief-building moment.",
+    supporting: [
+      "Above-the-fold CTA captures the 5 to 15% of visitors who arrive already pre-sold (from a podcast, referral, or repeat visit). They convert before scrolling.",
+      "The button copy matters more than the position. 'Start free trial' converts differently from 'Get the diagnostic' even on the identical button.",
+      "Track which CTA each conversion came from with anchor-specific tracking. Most founders are surprised which CTA position actually wins.",
+    ],
+    relatedGlossary: ["offer"],
+    category: "funnel-mechanics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "what-is-the-perfect-webinar-structure",
+    question: "What is the Perfect Webinar structure?",
+    metaTitle: "Perfect Webinar Structure (Brunson Answer)",
+    metaDescription:
+      "Brunson's Perfect Webinar: Big Domino → Origin Story → Three Secrets → Stack and Close. ~60-90 minutes. Used for offers $497+.",
+    directAnswer:
+      "Russell Brunson's Perfect Webinar is a 60 to 90 minute structure: open with the Big Domino (the one belief that, if broken, makes the offer make sense), tell the Origin Story, teach Three Secrets that each break a related belief, then Stack and Close. Used for offers $497 and above where longer-form belief-building justifies the time investment.",
+    supporting: [
+      "Each of the Three Secrets reframes a specific objection. Secret 1: the vehicle (your product is the right type). Secret 2: internal belief (the user can succeed). Secret 3: external belief (circumstances don't block it).",
+      "The Stack arrives at minute ~50 to 60 after belief is established. Stacking too early (before belief) converts poorly even with a strong offer.",
+      "Simulated-live webinars (pre-recorded but presented as live) convert similarly to live for evergreen funnels. Live still wins for high-ticket launches where Q&A drives the close.",
+    ],
+    relatedGlossary: ["perfect-webinar", "big-domino", "stack-slide", "offer", "story"],
+    category: "funnel-mechanics",
+    lastVerified: "2026-05-22",
+  },
+
+  // Email expansion
+  {
+    slug: "what-is-a-good-email-open-rate-for-saas",
+    question: "What is a good email open rate for SaaS?",
+    metaTitle: "Good SaaS Email Open Rate (Answer)",
+    metaDescription:
+      "30-50% for engaged indie SaaS lists, 20-30% for general newsletters. Apple Mail Privacy inflates reported opens; trust click rate as the cleaner signal.",
+    directAnswer:
+      "Engaged indie SaaS lists open at 30% to 50%; general newsletters open at 20% to 30%; below 15% indicates list-quality or deliverability problems. Apple Mail Privacy Protection inflates reported opens by 20 to 40% on lists with high iOS share, so trust click rate as the cleaner engagement signal. List quality matters more than copywriting.",
+    supporting: [
+      "First 5 days of a Soap Opera Sequence open at 40 to 60% because subscribers are at peak engagement. Open rate decays after week 2 unless content stays specific to the subscriber's problem.",
+      "Sender name matters more than subject line for opens. A founder's first-name sender outperforms a generic brand-only sender by 5 to 15 percentage points.",
+      "Re-engagement sequences after 90 days of inactivity recover 5 to 15% of dormant subscribers and improve overall deliverability by removing the rest.",
+    ],
+    relatedGlossary: ["soap-opera-sequence", "seinfeld-email"],
+    category: "email",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "what-is-a-good-email-click-through-rate",
+    question: "What is a good email click-through rate?",
+    metaTitle: "Good Email Click-Through Rate (Answer)",
+    metaDescription:
+      "2-5% for general broadcast, 5-10% for Soap Opera, 10-20% for targeted behavioral. Click rate is the cleaner signal post Apple privacy changes.",
+    directAnswer:
+      "General broadcast emails to an indie SaaS list click at 2% to 5%. Soap Opera Sequence emails click at 5% to 10% during the first 5 days. Targeted re-engagement or behavioral emails (after a trial signup, after a paywall hit) click at 10% to 20%. Click rate is the cleaner engagement signal since Apple Mail Privacy makes open rates noisy.",
+    supporting: [
+      "Single primary link per email outperforms multiple links by 15 to 30%. The classic mistake is hedging with 'or visit our website' secondary CTAs.",
+      "Button links outperform text links by 10 to 25% for the same destination. Button styling needs to look clickable but not overproduced.",
+      "Click rate above 20% on a broadcast email is usually a sign of an over-segmented send (very small, very warm list). The headline rate is good; the absolute volume is the constraint.",
+    ],
+    relatedGlossary: ["seinfeld-email", "soap-opera-sequence"],
+    category: "email",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-do-i-warm-up-a-new-email-domain",
+    question: "How do I warm up a new email sending domain?",
+    metaTitle: "How to Warm Up an Email Domain (Answer)",
+    metaDescription:
+      "Start at 20-50 sends/day to engaged recipients, double weekly over 3-6 weeks. Set up SPF, DKIM, DMARC before the first send.",
+    directAnswer:
+      "Start with 20 to 50 sends per day to your most-engaged recipients (people who opted in recently or replied recently). Double daily volume weekly until you reach your target send rate, typically over 3 to 6 weeks. Set up SPF, DKIM, and DMARC records before the first send. Sending high volume from a cold domain on day one will land your emails in spam permanently.",
+    supporting: [
+      "Engagement signals (opens, clicks, replies) build sender reputation. Send to subscribers who actually engage; skip the dormant ones during warm-up.",
+      "Transactional emails (welcome, receipt) build reputation faster than marketing broadcasts because they're high-engagement. Send them first if your stack supports it.",
+      "Subdomain strategy isolates risk. Use mail.yourdomain.com for marketing and updates; transactional comes from app.yourdomain.com. If marketing tanks reputation, transactional stays clean.",
+    ],
+    relatedGlossary: ["seinfeld-email"],
+    category: "email",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "plain-text-vs-html-emails-for-saas",
+    question: "Should I send plain-text or HTML emails for SaaS?",
+    metaTitle: "Plain Text vs HTML Email for SaaS (Answer)",
+    metaDescription:
+      "Plain text wins for founder-voice, transactional, and re-engagement. HTML wins for newsletters with visual content. Default to plain text.",
+    directAnswer:
+      "Plain text wins for founder-voice broadcasts, transactional emails, and re-engagement sequences – it looks personal and reaches the primary inbox more reliably. HTML wins for newsletters with visual content (screenshots, charts, product updates). Most indie SaaS over-design their emails. Default to plain text and add HTML only when the content genuinely needs it.",
+    supporting: [
+      "Plain-text emails feel like a person; HTML emails feel like marketing. The Soap Opera Sequence and most Seinfeld emails should be plain-text.",
+      "Gmail's tabbed inbox (Primary, Promotions, Updates) sorts HTML-heavy emails into Promotions more often. Plain text reaches Primary more reliably.",
+      "Hybrid (text-styled HTML that looks plain) is the practical compromise. Single column, no images, hyperlinks instead of buttons.",
+    ],
+    relatedGlossary: ["seinfeld-email", "soap-opera-sequence"],
+    category: "email",
+    lastVerified: "2026-05-22",
+  },
+
+  // Metrics expansion
+  {
+    slug: "what-is-a-good-mrr-growth-rate",
+    question: "What is a good MRR growth rate for indie SaaS?",
+    metaTitle: "Good MRR Growth Rate for Indie SaaS (Answer)",
+    metaDescription:
+      "10-20% MoM at sub-$10K MRR, slowing to 5-10% at $10K-$50K MRR. Below 5% at sub-$10K usually signals a positioning or offer problem.",
+    directAnswer:
+      "10% to 20% month-over-month growth is healthy at sub-$10K MRR for indie SaaS. Growth typically slows to 5% to 10% MoM at $10K to $50K MRR. Below 5% at sub-$10K MRR usually signals a positioning or offer problem, not a growth-channel problem. The fix is upstream (Hook / Story / Offer) before tuning ad spend or content cadence.",
+    supporting: [
+      "MRR growth at the early stage is dominated by net new customers, not expansion. Don't optimize for expansion revenue until you're past $20K MRR.",
+      "Compounding growth is fragile: 15% MoM compounds to 5.4x in a year, but a single 'flat month' resets the compound. Consistency beats peaks.",
+      "Calculate MRR growth on net new MRR (new plus expansion minus churn minus downgrade), not gross new MRR. Gross hides churn problems for months.",
+    ],
+    relatedGlossary: ["wrong-person", "weak-offer"],
+    category: "metrics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "what-is-a-good-free-to-paid-conversion-rate",
+    question: "What is a good free trial to paid conversion rate?",
+    metaTitle: "Good Trial-to-Paid Conversion Rate (Answer)",
+    metaDescription:
+      "Credit-card-required trials: 40-60% to paid. No-card trials: 8-20% to paid. Below 8% on no-card means activation isn't happening during the trial.",
+    directAnswer:
+      "Credit-card-required trials convert to paid at 40% to 60% – the card requirement filters serious evaluators upstream. No-card trials convert at 8% to 20% to paid. Below 8% on no-card trial almost always means activation (first value delivery) isn't happening during the trial window, not that pricing is wrong.",
+    supporting: [
+      "Activation correlates with conversion 5 to 10x stronger than any pricing variable. Fix activation first, pricing second.",
+      "Day-1 activation predicts trial-to-paid better than any other metric. If a user doesn't reach first value within 24 hours, conversion drops 50 to 80%.",
+      "Trial-extension requests are a positive signal, not a hassle to deflect. Users who extend convert at 30 to 60% – higher than the trial-period default.",
+    ],
+    relatedGlossary: ["weak-offer", "value-ladder"],
+    category: "metrics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-long-to-hit-10k-mrr-for-indie-saas",
+    question: "How long does it take an indie SaaS to hit $10K MRR?",
+    metaTitle: "How Long to Hit $10K MRR Indie SaaS (Answer)",
+    metaDescription:
+      "Median is 18-36 months post-launch. Top quartile hits $10K MRR in 6-12 months with a paid acquisition channel and a tripwire.",
+    directAnswer:
+      "Median time to $10K MRR for indie SaaS is 18 to 36 months post-launch. Top quartile hits $10K MRR in 6 to 12 months. The single biggest differentiator between the fast quartile and the median: the fast ones have a paid acquisition channel that works (LinkedIn or Meta ads, not pure SEO) and a tripwire that recovers ad spend within 30 days.",
+    supporting: [
+      "The 'years to $10K MRR' headline hides that 30 to 50% of indie SaaS never reach $10K. The benchmark is conditional on reaching it at all.",
+      "Founders who reach $10K MRR usually pivot positioning at least once. The first positioning is rarely the one that works.",
+      "Solo founders reach $10K MRR slower than two-founder teams on average, but solo unit economics are stronger. Different game, not a slower one.",
+    ],
+    relatedGlossary: ["value-ladder", "wrong-person"],
+    category: "metrics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "what-is-a-good-net-revenue-retention",
+    question: "What is a good Net Revenue Retention for SaaS?",
+    metaTitle: "Good Net Revenue Retention SaaS (Answer)",
+    metaDescription:
+      "100%+ is healthy (expansion offsets churn). 110%+ is excellent. Below 90% means the business is shrinking before counting new customers.",
+    directAnswer:
+      "Net Revenue Retention (NRR) of 100% or above means the existing customer base self-grows: expansion revenue offsets churn and contraction. 110%+ is excellent for indie SaaS. Below 90% means the business is shrinking even before counting new customers, which is the most expensive way to run a SaaS. NRR is one of the two most-watched SaaS metrics by acquirers.",
+    supporting: [
+      "NRR above 100% is hard to reach without an expansion mechanic (seat growth, usage growth, tier upgrades). Pure flat-rate single-seat pricing typically tops out at 95% to 100%.",
+      "The fastest NRR win is fixing involuntary churn (failed card retries). Smart Stripe retry logic recovers 50 to 70% of involuntary churn and adds 2 to 5 points to NRR.",
+      "Cohort NRR matters more than headline NRR. Headline NRR can hide that recent cohorts are churning faster than older cohorts.",
+    ],
+    relatedGlossary: ["value-ladder"],
+    category: "metrics",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "what-is-a-good-nps-for-saas",
+    question: "What is a good NPS for SaaS?",
+    metaTitle: "Good NPS for SaaS (Answer)",
+    metaDescription:
+      "30-50 is solid for indie SaaS. 50+ is excellent. With under 200 responses, NPS is directional, not predictive – use it as a trend over time.",
+    directAnswer:
+      "NPS of 30 to 50 is solid for indie SaaS. 50+ is excellent. Below 20 means the product isn't loved enough to grow via word of mouth. For early-stage indie SaaS with under 200 responses, NPS is more directional than predictive – use it as a trend over time, not as a fixed target.",
+    supporting: [
+      "NPS sample size matters: under 30 responses produces wildly variable scores. Don't make decisions until you have at least 50 to 100 responses per quarter.",
+      "Detractors (0 to 6) are the highest-value qualitative signal. Read every detractor open-text response; they explain what's blocking growth.",
+      "Promoters (9 to 10) are the highest-value quantitative signal. Ask them how they'd describe the product to a friend – that's your headline copy.",
+    ],
+    relatedGlossary: ["weak-belief"],
+    category: "metrics",
+    lastVerified: "2026-05-22",
+  },
+
+  // Positioning expansion
+  {
+    slug: "how-do-i-find-my-saas-positioning",
+    question: "How do I find my SaaS positioning?",
+    metaTitle: "How to Find SaaS Positioning (Answer)",
+    metaDescription:
+      "Run 10-20 customer interviews, identify the specific job-to-be-done, name one cohort plus one outcome on the homepage. Dunford's framework is the standard.",
+    directAnswer:
+      "Find positioning by running 10 to 20 customer interviews, identifying the specific job-to-be-done your product solves uniquely, then naming exactly one cohort and one outcome on the homepage. April Dunford's Obviously Awesome framework is the field standard: list alternatives, list unique attributes, derive enablers, map to market category, name the cohort. Positioning isn't a tagline – it's a market position.",
+    supporting: [
+      "The right cohort is specific enough that the cohort recognizes themselves on the homepage. 'B2B SaaS founders' is too broad; 'B2B SaaS founders post-launch with under $10K MRR' is specific.",
+      "Positioning often changes after the first 100 customers. The cohort that buys is rarely the cohort the founder imagined at launch. Iterate based on who actually pays.",
+      "Test positioning by reading the homepage to a real cohort member out loud. If they don't immediately say 'that's me, I need that', the positioning isn't there yet.",
+    ],
+    relatedGlossary: ["wrong-person", "dream-100"],
+    category: "positioning",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "whats-the-difference-between-positioning-and-messaging",
+    question: "What's the difference between positioning and messaging?",
+    metaTitle: "Positioning vs Messaging Difference (Answer)",
+    metaDescription:
+      "Positioning is the market position. Messaging is how you communicate that position. Positioning changes rarely; messaging iterates constantly.",
+    directAnswer:
+      "Positioning is your market position: which cohort you serve, which alternatives you replace, what makes you the only viable choice for them. Messaging is how you communicate that position in copy, ads, and conversation. Positioning changes rarely (once a year at most); messaging iterates constantly (every campaign, every page). Most founders try to fix positioning by editing messaging, which doesn't work.",
+    supporting: [
+      "Positioning is strategic; messaging is tactical. Bad positioning can't be saved by good copywriting.",
+      "Two products with identical positioning can have radically different messaging because messaging carries the founder's voice (the Attractive Character).",
+      "When a campaign underperforms, diagnose positioning first. Wrong cohort plus perfect copy still converts near zero.",
+    ],
+    relatedGlossary: ["wrong-person", "story"],
+    category: "positioning",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-do-i-write-a-one-line-saas-pitch",
+    question: "How do I write a one-line SaaS pitch?",
+    metaTitle: "How to Write a One-Line SaaS Pitch (Answer)",
+    metaDescription:
+      "Template: '[Product] is the [category] for [cohort] that [unique value]'. Specific is the rule – generic pitches convert nothing.",
+    directAnswer:
+      "Use the template: '[Product] is the [category] for [cohort] that [unique value]'. The category orients the listener (they know the type); the cohort narrows to the specific buyer; the unique value distinguishes from category alternatives. Generic pitches like 'We help businesses grow' convert nothing. Specific pitches like 'We're the diagnostic tool for post-launch indie SaaS founders with flat Stripe lines' convert.",
+    supporting: [
+      "The pitch should be readable aloud in under 8 seconds. Anything longer loses the listener's attention before the key noun.",
+      "Test the pitch by reading it to someone who matches the cohort. If they immediately ask the right follow-up question ('how does it work?'), the pitch landed. If they ask 'what do you mean?', revise.",
+      "The pitch should match the homepage hero exactly. Misaligned pitch and hero is the most common Wrong Person diagnosis.",
+    ],
+    relatedGlossary: ["hook", "wrong-person", "offer"],
+    category: "positioning",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "how-do-i-get-my-first-10-saas-customers",
+    question: "How do I get my first 10 SaaS customers?",
+    metaTitle: "How to Get First 10 SaaS Customers (Answer)",
+    metaDescription:
+      "Direct outreach to your Dream 100, founder-led sales, and a tiny tripwire. Paid ads don't work at zero brand awareness. Aim for 10 in 30 days.",
+    directAnswer:
+      "Get the first 10 customers via direct outreach (email, LinkedIn, communities), founder-led sales conversations, and a tiny tripwire offer ($1 to $27) that converts conversation into customer. Paid ads don't work at zero brand awareness because the click-through audience has no context. Aim for 10 paying customers in 30 days; longer than 30 usually means positioning is off.",
+    supporting: [
+      "The first 10 customers should be conversations, not signups. Talk to each one before and after they buy. Their language becomes your copy.",
+      "The Dream 100 method applies even at zero customers: identify 100 specific people who already have your audience and become useful to them.",
+      "Skip Product Hunt and Hacker News for the first 10. Both are launch platforms for products with existing momentum, not engines for the first paying customer.",
+    ],
+    relatedGlossary: ["dream-100", "offer", "value-ladder"],
+    category: "positioning",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "should-i-launch-my-saas-on-product-hunt",
+    question: "Should I launch my SaaS on Product Hunt?",
+    metaTitle: "Should I Launch on Product Hunt? (Answer)",
+    metaDescription:
+      "Yes if you have an existing audience to drive votes. No if you're hoping PH will bring the first audience. PH amplifies momentum; it doesn't create it.",
+    directAnswer:
+      "Yes if you have an existing audience to drive day-one votes (email list, Twitter following, community). No if you're hoping Product Hunt will bring the first audience – the platform amplifies existing momentum but doesn't create it. A top-5 day on Product Hunt typically generates 500 to 5,000 signups but only converts well if the product has a clear free tier or trial.",
+    supporting: [
+      "Day-one votes from your existing audience determine whether the algorithm features you. Without 100 to 200 upvotes in the first 4 hours, the listing drops below the fold.",
+      "Hunt by a top hunter (with their own following) consistently outperforms self-hunt by 2 to 5x in placement and downstream signups.",
+      "The audience that arrives from Product Hunt is technical-product-curious, not buyer-intent. Conversion is lower than direct outreach but volume is higher.",
+    ],
+    relatedGlossary: ["dream-100", "offer"],
+    category: "positioning",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "do-waitlists-work-for-saas",
+    question: "Do waitlists actually work for SaaS?",
+    metaTitle: "Do SaaS Waitlists Work? (Answer)",
+    metaDescription:
+      "Yes for established creator audiences; usually not for first-time founders. Waitlist conversion to paid runs 1-5% cold, 10-30% warm.",
+    directAnswer:
+      "Yes for established creator audiences with existing trust; usually not for first-time indie SaaS founders. Waitlist conversion to paid runs 1% to 5% for cold lists and 10% to 30% for warm ones. The waitlist signal value is what it tells you about positioning, not the absolute count. 10,000 cold waitlist signups convert worse than 200 warm ones.",
+    supporting: [
+      "Waitlists work best as a positioning sharpener: the questions people ask in the waitlist signup form reveal whether your positioning is landing.",
+      "Most waitlists overstate launch demand by 5 to 10x. A 'waitlist of 5,000' typically converts to 50 to 250 paying customers, not thousands.",
+      "Skip the waitlist if you can launch directly. Charging on day one filters serious buyers from curious browsers; a waitlist often hides positioning weakness behind a count.",
+    ],
+    relatedGlossary: ["offer", "wrong-person"],
+    category: "positioning",
+    lastVerified: "2026-05-22",
+  },
+
+  // Ladder expansion
+  {
+    slug: "what-is-an-order-bump",
+    question: "What is an order bump in a funnel?",
+    metaTitle: "What Is an Order Bump? (Funnel Answer)",
+    metaDescription:
+      "An order bump is a checkbox add-on at checkout, typically $7-$47. Take rate 10-30%. Adds revenue without adding a new page.",
+    directAnswer:
+      "An order bump is a checkbox add-on offered at checkout, typically priced $7 to $47. Take rate runs 10% to 30% of buyers. It adds incremental revenue without adding a new page or new clicks; the buyer ticks a box during checkout. Different from an OTO (which is a separate page after the purchase) – the order bump is in-checkout.",
+    supporting: [
+      "The bump's value should be obviously complementary to the main purchase. A bump that requires its own pitch usually flops; a bump that's clearly an extension converts.",
+      "Common pattern: main offer plus bump equals the 'complete' version. The bump frames as completion, not addition.",
+      "Bumps work best at $19 to $47. Too low and the buyer doesn't notice; too high and the in-checkout decision feels too big.",
+    ],
+    relatedGlossary: ["offer", "value-ladder"],
+    category: "ladder",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "what-is-a-downsell",
+    question: "What is a downsell in a funnel?",
+    metaTitle: "What Is a Downsell? (Funnel Answer)",
+    metaDescription:
+      "A downsell is a lower-priced offer shown after the buyer declines the main offer. Typically 30-60% of main offer price. Take rate 5-15%.",
+    directAnswer:
+      "A downsell is a lower-priced offer shown after the buyer declines the main offer (or the OTO). Typically priced at 30% to 60% of the main offer. Take rate runs 5% to 15% of decliners. It recovers revenue from buyers who said no, by offering a smaller commitment that still moves them up the value ladder.",
+    supporting: [
+      "The downsell isn't 'the same thing for less' – it's a smaller deliverable at a fair price for that deliverable. Faking a discount by removing arbitrary features converts poorly.",
+      "Common downsell pattern: monthly subscription downsells to annual or to a one-time payment. The buyer who couldn't commit monthly might commit to a single payment.",
+      "Downsell take rate plus original take rate is the actual offer conversion. Track both.",
+    ],
+    relatedGlossary: ["offer", "value-ladder"],
+    category: "ladder",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "whats-the-difference-between-an-oto-and-an-upsell",
+    question: "What's the difference between an OTO and an upsell?",
+    metaTitle: "OTO vs Upsell Difference (Funnel Answer)",
+    metaDescription:
+      "OTO appears once immediately after purchase, often with a deadline. Upsell can recur over time. OTO take rates are higher per moment.",
+    directAnswer:
+      "A One-Time Offer (OTO) appears once, immediately after the first purchase, often with a visible deadline ('this offer disappears'). An upsell can recur over time and be re-offered in different channels. OTOs have higher take rates (15 to 35%) because of the immediate-decision framing. Upsells have lower take rates per moment but more total opportunity over the customer lifetime.",
+    supporting: [
+      "OTOs work because the buyer's decision-making mode is still active. Re-engaging that mode after a 3-day gap converts at a fraction of the OTO rate.",
+      "Multi-step OTO funnels (OTO 1 → OTO 2) compound take rate but also compound buyer fatigue. Two OTOs is the practical maximum before conversion collapses.",
+      "Upsells are the natural mechanism for value-ladder progression: tripwire buyer becomes core buyer becomes coaching buyer over months.",
+    ],
+    relatedGlossary: ["offer", "value-ladder", "stack-slide"],
+    category: "ladder",
+    lastVerified: "2026-05-22",
+  },
+  {
+    slug: "can-i-have-multiple-otos-in-one-funnel",
+    question: "Can I have multiple OTOs in one funnel?",
+    metaTitle: "Multiple OTOs in One Funnel? (Answer)",
+    metaDescription:
+      "Yes, up to 2 OTOs is the practical max. OTO 1 take rate 15-35%, OTO 2 take rate 8-15% of OTO 1 buyers. Three OTOs trigger buyer fatigue.",
+    directAnswer:
+      "Yes – up to 2 OTOs is the practical maximum. OTO 1 take rate runs 15% to 35%; OTO 2 (offered to OTO 1 buyers) runs 8% to 15%. Three OTOs trigger buyer fatigue, conversion of OTO 3 collapses, and refund rates on the entire funnel climb. The pattern that works: OTO 1 extends the buyer's just-made decision; OTO 2 offers the natural next ladder rung.",
+    supporting: [
+      "OTO 2 should be a different category than OTO 1, not 'more of the same'. Repeating the same offer at a higher price converts near zero.",
+      "Downsells between OTOs recover revenue but extend funnel length. Keep the total funnel under 4 steps post-purchase to maintain buyer momentum.",
+      "Track the funnel as a whole, not OTO-by-OTO. A funnel with OTO 1 plus OTO 2 plus Downsell can have 1.4 to 2x the revenue per buyer of a single-OTO funnel.",
+    ],
+    relatedGlossary: ["offer", "value-ladder"],
+    category: "ladder",
+    lastVerified: "2026-05-22",
+  },
 ];
 
 export const ANSWER_SLUGS = ANSWER_ENTRIES.map((e) => e.slug);
