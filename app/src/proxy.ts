@@ -26,6 +26,30 @@ import { BASE_URL } from "@/lib/seo/entity";
 const REF_COOKIE = "unlocksaas_ref";
 const REF_COOKIE_MAX_AGE = 60 * 60 * 24 * 90; // 90 days
 const REF_CODE_RE = /^[a-z0-9]{6,16}$/i; // permissive: matches lib/affiliate's CODE_ALPHABET
+const MACHINE_READABLE_FILE_EXT_RE =
+  /\.(?:atom|bib|csv|html|ics|json|jsonld|m4a|md|mp3|mp4|pdf|ris|rss|txt|webmanifest|xml)$/i;
+const MACHINE_READABLE_PATH_PREFIXES = [
+  "/.well-known/",
+  "/feed/",
+] as const;
+const MACHINE_READABLE_EXACT_PATHS = new Set([
+  "/dataset/huggingface/raw",
+  "/dataset/zenodo/raw",
+  "/glossary/podcast-cover",
+  "/glossary/podcast.xml",
+]);
+
+function isMachineReadablePath(pathname: string): boolean {
+  if (pathname.startsWith("/api/")) return false;
+  if (pathname === "/dataset") return false;
+  if (pathname.endsWith("/md")) return true;
+  if (MACHINE_READABLE_FILE_EXT_RE.test(pathname)) return true;
+  if (MACHINE_READABLE_EXACT_PATHS.has(pathname)) return true;
+
+  return MACHINE_READABLE_PATH_PREFIXES.some((prefix) =>
+    pathname.startsWith(prefix),
+  );
+}
 
 /**
  * Emit an explicit `Link: <…>; rel="canonical"` HTTP header on every proxied
@@ -114,6 +138,14 @@ export async function proxy(request: NextRequest) {
       // another one here duplicates the final response header.
       return NextResponse.rewrite(rewriteUrl);
     }
+  }
+
+  // Public machine-readable surfaces are cacheable crawler/agent resources,
+  // not visitor sessions. Let the route handler answer directly so llms.txt,
+  // markdown mirrors, feeds, manifests, dataset assets, and similar URLs do
+  // not receive Supabase refresh cookies or sticky A/B attribution cookies.
+  if (isMachineReadablePath(originalPathname)) {
+    return NextResponse.next();
   }
 
   const response = await updateSession(request);
