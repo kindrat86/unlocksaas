@@ -69,6 +69,7 @@ import {
   PUBLISHING_PRINCIPLES_URL,
   WORLDWIDE_AREA_SERVED,
 } from "@/lib/seo/entity";
+import { FOUNDER_SAME_AS } from "@/lib/seo/founder";
 
 /**
  * The canonical @graph. One @context at the root, every node carries
@@ -156,7 +157,17 @@ const ENTITY_GRAPH = {
       description: FOUNDER.description,
       worksFor: { "@id": ID.organization },
       knowsAbout: KNOWS_ABOUT,
-      sameAs: ORGANIZATION_SAME_AS,
+      // Person.sameAs is gated on FOUNDER_SAME_AS (founder-level env slots in
+      // src/lib/seo/founder.ts), NOT on ORGANIZATION_SAME_AS. The brand's
+      // Wikidata Q-ID, X handle, and IndieHackers product URL belong to the
+      // Organization node above; declaring them on the Person fabricates
+      // founder-level identity claims (Knowledge Graph reads Person.sameAs as
+      // "this human's off-platform profiles"). Per the doc-block at the head
+      // of src/lib/seo/founder.ts: consumers MUST omit the sameAs key
+      // entirely when the array is empty - an empty array on Person.sameAs
+      // is a fabrication tell to KG validators. Mirrors the gating pattern
+      // already used by the on-page Person block in components/seo/json-ld.tsx.
+      ...(FOUNDER_SAME_AS.length > 0 ? { sameAs: FOUNDER_SAME_AS } : {}),
     },
     {
       "@type": "WebSite",
