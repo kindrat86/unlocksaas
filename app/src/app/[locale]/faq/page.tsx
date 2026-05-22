@@ -105,6 +105,7 @@ export default async function LocalizedFaqPage({
       <FaqPageJsonLd
         items={entries}
         speakableSelectors={[".aeo-q", ".aeo-a"]}
+        language={locale}
       />
       <BreadcrumbListJsonLd trail={breadcrumbTrail} />
 

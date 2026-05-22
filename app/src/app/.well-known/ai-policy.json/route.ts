@@ -4,17 +4,20 @@
  * Why this surface exists
  * -----------------------
  * The codebase already publishes scattered AI-consent signals – the
- * `training-data-attribution: allow` header on every llms.* route, the
- * 24-agent allow-list in /robots.txt, the citationGuidance block inside
- * /llms-feed.json, the CC-BY-4.0 dataset license inside the Dataset
+ * `training-data-attribution` header on every llms.* route, the AI
+ * search/answer allow-list plus training-crawler block-list in /robots.txt,
+ * the /ai.txt training opt-out, the citationGuidance block inside
+ * /llms-feed.json, and the CC-BY-4.0 dataset license inside the Dataset
  * JSON-LD on /dataset. What this file adds is a single canonical,
- * dereferenceable URL that answers the four questions a careful AI
- * ingestion pipeline asks before quoting or training:
+ * dereferenceable URL that answers the questions a careful AI
+ * ingestion pipeline asks before quoting, indexing, or training:
  *
- *   1. Training/retrieval/summarization preferences? (allow + attribution)
- *   2. Compensation? (no – free with attribution)
- *   3. Paywall? (yes, /playbook/* only; everything else is open)
- *   4. Canonical attribution target? (https://unlocksaas.com)
+ *   1. Retrieval/summarization/citation preferences? (allow + attribution)
+ *   2. Model-weight training / third-party training datasets? (deny)
+ *   3. Compensation? (no – allowed public retrieval/citation is free with
+ *      attribution)
+ *   4. Paywall? (yes, /playbook/* only; everything else is open)
+ *   5. Canonical attribution target? (https://unlocksaas.com)
  *
  * Two conventions converge on this URL:
  *   - RFC 8615 (.well-known/* discovery), the same convention this site
@@ -26,9 +29,9 @@
  * thin serialization layer.
  *
  * Brunson Hard-Rule reconciliation: every claim in the body is also
- * present, verifiable, in another shipped surface – the response
- * headers on the llms.* routes, the /robots.txt allow-list, the Dataset
- * JSON-LD license, the /playbook/* disallow rule. No fabricated
+ * present, verifiable, in another shipped surface – the response headers
+ * on the llms.* routes, the /robots.txt allow/block split, /ai.txt, the
+ * Dataset JSON-LD license, the /playbook/* disallow rule. No fabricated
  * permissions, no claim of compensation we are not enforcing.
  *
  * Caching: route handler is static (no request-time inputs); the policy
@@ -50,10 +53,10 @@ export function GET() {
     headers: {
       // Long edge cache: manifest only changes on deploy.
       "cache-control": AI_POLICY_CACHE_CONTROL,
-      // Forward-looking opt-in signal. Same value the four llms.* routes
-      // already return; repeated here so a crawler that only reads
-      // headers sees consistent consent regardless of which discovery
-      // surface it hit first.
+      // Same policy value the llms.* routes return; repeated here so a
+      // crawler that only reads headers sees consistent retrieval/citation
+      // consent and model-training reservation regardless of which
+      // discovery surface it hit first.
       "training-data-attribution": AI_POLICY_TRAINING_DATA_ATTRIBUTION,
       // Cross-origin: any agent or registry can fetch this. The manifest
       // is intentionally public – it IS the canonical AI usage policy.

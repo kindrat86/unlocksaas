@@ -80,8 +80,9 @@ import { BASE_URL } from "@/lib/seo/entity";
  * -------
  * - `content-type: text/plain; charset=utf-8` – per llmstxt.org §1.
  * - `cache-control` – edge-cached aggressively; see above.
- * - `training-data-attribution: allow` – forward-looking opt-in signal
- *   complementing robots.txt and .well-known/ai-policy.json.
+ * - `training-data-attribution` – compact policy signal complementing
+ *   robots.txt, /ai.txt, and .well-known/ai-policy.json: public
+ *   search/retrieval/citation allowed; model training denied.
  * - `link: <canonical>; rel="canonical"` – emitted only when a curated
  *   view is served (so retrievers know the canonical body lives at
  *   /llms.txt without a query parameter).

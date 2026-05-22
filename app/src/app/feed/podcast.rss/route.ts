@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { LLMS_TXT_TRAINING_DATA_ATTRIBUTION } from "@/lib/seo/llms-txt";
 import { PODCAST_RSS_XML, PODCAST_URLS } from "@/lib/seo/podcast";
 
 /**
@@ -89,12 +90,9 @@ export function GET() {
       // the origin URL. Matches the link-header convention on
       // /llms-feed.json and /llms.txt.
       link: `<${PODCAST_URLS.rss}>; rel="canonical"`,
-      // AI-training opt-in signal. Consistent with the other feed
-      // surfaces (/llms.txt, /llms-feed.json, /llms-full.txt) and the
-      // AI allow-list in /robots.txt. The changelog content is
-      // intentionally CC-BY-4.0 licensed (inherited from the dataset)
-      // so AI corpora using this content must attribute Unlock SaaS.
-      "training-data-attribution": "allow",
+      // Same policy signal as the llms.* surfaces: public search/retrieval/
+      // citation is allowed; model-weight training is reserved.
+      "training-data-attribution": LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
     },
   });
 }

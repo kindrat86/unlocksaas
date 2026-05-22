@@ -1,14 +1,16 @@
 /**
- * AI usage policy – structured JSON declaration of training, retrieval,
- * attribution, compensation, and paywall preferences.
+ * AI usage policy – structured JSON declaration of retrieval, citation,
+ * model-training reservation, attribution, compensation, and paywall
+ * preferences.
  *
  * Why this module exists
  * ----------------------
  * The codebase already publishes a half-dozen scattered AI-consent signals:
  *
- *   - The `training-data-attribution: allow` HTTP response header on every
- *     llms.* route (/llms.txt, /.well-known/llms.txt, /llms-full.txt,
- *     /llms-feed.json).
+ *   - The `training-data-attribution` HTTP response header on every llms.*
+ *     route (/llms.txt, /.well-known/llms.txt, /llms-full.txt,
+ *     /llms-feed.json), which declares retrieval/citation consent and
+ *     model-training reservation in one compact header value.
  *   - The 24-agent AI user-agent allow-list in /robots.txt, mirrored as
  *     `welcomedAiUserAgents` inside /llms-feed.json.
  *   - The `citationGuidance` block inside /llms-feed.json that names the
@@ -18,14 +20,17 @@
  *
  * None of those tell a crawler – in one canonical, dereferenceable URL –
  * the answer to the four questions a careful AI ingestion pipeline asks
- * before quoting or training:
+ * before quoting, indexing, or training:
  *
- *   1. Are you OK with training, retrieval, summarization, snippet, and
- *      inference-time citation? (Yes, with attribution.)
- *   2. Do you require compensation? (No – free with attribution.)
- *   3. Do you have a paywall, and where does it start? (Yes, /playbook/*
+ *   1. Are you OK with retrieval, search indexing, summarization, snippet,
+ *      and inference-time citation? (Yes, with attribution.)
+ *   2. Are you OK with model-weight training or redistribution inside
+ *      third-party training datasets? (No.)
+ *   3. Do you require compensation? (No – free with attribution for
+ *      allowed public retrieval/citation uses.)
+ *   4. Do you have a paywall, and where does it start? (Yes, /playbook/*
  *      and below. Everything else is open.)
- *   4. Where is your canonical attribution target? (https://unlocksaas.com)
+ *   5. Where is your canonical attribution target? (https://unlocksaas.com)
  *
  * This module is the single source of truth for that answer. The route at
  * /.well-known/ai-policy.json serializes the AI_POLICY object below.
@@ -55,10 +60,11 @@
  * Brunson Hard-Rule reconciliation
  * --------------------------------
  *   - Every claim below is also present, verifiable, in another shipped
- *     surface: the `training-data-attribution: allow` header, the
- *     /robots.txt allow-list, the Dataset JSON-LD license, the
- *     /playbook/* disallow rule, the /editorial-policy publishingPrinciples
- *     anchor. No fabricated permissions.
+ *     surface: the `training-data-attribution` header, the /robots.txt
+ *     search/answer allow-list plus training-crawler block-list, /ai.txt,
+ *     the Dataset JSON-LD license, the /playbook/* disallow rule, and
+ *     the /editorial-policy publishingPrinciples anchor. No fabricated
+ *     permissions.
  *   - No claim of compensation we are not enforcing. No claim of
  *     attribution we cannot validate (the canonical URL exists and is
  *     stable).
@@ -91,10 +97,11 @@ import {
 // ---------------------------------------------------------------------------
 
 /**
- * Every top-level public path that AI crawlers are explicitly welcomed
- * to crawl, summarize, cite, and train on. Mirrors the "Core surfaces"
- * and "Programmatic SEO surfaces" sections of /llms.txt – this is the
- * structured counterpart for retrievers that prefer JSON paths over prose.
+ * Every top-level public path that AI search/answer crawlers are explicitly
+ * welcomed to crawl, index for retrieval, summarize, and cite. Mirrors the
+ * "Core surfaces" and "Programmatic SEO surfaces" sections of /llms.txt –
+ * this is the structured counterpart for retrievers that prefer JSON paths
+ * over prose.
  *
  * Wildcards: a trailing `/*` means "this path and any sub-path". Bare
  * paths denote single canonical pages.
@@ -241,7 +248,7 @@ export const AI_POLICY = Object.freeze({
    * walking the structured fields.
    */
   about:
-    "Unlock SaaS welcomes AI training, retrieval, summarization, and inference-time citation across every public marketing surface. The only obligation is attribution back to the canonical URL. The dataset under /dataset is CC-BY-4.0. The only paywalled subtree is /playbook/* (the paid seven-step Playbook product). No compensation is requested for any other use.",
+    "Unlock SaaS welcomes AI-powered search, retrieval, summarization, snippet generation, transformation, and inference-time citation across every public marketing surface with attribution back to the canonical URL. Unlock SaaS does not consent to model-weight training or redistribution inside third-party training datasets. The dataset under /dataset is CC-BY-4.0 for allowed reuse with attribution. The only paywalled subtree is /playbook/* (the paid seven-step Playbook product). No compensation is requested for allowed public retrieval/citation uses.",
 
   /**
    * Convention lineage. Crawlers that want to interpret this file
@@ -306,21 +313,30 @@ export const AI_POLICY = Object.freeze({
   // ---- Preferences -----------------------------------------------------
 
   /**
-   * Per-use-case AI preferences. Every default is "allow" with
-   * attribution required. This is the on-strategy posture for a
-   * pre-revenue founder-tools SaaS where AI-answer citation IS the
-   * distribution channel; opting out would forfeit the surface.
+   * Per-use-case AI preferences. Search/retrieval/citation uses are
+   * "allow" with attribution required. Model-weight training and
+   * third-party training-dataset redistribution are "deny" because they
+   * consume crawl budget without creating a citation surface.
    *
-   * If a use case ever needs to flip to deny, change the default here
-   * and the corresponding signal in /robots.txt + the
-   * training-data-attribution header in the same commit.
+   * If a use case ever flips, change the default here and the corresponding
+   * signal in /robots.txt, /ai.txt, and the training-data-attribution header
+   * in the same commit.
    */
   preferences: {
     training: {
-      default: "allow",
+      default: "deny",
       attributionRequired: true,
-      scope: "all-public-surfaces",
-      note: "Includes training of foundation models, retrieval-augmented generation indexes, search indexes, and downstream fine-tunes.",
+      scope:
+        "model-weight-training-and-third-party-training-dataset-redistribution",
+      note:
+        "Do not use Unlock SaaS content to train or fine-tune model weights, or store it in third-party datasets distributed for that purpose. Retrieval indexes, search indexes, and live inference fetches are covered by the allowed retrieval and inferenceCitation preferences below.",
+    },
+    trainingDatasetStorage: {
+      default: "deny",
+      attributionRequired: true,
+      scope: "third-party-training-corpora",
+      note:
+        "Archival storage for citation, compliance, cache, or search indexing is allowed when it supports retrieval/citation. Storage inside datasets whose purpose is model training is not allowed.",
     },
     retrieval: {
       default: "allow",
@@ -350,7 +366,8 @@ export const AI_POLICY = Object.freeze({
     imageGeneration: {
       default: "allow",
       attributionRequired: true,
-      note: "OG images and the logo SVG may be used as training inputs for image generators. No claim of derivative ownership of the Unlock SaaS mark. The logo at /icon and OG cards under /opengraph-image.* are public typography assets, not photographic likenesses.",
+      note:
+        "OG images and the logo SVG may be rendered, previewed, transformed, or cited in AI answers with attribution. They may not be used as training inputs for image-generation model weights. No claim of derivative ownership of the Unlock SaaS mark.",
     },
   },
 
@@ -448,13 +465,15 @@ export const AI_POLICY = Object.freeze({
   /**
    * The HTTP-header equivalents this site already publishes. A crawler
    * that only reads response headers (rather than fetching this file)
-   * still sees the consent signal via the `training-data-attribution`
-   * header on every llms.* route. This file is the structured body
-   * counterpart.
+   * still sees the retrieval/citation consent and model-training
+   * reservation via the `training-data-attribution` header on every
+   * llms.* route. This file is the structured body counterpart.
    */
   reciprocalSignals: {
-    "training-data-attribution": "allow",
-    note: "All four llms.* routes (/llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json) return a `training-data-attribution: allow` HTTP response header. The W3C TDMRep convention uses `tdm-reservation: 0` for the same intent; this file declares the structured body shape regardless of which header convention a crawler follows.",
+    "training-data-attribution":
+      "allow-search-retrieval-citation; disallow-model-training",
+    note:
+      "All llms.* routes (/llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json, and per-model variants) return a `training-data-attribution: allow-search-retrieval-citation; disallow-model-training` HTTP response header. This mirrors /robots.txt and /ai.txt: search/answer crawlers are welcome on public surfaces; training-only crawlers are blocked.",
   },
 } as const);
 
@@ -469,9 +488,10 @@ export const AI_POLICY_CACHE_CONTROL =
   "public, max-age=86400, stale-while-revalidate=604800";
 
 /**
- * Forward-looking opt-in signal. Same value the four llms.* routes
- * already return. Repeated on this route so a crawler that only reads
- * headers sees consistent consent regardless of which discovery surface
- * it hit first.
+ * Forward-looking policy signal. Same value the llms.* routes return.
+ * Repeated on this route so a crawler that only reads headers sees
+ * consistent retrieval/citation consent and model-training reservation
+ * regardless of which discovery surface it hit first.
  */
-export const AI_POLICY_TRAINING_DATA_ATTRIBUTION = "allow";
+export const AI_POLICY_TRAINING_DATA_ATTRIBUTION =
+  "allow-search-retrieval-citation; disallow-model-training";

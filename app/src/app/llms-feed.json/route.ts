@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { LLMS_TXT_TRAINING_DATA_ATTRIBUTION } from "@/lib/seo/llms-txt";
 import {
   ALTERNATE_NAMES,
   BASE_URL,
@@ -523,10 +524,10 @@ const KEY_FACTS = Object.freeze({
 });
 
 /**
- * AI crawlers explicitly welcomed in /robots.txt. Mirrors the
- * AI_USER_AGENTS array in app/src/app/robots.ts. Listed here so a
- * retriever discovering this feed can confirm its own user-agent is
- * on the allow-list without having to fetch robots.txt separately.
+ * AI search/answer crawlers explicitly welcomed in /robots.txt. Mirrors the
+ * AI_SEARCH_ANSWER_USER_AGENTS array in app/src/app/robots.ts. Listed here
+ * so a retriever discovering this feed can confirm its own user-agent is on
+ * the allow-list without having to fetch robots.txt separately.
  *
  * Maintenance note: if app/src/app/robots.ts gains or loses a UA,
  * update this array in the same commit. There is no programmatic
@@ -534,30 +535,21 @@ const KEY_FACTS = Object.freeze({
  * shape; this is a documentation mirror, not a code dependency.
  */
 const WELCOMED_AI_USER_AGENTS = Object.freeze([
-  "GPTBot",
   "OAI-SearchBot",
   "ChatGPT-User",
   "ClaudeBot",
+  "Claude-SearchBot",
   "Claude-Web",
+  "Claude-User",
   "anthropic-ai",
-  "Google-Extended",
   "GoogleOther",
   "PerplexityBot",
   "Perplexity-User",
-  "Bingbot",
   "Applebot",
-  "Applebot-Extended",
-  "Meta-ExternalAgent",
-  "FacebookBot",
-  "CCBot",
-  "Bytespider",
   "DuckAssistBot",
-  "Amazonbot",
   "MistralAI-User",
   "YouBot",
   "cohere-ai",
-  "cohere-training-data-crawler",
-  "Diffbot",
 ]);
 
 /**
@@ -890,13 +882,10 @@ export function GET() {
       // Self-canonical so any aggregator that mirrors this feed credits
       // the origin URL.
       link: `<${BASE_URL}/llms-feed.json>; rel="canonical"`,
-      // Forward-looking opt-in signal for AI training corpora — positive
-      // complement to the "noai" / "noimageai" X-Robots-Tag values publishers
-      // use to opt out. No finalized RFC yet (IETF AI Preferences WG still
-      // drafting), but the value is consistent with the welcomedAiUserAgents
-      // array in the payload itself and the AI allow-list in /robots.txt.
-      // Mirrors the same header on /llms.txt and /llms-full.txt.
-      "training-data-attribution": "allow",
+      // Same policy signal as /llms.txt: public search/retrieval/citation
+      // is allowed with attribution; model-weight training and third-party
+      // training-dataset redistribution are denied.
+      "training-data-attribution": LLMS_TXT_TRAINING_DATA_ATTRIBUTION,
     },
   });
 }

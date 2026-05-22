@@ -126,6 +126,7 @@ const fetchYearRows = cache(async function fetchYearRows(
   if (!hasSupabaseAdminConfig()) return [];
 
   const { gte, lt } = yearWindowUtc(year);
+
   try {
     const supabase = createAdminClient();
     const { data, error } = await supabase
