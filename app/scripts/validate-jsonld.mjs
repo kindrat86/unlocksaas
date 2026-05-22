@@ -53,7 +53,10 @@
  */
 
 const BASE_URL = process.env.VALIDATE_BASE_URL || "http://localhost:3000";
-const FETCH_TIMEOUT_MS = 30_000;
+const FETCH_TIMEOUT_MS = Number.parseInt(
+  process.env.VALIDATE_FETCH_TIMEOUT_MS || "60000",
+  10
+);
 
 /**
  * Representative URL set: one per pSEO template + every authority page +

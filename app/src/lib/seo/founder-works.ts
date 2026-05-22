@@ -57,6 +57,7 @@ import {
   DATASET_DOI_URL,
   DATASET_EXTERNAL_REGISTRATIONS,
 } from "@/lib/seo/entity";
+import { DATASET_LICENSE_URL } from "@/lib/seo/dataset";
 
 /**
  * One shipped artifact authored or maintained by the founder.
@@ -335,6 +336,12 @@ export function toCreativeWorkNode(
     datePublished: work.datePublished,
     description: work.description,
   };
+  if (work.type === "Article") {
+    base.headline = work.name;
+  }
+  if (work.type === "Dataset") {
+    base.license = DATASET_LICENSE_URL;
+  }
   if (work.doi) {
     base.identifier = {
       "@type": "PropertyValue",
