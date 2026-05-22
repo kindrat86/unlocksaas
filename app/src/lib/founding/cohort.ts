@@ -1,4 +1,7 @@
-import { createAdminClient } from "@/lib/supabase/server";
+import {
+  createAdminClient,
+  hasSupabaseAdminEnv,
+} from "@/lib/supabase/server";
 
 /**
  * Founding-Cohort PLF — cap + window logic.
@@ -22,6 +25,8 @@ export const FOUNDING_COHORT_CAP = 50;
 
 /** Returns the current count of claimed seats. Service-role read. */
 export async function seatsClaimed(): Promise<number> {
+  if (!hasSupabaseAdminEnv()) return 0;
+
   const supabase = createAdminClient();
   // founding_cohort lives in migration 20260518000002 which is not yet
   // reflected in the generated database.types.ts. Cast to bypass strict
@@ -93,6 +98,10 @@ export async function isCartOpen(now: Date = new Date()): Promise<boolean> {
  * fail the second of any two concurrent 50th claims.
  */
 export async function nextSeatNumber(): Promise<number> {
+  if (!hasSupabaseAdminEnv()) {
+    throw new Error("founding_cohort_read_failed: missing Supabase admin env");
+  }
+
   const supabase = createAdminClient();
   const { data, error } = await (supabase as unknown as { from: (t: string) => any })
     .from("founding_cohort")

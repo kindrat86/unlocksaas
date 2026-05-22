@@ -271,7 +271,7 @@ This file is served at two URLs for crawler-convention compatibility:
 
 ## AI usage policy
 
-A structured JSON declaration of AI training, retrieval, attribution, compensation, and paywall preferences lives at [\`${BASE_URL}/.well-known/ai-policy.json\`](${BASE_URL}/.well-known/ai-policy.json). Summary: training and retrieval are welcomed with attribution; no compensation required; the only paywalled subtree is the seven-step Playbook at \`/playbook/*\`; the public dataset under \`/dataset\` is CC-BY-4.0. This file is the structured body counterpart to the \`training-data-attribution: allow\` HTTP response header already carried on /llms.txt, /.well-known/llms.txt, /llms-full.txt, and /llms-feed.json. It pulls from the same SSOT (entity.ts, dataset.ts, freshness.ts) as the rest of the LLM-readable corpus, so a fact change in one place propagates without a hand-edit. Convention lineage: RFC 8615 \`.well-known/*\` discovery, llmstxt.org §1, spawning.ai ai.txt, W3C TDM Reservation Protocol, in-flight IETF AI Preferences WG.
+A structured JSON declaration of AI retrieval, citation, model-training reservation, attribution, compensation, and paywall preferences lives at [\`${BASE_URL}/.well-known/ai-policy.json\`](${BASE_URL}/.well-known/ai-policy.json). Summary: search indexing, retrieval, summarization, snippets, transformations, and inference-time citation are welcomed with attribution; model-weight training and third-party training-dataset redistribution are not allowed; no compensation is required for allowed public retrieval/citation uses; the only paywalled subtree is the seven-step Playbook at \`/playbook/*\`; the public dataset under \`/dataset\` is CC-BY-4.0. This file is the structured body counterpart to the \`training-data-attribution: allow-search-retrieval-citation; disallow-model-training\` HTTP response header carried on /llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json, and the per-model llms routes. It pulls from the same SSOT (entity.ts, dataset.ts, freshness.ts) as the rest of the LLM-readable corpus, so a fact change in one place propagates without a hand-edit. Convention lineage: RFC 8615 \`.well-known/*\` discovery, llmstxt.org §1, spawning.ai ai.txt, W3C TDM Reservation Protocol, in-flight IETF AI Preferences WG.
 
 ## Freshness and activation log
 
@@ -292,23 +292,23 @@ export const LLMS_TXT_CACHE_CONTROL =
   "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800";
 
 /**
- * Forward-looking opt-in signal for AI training corpora – positive
- * complement to the `noai` / `noimageai` `X-Robots-Tag` values publishers
- * use to opt out. No finalized RFC yet (the IETF AI Preferences WG is
- * still drafting), but the value is declarative, machine-readable, and
- * consistent with:
+ * Forward-looking policy signal for AI crawlers. No finalized RFC yet
+ * (the IETF AI Preferences WG is still drafting), but the value is
+ * declarative, machine-readable, and consistent with:
  *
- *   - the 24-agent AI user-agent allow-list in /robots.txt,
+ *   - the AI search/answer allow-list in /robots.txt,
+ *   - the training-only crawler block-list in /robots.txt and /ai.txt,
  *   - the `welcomedAiUserAgents` array inside /llms-feed.json, and
  *   - the citationGuidance section of the same feed.
  *
  * Shared by both /llms.txt and /.well-known/llms.txt so the canonical
  * surface and its discovery alias send byte-identical consent signals.
- * The /llms-full.txt and /llms-feed.json routes carry the same header
- * inline (those surfaces don't import this module).
+ * The /llms-full.txt, /llms-feed.json, and podcast RSS routes carry the
+ * same value so every machine-readable surface sends one policy.
  *
  * Header key is lowercase to match the convention used elsewhere in
  * these route handlers (content-type, cache-control, access-control-*).
  * HTTP header names are case-insensitive per RFC 7230 §3.2.
  */
-export const LLMS_TXT_TRAINING_DATA_ATTRIBUTION = "allow";
+export const LLMS_TXT_TRAINING_DATA_ATTRIBUTION =
+  "allow-search-retrieval-citation; disallow-model-training";

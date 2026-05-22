@@ -1194,11 +1194,12 @@ export type FaqItem = { q: string; a: string };
 function buildFaqPageJson(
   items: ReadonlyArray<FaqItem>,
   speakable?: SpeakableSelectors,
+  language = "en-US",
 ): string {
   return JSON.stringify({
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    inLanguage: "en-US",
+    inLanguage: language,
     ...ACCESS_MODE_TEXTUAL,
     // VEO — voice assistants reading FAQPage schema will read aloud whichever
     // DOM regions match these selectors. Caller-provided selectors win
@@ -1213,7 +1214,7 @@ function buildFaqPageJson(
       acceptedAnswer: {
         "@type": "Answer",
         text: it.a,
-        inLanguage: "en-US",
+        inLanguage: language,
       },
     })),
   });
@@ -1669,11 +1670,17 @@ export function PersonJsonLd() {
 export function FaqPageJsonLd({
   items,
   speakableSelectors,
+  language = "en-US",
 }: {
   items: ReadonlyArray<FaqItem>;
   speakableSelectors?: SpeakableSelectors;
+  language?: string;
 }) {
-  return <JsonLdScript json={buildFaqPageJson(items, speakableSelectors)} />;
+  return (
+    <JsonLdScript
+      json={buildFaqPageJson(items, speakableSelectors, language)}
+    />
+  );
 }
 
 /**

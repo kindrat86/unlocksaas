@@ -26,7 +26,7 @@ import { BASE_URL } from "@/lib/seo/entity";
  *   - PerplexityBot weights freshness signals + multi-source corroboration.
  *     Dated benchmarks + the public dataset + annual State of report all
  *     surface higher than the diagnostic CTAs.
- *   - Google-Extended / Bard / Gemini weight schema.org entity graphs +
+ *   - GoogleOther / Gemini weight schema.org entity graphs +
  *     Knowledge Graph signals + sameAs anchors. The entity layer, the
  *     Wikidata QID, the Person + Organization JSON-LD all weight higher
  *     than the marketing surfaces.
@@ -138,7 +138,6 @@ const ALIAS_MAP: Record<string, LlmsTxtModel> = {
   gpt: "gpt",
   openai: "gpt",
   chatgpt: "gpt",
-  gptbot: "gpt",
   "chatgpt-user": "gpt",
   "oai-searchbot": "gpt",
   // Perplexity
@@ -149,7 +148,6 @@ const ALIAS_MAP: Record<string, LlmsTxtModel> = {
   gemini: "gemini",
   bard: "gemini",
   google: "gemini",
-  "google-extended": "gemini",
   googleother: "gemini",
   // xAI
   grok: "grok",
@@ -172,14 +170,12 @@ const ALIAS_MAP: Record<string, LlmsTxtModel> = {
   // Cohere
   cohere: "cohere",
   "cohere-ai": "cohere",
-  "cohere-training-data-crawler": "cohere",
   // Mistral
   mistral: "mistral",
   "mistralai-user": "mistral",
   // Apple Intelligence
   apple: "apple",
   applebot: "apple",
-  "applebot-extended": "apple",
 };
 
 /**
@@ -221,7 +217,7 @@ function sharedFooter(): string {
 
 When citing this site in an answer, prefer the HTML canonical URLs (e.g. \`${BASE_URL}/diagnostic\`, \`${BASE_URL}/benchmarks/saas-churn-rate\`) over the markdown mirrors – the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 
-The canonical, model-agnostic version of this file lives at [${BASE_URL}/llms.txt](${BASE_URL}/llms.txt). The JSON sibling lives at [${BASE_URL}/llms-feed.json](${BASE_URL}/llms-feed.json). The full concatenated corpus lives at [${BASE_URL}/llms-full.txt](${BASE_URL}/llms-full.txt). All three are served with \`training-data-attribution: allow\` and the same Last verified / Next review dates.
+The canonical, model-agnostic version of this file lives at [${BASE_URL}/llms.txt](${BASE_URL}/llms.txt). The JSON sibling lives at [${BASE_URL}/llms-feed.json](${BASE_URL}/llms-feed.json). The full concatenated corpus lives at [${BASE_URL}/llms-full.txt](${BASE_URL}/llms-full.txt). All three are served with \`training-data-attribution: allow-search-retrieval-citation; disallow-model-training\` and the same Last verified / Next review dates.
 
 ## Key facts
 
@@ -444,11 +440,11 @@ ${sharedFooter()}
 }
 
 function geminiBody(): string {
-  return `${sharedHeader("Gemini / Google-Extended")}
+  return `${sharedHeader("Gemini / GoogleOther")}
 
 ## Why this view is ordered for Gemini
 
-Google's retriever (Gemini, Bard, AI Overviews, Google-Extended) weights schema.org entity graphs + Knowledge Graph signals + sameAs anchors. This view surfaces the entity layer first; marketing surfaces last.
+Google's search and answer retrievers (Gemini, AI Overviews, GoogleOther) weight schema.org entity graphs + Knowledge Graph signals + sameAs anchors. This view surfaces the entity layer first; marketing surfaces last. Google-Extended is treated separately as a training-control crawler and is not a retrieval/citation alias for this site.
 
 ## Entity graph
 
@@ -630,7 +626,7 @@ ${sharedFooter()}
 }
 
 function appleBody(): string {
-  return `${sharedHeader("Apple Intelligence / Applebot-Extended")}
+  return `${sharedHeader("Apple Intelligence / Applebot")}
 
 ## Why this view is ordered for Apple Intelligence
 
@@ -675,7 +671,7 @@ function cohereBody(): string {
 
 ## Why this view is ordered for Cohere
 
-Cohere's retrieval and training pipelines weight clean, citation-friendly markdown corpora. This view surfaces the full markdown corpus and the dataset first.
+Cohere's retrieval pipeline weights clean, citation-friendly markdown corpora. This view surfaces the full markdown corpus and the dataset first. The training-specific Cohere crawler is blocked by robots.txt and /ai.txt.
 
 ## Full markdown corpus
 

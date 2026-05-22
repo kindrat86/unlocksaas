@@ -30,7 +30,10 @@
  */
 
 import { cacheLife, cacheTag } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import {
+  createAdminClient,
+  hasSupabaseAdminEnv,
+} from "@/lib/supabase/server";
 import { FOUNDER } from "@/lib/seo/entity";
 
 /** $49/mo Core, locked in project_unlocksaas_stripe.md. In cents to match Stripe. */
@@ -39,6 +42,21 @@ export const CORE_PRICE_CENTS = 4900;
 export const STARTER_PRICE_CENTS = 100;
 
 const FOUNDER_EMAIL = FOUNDER.email.toLowerCase();
+
+function emptyOpenMetrics(generatedAt = new Date().toISOString()): OpenMetrics {
+  return {
+    activeCoreCount: 0,
+    activeStarterCount: 0,
+    mrrCents: 0,
+    diagnosticCompletions: 0,
+    lifetimeStartersPaid: 0,
+    lifetimeCoresStarted: 0,
+    churn30dPercent: null,
+    canceledLast30d: 0,
+    recentBuilders: [],
+    generatedAt,
+  };
+}
 
 /** Role-style local-parts that should never be published as a person's name. */
 const ROLE_LOCAL_PARTS = new Set([
@@ -90,6 +108,10 @@ export async function getOpenMetrics(): Promise<OpenMetrics> {
   "use cache";
   cacheLife({ stale: 60, revalidate: 300, expire: 1800 });
   cacheTag("open-metrics", "billing-mutation");
+
+  if (!hasSupabaseAdminEnv()) {
+    return emptyOpenMetrics();
+  }
 
   const admin = createAdminClient();
   const now = new Date();

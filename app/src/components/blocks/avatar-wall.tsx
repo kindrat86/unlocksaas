@@ -20,7 +20,10 @@
  * (the `loadVerifiedBuilders` helper).
  */
 import Link from "next/link";
-import { createAdminClient } from "@/lib/supabase/server";
+import {
+  createAdminClient,
+  hasSupabaseAdminEnv,
+} from "@/lib/supabase/server";
 import { loadVerifiedBuilders } from "@/lib/builder-badge";
 
 const AVATAR_WALL_MIN_COUNT = 9;
@@ -32,6 +35,8 @@ function initialOf(name: string): string {
 }
 
 export async function AvatarWall() {
+  if (!hasSupabaseAdminEnv()) return null;
+
   const builders = await loadVerifiedBuilders(createAdminClient(), AVATAR_WALL_MIN_COUNT);
 
   if (builders.length < AVATAR_WALL_MIN_COUNT) {

@@ -36,7 +36,10 @@ import {
   SoftwareApplicationJsonLd,
 } from "@/components/seo/json-ld";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
-import { createAdminClient } from "@/lib/supabase/server";
+import {
+  createAdminClient,
+  hasSupabaseAdminEnv,
+} from "@/lib/supabase/server";
 
 /**
  * UnlockSaaS Funnel Hub — Perfect Webinar arc.
@@ -89,6 +92,8 @@ async function getVerifiedBadgeCount(): Promise<number> {
   "use cache";
   cacheLife({ revalidate: 3600 });
   cacheTag("verified-builder-count");
+  if (!hasSupabaseAdminEnv()) return 0;
+
   return loadPublicBadgeCount(createAdminClient());
 }
 
