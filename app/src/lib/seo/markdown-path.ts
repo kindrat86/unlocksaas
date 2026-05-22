@@ -80,6 +80,20 @@ const PSEO_SLUG_ROOTS: ReadonlyArray<string> = [
 ];
 
 /**
+ * True when a request already targets one of the markdown mirror URL shapes.
+ * These routes emit their own `Link: rel="canonical"` response header from
+ * the route handler, pointing back to the HTML page.
+ */
+export function isMarkdownMirrorPath(pathname: string): boolean {
+  const normalized =
+    pathname.length > 1 && pathname.endsWith("/")
+      ? pathname.slice(0, -1)
+      : pathname;
+
+  return normalized.endsWith(".md") || normalized.endsWith("/md");
+}
+
+/**
  * Map an HTML pathname to its markdown mirror pathname, or `null` if no
  * mirror exists for the requested path.
  *
@@ -88,7 +102,7 @@ const PSEO_SLUG_ROOTS: ReadonlyArray<string> = [
  */
 export function toMarkdownPath(pathname: string): string | null {
   // Already a markdown URL — no-op so the proxy doesn't loop.
-  if (pathname.endsWith(".md") || pathname.endsWith("/md")) {
+  if (isMarkdownMirrorPath(pathname)) {
     return null;
   }
 

@@ -13,7 +13,11 @@ import {
   detectSourceFromRequest,
   parseSource,
 } from "@/lib/acquisition-source";
-import { toMarkdownPath, wantsMarkdown } from "@/lib/seo/markdown-path";
+import {
+  isMarkdownMirrorPath,
+  toMarkdownPath,
+  wantsMarkdown,
+} from "@/lib/seo/markdown-path";
 import { BASE_URL } from "@/lib/seo/entity";
 
 // Affiliate program (see lib/affiliate.ts). Re-declared here to avoid importing
@@ -44,6 +48,9 @@ const REF_CODE_RE = /^[a-z0-9]{6,16}$/i; // permissive: matches lib/affiliate's 
  *   – `/cite/*` already emits its own canonical pointing to the HUMAN page
  *     rather than to itself; overriding here would create two competing
  *     rel="canonical" Link values.
+ *   – markdown mirror routes (dot-md suffixes and slash-md children)
+ *     already emit their own canonical from the route handler, pointing
+ *     back to the HTML page.
  *
  * For markdown-rewrite responses, the canonical points to the ORIGINAL HTML
  * URL (e.g., /about), not the rewritten .md path, because /about is the
@@ -59,6 +66,7 @@ function setCanonicalLinkHeader(
 ): void {
   if (originalPathname.startsWith("/api/")) return;
   if (originalPathname.startsWith("/cite/")) return;
+  if (isMarkdownMirrorPath(originalPathname)) return;
   const path =
     originalPathname.length > 1 && originalPathname.endsWith("/")
       ? originalPathname.slice(0, -1)
@@ -102,10 +110,9 @@ export async function proxy(request: NextRequest) {
       rewriteUrl.pathname = mdPath;
       // Strip the `format` param so the rewritten URL is cache-key clean.
       rewriteUrl.searchParams.delete("format");
-      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
-      // Canonical points to the original HTML URL, not the .md mirror.
-      setCanonicalLinkHeader(rewriteResponse, originalPathname);
-      return rewriteResponse;
+      // The markdown route handler owns the canonical Link header. Adding
+      // another one here duplicates the final response header.
+      return NextResponse.rewrite(rewriteUrl);
     }
   }
 
