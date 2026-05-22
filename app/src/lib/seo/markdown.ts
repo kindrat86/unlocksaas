@@ -634,6 +634,57 @@ Nowhere yet. The founder is pre-launch. When real coverage lands it appears on t
 Email ${FOUNDER.email}. One inbox, one human, real replies. Time zone: EU. Typical response window: within one business day.
 `;
 
+// Aggregator / review-directory listings markdown mirror. Same surface as
+// /press/listings rendered as plain text for GEO crawlers. Wired into
+// SURFACES below so /press/listings.md serves alongside the HTML page.
+// The body intentionally omits the env-driven live-link resolution that
+// runs on the HTML page – the markdown is a stable description of which
+// directories we target and how the operator can verify the live status
+// (by visiting the HTML page).
+const LISTINGS_BODY = `# Where Unlock SaaS Is Listed
+
+> Public status board of every review aggregator, launch directory, and discovery surface Unlock SaaS targets. Live links and submission URLs.
+
+## TL;DR
+
+A canonical inventory of the off-platform directories Unlock SaaS targets for backlinks, AI-Overview citations, and Organization sameAs anchors. Live link rows are visible on the HTML page at ${BASE_URL}/press/listings. The honest default is empty: a directory is either live or it is not. No "coming soon", no fabricated badges, no aggregate ratings until they are independently verifiable on the linked directory.
+
+## How this list works
+
+Every row below is a slot. When the operator pastes the approved listing URL into the corresponding Vercel environment variable and redeploys, two things happen at once: the row on ${BASE_URL}/press/listings flips to a live link, and the Organization \`sameAs\` block on every page of unlocksaas.com picks up the URL. There is no code edit, no audit, no manual schema update.
+
+## Launch events
+
+One-shot events. Time the submission to a product moment (relaunch, price change, public-beta open). Sustained AI-citation traffic continues for months after launch day.
+
+- **Product Hunt** (producthunt.com). Submission: https://www.producthunt.com/posts/new. Single-shot launch event. Coordinate relaunch with the $1 Starter price drop – the gallery rewards a sub-$5 entry tier.
+- **BetaList** (betalist.com). Submission: https://betalist.com/submit. Early-adopter audience. Best paired with a waitlist or a private-beta gate – the directory rewards exclusivity framing.
+
+## Review aggregators
+
+Reviews-gated platforms. Submit only when there are real paying customers willing to leave honest reviews. No farming, no incentivised reviews. The directory teams and the AI Overview pipelines both penalise incentivised review patterns.
+
+- **G2** (g2.com). Submission: https://sell.g2.com/get-listed. Largest review platform AI Overviews cite. Requires 3+ paying customers ready to review honestly – G2 rejects single-customer listings.
+- **Capterra** (capterra.com). Submission: https://www.capterra.com/vendors/sign-up. Gartner-owned. Listing also auto-syndicates to GetApp and SoftwareAdvice (one submission, three surfaces).
+
+## Discovery and comparison directories
+
+Lightweight comparison surfaces. Approval is fast; each row is a permanent inbound link AI Overviews cite for "alternatives" queries.
+
+- **AlternativeTo** (alternativeto.net). Submission: https://alternativeto.net/account/submit-app/. Heavily cited for "X alternatives" queries by AI Overviews. Lightweight submission, near-automatic approval.
+- **SaaSHub** (saashub.com). Submission: https://www.saashub.com/submit-software. Peer of AlternativeTo focused on SaaS. Indexed quickly; submission is one form.
+
+## Community profiles
+
+Audience-fit profiles. The backlink is half the value; sustained posting and milestone updates are the other half.
+
+- **Indie Hackers** (indiehackers.com). Submission: https://www.indiehackers.com/products/new. Dream-customer hangout. Profile is the backlink anchor; sustained posting and milestone updates compound over time.
+
+## Verify live status
+
+Visit ${BASE_URL}/press/listings for the live status board with current links. Verify any individual listing by inspecting the page's \`Organization\` JSON-LD: every live URL on /press/listings also appears in the \`sameAs\` array on every page of unlocksaas.com.
+`;
+
 // Editorial policy markdown mirror — same source-of-truth principle as
 // /press: every claim is something the operator already does in practice,
 // not aspirational standards we have not shipped. Wired into the surface
@@ -1440,6 +1491,14 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     summary:
       "Brand facts, founder bio, descriptions in three lengths, and contact for media coverage.",
     body: PRESS_BODY,
+  },
+  {
+    path: "/press/listings",
+    mdPath: "/press/listings.md",
+    title: "Where Unlock SaaS Is Listed",
+    summary:
+      "Aggregator and review-directory listings status board – Product Hunt, BetaList, G2, Capterra, AlternativeTo, SaaSHub, Indie Hackers.",
+    body: LISTINGS_BODY,
   },
   {
     path: "/editorial-policy",
