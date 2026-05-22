@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { connection } from "next/server";
 import { StarterSalesClient } from "./starter-client";
 
 /**
@@ -7,39 +9,61 @@ import { StarterSalesClient } from "./starter-client";
  * ----------------------------------
  * The page is interactive (Stripe POST, order-bump state, attribution from
  * URL params, diagnostic handoff banner), so the body has to live in a
- * "use client" component (starter-client.tsx). But the previous implementation
- * inlined that client body and wrapped it in `<Suspense fallback={null}>`
- * because `useSearchParams()` requires a Suspense boundary in client trees
- * that may be prerendered.
+ * "use client" component (starter-client.tsx). Two prior implementations:
  *
- * That pattern made SSR render `null` (the Suspense fallback) for every
- * crawler. Vercel's CDN then cached the empty render and served it to
- * every subsequent crawler request — 18 of 19 user-agents tested by the
- * 2026-05-22 crawler citation audit saw zero substantive content; only
- * Applebot (whose responses carried `cache-control: private, no-store`)
- * received a fresh dynamic render and saw the real page. See
- * `strategy/audits/2026-05-22-crawler-citation-audit.md` for the
- * full reproduction and the per-UA divergence table.
+ *   1. Inlined the client body and wrapped it in `<Suspense fallback={null}>`
+ *      because `useSearchParams()` requires a Suspense boundary in client
+ *      trees that may be prerendered. SSR rendered `null` for every crawler;
+ *      Vercel's CDN cached the empty render; 18 of 19 user-agents tested
+ *      by the 2026-05-22 crawler citation audit saw zero substantive
+ *      content. See `strategy/audits/2026-05-22-crawler-citation-audit.md`.
  *
- * The fix is structural, not a Suspense fallback band-aid: read
- * searchParams on the server (where they are available at request time
- * via the props promise), pass them to the client component as a normal
- * prop, and drop the Suspense wrapper entirely. The client component
- * never calls `useSearchParams()` so there is nothing to suspend, the
- * server fully renders the static + dynamic HTML in one pass, and the
- * CDN now caches a complete page for every crawler.
+ *   2. Read `searchParams` on the server (await props.searchParams) and
+ *      pass them down to the client as a concrete object. This worked
+ *      pre-Cache Components but trips the strict cacheComponents:true
+ *      rule once re-enabled — `await props.searchParams` is uncached
+ *      dynamic data that requires a Suspense ancestor during prerender,
+ *      so /starter started failing the static export with:
+ *
+ *        Error: Route "/starter": Uncached data was accessed outside of
+ *        <Suspense>. [posthog-provider.tsx:91 / body / html]
+ *
+ *      The error frame points at the closest matchable server boundary
+ *      (PostHogProvider in the root layout) but the actual cause is the
+ *      `await props.searchParams` here.
+ *
+ * Current shape (option 3): the default export is a synchronous Suspense
+ * wrapper; the body is an async function that calls `await connection()`
+ * before awaiting searchParams. This is the canonical Next 16 +
+ * cacheComponents pattern already used by /ask, /diagnostic, and
+ * /diagnostic/result. The crawler issue from option 1 is acknowledged
+ * but not re-litigated here: the immediate goal is unblocking the
+ * production deploy; the SEO-fallback question is a separate follow-up
+ * tracked against the audit doc above.
  *
  * Metadata for /starter still lives in `layout.tsx` (the page itself
  * cannot export metadata because the body is a client component, and
  * we want to keep the body server-rendered).
  */
-export default async function StarterSalesPage(props: {
+export default function StarterSalesPage(props: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  // Resolve the searchParams promise on the server, then hand the
-  // concrete object down to the client component. No useSearchParams()
-  // anywhere in the client tree → no Suspense boundary needed → SSR
-  // returns the complete page HTML on every request.
+  return (
+    <Suspense fallback={null}>
+      <StarterSalesPageBody searchParams={props.searchParams} />
+    </Suspense>
+  );
+}
+
+async function StarterSalesPageBody(props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  // `connection()` marks this boundary dynamic so the prerender shell
+  // can build while the body resolves. Without it, the strict
+  // cacheComponents:true rule treats `await props.searchParams` as an
+  // uncached read outside a Suspense ancestor and fails the static
+  // export.
+  await connection();
   const searchParams = await props.searchParams;
   return <StarterSalesClient searchParams={searchParams} />;
 }
