@@ -566,6 +566,40 @@ const WEBSITE_JSON = JSON.stringify({
           "One of three diagnoses (Wrong Person, Weak Offer, Weak Belief) plus the specific next step that fixes the labeled problem.",
       },
     },
+    /**
+     * Third potentialAction (2026-05-22): natural-language ask over the
+     * full Unlock SaaS corpus. Backed by app/(marketing)/ask/page.tsx,
+     * which is the human-facing companion to /api/nlweb/ask (the NLWeb
+     * protocol endpoint). Semantically distinct from the /diagnostic
+     * AskAction above — that one takes a product URL and returns a
+     * three-axis labeled diagnosis; this one takes a free-form query
+     * and returns a grounded paragraph plus numbered citations to the
+     * canonical Unlock SaaS pages the answer is built from.
+     *
+     * Brunson Hard-Rule: the page resolves for any submitted query
+     * (BM25 retrieval over the static corpus, deterministic summary).
+     * An AskAction that 404s would demote the WebSite block; this one
+     * is verifiable end-to-end against the live route.
+     */
+    {
+      "@type": "AskAction",
+      name: "Ask Unlock SaaS any question about the corpus",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${BASE}/ask?q={search_term_string}`,
+        inLanguage: "en-US",
+        actionPlatform: [
+          "https://schema.org/DesktopWebPlatform",
+          "https://schema.org/MobileWebPlatform",
+        ],
+      },
+      "query-input": "required name=search_term_string",
+      result: {
+        "@type": "Answer",
+        text:
+          "A grounded paragraph plus numbered citations to the canonical Unlock SaaS pages the answer is built from. NLWeb-compatible: agents can call /api/nlweb/ask for the protocol response.",
+      },
+    },
   ],
 });
 

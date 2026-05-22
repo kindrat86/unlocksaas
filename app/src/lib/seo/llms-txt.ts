@@ -68,6 +68,7 @@ Two schema.org \`potentialAction\` declarations on the WebSite block name the tw
 
 - **SearchAction** → \`${BASE_URL}/search?q={search_term_string}\` – site-wide search across every shipped marketing surface (funnel teardowns, pricing teardowns, head-to-head comparisons, alternatives, category roundups, the main pages). Plain GET. Results are server-rendered HTML grouped by surface. Companion markdown at [${BASE_URL}/search.md](${BASE_URL}/search.md) documents the corpus for AI agents.
 - **AskAction** → \`${BASE_URL}/diagnostic?url={url_input}\` – paste any live product URL, get one of three labeled diagnoses (Wrong Person, Weak Offer, or Weak Belief) plus the specific next step that fixes the labeled problem. The canonical "ask the site to diagnose X" surface.
+- **NLWeb conversational ask** → \`${BASE_URL}/ask?q={search_term_string}\` – natural-language search over the full Unlock SaaS corpus (funnel teardowns, pricing teardowns, alternatives, comparisons, glossary, FAQ, direct answers, benchmarks, Playbook steps). Returns a server-rendered grounded answer plus numbered citation cards linking back to the canonical pages. QAPage + ItemList JSON-LD per query. Optional streaming LLM gloss for JS-enabled visitors. Markdown mirror at [${BASE_URL}/ask.md](${BASE_URL}/ask.md). Companion protocol endpoint at [${BASE_URL}/api/nlweb/ask](${BASE_URL}/api/nlweb/ask) returns the same retrieval as schema.org ItemList JSON-LD. Discovery manifest at [${BASE_URL}/.well-known/nlweb.json](${BASE_URL}/.well-known/nlweb.json).
 
 ## Agent retrieval – MCP server
 

@@ -31,6 +31,7 @@ import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
 import { DIARY_DATES } from "@/lib/founder-diary";
 import { allCitationIds } from "@/lib/citations";
+import { SHOWCASE_QUERIES } from "@/lib/nlweb/showcase-queries";
 import {
   allApprovedTranslations,
   approvedLocalesForPath,
@@ -1109,6 +1110,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
       alternates: hreflang(`${base}/search`),
     },
+    // /ask — NLWeb-compatible conversational search hub. Higher priority
+    // than /search because it surfaces grounded answers (one paragraph
+    // + numbered citations) rather than a flat link list, and the
+    // showcase URLs below are pre-answered Q&A pages AI Overviews can
+    // cite directly. Backed by app/(marketing)/ask/page.tsx.
+    {
+      url: `${base}/ask`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/ask`),
+    },
+    // Pre-rendered Q&A URLs for the curated showcase queries. Each one
+    // is a server-rendered page with QAPage + ItemList JSON-LD and a
+    // grounded BM25 answer, so AI crawlers landing here get the full
+    // answer surface — same content as /ask?q=… typed manually but
+    // discoverable via sitemap. Brunson Hard-Rule: every query in
+    // SHOWCASE_QUERIES maps to corpus surfaces with real matches; no
+    // keyword bait.
+    ...SHOWCASE_QUERIES.map((q) => ({
+      url: `${base}/ask?q=${encodeURIComponent(q.query)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/ask`),
+    })),
     {
       url: `${base}/privacy`,
       lastModified: now,
