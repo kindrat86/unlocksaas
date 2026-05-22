@@ -7,11 +7,11 @@
  * Run:  node scripts/build-workbook-bundle.mjs
  * Auto: wired as "prebuild" in package.json so Vercel runs it before next build.
  *
- * The output file is committed so local dev works without running the script,
- * but Vercel always regenerates from source on deploy.
+ * The output file is committed so local dev and app-root Vercel deploys work
+ * even when the sibling strategy/ source tree is not part of the upload.
  */
 
-import { readFileSync, writeFileSync, readdirSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { join, resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -20,6 +20,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 // ../../strategy/workbooks relative to app/scripts/
 const WORKBOOKS_DIR = resolve(__dirname, '../../strategy/workbooks')
 const OUTPUT_PATH   = resolve(__dirname, '../src/lib/workbooks-bundle.ts')
+
+if (!existsSync(WORKBOOKS_DIR)) {
+  if (existsSync(OUTPUT_PATH)) {
+    console.warn(`[workbook-bundle] Source ${WORKBOOKS_DIR} not found; using committed src/lib/workbooks-bundle.ts`)
+    process.exit(0)
+  }
+
+  throw new Error(`Workbook source directory not found: ${WORKBOOKS_DIR}`)
+}
 
 const WORKBOOK_META = [
   { slug: '01-sales-funnel-secrets',  title: 'The Secret Formula',         number: 1  },
