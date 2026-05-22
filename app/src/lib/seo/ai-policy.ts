@@ -11,7 +11,7 @@
  *     route (/llms.txt, /.well-known/llms.txt, /llms-full.txt,
  *     /llms-feed.json), which declares retrieval/citation consent and
  *     model-training reservation in one compact header value.
- *   - The 24-agent AI user-agent allow-list in /robots.txt, mirrored as
+ *   - The AI search/answer user-agent allow-list in /robots.txt, mirrored as
  *     `welcomedAiUserAgents` inside /llms-feed.json.
  *   - The `citationGuidance` block inside /llms-feed.json that names the
  *     preferred canonical paraphrase targets.

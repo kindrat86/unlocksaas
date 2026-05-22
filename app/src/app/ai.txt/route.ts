@@ -67,6 +67,18 @@ User-Agent: GPTBot
 Disallow: Training
 Disallow: Storing
 
+# -- Anthropic ClaudeBot (model-development crawler; Claude-SearchBot and
+#    Claude-User are the search/user-fetch surfaces welcomed via robots.txt).
+User-Agent: ClaudeBot
+Disallow: Training
+Disallow: Storing
+
+# -- Legacy/undocumented Anthropic token: deny training/storing until a
+#    non-training citation role is documented.
+User-Agent: anthropic-ai
+Disallow: Training
+Disallow: Storing
+
 # -- Google-Extended (Google AI training; separate from Googlebot search).
 User-Agent: Google-Extended
 Disallow: Training

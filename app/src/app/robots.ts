@@ -17,8 +17,9 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  *                          SaaS where AI-answer citation IS the channel.
  *   3. AI training-only  -- explicit Disallow for crawlers that ONLY feed model
  *                          training corpora with no citation/retrieval surface
- *                          (GPTBot, Google-Extended, CCBot, Bytespider, Meta,
- *                          Apple-Extended, Amazon, Cohere-training, Diffbot).
+ *                          (ClaudeBot, GPTBot, Google-Extended, CCBot,
+ *                          Bytespider, Meta, Apple-Extended, Amazon,
+ *                          Cohere-training, Diffbot).
  *                          Paired with /ai.txt (Spawning spec) for belt-and-
  *                          suspenders training opt-out signalling.
  *   4. Indie search      -- explicit Allow for Brave, Mojeek, Marginalia, Kagi.
@@ -34,10 +35,10 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  * surface -- they do not link back, do not drive traffic, and consume
  * crawl budget. Blocking them redirects that budget toward the bots that
  * actually surface UnlockSaaS in answers (ChatGPT, Claude, Perplexity).
- * ClaudeBot is kept in the allow-list because Anthropic uses it for BOTH
- * claude.ai search and training -- the citation surface outweighs the
- * training cost for a solo-founder SaaS. This decision can be revisited
- * once the site has measurable LLM-citation share data.
+ * Anthropic now publishes separate user-agent tokens for model-training
+ * crawl (ClaudeBot), user-directed fetches (Claude-User), and search-result
+ * quality indexing (Claude-SearchBot). That lets this file allow Claude
+ * citation/retrieval while blocking model-weight training.
  *
  * Full machine-readable AI policy: /.well-known/ai-policy.json
  * Spawning opt-out declaration:    /ai.txt
@@ -185,24 +186,14 @@ export default function robots(): MetadataRoute.Robots {
   // real referral traffic and brand recall. Allow on public marketing,
   // block on private/transactional surfaces.
   //
-  // ClaudeBot note: Anthropic uses ClaudeBot for BOTH claude.ai search
-  // and model training. We allow it here because the citation surface
-  // (claude.ai search, Claude.ai web) outweighs the training cost for a
-  // pre-revenue SaaS that needs AI-search visibility. Revisit once
-  // LLM-citation share data is measurable (e.g. via Otterly.ai).
   const AI_SEARCH_ANSWER_USER_AGENTS = [
     // OpenAI -- ChatGPT browsing and search-surface crawlers.
     "OAI-SearchBot",
     "ChatGPT-User",
-    // Anthropic -- Claude web search + retrieval indexing + training (citation
-    // surface kept). Claude-SearchBot is the dedicated retrieval-indexing UA
-    // (independently controllable from ClaudeBot per nohacks.co 2026 report).
-    // Claude-User is the user-triggered fetch UA (real-time queries in Claude).
-    "ClaudeBot",
+    // Anthropic -- search-result quality indexing and user-triggered fetches.
+    // ClaudeBot is the model-training crawler and belongs in the block-list.
     "Claude-SearchBot",
-    "Claude-Web",
     "Claude-User",
-    "anthropic-ai",
     // Google -- AI Overviews fetch and Gemini inference (not training).
     "GoogleOther",
     // Perplexity -- answer engine, cites sources with live URLs.
@@ -225,6 +216,12 @@ export default function robots(): MetadataRoute.Robots {
   // driving traffic or citations. Blocked here; also opted-out via /ai.txt
   // (Spawning spec) as a belt-and-suspenders training opt-out signal.
   const AI_TRAINING_BLOCK_USER_AGENTS = [
+    // Anthropic ClaudeBot -- model-development crawl; Claude-SearchBot and
+    // Claude-User remain allowed for citation/retrieval surfaces.
+    "ClaudeBot",
+    // Legacy/undocumented Anthropic token. Deny until Anthropic documents a
+    // non-training citation role for it.
+    "anthropic-ai",
     // OpenAI GPTBot -- training corpus only; ChatGPT-User is the citation UA.
     "GPTBot",
     // Google-Extended -- Google AI training; separate from Googlebot search.

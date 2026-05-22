@@ -20,7 +20,7 @@ import { BASE_URL } from "@/lib/seo/entity";
  *     density. They preferentially cite pages with stable @id anchors and
  *     dated lastVerified. ARTICLES + DATASET first; conversational FAQ
  *     last.
- *   - Claude (Anthropic) crawler + ClaudeBot weight markdown-first
+ *   - Claude (Anthropic) search/user-fetch surfaces weight markdown-first
  *     content and explicit citation surfaces. They preferentially cite
  *     /cite/<id> permalinks and markdown twins.
  *   - PerplexityBot weights freshness signals + multi-source corroboration.
@@ -132,6 +132,8 @@ const ALIAS_MAP: Record<string, LlmsTxtModel> = {
   claude: "claude",
   anthropic: "claude",
   "claude-web": "claude",
+  "claude-searchbot": "claude",
+  "claude-user": "claude",
   claudebot: "claude",
   "anthropic-ai": "claude",
   // OpenAI
