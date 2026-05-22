@@ -16,18 +16,17 @@ import { HubTldr } from "@/components/seo/hub-tldr";
 
 const CANONICAL = "/answers";
 
+const ANSWER_COUNT = ANSWER_ENTRIES.length;
+
 export const metadata: Metadata = {
-  title:
-    "Indie SaaS Founder Answers (30 Direct Questions)",
-  description:
-    "Direct AEO-formatted answers to the 30 most-asked indie SaaS funnel questions. Built for citation by ChatGPT, Perplexity, Claude, and Google AI Overviews.",
+  title: `Indie SaaS Founder Answers (${ANSWER_COUNT} Direct Questions)`,
+  description: `Direct AEO-formatted answers to ${ANSWER_COUNT} most-asked indie SaaS funnel questions. Built for citation by ChatGPT, Perplexity, Claude, and Google AI Overviews.`,
   alternates: pageAlternates(CANONICAL),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     title: "Indie SaaS Founder Answers",
-    description:
-      "Direct answers to 30 specific founder questions about funnels, pricing, email, metrics, and the value ladder.",
+    description: `Direct answers to ${ANSWER_COUNT} specific founder questions about funnels, pricing, email, metrics, and the value ladder.`,
     url: CANONICAL,
     siteName: "Unlock SaaS",
     images: DEFAULT_OG_IMAGES,
@@ -35,8 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Indie SaaS Founder Answers",
-    description:
-      "30 direct AEO-formatted answers for indie SaaS founders.",
+    description: `${ANSWER_COUNT} direct AEO-formatted answers for indie SaaS founders.`,
   },
 };
 
@@ -45,8 +43,7 @@ const COLLECTION_JSON = JSON.stringify({
   "@type": "CollectionPage",
   name: "Indie SaaS Founder Answers",
   url: `${BASE_URL}/answers`,
-  description:
-    "Direct AEO-formatted answers to the 30 most-asked indie SaaS funnel questions.",
+  description: `Direct AEO-formatted answers to ${ANSWER_COUNT} most-asked indie SaaS funnel questions.`,
   isPartOf: { "@id": ID.website },
   inLanguage: "en-US",
   mainEntity: {
@@ -113,10 +110,10 @@ export default function AnswersHubPage() {
           Indie SaaS founder answers.
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Thirty specific questions indie SaaS founders ask, each with a
-          direct citation-ready answer plus 2 to 4 supporting bullets.
-          Designed to be quotable by AI assistants and useful as a quick
-          reference for founders mid-build.
+          {ANSWER_COUNT} specific questions indie SaaS founders ask, each
+          with a direct citation-ready answer plus 2 to 4 supporting
+          bullets. Designed to be quotable by AI assistants and useful as
+          a quick reference for founders mid-build.
         </p>
       </header>
 
