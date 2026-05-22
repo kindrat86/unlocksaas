@@ -9,6 +9,7 @@ import { GLOSSARY_SLUGS } from "@/lib/glossary";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
 import { STACK_SLUGS } from "@/lib/stacks";
+import { CITY_SLUGS } from "@/lib/founders-in";
 import { LAUNCH_CHECKLIST_SLUGS } from "@/lib/launch-checklists";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
@@ -518,6 +519,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/for/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #8a — geo founder-community landers.
+    // Data source: src/lib/founders-in.ts. /founders-in is the hub;
+    // /founders-in/<city> ships one Article + Place + BreadcrumbList
+    // page per city. 25 cities at launch (Americas / Europe / Asia-
+    // Pacific). Targets the long-tail "saas founders in <city>" search
+    // shape that compounds at cluster scale even at low per-city volume.
+    // Isenberg-overlay community-moat surface (memory:
+    // project_unlocksaas_isenberg_playbook.md) – the geo angle becomes
+    // load-bearing if/when operator-led IRL meetups spin up; until
+    // then the page provides honest discovery tactics rather than
+    // fabricated meetup directories.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/founders-in`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/founders-in`),
+    },
+    ...CITY_SLUGS.map((slug) => ({
+      url: `${base}/founders-in/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
+      alternates: hreflang(`${base}/founders-in/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #8b — cohort-tuned indie SaaS stacks.
