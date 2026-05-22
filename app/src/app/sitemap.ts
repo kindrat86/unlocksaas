@@ -22,6 +22,7 @@ import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
+import { DIARY_DATES } from "@/lib/founder-diary";
 import { allCitationIds } from "@/lib/citations";
 import {
   allApprovedTranslations,
@@ -816,6 +817,38 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.45,
       alternates: hreflang(`${base}/press/topics/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — Founder Diary (Isenberg content-franchise
+    // overlay, 2026-05-22). Data source: src/lib/founder-diary.ts. One
+    // URL per build day, slugged YYYY-MM-DD. BlogPosting + BreadcrumbList
+    // JSON-LD per detail page; Blog + CollectionPage on the hub.
+    //
+    // Hub priority matches /press (0.5) — moderate standalone SERP
+    // value, high recurring-backlink value. Detail entries at 0.45
+    // mirror /press/topics/<slug>: they earn link equity from X / IH
+    // cross-posts that reference the canonical here, not from raw
+    // search volume on date-shaped queries.
+    //
+    // Adding a new entry to DIARY_ENTRIES extends this block on the
+    // next deploy. Brunson Hard-Rule reconciliation: every entry is
+    // grounded in a public artifact (merged PR, deployed surface,
+    // shipped env var) — listing a URL here = a public claim that the
+    // entry on that date is truthful and verifiable.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/founder-diary`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.5,
+      alternates: hreflang(`${base}/founder-diary`),
+    },
+    ...DIARY_DATES.map((date) => ({
+      url: `${base}/founder-diary/${date}`,
+      lastModified: new Date(`${date}T12:00:00Z`),
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/founder-diary/${date}`),
     })),
     // Editorial policy + disclosures + corrections log. E-E-A-T Trust
     // uplift (2026-05-17). Google Search Quality Rater Guidelines §3.1
