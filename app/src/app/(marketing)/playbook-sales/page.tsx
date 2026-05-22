@@ -179,13 +179,21 @@ export default async function PlaybookSalesPage() {
           /llms-full.txt). Voice-engine eligibility via Speakable cssSelector
           pointing at the `.aeo-playbook-howto` block below. */}
       <PlaybookHowToJsonLd />
-      {/* Course schema (E-E-A-T Expertise uplift, 2026-05-17). The Playbook
-          IS a seven-step instructor-led time-bounded program; Course is the
-          precise schema.org type. Declared as a separate @id-anchored node
+      {/* Course schema (E-E-A-T Expertise uplift, 2026-05-17; hasPart
+          Learning-carousel uplift 2026-05-22). The Playbook IS a seven-step
+          instructor-led time-bounded program; Course is the precise
+          schema.org type. Declared as a separate @id-anchored node
           (course-playbook) so Google's Course Rich Result eligibility does
           not collide with the Product Rich Result on the Offer node above.
           provider + instructor cross-reference the canonical Organization
-          and Person @ids — same entity walked through three perspectives. */}
+          and Person @ids – same entity walked through three perspectives.
+          hasPart decomposes the course into seven sub-Course modules (one
+          per Playbook step) sourced from PLAYBOOK_STEPS, so AI Overviews,
+          Google's Learning carousel, and LLM citation pipelines treat the
+          seven steps as a structured curriculum with per-step modules
+          rather than one opaque Course mention. Each sub-Course carries
+          its own CourseInstance with courseWorkload P7D (matches the
+          visible "seven steps, seven days each" copy below). */}
       <PlaybookCourseJsonLd />
       <FaqPageJsonLd items={PLAYBOOK_SALES_FAQS} />
       <BreadcrumbListJsonLd
