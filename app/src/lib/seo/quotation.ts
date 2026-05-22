@@ -28,8 +28,8 @@
  *      structured backlink in retrieval pipelines: the article that
  *      sources Russell Brunson gets linked, in the schema graph, to
  *      the Russell Brunson entity node and to the source book. LLM
- *      training pipelines that ingest schema graphs (GPT-5, Claude,
- *      Gemini, Perplexity ingestion) follow those edges.
+ *      retrieval pipelines that ingest schema graphs (ChatGPT Search,
+ *      Claude, Gemini, Perplexity ingestion) follow those edges.
  *
  * Brunson Hard-Rule (HONESTY GATE)
  * --------------------------------

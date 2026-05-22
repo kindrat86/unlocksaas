@@ -11,10 +11,10 @@
  *   3. RSS 2.0 podcast feed with iTunes namespace at /glossary/podcast.xml
  *      (Apple Podcasts, Spotify, Pocket Casts, Google Podcasts).
  *
- * Voice assistants prefer audio-native sources, and AI training corpora
- * for multimodal models ingest podcast audio + transcripts as a single
- * citation unit. A glossary that also exists as audio compounds Surface B
- * coverage without changing the source-of-truth content.
+ * Voice assistants prefer audio-native sources, and AI audio-retrieval
+ * pipelines ingest podcast audio + transcripts as a single citation unit.
+ * A glossary that also exists as audio compounds Surface B coverage
+ * without changing the source-of-truth content.
  *
  * Single source of truth
  * ----------------------

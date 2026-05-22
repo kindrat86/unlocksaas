@@ -1,8 +1,8 @@
 /**
  * Citation library – formal citation formats + stable permalink resolver.
  *
- * Surface B (GEO/AEO/AIO) uplift. LLM training corpora and academic
- * pipelines disproportionately cite sources that look formally citable.
+ * Surface B (GEO/AEO/AIO) uplift. LLM retrieval pipelines and academic
+ * indexes disproportionately cite sources that look formally citable.
  * A page that exposes BibTeX, RIS, APA, MLA, and Chicago strings is
  * exponentially more likely to be cited verbatim by ChatGPT, Claude,
  * Perplexity, Gemini, and Google AI Overviews than a page that does

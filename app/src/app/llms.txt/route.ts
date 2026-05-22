@@ -50,9 +50,10 @@ import { BASE_URL } from "@/lib/seo/entity";
  *   /llms.txt?model=apple      – AEO direct answers + FAQ first
  *
  * Aliases map onto canonical keys. `?model=anthropic`, `?model=claudebot`,
- * `?model=claude-web` all resolve to `claude`. `?model=openai`, `?model=gptbot`,
- * `?model=oai-searchbot` all resolve to `gpt`. Unknown values gracefully fall
- * back to the canonical body. Comparison is case-insensitive.
+ * `?model=claude-web` all resolve to `claude`. `?model=openai`,
+ * `?model=chatgpt-user`, `?model=oai-searchbot` all resolve to `gpt`.
+ * Training-only crawler names are intentionally not aliases. Unknown values
+ * gracefully fall back to the canonical body. Comparison is case-insensitive.
  *
  * Brunson Hard-Rule reconciliation
  * --------------------------------

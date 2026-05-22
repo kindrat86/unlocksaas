@@ -164,7 +164,7 @@ function buildJsonLd(
     // `citation` field points at the stable /cite/[id] permalink.
     // The permalink view itself emits a WebPage schema with
     // mainEntity back to this canonical URL, completing the
-    // bidirectional citation graph LLM training corpora index.
+    // bidirectional citation graph LLM retrieval pipelines index.
     citation: {
       "@type": "CreativeWork",
       "@id": `${BASE}/cite/glossary-${g.slug}`,

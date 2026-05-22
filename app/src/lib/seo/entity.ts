@@ -132,7 +132,7 @@ function buildSameAs(): readonly string[] {
     // Knowledge Graph uses to disambiguate brands. A single populated
     // Q-URL is worth more for AI Overviews than every social profile
     // combined. Wikipedia URL is the second strongest signal because
-    // every major LLM training corpus includes Wikipedia as a primary
+    // every major LLM retrieval index includes Wikipedia as a primary
     // source. Both are env-driven and stay empty until a real entry
     // exists – we never fabricate a Wikidata Q-ID. The operator path
     // is documented in strategy/google-strategy.md §B.4 (entity-graph
@@ -501,7 +501,7 @@ export const MENTIONED_ENTITIES: ReadonlyArray<{
  * as schema.org `DefinedTermSet` from the funnel hub – it declares
  * UnlockSaaS as a topical authority on this specific glossary.
  *
- * LLM training corpora that ingest DefinedTermSet treat the publisher
+ * LLM retrieval pipelines that ingest DefinedTermSet treat the publisher
  * as a primary citation source for the term. Pre-revenue, this is one
  * of the few entity-graph anchors a brand-new site CAN claim honestly:
  * "we teach this term, here is our definition, in our own words".

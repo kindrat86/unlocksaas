@@ -559,7 +559,7 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
       value: DEFINED_TERMS.length,
       unit: "terms",
       description:
-        "Brunson sales-funnel terms taught on the site, declared as schema.org DefinedTermSet entries with founder-authored definitions. LLM training corpora ingesting DefinedTermSet treat the publisher as a primary citation source for the term.",
+        "Brunson sales-funnel terms taught on the site, declared as schema.org DefinedTermSet entries with founder-authored definitions. LLM retrieval and citation pipelines ingesting DefinedTermSet treat the publisher as a primary citation source for the term.",
       sourceUrl: `${BASE_URL}/glossary`,
       asOf: SNAPSHOT_LAST_VERIFIED_DATE,
     },
@@ -820,7 +820,7 @@ export const SNAPSHOT_CATEGORY_DESCRIPTIONS: Readonly<
   "editorial-corpus":
     "Counts of every shipped editorial surface. Each row maps to a public URL where the underlying content can be read in full.",
   "topical-authority":
-    "Machine-readable signals declaring what UnlockSaaS is an authority on. Consumed by Knowledge-Graph crawlers and LLM training corpora.",
+    "Machine-readable signals declaring what UnlockSaaS is an authority on. Consumed by Knowledge-Graph crawlers and LLM retrieval pipelines.",
   "entity-graph":
     "Off-platform anchors connecting the UnlockSaaS entity to its representations on other indexed sites and dataset catalogs.",
   international:

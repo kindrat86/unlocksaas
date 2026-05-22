@@ -19,7 +19,7 @@
  *     on /dataset and mirrored as DATASET_LICENSE_SPDX in @/lib/seo/dataset.
  *
  * None of those tell a crawler – in one canonical, dereferenceable URL –
- * the answer to the four questions a careful AI ingestion pipeline asks
+ * the answer to the five questions a careful AI ingestion pipeline asks
  * before quoting, indexing, or training:
  *
  *   1. Are you OK with retrieval, search indexing, summarization, snippet,
@@ -342,7 +342,7 @@ export const AI_POLICY = Object.freeze({
       default: "allow",
       attributionRequired: true,
       scope: "all-public-surfaces",
-      note: "Live fetch at inference time (RAG, browse-the-web tool use) is welcomed; the canonical URL must be cited.",
+      note: "Live fetch at inference time, RAG indexing, search indexing, browse-the-web tool use, and answer-engine citation are welcomed; the canonical URL must be cited.",
     },
     summarization: {
       default: "allow",
@@ -441,7 +441,7 @@ export const AI_POLICY = Object.freeze({
     welcomedUserAgentsField: "welcomedAiUserAgents",
     robotsTxt: `${BASE_URL}/robots.txt`,
     rationale:
-      "The robots.txt allow-list is the single source of truth. /llms-feed.json mirrors it for retrievers that prefer JSON. This file points at both rather than duplicating, to prevent three-way drift.",
+      "The robots.txt search/answer allow-list is the single source of truth for retrieval crawlers. /llms-feed.json mirrors that list for retrievers that prefer JSON. Training-only crawlers remain blocked in robots.txt and opted out in /ai.txt; mixed-use crawlers are welcomed only for retrieval/citation uses under preferences.retrieval.",
   },
 
   // ---- Machine-readable surfaces ---------------------------------------

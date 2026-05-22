@@ -125,8 +125,9 @@ import { DIARY_ENTRIES, DIARY_DATES } from "@/lib/founder-diary";
  * ---------
  *   - Linked from /llms.txt under "## JSON sibling".
  *   - Listed in /sitemap.xml at priority 0.3 (matching /llms.txt).
- *   - Allow-listed for every AI user agent in /robots.txt by virtue of
- *     being under "/" with no Disallow rule.
+ *   - Allow-listed for every AI search/answer user agent in /robots.txt
+ *     by virtue of being under "/" with no Disallow rule. Training-only
+ *     user agents remain blocked.
  *
  * Schema version contract
  * -----------------------
@@ -529,10 +530,12 @@ const KEY_FACTS = Object.freeze({
  * so a retriever discovering this feed can confirm its own user-agent is on
  * the allow-list without having to fetch robots.txt separately.
  *
- * Maintenance note: if app/src/app/robots.ts gains or loses a UA,
- * update this array in the same commit. There is no programmatic
- * cross-import because robots.ts owns the canonical Next.js Robots
- * shape; this is a documentation mirror, not a code dependency.
+ * Maintenance note: if app/src/app/robots.ts gains or loses a search/answer
+ * UA, update this array in the same commit. Training-only crawlers belong
+ * in robots.ts' block-list and /ai.txt, not in this welcomed list. There
+ * is no programmatic cross-import because robots.ts owns the canonical
+ * Next.js Robots shape; this is a documentation mirror, not a code
+ * dependency.
  */
 const WELCOMED_AI_USER_AGENTS = Object.freeze([
   "OAI-SearchBot",

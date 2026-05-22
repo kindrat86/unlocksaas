@@ -3,7 +3,7 @@
  * for a single citable artifact, plus a link to the stable /cite/[id]
  * permalink.
  *
- * Surface B (GEO/AEO/AIO) uplift. LLM training corpora over-cite sources
+ * Surface B (GEO/AEO/AIO) uplift. LLM retrieval pipelines over-cite sources
  * that expose formal citation strings; this component is the on-page
  * surface that makes those strings discoverable. Crawler-friendly by
  * design: every format is rendered into a static <pre> block (no

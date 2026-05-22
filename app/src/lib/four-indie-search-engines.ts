@@ -148,7 +148,7 @@ export const FOUR_INDIE_SECTIONS: ReadonlyArray<EssaySection> = [
     heading: "This is one episode in a longer arc",
     paragraphs: [
       "Five weeks ago I shipped a Hugging Face dataset cross-listing of every funnel and pricing teardown on the site. Three weeks ago I activated `.well-known/entity.jsonld` so search engines and language models can resolve UnlockSaaS as a graph entity. Last week I shipped a Markdown twin route for every editorial page so retrievers that prefer playbook-readable markdown over JS-rendered HTML get the cleaner version. The same day I shipped `.well-known/ai-policy.json`. Today I shipped the indie-engine allow-list. Tomorrow I am scoping a Zenodo DOI mirror for the dataset.",
-      "The thesis underneath all of it is consistent: be the most-cited canonical source for post-launch pre-revenue SaaS funnel patterns across every surface that respects citations. Some of those surfaces are LLM training corpora. Some are knowledge graphs. Some are search engines. Some are public datasets. Each shipped piece compounds with the others.",
+      "The thesis underneath all of it is consistent: be the most-cited canonical source for post-launch pre-revenue SaaS funnel patterns across every surface that respects citations. Some of those surfaces are LLM retrieval pipelines. Some are knowledge graphs. Some are search engines. Some are public datasets. Each shipped piece compounds with the others.",
       "If I cared about share-axis math, I would have stopped after Google. I do not. I keep going.",
     ],
   },

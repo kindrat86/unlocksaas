@@ -21,8 +21,8 @@
  *
  *   2. GEO / AEO. Schema.org PodcastEpisode is one of the most heavily
  *      indexed Article-like types because Google's Podcast Search,
- *      Spotify's content graph, and every LLM training corpus that
- *      ingests media metadata treats PodcastEpisode as a high-trust
+ *      Spotify's content graph, and LLM audio-retrieval pipelines that
+ *      ingest media metadata treat PodcastEpisode as a high-trust
  *      "dated, attributed, citable" content unit. Each episode page
  *      emits a PodcastEpisode JSON-LD block; the series page emits a
  *      PodcastSeries; the cross-reference graph is anchored on
