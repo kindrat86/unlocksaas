@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 
 /**
  * Per-page metadata wrapper for the $1 Starter sales page.
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
       "One dollar. One week. Pin one real customer. Write one real offer. Steps 1 and 2 of The Playbook.",
     url: "/starter",
     type: "website",
+    images: DEFAULT_OG_IMAGES,
   },
 };
 
