@@ -16,6 +16,7 @@ import { getPricingTeardownBySlug } from "@/lib/pricing-teardowns";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { deriveComparisonRatings } from "@/lib/seo/review-rating";
 import { TldrSummary } from "@/components/seo/tldr-summary";
@@ -110,6 +111,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${c.a.name} vs ${c.b.name} — Honest Head-to-Head Comparison`,
+    image: articleImageFor(canonicalUrl),
     description: c.oneLine,
     abstract: c.tldr,
     // @id references back to the canonical Organization / Person /

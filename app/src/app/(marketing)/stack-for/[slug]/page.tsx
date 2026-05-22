@@ -13,6 +13,7 @@ import {
 } from "@/lib/stacks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { TldrSummary } from "@/components/seo/tldr-summary";
@@ -106,6 +107,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: s.metaTitle,
+    image: articleImageFor(canonicalUrl),
     description: s.metaDescription,
     abstract: s.heroSubhead,
     author: { "@id": ID.person },

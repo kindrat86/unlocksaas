@@ -19,6 +19,7 @@ import { getComparisonsForProductSlug } from "@/lib/comparisons";
 import { getCategoryByRawString } from "@/lib/categories";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
@@ -120,6 +121,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${alt.displayName} vs Unlock SaaS — Honest Comparison`,
+    image: articleImageFor(canonicalUrl),
     description: alt.oneLine,
     // Reference the canonical @ids declared on the funnel hub via
     // OrganizationJsonLd / PersonJsonLd. Google walks the @id graph
