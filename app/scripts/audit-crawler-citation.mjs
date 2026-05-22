@@ -116,7 +116,10 @@ const URLS = [
   // ── pSEO hubs ───────────────────────────────────────────────────────
   "/glossary",
   "/alternatives-to",
-  "/compare",
+  // /compare is a 308 alias for /vs (see next.config.mjs redirects()).
+  // Audit the canonical URL directly so we are scoring real metadata
+  // on /vs/page.tsx, not silently following the redirect.
+  "/vs",
   "/funnel-teardown",
   "/pricing-teardown",
   "/category",
