@@ -66,7 +66,11 @@ type QueuedIdentify = {
   properties?: Record<string, unknown>;
 };
 type QueuedReset = { kind: "reset" };
-type Queued = QueuedCapture | QueuedIdentify | QueuedReset;
+type QueuedRegister = {
+  kind: "register";
+  properties: Record<string, unknown>;
+};
+type Queued = QueuedCapture | QueuedIdentify | QueuedReset | QueuedRegister;
 
 const queue: Queued[] = [];
 
@@ -144,6 +148,9 @@ function loadPostHog(): Promise<PostHog | null> {
           break;
         case "reset":
           posthog.reset();
+          break;
+        case "register":
+          posthog.register(item.properties);
           break;
       }
     }
@@ -223,5 +230,30 @@ export function captureBuiltinEvent(
     return;
   }
   queue.push({ kind: "capture", event, properties });
+  void loadPostHog();
+}
+
+/**
+ * Register PostHog super-properties.
+ *
+ * Super-properties are sent with every subsequent event from this
+ * browser session. Used for first-touch attribution (ai_engine,
+ * acquisition channel) so per-event handlers don't have to repeat
+ * the property on every `track()` call.
+ *
+ * Queues if posthog-js hasn't resolved yet – same discipline as
+ * `track()` / `identify()`. The drain loop in `loadPostHog()` handles
+ * the queued register call once init completes (see the queue
+ * `kind: "register"` branch below).
+ */
+export function registerSuperProperties(
+  properties: Record<string, unknown>,
+): void {
+  if (typeof window === "undefined") return;
+  if (posthogInstance) {
+    posthogInstance.register(properties);
+    return;
+  }
+  queue.push({ kind: "register", properties });
   void loadPostHog();
 }

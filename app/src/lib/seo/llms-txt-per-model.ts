@@ -4,6 +4,11 @@ import {
   STRATEGY_LOCK_DATE,
 } from "@/lib/seo/freshness";
 import { BASE_URL } from "@/lib/seo/entity";
+import {
+  ENGINE_BY_LLMS_TXT_MODEL,
+  tagBodyLinks,
+  type AiEngine,
+} from "@/lib/seo/ai-attribution";
 
 /**
  * Per-model curated /llms.txt feeds.
@@ -800,17 +805,37 @@ export function renderLlmsTxtForModel(model: LlmsTxtModel): string {
 }
 
 /**
+ * Resolve the AiEngine that a given llms-txt model variant belongs
+ * to. Used by `getCachedLlmsTxtForModel()` to tag every link in the
+ * rendered body with the engine that's about to receive it.
+ */
+function engineForModel(model: LlmsTxtModel): AiEngine {
+  return ENGINE_BY_LLMS_TXT_MODEL[model] ?? "ai-search";
+}
+
+/**
  * Memoised cache of rendered bodies. The bodies are pure functions of
  * the freshness constants and base URL – they only change at deploy
  * time (when LAST_VERIFIED_DATE bumps) or at module reload. Caching
  * the strings avoids re-running the template literals on every request.
+ *
+ * Each cached body has already passed through `tagBodyLinks()` so the
+ * markdown-link targets carry engine-specific UTM tags. The display
+ * text and code-fenced URLs stay untouched (Brunson Hard-Rule: no
+ * per-model exclusive content, and a clean URL visible to the user
+ * when an engine quotes the body verbatim).
  */
 const RENDER_CACHE = new Map<LlmsTxtModel, string>();
 
 export function getCachedLlmsTxtForModel(model: LlmsTxtModel): string {
   const cached = RENDER_CACHE.get(model);
   if (cached !== undefined) return cached;
-  const body = renderLlmsTxtForModel(model);
+  const engine = engineForModel(model);
+  const body = tagBodyLinks(renderLlmsTxtForModel(model), engine, {
+    medium: "llms-txt",
+    campaign: "llms_corpus",
+    content: model,
+  });
   RENDER_CACHE.set(model, body);
   return body;
 }

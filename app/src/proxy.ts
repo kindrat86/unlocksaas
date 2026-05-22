@@ -19,6 +19,12 @@ import {
   wantsMarkdown,
 } from "@/lib/seo/markdown-path";
 import { BASE_URL } from "@/lib/seo/entity";
+import {
+  AI_ENGINE_COOKIE,
+  AI_ENGINE_COOKIE_MAX_AGE,
+  isAiEngine,
+  resolveEngineFromUtmSource,
+} from "@/lib/seo/ai-attribution";
 
 // Affiliate program (see lib/affiliate.ts). Re-declared here to avoid importing
 // the full lib (which transitively pulls Supabase + crypto) into the proxy
@@ -205,6 +211,40 @@ export async function proxy(request: NextRequest) {
       request.cookies.set(SOURCE_COOKIE, detectedSource);
       response.cookies.set(SOURCE_COOKIE, detectedSource, {
         maxAge: SOURCE_COOKIE_MAX_AGE,
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+  }
+
+  // AI engine attribution: first-touch sticky cookie that drives the
+  // PostHog `ai_engine` super-property (see components/analytics/
+  // posthog-provider.tsx). Captured from the `utm_source` query
+  // parameter we publish in llms.txt + llms-*.txt + MCP tool returns
+  // (see src/lib/seo/ai-attribution.ts).
+  //
+  // Decoupled from `usaas_source` (acquisition-source.ts) because
+  // those tag indie-channel attribution (Twitter, IndieHackers, etc.)
+  // while this one tags WHICH AI ENGINE drove the click. The two
+  // co-exist on a single visit; a click from Claude posted on Twitter
+  // gets `ai_engine=claude` AND `source=twitter`.
+  //
+  // First-touch wins. We do NOT overwrite an existing cookie – a
+  // later utm_source on the same browser cannot steal attribution
+  // mid-funnel.
+  //
+  // resolveEngineFromUtmSource() returns null when no rule matches
+  // (organic, direct, or a utm_source from a non-AI channel like
+  // twitter/indiehackers). In that case we leave the cookie alone –
+  // the acquisition-source pipeline handles non-AI channels.
+  const existingAiEngine = request.cookies.get(AI_ENGINE_COOKIE)?.value;
+  if (!existingAiEngine || !isAiEngine(existingAiEngine)) {
+    const utmSourceRaw = request.nextUrl.searchParams.get("utm_source");
+    const detectedEngine = resolveEngineFromUtmSource(utmSourceRaw);
+    if (detectedEngine) {
+      request.cookies.set(AI_ENGINE_COOKIE, detectedEngine);
+      response.cookies.set(AI_ENGINE_COOKIE, detectedEngine, {
+        maxAge: AI_ENGINE_COOKIE_MAX_AGE,
         sameSite: "lax",
         path: "/",
       });
