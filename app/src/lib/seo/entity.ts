@@ -292,6 +292,29 @@ export const DATASET_DOI_URL: string | undefined = DATASET_DOI
 function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration[] {
   const rows: DatasetCatalogRegistration[] = [];
 
+  // GitHub mirror — a public mirror repository with a weekly auto-PR refresh
+  // workflow. The mirror is the strongest off-platform backlink for the
+  // canonical landing because GitHub's domain authority is among the highest
+  // on the web, AI Overviews / Perplexity cite GitHub repos frequently, and
+  // every fork of the mirror creates an inbound link back to /dataset. The
+  // mirror repo itself runs a weekly cron that pulls the canonical files
+  // from this site, so the dataset declared here is by construction a
+  // verbatim copy of the canonical artifact, not a forked snapshot.
+  //
+  // Activation: create the public mirror repo, then set
+  // NEXT_PUBLIC_UNLOCKSAAS_GITHUB_DATASET_URL on Vercel to the repo URL
+  // (e.g. https://github.com/<owner>/indie-saas-teardowns-dataset). The
+  // canonical Dataset JSON-LD then declares the GitHub mirror as another
+  // `includedInDataCatalog` row + appends it to `sameAs`.
+  const github = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_GITHUB_DATASET_URL");
+  if (github) {
+    rows.push({
+      name: "GitHub",
+      url: github,
+      catalogUrl: "https://github.com/",
+    });
+  }
+
   const hf = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL");
   if (hf) {
     rows.push({
