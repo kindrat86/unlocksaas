@@ -3,6 +3,7 @@ import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
+import { COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
@@ -187,6 +188,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/benchmarks",
     "/alternatives-to",
     "/vs",
+    "/compare",
     "/funnel-teardown",
     "/pricing-teardown",
     "/category",
@@ -433,6 +435,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/vs/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #4b — /compare Switzerland-style shopping
+    // comparator. Sister surface to /vs/[slug]: lighter quick-verdict shape
+    // with non-overlapping slugs. Catalog: src/lib/compare-catalog.ts.
+    // Each detail page is Article + FAQPage + BreadcrumbList JSON-LD; the
+    // hub uses CollectionPage + Dataset.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/compare`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/compare`),
+    },
+    ...COMPARE_SLUGS.map((slug) => ({
+      url: `${base}/compare/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/compare/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #5 — category roundup pages.
