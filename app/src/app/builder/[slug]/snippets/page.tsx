@@ -56,7 +56,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { loadPublicBadge, absoluteBadgeUrl } from "@/lib/builder-badge";
 import { buildReviewJsonLd } from "@/lib/seo/builder-review";
 import { ArrowLeft, CheckCircle2, Code2 } from "lucide-react";
@@ -93,6 +93,8 @@ async function getBadge(slug: string) {
   "use cache";
   cacheLife({ revalidate: 3600 });
   cacheTag(`builder:${slug}`);
+  if (!hasSupabaseAdminConfig()) return null;
+
   return loadPublicBadge(createAdminClient(), slug);
 }
 

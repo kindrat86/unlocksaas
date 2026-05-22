@@ -15,7 +15,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import {
   loadPublicBadge,
   loadPublicBadgeSerial,
@@ -42,6 +42,8 @@ async function getBadge(slug: string) {
   "use cache";
   cacheLife({ revalidate: 3600 });
   cacheTag(`builder:${slug}`);
+  if (!hasSupabaseAdminConfig()) return null;
+
   return loadPublicBadge(createAdminClient(), slug);
 }
 
@@ -108,9 +110,9 @@ export default function BuilderBadgePage(props: Props) {
 
 async function BuilderBadgeBody({ params: paramsP }: { params: Props["params"] }) {
   const params = await paramsP;
-  const adminClient = createAdminClient();
   const badge = await getBadge(params.slug);
   if (!badge) notFound();
+  const adminClient = createAdminClient();
 
   // Founding-cohort serial. Computed via a head-only count query against
   // `builder_badges` rows strictly earlier than this badge's

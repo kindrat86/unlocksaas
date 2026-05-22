@@ -1,5 +1,8 @@
 import { withWorkflow } from "workflow/next";
 import { withBotId } from "botid/next/config";
+import { fileURLToPath } from "node:url";
+
+const appRoot = fileURLToPath(new URL(".", import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -163,7 +166,9 @@ const nextConfig = {
    * config above (for c2pa-node external) is handled by withWorkflow wrapper
    * which provides Turbopack equivalents.
    */
-  turbopack: {},
+  turbopack: {
+    root: appRoot,
+  },
 
   poweredByHeader: false,
 

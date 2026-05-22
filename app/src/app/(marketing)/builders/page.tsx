@@ -32,7 +32,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { cacheLife, cacheTag } from "next/cache";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import {
@@ -80,6 +80,8 @@ async function loadPublicBuilders(): Promise<BuilderRow[]> {
   "use cache";
   cacheLife({ revalidate: 3600 });
   cacheTag("builder_badges");
+  if (!hasSupabaseAdminConfig()) return [];
+
   const supabase = createAdminClient();
   // `builder_badges` view filters to share_visibility='public' + non-null
   // slug + non-null first_customer_at. Ordered most-recent first.

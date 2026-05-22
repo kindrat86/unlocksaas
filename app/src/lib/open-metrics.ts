@@ -30,7 +30,7 @@
  */
 
 import { cacheLife, cacheTag } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { FOUNDER } from "@/lib/seo/entity";
 
 /** $49/mo Core, locked in project_unlocksaas_stripe.md. In cents to match Stripe. */
@@ -82,17 +82,38 @@ export interface OpenMetrics {
   generatedAt: string;
 }
 
+function emptyOpenMetrics(now = new Date()): OpenMetrics {
+  return {
+    activeCoreCount: 0,
+    activeStarterCount: 0,
+    mrrCents: 0,
+    diagnosticCompletions: 0,
+    lifetimeStartersPaid: 0,
+    lifetimeCoresStarted: 0,
+    churn30dPercent: null,
+    canceledLast30d: 0,
+    recentBuilders: [],
+    generatedAt: now.toISOString(),
+  };
+}
+
 /**
  * Cached metrics. Wrapped in `'use cache'` so the dashboard is essentially
- * free per render; revalidated by the Stripe webhook via cacheTag.
+ * free per render; revalidated by the Stripe webhook via cacheTag. Clean
+ * checkouts and preview builds without Supabase service env render the honest
+ * zero state instead of failing prerender.
  */
 export async function getOpenMetrics(): Promise<OpenMetrics> {
   "use cache";
   cacheLife({ stale: 60, revalidate: 300, expire: 1800 });
   cacheTag("open-metrics", "billing-mutation");
 
-  const admin = createAdminClient();
   const now = new Date();
+  if (!hasSupabaseAdminConfig()) {
+    return emptyOpenMetrics(now);
+  }
+
+  const admin = createAdminClient();
   const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
   const thirtyDaysAgoIso = new Date(now.getTime() - THIRTY_DAYS_MS).toISOString();
 

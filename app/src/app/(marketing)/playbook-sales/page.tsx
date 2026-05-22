@@ -28,7 +28,7 @@ import { PLAYBOOK_SALES_FAQS } from "@/lib/faqs";
 import { Event } from "@/lib/analytics/events";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { cacheLife, cacheTag } from "next/cache";
 
 /**
@@ -61,6 +61,8 @@ async function getVerifiedBadgeCount(): Promise<number> {
   "use cache";
   cacheLife({ revalidate: 3600 });
   cacheTag("verified-builder-count");
+  if (!hasSupabaseAdminConfig()) return 0;
+
   return loadPublicBadgeCount(createAdminClient());
 }
 

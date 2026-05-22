@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cacheLife, cacheTag } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import {
   LABEL_PUBLIC_NAME,
   isValidLeadId,
@@ -18,6 +18,8 @@ async function getDiagnosis(id: string) {
   "use cache";
   cacheLife({ revalidate: 3600 });
   cacheTag(`diagnosis:${id}`);
+  if (!hasSupabaseAdminConfig()) return null;
+
   return loadPublicDiagnosis(createAdminClient(), id);
 }
 

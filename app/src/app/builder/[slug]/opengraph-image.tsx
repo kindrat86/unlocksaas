@@ -9,7 +9,7 @@
  * runtime without bundling additional font files.
  */
 import { ImageResponse } from "next/og";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { loadPublicBadge } from "@/lib/builder-badge";
 
 // Static alt is intentional even though the page is force-dynamic: per-
@@ -31,7 +31,9 @@ interface Props {
 
 export default async function OgImage({ params }: Props) {
   const { slug } = await params;
-  const badge = await loadPublicBadge(createAdminClient(), slug);
+  const badge = hasSupabaseAdminConfig()
+    ? await loadPublicBadge(createAdminClient(), slug)
+    : null;
 
   const headline = badge
     ? `${badge.builderName} shipped and got paid.`

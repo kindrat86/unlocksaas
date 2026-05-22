@@ -10,7 +10,7 @@
  * Pattern mirrored from app/src/app/builder/[slug]/opengraph-image.tsx.
  */
 import { ImageResponse } from "next/og";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import {
   LABEL_PUBLIC_NAME,
   loadPublicDiagnosis,
@@ -35,7 +35,9 @@ interface Props {
 
 export default async function OgImage({ params }: Props) {
   const { id } = await params;
-  const diag = await loadPublicDiagnosis(createAdminClient(), id);
+  const diag = hasSupabaseAdminConfig()
+    ? await loadPublicDiagnosis(createAdminClient(), id)
+    : null;
 
   const hostLine = diag ? diag.hostname : "unlocksaas.com";
   const labelLine = diag ? LABEL_PUBLIC_NAME[diag.label] : "Free Diagnostic";

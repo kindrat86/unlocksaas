@@ -3,6 +3,23 @@ import { cookies } from "next/headers";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
 
+function isValidUrl(value: string | undefined): value is string {
+  if (!value?.trim()) return false;
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function hasSupabaseAdminConfig(): boolean {
+  return (
+    isValidUrl(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+    Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY?.trim())
+  );
+}
+
 /**
  * Supabase client for Server Components, Route Handlers, and Server Actions.
  *
@@ -43,6 +60,12 @@ export async function createClient() {
  * routes). NEVER expose this client to a browser bundle.
  */
 export function createAdminClient() {
+  if (!hasSupabaseAdminConfig()) {
+    throw new Error(
+      "Supabase admin config is missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
+    );
+  }
+
   return createServiceClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,

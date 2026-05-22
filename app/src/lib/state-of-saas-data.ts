@@ -47,7 +47,7 @@
 
 import { cache } from "react";
 import { cacheLife, cacheTag } from "next/cache";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { CURRENT_EDITION_YEAR, MIN_REPORT_N } from "@/lib/state-of-saas";
 
 /**
@@ -123,6 +123,8 @@ function yearWindowUtc(year: number): { gte: string; lt: string } {
 const fetchYearRows = cache(async function fetchYearRows(
   year: number,
 ): Promise<ReadonlyArray<AggregateRow>> {
+  if (!hasSupabaseAdminConfig()) return [];
+
   const { gte, lt } = yearWindowUtc(year);
   try {
     const supabase = createAdminClient();
