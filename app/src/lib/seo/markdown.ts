@@ -165,6 +165,15 @@ import {
   getSwipeFileBySlug,
   resolveSwipeFileRealExamples,
 } from "@/lib/swipe-files";
+import {
+  MCP_TOOLS,
+  type McpTool,
+  getMcpToolBySlug,
+  groupMcpToolsByCategory,
+  renderClaudeDesktopSnippet,
+  renderCursorSnippet,
+  latestMcpToolsVerifiedDate,
+} from "@/lib/mcp-tools";
 
 /**
  * Canonical surface descriptor. `path` is the page's HTML URL relative to
@@ -3074,6 +3083,155 @@ export function renderLaunchChecklistMarkdown(
       updated: e.lastVerified,
     }),
     buildLaunchChecklistMarkdown(e).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+// ---------------------------------------------------------------------------
+// MCP-tools markdown rendering (pSEO block #11 – MCP server directory)
+// ---------------------------------------------------------------------------
+
+function mcpDistributionLabel(t: McpTool): string {
+  switch (t.distribution) {
+    case "remote":
+      return "Remote (hosted URL)";
+    case "npm":
+      return "npm package (runs locally)";
+    case "binary":
+      return "Local binary";
+    case "repo":
+      return "Source repository";
+  }
+}
+
+function buildMcpToolMarkdown(t: McpTool): string {
+  const lines: string[] = [];
+
+  lines.push(`# ${t.name}`);
+  lines.push("");
+  lines.push(`> ${t.oneLine}`);
+  lines.push("");
+  lines.push(`- Vendor: ${t.vendor}`);
+  lines.push(`- Vendor URL: ${t.vendorUrl}`);
+  lines.push(`- Category: ${t.category}`);
+  lines.push(`- Distribution: ${mcpDistributionLabel(t)}`);
+  lines.push(`- Install handle: ${t.installHandle}`);
+  lines.push(`- Official: ${t.official ? "yes" : "no"}`);
+  if (t.builtByUnlocksaas) lines.push(`- Built by UnlockSaaS: yes`);
+  if (t.accessNote) lines.push(`- Access: ${t.accessNote}`);
+  lines.push("");
+
+  lines.push("## TL;DR");
+  lines.push("");
+  lines.push(t.tldr);
+  lines.push("");
+
+  lines.push("## Why an indie SaaS founder cares");
+  lines.push("");
+  lines.push(t.founderFit);
+  lines.push("");
+
+  lines.push("## What an agent can do with it");
+  lines.push("");
+  for (const cap of t.toolHighlights) {
+    lines.push(`- **${cap.label}** – ${cap.description}`);
+  }
+  lines.push("");
+
+  lines.push("## Install in Claude Desktop");
+  lines.push("");
+  lines.push("```json");
+  lines.push(renderClaudeDesktopSnippet(t));
+  lines.push("```");
+  lines.push("");
+
+  lines.push("## Install in Cursor");
+  lines.push("");
+  lines.push("```json");
+  lines.push(renderCursorSnippet(t));
+  lines.push("```");
+  lines.push("");
+
+  if (t.faqs.length > 0) {
+    lines.push("## FAQ");
+    lines.push("");
+    for (const f of t.faqs) {
+      lines.push(`**${f.q}**`);
+      lines.push("");
+      lines.push(f.a);
+      lines.push("");
+    }
+  }
+
+  lines.push(`Last verified: ${t.lastVerified}.`);
+
+  return lines.join("\n");
+}
+
+/**
+ * Render per-MCP-server markdown body. Powers /mcp-tools/<slug>/md.
+ */
+export function renderMcpToolMarkdown(slug: string): string | undefined {
+  const t = getMcpToolBySlug(slug);
+  if (!t) return undefined;
+
+  const canonicalUrl = `${BASE_URL}/mcp-tools/${t.slug}`;
+  return [
+    frontMatter({
+      title: `${t.name} – install in Claude Desktop and Cursor`,
+      summary: t.oneLine,
+      canonical: canonicalUrl,
+      updated: t.lastVerified,
+    }),
+    buildMcpToolMarkdown(t).trim(),
+    citationFooter(canonicalUrl),
+  ].join("\n");
+}
+
+/**
+ * Render the MCP-tools hub markdown body. Powers /mcp-tools.md.
+ */
+export function renderMcpToolsHubMarkdown(): string {
+  const groups = groupMcpToolsByCategory();
+  const lines: string[] = [];
+
+  lines.push("# MCP server directory for indie SaaS founders");
+  lines.push("");
+  lines.push(
+    "> Honest directory of MCP servers an indie SaaS founder would plausibly install alongside the UnlockSaaS MCP server.",
+  );
+  lines.push("");
+  lines.push(`- Entries: ${MCP_TOOLS.length}`);
+  lines.push(`- Last verified: ${latestMcpToolsVerifiedDate()}`);
+  lines.push(`- Hub URL: ${BASE_URL}/mcp-tools`);
+  lines.push("");
+
+  for (const g of groups) {
+    lines.push(`## ${g.category}`);
+    lines.push("");
+    for (const t of g.tools) {
+      lines.push(`### ${t.name}`);
+      lines.push("");
+      lines.push(t.oneLine);
+      lines.push("");
+      lines.push(`- Vendor: ${t.vendor}`);
+      lines.push(`- Distribution: ${mcpDistributionLabel(t)}`);
+      lines.push(`- Detail page: ${BASE_URL}/mcp-tools/${t.slug}`);
+      lines.push(`- Markdown mirror: ${BASE_URL}/mcp-tools/${t.slug}/md`);
+      lines.push("");
+    }
+  }
+
+  const canonicalUrl = `${BASE_URL}/mcp-tools`;
+  return [
+    frontMatter({
+      title: "MCP server directory for indie SaaS founders",
+      summary:
+        "Honest directory of MCP servers an indie SaaS founder would plausibly install. Install snippets, founder-fit notes, lastVerified per entry.",
+      canonical: canonicalUrl,
+      updated: latestMcpToolsVerifiedDate(),
+    }),
+    lines.join("\n").trim(),
     citationFooter(canonicalUrl),
   ].join("\n");
 }

@@ -364,6 +364,24 @@ export default function MCPPage() {
           </p>
         </section>
 
+        <section className="space-y-3">
+          <h2 className="text-xl font-semibold">Other MCP servers worth installing</h2>
+          <p>
+            The UnlockSaaS MCP server is one piece of the agent stack an
+            indie SaaS founder should run. For the rest – the Stripe,
+            Supabase, Vercel, Linear, Sentry, and Anthropic reference
+            servers worth installing alongside it – see the{" "}
+            <Link
+              href="/mcp-tools"
+              className="underline underline-offset-4"
+            >
+              MCP server directory
+            </Link>
+            . Honest entries, install snippets for Claude Desktop and
+            Cursor, founder-fit notes per server.
+          </p>
+        </section>
+
         <footer className="pt-8 border-t text-sm text-muted-foreground">
           Maintained by Maryan ·{" "}
           <a
