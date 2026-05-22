@@ -594,7 +594,7 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
       value: ORGANIZATION_SAME_AS.length,
       unit: "anchors",
       description:
-        "Off-platform profile URLs declared in Organization.sameAs (Wikidata, Wikipedia, X, LinkedIn, GitHub, Indie Hackers, Product Hunt, Crunchbase, YouTube). Env-driven; ships at zero until the operator creates each profile and the bio credibly links back to unlocksaas.com.",
+        "Off-platform profile URLs declared in Organization.sameAs (Wikidata, Wikipedia, SameAs.org, X, LinkedIn, GitHub, Indie Hackers, Product Hunt, Crunchbase, OpenCorporates, Wellfound, G2, Capterra, YouTube). Verified public defaults ship immediately; operator-owned profiles remain env-driven until their bios credibly link back to unlocksaas.com.",
       asOf: SNAPSHOT_LAST_VERIFIED_DATE,
     },
     {
@@ -604,7 +604,7 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
       value: DATASET_EXTERNAL_REGISTRATIONS.length,
       unit: "catalogs",
       description:
-        "External DataCatalog registrations of the Indie SaaS Teardowns dataset (Hugging Face, Kaggle, Zenodo). Env-driven; ships at zero until the operator creates the catalog listing and sets the matching NEXT_PUBLIC_UNLOCKSAAS_*_DATASET_URL env var.",
+        "External DataCatalog registrations of the Indie SaaS Teardowns dataset (Hugging Face, Kaggle, Zenodo, OSF). Verified Hugging Face + Zenodo defaults ship immediately; optional mirrors remain env-driven until the operator creates the catalog listing and sets the matching NEXT_PUBLIC_UNLOCKSAAS_* env var.",
       sourceUrl: `${BASE_URL}/dataset`,
       asOf: DATASET_BUNDLE.lastVerified,
     },

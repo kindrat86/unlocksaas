@@ -361,9 +361,9 @@ export default function DatasetHuggingFacePage() {
               Google Dataset Search
             </a>{" "}
             UI to query the canonical name once Google has crawled the
-            updated schema. Typical end-to-end propagation after the
-            HF env var is set: 24 hours for the schema, 1–7 days for
-            Dataset Search re-ingestion.
+            updated schema. Typical end-to-end propagation after this
+            deployment is crawled: 24 hours for the schema, 1–7 days
+            for Dataset Search re-ingestion.
           </p>
         </section>
 
@@ -379,11 +379,11 @@ export default function DatasetHuggingFacePage() {
             citation, and column contract is read once at module load.
           </p>
           <p className="text-sm">
-            The HF cross-listing itself is operator-gated. The Dataset
-            JSON-LD declares the catalog only when the env var resolves
-            to a valid <code>https://</code> URL. A missing or
-            malformed value is silently skipped – the schema validator
-            never sees a fabricated catalog claim.
+            The live HF cross-listing is committed as a verified public
+            default. Future overrides still pass through the same
+            <code>https://</code> URL validator; a malformed override is
+            silently skipped so the schema validator never sees a
+            fabricated catalog claim.
           </p>
         </section>
 

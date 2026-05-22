@@ -234,11 +234,12 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
 });
 
 /**
- * Off-platform entity anchors shared by Organization.sameAs and Person.sameAs.
+ * Off-platform entity anchors for Organization.sameAs.
  *
  * LLMs (Perplexity, ChatGPT, Claude, Gemini) and Google's Knowledge Graph
  * walk `sameAs` to link the UnlockSaaS entity to its representation on other
- * indexed sites. Empty array = isolated entity = ~zero topical authority lift.
+ * indexed sites. A fresh checkout now includes verified public defaults
+ * (Wikidata); operator-owned profiles remain env-gated.
  *
  * Wired (2026-05-17 E-E-A-T audit fix) to the env-driven array exported by
  * src/lib/seo/entity.ts. Pre-fix this block was a local hardcoded `[]`, so
@@ -258,21 +259,24 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
  *
  * Env vars consulted (see entity.ts buildSameAs), in suggested fill order
  * by GEO / AIO impact per effort:
- *   1. NEXT_PUBLIC_UNLOCKSAAS_X_URL              (Twitter / X)
- *   2. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL  (Indie Hackers)
- *   3. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL       (LinkedIn personal)
- *   4. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL         (GitHub)
- *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL        (YouTube)
- *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL     (Crunchbase company)
- *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL   (Product Hunt)
- *   8. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
- *   9. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
- *  10. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
+ *   1. NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL       (optional override)
+ *   2. NEXT_PUBLIC_UNLOCKSAAS_SAMEAS_ORG_URL     (SameAs.org registry)
+ *   3. NEXT_PUBLIC_UNLOCKSAAS_X_URL              (Twitter / X)
+ *   4. NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL  (Indie Hackers)
+ *   5. NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL       (LinkedIn personal)
+ *   6. NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL         (GitHub)
+ *   7. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL        (YouTube)
+ *   8. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL     (Crunchbase company)
+ *   9. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL   (Product Hunt)
+ *  10. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
+ *  11. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
+ *  12. NEXT_PUBLIC_UNLOCKSAAS_G2_URL             (G2 listing)
+ *  13. NEXT_PUBLIC_UNLOCKSAAS_CAPTERRA_URL       (Capterra listing)
+ *  14. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (ad-hoc profile)
  *
- * Defaults to a frozen empty array in a fresh checkout. That is honest:
- * no env vars set = no off-platform anchors claimed. strategy/google-
- * strategy.md §B.3 (off-platform signal loop) is the publishing schedule
- * that fills the env vars.
+ * Defaults to verified public anchors plus whatever env vars are set.
+ * strategy/google-strategy.md §B.3 (off-platform signal loop) is the
+ * publishing schedule that fills the remaining env vars.
  */
 const SAME_AS = ORGANIZATION_SAME_AS;
 
@@ -501,7 +505,7 @@ const ORGANIZATION_JSON = JSON.stringify({
       value: `${BASE}/.well-known/entity.jsonld`,
     },
   ],
-  sameAs: SAME_AS,
+  ...(SAME_AS.length > 0 ? { sameAs: SAME_AS } : {}),
 });
 
 const WEBSITE_JSON = JSON.stringify({
@@ -974,8 +978,8 @@ const PLAYBOOK_COURSE_JSON = JSON.stringify({
 // --- Founder (Person) ------------------------------------------------------
 // Anchors the entity graph: LLMs link "Maryan, founder of Unlock SaaS" to the
 // Organization above via the shared founder reference. ProfilePage on `/` is
-// the canonical place to render this; the empty sameAs[] is the same
-// honest-state pattern as Organization — fills as the founder publishes.
+// the canonical place to render this; Person.sameAs is omitted until the
+// founder publishes real, bidirectionally linked profiles.
 //
 // 2026-05-20 enrichment (GEO uplift): knowsAbout sourced from DEFINED_TERMS +
 // KNOWS_ABOUT via FOUNDER_KNOWS_ABOUT; subjectOf composes the existing
@@ -2129,12 +2133,13 @@ export type PublicDatasetInput = {
   /**
    * External DataCatalog registrations (Hugging Face, Kaggle, Zenodo,
    * OSF). Each becomes a `Dataset.includedInDataCatalog` row and
-   * contributes to `Dataset.sameAs`. Env-driven empty by default –
-   * Brunson Hard-Rule: only declared when the catalog listing actually
-   * exists. The optional `doi` field is populated for DOI-minting
-   * catalogs (Zenodo, OSF) – it does not turn into a separate Dataset
-   * field by itself, but the top-level `doi` prop below is the canonical
-   * surface for it.
+   * contributes to `Dataset.sameAs`. Verified Hugging Face + Zenodo
+   * defaults are emitted in fresh builds; optional mirrors remain
+   * env-driven. Brunson Hard-Rule: a catalog is declared only when the
+   * listing actually exists. The optional `doi` field is populated for
+   * DOI-minting catalogs (Zenodo, OSF) – it does not turn into a separate
+   * Dataset field by itself, but the top-level `doi` prop below is the
+   * canonical surface for it.
    */
   externalRegistrations?: ReadonlyArray<{
     /** Schema.org DataCatalog.name. */

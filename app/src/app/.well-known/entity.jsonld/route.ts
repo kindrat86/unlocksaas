@@ -4,10 +4,12 @@
  * Why this surface exists
  * -----------------------
  * The SEO/GEO/AIO audit identified the Knowledge Graph cluster as the
- * single highest-leverage missing signal: empty `sameAs`, no Wikidata,
- * no Wikipedia. Every Tier 1 / Tier 2 anchor is operator-gated:
+ * single highest-leverage missing signal. Some anchors are now verified
+ * public defaults (Wikidata, dataset catalogs); the remaining Tier 1 /
+ * Tier 2 anchors are operator-gated:
  *
- *   - Wikidata        requires earned notability + a Q-ID submission.
+ *   - Wikidata        requires earned notability + a Q-ID submission
+ *                     (Q139863921 is active as of 2026-05-22).
  *   - Wikipedia       requires 3 independent secondary sources.
  *   - SameAs.org      requires an operator account creation.
  *   - X/IH/LI/CB/G2…  requires the linked profile to exist with a
@@ -69,6 +71,7 @@ import {
   PUBLISHING_PRINCIPLES_URL,
   WORLDWIDE_AREA_SERVED,
 } from "@/lib/seo/entity";
+import { FOUNDER_SAME_AS } from "@/lib/seo/founder";
 
 /**
  * The canonical @graph. One @context at the root, every node carries
@@ -143,7 +146,9 @@ const ENTITY_GRAPH = {
         "@type": "Audience",
         audienceType: PRIMARY_AUDIENCE_TYPE,
       },
-      sameAs: ORGANIZATION_SAME_AS,
+      ...(ORGANIZATION_SAME_AS.length > 0
+        ? { sameAs: ORGANIZATION_SAME_AS }
+        : {}),
     },
     {
       "@type": "Person",
@@ -156,7 +161,7 @@ const ENTITY_GRAPH = {
       description: FOUNDER.description,
       worksFor: { "@id": ID.organization },
       knowsAbout: KNOWS_ABOUT,
-      sameAs: ORGANIZATION_SAME_AS,
+      ...(FOUNDER_SAME_AS.length > 0 ? { sameAs: FOUNDER_SAME_AS } : {}),
     },
     {
       "@type": "WebSite",

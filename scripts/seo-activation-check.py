@@ -2,18 +2,19 @@
 """
 SEO / GEO / AIO activation audit.
 
-Read-only audit of every env-driven signal slot the UnlockSaaS schema
-graph reads. Prints a matrix of:
+Read-only audit of every env-driven or verified-default signal slot the
+UnlockSaaS schema graph reads. Prints a matrix of:
 
   - Tier 1 Knowledge Graph anchors (Wikidata, Wikipedia, SameAs.org)
   - Tier 2 social sameAs slots (X, IH, LinkedIn, GitHub, YT, CB, PH, G2, Capterra, ad-hoc)
+  - Dataset catalog / DOI anchors (Hugging Face, Kaggle, Zenodo, OSF)
   - Webmaster verification slots (Google, Bing, Yandex, Pinterest, FB, Naver)
   - IndexNow key state
   - MEDIA_MENTIONS row count vs the 3-entry minimum credible bar
 
 The script NEVER prints the value of any env var. It only reports whether
-each slot is `set / unset / malformed`. This is the same identity-safety
-discipline used by setup-indexnow-key.py and setup-mail-creds.py.
+each slot is `set / default / unset / malformed`. This is the same
+identity-safety discipline used by setup-indexnow-key.py and setup-mail-creds.py.
 
 Two read modes:
   1. Local mode (default) – reads .env.local + .env.development.local from
@@ -99,10 +100,12 @@ def bold(s: str) -> str:
 @dataclass(frozen=True)
 class Slot:
     name: str
-    tier: str  # "kg" | "social" | "webmaster" | "indexnow"
+    tier: str  # "kg" | "social" | "dataset" | "webmaster" | "indexnow"
     label: str
     operator_action: str
     activation_doc_anchor: str = ""
+    value_kind: str = "url"  # "url" | "doi" | "token"
+    default_value: str = ""
 
 
 SLOTS: tuple[Slot, ...] = (
@@ -117,6 +120,7 @@ SLOTS: tuple[Slot, ...] = (
             "exist – Wikidata requires notability."
         ),
         activation_doc_anchor="#wikidata",
+        default_value="https://www.wikidata.org/wiki/Q139863921",
     ),
     Slot(
         name="NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL",
@@ -272,6 +276,74 @@ SLOTS: tuple[Slot, ...] = (
         ),
         activation_doc_anchor="#other",
     ),
+    # ------ Dataset catalog / DOI anchors ------
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL",
+        tier="dataset",
+        label="Hugging Face dataset mirror",
+        operator_action=(
+            "Public default is already committed. Override only if the "
+            "canonical Hugging Face repo moves; otherwise leave blank."
+        ),
+        activation_doc_anchor="#hugging-face-datasets",
+        default_value=(
+            "https://huggingface.co/datasets/unlocksaas/indie-saas-teardowns"
+        ),
+    ),
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_KAGGLE_DATASET_URL",
+        tier="dataset",
+        label="Kaggle dataset mirror",
+        operator_action=(
+            "Create the Kaggle dataset listing and link it back to "
+            "https://unlocksaas.com/dataset before setting the URL."
+        ),
+        activation_doc_anchor="#kaggle-datasets",
+    ),
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI",
+        tier="dataset",
+        label="Zenodo DOI",
+        operator_action=(
+            "Public default is already committed. Override only if a new "
+            "canonical Zenodo DOI supersedes the current record."
+        ),
+        activation_doc_anchor="#zenodo",
+        value_kind="doi",
+        default_value="10.5281/zenodo.20315742",
+    ),
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL",
+        tier="dataset",
+        label="Zenodo record URL",
+        operator_action=(
+            "Public default is already committed. Override only if a new "
+            "canonical Zenodo record supersedes the current record."
+        ),
+        activation_doc_anchor="#zenodo",
+        default_value="https://zenodo.org/records/20315742",
+    ),
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_OSF_DOI",
+        tier="dataset",
+        label="OSF DOI",
+        operator_action=(
+            "Deposit the same dataset on OSF, request a DOI, then set this "
+            "bare DOI together with NEXT_PUBLIC_UNLOCKSAAS_OSF_DATASET_URL."
+        ),
+        activation_doc_anchor="#osf-io",
+        value_kind="doi",
+    ),
+    Slot(
+        name="NEXT_PUBLIC_UNLOCKSAAS_OSF_DATASET_URL",
+        tier="dataset",
+        label="OSF dataset URL",
+        operator_action=(
+            "Deposit the same dataset on OSF and link the record back to "
+            "https://unlocksaas.com/dataset before setting the URL."
+        ),
+        activation_doc_anchor="#osf-io",
+    ),
     # ------ Webmaster verification ------
     # Slot names MUST match what app/src/lib/seo/verification.ts actually
     # reads (NEXT_PUBLIC_* prefix mandatory + exact suffix). Earlier versions
@@ -289,6 +361,7 @@ SLOTS: tuple[Slot, ...] = (
             "GSC unlocks AI Overviews eligibility metrics."
         ),
         activation_doc_anchor="#google-search-console",
+        value_kind="token",
     ),
     Slot(
         name="NEXT_PUBLIC_BING_SITE_VERIFICATION",
@@ -299,6 +372,7 @@ SLOTS: tuple[Slot, ...] = (
             "Claim at bing.com/webmasters. Bing AI Copilot answers are powered by this index."
         ),
         activation_doc_anchor="#bing-webmaster",
+        value_kind="token",
     ),
     Slot(
         name="NEXT_PUBLIC_YANDEX_VERIFICATION",
@@ -309,6 +383,7 @@ SLOTS: tuple[Slot, ...] = (
             "Powers Yandex.AI + IndexNow retrieval on the Yandex side."
         ),
         activation_doc_anchor="#yandex-webmaster",
+        value_kind="token",
     ),
     Slot(
         name="NEXT_PUBLIC_PINTEREST_SITE_VERIFICATION",
@@ -319,6 +394,7 @@ SLOTS: tuple[Slot, ...] = (
             "Skippable for pre-revenue unless a Pinterest content strategy ships."
         ),
         activation_doc_anchor="#pinterest",
+        value_kind="token",
     ),
     Slot(
         name="NEXT_PUBLIC_FACEBOOK_DOMAIN_VERIFICATION",
@@ -329,6 +405,7 @@ SLOTS: tuple[Slot, ...] = (
             "Only required if Meta ads or Instagram Shopping launch."
         ),
         activation_doc_anchor="#facebook",
+        value_kind="token",
     ),
     Slot(
         name="NEXT_PUBLIC_NAVER_SITE_VERIFICATION",
@@ -339,6 +416,7 @@ SLOTS: tuple[Slot, ...] = (
             "Korean-market specific – defer unless KR distribution is in scope."
         ),
         activation_doc_anchor="#naver",
+        value_kind="token",
     ),
     # ------ IndexNow ------
     Slot(
@@ -347,6 +425,7 @@ SLOTS: tuple[Slot, ...] = (
         label="IndexNow key (Bing/Yandex/Naver push)",
         operator_action="Run: python3 scripts/setup-indexnow-key.py",
         activation_doc_anchor="#indexnow",
+        value_kind="token",
     ),
 )
 
@@ -434,6 +513,18 @@ def validate_url(val: str) -> tuple[bool, str]:
     return True, "ok"
 
 
+DOI_RE = re.compile(r"^10\.\d{4,}(?:\.\d+)*\/\S+$")
+
+
+def validate_doi(val: str) -> tuple[bool, str]:
+    candidate = val.strip().removeprefix("doi:").strip()
+    if not candidate:
+        return False, "empty"
+    if DOI_RE.match(candidate):
+        return True, "ok"
+    return False, "must look like 10.<registrant>/<suffix>"
+
+
 # ---- Reporting -----------------------------------------------------------
 
 
@@ -443,19 +534,26 @@ class SlotState:
     local_set: bool
     local_valid: bool
     local_reason: str
+    local_source: str
     remote_set: bool | None
     fail_severity: str = field(default="")
 
 
 def evaluate(slot: Slot, local: dict[str, str], remote: dict | None) -> SlotState:
-    raw = (local.get(slot.name) or "").strip()
+    env_raw = (local.get(slot.name) or "").strip()
+    raw = env_raw or slot.default_value
     is_set = bool(raw)
+    source = "env" if env_raw else ("default" if slot.default_value else "")
     valid, reason = (False, "unset")
     if is_set:
-        if slot.tier in ("kg", "social"):
+        if slot.value_kind == "url":
             valid, reason = validate_url(raw)
+        elif slot.value_kind == "doi":
+            valid, reason = validate_doi(raw)
         else:
             valid, reason = True, "ok"
+        if valid and source == "default":
+            reason = "verified default"
     remote_set: bool | None = None
     if remote is not None:
         remote_set = slot.name in remote
@@ -464,12 +562,15 @@ def evaluate(slot: Slot, local: dict[str, str], remote: dict | None) -> SlotStat
         local_set=is_set,
         local_valid=valid,
         local_reason=reason,
+        local_source=source,
         remote_set=remote_set,
     )
 
 
 def format_status(s: SlotState) -> str:
     if s.local_set and s.local_valid:
+        if s.local_source == "default":
+            return green("default")
         return green("set    ")
     if s.local_set and not s.local_valid:
         return red("malformed")
@@ -505,10 +606,15 @@ def print_action_table(missing: Iterable[SlotState]) -> None:
         print(f"  {i}. {bold(st.slot.label)}  ({st.slot.name})")
         print(f"     {st.slot.operator_action}")
         if st.slot.activation_doc_anchor:
+            if st.slot.tier == "dataset":
+                doc = "strategy/dataset-submission-playbook.md"
+            elif st.slot.tier in ("webmaster", "indexnow"):
+                doc = "strategy/seo-activation-checklist.md"
+            else:
+                doc = "strategy/sameas-activation-playbook.md"
             print(
                 dim(
-                    f"     → strategy/sameas-activation-playbook.md"
-                    f"{st.slot.activation_doc_anchor}"
+                    f"     → {doc}{st.slot.activation_doc_anchor}"
                 )
             )
 
@@ -583,6 +689,7 @@ def main(argv: list[str]) -> int:
                     "local_set": s.local_set,
                     "local_valid": s.local_valid,
                     "local_reason": s.local_reason,
+                    "local_source": s.local_source,
                     "remote_set": s.remote_set,
                 }
                 for s in states
@@ -608,6 +715,7 @@ def main(argv: list[str]) -> int:
 
     print_section("Tier 1 – Knowledge Graph anchors", [s for s in states if s.slot.tier == "kg"], remote_checked)
     print_section("Tier 2 – Social sameAs", [s for s in states if s.slot.tier == "social"], remote_checked)
+    print_section("Dataset catalog / DOI anchors", [s for s in states if s.slot.tier == "dataset"], remote_checked)
     print_section("Webmaster verification consoles", [s for s in states if s.slot.tier == "webmaster"], remote_checked)
     print_section("IndexNow (Bing / Yandex / Naver push)", [s for s in states if s.slot.tier == "indexnow"], remote_checked)
 
@@ -626,16 +734,24 @@ def main(argv: list[str]) -> int:
         )
 
     print()
-    missing = [s for s in states if not s.local_set]
+    missing = [s for s in states if not s.local_valid]
     missing.sort(
-        key=lambda s: {"kg": 0, "social": 1, "indexnow": 2, "webmaster": 3}.get(s.slot.tier, 9)
+        key=lambda s: {
+            "kg": 0,
+            "social": 1,
+            "dataset": 2,
+            "indexnow": 3,
+            "webmaster": 4,
+        }.get(s.slot.tier, 9)
     )
     print_action_table(missing)
 
-    kg_missing = any(not s.local_set for s in states if s.slot.tier == "kg")
-    social_missing = sum(1 for s in states if s.slot.tier == "social" and not s.local_set)
+    kg_missing = any(not s.local_valid for s in states if s.slot.tier == "kg")
+    social_missing = sum(
+        1 for s in states if s.slot.tier == "social" and not s.local_valid
+    )
     webmaster_missing = any(
-        not s.local_set
+        not s.local_valid
         for s in states
         if s.slot.tier == "webmaster" and s.slot.name == "NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION"
     )

@@ -1,13 +1,13 @@
 # Dataset submission playbook
 
 > Indie SaaS Teardowns Dataset – Hugging Face Datasets and Google Dataset Search
-> activation. Status: code is shipped (2026-05-20), operator action gates the
-> cross-listing.
+> activation. Status: Hugging Face + Zenodo are live and committed as verified
+> defaults (2026-05-22); Kaggle / OSF remain optional operator mirrors.
 
 This is the operator-facing companion to `app/src/lib/seo/dataset-hf.ts` and
-the surfaces under `app/src/app/dataset/`. The code is in place. This
-document is the five-minute checklist for the founder to flip the env-driven
-gates from `operator` to `shipped`.
+the surfaces under `app/src/app/dataset/`. The code now emits verified public
+defaults for the live Hugging Face repo and Zenodo DOI record; this document
+remains the checklist for future mirrors and canonical URL changes.
 
 ## Why this matters
 
@@ -20,7 +20,8 @@ marketing-analysis dataset queries, AND the HF Hub itself becomes a second
 acquisition surface that compounds with the canonical landing.
 
 The audit on 2026-05-20 identified this as one of the highest impact-per-effort
-moves available. Code is done; operator activation is the only gate.
+moves available. Hugging Face and Zenodo have since moved from operator-gated
+to active external anchors.
 
 ## Current state
 
@@ -31,9 +32,17 @@ moves available. Code is done; operator activation is the only gate.
 | Raw README.md at /dataset/huggingface/raw | shipped | curl-downloadable as `README.md`, build-time constant |
 | Sitemap entries | shipped | Both URLs listed, crawler-discoverable |
 | Activation log entry | shipped | `dataset_external_catalogs` row in freshness.ts |
-| HF dataset repo | **operator** | Operator creates at huggingface.co/new-dataset |
-| `NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL` env var | **operator** | Set on Vercel after the HF repo exists |
-| Google Dataset Search re-ingest | downstream | 1–7 days after the env var lands |
+| HF dataset repo | **active** | `https://huggingface.co/datasets/unlocksaas/indie-saas-teardowns` |
+| `NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL` env var | optional override | Leave blank unless the canonical HF repo moves |
+| Zenodo DOI record | **active** | `10.5281/zenodo.20315742` at `https://zenodo.org/records/20315742` |
+| `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI(_URL)` env vars | optional override | Leave blank unless a new canonical DOI supersedes the current record |
+| Google Dataset Search re-ingest | downstream | 1–7 days after the deployment is crawled |
+
+## Hugging Face Datasets <a id="hugging-face-datasets"></a>
+
+The live repo is already active at
+`https://huggingface.co/datasets/unlocksaas/indie-saas-teardowns`. The flow
+below is retained for future repo migrations or version refreshes.
 
 ## Five-minute submission flow
 
@@ -156,7 +165,7 @@ Everything else (the dataset card, the YAML frontmatter, the per-table
 CSVs, the cross-catalog JSON-LD, the sitemap entries, the activation-log
 mirror) is shipped and lives on https://unlocksaas.com.
 
-## Zenodo – persistent DOI mirror (shipped 2026-05-21)
+## Zenodo – persistent DOI mirror (shipped 2026-05-21) <a id="zenodo"></a>
 
 Zenodo is the CERN-hosted open-research repository that mints persistent
 DOIs on deposit. DOIs are the strongest dataset identifier class Google
@@ -260,7 +269,7 @@ Two steps require a human:
 Everything else – the metadata payload, the file list, the API calls,
 the verification – is automated by `scripts/mint-zenodo-deposit.py`.
 
-### OSF.io alternative
+### OSF.io alternative <a id="osf-io"></a>
 
 Open Science Framework also mints DOIs and is a recognised
 `DataCatalog`. The same dataset can be deposited on OSF instead of
@@ -274,7 +283,7 @@ OSF and Zenodo deposits are additive – the canonical Dataset JSON-LD
 declares both `includedInDataCatalog` rows simultaneously when both
 env-var pairs land.
 
-## Kaggle – optional mirror
+## Kaggle – optional mirror <a id="kaggle-datasets"></a>
 
 - `NEXT_PUBLIC_UNLOCKSAAS_KAGGLE_DATASET_URL` – Kaggle Datasets.
   Submission flow mirrors HF: create a Kaggle dataset, upload the same

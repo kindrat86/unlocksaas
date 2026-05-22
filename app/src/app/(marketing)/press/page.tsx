@@ -411,16 +411,14 @@ export default function PressPage() {
         <Separator className="my-8" />
 
         {/* ── Verified external presence ────────────────────────────────
-            Off-platform anchors that have already been claimed and
-            externally verified – Wikidata QID (patrol-approved), Zenodo
-            DOI (mint-confirmed), HuggingFace cross-listing (repo-live),
-            plus any populated Organization.sameAs entries.
+            Off-platform anchors that are either committed verified defaults
+            (Wikidata QID, Zenodo DOI, Hugging Face cross-listing) or
+            populated Organization.sameAs entries.
 
-            Each row is env-gated through the existing entity.ts
-            registries. A fresh checkout with no env vars set renders the
-            honest empty-state (the same posture as the Recent coverage
-            section below). Once the operator flips an env var to a real
-            URL, the row lights up on the next redeploy. */}
+            Each row is sourced through the existing entity.ts registries.
+            A fresh checkout renders verified defaults; remaining env-gated
+            rows light up on the next redeploy once the operator flips a
+            real URL. */}
         {(() => {
           const externalRows: Array<{
             label: string;

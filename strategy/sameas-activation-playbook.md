@@ -8,14 +8,14 @@
 
 ## Why this exists
 
-The SEO/GEO/AIO audit identified one cluster as the single highest-leverage missing signal: the `sameAs` / `mainEntityOfPage` / `subjectOf` arrays on the Organization + Person JSON-LD are empty. Every supporting piece of code is shipped:
+The SEO/GEO/AIO audit identified one cluster as the single highest-leverage missing signal: the `sameAs` / `mainEntityOfPage` / `subjectOf` arrays on the Organization + Person JSON-LD were under-activated. Wikidata, Hugging Face, and Zenodo are now live verified defaults; founder-owned profiles, review-platform listings, Wikipedia, SameAs.org, and earned-media mentions remain operator-gated. Every supporting piece of code is shipped:
 
 - [src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) reads 15 env-driven URL slots for Organization-level anchors
 - [src/lib/seo/founder.ts](../app/src/lib/seo/founder.ts) reads the Person-level slots (founder `sameAs`, `alumniOf`, `award`)
 - [src/components/seo/json-ld.tsx](../app/src/components/seo/json-ld.tsx) wires them into Organization + Person `sameAs`, Person `alumniOf` / `award`, and Organization `mainEntityOfPage`
 - [src/lib/media-mentions.ts](../app/src/lib/media-mentions.ts) supplies the `subjectOf` Article anchors for both Organization and Person
 
-The schema graph activates the moment an operator fills the env vars on Vercel and pushes a redeploy. No code change required.
+The schema graph expands the moment an operator fills the env vars on Vercel and pushes a redeploy. No code change required for remaining anchors.
 
 What this playbook covers:
 1. Why bidirectional matters
@@ -87,7 +87,7 @@ These are the highest-leverage anchors in the entire schema graph. The first two
 
 **Statements applied:** P31=Q47535984 (online service), P856 (official website), P571 (inception 2026-05-17), P407 × 3 (en/es/pt-br languages of work), P1813 (short name en:UnlockSaaS), P973 × 3 (entity.jsonld, /dataset, /llms-feed.json). Labels + descriptions in en/es/pt-br, aliases UnlockSaaS / Unlock-SaaS / unlocksaas.com.
 
-**Verification:** `Organization.sameAs` and `Person.sameAs` on `https://unlocksaas.com/.well-known/entity.jsonld` include the Q-URL. Same for the homepage Organization JSON-LD and `/llms-feed.json`. Tested 21-05-2026 01:13 against production deployment `unlocksaas-1p3am4wws-sales-3429s-projects.vercel.app` (commit `67c35e5`, build duration 1m).
+**Verification:** `Organization.sameAs` on `https://unlocksaas.com/.well-known/entity.jsonld`, the homepage Organization JSON-LD, and `/llms-feed.json` includes the Q-URL. Person-level `sameAs` is reserved for founder-owned profiles only. Re-verified 22-05-2026 and committed as a public default so fresh local builds no longer regress to `sameAs: []`.
 
 **Patrol watch:** Wikidata patrollers typically review new items within 24-72h. If Q139863921 is flagged for AfD or notability review, escalate to the operator before any rollback – the env var stays unless the item is actually deleted. The operator's MEDIA_MENTIONS-empty calibration is defensible (Q139376302 precedent), but if patrol disagrees the remedy is to add references to each statement via the UI rather than to delete the env var.
 

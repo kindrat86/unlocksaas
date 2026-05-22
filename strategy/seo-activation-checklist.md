@@ -11,7 +11,7 @@
 
 ## Why this document exists
 
-The audit pass that scored UnlockSaaS at 89/100 on combined SEO/pSEO/GEO/AIO/AEO/E-E-A-T identified a single common pattern in every deduction: the code reads an env var, the code validates the env var, the code wires the env var into the rendered HTML or HTTP API – and the env var is unset. So the rendered HTML is honest (empty `sameAs`, no verification meta tag, IndexNow returns 503) but the signal surface the world sees is the activation level, not the code level.
+The audit pass that scored UnlockSaaS at 89/100 on combined SEO/pSEO/GEO/AIO/AEO/E-E-A-T identified a single common pattern in every deduction: the code reads an env var, the code validates the env var, the code wires the env var into the rendered HTML or HTTP API – and the env var is unset. Wikidata, Hugging Face, and Zenodo now ship as verified public defaults; the remaining env-gated surfaces still determine the signal level the world sees.
 
 This file turns "set the env vars" from a vague TODO into a concrete, leverage-ordered, time-estimated checklist. It is the path from gated E-E-A-T to active E-E-A-T without violating the Brunson Hard-Rule.
 
@@ -211,7 +211,9 @@ The code at [app/src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) `buildSame
 
 **Acceptance test:** the curl in step 4 returns the key plaintext.
 
-### 3.2 Wikidata entry (20 min) – the single highest-leverage Knowledge Graph anchor
+### 3.2 Wikidata entry (active) – the single highest-leverage Knowledge Graph anchor
+
+**Current state:** active as `https://www.wikidata.org/wiki/Q139863921` and committed as a verified public default. The steps below are retained only for a future replacement Q-ID.
 
 **Why:** A populated Wikidata Q-URL is worth more for AI Overviews than every other social profile combined. Wikidata is the canonical machine-readable entity ID Google's Knowledge Graph uses to disambiguate brands. LLM training corpora (Common Crawl, RedPajama, FineWeb) treat Wikidata as a primary citation source.
 
@@ -228,12 +230,12 @@ The code at [app/src/lib/seo/entity.ts](../app/src/lib/seo/entity.ts) `buildSame
    - **country** (P17) → leave unset (digital-only, worldwide)
    - **described at URL** (P973) → `https://unlocksaas.com/about` (qualifier: `language of work or name (P407) → English`)
 5. Save. Note the Q-number (e.g. `Q123456789`).
-6. Set in Vercel:
+6. Set in Vercel only if replacing the committed default:
    - `NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL` = `https://www.wikidata.org/wiki/Q<number>`
 
 **What this unlocks:**
 
-- The `mainEntityOfPage` field in Organization JSON-LD lights up (currently undefined).
+- The Organization `sameAs` field includes the Q-URL. `mainEntityOfPage` remains reserved for a real Wikipedia article URL.
 - The `sameAs` array gains the highest-weight entry it can hold.
 - AI Overview / Perplexity / Gemini citation pipelines resolve "UnlockSaaS" to a stable Q-ID instead of a string-match.
 
@@ -282,10 +284,10 @@ The audit score line that closes each item:
 
 | Deduction | Closes when | Lift |
 |---|---|---|
-| `sameAs` empty | Tier 2 entries ≥ 3 | +3 |
+| Organization `sameAs` under-active | Tier 2 entries ≥ 3 beyond the verified Wikidata default | +3 |
 | No verification consoles | Tier 1.1-1.3 verified | +3 |
 | IndexNow inactive | Tier 3.1 done | +2 |
-| Wikidata Q-ID empty | Tier 3.2 done | +2 |
+| Wikidata Q-ID empty | Closed by Q139863921 verified default | +2 |
 | `/builders` empty | First Stripe-verified cycle (gated, not operator-action) | +3 |
 | No earned media | First independent publication mention (gated) | +2 |
 | `aggregateRating` missing | First public review (gated) | +1 |

@@ -122,17 +122,19 @@ secondary-source count.
 
 6. **Note the Q-ID.** Copy the new Q-URL: `https://www.wikidata.org/wiki/Q<number>`.
 
-7. **Activate the schema.** Push the Q-URL to Vercel:
+7. **Activate the schema.** For a newly issued replacement Q-ID, push the
+   Q-URL to Vercel:
    ```sh
    vercel env add NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL production
    # paste: https://www.wikidata.org/wiki/Q<your-number>
    vercel env add NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL preview
    ```
-   The next deploy picks it up. `ORGANIZATION_SAME_AS` in
-   `app/src/lib/seo/entity.ts` is already wired to consume this slot
-   (see line 107). The Organization JSON-LD, the Person JSON-LD, and the
-   `/.well-known/entity.jsonld` manifest all start advertising the Q-URL
-   automatically on the next build.
+   The current Q-ID (`Q139863921`) is already committed as a verified
+   public default in `app/src/lib/seo/entity.ts`; the env var is now an
+   override for a future canonical Q-ID change. Organization JSON-LD and
+   the `/.well-known/entity.jsonld` manifest advertise the Q-URL
+   automatically on the next build. Person JSON-LD remains limited to
+   founder-owned profiles.
 
 8. **Wait 24-48h for patrol.** Wikidata patrollers may flag the item for
    notability review. If flagged, respond in the talk page with the same
@@ -149,16 +151,16 @@ secondary-source count.
 
 ## Post-submission wiring (what the codebase already handles)
 
-No further code changes needed. The env var `NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL`
-flows through:
+No further code changes needed. The verified default Q-URL, or an override
+from `NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL`, flows through:
 
 - `app/src/lib/seo/entity.ts` → `ORGANIZATION_SAME_AS` (Organization.sameAs)
 - `app/src/lib/seo/entity.ts` → `ORGANIZATION_MAIN_ENTITY_OF_PAGE` only when
   Wikipedia URL is also set (currently uses `NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL`
   for the dedicated mainEntityOfPage slot, but the Q-URL also strengthens
   the schema graph via sameAs).
-- `app/src/components/seo/json-ld.tsx` → embeds in Organization + Person
-  schema on every page (site-wide, via the root-layout OrganizationJsonLd).
+- `app/src/components/seo/json-ld.tsx` → embeds in Organization schema on
+  every page (site-wide, via the root-layout OrganizationJsonLd).
 - `app/src/app/.well-known/entity.jsonld/route.ts` → embeds in the
   canonical entity manifest.
 - `app/src/app/llms-feed.json` → exposed to AI retrievers in the
@@ -189,12 +191,11 @@ Possible reasons and remedies:
   the public site or in the `entity.ts` constants (single source of truth).
 - No fabricated dates, no fabricated audience counts, no fabricated
   affiliations.
-- The `NOT-READY` state is the honest default. The kit auto-activates
-  when the codebase's own `MEDIA_MENTIONS` array reaches the threshold –
-  same gate the funnel hub's earned-media bar uses, so the two signals
-  cannot drift.
-- The Wikidata Q-URL is env-driven (`NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL`)
-  and stays absent from the schema until a real, verified Q-ID exists.
-  The kit does not pre-populate the env var.
+- The original `NOT-READY` state was the honest default before Q139863921
+  existed. Now that the Q-ID is live and points at unlocksaas.com, the
+  verified public default keeps fresh builds from regressing to an empty
+  Organization.sameAs array.
+- `NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL` remains available as an override
+  for a future canonical Q-ID replacement; do not set it to a placeholder.
 
-Last verified: 2026-05-20.
+Last verified: 2026-05-22.

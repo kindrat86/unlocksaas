@@ -22,10 +22,12 @@
  *      Google's Knowledge Graph and AI-Overview pipelines can resolve the
  *      entity as a connected node, not five disconnected blocks.
  *
- * The `sameAs` array currently resolves to whatever env vars are set. In a
- * fresh checkout it is empty. That is honest and correct. The moment the
- * operator drops e.g. NEXT_PUBLIC_UNLOCKSAAS_X_URL into Vercel, the
- * Organization JSON-LD starts claiming it and the LLMO surface lights up.
+ * The `sameAs` array currently resolves to verified public defaults plus
+ * whatever env vars are set. A fresh checkout includes only off-domain
+ * anchors that are already live and publicly dereferenceable. The moment
+ * the operator drops e.g. NEXT_PUBLIC_UNLOCKSAAS_X_URL into Vercel, the
+ * Organization JSON-LD starts claiming that additional profile and the
+ * LLMO surface lights up.
  *
  * No fabricated handles. No placeholder URLs. No "if used" speculative
  * entries. If the env var isn't set, the entry isn't claimed.
@@ -60,8 +62,28 @@ export const ID = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Off-platform anchors (env-driven, empty until operator activates)
+// Off-platform anchors (verified defaults + env-driven expansion)
 // ---------------------------------------------------------------------------
+
+/**
+ * Public anchors that have already been verified off-domain.
+ *
+ * These are intentionally committed as defaults instead of requiring a
+ * Vercel env var: they are public, non-secret, dereferenceable URLs whose
+ * target pages already name unlocksaas.com. Env vars can still override the
+ * values if a canonical URL changes, but a fresh local build should not
+ * regress to an empty entity graph when a verified public anchor exists.
+ *
+ * Verified 2026-05-22:
+ *   - Wikidata Q139863921 official website statement points at unlocksaas.com.
+ *   - Hugging Face dataset repo is public and links the canonical dataset.
+ *   - Zenodo record 20315742 mints DOI 10.5281/zenodo.20315742.
+ */
+const VERIFIED_WIKIDATA_URL = "https://www.wikidata.org/wiki/Q139863921";
+const VERIFIED_HUGGINGFACE_DATASET_URL =
+  "https://huggingface.co/datasets/unlocksaas/indie-saas-teardowns";
+const VERIFIED_ZENODO_DOI = "10.5281/zenodo.20315742";
+const VERIFIED_ZENODO_RECORD_URL = "https://zenodo.org/records/20315742";
 
 /**
  * Reads a candidate social-anchor URL from env. Returns undefined if the
@@ -133,12 +155,14 @@ function buildSameAs(): readonly string[] {
     // Q-URL is worth more for AI Overviews than every social profile
     // combined. Wikipedia URL is the second strongest signal because
     // every major LLM training corpus includes Wikipedia as a primary
-    // source. Both are env-driven and stay empty until a real entry
-    // exists – we never fabricate a Wikidata Q-ID. The operator path
-    // is documented in strategy/google-strategy.md §B.4 (entity-graph
-    // activation).
-    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL"),
+    // source. Wikidata now has a verified public default; Wikipedia
+    // remains env-driven and omitted until a real article exists – we
+    // never fabricate either anchor. The operator path is documented in
+    // strategy/google-strategy.md §B.4 (entity-graph activation).
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL") ??
+      VERIFIED_WIKIDATA_URL,
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_SAMEAS_ORG_URL"),
     // Founder/owner profiles – primary entity anchors.
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_X_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_LINKEDIN_URL"),
@@ -158,6 +182,11 @@ function buildSameAs(): readonly string[] {
     // angel.co domain.
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL"),
+    // Review-platform / software-directory anchors. Keep env-gated until
+    // the vendor listings exist; do not set before the profile links back
+    // to unlocksaas.com.
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_G2_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CAPTERRA_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL"),
     // Generic "other" slot – for one ad-hoc profile without a dedicated
     // env var. Lower priority than Wikidata/Wikipedia above.
@@ -171,7 +200,9 @@ function buildSameAs(): readonly string[] {
 /**
  * Frozen at module load. Importers see a stable array per server boot.
  * Vercel's per-request env mutation is not a concern here – these are
- * build-time configuration, not per-request data.
+ * build-time configuration, not per-request data. A fresh checkout includes
+ * verified non-secret defaults such as the Wikidata Q-URL; additional
+ * profile slots remain env-gated until the operator controls them.
  */
 export const ORGANIZATION_SAME_AS: readonly string[] = Object.freeze(
   buildSameAs(),
@@ -195,13 +226,13 @@ export const ORGANIZATION_MAIN_ENTITY_OF_PAGE: string | undefined =
   readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL");
 
 // ---------------------------------------------------------------------------
-// External dataset catalog registrations (env-driven, empty until activated)
+// External dataset catalog registrations (verified defaults + env-driven mirrors)
 // ---------------------------------------------------------------------------
 
 /**
- * Off-platform dataset catalog where the Indie SaaS Teardowns dataset is
- * also hosted. Each entry is a real registration on a real catalog;
- * env-driven empty slots stay omitted, never fabricated.
+ * Off-platform dataset catalogs where the Indie SaaS Teardowns dataset is
+ * also hosted. Verified public defaults are emitted in a fresh checkout;
+ * optional mirrors remain env-driven and omitted until they exist.
  *
  * Why this matters
  * ----------------
@@ -236,9 +267,10 @@ export const ORGANIZATION_MAIN_ENTITY_OF_PAGE: string | undefined =
  * strongest dataset identifier class. All three are optional.
  *
  * Brunson Hard-Rule reconciliation: a row only appears in the output when
- * the env var is set to a valid https URL. A malformed value or unset env
- * skips the catalog entirely – we never advertise a dataset listing that
- * the operator has not actually created.
+ * it is either a verified committed default or the env var is set to a
+ * valid https URL. A malformed value drops the env-driven catalog entirely
+ * – we never advertise a dataset listing that the operator has not actually
+ * created.
  */
 export interface DatasetCatalogRegistration {
   /** Schema.org DataCatalog.name – the human-readable catalog identifier. */
@@ -262,9 +294,8 @@ export interface DatasetCatalogRegistration {
 /**
  * The bare DOI for the Indie SaaS Teardowns dataset (e.g.
  * `10.5281/zenodo.12345678`), resolved from
- * `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI` at module load. Undefined until
- * the operator mints a Zenodo deposit and pastes the resulting DOI on
- * Vercel.
+ * `NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI` at module load, falling back to the
+ * verified Zenodo DOI committed above.
  *
  * Why this lives at module scope (not derived per-call from the catalog
  * registrations): consumers other than the Dataset JSON-LD also need
@@ -272,13 +303,13 @@ export interface DatasetCatalogRegistration {
  * string, the HF dataset card YAML frontmatter, the markdown mirror.
  * Hoisting it once keeps the source of truth single.
  *
- * Brunson Hard-Rule: a malformed value silently drops via DOI_PATTERN
- * validation. The dataset never advertises a DOI it does not actually
- * resolve.
+ * Brunson Hard-Rule: a malformed env override silently drops via
+ * DOI_PATTERN validation and falls back to the verified DOI. The dataset
+ * never advertises a DOI it does not actually resolve.
  */
 export const DATASET_DOI: string | undefined = readDoiEnv(
   "NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI",
-);
+) ?? VERIFIED_ZENODO_DOI;
 
 /**
  * Resolvable `https://doi.org/...` URL form of DATASET_DOI. Undefined
@@ -292,7 +323,9 @@ export const DATASET_DOI_URL: string | undefined = DATASET_DOI
 function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration[] {
   const rows: DatasetCatalogRegistration[] = [];
 
-  const hf = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL");
+  const hf =
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL") ??
+    VERIFIED_HUGGINGFACE_DATASET_URL;
   if (hf) {
     rows.push({
       name: "Hugging Face Datasets",
@@ -310,7 +343,9 @@ function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration
     });
   }
 
-  const zenodo = readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL");
+  const zenodo =
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI_URL") ??
+    VERIFIED_ZENODO_RECORD_URL;
   if (zenodo) {
     rows.push({
       name: "Zenodo",
@@ -348,9 +383,8 @@ function buildDatasetCatalogRegistrations(): readonly DatasetCatalogRegistration
 /**
  * Frozen at module load. Re-evaluated only on cold start when the
  * env-driven URLs might change (Vercel env updates are picked up at
- * deploy time, not at request time). Defaults to a frozen empty array
- * in a fresh checkout – that is honest: no env vars set = no cross-
- * listings claimed.
+ * deploy time, not at request time). Defaults include the verified
+ * Hugging Face + Zenodo listings; optional mirrors are additive.
  */
 export const DATASET_EXTERNAL_REGISTRATIONS: readonly DatasetCatalogRegistration[] =
   buildDatasetCatalogRegistrations();

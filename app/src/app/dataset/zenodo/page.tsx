@@ -504,13 +504,12 @@ vercel env add NEXT_PUBLIC_UNLOCKSAAS_OSF_DOI production
             citation, and column contract is read once at module load.
           </p>
           <p className="text-sm">
-            The DOI itself is operator-gated. The canonical Dataset
-            JSON-LD declares the DOI as a typed PropertyValue identifier
-            only when both env vars resolve to valid values: the URL
-            must be <code>https://</code> and the bare DOI must match{" "}
-            <code>10.&lt;digits&gt;/&lt;suffix&gt;</code>. A missing or
-            malformed value is silently skipped – the schema validator
-            never sees a fabricated DOI claim.
+            The live DOI is committed as a verified public default. Future
+            overrides still pass through the same validators: the URL must
+            be <code>https://</code> and the bare DOI must match{" "}
+            <code>10.&lt;digits&gt;/&lt;suffix&gt;</code>. A malformed
+            override is silently skipped – the schema validator never sees
+            a fabricated DOI claim.
           </p>
         </section>
 

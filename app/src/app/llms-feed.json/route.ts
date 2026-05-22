@@ -110,9 +110,8 @@ import { DIARY_ENTRIES, DIARY_DATES } from "@/lib/founder-diary";
  * verifiable, in the public HTML or one of the strategy documents.
  * No fabricated counts, no aspirational facts, no testimonial figures
  * before they exist. `mediaMentions` ships empty until a real earned
- * mention publishes (Reluctant-Hero rule). `entity.sameAs` ships
- * whatever the operator has activated via env vars (empty until
- * NEXT_PUBLIC_UNLOCKSAAS_*_URL slots are set).
+ * mention publishes (Reluctant-Hero rule). `entity.sameAs` ships verified
+ * public defaults plus whatever the operator has activated via env vars.
  *
  * Caching
  * -------

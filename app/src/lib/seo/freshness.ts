@@ -156,9 +156,9 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
   },
   {
     item: "same_as_off_platform_anchors",
-    state: "operator",
+    state: "shipped",
     note:
-      "sameAs env slots for X, LinkedIn, GitHub, Indie Hackers, YouTube, Crunchbase, Product Hunt, Wikidata, and Wikipedia are empty until the corresponding profile exists and credibly links back.",
+      "Wikidata ships as a verified public default in Organization.sameAs. Additional env slots for X, LinkedIn, GitHub, Indie Hackers, YouTube, Crunchbase, Product Hunt, SameAs.org, OpenCorporates, Wellfound, G2, Capterra, Wikipedia, and ad-hoc profiles remain operator-gated until the corresponding profile exists and credibly links back.",
   },
   {
     item: "media_mentions",
@@ -168,9 +168,9 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
   },
   {
     item: "dataset_external_catalogs",
-    state: "operator",
+    state: "shipped",
     note:
-      "Hugging Face / Kaggle / Zenodo / OSF cross-listing slots ship empty; canonical Dataset JSON-LD auto-declares includedInDataCatalog when NEXT_PUBLIC_UNLOCKSAAS_HUGGINGFACE_DATASET_URL (or the Kaggle/Zenodo/OSF equivalents) lands on Vercel. Pre-built HF README + submission flow at /dataset/huggingface. Pre-built Zenodo deposition JSON + API-driven operator CLI (scripts/mint-zenodo-deposit.py) + submission flow at /dataset/zenodo. When the Zenodo deposit publishes and NEXT_PUBLIC_UNLOCKSAAS_ZENODO_DOI lands, the DOI propagates into Dataset JSON-LD as a PropertyValue identifier, into BibTeX as a doi field, into the citation string, and into the HF dataset card YAML frontmatter automatically.",
+      "Hugging Face and Zenodo ship as verified public defaults; canonical Dataset JSON-LD declares includedInDataCatalog and the Zenodo DOI without env setup. Kaggle and OSF remain optional operator-gated mirrors. Pre-built HF README + submission flow at /dataset/huggingface. Pre-built Zenodo deposition JSON + API-driven operator CLI (scripts/mint-zenodo-deposit.py) + submission flow at /dataset/zenodo.",
   },
   {
     item: "founders_proof_pages",
