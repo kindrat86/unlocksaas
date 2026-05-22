@@ -1,0 +1,57 @@
+name: App JSON-LD
+
+on:
+  pull_request:
+    paths:
+      - "app/**"
+      - ".github/workflows/app-jsonld.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-jsonld:
+    name: Validate rendered JSON-LD
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+      SUPABASE_SERVICE_ROLE_KEY: placeholder
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+      STRIPE_SECRET_KEY: sk_test_placeholder
+      STRIPE_WEBHOOK_SECRET: whsec_placeholder
+      ANTHROPIC_API_KEY: sk-ant-placeholder
+      VALIDATE_BASE_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Start Next dev server
+        run: |
+          npm run dev > /tmp/unlocksaas-next.log 2>&1 &
+          echo $! > /tmp/unlocksaas-next.pid
+          for i in $(seq 1 60); do
+            if curl -fsS "$VALIDATE_BASE_URL" > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/unlocksaas-next.log
+          exit 1
+      - name: Validate JSON-LD
+        run: npm run validate:jsonld
+      - name: Stop Next dev server
+        if: always()
+        run: |
+          if [ -f /tmp/unlocksaas-next.pid ]; then
+            kill "$(cat /tmp/unlocksaas-next.pid)" 2>/dev/null || true
+          fi

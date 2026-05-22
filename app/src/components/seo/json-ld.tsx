@@ -2839,6 +2839,7 @@ const CLAIM_REVIEW_JSON = JSON.stringify({
   itemReviewed: {
     "@type": "Article",
     name: "Editorial Policy -- Unlock SaaS",
+    headline: "Editorial Policy -- Unlock SaaS",
     url: `${BASE}/editorial-policy`,
     author: { "@id": ID.person },
   },
