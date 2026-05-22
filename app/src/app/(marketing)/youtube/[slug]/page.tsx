@@ -14,6 +14,8 @@ import {
   episodeDiagnosticUrl,
   episodeNeighbors,
   episodePath,
+  episodeTranscriptPath,
+  episodeTranscriptUrl,
   findEpisodeBySlug,
   FOUNDERS_DIARY_CHANNEL,
   FOUNDERS_DIARY_SLUGS,
@@ -152,6 +154,16 @@ export default async function EpisodePage(props: {
   // the schema only emits when the operator has flipped the entry to
   // "live" with a real youtube_url + publish_at. Pre-live entries emit
   // BreadcrumbList + the page-level OpenGraph article tags only.
+  //
+  // When the operator has also pasted a transcript, we point
+  // VideoObject.transcript at the sibling /youtube/<slug>/transcript URL
+  // (the standalone page is the canonical transcript surface for AI
+  // retrievers + voice engines) AND emit the inline `transcriptText`
+  // for crawlers that don't follow nested URLs. Bidirectional graph
+  // linkage so either entity (episode VideoObject ↔ transcript Article)
+  // resolves to the other.
+  const hasTranscript =
+    isLive && ep.transcript && ep.transcript.trim().length > 0;
   const videoSchema =
     isLive && ep.youtube_url && ep.publish_at ? (
       <VideoJsonLd
@@ -164,8 +176,11 @@ export default async function EpisodePage(props: {
         {...(deriveEmbedUrl(ep.youtube_url)
           ? { embedUrl: deriveEmbedUrl(ep.youtube_url)! }
           : {})}
-        {...(ep.transcript && ep.transcript.length > 0
-          ? { transcriptText: ep.transcript }
+        {...(hasTranscript
+          ? {
+              transcriptUrl: episodeTranscriptUrl(ep),
+              transcriptText: ep.transcript!,
+            }
           : {})}
       />
     ) : null;
@@ -325,6 +340,20 @@ export default async function EpisodePage(props: {
             >
               {ep.transcript}
             </div>
+            {/* Sibling surface for AI retrievers + citation managers:
+                /youtube/<slug>/transcript carries its own Article JSON-LD,
+                BreadcrumbList, and a Markdown twin at .../transcript/md.
+                VideoObject.transcript references this URL alongside the
+                inline text above. */}
+            <p className="mt-4 text-xs text-muted-foreground">
+              Standalone transcript:{" "}
+              <Link
+                href={episodeTranscriptPath(ep)}
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                {episodeTranscriptUrl(ep)}
+              </Link>
+            </p>
           </section>
         )}
 

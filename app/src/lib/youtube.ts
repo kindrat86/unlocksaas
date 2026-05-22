@@ -37,6 +37,8 @@
  *   - strategy/youtube-production-runbook.md          (per-episode workflow)
  */
 
+import { BASE_URL } from "@/lib/seo/entity";
+
 export type BrunsonBeat = "hook" | "story" | "offer" | "polarity" | "proof";
 
 export type EpisodeStatus = "draft" | "voiced" | "cut" | "scheduled" | "live";
@@ -545,6 +547,54 @@ export function episodePath(ep: Pick<FoundersDiaryEpisode, "slug">): string {
 }
 
 /**
+ * Absolute canonical URL for an episode landing page. JSON-LD nodes and
+ * sitemap entries want the BASE_URL-prefixed form; in-page <Link href>
+ * keeps using `episodePath` for relative routing.
+ */
+export function episodeUrl(ep: Pick<FoundersDiaryEpisode, "slug">): string {
+  return `${BASE_URL}${episodePath(ep)}`;
+}
+
+/**
+ * Per-episode transcript page path. Sibling URL under /youtube/<slug>/
+ * mirroring the /podcast/<slug>/transcript pattern. Exists as a second
+ * indexable surface per video so VideoObject.transcript can resolve to a
+ * real URL (highest-leverage AEO signal once an episode actually publishes).
+ *
+ * Brunson Hard-Rule: the route returns notFound() unless the episode is
+ * status="live" AND has a populated transcript field. No empty transcript
+ * pages.
+ */
+export function episodeTranscriptPath(
+  ep: Pick<FoundersDiaryEpisode, "slug">,
+): string {
+  return `/youtube/${ep.slug}/transcript`;
+}
+
+export function episodeTranscriptUrl(
+  ep: Pick<FoundersDiaryEpisode, "slug">,
+): string {
+  return `${BASE_URL}${episodeTranscriptPath(ep)}`;
+}
+
+/**
+ * Markdown twin of the transcript page. Same body, served with
+ * `Content-Type: text/markdown` for LLM retrievers + citation managers.
+ * Mirrors /podcast/<slug>/transcript/md.
+ */
+export function episodeTranscriptMdPath(
+  ep: Pick<FoundersDiaryEpisode, "slug">,
+): string {
+  return `/youtube/${ep.slug}/transcript/md`;
+}
+
+export function episodeTranscriptMdUrl(
+  ep: Pick<FoundersDiaryEpisode, "slug">,
+): string {
+  return `${BASE_URL}${episodeTranscriptMdPath(ep)}`;
+}
+
+/**
  * Channel-level metadata. Kept in code (not env) because it is part of the
  * brand surface, not an operator secret. Change here triggers a real
  * commit + diff in code review.
@@ -684,6 +734,24 @@ validateRegistry();
  */
 export function liveEpisodes(): ReadonlyArray<FoundersDiaryEpisode> {
   return FOUNDERS_DIARY_EPISODES.filter((ep) => ep.status === "live");
+}
+
+/**
+ * Episodes eligible for a standalone transcript surface. Strictly the
+ * subset of live episodes whose operator has hand-pasted the transcript
+ * body — pre-launch (or post-launch-without-transcript) this stays empty.
+ * Sitemap iterates this so a transcript URL is only advertised once there
+ * is a real transcript to index, never as a phantom URL.
+ */
+export function liveEpisodesWithTranscript(): ReadonlyArray<
+  FoundersDiaryEpisode
+> {
+  return FOUNDERS_DIARY_EPISODES.filter(
+    (ep) =>
+      ep.status === "live" &&
+      typeof ep.transcript === "string" &&
+      ep.transcript.trim().length > 0,
+  );
 }
 
 /**
