@@ -21,6 +21,8 @@ import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForCategory } from "@/lib/seo/paa-questions";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
+import { LAST_VERIFIED_DATE } from "@/lib/seo/freshness";
 
 /**
  * pSEO #5 — Category roundup pages.
@@ -272,6 +274,12 @@ export default async function CategoryPage(props: { params: Promise<RouteParams>
       </header>
 
       <Separator className="my-2" />
+
+      {/* Direct answer – speakable TL;DR paragraph for AI Overviews,
+          Perplexity, ChatGPT browse, Claude search. */}
+      <DirectAnswer lastVerified={LAST_VERIFIED_DATE} variant="tldr">
+        {cat.oneLine}
+      </DirectAnswer>
 
       <TldrSummary
         headingLabel={`${cat.displayName} category overview`}

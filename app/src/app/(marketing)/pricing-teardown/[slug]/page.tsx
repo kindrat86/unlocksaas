@@ -20,6 +20,7 @@ import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
 import {
   buildSpeakable,
   ACCESS_MODE_TEXTUAL,
@@ -307,6 +308,15 @@ export default async function PricingTeardownPage(
         </p>
       </header>
       <Separator className="my-2" />
+      {/* Direct answer – 40-60 word speakable paragraph extracted by AI
+          Overviews, Perplexity, ChatGPT browse, Claude search. Sits between
+          the page header and the TldrSummary key/value table. */}
+      <DirectAnswer
+        lastVerified={t.lastVerified}
+        variant="takeaway"
+      >
+        {t.tldr}
+      </DirectAnswer>
       {/* TL;DR – structured key/value summary for AI summarizers + voice engines */}
       <TldrSummary
         headingLabel={`${t.displayName} pricing teardown TL;DR`}

@@ -17,6 +17,7 @@ import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { TldrSummary } from "@/components/seo/tldr-summary";
+import { DirectAnswer } from "@/components/seo/direct-answer";
 import {
   SPEAKABLE_SPEC,
   ACCESS_MODE_TEXTUAL,
@@ -270,6 +271,12 @@ export default async function StackForDetailPage(props: {
       </header>
 
       <Separator className="my-2" />
+
+      {/* Direct answer – speakable TL;DR paragraph for AI Overviews,
+          Perplexity, ChatGPT browse, Claude search. */}
+      <DirectAnswer lastVerified={s.lastVerified} variant="tldr">
+        {s.tldr}
+      </DirectAnswer>
 
       <TldrSummary
         headingLabel={`Key facts for the ${niche?.displayName ?? s.slug} stack`}
