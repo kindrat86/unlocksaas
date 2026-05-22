@@ -461,6 +461,65 @@ const nextConfig = {
       // Next.js path-to-regexp matches a single locale segment via :locale.
       { source: "/:locale/compare", destination: "/:locale/vs", permanent: true },
       { source: "/:locale/compare/:path*", destination: "/:locale/vs/:path*", permanent: true },
+
+      /**
+       * 308 permanent redirect for /get/<slug> → /get-<slug> (2026-05-22).
+       *
+       * The outcome-promise cluster lives on disk at
+       * `app/(marketing)/get/[outcome]/page.tsx` (nested dynamic segment),
+       * but the canonical PUBLIC URL is /get-<slug> — the outcome-as-one-
+       * URL-segment shape is what founders type into Google and what the
+       * sitemap, OG cards, and JSON-LD canonical all declare.
+       *
+       * The companion `rewrites()` block below maps inbound /get-<slug>
+       * traffic to the internal /get/<slug> handler. This redirect closes
+       * the back door: any visitor or crawler that lands directly on
+       * /get/<slug> bounces to the canonical /get-<slug> URL, so neither
+       * Search Console nor AI retrievers ever see two URLs for the same
+       * content.
+       *
+       * The redirect uses Next.js path-to-regexp `:slug` capture against
+       * the segment immediately under /get. The /get hub itself (no
+       * trailing segment) is unaffected; the dynamic detail route is the
+       * only target.
+       *
+       * Brunson Hard-Rule reconciliation: the canonical declared in the
+       * page's metadata (`pageAlternates("/get-${slug}")`) matches the
+       * URL this redirect resolves to. Sitemap, canonical link, OG URL,
+       * and the address bar all agree.
+       */
+      { source: "/get/:slug", destination: "/get-:slug", permanent: true },
+    ];
+  },
+
+  /**
+   * URL rewrites — internal-only path remapping (2026-05-22).
+   *
+   * `/get-<slug>` is the canonical public URL for the outcome-promise
+   * pSEO cluster, but the route file lives at
+   * `app/(marketing)/get/[outcome]/page.tsx` because Next.js App Router
+   * does not parse mixed static-dynamic folder names (`get-[outcome]`
+   * is read as a literal segment, NOT a parameterized one). The rewrite
+   * below bridges the gap: inbound `/get-<slug>` requests are served by
+   * the `/get/[outcome]` handler with `outcome` bound to <slug>, and the
+   * address bar / canonical / sitemap all stay on `/get-<slug>`.
+   *
+   * Rewrites are server-internal — they do NOT cascade back through
+   * `redirects()`, so the companion `/get/:slug → /get-:slug` redirect
+   * above and this rewrite never form a loop. The flow is:
+   *
+   *   browser → /get-first-paying-customer
+   *     → rewrite matches `/get-:outcome` → /get/:outcome internally
+   *     → renders the prerendered SSG output of /get/first-paying-customer
+   *     → response served at the original /get-first-paying-customer URL
+   *
+   * Direct hits on /get/first-paying-customer are 308'd to the canonical
+   * by the redirect block above, so the internal route is reachable only
+   * through the rewrite. No duplicate-content risk.
+   */
+  async rewrites() {
+    return [
+      { source: "/get-:outcome", destination: "/get/:outcome" },
     ];
   },
 };
