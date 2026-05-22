@@ -20,6 +20,7 @@ import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
+import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
 import { allCitationIds } from "@/lib/citations";
 import {
   allApprovedTranslations,
@@ -1090,6 +1091,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.4,
     },
+    // -------------------------------------------------------------------------
+    // The Founder's Diary — faceless YouTube channel (#5, additive to the
+    // locked launch-minimum-four channels).
+    //
+    // Shape mirrors the podcast cluster directly above:
+    //   - /youtube: human-readable hub with channel overview + live-episode
+    //     grid (renders honest empty-state pre-launch).
+    //   - /youtube/<slug>: per-episode landing page with hook + Brunson beat
+    //     + phase. When status="live", upgrades in place to include the
+    //     YouTube watch CTA, inline transcript (strongest AEO signal),
+    //     key takeaways, and VideoObject JSON-LD. generateStaticParams
+    //     enumerates FOUNDERS_DIARY_SLUGS so the 30-episode backlog is
+    //     indexable from day one.
+    //
+    // Priority alignment:
+    //   - /youtube at 0.5 matches /podcast – distribution-surface hub.
+    //   - /youtube/<slug> at 0.45 matches /podcast/<slug> – same shape,
+    //     same indexable transcript signal once the cut ships.
+    //
+    // Honesty: priorities don't change based on live-vs-draft state. The
+    // page renders an honest "scheduled, not yet aired" preview pre-launch
+    // (no fake counts, no synthetic transcripts), so the URL is genuinely
+    // useful to crawlers and the diagnostic CTA still fires. See
+    // strategy/youtube-founders-diary-backlog.md §Backlog hygiene.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/youtube`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/youtube`),
+    },
+    ...FOUNDERS_DIARY_SLUGS.map((slug) => ({
+      url: `${base}/youtube/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/youtube/${slug}`),
+    })),
     // Alexa Flash Briefing JSON feed (VEO uplift landing 2026-05-21).
     // Documented at strategy/voice-assistants-playbook.md. Listed in
     // the sitemap so retrievers discover it without depending on the
