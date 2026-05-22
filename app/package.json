@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/build-workbook-bundle.mjs",
     "build": "next build",
+    "audit:prod": "npm audit --omit=dev --audit-level=low",
     "start": "next start",
     "validate:jsonld": "node scripts/validate-jsonld.mjs",
     "workbooks:bundle": "node scripts/build-workbook-bundle.mjs"
@@ -56,5 +57,19 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@workflow/core": {
+      "devalue": "5.8.1"
+    },
+    "@workflow/world-local": {
+      "undici": "7.25.0"
+    },
+    "@workflow/world-vercel": {
+      "undici": "7.25.0"
+    },
+    "next": {
+      "postcss": "8.5.15"
+    }
   }
 }
