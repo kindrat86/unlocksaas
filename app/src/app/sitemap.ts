@@ -3,6 +3,7 @@ import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
+import { COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
@@ -15,12 +16,16 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SCRIPT_SLUGS } from "@/lib/scripts";
 import { PRICING_PAGE_PATTERN_SLUGS } from "@/lib/pricing-page-examples";
 import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
+import { OUTCOME_SLUGS } from "@/lib/outcomes";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
+import { FOUNDERS_DIARY_SLUGS } from "@/lib/youtube";
+import { DIARY_DATES } from "@/lib/founder-diary";
 import { allCitationIds } from "@/lib/citations";
 import {
   allApprovedTranslations,
@@ -188,6 +193,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/benchmarks",
     "/alternatives-to",
     "/vs",
+    "/compare",
     "/funnel-teardown",
     "/pricing-teardown",
     "/category",
@@ -436,6 +442,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/vs/${slug}`),
     })),
     // ---------------------------------------------------------------------
+    // Programmatic SEO block #4b — /compare Switzerland-style shopping
+    // comparator. Sister surface to /vs/[slug]: lighter quick-verdict shape
+    // with non-overlapping slugs. Catalog: src/lib/compare-catalog.ts.
+    // Each detail page is Article + FAQPage + BreadcrumbList JSON-LD; the
+    // hub uses CollectionPage + Dataset.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/compare`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/compare`),
+    },
+    ...COMPARE_SLUGS.map((slug) => ({
+      url: `${base}/compare/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/compare/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
     // Programmatic SEO block #5 — category roundup pages.
     // Data source: src/lib/categories.ts. Each canonical category bucket
     // aggregates products and comparisons across all underlying manifests.
@@ -650,6 +677,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/answers/${slug}`),
     })),
     // ---------------------------------------------------------------------
+    // Programmatic SEO block #11b — Should I…? decision-helper AEO pages.
+    // Data source: src/lib/should-i.ts. Pure AEO play targeting the
+    // "should I X?" query shape that ChatGPT / Perplexity / Claude cite
+    // verbatim (decision-tree response shape). Each page carries a
+    // single yes / no / depends / not-yet verdict plus reasoning.
+    // QAPage + Article + FAQPage + BreadcrumbList JSON-LD.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/should-i`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/should-i`),
+    },
+    ...SHOULD_I_SLUGS.map((slug) => ({
+      url: `${base}/should-i/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/should-i/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
     // Programmatic SEO block #12 – recordable funnel scripts.
     // Data source: src/lib/scripts.ts. Targets script-template search
     // intent ("VSL script template", "perfect webinar script outline",
@@ -733,7 +782,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/swipe-file/${slug}`),
     })),
     // ---------------------------------------------------------------------
-    // Programmatic SEO block #16 – branded partner landing pages.
+    // Programmatic SEO block #16 – outcome-promise landing pages.
+    // Data source: src/lib/outcomes.ts. Targets the canonical
+    // result-shaped Google query class the post-launch pre-revenue
+    // founder makes: "get first paying customer", "get to 1k mrr",
+    // "get 30 warm leads from cold outreach". URL shape preserves the
+    // outcome-as-one-segment ranking signal: /get-<slug> via a mixed
+    // static-dynamic folder name, NOT /get/<slug>. Article + HowTo +
+    // FAQPage + BreadcrumbList JSON-LD per detail page; CollectionPage +
+    // ItemList on the hub. Slightly higher priority than the niche
+    // cluster (0.55 vs 0.5) because outcome-shaped intent is more
+    // commercial than identity-shaped intent ("for course creators").
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/get`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+      alternates: hreflang(`${base}/get`),
+    },
+    ...OUTCOME_SLUGS.map((slug) => ({
+      url: `${base}/get-${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/get-${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #17 – branded partner landing pages.
     // Data source: src/lib/partners.ts. Pairs with the existing /r/<code>
     // attribution redirect: /partners/<slug> is the shareable destination
     // a partner can link to from their own audience, with their face,
@@ -820,6 +896,38 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.45,
       alternates: hreflang(`${base}/press/topics/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — Founder Diary (Isenberg content-franchise
+    // overlay, 2026-05-22). Data source: src/lib/founder-diary.ts. One
+    // URL per build day, slugged YYYY-MM-DD. BlogPosting + BreadcrumbList
+    // JSON-LD per detail page; Blog + CollectionPage on the hub.
+    //
+    // Hub priority matches /press (0.5) — moderate standalone SERP
+    // value, high recurring-backlink value. Detail entries at 0.45
+    // mirror /press/topics/<slug>: they earn link equity from X / IH
+    // cross-posts that reference the canonical here, not from raw
+    // search volume on date-shaped queries.
+    //
+    // Adding a new entry to DIARY_ENTRIES extends this block on the
+    // next deploy. Brunson Hard-Rule reconciliation: every entry is
+    // grounded in a public artifact (merged PR, deployed surface,
+    // shipped env var) — listing a URL here = a public claim that the
+    // entry on that date is truthful and verifiable.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/founder-diary`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.5,
+      alternates: hreflang(`${base}/founder-diary`),
+    },
+    ...DIARY_DATES.map((date) => ({
+      url: `${base}/founder-diary/${date}`,
+      lastModified: new Date(`${date}T12:00:00Z`),
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/founder-diary/${date}`),
     })),
     // Editorial policy + disclosures + corrections log. E-E-A-T Trust
     // uplift (2026-05-17). Google Search Quality Rater Guidelines §3.1
@@ -1118,6 +1226,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.4,
     },
+    // -------------------------------------------------------------------------
+    // The Founder's Diary — faceless YouTube channel (#5, additive to the
+    // locked launch-minimum-four channels).
+    //
+    // Shape mirrors the podcast cluster directly above:
+    //   - /youtube: human-readable hub with channel overview + live-episode
+    //     grid (renders honest empty-state pre-launch).
+    //   - /youtube/<slug>: per-episode landing page with hook + Brunson beat
+    //     + phase. When status="live", upgrades in place to include the
+    //     YouTube watch CTA, inline transcript (strongest AEO signal),
+    //     key takeaways, and VideoObject JSON-LD. generateStaticParams
+    //     enumerates FOUNDERS_DIARY_SLUGS so the 30-episode backlog is
+    //     indexable from day one.
+    //
+    // Priority alignment:
+    //   - /youtube at 0.5 matches /podcast – distribution-surface hub.
+    //   - /youtube/<slug> at 0.45 matches /podcast/<slug> – same shape,
+    //     same indexable transcript signal once the cut ships.
+    //
+    // Honesty: priorities don't change based on live-vs-draft state. The
+    // page renders an honest "scheduled, not yet aired" preview pre-launch
+    // (no fake counts, no synthetic transcripts), so the URL is genuinely
+    // useful to crawlers and the diagnostic CTA still fires. See
+    // strategy/youtube-founders-diary-backlog.md §Backlog hygiene.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/youtube`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/youtube`),
+    },
+    ...FOUNDERS_DIARY_SLUGS.map((slug) => ({
+      url: `${base}/youtube/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/youtube/${slug}`),
+    })),
     // Alexa Flash Briefing JSON feed (VEO uplift landing 2026-05-21).
     // Documented at strategy/voice-assistants-playbook.md. Listed in
     // the sitemap so retrievers discover it without depending on the

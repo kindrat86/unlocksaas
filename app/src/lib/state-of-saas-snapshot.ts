@@ -77,6 +77,7 @@
 
 import { ALTERNATIVES, ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { ANSWER_ENTRIES, ANSWER_SLUGS } from "@/lib/answers";
+import { SHOULD_I_ENTRIES, SHOULD_I_SLUGS } from "@/lib/should-i";
 import { BENCHMARK_ENTRIES, BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { CATEGORIES, CATEGORY_SLUGS } from "@/lib/categories";
 import { COMPARISONS, COMPARISON_SLUGS } from "@/lib/comparisons";
@@ -295,6 +296,10 @@ const ANSWER_AS_OF: string = latestLastVerified(
   ANSWER_ENTRIES,
   SNAPSHOT_LAST_VERIFIED_DATE,
 );
+const SHOULD_I_AS_OF: string = latestLastVerified(
+  SHOULD_I_ENTRIES,
+  SNAPSHOT_LAST_VERIFIED_DATE,
+);
 const WHY_ISNT_MY_AS_OF: string = latestLastVerified(
   WHY_ISNT_MY_ENTRIES,
   SNAPSHOT_LAST_VERIFIED_DATE,
@@ -325,6 +330,7 @@ const TOTAL_PSEO_PAGES: number =
   COMPARISON_SLUGS.length +
   ALTERNATIVE_SLUGS.length +
   ANSWER_SLUGS.length +
+  SHOULD_I_SLUGS.length +
   WHY_ISNT_MY_SLUGS.length +
   NICHE_SLUGS.length +
   FUNNEL_PLAYBOOK_SLUGS.length +
@@ -464,6 +470,17 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
         "Two-to-four-sentence direct answers under /answers, formatted for AI assistant citation. QAPage + Article + BreadcrumbList JSON-LD per page.",
       sourceUrl: `${BASE_URL}/answers`,
       asOf: ANSWER_AS_OF,
+    },
+    {
+      key: "should_i",
+      category: "editorial-corpus",
+      label: "Should I…? decision-helper AEO pages",
+      value: SHOULD_I_SLUGS.length,
+      unit: "pages",
+      description:
+        "Binary-verdict decision-helper pages under /should-i targeting the 'should I X?' query shape that LLM assistants cite verbatim. Each page carries one yes / no / depends / not-yet verdict plus reasoning. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per page.",
+      sourceUrl: `${BASE_URL}/should-i`,
+      asOf: SHOULD_I_AS_OF,
     },
     {
       key: "benchmarks",

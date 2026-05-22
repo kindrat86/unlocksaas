@@ -7,9 +7,12 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import {
+  allEpisodes,
+  episodePath,
   FOUNDERS_DIARY_CHANNEL,
   hubDiagnosticUrl,
   liveEpisodes,
+  phaseLabel,
 } from "@/lib/youtube";
 
 /**
@@ -47,6 +50,7 @@ export const metadata: Metadata = {
 
 export default function YoutubeHubPage() {
   const episodes = liveEpisodes();
+  const backlog = allEpisodes();
 
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
@@ -116,18 +120,20 @@ export default function YoutubeHubPage() {
             /* Honest empty state. Mirrors the /builders directory convention:
                no fake episode count, no "coming soon" placeholders, just a
                truthful sentence about the gates the channel still has to
-               clear before E01 ships. See
-               strategy/youtube-faceless-channel.md §7. */
-            <div className="rounded-lg border border-border bg-muted/30 p-6 text-sm text-muted-foreground leading-relaxed">
+               clear before E01 airs. See
+               strategy/youtube-faceless-channel.md §7. The 30-episode arc
+               is fully scripted and discoverable through the scheduled-
+               backlog grid below – each entry links to its own detail page
+               that renders an honest scheduled-preview until the operator
+               flips status to live. */
+            <div className="rounded-lg border border-border bg-muted/30 p-6 text-sm text-muted-foreground leading-relaxed mb-8">
               <p className="mb-3">
                 Episode 1 ships after three gates close: the first month&apos;s
                 backlog is fully scripted, the production runbook has been
                 dry-run once end-to-end, and the channel art is live on
-                YouTube. The 30-episode arc is locked in
-                <code className="mx-1 px-1 py-0.5 rounded bg-background text-foreground text-xs">
-                  strategy/youtube-founders-diary-backlog.md
-                </code>
-                .
+                YouTube. The {FOUNDERS_DIARY_CHANNEL.total_episodes_planned}
+                -episode arc is browsable below – each card opens the
+                episode&apos;s scheduled-preview page.
               </p>
               <p>
                 Cadence on launch: {FOUNDERS_DIARY_CHANNEL.cadence}, two short
@@ -137,7 +143,7 @@ export default function YoutubeHubPage() {
               </p>
             </div>
           ) : (
-            <ol className="space-y-4">
+            <ol className="space-y-4 mb-8">
               {episodes.map((ep) => (
                 <li key={ep.id}>
                   <Card>
@@ -147,29 +153,89 @@ export default function YoutubeHubPage() {
                           {ep.id}
                         </span>
                         <h3 className="text-base font-semibold leading-tight">
-                          {ep.title}
+                          <Link
+                            href={episodePath(ep)}
+                            className="hover:underline"
+                          >
+                            {ep.title}
+                          </Link>
                         </h3>
                       </div>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                         {ep.hook_3s}
                       </p>
-                      {ep.youtube_url && (
-                        <Button asChild variant="outline" size="sm">
-                          <Link
-                            href={ep.youtube_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Watch on YouTube
+                      <div className="flex flex-wrap gap-2">
+                        {ep.youtube_url && (
+                          <Button asChild variant="outline" size="sm">
+                            <Link
+                              href={ep.youtube_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Watch on YouTube
+                            </Link>
+                          </Button>
+                        )}
+                        <Button asChild variant="ghost" size="sm">
+                          <Link href={episodePath(ep)}>
+                            Episode page →
                           </Link>
                         </Button>
-                      )}
+                      </div>
                     </CardContent>
                   </Card>
                 </li>
               ))}
             </ol>
           )}
+
+          {/* Scheduled-backlog grid. Always rendered (regardless of live-
+              episode count) because the arc is locked and every entry
+              maps to a real, indexable per-episode page. Pre-launch this
+              is the only navigable episode surface; post-launch it lives
+              beside the live list as the canonical arc index. */}
+          <div className="rounded-lg border border-border bg-background">
+            <div className="border-b border-border px-4 py-3 flex items-baseline justify-between gap-2">
+              <h3 className="text-sm font-semibold">
+                The {FOUNDERS_DIARY_CHANNEL.total_episodes_planned}-episode
+                arc
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Scheduled · pages go live in place when each cut ships
+              </p>
+            </div>
+            <ol className="divide-y divide-border">
+              {backlog.map((ep) => {
+                const isLive = ep.status === "live";
+                return (
+                  <li key={ep.id}>
+                    <Link
+                      href={episodePath(ep)}
+                      className="block px-4 py-3 hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="flex items-baseline gap-3">
+                        <span className="text-xs uppercase tracking-widest text-muted-foreground shrink-0 min-w-[2.25rem]">
+                          {ep.id}
+                        </span>
+                        <span className="text-sm leading-snug flex-1">
+                          {ep.title}
+                        </span>
+                        <span
+                          className={
+                            isLive
+                              ? "text-[10px] uppercase tracking-widest text-green-700 dark:text-green-300 shrink-0"
+                              : "text-[10px] uppercase tracking-widest text-muted-foreground shrink-0"
+                          }
+                        >
+                          {isLive ? "Live" : phaseLabel(ep.phase).split("·")[0].trim()}
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
         </section>
 
         <Separator className="mb-10" />

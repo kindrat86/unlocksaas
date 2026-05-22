@@ -23,6 +23,7 @@ import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
+import { COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
@@ -31,6 +32,7 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import {
   DATASET_BUNDLE,
@@ -70,6 +72,7 @@ import {
 } from "@/lib/seo/podcast";
 import { PODCAST_AUDIO_VOICE } from "@/lib/seo/podcast-audio";
 import { LLMS_TXT_MODELS } from "@/lib/seo/llms-txt-per-model";
+import { DIARY_ENTRIES, DIARY_DATES } from "@/lib/founder-diary";
 
 /**
  * /llms-feed.json – machine-typed JSON sibling of /llms.txt.
@@ -136,6 +139,7 @@ const PSEO_COUNTS = Object.freeze({
   funnelTeardown: TEARDOWN_SLUGS.length,
   pricingTeardown: PRICING_TEARDOWN_SLUGS.length,
   compare: COMPARISON_SLUGS.length,
+  compareShop: COMPARE_SLUGS.length,
   category: CATEGORY_SLUGS.length,
   whyIsntMy: WHY_ISNT_MY_SLUGS.length,
   niches: NICHE_SLUGS.length,
@@ -144,6 +148,7 @@ const PSEO_COUNTS = Object.freeze({
   funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
   funnelPlaybookMatrix: FUNNEL_MATRIX_SLUGS.length,
   answers: ANSWER_SLUGS.length,
+  shouldI: SHOULD_I_SLUGS.length,
   swipeFile: SWIPE_FILE_SLUGS.length,
 });
 
@@ -152,6 +157,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.funnelTeardown +
   PSEO_COUNTS.pricingTeardown +
   PSEO_COUNTS.compare +
+  PSEO_COUNTS.compareShop +
   PSEO_COUNTS.category +
   PSEO_COUNTS.whyIsntMy +
   PSEO_COUNTS.niches +
@@ -160,6 +166,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.funnelPlaybook +
   PSEO_COUNTS.funnelPlaybookMatrix +
   PSEO_COUNTS.answers +
+  PSEO_COUNTS.shouldI +
   PSEO_COUNTS.swipeFile;
 
 /**
@@ -327,6 +334,15 @@ const PSEO_CATALOGS = Object.freeze({
     slugs: COMPARISON_SLUGS,
     count: PSEO_COUNTS.compare,
   },
+  compareShop: {
+    hub: "/compare",
+    slugPattern: "/compare/{slug}",
+    markdownPattern: "/compare/{slug}/md",
+    description:
+      "Switzerland-style shopping comparator. Lighter sister surface to /vs: 5-7 criteria scored symmetrically, pick-A-if / pick-B-if bullets, an honest 'when neither fits' callout that earns trust by admitting both can be wrong, and an indie-founder pick. Non-overlapping slugs to extend head-to-head SERP coverage without duplicating editorial work.",
+    slugs: COMPARE_SLUGS,
+    count: PSEO_COUNTS.compareShop,
+  },
   category: {
     hub: "/category",
     slugPattern: "/category/{slug}",
@@ -407,6 +423,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Direct AEO-formatted answers to 30 specific founder questions across funnel mechanics, pricing, email, metrics, positioning, and the value ladder. Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for citation by AI assistants.",
     slugs: ANSWER_SLUGS,
     count: PSEO_COUNTS.answers,
+  },
+  shouldI: {
+    hub: "/should-i",
+    slugPattern: "/should-i/{decision}",
+    markdownPattern: "/should-i/{decision}/md",
+    description:
+      "Decision-helper AEO pages in the 'should I X?' query shape that LLM assistants cite verbatim (ChatGPT, Perplexity, Claude, Google AI Overviews). Each page carries a single binary verdict (yes / no / depends / not-yet), a one-clause verdict headline, a 2-4 sentence direct answer, and 2-4 supporting bullets. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per detail.",
+    slugs: SHOULD_I_SLUGS,
+    count: PSEO_COUNTS.shouldI,
   },
 });
 
@@ -732,6 +757,32 @@ function buildPayload() {
         ...(ep.audioDurationSec !== undefined
           ? { audioDurationSec: ep.audioDurationSec }
           : {}),
+      })),
+    },
+    /**
+     * Founder Diary descriptor (Isenberg content-franchise overlay,
+     * 2026-05-22). One entry per build day at /founder-diary/<YYYY-MM-DD>,
+     * each grounded in a public artifact (merged PR, deployed surface,
+     * shipped env var). The text arm of The Founder's Diary content
+     * franchise; the YouTube channel of the same name is the video arm.
+     *
+     * JSON consumers that want the canonical citation URL for a given
+     * build day's log read `entries[].url` directly. The hub URL is the
+     * canonical recurring-backlink target for cross-posts on X / IH /
+     * r/saas.
+     */
+    founderDiary: {
+      hubUrl: `${BASE_URL}/founder-diary`,
+      description:
+        "Daily build-in-public log for UnlockSaaS. One indexable URL per build day at /founder-diary/<YYYY-MM-DD>. Brunson Hook / Story / Offer voice; every claim grounded in a merged PR, deployed surface, or shipped env var.",
+      entryCount: DIARY_DATES.length,
+      entries: DIARY_ENTRIES.map((e) => ({
+        date: e.date,
+        url: `${BASE_URL}/founder-diary/${e.date}`,
+        hook: e.hook,
+        tldr: e.tldr,
+        tags: e.tags,
+        pullRequests: e.pullRequests,
       })),
     },
     facts: KEY_FACTS,
