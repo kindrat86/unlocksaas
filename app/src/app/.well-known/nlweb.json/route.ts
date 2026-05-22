@@ -48,6 +48,13 @@ const MANIFEST = {
     "A guided seven-step Brunson Playbook for post-launch pre-revenue indie SaaS founders. Free Diagnostic labels what is broken (Wrong Person / Weak Offer / Weak Belief). $1 Starter unlocks the first two Playbook steps. $49/mo Playbook runs the full seven-step engine with a 60-day Stripe-verified guarantee.",
   ask_endpoint: `${BASE}/api/nlweb/ask`,
   mcp_endpoint: `${BASE}/api/mcp`,
+  // Human-facing companion to the protocol endpoint. A founder lands
+  // here directly; the page server-renders the same BM25 retrieval
+  // result the ask_endpoint returns, plus an optional streaming LLM
+  // gloss as a progressive enhancement. NLWeb-aware agents that want
+  // to surface a "view this in a browser" affordance can deep-link
+  // visitors at the ui_endpoint with ?q= populated.
+  ui_endpoint: `${BASE}/ask`,
   // Companion discovery surfaces. NLWeb-aware agents that also speak
   // MCP, OpenAPI, or the llmstxt.org convention can pick the protocol
   // their runtime supports.
@@ -56,6 +63,8 @@ const MANIFEST = {
     openapi: `${BASE}/openapi.json`,
     llms_txt: `${BASE}/llms.txt`,
     llms_feed: `${BASE}/llms-feed.json`,
+    ask_ui: `${BASE}/ask`,
+    ask_ui_markdown: `${BASE}/ask.md`,
   },
   publisher: {
     name: "UnlockSaaS",
