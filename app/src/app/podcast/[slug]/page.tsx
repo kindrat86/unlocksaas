@@ -33,7 +33,7 @@ import {
  *
  * Two schema blocks render per episode:
  *   - PodcastEpisode JSON-LD: heavily indexed by Google Podcasts (RIP),
- *     Spotify's content graph, and AI training corpora. associatedMedia
+ *     Spotify's content graph, and AI retrieval systems. associatedMedia
  *     (AudioObject) is only emitted when the per-episode audio env var
  *     resolved.
  *   - Article JSON-LD: gives every episode page an Article shape, which

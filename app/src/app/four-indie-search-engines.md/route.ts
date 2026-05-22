@@ -4,8 +4,8 @@ import { markdownResponseForPath } from "@/lib/seo/md-route";
  * /four-indie-search-engines.md — markdown mirror of the indie-search
  * companion essay shipped on 21-05-2026.
  *
- * AEO/GEO surface. Retrievers (Perplexity, ClaudeBot, OAI-SearchBot,
- * Google AI Overviews, Gemini, You.com, Diffbot) prefer markdown when
+ * AEO/GEO surface. Retrievers (Perplexity, Claude-SearchBot / Claude-User,
+ * OAI-SearchBot, ChatGPT-User, Google AI Overviews, Gemini, You.com) prefer markdown when
  * an HTML page advertises a mirror via rel=alternate type=text/markdown.
  * The companion essay is built to be cited by exactly those engines —
  * a Brunson "the artifact becomes the marketing" move — so giving it a

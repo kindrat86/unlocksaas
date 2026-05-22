@@ -73,8 +73,12 @@ User-Agent: ClaudeBot
 Disallow: Training
 Disallow: Storing
 
-# -- Legacy/undocumented Anthropic token: deny training/storing until a
+# -- Legacy/undocumented Anthropic tokens: deny training/storing until a
 #    non-training citation role is documented.
+User-Agent: Claude-Web
+Disallow: Training
+Disallow: Storing
+
 User-Agent: anthropic-ai
 Disallow: Training
 Disallow: Storing

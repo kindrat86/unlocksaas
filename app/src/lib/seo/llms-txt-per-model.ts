@@ -131,11 +131,8 @@ const ALIAS_MAP: Record<string, LlmsTxtModel> = {
   // Anthropic
   claude: "claude",
   anthropic: "claude",
-  "claude-web": "claude",
   "claude-searchbot": "claude",
   "claude-user": "claude",
-  claudebot: "claude",
-  "anthropic-ai": "claude",
   // OpenAI
   gpt: "gpt",
   openai: "gpt",

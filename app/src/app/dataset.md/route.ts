@@ -29,8 +29,9 @@ import {
  * Same Brunson Hard-Rule discipline as the other .md mirrors: every fact
  * below is present, verifiable, on /dataset HTML. Nothing is exclusive
  * to this surface. The mirror exists because retrieval pipelines
- * (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI Overviews,
- * Gemini, You.com, Diffbot) prefer plain markdown over JS-rendered HTML
+ * (Perplexity, Claude-SearchBot / Claude-User, OAI-SearchBot,
+ * ChatGPT-User, Google AI Overviews, Gemini, You.com) prefer plain
+ * markdown over JS-rendered HTML
  * for entity bodies.
  *
  * Why this is hand-built, not registered with the SURFACES registry
@@ -218,4 +219,3 @@ export function OPTIONS() {
     },
   });
 }
-

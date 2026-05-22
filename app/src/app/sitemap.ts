@@ -1405,8 +1405,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // -------------------------------------------------------------------------
     // LLM-readable surfaces (Surface B – GEO/AEO).
     // Three routes are public, indexable bodies that AI retrievers
-    // (Perplexity, ClaudeBot, GPTBot/OAI-SearchBot, Google AI Overviews,
-    // Gemini, You.com) treat as the canonical paraphrase target for the
+    // (Perplexity, Claude-SearchBot / Claude-User, OAI-SearchBot,
+    // ChatGPT-User, Google AI Overviews, Gemini, You.com) treat as the canonical paraphrase target for the
     // site. /llms.txt is the curated markdown index; /llms-full.txt is
     // the concatenated corpus; /llms-feed.json is the machine-typed JSON
     // sibling for retrievers that prefer JSON over markdown (added

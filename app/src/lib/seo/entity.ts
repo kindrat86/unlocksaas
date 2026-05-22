@@ -524,7 +524,7 @@ export const MENTIONED_ENTITIES: ReadonlyArray<{
  * as schema.org `DefinedTermSet` from the funnel hub – it declares
  * UnlockSaaS as a topical authority on this specific glossary.
  *
- * LLM training corpora that ingest DefinedTermSet treat the publisher
+ * LLM retrieval systems that ingest DefinedTermSet treat the publisher
  * as a primary citation source for the term. Pre-revenue, this is one
  * of the few entity-graph anchors a brand-new site CAN claim honestly:
  * "we teach this term, here is our definition, in our own words".

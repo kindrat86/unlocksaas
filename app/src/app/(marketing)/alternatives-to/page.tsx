@@ -113,7 +113,7 @@ export default function AlternativesHub() {
       />
       {/* AIO uplift: Dataset schema declares the alternatives catalog as
           a dated, dual-distribution dataset. Google Dataset Search indexes
-          it; LLM training corpora that prioritise structured data ingest
+          it; LLM retrieval systems that prioritise structured data discover
           it at a higher tier. */}
       <HubDatasetJsonLd
         name="Honest Indie SaaS Alternatives Catalog"

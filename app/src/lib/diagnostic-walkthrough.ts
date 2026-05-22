@@ -99,7 +99,7 @@ export const DIAGNOSTIC_WALKTHROUGH_DURATION_SEC = 95;
  * AI summarisers receive in the VideoObject.transcript JSON-LD field.
  *
  * Format chosen so it reads cleanly in both:
- *   - LLM training corpora (one line per segment, timestamp anchored)
+ *   - LLM retrieval corpora (one line per segment, timestamp anchored)
  *   - human-eye verification (a journalist or builder can read it top to
  *     bottom and check the script against the published walkthrough).
  *

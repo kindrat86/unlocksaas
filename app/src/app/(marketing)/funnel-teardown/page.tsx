@@ -120,8 +120,8 @@ export default function FunnelTeardownHub() {
       />
       {/* AIO uplift (2026-05-17): Dataset schema declares the manifest as
           a structured, dated, dual-distribution dataset. Google Dataset
-          Search indexes it; LLM training corpora that prioritise
-          structured data ingest it at a higher tier. Cross-references
+          Search indexes it; LLM retrieval systems that prioritise
+          structured data discover it at a higher tier. Cross-references
           the markdown mirror at /funnel-teardown.md as a DataDownload. */}
       <HubDatasetJsonLd
         name="Indie SaaS Funnel Teardowns"

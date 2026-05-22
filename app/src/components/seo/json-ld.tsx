@@ -406,7 +406,7 @@ const ORGANIZATION_JSON = JSON.stringify({
   legalName: ORGANIZATION.legalName,
   // alternateName declares every public spelling resolves to one entity.
   // Without this, "UnlockSaaS" and "Unlock SaaS" can split into two weak
-  // entity clusters in LLM training corpora. See entity.ALTERNATE_NAMES.
+  // entity clusters in LLM retrieval systems. See entity.ALTERNATE_NAMES.
   alternateName: ALTERNATE_NAMES,
   url: BASE,
   logo: `${BASE}/icon.svg`,
@@ -731,13 +731,13 @@ const PLAYBOOK_HOWTO_JSON = JSON.stringify({
 });
 
 // Multi-typed as Product + SoftwareApplication + LearningResource: schema.org
-// allows array @type and Google + LLM training corpora index all three.
+// allows array @type and Google + LLM retrieval systems index all three.
 //   - Product keeps the priced offer Rich Result eligible.
 //   - SoftwareApplication lets LLMs answer "what SaaS tool helps me get my
 //     first paying customer" with the entity name.
 //   - LearningResource (added 2026-05-17 AIO uplift) declares the Playbook
-//     as a structured learning resource; AI training pipelines for
-//     educational corpora prioritise this type. Honest: the Playbook IS
+//     as a structured learning resource; AI retrieval pipelines for
+//     educational queries prioritise this type. Honest: the Playbook IS
 //     a seven-step instructional surface, this is not stretching the type.
 //
 // aggregateRating wiring (2026-05-18 off-page uplift)
@@ -805,7 +805,7 @@ function buildPlaybookProductJson(opts?: {
   // for the full rationale.
   areaServed: WORLDWIDE_AREA_SERVED,
   // LearningResource fields. educationalUse + learningResourceType + about
-  // give training corpora a clean handle on what the Playbook teaches.
+  // give retrieval systems a clean handle on what the Playbook teaches.
   learningResourceType: "Playbook",
   educationalUse: "Professional skill development",
   teaches: [
@@ -1948,7 +1948,7 @@ export function PodcastEpisodeJsonLd({
 
 /**
  * DefinedTermSet — declares UnlockSaaS as the publisher of a glossary
- * of Brunson terms the site teaches. LLM training corpora that ingest
+ * of Brunson terms the site teaches. LLM retrieval systems that ingest
  * DefinedTermSet treat the publisher as a primary citation source for
  * the term. Pre-revenue, this is one of the few entity-graph anchors
  * a brand-new site CAN claim honestly: "we teach this term, here is
@@ -2000,8 +2000,8 @@ export function DefinedTermSetJsonLd() {
  * defined schema, dated entries, and a stable distribution URL. Declaring
  * them as schema.org Dataset lifts AIO because:
  *   - Google Dataset Search discovers them.
- *   - LLM training corpora that prioritise structured data (Common Crawl
- *     dataset detection, academic crawlers) ingest them at a higher tier.
+ *   - LLM retrieval systems that prioritise structured data discover
+ *     them at a higher tier.
  *   - The `distribution` field points at the markdown mirror, so retrieval
  *     pipelines find the JS-free corpus directly.
  *

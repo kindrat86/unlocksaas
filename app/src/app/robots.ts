@@ -11,7 +11,7 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  *   1. `*`               -- every crawler (Google, Bing, Yandex, etc.). Public
  *                          marketing surfaces allowed; private/auth/api blocked.
  *   2. AI search/answer  -- explicit Allow for crawlers that power citation
- *                          surfaces (ChatGPT, Claude, Perplexity, DuckAssist,
+ *                          surfaces (ChatGPT, Claude search/user fetch, Perplexity, DuckAssist,
  *                          Mistral, You.com, Cohere inference, GoogleOther).
  *                          Distribution > scrape-protection for a pre-revenue
  *                          SaaS where AI-answer citation IS the channel.
@@ -44,7 +44,8 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  * Spawning opt-out declaration:    /ai.txt
  *
  * Brunson Hard-Rule reconciliation: no fabricated bot names, no aspirational
- * crawlers. Every entry is a real, currently operating user-agent string.
+ * crawlers. Every entry is either a documented current user-agent or an
+ * explicitly labelled legacy/undocumented fallback that is blocked.
  *
  * Disallow list for `*` blocks:
  *  - /playbook/*         -- authenticated member area; per-user data
@@ -131,8 +132,8 @@ export default function robots(): MetadataRoute.Robots {
   //   pointing back to /foo (the HTML page). Google then reports it as
   //   "Alternative page with proper canonical tag" — accurate but wasted
   //   crawl budget. The markdown mirror exists for AI retrievers
-  //   (Perplexity, Claude, GPT, AI Overviews via Google-Extended which is
-  //   distinct from Googlebot's web index) discovered via /llms.txt, not
+  //   (Perplexity, Claude-SearchBot / Claude-User, OAI-SearchBot,
+  //   ChatGPT-User, GoogleOther) discovered via /llms.txt, not
   //   for the HTML web index. Web crawlers see /foo (HTML); AI crawlers
   //   see /foo.md (same content, machine-friendlier shape).
   //
@@ -219,8 +220,9 @@ export default function robots(): MetadataRoute.Robots {
     // Anthropic ClaudeBot -- model-development crawl; Claude-SearchBot and
     // Claude-User remain allowed for citation/retrieval surfaces.
     "ClaudeBot",
-    // Legacy/undocumented Anthropic token. Deny until Anthropic documents a
-    // non-training citation role for it.
+    // Legacy/undocumented Anthropic tokens. Deny until Anthropic documents a
+    // non-training citation role for them.
+    "Claude-Web",
     "anthropic-ai",
     // OpenAI GPTBot -- training corpus only; ChatGPT-User is the citation UA.
     "GPTBot",
