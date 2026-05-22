@@ -3,7 +3,11 @@ import {
   NEXT_REVIEW_DATE,
   STRATEGY_LOCK_DATE,
 } from "@/lib/seo/freshness";
-import { BASE_URL } from "@/lib/seo/entity";
+import {
+  BASE_URL,
+  ORGANIZATION_WIKIDATA_QID,
+  ORGANIZATION_WIKIDATA_URL,
+} from "@/lib/seo/entity";
 import {
   ENGINE_BY_LLMS_TXT_MODEL,
   tagBodyLinks,
@@ -444,6 +448,18 @@ ${sharedFooter()}
 }
 
 function geminiBody(): string {
+  // Wikidata bullet is conditional on the operator-activated Q-URL env. In
+  // production the env is set (Q139863921 / activated 21-05-2026); in a
+  // fresh checkout it's undefined and the line is omitted entirely –
+  // Brunson Hard-Rule, no hardcoded Q-ID drift between this body and
+  // the canonical entity.ts source of truth.
+  const wikidataEntityLine =
+    ORGANIZATION_WIKIDATA_QID && ORGANIZATION_WIKIDATA_URL
+      ? `- **Wikidata** – ${ORGANIZATION_WIKIDATA_QID} (UnlockSaaS). Resolves at ${ORGANIZATION_WIKIDATA_URL}. Bidirectional sameAs claim with the Organization JSON-LD on the canonical homepage.\n`
+      : "";
+  const wikidataSameAsLine = ORGANIZATION_WIKIDATA_QID
+    ? `- Wikidata: ${ORGANIZATION_WIKIDATA_QID}\n`
+    : "";
   return `${sharedHeader("Gemini / GoogleOther")}
 
 ## Why this view is ordered for Gemini
@@ -452,8 +468,7 @@ Google's search and answer retrievers (Gemini, AI Overviews, GoogleOther) weight
 
 ## Entity graph
 
-- **Wikidata** – Q139863921 (UnlockSaaS). Resolves at https://www.wikidata.org/wiki/Q139863921. Bidirectional sameAs claim with the Organization JSON-LD on the canonical homepage.
-- **Entity JSON-LD** – [\`${BASE_URL}/.well-known/entity.jsonld\`](${BASE_URL}/.well-known/entity.jsonld) – Organization, Person, WebSite, Product blocks with stable \`@id\` fragments (\`#organization\`, \`#founder\`, \`#website\`, \`#product-playbook\`, \`#service-diagnostic\`).
+${wikidataEntityLine}- **Entity JSON-LD** – [\`${BASE_URL}/.well-known/entity.jsonld\`](${BASE_URL}/.well-known/entity.jsonld) – Organization, Person, WebSite, Product blocks with stable \`@id\` fragments (\`#organization\`, \`#founder\`, \`#website\`, \`#product-playbook\`, \`#service-diagnostic\`).
 - **DefinedTermSet** – [\`${BASE_URL}/glossary\`](${BASE_URL}/glossary) declares one DefinedTermSet with sixteen DefinedTerm children, each with stable \`@id\` (\`#hook\`, \`#story\`, \`#offer\`, \`#big-domino\`, …).
 - **Dataset** – Dataset JSON-LD on [\`${BASE_URL}/dataset\`](${BASE_URL}/dataset). Eligible for Google Dataset Search. Includes \`includedInDataCatalog\` cross-references for Hugging Face + Zenodo (env-gated until activated).
 - **PodcastSeries + PodcastEpisode** – anchored on \`#podcast\` @id across the press page and per-episode pages at \`${BASE_URL}/podcast/<slug>\`.
@@ -461,8 +476,7 @@ Google's search and answer retrievers (Gemini, AI Overviews, GoogleOther) weight
 ## Knowledge Graph anchors (sameAs)
 
 Organization sameAs array includes (env-gated; populated as live):
-- Wikidata: Q139863921
-- Wikipedia: stub draft submitted; awaiting patrol
+${wikidataSameAsLine}- Wikipedia: stub draft submitted; awaiting patrol
 - Founder profiles: Indie Hackers, Product Hunt, GitHub, X, LinkedIn
 - Public dataset: Zenodo DOI (when published), Hugging Face dataset (when published)
 

@@ -31,7 +31,7 @@
  * URLs are sensitive.
  */
 
-import { DEFINED_TERMS, KNOWS_ABOUT } from "@/lib/seo/entity";
+import { DEFINED_TERMS, KNOWS_ABOUT, extractWikidataQid } from "@/lib/seo/entity";
 
 /**
  * Reads a candidate URL from env. Returns undefined if the env var is
@@ -73,6 +73,45 @@ function readCsvEnv(key: string): readonly string[] {
 }
 
 /**
+ * Knowledge-Graph anchors for the Founder Person entity – parallel to the
+ * Organization-level slots in entity.ts. Maryan-the-Person and Unlock-SaaS-
+ * the-Organization are SEPARATE entities in the Wikidata / Wikipedia graph;
+ * each can have its own Q-item and its own Wikipedia article once notable.
+ *
+ * The Founder slots stay empty until the Person passes Wikidata notability
+ * (typically: authorship of a notable work, founder of a notable company,
+ * or two non-trivial secondary sources). Brunson Hard-Rule: never fabricate
+ * Maryan's Q-ID. The empty default is honest and correct.
+ *
+ * Exposed as hoisted module-scope constants so consumers other than sameAs
+ * can resolve them:
+ *   - FOUNDER_WIKIDATA_URL    – Person.sameAs row.
+ *   - FOUNDER_WIKIDATA_QID    – Person.identifier[] PropertyValue.
+ *   - FOUNDER_WIKIPEDIA_URL   – Person.sameAs row AND Person.mainEntityOfPage
+ *                               (one-to-one authoritative-description anchor).
+ */
+export const FOUNDER_WIKIDATA_URL: string | undefined = readUrlEnv(
+  "NEXT_PUBLIC_FOUNDER_WIKIDATA_URL",
+);
+
+export const FOUNDER_WIKIPEDIA_URL: string | undefined = readUrlEnv(
+  "NEXT_PUBLIC_FOUNDER_WIKIPEDIA_URL",
+);
+
+/**
+ * Bare Wikidata Q-ID for the Founder Person (e.g. "Q987654321"). Derived
+ * from FOUNDER_WIKIDATA_URL via the shared `extractWikidataQid` helper in
+ * entity.ts – same validation, same rejection rules.
+ *
+ * Undefined until both:
+ *   1. NEXT_PUBLIC_FOUNDER_WIKIDATA_URL is set to a valid https URL.
+ *   2. That URL's last path segment matches `^Q\d+$`.
+ */
+export const FOUNDER_WIKIDATA_QID: string | undefined = extractWikidataQid(
+  FOUNDER_WIKIDATA_URL,
+);
+
+/**
  * Build the founder's `sameAs` array from per-platform env vars.
  *
  * Each platform has its own env slot so the operator can flip one at a
@@ -85,15 +124,20 @@ function readCsvEnv(key: string): readonly string[] {
  * is a fabrication tell to KG validators.
  *
  * Env vars consulted (suggested fill order by GEO/AIO leverage):
- *   1. NEXT_PUBLIC_FOUNDER_SAMEAS_LINKEDIN
- *   2. NEXT_PUBLIC_FOUNDER_SAMEAS_TWITTER
- *   3. NEXT_PUBLIC_FOUNDER_SAMEAS_GITHUB
- *   4. NEXT_PUBLIC_FOUNDER_SAMEAS_CRUNCHBASE
- *   5. NEXT_PUBLIC_FOUNDER_SAMEAS_PRODUCT_HUNT
- *   6. NEXT_PUBLIC_FOUNDER_SAMEAS_ANGELLIST
+ *   1. NEXT_PUBLIC_FOUNDER_WIKIDATA_URL          (highest – KG anchor)
+ *   2. NEXT_PUBLIC_FOUNDER_WIKIPEDIA_URL         (highest – LLM training corpus)
+ *   3. NEXT_PUBLIC_FOUNDER_SAMEAS_LINKEDIN
+ *   4. NEXT_PUBLIC_FOUNDER_SAMEAS_TWITTER
+ *   5. NEXT_PUBLIC_FOUNDER_SAMEAS_GITHUB
+ *   6. NEXT_PUBLIC_FOUNDER_SAMEAS_CRUNCHBASE
+ *   7. NEXT_PUBLIC_FOUNDER_SAMEAS_PRODUCT_HUNT
+ *   8. NEXT_PUBLIC_FOUNDER_SAMEAS_ANGELLIST
  */
 function buildFounderSameAs(): readonly string[] {
   const candidates = [
+    // Knowledge-Graph anchors first – strongest signals in the array.
+    FOUNDER_WIKIDATA_URL,
+    FOUNDER_WIKIPEDIA_URL,
     readUrlEnv("NEXT_PUBLIC_FOUNDER_SAMEAS_LINKEDIN"),
     readUrlEnv("NEXT_PUBLIC_FOUNDER_SAMEAS_TWITTER"),
     readUrlEnv("NEXT_PUBLIC_FOUNDER_SAMEAS_GITHUB"),

@@ -35,6 +35,7 @@ import {
   KNOWS_ABOUT,
   MENTIONED_ENTITIES,
   ORGANIZATION,
+  ORGANIZATION_IDENTIFIERS,
   ORGANIZATION_MAIN_ENTITY_OF_PAGE,
   ORGANIZATION_SAME_AS,
   PUBLISHING_PRINCIPLES_URL,
@@ -56,6 +57,7 @@ import {
   FOUNDER_AWARDS,
   FOUNDER_KNOWS_ABOUT,
   FOUNDER_SAME_AS,
+  FOUNDER_WIKIDATA_QID,
 } from "@/lib/seo/founder";
 import {
   FOUNDER_WORK_EXAMPLES,
@@ -489,26 +491,15 @@ const ORGANIZATION_JSON = JSON.stringify({
   // pattern for stable IDs that are not URLs. Knowledge Graph and LLM
   // retrieval pipelines walk Organization.identifier[] to confirm an
   // entity card is keyed to the same domain / founding date / canonical
-  // manifest URL the body content names. Mirrors the identifier array on
-  // /.well-known/entity.jsonld so both surfaces declare the same machine
-  // IDs for the entity.
-  identifier: [
-    {
-      "@type": "PropertyValue",
-      propertyID: "domain",
-      value: "unlocksaas.com",
-    },
-    {
-      "@type": "PropertyValue",
-      propertyID: "foundingDate",
-      value: ORGANIZATION.foundingDate,
-    },
-    {
-      "@type": "PropertyValue",
-      propertyID: "canonical-manifest",
-      value: `${BASE}/.well-known/entity.jsonld`,
-    },
-  ],
+  // manifest URL / Wikidata Q-ID the body content names.
+  //
+  // Source-of-truth is ORGANIZATION_IDENTIFIERS in src/lib/seo/entity.ts –
+  // the same constant feeds /.well-known/entity.jsonld so both surfaces
+  // declare byte-identical identifier[] rows. The Wikidata PropertyValue
+  // row (propertyID="wikidata") appears conditionally when the operator
+  // has activated NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL with a valid Q-URL;
+  // omitted entirely when unset (Brunson Hard-Rule, no fabricated IDs).
+  identifier: ORGANIZATION_IDENTIFIERS,
   sameAs: SAME_AS,
 });
 
@@ -1210,8 +1201,34 @@ function buildPersonJson(): string {
           })),
         }
       : {};
+  // identifier[] – machine-readable Person cross-references. Knowledge
+  // Graph walks Person.identifier[propertyID="wikidata"] to resolve the
+  // entity card to the canonical Wikidata item without URL-parsing the
+  // sameAs row. Conditional: omitted entirely when FOUNDER_WIKIDATA_QID
+  // is undefined (no Wikidata Q-item yet for the founder). Brunson
+  // Hard-Rule: never ship an empty identifier[] – the key is dropped
+  // when the array would have zero real rows.
+  //
+  // Adjacent future slots (intentionally omitted for this iteration to
+  // keep scope narrow – each requires its own env-driven plumbing):
+  //   - propertyID="orcid"          – when NEXT_PUBLIC_UNLOCKSAAS_FOUNDER_ORCID
+  //                                   is exposed via founder.ts as a constant.
+  //   - propertyID="github"         – GitHub username slug.
+  //   - propertyID="twitter"        – X / Twitter handle.
+  const identifier = FOUNDER_WIKIDATA_QID
+    ? {
+        identifier: [
+          {
+            "@type": "PropertyValue",
+            propertyID: "wikidata",
+            value: FOUNDER_WIKIDATA_QID,
+          },
+        ],
+      }
+    : {};
   return JSON.stringify({
     ...base,
+    ...identifier,
     ...sameAs,
     ...alumniOf,
     ...award,

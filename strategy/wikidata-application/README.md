@@ -153,20 +153,55 @@ No further code changes needed. The env var `NEXT_PUBLIC_UNLOCKSAAS_WIKIDATA_URL
 flows through:
 
 - `app/src/lib/seo/entity.ts` → `ORGANIZATION_SAME_AS` (Organization.sameAs)
+- `app/src/lib/seo/entity.ts` → `ORGANIZATION_WIKIDATA_QID` – the bare
+  Q-ID is extracted from the URL via `extractWikidataQid()` and surfaced
+  as a `PropertyValue` with `propertyID="wikidata"` in
+  `ORGANIZATION_IDENTIFIERS`. This is the canonical machine-readable
+  form Google's Knowledge Graph resolves WITHOUT URL parsing; pairing
+  it with the sameAs URL gives the entity both a one-to-one structured
+  anchor AND a crawlable URL (the pattern KG documentation recommends).
 - `app/src/lib/seo/entity.ts` → `ORGANIZATION_MAIN_ENTITY_OF_PAGE` only when
   Wikipedia URL is also set (currently uses `NEXT_PUBLIC_UNLOCKSAAS_WIKIPEDIA_URL`
   for the dedicated mainEntityOfPage slot, but the Q-URL also strengthens
   the schema graph via sameAs).
 - `app/src/components/seo/json-ld.tsx` → embeds in Organization + Person
   schema on every page (site-wide, via the root-layout OrganizationJsonLd).
+  Organization.identifier[] now carries the `wikidata` PropertyValue
+  alongside the existing `domain`, `foundingDate`, and `canonical-manifest`
+  rows via the shared `ORGANIZATION_IDENTIFIERS` constant.
 - `app/src/app/.well-known/entity.jsonld/route.ts` → embeds in the
-  canonical entity manifest.
+  canonical entity manifest. Uses the same `ORGANIZATION_IDENTIFIERS`
+  constant so the in-page JSON-LD and the manifest declare byte-identical
+  identifier[] rows (a crawler that diffs them sees no drift).
+- `app/src/lib/seo/llms-txt-per-model.ts` → the Gemini-targeted feed
+  reads `ORGANIZATION_WIKIDATA_QID` + `ORGANIZATION_WIKIDATA_URL` at render
+  time and renders the entity-graph bullet only when both resolve. No
+  hardcoded Q-ID strings; the source of truth is the env-driven constant.
 - `app/src/app/llms-feed.json` → exposed to AI retrievers in the
   machine-typed JSON sibling.
 
 The activation moves UnlockSaaS from "self-published entity manifest only"
 to "Wikidata-anchored entity," which Knowledge Graph weights orders of
 magnitude higher.
+
+### Founder (Person) Wikidata Q-item – parallel infrastructure
+
+The Founder Person entity is SEPARATE from the Organization entity in the
+KG graph; each gets its own Q-item once notable. Wired-but-empty slots:
+
+- `NEXT_PUBLIC_FOUNDER_WIKIDATA_URL`   → `FOUNDER_WIKIDATA_URL`, flows into
+  `FOUNDER_SAME_AS` (Person.sameAs row).
+- Extracted `FOUNDER_WIKIDATA_QID` → Person.identifier[] PropertyValue with
+  `propertyID="wikidata"` (only emitted when the URL parses to a valid
+  Q-shape; never ships an empty row).
+- `NEXT_PUBLIC_FOUNDER_WIKIPEDIA_URL`  → flows into `FOUNDER_SAME_AS`. Future
+  work can also surface it as Person.mainEntityOfPage when a real
+  Wikipedia article exists for the founder.
+
+Founder Q-item notability bar is typically higher than Organization
+(needs authorship of a notable work, founding of a notable company,
+or two non-trivial secondary biographical sources). The slots stay
+empty until Maryan meets that bar.
 
 ---
 
@@ -197,4 +232,6 @@ Possible reasons and remedies:
   and stays absent from the schema until a real, verified Q-ID exists.
   The kit does not pre-populate the env var.
 
-Last verified: 2026-05-20.
+Last verified: 2026-05-22 (Q139863921 activated 21-05-2026; bare-Q-ID
+PropertyValue identifier wired site-wide; Founder Person Wikidata slot
+infrastructure shipped, awaiting Founder notability bar).
