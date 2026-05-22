@@ -82,6 +82,33 @@ import {
 
 const BASE = "https://unlocksaas.com";
 
+// ---------------------------------------------------------------------------
+// Canonical Offer @id anchors and price-validity window (2026-05-22)
+// ---------------------------------------------------------------------------
+// Declared at top of module (alongside BASE) because the priced Product
+// node (buildPlaybookProductJson) is evaluated at module load and needs
+// to cross-reference these constants in its Core Offer @id field. The
+// helper builders that consume them (buildStarterOfferNode,
+// buildCoreOfferNode, buildStarterCoreAggregateOffer) live further down
+// near the SoftwareApplication blocks where they are used; the constants
+// hoist their declarations into the same lexical scope without forcing
+// the helpers to move too.
+//
+// Single source of truth for the two Stripe-locked tiers:
+//   - $1 Starter        one-time   STARTER_OFFER_ID
+//   - $49/mo Core       recurring  CORE_OFFER_ID
+// ---------------------------------------------------------------------------
+
+const STARTER_OFFER_ID = `${BASE}/#offer-starter`;
+const CORE_OFFER_ID = `${BASE}/#offer-core`;
+
+// schema.org/Offer requires a priceValidUntil window for Google's Product
+// Rich Result eligibility on non-expiring digital offers. Set one year
+// forward from the audit-cycle date (2026-05-22). Refresh on each audit;
+// the field is a caching hint, not a marketing urgency claim, so the
+// Brunson Hard-Rule (no fabricated urgency) is intact.
+const PRICE_VALID_UNTIL = "2027-05-22";
+
 /**
  * Speakable Specification cssSelector list.
  *
@@ -872,10 +899,24 @@ function buildPlaybookProductJson(opts?: {
   creator: { "@id": ID.person },
   offers: {
     "@type": "Offer",
+    // Canonical Core-tier Offer @id. Cross-referenced from the homepage
+    // SoftwareApplication AggregateOffer and the /starter
+    // SoftwareApplication AggregateOffer so all three surfaces resolve
+    // to a single Offer entity in the schema graph (2026-05-22 uplift).
+    "@id": CORE_OFFER_ID,
+    name: "$49/mo Core",
+    description:
+      "Subscription. Unlocks the full seven-step Playbook with the 60-day money-back guarantee verified by Stripe.",
     price: "49",
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: `${BASE}/playbook-sales`,
+    // priceValidUntil: schema.org/Offer requires a validity window for
+    // Google's Product Rich Result eligibility on non-expiring offers.
+    // Set to the shared PRICE_VALID_UNTIL constant so the three Core
+    // Offer declarations (homepage + /starter + /playbook-sales) carry
+    // the same window without drift.
+    priceValidUntil: PRICE_VALID_UNTIL,
     seller: { "@id": ID.organization },
     // eligibleRegion: Offer-scoped worldwide declaration. Pairs with
     // Product.areaServed above and MerchantReturnPolicy.applicableCountry
@@ -884,6 +925,19 @@ function buildPlaybookProductJson(opts?: {
     // worldwide, fulfilled worldwide, and refundable worldwide.
     // Source: WORLDWIDE_PLACE in entity.ts ("no Local SEO" decision).
     eligibleRegion: WORLDWIDE_PLACE,
+    // Subscription category + priceSpecification mirror the homepage /
+    // /starter AggregateOffer declaration so the canonical Core Offer
+    // carries the recurring-billing signal even when the consumer parser
+    // does not deduplicate by @id.
+    category: "Subscription",
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: "49",
+      priceCurrency: "USD",
+      // ISO 8601 duration: P1M = recurring monthly.
+      billingDuration: "P1M",
+      unitText: "MONTH",
+    },
     // E-E-A-T Trust uplift (2026-05-17). The 60-day money-back guarantee
     // is real, code-enforced (Stripe-verified at refund time per
     // strategy/workbooks/01-sales-funnel-secrets.md §2), and the single
@@ -2862,18 +2916,161 @@ export function SnapshotJsonLd(props: SnapshotJsonLdInput) {
 }
 
 // ---------------------------------------------------------------------------
-// SoftwareApplication schema (2026-05-21)
+// Shared price-ladder helpers (2026-05-22)
+// ---------------------------------------------------------------------------
+// Single source of truth for the two priced Stripe products (locked per
+// project_unlocksaas_stripe memory):
+//
+//   - $1 Starter        one-time   `@id` STARTER_OFFER_ID
+//   - $49/mo Core       recurring  `@id` CORE_OFFER_ID
+//
+// The constants STARTER_OFFER_ID, CORE_OFFER_ID, and PRICE_VALID_UNTIL
+// are declared at module top (alongside BASE) so the PLAYBOOK_PRODUCT_JSON
+// builder can reference them at module load without hitting a TDZ. The
+// helper functions below live here, near the SoftwareApplication blocks
+// that consume them, because their callers (SOFTWARE_APPLICATION_JSON and
+// STARTER_SOFTWARE_APPLICATION_JSON) are evaluated AFTER this point.
+//
+// The same AggregateOffer is referenced from two SoftwareApplication
+// mount points -- the canonical homepage block AND the /starter block --
+// so the price-ladder JSON cannot drift between surfaces. Both mount
+// points share the same @id (BASE/#app) and now the same offers payload;
+// Google's structured-data parser treats them as one entity declared
+// from two pages, the documented schema.org pattern for canonical
+// SaaS apps.
+//
+// Why this matters for Google rich snippets ("starting at $1"):
+//   The Rich Result for SoftwareApplication / Product reads the lowPrice
+//   field on AggregateOffer to render the "from $X" copy in SERPs. Before
+//   this change the canonical homepage SoftwareApplication block declared
+//   a single $49 Offer -- so Google rendered "from $49." The /starter
+//   page already declared the proper $1 ladder, but it is not the
+//   canonical URL the homepage SERP card draws from. With the homepage
+//   block now mirroring the same AggregateOffer, the SERP card on the
+//   canonical URL renders "from $1" -- matching the entry-point copy on
+//   every commercial page on the site.
+//
+// Brunson Hard-Rule check on every field:
+//   - Prices match the locked Stripe products in project_unlocksaas_stripe.
+//   - priceValidUntil set one year forward from today (the schema.org
+//     caching hint, NOT a marketing urgency claim -- the field is a
+//     standard validity-window declaration; both Google and Schema.org
+//     documentation recommend setting it to keep Offer markup live).
+//   - applicableCountry "Worldwide" matches Organization.areaServed.
+//   - No fabricated aggregateRating on the Offer (we use the honest
+//     count-gated rating helper in lib/seo/review-rating on the priced
+//     Product node only).
+// ---------------------------------------------------------------------------
+
+function buildStarterOfferNode(): Record<string, unknown> {
+  return {
+    "@type": "Offer",
+    "@id": STARTER_OFFER_ID,
+    name: "$1 Starter",
+    description:
+      "One-time purchase. Unlocks Steps 1 and 2 of the Playbook (dream customer + offer). No subscription, no auto-upgrade.",
+    price: "1",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: `${BASE}/starter`,
+    priceValidUntil: PRICE_VALID_UNTIL,
+    seller: { "@id": ID.organization },
+    eligibleRegion: WORLDWIDE_PLACE,
+    category: "OneTimePurchase",
+  };
+}
+
+function buildCoreOfferNode(opts?: {
+  includeReturnPolicy?: boolean;
+}): Record<string, unknown> {
+  const node: Record<string, unknown> = {
+    "@type": "Offer",
+    "@id": CORE_OFFER_ID,
+    name: "$49/mo Core",
+    description:
+      "Subscription. Unlocks the full seven-step Playbook with the 60-day money-back guarantee verified by Stripe.",
+    price: "49",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: `${BASE}/playbook-sales`,
+    priceValidUntil: PRICE_VALID_UNTIL,
+    seller: { "@id": ID.organization },
+    eligibleRegion: WORLDWIDE_PLACE,
+    category: "Subscription",
+    priceSpecification: {
+      "@type": "UnitPriceSpecification",
+      price: "49",
+      priceCurrency: "USD",
+      // ISO 8601 duration: P1M = recurring monthly.
+      billingDuration: "P1M",
+      unitText: "MONTH",
+    },
+  };
+  // Optional MerchantReturnPolicy. Anchored to the visible #guarantee
+  // section on /playbook-sales (the canonical guarantee surface). Mounted
+  // by callers that render the canonical sales page or the cross-page
+  // SoftwareApplication AggregateOffer.
+  if (opts?.includeReturnPolicy) {
+    node.hasMerchantReturnPolicy = {
+      "@type": "MerchantReturnPolicy",
+      applicableCountry: "Worldwide",
+      returnPolicyCategory:
+        "https://schema.org/MerchantReturnFiniteReturnWindow",
+      merchantReturnDays: 60,
+      returnMethod: "https://schema.org/ReturnByMail",
+      returnFees: "https://schema.org/FreeReturn",
+      url: `${BASE}/playbook-sales#guarantee`,
+    };
+  }
+  return node;
+}
+
+/**
+ * The canonical AggregateOffer for UnlockSaaS the SoftwareApplication.
+ * Covers both Stripe tiers ($1 Starter + $49/mo Core). Used from the
+ * homepage SoftwareApplicationJsonLd AND the /starter
+ * StarterSoftwareApplicationJsonLd so the lowPrice signal Google reads
+ * is identical from either canonical URL.
+ *
+ * Callers SHOULD include the MerchantReturnPolicy on the Core offer when
+ * the page itself is the canonical guarantee surface (homepage funnel
+ * hub, /starter dollar surface, /playbook-sales). Off-canonical surfaces
+ * (per-locale, per-builder, embed) may pass `includeReturnPolicy: false`
+ * to avoid duplicating the policy on every page.
+ */
+function buildStarterCoreAggregateOffer(opts?: {
+  pageUrl?: string;
+  includeReturnPolicy?: boolean;
+}): Record<string, unknown> {
+  const includeReturnPolicy = opts?.includeReturnPolicy ?? true;
+  return {
+    "@type": "AggregateOffer",
+    priceCurrency: "USD",
+    lowPrice: "1",
+    highPrice: "49",
+    offerCount: 2,
+    availability: "https://schema.org/InStock",
+    url: opts?.pageUrl ?? BASE,
+    offers: [
+      buildStarterOfferNode(),
+      buildCoreOfferNode({ includeReturnPolicy }),
+    ],
+  };
+}
+
+// ---------------------------------------------------------------------------
+// SoftwareApplication schema (2026-05-21, AggregateOffer uplift 2026-05-22)
 // ---------------------------------------------------------------------------
 // schema.org/SoftwareApplication is the canonical type for SaaS products.
 // The Playbook Product node already carries "@type": ["Product",
 // "SoftwareApplication", "LearningResource"] at ID.product -- that node
-// is the priced subscription. This node is the APPLICATION ITSELF: the
+// is the priced Core subscription. This node is the APPLICATION ITSELF: the
 // web tool the founder built. It is a distinct entity from the subscription
 // offer, just as "Figma" (the SoftwareApplication) is distinct from
 // "Figma Professional" (the Product/Offer).
 //
 // Cross-references: this node references the existing ID.organization
-// (creator/publisher) and ID.product (the subscription offer) via @id.
+// (creator/publisher) and ID.product (the subscription Product) via @id.
 // Brunson Hard-Rule: featureList entries are verbatim from the funnel hub
 // hero section and the Playbook Stack Slide -- no invented features.
 //
@@ -2881,6 +3078,12 @@ export function SnapshotJsonLd(props: SnapshotJsonLdInput) {
 // of the application. Mounting here also means Organization + WebSite +
 // Person + SoftwareApplication all co-locate on a single page, giving
 // Google's Knowledge Graph the densest entity graph signal.
+//
+// 2026-05-22 uplift: the homepage SoftwareApplication block now uses the
+// shared AggregateOffer (buildStarterCoreAggregateOffer) instead of a
+// single $49 Offer. Result: Google's SERP rich snippet on the canonical
+// URL now renders "from $1" instead of "from $49", matching the dollar
+// entry point on /starter and every commercial CTA on the site.
 // ---------------------------------------------------------------------------
 
 const SOFTWARE_APPLICATION_JSON = JSON.stringify({
@@ -2891,7 +3094,15 @@ const SOFTWARE_APPLICATION_JSON = JSON.stringify({
   description:
     "A playbook that runs the work post-launch pre-revenue founders need to get their first paying customer.",
   url: BASE,
+  // Brand: same string the PLAYBOOK_PRODUCT_JSON Product node declares,
+  // so Knowledge Graph resolves Application + Product under one brand
+  // identity rather than as two unrelated entities.
+  brand: {
+    "@type": "Brand",
+    name: "Unlock SaaS",
+  },
   applicationCategory: "BusinessApplication",
+  applicationSubCategory: "SaaSFunnelDiagnostic",
   operatingSystem: "Web",
   inLanguage: "en-US",
   areaServed: WORLDWIDE_AREA_SERVED,
@@ -2906,15 +3117,14 @@ const SOFTWARE_APPLICATION_JSON = JSON.stringify({
     "Stripe-verified first-customer confirmation",
     "60-day money-back guarantee enforced by code",
   ],
-  // Offer: the $49/mo Core subscription. Cross-references the canonical
-  // Offer URL on /playbook-sales so crawlers find full terms there.
-  offers: {
-    "@type": "Offer",
-    price: "49",
-    priceCurrency: "USD",
-    availability: "https://schema.org/InStock",
-    url: `${BASE}/playbook-sales`,
-  },
+  // AggregateOffer: shared with /starter so the lowPrice signal is the
+  // same from either canonical URL. Includes MerchantReturnPolicy on
+  // the Core offer because the homepage IS a canonical surface for the
+  // guarantee (linked from the hero CTA).
+  offers: buildStarterCoreAggregateOffer({
+    pageUrl: BASE,
+    includeReturnPolicy: true,
+  }),
   // creator and publisher cross-reference the existing entity @ids so
   // Knowledge Graph resolves "who made UnlockSaaS" to the same Person
   // and Organization nodes already in the graph.
@@ -3151,6 +3361,13 @@ const STARTER_SOFTWARE_APPLICATION_JSON = JSON.stringify({
   description:
     "A seven-step playbook that turns an already-shipped SaaS into a verified paying customer in 60 days, sold as a $1 Starter (Steps 1 and 2) and a $49/mo Core subscription (the full Playbook + 60-day money-back guarantee).",
   url: `${BASE}/starter`,
+  // Brand parity with the homepage SoftwareApplication node + the
+  // PLAYBOOK_PRODUCT_JSON Product node. One brand identity across all
+  // three surfaces.
+  brand: {
+    "@type": "Brand",
+    name: "Unlock SaaS",
+  },
   applicationCategory: "BusinessApplication",
   applicationSubCategory: "SaaSFunnelDiagnostic",
   operatingSystem: "Web",
@@ -3169,52 +3386,13 @@ const STARTER_SOFTWARE_APPLICATION_JSON = JSON.stringify({
     "Step 6: Stripe-verified first-customer confirmation",
     "Step 7: 60-day money-back guarantee enforced by code",
   ],
-  // AggregateOffer: the canonical price-ladder pattern. lowPrice/highPrice
-  // cover the Stripe products, and the offers array carries the per-tier
-  // detail (one-time vs subscription billing).
-  offers: {
-    "@type": "AggregateOffer",
-    priceCurrency: "USD",
-    lowPrice: "1",
-    highPrice: "49",
-    offerCount: 2,
-    availability: "https://schema.org/InStock",
-    url: `${BASE}/starter`,
-    offers: [
-      {
-        "@type": "Offer",
-        name: "$1 Starter",
-        description:
-          "One-time purchase. Unlocks Steps 1 and 2 of the Playbook (dream customer + offer). No subscription, no auto-upgrade.",
-        price: "1",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-        url: `${BASE}/starter`,
-        priceValidUntil: "2027-05-21",
-        seller: { "@id": ID.organization },
-      },
-      {
-        "@type": "Offer",
-        name: "$49/mo Core",
-        description:
-          "Subscription. Unlocks the full seven-step Playbook with the 60-day money-back guarantee verified by Stripe.",
-        price: "49",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-        url: `${BASE}/playbook-sales`,
-        priceValidUntil: "2027-05-21",
-        seller: { "@id": ID.organization },
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          price: "49",
-          priceCurrency: "USD",
-          // ISO 8601 duration: P1M = recurring monthly.
-          billingDuration: "P1M",
-          unitText: "MONTH",
-        },
-      },
-    ],
-  },
+  // AggregateOffer: shared helper with the homepage SoftwareApplication
+  // block. Single source of truth for the $1 + $49 price ladder so the
+  // two canonical surfaces cannot drift.
+  offers: buildStarterCoreAggregateOffer({
+    pageUrl: `${BASE}/starter`,
+    includeReturnPolicy: true,
+  }),
   creator: { "@id": ID.person },
   publisher: { "@id": ID.organization },
   // isRelatedTo cross-references the priced Playbook Product node so the
