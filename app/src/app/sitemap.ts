@@ -20,6 +20,7 @@ import { CONVERSION_RATE_SLUGS } from "@/lib/conversion-rate";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
+import { episodeSlug as foundersDiaryEpisodeSlug, liveEpisodes as foundersDiaryLiveEpisodes } from "@/lib/youtube";
 import { allCitationIds } from "@/lib/citations";
 import {
   allApprovedTranslations,
@@ -979,6 +980,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.65,
       alternates: hreflang(`${base}/state-of-saas/${year}`),
+    })),
+    // -------------------------------------------------------------------------
+    // The Founder's Diary — YouTube channel hub + per-episode landings.
+    //
+    // /youtube is the channel hub (honest empty-state pre-launch); each
+    // /youtube/<slug> is one indexable transcript-bearing landing per
+    // operator-promoted live episode. Per-episode pages are the canonical
+    // surface for video-carousel and AI-Overview citations because they
+    // ship a verbatim transcript in the DOM that the bare YouTube embed
+    // does not. The episode fan-out is driven by liveEpisodes() so the
+    // sitemap stays honest: zero entries pre-launch, one entry per real
+    // episode after promotion. See @/lib/youtube for the registry rules.
+    // -------------------------------------------------------------------------
+    {
+      url: `${base}/youtube`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+      alternates: hreflang(`${base}/youtube`),
+    },
+    ...foundersDiaryLiveEpisodes().map((ep) => ({
+      url: `${base}/youtube/${foundersDiaryEpisodeSlug(ep)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/youtube/${foundersDiaryEpisodeSlug(ep)}`),
     })),
     // Hugging Face Datasets submission surface (2026-05-20 off-page lift).
     // The page documents the operator submission flow + Google Dataset

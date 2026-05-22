@@ -8,6 +8,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import {
   FOUNDERS_DIARY_CHANNEL,
+  episodeSlug,
   hubDiagnosticUrl,
   liveEpisodes,
 } from "@/lib/youtube";
@@ -138,36 +139,51 @@ export default function YoutubeHubPage() {
             </div>
           ) : (
             <ol className="space-y-4">
-              {episodes.map((ep) => (
-                <li key={ep.id}>
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-baseline gap-3 mb-2">
-                        <span className="text-xs uppercase tracking-widest text-muted-foreground shrink-0">
-                          {ep.id}
-                        </span>
-                        <h3 className="text-base font-semibold leading-tight">
-                          {ep.title}
-                        </h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                        {ep.hook_3s}
-                      </p>
-                      {ep.youtube_url && (
-                        <Button asChild variant="outline" size="sm">
-                          <Link
-                            href={ep.youtube_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Watch on YouTube
-                          </Link>
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                </li>
-              ))}
+              {episodes.map((ep) => {
+                const episodePath = `/youtube/${episodeSlug(ep)}`;
+                return (
+                  <li key={ep.id}>
+                    <Card>
+                      <CardContent className="pt-6">
+                        <div className="flex items-baseline gap-3 mb-2">
+                          <span className="text-xs uppercase tracking-widest text-muted-foreground shrink-0">
+                            {ep.id}
+                          </span>
+                          <h3 className="text-base font-semibold leading-tight">
+                            <Link
+                              href={episodePath}
+                              className="hover:underline underline-offset-4"
+                            >
+                              {ep.title}
+                            </Link>
+                          </h3>
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                          {ep.hook_3s}
+                        </p>
+                        <div className="flex gap-2 flex-wrap">
+                          <Button asChild size="sm">
+                            <Link href={episodePath}>
+                              Episode notes + transcript →
+                            </Link>
+                          </Button>
+                          {ep.youtube_url && (
+                            <Button asChild variant="outline" size="sm">
+                              <Link
+                                href={ep.youtube_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Watch on YouTube
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </li>
+                );
+              })}
             </ol>
           )}
         </section>
