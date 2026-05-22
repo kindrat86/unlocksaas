@@ -195,8 +195,37 @@ import { buildIndex, rank } from "@/lib/nlweb/bm25";
 import { summarise } from "@/lib/nlweb/summary";
 import { createAdminClient } from "@/lib/supabase/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { AsyncLocalStorage } from "node:async_hooks";
+import {
+  detectEngineFromUserAgent,
+  type AiEngine,
+} from "@/lib/seo/ai-attribution";
 
 const BASE = "https://unlocksaas.com";
+
+/**
+ * Per-request host-engine storage.
+ *
+ * The MCP transport is invoked by an agent host (Claude Desktop,
+ * Cursor, MCP Inspector, mcp-remote, a Custom GPT Action gateway,
+ * etc.). The User-Agent on the incoming HTTP request is the only
+ * signal we get about WHICH host issued the call. Capturing it here
+ * lets every tool-return URL carry a `utm_content=<host>` tag in
+ * addition to the canonical `utm_source=mcp`, so the PostHog
+ * dashboard can break MCP-attributed sessions by the engine that
+ * actually delivered the click.
+ *
+ * AsyncLocalStorage propagates through every await inside the tool
+ * callback, so we don't have to thread an `extra` parameter through
+ * 40+ tool registrations. The MCP handler runs each tool inside one
+ * async context and ALS surfaces the host engine to `withRef`
+ * without any explicit plumbing.
+ *
+ * `null` means: incoming UA didn't match any known engine. `withRef`
+ * then omits `utm_content` so the URL stays clean – the baseline
+ * `utm_source=mcp` attribution still works.
+ */
+const hostEngineStorage = new AsyncLocalStorage<AiEngine | null>();
 
 function looseAdminDb(): SupabaseClient {
   return createAdminClient() as unknown as SupabaseClient;
@@ -212,14 +241,31 @@ const NLWEB_BM25_INDEX = buildIndex(NLWEB_CORPUS);
  * Append the canonical MCP attribution params to a URL. Every tool that
  * returns a URL passes through this helper so the click-through traffic
  * is attributable in PostHog without the agent operator having to know
- * the convention. `tool` is the MCP tool name; PostHog reads it as the
- * UTM campaign.
+ * the convention.
+ *
+ * Attribution layers (last-write-wins on the click-through URL):
+ *   - utm_source  = "mcp" – the transport that emitted the click. Kept
+ *                   stable for backward-compatibility with the existing
+ *                   PostHog "MCP-attributed sessions" funnel.
+ *   - utm_medium  = "ai-agent" – the surface family.
+ *   - utm_campaign = the MCP tool name (e.g. "diagnose_url"). Tells
+ *                    which capability the agent invoked.
+ *   - utm_content = host engine (e.g. "claude", "chatgpt") when the
+ *                   incoming HTTP User-Agent matched a known
+ *                   `detectEngineFromUserAgent()` pattern. Omitted on
+ *                   unrecognised UAs so PostHog buckets them as
+ *                   "MCP, host unknown" without a fabricated label.
+ *
+ * Brunson Hard-Rule: never invent a host engine. Only attribute what
+ * the UA actually announced.
  */
 function withRef(path: string, tool: string): string {
   const u = new URL(path, BASE);
   u.searchParams.set("utm_source", "mcp");
   u.searchParams.set("utm_medium", "ai-agent");
   u.searchParams.set("utm_campaign", tool);
+  const hostEngine = hostEngineStorage.getStore();
+  if (hostEngine) u.searchParams.set("utm_content", hostEngine);
   return u.toString();
 }
 
@@ -2276,4 +2322,35 @@ const handler = createMcpHandler(
   },
 );
 
-export { handler as GET, handler as POST, handler as DELETE };
+/**
+ * Wrap the raw mcp-handler in an AsyncLocalStorage scope so every
+ * tool callback can read the host engine inferred from the incoming
+ * HTTP User-Agent. The MCP transport itself does not propagate UA
+ * into tool callbacks (the `extra` parameter carries `requestInfo`
+ * but plumbing that through 40+ tool registrations would be massive).
+ * ALS gives `withRef` access to the host engine via a single
+ * read on `hostEngineStorage` – no per-tool refactor required.
+ *
+ * Concurrency: AsyncLocalStorage propagates through every `await`
+ * inside the handler. Two concurrent MCP calls land in separate
+ * stores because Node creates a new async context per invocation;
+ * one call seeing another's host engine is not possible.
+ */
+function wrapWithHostEngineDetection(
+  inner: (req: Request) => Promise<Response>,
+): (req: Request) => Promise<Response> {
+  return async (req: Request) => {
+    const hostEngine = detectEngineFromUserAgent(req.headers.get("user-agent"));
+    return hostEngineStorage.run(hostEngine, () => inner(req));
+  };
+}
+
+const attributedHandler = wrapWithHostEngineDetection(
+  handler as (req: Request) => Promise<Response>,
+);
+
+export {
+  attributedHandler as GET,
+  attributedHandler as POST,
+  attributedHandler as DELETE,
+};
