@@ -8,6 +8,7 @@ import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
+import { PARTNER_SLUGS } from "@/lib/partners";
 import { STACK_SLUGS } from "@/lib/stacks";
 import { LAUNCH_CHECKLIST_SLUGS } from "@/lib/launch-checklists";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
@@ -730,6 +731,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/swipe-file/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #16 – branded partner landing pages.
+    // Data source: src/lib/partners.ts. Pairs with the existing /r/<code>
+    // attribution redirect: /partners/<slug> is the shareable destination
+    // a partner can link to from their own audience, with their face,
+    // pitch, and proof; the page's primary CTA routes through /r/<code>
+    // so the unlocksaas_ref cookie is set for the 50% lifetime rev share
+    // affiliate program (see supabase/migrations/20260521000000_…).
+    // ProfilePage + Person + BreadcrumbList JSON-LD per detail page;
+    // CollectionPage + ItemList on the hub. Founder seed entry is
+    // pre-populated; affiliate entries get appended as Verified Builders
+    // opt in (operator runbook in the data file header).
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/partners`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/partners`),
+    },
+    ...PARTNER_SLUGS.map((slug) => ({
+      url: `${base}/partners/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/partners/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // E-E-A-T trust columns. Low SERP priority on their own; high structural
