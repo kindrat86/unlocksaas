@@ -265,9 +265,17 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
  *   5. NEXT_PUBLIC_UNLOCKSAAS_YOUTUBE_URL        (YouTube)
  *   6. NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL     (Crunchbase company)
  *   7. NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL   (Product Hunt)
- *   8. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
- *   9. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
- *  10. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
+ *   8. NEXT_PUBLIC_UNLOCKSAAS_BETALIST_URL       (BetaList)
+ *   9. NEXT_PUBLIC_UNLOCKSAAS_G2_URL             (G2 reviews)
+ *  10. NEXT_PUBLIC_UNLOCKSAAS_CAPTERRA_URL       (Capterra reviews)
+ *  11. NEXT_PUBLIC_UNLOCKSAAS_ALTERNATIVETO_URL  (AlternativeTo)
+ *  12. NEXT_PUBLIC_UNLOCKSAAS_SAASHUB_URL        (SaaSHub)
+ *  13. NEXT_PUBLIC_UNLOCKSAAS_OPENCORPORATES_URL (OpenCorporates legal entity)
+ *  14. NEXT_PUBLIC_UNLOCKSAAS_WELLFOUND_URL      (Wellfound, formerly AngelList)
+ *  15. NEXT_PUBLIC_UNLOCKSAAS_OTHER_URL          (Wikidata Q-number or ad-hoc)
+ *
+ * The aggregator slots (8-12) are operator-activated via the workflow at
+ * strategy/aggregator-listings-runbook.md and visualised on /press/listings.
  *
  * Defaults to a frozen empty array in a fresh checkout. That is honest:
  * no env vars set = no off-platform anchors claimed. strategy/google-

@@ -145,6 +145,19 @@ function buildSameAs(): readonly string[] {
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_GITHUB_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_INDIE_HACKERS_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_PRODUCT_HUNT_URL"),
+    // Aggregator / review-directory anchors. These are the surfaces
+    // ChatGPT, Perplexity, and Google AI Overviews cite when answering
+    // "what is X?" or "X alternatives" – every live listing is a permanent
+    // candidate citation that loops back to unlocksaas.com via sameAs.
+    // Source of truth for which directories we're targeting + submission
+    // URLs + operator runbook: src/lib/seo/directory-listings.ts.
+    // Brunson Hard-Rule: a slot stays unset until the directory team
+    // approves the listing and the URL is live. No aspirational entries.
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_G2_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CAPTERRA_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_BETALIST_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_ALTERNATIVETO_URL"),
+    readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_SAASHUB_URL"),
     readSocialEnv("NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL"),
     // Company-entity registry anchors – fed directly into Google's
     // Knowledge Graph as primary entity sources. Heavier weight than

@@ -983,6 +983,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/press`),
     },
     // ---------------------------------------------------------------------
+    // Aggregator / review-directory listings status board – Isenberg
+    // overlay #2 (2026-05-22). Public hub listing every off-platform
+    // directory we target (Product Hunt, BetaList, G2, Capterra,
+    // AlternativeTo, SaaSHub, Indie Hackers). Doubles as an LLM-citable
+    // editorial surface ("where is UnlockSaaS listed?") and an operator
+    // status board (env-driven row resolution). Data source:
+    // src/lib/seo/directory-listings.ts.
+    //
+    // Priority matches /press (0.4) — moderate standalone SERP value,
+    // high citation value for AI Overviews answering category /
+    // alternative queries.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/press/listings`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: hreflang(`${base}/press/listings`),
+    },
+    // ---------------------------------------------------------------------
     // Reverse press kit – pre-assembled story packages for journalists.
     // Off-page lift item #7 of the 2026-05-18 plan. Hub + per-topic detail
     // pages, each pre-built around a recognisable story angle with
