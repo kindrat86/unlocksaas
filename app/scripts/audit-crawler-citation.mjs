@@ -54,7 +54,8 @@
  *
  * Why this validator and not a hosted service?
  *   Google's Mobile-Friendly Test + Rich Results Test only emulate Googlebot
- *   and do not let us spoof PerplexityBot / ClaudeBot / OAI-SearchBot etc.
+ *   and do not let us spoof PerplexityBot / Claude-SearchBot /
+ *   OAI-SearchBot etc.
  *   We need to verify each citation bot independently because Next.js can
  *   serve different responses per UA (e.g. via middleware UA-sniffing), and
  *   because a hydration bug in a Server Component can silently render an
@@ -152,12 +153,9 @@ const AI_SEARCH_USER_AGENTS = [
   // OpenAI -- ChatGPT browsing + search-surface.
   { name: "OAI-SearchBot", ua: "Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)" },
   { name: "ChatGPT-User", ua: "Mozilla/5.0 (compatible; ChatGPT-User/1.0; +https://openai.com/bot)" },
-  // Anthropic -- Claude retrieval + web search + real-time fetch.
-  { name: "ClaudeBot", ua: "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)" },
+  // Anthropic -- Claude search-result quality indexing + user-triggered fetch.
   { name: "Claude-SearchBot", ua: "Mozilla/5.0 (compatible; Claude-SearchBot/1.0; +claudebot@anthropic.com)" },
-  { name: "Claude-Web", ua: "Mozilla/5.0 (compatible; Claude-Web/1.0; +claudebot@anthropic.com)" },
   { name: "Claude-User", ua: "Mozilla/5.0 (compatible; Claude-User/1.0; +claudebot@anthropic.com)" },
-  { name: "anthropic-ai", ua: "anthropic-ai" },
   // Google -- AI Overviews fetch + Gemini inference.
   { name: "GoogleOther", ua: "Mozilla/5.0 (compatible; GoogleOther)" },
   // Perplexity -- answer engine with live citations.
