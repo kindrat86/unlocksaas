@@ -11,8 +11,7 @@ import { HubTldr } from "@/components/seo/hub-tldr";
 const CANONICAL = "/founders-in";
 
 export const metadata: Metadata = {
-  title:
-    "Micro-SaaS Founders by City – 25 Local Scenes – Unlock SaaS",
+  title: "Micro-SaaS Founders by City – 25 Local Scenes",
   description:
     "Geo landing pages for indie founders building micro-SaaS in 25 cities. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
   alternates: pageAlternates(CANONICAL),

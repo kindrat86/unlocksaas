@@ -73,7 +73,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "California",
     timezone: "America/Los_Angeles",
     utcOffsetLabel: "UTC-08 (UTC-07 DST)",
-    metaTitle: "Micro-SaaS Founders in San Francisco – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in San Francisco",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in San Francisco. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -102,7 +102,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "New York",
     timezone: "America/New_York",
     utcOffsetLabel: "UTC-05 (UTC-04 DST)",
-    metaTitle: "Micro-SaaS Founders in New York – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in New York",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in New York. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -131,7 +131,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Texas",
     timezone: "America/Chicago",
     utcOffsetLabel: "UTC-06 (UTC-05 DST)",
-    metaTitle: "Micro-SaaS Founders in Austin – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Austin",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Austin. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -160,7 +160,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Florida",
     timezone: "America/New_York",
     utcOffsetLabel: "UTC-05 (UTC-04 DST)",
-    metaTitle: "Micro-SaaS Founders in Miami – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Miami",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Miami. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -189,7 +189,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "California",
     timezone: "America/Los_Angeles",
     utcOffsetLabel: "UTC-08 (UTC-07 DST)",
-    metaTitle: "Micro-SaaS Founders in Los Angeles – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Los Angeles",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Los Angeles. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -218,7 +218,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Washington",
     timezone: "America/Los_Angeles",
     utcOffsetLabel: "UTC-08 (UTC-07 DST)",
-    metaTitle: "Micro-SaaS Founders in Seattle – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Seattle",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Seattle. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -247,7 +247,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Massachusetts",
     timezone: "America/New_York",
     utcOffsetLabel: "UTC-05 (UTC-04 DST)",
-    metaTitle: "Micro-SaaS Founders in Boston – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Boston",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Boston. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -276,7 +276,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Colorado",
     timezone: "America/Denver",
     utcOffsetLabel: "UTC-07 (UTC-06 DST)",
-    metaTitle: "Micro-SaaS Founders in Denver – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Denver",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Denver. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -305,7 +305,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Illinois",
     timezone: "America/Chicago",
     utcOffsetLabel: "UTC-06 (UTC-05 DST)",
-    metaTitle: "Micro-SaaS Founders in Chicago – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Chicago",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Chicago. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -334,7 +334,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Oregon",
     timezone: "America/Los_Angeles",
     utcOffsetLabel: "UTC-08 (UTC-07 DST)",
-    metaTitle: "Micro-SaaS Founders in Portland – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Portland",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Portland. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -363,7 +363,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Ontario",
     timezone: "America/Toronto",
     utcOffsetLabel: "UTC-05 (UTC-04 DST)",
-    metaTitle: "Micro-SaaS Founders in Toronto – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Toronto",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Toronto. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -392,7 +392,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "British Columbia",
     timezone: "America/Vancouver",
     utcOffsetLabel: "UTC-08 (UTC-07 DST)",
-    metaTitle: "Micro-SaaS Founders in Vancouver – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Vancouver",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Vancouver. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -421,7 +421,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "England",
     timezone: "Europe/London",
     utcOffsetLabel: "UTC+00 (UTC+01 BST)",
-    metaTitle: "Micro-SaaS Founders in London – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in London",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in London. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -450,7 +450,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Berlin",
     timezone: "Europe/Berlin",
     utcOffsetLabel: "UTC+01 (UTC+02 CEST)",
-    metaTitle: "Micro-SaaS Founders in Berlin – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Berlin",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Berlin. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -479,7 +479,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Île-de-France",
     timezone: "Europe/Paris",
     utcOffsetLabel: "UTC+01 (UTC+02 CEST)",
-    metaTitle: "Micro-SaaS Founders in Paris – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Paris",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Paris. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -508,7 +508,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "North Holland",
     timezone: "Europe/Amsterdam",
     utcOffsetLabel: "UTC+01 (UTC+02 CEST)",
-    metaTitle: "Micro-SaaS Founders in Amsterdam – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Amsterdam",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Amsterdam. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -537,7 +537,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Lisbon",
     timezone: "Europe/Lisbon",
     utcOffsetLabel: "UTC+00 (UTC+01 WEST)",
-    metaTitle: "Micro-SaaS Founders in Lisbon – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Lisbon",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Lisbon. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -566,7 +566,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Catalonia",
     timezone: "Europe/Madrid",
     utcOffsetLabel: "UTC+01 (UTC+02 CEST)",
-    metaTitle: "Micro-SaaS Founders in Barcelona – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Barcelona",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Barcelona. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -595,7 +595,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Leinster",
     timezone: "Europe/Dublin",
     utcOffsetLabel: "UTC+00 (UTC+01 IST)",
-    metaTitle: "Micro-SaaS Founders in Dublin – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Dublin",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Dublin. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -624,7 +624,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Attica",
     timezone: "Europe/Athens",
     utcOffsetLabel: "UTC+02 (UTC+03 EEST)",
-    metaTitle: "Micro-SaaS Founders in Athens – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Athens",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Athens. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -653,7 +653,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Capital Region",
     timezone: "Europe/Copenhagen",
     utcOffsetLabel: "UTC+01 (UTC+02 CEST)",
-    metaTitle: "Micro-SaaS Founders in Copenhagen – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Copenhagen",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Copenhagen. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -682,7 +682,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Tel Aviv District",
     timezone: "Asia/Jerusalem",
     utcOffsetLabel: "UTC+02 (UTC+03 IDT)",
-    metaTitle: "Micro-SaaS Founders in Tel Aviv – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Tel Aviv",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Tel Aviv. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -711,7 +711,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "",
     timezone: "Asia/Singapore",
     utcOffsetLabel: "UTC+08",
-    metaTitle: "Micro-SaaS Founders in Singapore – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Singapore",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Singapore. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -740,7 +740,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "New South Wales",
     timezone: "Australia/Sydney",
     utcOffsetLabel: "UTC+10 (UTC+11 AEDT)",
-    metaTitle: "Micro-SaaS Founders in Sydney – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Sydney",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Sydney. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
@@ -769,7 +769,7 @@ export const CITY_ENTRIES: ReadonlyArray<CityEntry> = [
     region: "Karnataka",
     timezone: "Asia/Kolkata",
     utcOffsetLabel: "UTC+05:30",
-    metaTitle: "Micro-SaaS Founders in Bangalore – Unlock SaaS",
+    metaTitle: "Micro-SaaS Founders in Bangalore",
     metaDescription:
       "Indie founders building post-launch pre-revenue SaaS in Bangalore. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
     heroSubhead:
