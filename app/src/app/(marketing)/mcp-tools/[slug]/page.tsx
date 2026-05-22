@@ -16,6 +16,7 @@ import {
 } from "@/lib/mcp-tools";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
@@ -102,6 +103,7 @@ function buildJsonLd(t: McpTool, canonicalUrl: string): string[] {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${t.name} – install in Claude Desktop and Cursor`,
+    image: articleImageFor(canonicalUrl),
     description: t.oneLine,
     abstract: t.tldr,
     author: { "@id": ID.person },

@@ -13,6 +13,7 @@ import {
 } from "@/lib/post-mortems";
 import { ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
@@ -105,6 +106,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `${p.displayName} Post-Mortem – Why It Failed and What Indie Founders Can Learn`,
+    image: articleImageFor(canonicalUrl),
     description: p.oneLine,
     abstract: p.tldr,
     author: { "@id": ID.person },

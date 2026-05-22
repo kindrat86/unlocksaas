@@ -27,6 +27,7 @@ async function getCachedEntry(slug: string): Promise<AnswerEntry | undefined> {
 import { getGlossaryBySlug } from "@/lib/glossary";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { PeopleAlsoAsk } from "@/components/seo/people-also-ask";
 import { paaForAnswer } from "@/lib/seo/paa-questions";
@@ -117,6 +118,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: e.question,
+    image: articleImageFor(canonicalUrl),
     description: e.metaDescription,
     abstract: e.directAnswer,
     author: { "@id": ID.person },

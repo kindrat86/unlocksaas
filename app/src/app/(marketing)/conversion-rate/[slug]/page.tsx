@@ -13,6 +13,7 @@ import { getGlossaryBySlug } from "@/lib/glossary";
 import { getNicheBySlug } from "@/lib/niches";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import { TldrSummary } from "@/components/seo/tldr-summary";
 import {
@@ -63,6 +64,7 @@ function buildJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: e.metaTitle,
+    image: articleImageFor(canonicalUrl),
     description: e.metaDescription,
     abstract: e.tldr,
     author: { "@id": ID.person },

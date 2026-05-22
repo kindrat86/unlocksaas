@@ -45,6 +45,7 @@ import {
 } from "@/lib/cohorts";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { articleImageFor } from "@/lib/seo/article-image";
 import { formatVerifiedDate } from "@/lib/seo/dates";
 import {
   SPEAKABLE_SPEC,
@@ -159,6 +160,7 @@ function buildStaticJsonLd(c: CohortQuarter, canonicalUrl: string): string[] {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: `Verified Builders ${c.displayName} cohort`,
+    image: articleImageFor(canonicalUrl),
     description: c.metaDescription,
     abstract: c.tldr,
     author: { "@id": ID.person },
