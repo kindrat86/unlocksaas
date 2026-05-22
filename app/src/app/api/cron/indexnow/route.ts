@@ -10,6 +10,7 @@ import { NICHE_SLUGS } from "@/lib/niches";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SHOULD_I_SLUGS } from "@/lib/should-i";
 
 /**
  * IndexNow ping cron — Surface A.4 (crawlability) of strategy/google-strategy.md.
@@ -113,6 +114,7 @@ function buildUrlList(): string[] {
     ...BENCHMARK_SLUGS.map((s) => `/benchmarks/${s}`),
     ...FUNNEL_PLAYBOOK_SLUGS.map((s) => `/funnel-playbook/${s}`),
     ...ANSWER_SLUGS.map((s) => `/answers/${s}`),
+    ...SHOULD_I_SLUGS.map((s) => `/should-i/${s}`),
   ];
   return [...STATIC_URLS, ...dynamic].map((p) => `${BASE}${p}`);
 }

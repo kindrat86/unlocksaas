@@ -32,6 +32,7 @@ import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
 import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
 import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
+import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
 import {
   DATASET_BUNDLE,
@@ -147,6 +148,7 @@ const PSEO_COUNTS = Object.freeze({
   funnelPlaybook: FUNNEL_PLAYBOOK_SLUGS.length,
   funnelPlaybookMatrix: FUNNEL_MATRIX_SLUGS.length,
   answers: ANSWER_SLUGS.length,
+  shouldI: SHOULD_I_SLUGS.length,
   swipeFile: SWIPE_FILE_SLUGS.length,
 });
 
@@ -164,6 +166,7 @@ const PSEO_TOTAL =
   PSEO_COUNTS.funnelPlaybook +
   PSEO_COUNTS.funnelPlaybookMatrix +
   PSEO_COUNTS.answers +
+  PSEO_COUNTS.shouldI +
   PSEO_COUNTS.swipeFile;
 
 /**
@@ -420,6 +423,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Direct AEO-formatted answers to 30 specific founder questions across funnel mechanics, pricing, email, metrics, positioning, and the value ladder. Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for citation by AI assistants.",
     slugs: ANSWER_SLUGS,
     count: PSEO_COUNTS.answers,
+  },
+  shouldI: {
+    hub: "/should-i",
+    slugPattern: "/should-i/{decision}",
+    markdownPattern: "/should-i/{decision}/md",
+    description:
+      "Decision-helper AEO pages in the 'should I X?' query shape that LLM assistants cite verbatim (ChatGPT, Perplexity, Claude, Google AI Overviews). Each page carries a single binary verdict (yes / no / depends / not-yet), a one-clause verdict headline, a 2-4 sentence direct answer, and 2-4 supporting bullets. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per detail.",
+    slugs: SHOULD_I_SLUGS,
+    count: PSEO_COUNTS.shouldI,
   },
 });
 
