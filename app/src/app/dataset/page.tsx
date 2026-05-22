@@ -453,6 +453,68 @@ export default function DatasetPage() {
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <div className="text-sm font-semibold">
+                    GitHub (public mirror, weekly auto-PR)
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">
+                    A public mirror repository with a weekly auto-PR
+                    refresh workflow. Every Monday at 06:00 UTC the
+                    mirror's workflow pulls the canonical files from this
+                    page and opens a pull request if anything changed.
+                    Forks of the mirror create inbound links back to{" "}
+                    {BASE_URL}/dataset.
+                  </div>
+                </div>
+                {DATASET_EXTERNAL_REGISTRATIONS.some(
+                  (r) => r.name === "GitHub",
+                ) ? (
+                  <a
+                    href={
+                      DATASET_EXTERNAL_REGISTRATIONS.find(
+                        (r) => r.name === "GitHub",
+                      )?.url
+                    }
+                    rel="noopener"
+                    target="_blank"
+                    className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground shrink-0"
+                  >
+                    View on GitHub →
+                  </a>
+                ) : null}
+              </div>
+              {DATASET_EXTERNAL_REGISTRATIONS.some(
+                (r) => r.name === "GitHub",
+              ) ? (
+                <div className="mt-2 text-xs">
+                  Live at{" "}
+                  <a
+                    href={
+                      DATASET_EXTERNAL_REGISTRATIONS.find(
+                        (r) => r.name === "GitHub",
+                      )?.url
+                    }
+                    rel="noopener"
+                    target="_blank"
+                    className="underline underline-offset-4"
+                  >
+                    {
+                      DATASET_EXTERNAL_REGISTRATIONS.find(
+                        (r) => r.name === "GitHub",
+                      )?.url
+                    }
+                  </a>
+                </div>
+              ) : (
+                <div className="mt-2 text-xs text-muted-foreground">
+                  Mirror repo provisioned; operator paste of
+                  NEXT_PUBLIC_UNLOCKSAAS_GITHUB_DATASET_URL on Vercel
+                  flips this row to live.
+                </div>
+              )}
+            </li>
+            <li className="border border-border rounded-lg px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold">
                     Hugging Face Datasets
                   </div>
                   <div className="text-xs text-muted-foreground mt-0.5">
