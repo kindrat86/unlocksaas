@@ -34,6 +34,7 @@ import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
 import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SWIPE_FILE_SLUGS } from "@/lib/swipe-files";
+import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
 import {
   DATASET_BUNDLE,
   DATASET_CITATION,
@@ -150,6 +151,7 @@ const PSEO_COUNTS = Object.freeze({
   answers: ANSWER_SLUGS.length,
   shouldI: SHOULD_I_SLUGS.length,
   swipeFile: SWIPE_FILE_SLUGS.length,
+  mcpTools: MCP_TOOL_SLUGS.length,
 });
 
 const PSEO_TOTAL =
@@ -167,7 +169,8 @@ const PSEO_TOTAL =
   PSEO_COUNTS.funnelPlaybookMatrix +
   PSEO_COUNTS.answers +
   PSEO_COUNTS.shouldI +
-  PSEO_COUNTS.swipeFile;
+  PSEO_COUNTS.swipeFile +
+  PSEO_COUNTS.mcpTools;
 
 /**
  * Core public marketing surfaces. Mirrors the "## Core surfaces" block
@@ -432,6 +435,15 @@ const PSEO_CATALOGS = Object.freeze({
       "Decision-helper AEO pages in the 'should I X?' query shape that LLM assistants cite verbatim (ChatGPT, Perplexity, Claude, Google AI Overviews). Each page carries a single binary verdict (yes / no / depends / not-yet), a one-clause verdict headline, a 2-4 sentence direct answer, and 2-4 supporting bullets. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per detail.",
     slugs: SHOULD_I_SLUGS,
     count: PSEO_COUNTS.shouldI,
+  },
+  mcpTools: {
+    hub: "/mcp-tools",
+    slugPattern: "/mcp-tools/{slug}",
+    markdownPattern: "/mcp-tools/{slug}/md",
+    description:
+      "Switzerland-style directory of MCP servers an indie SaaS founder would plausibly install alongside the UnlockSaaS MCP server. Each entry names the vendor, distribution shape, capability highlights, founder-fit verdict, and a copy-paste install snippet for Claude Desktop and Cursor. SoftwareApplication + Article + FAQPage + BreadcrumbList JSON-LD per detail page.",
+    slugs: MCP_TOOL_SLUGS,
+    count: PSEO_COUNTS.mcpTools,
   },
 });
 
