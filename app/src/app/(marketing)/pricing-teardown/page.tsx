@@ -8,6 +8,7 @@ import {
   groupPricingTeardownsByCategory,
 } from "@/lib/pricing-teardowns";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "/pricing-teardown",
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

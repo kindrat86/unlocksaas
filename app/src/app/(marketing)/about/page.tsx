@@ -6,6 +6,7 @@ import {
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
 
 /**
@@ -41,6 +42,7 @@ export const metadata: Metadata = {
     description:
       "Funnel marketer + non-engineer who shipped a real AI product. Almost nobody in the post-launch pre-revenue niche has both, in one head.",
     url: "/about",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary",

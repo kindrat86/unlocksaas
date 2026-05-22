@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BENCHMARK_ENTRIES } from "@/lib/benchmarks";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
       "Directional ranges for the 20 most-asked indie SaaS funnel metrics, with source attribution and 'where you fall' diagnosis.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

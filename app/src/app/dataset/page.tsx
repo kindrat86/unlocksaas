@@ -8,6 +8,7 @@ import {
 import { CitationBlock } from "@/components/seo/citation-block";
 import { getCitationForDataset } from "@/lib/citations";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import {
   BASE_URL,
   DATASET_DOI,
@@ -90,6 +91,7 @@ export const metadata: Metadata = {
     publishedTime: DATASET_BUNDLE.lastVerified,
     modifiedTime: DATASET_BUNDLE.lastVerified,
     authors: [FOUNDER.name],
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

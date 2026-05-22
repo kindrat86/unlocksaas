@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import {
   CURRENT_EDITION_YEAR,
   EDITIONS,
@@ -55,6 +56,7 @@ export const metadata: Metadata = {
     description: `Annual flagship report from ${ORGANIZATION.name}. Wrong Person vs Weak Offer vs Weak Belief distribution across the cohort of founders who paste a real URL into the free diagnostic.`,
     url: "/state-of-saas",
     siteName: ORGANIZATION.name,
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

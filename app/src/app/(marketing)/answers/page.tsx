@@ -10,6 +10,7 @@ import {
 } from "@/lib/answers";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
       "Direct answers to 30 specific founder questions about funnels, pricing, email, metrics, and the value ladder.",
     url: CANONICAL,
     siteName: "Unlock SaaS",
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

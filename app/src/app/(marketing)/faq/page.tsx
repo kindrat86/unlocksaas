@@ -9,6 +9,7 @@ import {
 } from "@/components/seo/json-ld";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 
 /**
  * Standalone FAQ surface — Answer Engine Optimization (AEO) anchor page.
@@ -56,6 +57,7 @@ export const metadata: Metadata = {
     description:
       "Eight founder objections, eight honest answers. No marketing rewrites.",
     url: PAGE_URL,
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
