@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import {
   CURRENT_EDITION_YEAR,
@@ -49,7 +50,12 @@ import {
 export const metadata: Metadata = {
   title: `State of Post-Launch Pre-Revenue SaaS – Annual Reports`,
   description: `Annual flagship report from ${ORGANIZATION.name}. What founders who already shipped (but have not yet earned their first paying customer) are actually getting wrong, drawn from real diagnostic submissions. Free, CC-BY-4.0.`,
-  alternates: { canonical: "/state-of-saas" },
+  // pageAlternates emits the self-referencing en-US + x-default hreflang
+  // pair in addition to the canonical so the per-page <head> matches the
+  // sitemap's hreflang block. Without this the prior `{ canonical }`-only
+  // form left /state-of-saas as the last URL in the 2026-05-22 crawler
+  // citation audit failing `hreflang-present` across 16 user-agents.
+  alternates: pageAlternates("/state-of-saas"),
   openGraph: {
     type: "website",
     title: "State of Post-Launch Pre-Revenue SaaS – Annual Reports",
