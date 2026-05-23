@@ -941,24 +941,50 @@ const PLAYBOOK_PRODUCT_JSON = buildPlaybookProductJson();
 //      Product Rich Result eligibility on the priced offer AND Course Rich
 //      Result eligibility for the curriculum.
 //   2. The Course node carries a hasCourseInstance that names the cohort
-//      pattern (rolling — every new signup is its own instance), the
+//      pattern (rolling – every new signup is its own instance), the
 //      duration, and the format. These are honest, page-verifiable claims.
 //   3. provider + instructor cross-reference the canonical Organization /
 //      Person @ids so Google's Knowledge Graph resolves "who teaches
 //      Unlock SaaS" to the same Maryan node already declared elsewhere.
 //
+// 2026-05-22 GEO/Learning-carousel uplift: the Course now carries a
+// `hasPart` array of seven sub-Course nodes, one per Playbook step, each
+// with its own `CourseInstance`. The decomposition serves two purposes:
+//
+//   a. Google's Learning carousel (Course list) reads `hasPart: Course[]`
+//      as a navigable curriculum, eligible for the "lessons/modules" rich
+//      result rather than a single opaque card.
+//   b. Claude / ChatGPT / Perplexity citation pipelines treat the seven
+//      steps as a structured curriculum (named modules, ordered by
+//      position, each with its own URL anchor) instead of one undivided
+//      "Playbook" mention. Per-step citations become possible.
+//
 // Brunson Hard-Rule reconciliation:
 //   - No fabricated enrollment counts (no `numberOfStudents`).
 //   - No fabricated reviews (no `aggregateRating`).
-//   - hasCourseInstance.courseWorkload uses ISO 8601 duration P60D —
+//   - hasCourseInstance.courseWorkload uses ISO 8601 duration P60D –
 //     a deliberate declaration of the 60-day window, not a marketing claim.
 //   - educationalLevel set to "Beginner" because the Playbook explicitly
 //     targets founders who have NEVER acquired a paying customer.
+//   - Per-step `courseWorkload: P7D` mirrors the visible page copy
+//     ("Seven mechanical steps, seven days each") at /playbook-sales line
+//     ~250. Schema <-> DOM contract preserved – every per-step field
+//     below traces back to PLAYBOOK_STEPS (single source of truth feeding
+//     PLAYBOOK_HOWTO_JSON, /playbook-sales.md, and the visible
+//     .aeo-playbook-howto block on /playbook-sales).
+//
+// Why hasPart -> Course[] (not hasCourseInstance[] on the parent):
+//   schema.org/CourseInstance is "an instance of a course offering" – a
+//   specific cohort or run of the whole course – not a curriculum module.
+//   The correct decomposition for "seven steps inside one course" is
+//   `hasPart` -> Course, where each part is itself a structured Course
+//   with its own CourseInstance. This is the shape Google's
+//   structured-data validator + the Learning carousel parser expect.
 const PLAYBOOK_COURSE_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Course",
   "@id": `${BASE}/#course-playbook`,
-  name: "The Playbook — Your First Paying SaaS Customer in 60 Days",
+  name: "The Playbook – Your First Paying SaaS Customer in 60 Days",
   description:
     "A seven-step instructor-led program that walks a post-launch pre-revenue SaaS founder through pinning one real customer, writing one real offer, sending one real message, and verifying the first paying customer cycle inside Stripe.",
   url: `${BASE}/playbook-sales`,
@@ -966,6 +992,7 @@ const PLAYBOOK_COURSE_JSON = JSON.stringify({
   educationalLevel: "Beginner",
   educationalUse: "Professional skill development",
   learningResourceType: "Course",
+  numberOfCredits: PLAYBOOK_STEPS.length,
   teaches: [
     "Pin one real dream customer for an already-shipped SaaS",
     "Write one real offer the dream customer cannot say no to",
@@ -987,14 +1014,16 @@ const PLAYBOOK_COURSE_JSON = JSON.stringify({
   // The Course points BACK at the Product/SoftwareApplication node so
   // crawlers can walk from "what does the course cost" to the priced offer.
   isRelatedTo: { "@id": ID.product },
-  // hasCourseInstance — Google's Course Rich Result requires this for
-  // eligibility. Rolling cohort = every signup is its own instance.
+  // hasCourseInstance – Google's Course Rich Result requires this for
+  // eligibility on the parent course. Rolling cohort = every signup is its
+  // own instance. Each `hasPart` sub-Course below also declares its own
+  // per-module CourseInstance.
   hasCourseInstance: {
     "@type": "CourseInstance",
     name: "Self-paced rolling cohort",
     courseMode: "Online",
     courseWorkload: "P60D",
-    // Honest: no fixed start date — start date IS purchase date.
+    // Honest: no fixed start date – start date IS purchase date.
     location: {
       "@type": "VirtualLocation",
       url: `${BASE}/playbook-sales`,
@@ -1002,6 +1031,46 @@ const PLAYBOOK_COURSE_JSON = JSON.stringify({
     instructor: { "@id": ID.person },
     inLanguage: "en-US",
   },
+  // hasPart – the seven curriculum modules as sub-Course nodes. Order
+  // matches PLAYBOOK_STEPS, which is locked by workbook 07 (10x Secrets /
+  // One-to-Many Selling) sequence and verbatim-mirrored in the visible
+  // .aeo-playbook-howto paragraph on /playbook-sales. Renaming a step
+  // here without updating PLAYBOOK_STEPS breaks the schema<->DOM contract.
+  hasPart: PLAYBOOK_STEPS.map((step, i) => {
+    const position = i + 1;
+    const courseCode = String(position).padStart(2, "0");
+    const stepUrl = `${BASE}/playbook-sales#step-${position}`;
+    return {
+      "@type": "Course",
+      "@id": `${BASE}/#course-playbook-step-${position}`,
+      name: `Step ${position} – ${step.name}`,
+      description: step.text,
+      courseCode,
+      position,
+      url: stepUrl,
+      isPartOf: { "@id": `${BASE}/#course-playbook` },
+      provider: { "@id": ID.organization },
+      instructor: { "@id": ID.person },
+      inLanguage: "en-US",
+      educationalLevel: "Beginner",
+      learningResourceType: "Module",
+      // Per-step CourseInstance: each step is its own self-paced module
+      // inside the rolling cohort. courseWorkload P7D mirrors the visible
+      // "seven steps, seven days each" copy on /playbook-sales.
+      hasCourseInstance: {
+        "@type": "CourseInstance",
+        name: `Self-paced module – ${step.name}`,
+        courseMode: "Online",
+        courseWorkload: "P7D",
+        location: {
+          "@type": "VirtualLocation",
+          url: stepUrl,
+        },
+        instructor: { "@id": ID.person },
+        inLanguage: "en-US",
+      },
+    };
+  }),
 });
 
 // --- Founder (Person) ------------------------------------------------------
@@ -1712,15 +1781,20 @@ export type { PlaybookAggregateRatingNode } from "@/lib/seo/review-rating";
  *     subscription, with offers + MerchantReturnPolicy. Google Product
  *     Rich Result eligibility.
  *   - HowTo: the seven steps, voice-answer eligible via Speakable.
- *   - Course (this block): the time-bounded, instructor-led program.
- *     Google Course Rich Result eligibility; cited by AI Overviews when
- *     the query class is "courses" / "programs" / "training."
+ *   - Course (this block): the time-bounded, instructor-led program,
+ *     decomposed into seven sub-Course modules via `hasPart` (one per
+ *     Playbook step). Google Course Rich Result eligibility + Learning
+ *     carousel candidacy; cited by AI Overviews when the query class is
+ *     "courses" / "programs" / "training," and by Claude / ChatGPT /
+ *     Perplexity as a structured curriculum with named per-step modules
+ *     rather than one opaque mention.
  *
- * Schema.org Knowledge Graph walks @id cross-references — the Course's
+ * Schema.org Knowledge Graph walks @id cross-references – the Course's
  * `isRelatedTo: ID.product` and `instructor: ID.person` resolve to the
  * same Product and Person already declared above, so the page reads as
  * one connected entity with three perspectives, not three disconnected
- * blocks. E-E-A-T Expertise uplift (2026-05-17).
+ * blocks. E-E-A-T Expertise uplift (2026-05-17). hasPart -> Course[]
+ * Learning-carousel uplift (2026-05-22).
  */
 export function PlaybookCourseJsonLd() {
   return <JsonLdScript json={PLAYBOOK_COURSE_JSON} />;
