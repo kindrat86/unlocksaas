@@ -106,6 +106,43 @@ export function SignatureFooter() {
             >
               Glossary
             </Link>
+            {/*
+              Traffic Secrets distribution pages — sitewide footer links so
+              the congregation/atlas/HSO surfaces get full PageRank flow from
+              every page on the site, not just the homepage ExploreResources
+              section. Without these, the 5 highest-value Traffic Secrets
+              pages are 2+ clicks deep from most entry points.
+            */}
+            <Link
+              href="/who"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Who we serve
+            </Link>
+            <Link
+              href="/dream-100"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Dream 100
+            </Link>
+            <Link
+              href="/community-atlas"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Community Atlas
+            </Link>
+            <Link
+              href="/hso"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              HSO Matrix
+            </Link>
+            <Link
+              href="/ad-library"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              Ad Library
+            </Link>
             <Link
               href="/editorial-policy"
               className="underline underline-offset-4 hover:text-foreground transition-colors"

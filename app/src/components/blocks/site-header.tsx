@@ -46,6 +46,7 @@ const NAV_LINKS = [
   { href: "/alternatives-to", label: "Alternatives" },
   { href: "/how-to", label: "Learn" },
   { href: "/tools", label: "Free Tools" },
+  { href: "/dream-100", label: "Dream 100" },
 ] as const;
 
 export function SiteHeader() {
