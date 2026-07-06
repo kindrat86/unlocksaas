@@ -26,6 +26,7 @@ import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { buildVerification } from "@/lib/seo/verification";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
+import { SiteHeader } from "@/components/blocks/site-header";
 
 /**
  * Third-party connection hints (2026-05-20 SEO audit fix #8 / CWV +5).
@@ -230,6 +231,39 @@ export default function RootLayout({
             Server-rendered, zero hydration cost.
           */}
           <OrganizationJsonLd />
+          {/* SiteNavigationElement JSON-LD (2026-07-06 audit) — declares the
+              primary navigation structure to Google, improving sitelinks
+              display eligibility in SERPs. */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "SiteNavigationElement",
+                name: [
+                  "Glossary",
+                  "Benchmarks",
+                  "Teardowns",
+                  "Compare",
+                  "Alternatives",
+                  "Learn",
+                  "Free Tools",
+                ],
+                url: [
+                  "https://unlocksaas.com/glossary",
+                  "https://unlocksaas.com/benchmarks",
+                  "https://unlocksaas.com/funnel-teardown",
+                  "https://unlocksaas.com/compare",
+                  "https://unlocksaas.com/alternatives-to",
+                  "https://unlocksaas.com/how-to",
+                  "https://unlocksaas.com/tools",
+                ],
+              }),
+            }}
+          />
+          {/* Site-wide header navigation (2026-07-06 audit). Puts every major
+              content hub within one click of every page. */}
+          <SiteHeader />
           {children}
         </PostHogProvider>
       </body>

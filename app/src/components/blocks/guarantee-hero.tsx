@@ -81,7 +81,12 @@ export function GuaranteeHero() {
           playsInline
         >
           <source src="/founder-guarantee.mp4" type="video/mp4" />
-          <track kind="captions" />
+          <track
+            kind="captions"
+            src="/founder-guarantee.vtt"
+            srcLang="en"
+            label="English captions"
+          />
           Your browser does not support embedded video. The four refund
           conditions below carry the same information.
         </video>

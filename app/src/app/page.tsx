@@ -13,6 +13,8 @@ import {
 import { TopTagline } from "@/components/blocks/top-tagline";
 import { Hero } from "@/components/blocks/hero";
 import { BigDomino } from "@/components/blocks/big-domino";
+import { SecretFormula } from "@/components/blocks/secret-formula";
+import { ValueLadder } from "@/components/blocks/value-ladder";
 import { TldrBlock } from "@/components/tldr-block";
 import { SocialProofBar } from "@/components/blocks/social-proof-bar";
 import { BeforeAfter } from "@/components/blocks/before-after";
@@ -35,6 +37,7 @@ import {
   PersonJsonLd,
   SoftwareApplicationJsonLd,
 } from "@/components/seo/json-ld";
+import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 
@@ -102,6 +105,115 @@ async function getVerifiedBadgeCount(): Promise<number> {
 // marketing copy that changes at most a few times per week.
 // ---------------------------------------------------------------------------
 
+/**
+ * Explore Resources — internal linking hub section (2026-07-06 audit).
+ *
+ * SEO purpose: distributes PageRank from the homepage (strongest page) to
+ * 20+ high-value pSEO hubs. Before this section, those hubs were reachable
+ * only via footer links and sitemap. Now they are one click from home.
+ *
+ * Categories mirror the visitor journey:
+ *   - Learn: glossary, benchmarks, teardowns, case studies
+ *   - Compare: alternatives, head-to-head, pricing teardowns
+ *   - Tools: free calculators (editorial backlink bait)
+ *   - Guides: how-to, mistakes, launch checklists
+ */
+async function ExploreResources() {
+  "use cache";
+  cacheLife("days");
+
+  const categories = [
+    {
+      title: "Learn the framework",
+      links: [
+        { href: "/glossary", label: "SaaS Marketing Glossary", desc: "Every term defined" },
+        { href: "/benchmarks", label: "SaaS Benchmarks", desc: "Real metrics from real SaaS" },
+        { href: "/funnel-teardown", label: "Funnel Teardowns", desc: "How indie SaaS funnels work" },
+        { href: "/case-studies", label: "First-Customer Stories", desc: "How founders got to $1" },
+      ],
+    },
+    {
+      title: "Compare tools",
+      links: [
+        { href: "/alternatives-to", label: "SaaS Alternatives", desc: "Honest tool comparisons" },
+        { href: "/compare", label: "Head-to-Head", desc: "A vs B breakdowns" },
+        { href: "/pricing-teardown", label: "Pricing Teardowns", desc: "How SaaS prices itself" },
+        { href: "/vs", label: "Versus", desc: "Direct competitor analysis" },
+      ],
+    },
+    {
+      title: "Free tools",
+      links: [
+        { href: "/tools", label: "SaaS Calculators", desc: "5 free calculators, no email" },
+        { href: "/tools/ltv-calculator", label: "LTV Calculator", desc: "Lifetime value" },
+        { href: "/tools/churn-cost-calculator", label: "Churn Cost", desc: "What churn really costs" },
+        { href: "/tools/revenue-projector", label: "Revenue Projector", desc: "12-month forecast" },
+      ],
+    },
+    {
+      title: "Guides & playbooks",
+      links: [
+        { href: "/how-to", label: "How-To Guides", desc: "Step-by-step founder playbooks" },
+        { href: "/mistakes", label: "Common Mistakes", desc: "What kills indie SaaS" },
+        { href: "/launch-checklist", label: "Launch Checklists", desc: "Pre-launch, launch, post-launch" },
+        { href: "/answers", label: "Founder Q&A", desc: "Real questions, real answers" },
+      ],
+    },
+    {
+      title: "Distribution & traffic",
+      links: [
+        { href: "/who", label: "Who We Serve", desc: "The dream customer avatar" },
+        { href: "/dream-100", label: "Dream 100", desc: "27 people to reach in 2026" },
+        { href: "/community-atlas", label: "Community Atlas", desc: "18 communities where they hang out" },
+        { href: "/hso", label: "HSO Matrix", desc: "8 ready-to-deploy content units" },
+        { href: "/ad-library", label: "Ad Creative Library", desc: "9 paid distribution concepts" },
+      ],
+    },
+  ];
+
+  return (
+    <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-4xl mx-auto">
+      <div className="text-center mb-10">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          Free resources
+        </p>
+        <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
+          Everything we know about getting to the first customer.
+        </h2>
+        <p className="text-sm text-muted-foreground italic leading-relaxed mt-3 max-w-xl mx-auto">
+          Hundreds of teardowns, benchmarks, and guides. No email gate, no paywall.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {categories.map((cat) => (
+          <div key={cat.title}>
+            <h3 className="text-sm font-semibold text-foreground mb-3">
+              {cat.title}
+            </h3>
+            <ul className="space-y-2">
+              {cat.links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="group block rounded-md border border-border bg-card p-3 transition-colors hover:border-primary/40 hover:bg-accent/50"
+                  >
+                    <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                      {link.label}
+                    </span>
+                    <span className="block text-xs text-muted-foreground mt-0.5">
+                      {link.desc}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 async function ManifestoSection({ manifestoTitle }: { manifestoTitle: string }) {
   "use cache";
   cacheLife("days");
@@ -141,10 +253,15 @@ async function ManifestoSection({ manifestoTitle }: { manifestoTitle: string }) 
           </strong>
         </p>
         <p>
-          We measure progress in Stripe charges, not in encouragement. We do
-          not collect praise.{" "}
+          We do not collect praise.{" "}
           <strong className="text-foreground font-semibold">
             We collect customers.
+          </strong>{" "}
+          No encouragement count. No traction-porn. Only Stripe charges.
+        </p>
+        <p>
+          <strong className="text-foreground font-semibold">
+            This is not a self-improvement group. This is a shipping movement.
           </strong>
         </p>
       </blockquote>
@@ -425,6 +542,14 @@ async function FunnelHubBody() {
       <SoftwareApplicationJsonLd />
       <FaqPageJsonLd items={HOMEPAGE_FAQS} />
       <DefinedTermSetJsonLd />
+      {/* Homepage breadcrumb (2026-07-06 audit) — single-item trail for the
+          root URL. Google requires BreadcrumbList on content pages; the
+          homepage self-references as the root crumb. */}
+      <BreadcrumbListJsonLd
+        trail={[
+          { name: "Unlock SaaS", url: "https://unlocksaas.com" },
+        ]}
+      />
       {/* Founder VSL audio rendition — declares schema.org/AudioObject when
           NEXT_PUBLIC_VSL_AUDIO_URL is set. Renders nothing until then
           (Brunson Hard-Rule: no contentUrl, no declaration). */}
@@ -440,6 +565,13 @@ async function FunnelHubBody() {
 
       {/* ---------------- 2. BIG DOMINO ---------------- */}
       <BigDomino />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- 2.5 SECRET FORMULA — Who/What/When/Where/Why ---------------- */}
+      <SecretFormula />
+
+      <Separator className="max-w-4xl mx-auto" />
 
       {/* ---------------- 3. STRUCTURAL PROOF BAR ---------------- */}
       <SocialProofBar verifiedCount={verifiedBadgeCount} />
@@ -509,6 +641,11 @@ async function FunnelHubBody() {
 
       <Separator className="max-w-4xl mx-auto" />
 
+      {/* ---------------- 12.5 VALUE LADDER — the climb path ---------------- */}
+      <ValueLadder />
+
+      <Separator className="max-w-4xl mx-auto" />
+
       {/* ---------------- 13. GUARANTEE HERO — polarity move ---------------- */}
       <GuaranteeHero />
 
@@ -526,6 +663,15 @@ async function FunnelHubBody() {
           `#newsletter-tail` anchor is still the target of the "subscribe"
           links in the hero, the sticky CTA, and the final CTA. */}
       <NewsletterTailSection />
+
+      <Separator className="max-w-4xl mx-auto" />
+
+      {/* ---------------- 15.5. EXPLORE RESOURCES — internal linking hub ----------------
+          Added 2026-07-06. The homepage previously linked to ~20 pages (mostly
+          in the footer). This section adds 20+ more contextual links to the
+          highest-value pSEO hubs, putting them within ONE click of the homepage
+          and distributing PageRank from the strongest page on the site. */}
+      <ExploreResources />
 
       <Separator className="max-w-4xl mx-auto" />
 

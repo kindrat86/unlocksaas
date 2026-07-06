@@ -27,6 +27,9 @@ import { OUTCOME_SLUGS } from "@/lib/outcomes";
 import { MCP_TOOL_SLUGS } from "@/lib/mcp-tools";
 import { TOOL_SLUGS } from "@/lib/tools-catalog";
 import { COHORT_SLUGS } from "@/lib/cohorts";
+import { CASE_STUDY_SLUGS } from "@/lib/case-studies";
+import { HOW_TO_SLUGS } from "@/lib/how-to";
+import { MISTAKE_SLUGS } from "@/lib/mistakes";
 import { EDITION_YEARS_DESC } from "@/lib/state-of-saas";
 import { PODCAST_EPISODE_SLUGS } from "@/lib/seo/podcast";
 import {
@@ -463,6 +466,64 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
       alternates: hreflang(`${base}/post-mortem/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #3.7 — zero-to-first-customer case studies.
+    // Data source: src/lib/case-studies.ts. Each page is a real founder
+    // story about getting the first paying customer. Article JSON-LD per
+    // detail page, CollectionPage on the hub.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/case-studies`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/case-studies`),
+    },
+    ...CASE_STUDY_SLUGS.map((slug) => ({
+      url: `${base}/case-studies/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/case-studies/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #3.8 — how-to guides for indie founders.
+    // Data source: src/lib/how-to.ts. Each page is a step-by-step guide
+    // with HowTo JSON-LD. Hub uses CollectionPage.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/how-to`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/how-to`),
+    },
+    ...HOW_TO_SLUGS.map((slug) => ({
+      url: `${base}/how-to/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/how-to/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block #3.9 — indie SaaS mistakes to avoid.
+    // Data source: src/lib/mistakes.ts. Each page catalogs a common mistake.
+    // Article + FAQPage JSON-LD per detail page.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/mistakes`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/mistakes`),
+    },
+    ...MISTAKE_SLUGS.map((slug) => ({
+      url: `${base}/mistakes/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/mistakes/${slug}`),
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #4 — head-to-head comparisons.

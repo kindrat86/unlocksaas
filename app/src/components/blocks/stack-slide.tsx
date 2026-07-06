@@ -34,42 +34,42 @@ type StackItem = {
 const STACK: StackItem[] = [
   {
     title: "The 7-step Playbook engine",
-    value: "Comparable to $997 cohort",
+    value: "$997 value",
     body: "Step-by-step workflow from named dream customer to first verified Stripe charge. No frameworks left on a notepad — every answer is structured input to the next step.",
   },
   {
     title: "Dream 100 picker (pre-loaded)",
-    value: "Comparable to $3,000 consultant",
+    value: "$3,000 value",
     body: "Pulls from the locked Brunson Dream 100 workbook. You don't start with a blank canvas — you start with a list of 100 named congregations where your customer actually lives.",
   },
   {
     title: "Offer builder with engine pushback",
-    value: "Comparable to $497 copywriting course",
+    value: "$497 value",
     body: "The engine refuses to accept vague promises. If your offer fails the specificity test, it tells you which beat is broken and rewrites the prompt.",
   },
   {
     title: "Outreach happens inside the tool",
-    value: "Comparable to $79/mo CRM",
+    value: "$79/mo value",
     body: "Step 5 generates the message, picks the target, and logs the send. Outreach stops being optional. The tool tracks 20 actions before Day 60.",
   },
   {
     title: "Stripe-webhook verified badge",
-    value: "Free with the Playbook — sold by no one else",
+    value: "Sold by no one else",
     body: "When your first paying customer charge fires, the code reads your connected Stripe and lights up the Verified Builder badge. The mechanic IS the proof.",
   },
   {
     title: "Public builder profile page",
-    value: "Comparable to $29/mo portfolio host",
+    value: "$29/mo value",
     body: "A live /builder/[slug] page that shows your product, your first-customer date, and your badge. Marketing surface you don't have to build.",
   },
   {
     title: "Soap Opera + Seinfeld email sequences",
-    value: "Comparable to $297 email course",
+    value: "$297 value",
     body: "Five days of letters, then weekly Tuesday Seinfeld emails. Already written. Each one signed from Maryan.",
   },
   {
     title: "The 60-day Stripe-verified guarantee",
-    value: "Refunded by code, not by inbox",
+    value: "Refunded by code",
     body: "If you finish Steps 1–5 in-product, log 20 outreach actions, and Stripe still shows zero customers at Day 60 — the webhook refunds both monthly payments. Automatically.",
   },
 ];

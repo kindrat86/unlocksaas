@@ -1629,6 +1629,33 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
       "Curated category roundups across every SaaS tool we have analyzed, organized by category.",
     body: CATEGORY_HUB_BODY,
   },
+  {
+    path: "/case-studies",
+    mdPath: "/case-studies.md",
+    title:
+      "Zero to First Customer Case Studies — Real Indie SaaS Stories",
+    summary:
+      "Real stories from real founders who went from a flat Stripe line to their first paying customer. Each one names the exact tactic that worked.",
+    body: "See [case-studies](/case-studies) for the full hub.\n\nEach case study details a real founder's journey from zero to first paying customer. Read the individual stories:\n",
+  },
+  {
+    path: "/how-to",
+    mdPath: "/how-to.md",
+    title:
+      "How to Get Your First SaaS Customer — Step-by-Step Guides",
+    summary:
+      "Step-by-step playbooks for getting your first paying customer. Cold DM, community, content marketing, free tiers — every channel with an actionable system.",
+    body: "See [how-to](/how-to) for the full hub.\n\nStep-by-step guides covering every acquisition channel for pre-revenue founders:\n",
+  },
+  {
+    path: "/mistakes",
+    mdPath: "/mistakes.md",
+    title:
+      "Indie SaaS Mistakes to Avoid — Hard-Earned Lessons",
+    summary:
+      "Real mistakes real indie SaaS founders make that keep the Stripe line at zero. Each one comes with a specific fix you can apply today.",
+    body: "See [mistakes](/mistakes) for the full hub.\n\nEach mistake entry names a common pitfall, explains why it blocks revenue, and prescribes the fix:\n",
+  },
   // Note: /glossary SURFACES entry shipped via PR #32 (above). PR #33 does
   // not re-register it; per-slug markdown comes from renderGlossaryMarkdown
   // below, not from SURFACES.

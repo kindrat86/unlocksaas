@@ -51,6 +51,9 @@ const TOP_LEVEL_MD_SURFACES: ReadonlySet<string> = new Set([
   "/search",
   "/starter",
   "/stories",
+  "/case-studies",
+  "/how-to",
+  "/mistakes",
 ]);
 
 /**
@@ -77,6 +80,9 @@ const PSEO_SLUG_ROOTS: ReadonlyArray<string> = [
   "/for",
   "/launch-checklist",
   "/swipe-file",
+  "/mistakes",
+  "/case-studies",
+  "/how-to",
 ];
 
 /**

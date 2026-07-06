@@ -32,6 +32,8 @@ What came after did not. I would launch, open Stripe, and watch a line lie flat.
 What finally broke me was sitting with more than ten other founders and hearing
 my own story back. So I built the playbook I wish someone had handed me.`;
 
+const SEVEN_LINE_DESIRE = `What I wanted was not more users. It was one user who paid. Not validation. A Stripe charge. I wanted to know that what I built was worth something to at least one person who had no relationship with me — no obligation, no friendship discount, no "I will promote you" trade. Just a card entered for a product that solved a problem they actually had. That is what I wanted. I did not know how to name it at the time. I just knew the refresh was not working.`;
+
 const VIDEO_SRC = "/founder-vsl.mp4";
 const POSTER_SRC = "/founder-vsl-poster.jpg";
 
@@ -73,7 +75,12 @@ export function VslBlock(_props: Props = {}) {
           playsInline
         >
           <source src={VIDEO_SRC} type="video/mp4" />
-          <track kind="captions" />
+          <track
+            kind="captions"
+            src="/founder-vsl.vtt"
+            srcLang="en"
+            label="English captions"
+          />
           Your browser does not support embedded video. The full story is in
           the caption below.
         </video>
@@ -84,6 +91,9 @@ export function VslBlock(_props: Props = {}) {
 
       <blockquote className="pl-5 border-l-2 border-primary/40 text-muted-foreground leading-relaxed whitespace-pre-line">
         {SIX_LINE_INTRO}
+      </blockquote>
+      <blockquote className="pl-5 border-l-2 border-primary/40 text-muted-foreground leading-relaxed whitespace-pre-line mt-6 italic">
+        {SEVEN_LINE_DESIRE}
       </blockquote>
       <p className="text-xs text-muted-foreground text-right mt-3 italic">— Maryan</p>
     </section>
