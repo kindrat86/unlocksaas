@@ -56,14 +56,7 @@ export function generateStaticParams() {
 }
 
 function primaryQuestion(metric: string, locale: Locale): string {
-  switch (locale) {
-    case "es":
-      return `¿Cuál es una buena ${metric}?`;
-    case "pt":
-      return `Qual é uma boa ${metric}?`;
-    default:
-      return `What's a good ${metric}?`;
-  }
+  return `What's a good ${metric}?`;
 }
 
 export async function generateMetadata({
@@ -74,7 +67,7 @@ export async function generateMetadata({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const entries = getBenchmarkEntries(locale);
   const e = entries.find((x) => x.slug === slug);
   if (!e) return {};
@@ -235,7 +228,7 @@ export default async function LocalizedBenchmarkDetail({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const row = getTranslationStatus("/benchmarks", locale);
   if (!row || row.status === "archived") notFound();
 

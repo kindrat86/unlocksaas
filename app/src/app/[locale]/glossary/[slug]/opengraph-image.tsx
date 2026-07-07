@@ -85,7 +85,7 @@ export async function generateImageMetadata({
 }) {
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") return [];
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const entry = getGlossaryEntries(locale).find((e) => e.slug === slug);
   const chrome = getGlossaryChrome(locale);
   const name = entry?.term ?? chrome.hubBreadcrumbGlossary;
@@ -111,7 +111,7 @@ export default async function OgImage({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const entry = getGlossaryEntries(locale).find((e) => e.slug === slug);
   if (!entry) notFound();
 

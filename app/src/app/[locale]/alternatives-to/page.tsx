@@ -56,7 +56,7 @@ export async function generateMetadata({
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const localised = localizedPath(PATH, locale);
   const approved = isApproved(PATH, locale);
   const cluster = getPseoClusterChrome("alternatives-to", locale);
@@ -106,7 +106,7 @@ export default async function LocalizedAlternativesHub({
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const row = getTranslationStatus(PATH, locale);
   if (!row || row.status === "archived") notFound();
 

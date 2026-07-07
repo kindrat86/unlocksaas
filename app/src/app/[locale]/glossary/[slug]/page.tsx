@@ -70,7 +70,7 @@ export async function generateMetadata({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const entries = getGlossaryEntries(locale);
   const g = entries.find((e) => e.slug === slug);
   if (!g) return {};
@@ -238,7 +238,7 @@ export default async function LocalizedGlossaryDetail({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const row = getTranslationStatus("/glossary", locale);
   if (!row || row.status === "archived") notFound();
 

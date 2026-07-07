@@ -108,32 +108,6 @@ const STEMS: Partial<Record<Locale, PaaStems>> = {
     howToImprove: (x) => `How do I improve my ${x}?`,
     heading: "People also ask",
   },
-  es: {
-    whatIs: (x) => `¿Qué es ${x}?`,
-    howDoesItWork: (x) => `¿Cómo funciona ${x}?`,
-    whyDoesItMatter: (x) =>
-      `¿Por qué importa ${x} para los fundadores indie SaaS?`,
-    howDoIApply: (x) => `¿Cómo aplico ${x} en mi página?`,
-    exampleOf: (x) => `¿Cuál es un ejemplo de ${x}?`,
-    whatIsGood: (x) => `¿Cuál es una buena ${x}?`,
-    averageFor: (x) => `¿Cuál es el promedio de ${x} para indie SaaS?`,
-    whyIsLow: (x) => `¿Por qué mi ${x} es tan bajo?`,
-    howToImprove: (x) => `¿Cómo mejoro mi ${x}?`,
-    heading: "La gente también pregunta",
-  },
-  "pt": {
-    whatIs: (x) => `O que é ${x}?`,
-    howDoesItWork: (x) => `Como funciona ${x}?`,
-    whyDoesItMatter: (x) =>
-      `Por que ${x} importa para fundadores indie SaaS?`,
-    howDoIApply: (x) => `Como aplico ${x} na minha página?`,
-    exampleOf: (x) => `Qual é um exemplo de ${x}?`,
-    whatIsGood: (x) => `O que é uma boa ${x}?`,
-    averageFor: (x) => `Qual é a média de ${x} para indie SaaS?`,
-    whyIsLow: (x) => `Por que minha ${x} está tão baixa?`,
-    howToImprove: (x) => `Como melhoro minha ${x}?`,
-    heading: "As pessoas também perguntam",
-  },
 };
 
 /** Resolve the PAA "People also ask" section heading for a given locale. */

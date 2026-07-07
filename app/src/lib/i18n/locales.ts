@@ -29,15 +29,9 @@ export function localizedPath(path: string, locale: Locale): string {
 
 /**
  * BCP 47 → OpenGraph locale format. og:locale uses underscores.
- * For locales not in this map, we derive a best-effort og format.
  */
 export function ogLocaleFormat(locale: Locale): string {
-  if (locale === "en-US") return "en_US";
-  const dashIdx = locale.indexOf("-");
-  if (dashIdx > 0) {
-    return locale.slice(0, dashIdx) + "_" + locale.slice(dashIdx + 1);
-  }
-  return locale + "_" + locale.toUpperCase();
+  return "en_US";
 }
 
 /** Human-readable display name for the language switcher. */

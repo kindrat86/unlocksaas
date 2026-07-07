@@ -178,7 +178,7 @@ export function selfHreflang(canonical: string): Record<string, string> {
  */
 export function isLocaleApprovedForPath(
   canonical: string,
-  locale: Exclude<Locale, "en-US">,
+  locale: Locale,
 ): boolean {
   return localesForPathWithHubFallback(canonical).some((l) => l === locale);
 }
@@ -316,7 +316,7 @@ export function markdownAlternate(
  */
 export function localeAlternates(
   canonical: string,
-  locale: Exclude<Locale, "en-US">,
+  locale: Locale,
 ): AlternatesFragment {
   const localised = localizedPath(canonical, locale);
   if (!isLocaleApprovedForPath(canonical, locale)) {

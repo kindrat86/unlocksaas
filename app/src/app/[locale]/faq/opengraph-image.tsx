@@ -56,7 +56,7 @@ export default async function OgImage({
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const chrome = getFaqChrome(locale);
   const row = getTranslationStatus("/faq", locale);
   const dateline = row?.approvedAt

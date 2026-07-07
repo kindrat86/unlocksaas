@@ -40,7 +40,7 @@ export async function generateMetadata({
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const chrome = getRepeatableChrome(locale);
   const path = "/repeatable";
   const localised = localizedPath(path, locale);
@@ -82,7 +82,7 @@ export default async function LocalizedRepeatablePage({
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const path = "/repeatable";
 
   const row = getTranslationStatus(path, locale);

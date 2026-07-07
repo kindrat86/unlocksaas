@@ -72,7 +72,7 @@ export default async function LocaleLayout({
   if (!isLocale(rawLocale) || rawLocale === "en-US") {
     notFound();
   }
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   return <div lang={locale} dir={isRTL(locale) ? "rtl" : "ltr"}>{children}</div>;
 }
 

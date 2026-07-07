@@ -49,7 +49,7 @@ export async function generateMetadata({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") return {};
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const e = getWhyIsntMyBySlug(slug);
   if (!e) return {};
 
@@ -102,7 +102,7 @@ export default async function LocalizedWhyIsntMyDetail({
   const { locale: rawLocale, slug } = await params;
   if (!isLocale(rawLocale) || rawLocale === "en-US") notFound();
 
-  const locale = rawLocale as Exclude<Locale, "en-US">;
+  const locale = rawLocale as Locale;
   const row = getTranslationStatus(PATH, locale);
   if (!row || row.status === "archived") notFound();
 

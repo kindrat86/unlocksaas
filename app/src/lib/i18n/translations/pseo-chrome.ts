@@ -86,42 +86,6 @@ export const PAGE_CHROME_PSEO_SHARED: Partial<Record<Locale, PageChromePseoShare
     detailEnglishCalloutSuffix:
       "When the localized overlay for this slug ships, the full content renders here in your locale.",
   },
-  es: {
-    breadcrumbHome: "Inicio",
-    hubCtaHeading: "¿No estás seguro si Unlock SaaS es para vos?",
-    hubCtaBody: "El diagnóstico de 90 segundos te lo responde.",
-    hubCtaPrimary: "Hacer el diagnóstico gratis",
-    hubCtaSecondary: "Empezar por $1",
-    detailCtaHeading: "Corré el diagnóstico en tu propia página",
-    detailCtaBody:
-      "El diagnóstico de 90 segundos etiqueta qué está roto en tu oferta.",
-    detailCtaPrimary: "Hacer el diagnóstico gratis",
-    pendingBannerTitle: "En revisión por el founder",
-    pendingBannerHubBody:
-      "Esta URL con prefijo de idioma está en preview mientras se finaliza la traducción. El contenido mostrado refleja la fuente canónica en inglés.",
-    pendingBannerDetailBody:
-      "Esta URL con prefijo de idioma está en preview mientras se finaliza la traducción. La versión completa en inglés está publicada en el enlace canónico abajo.",
-    detailEnglishCalloutSuffix:
-      "Cuando se publique la traducción de este slug, el contenido completo se renderiza acá en tu idioma.",
-  },
-  "pt": {
-    breadcrumbHome: "Início",
-    hubCtaHeading: "Não tem certeza se Unlock SaaS é pra você?",
-    hubCtaBody: "O diagnóstico de 90 segundos responde isso.",
-    hubCtaPrimary: "Fazer o diagnóstico gratuito",
-    hubCtaSecondary: "Começar por $1",
-    detailCtaHeading: "Rode o diagnóstico na sua própria página",
-    detailCtaBody:
-      "O diagnóstico de 90 segundos rotula o que está quebrado na sua oferta.",
-    detailCtaPrimary: "Fazer o diagnóstico gratuito",
-    pendingBannerTitle: "Em revisão do founder",
-    pendingBannerHubBody:
-      "Essa URL com prefixo de idioma está em preview enquanto a tradução é finalizada. O conteúdo mostrado reflete a fonte canônica em inglês.",
-    pendingBannerDetailBody:
-      "Essa URL com prefixo de idioma está em preview enquanto a tradução é finalizada. A versão completa em inglês está publicada no link canônico abaixo.",
-    detailEnglishCalloutSuffix:
-      "Quando a tradução desse slug for publicada, o conteúdo completo renderiza aqui no seu idioma.",
-  },
 } as const;
 
 export function getPseoSharedChrome(locale: Locale): PageChromePseoShared {
@@ -186,42 +150,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "The full comparison – capability table, honest verdict, FAQ, and related alternatives – is published in English at the canonical URL:",
       detailCtaSecondary: "All comparisons",
     },
-    es: {
-      seoTitle:
-        "Alternativas honestas a Unlock SaaS – y por qué la mayoría son productos distintos",
-      seoDescription:
-        "Comparaciones lado a lado con ShipFast, Lovable, One Funnel Away Challenge, Starter Story y otras herramientas que el founder de SaaS post-launch pre-revenue típico evalúa. Encuadre honesto, sin desprestigios.",
-      breadcrumbHub: "Alternativas",
-      hubEyebrow: "Comparaciones honestas",
-      hubHeadline:
-        "La mayoría de las «alternativas» no son alternativas. Son productos distintos.",
-      hubLede:
-        "Unlock SaaS es el playbook que produce un primer cliente que paga, verificado en Stripe, para un SaaS que ya lanzaste, en 60 días, o no pagás. Abajo están las herramientas que los founders en ese punto exacto ya evalúan.",
-      hubListAriaLabel: "Lista de comparaciones",
-      hubReadMoreLabel: "Leer la comparación completa →",
-      detailEnglishCalloutTitle: "Comparación completa en inglés",
-      detailEnglishCalloutBody:
-        "La comparación completa – tabla de capacidades, veredicto honesto, FAQ y alternativas relacionadas – está publicada en inglés en la URL canónica:",
-      detailCtaSecondary: "Todas las comparaciones",
-    },
-    "pt": {
-      seoTitle:
-        "Alternativas honestas ao Unlock SaaS – e por que a maioria são produtos diferentes",
-      seoDescription:
-        "Comparações lado a lado com ShipFast, Lovable, One Funnel Away Challenge, Starter Story e outras ferramentas que o founder típico de SaaS pós-launch sem receita avalia. Enquadre honesto, sem detratar.",
-      breadcrumbHub: "Alternativas",
-      hubEyebrow: "Comparações honestas",
-      hubHeadline:
-        "A maioria das “alternativas” não são alternativas. São produtos diferentes.",
-      hubLede:
-        "Unlock SaaS é o playbook que produz um primeiro cliente pagante, verificado no Stripe, pra um SaaS que você já lançou, em 60 dias, ou você não paga. Abaixo estão as ferramentas que os founders nesse ponto exato já avaliam.",
-      hubListAriaLabel: "Lista de comparações",
-      hubReadMoreLabel: "Ler a comparação completa →",
-      detailEnglishCalloutTitle: "Comparação completa em inglês",
-      detailEnglishCalloutBody:
-        "A comparação completa – tabela de capacidades, veredito honesto, FAQ e alternativas relacionadas – está publicada em inglês na URL canônica:",
-      detailCtaSecondary: "Todas as comparações",
-    },
   },
   // -------------------------------------------------------------------------
   // /vs (cluster key `compare` retained internally – see header comment)
@@ -242,38 +170,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
       detailEnglishCalloutBody:
         "The full head-to-head – capability matrix, pricing anchors, verdict, FAQ – is published in English at the canonical URL:",
       detailCtaSecondary: "All comparisons",
-    },
-    es: {
-      seoTitle: "Comparaciones de SaaS mano a mano – herramienta A vs herramienta B",
-      seoDescription:
-        "Comparaciones honestas dimensión por dimensión entre las herramientas SaaS que los founders evalúan lado a lado. Capacidades, anclas de precio, para quién es cada una.",
-      breadcrumbHub: "Comparar",
-      hubEyebrow: "Mano a mano",
-      hubHeadline: "Elegí la herramienta correcta. Dejá de saltar entre pestañas.",
-      hubLede:
-        "Cada comparación de abajo expone las dimensiones que realmente importan para un founder de SaaS post-launch pre-revenue: para quién es la herramienta, qué hace que la otra no hace, y dónde se queda corta. Sin desprestigios, sin reseñas falsas.",
-      hubListAriaLabel: "Lista de comparaciones mano a mano",
-      hubReadMoreLabel: "Leer la comparación completa →",
-      detailEnglishCalloutTitle: "Comparación mano a mano completa en inglés",
-      detailEnglishCalloutBody:
-        "La comparación mano a mano completa – matriz de capacidades, anclas de precio, veredicto, FAQ – está publicada en inglés en la URL canónica:",
-      detailCtaSecondary: "Todas las comparaciones",
-    },
-    "pt": {
-      seoTitle: "Comparações de SaaS frente a frente – ferramenta A vs ferramenta B",
-      seoDescription:
-        "Comparações honestas dimensão por dimensão entre as ferramentas SaaS que founders avaliam lado a lado. Capacidades, âncoras de preço, pra quem cada uma é.",
-      breadcrumbHub: "Comparar",
-      hubEyebrow: "Frente a frente",
-      hubHeadline: "Escolha a ferramenta certa. Pare de pular entre abas.",
-      hubLede:
-        "Cada comparação abaixo expõe as dimensões que realmente importam pra um founder de SaaS pós-launch sem receita: pra quem é a ferramenta, o que ela faz que a outra não faz, e onde ela falha. Sem detratar, sem reviews falsos.",
-      hubListAriaLabel: "Lista de comparações frente a frente",
-      hubReadMoreLabel: "Ler a comparação completa →",
-      detailEnglishCalloutTitle: "Comparação frente a frente completa em inglês",
-      detailEnglishCalloutBody:
-        "A comparação frente a frente completa – matriz de capacidades, âncoras de preço, veredito, FAQ – está publicada em inglês na URL canônica:",
-      detailCtaSecondary: "Todas as comparações",
     },
   },
   // -------------------------------------------------------------------------
@@ -296,39 +192,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "The full category roundup – product map, honest verdicts, related teardowns – is published in English at the canonical URL:",
       detailCtaSecondary: "All categories",
     },
-    es: {
-      seoTitle:
-        "Resúmenes de categorías SaaS – el panorama honesto por nicho",
-      seoDescription:
-        "Panoramas de categoría curados: quién juega en este espacio, entre qué está eligiendo realmente el founder típico, y para qué es honestamente cada producto.",
-      breadcrumbHub: "Categorías",
-      hubEyebrow: "Resúmenes por categoría",
-      hubHeadline: "El panorama honesto, una categoría a la vez.",
-      hubLede:
-        "Cada resumen nombra los productos de la categoría, para qué es honestamente cada uno, y a cuáles debería considerar un founder post-launch pre-revenue. Sin colocaciones pagas. Sin rankings inventados.",
-      hubListAriaLabel: "Lista de categorías",
-      hubReadMoreLabel: "Leer el resumen completo →",
-      detailEnglishCalloutTitle: "Resumen completo en inglés",
-      detailEnglishCalloutBody:
-        "El resumen completo de la categoría – mapa de productos, veredictos honestos, teardowns relacionados – está publicado en inglés en la URL canónica:",
-      detailCtaSecondary: "Todas las categorías",
-    },
-    "pt": {
-      seoTitle: "Resumos de categorias SaaS – o panorama honesto por nicho",
-      seoDescription:
-        "Panoramas de categoria curados: quem joga nesse espaço, entre o que o founder típico está de fato escolhendo, e pra que cada produto é honestamente.",
-      breadcrumbHub: "Categorias",
-      hubEyebrow: "Resumos por categoria",
-      hubHeadline: "O panorama honesto, uma categoria por vez.",
-      hubLede:
-        "Cada resumo nomeia os produtos da categoria, pra que cada um é honestamente, e quais deles um founder pós-launch sem receita deveria considerar. Sem colocações pagas. Sem rankings inventados.",
-      hubListAriaLabel: "Lista de categorias",
-      hubReadMoreLabel: "Ler o resumo completo →",
-      detailEnglishCalloutTitle: "Resumo completo em inglês",
-      detailEnglishCalloutBody:
-        "O resumo completo da categoria – mapa de produtos, vereditos honestos, teardowns relacionados – está publicado em inglês na URL canônica:",
-      detailCtaSecondary: "Todas as categorias",
-    },
   },
   // -------------------------------------------------------------------------
   // /funnel-teardown
@@ -350,42 +213,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
       detailEnglishCalloutBody:
         "The full Hook / Story / Offer teardown – with Wrong Person / Weak Offer / Weak Belief labels and related pricing teardown – is published in English at the canonical URL:",
       detailCtaSecondary: "All teardowns",
-    },
-    es: {
-      seoTitle:
-        "Teardowns de funnel – Hook / Story / Offer en páginas SaaS reales",
-      seoDescription:
-        "Teardowns honestos Hook / Story / Offer de funnels SaaS reales. Qué funciona, qué falta, qué probablemente cree el founder que la página no prueba.",
-      breadcrumbHub: "Teardowns de funnel",
-      hubEyebrow: "Hook · Story · Offer",
-      hubHeadline:
-        "Qué está vendiendo la página, contra lo que al visitante se le pide creer.",
-      hubLede:
-        "Cada teardown corre la misma triage: Wrong Person / Weak Offer / Weak Belief. La página o está vendiendo lo equivocado, a la persona equivocada, con prueba débil – o una de esas está bien. El teardown etiqueta cuál.",
-      hubListAriaLabel: "Lista de teardowns de funnel",
-      hubReadMoreLabel: "Leer el teardown completo →",
-      detailEnglishCalloutTitle: "Teardown completo en inglés",
-      detailEnglishCalloutBody:
-        "El teardown Hook / Story / Offer completo – con etiquetas Wrong Person / Weak Offer / Weak Belief y el teardown de precio relacionado – está publicado en inglés en la URL canónica:",
-      detailCtaSecondary: "Todos los teardowns",
-    },
-    "pt": {
-      seoTitle:
-        "Teardowns de funnel – Hook / Story / Offer em páginas SaaS reais",
-      seoDescription:
-        "Teardowns honestos Hook / Story / Offer de funnels SaaS reais. O que funciona, o que está faltando, o que o founder provavelmente acredita que a página não prova.",
-      breadcrumbHub: "Teardowns de funnel",
-      hubEyebrow: "Hook · Story · Offer",
-      hubHeadline:
-        "O que a página está vendendo, contra o que o visitante é pedido pra acreditar.",
-      hubLede:
-        "Cada teardown roda a mesma triagem: Wrong Person / Weak Offer / Weak Belief. A página ou está vendendo a coisa errada, pra pessoa errada, com prova fraca – ou uma dessas está OK. O teardown rotula qual.",
-      hubListAriaLabel: "Lista de teardowns de funnel",
-      hubReadMoreLabel: "Ler o teardown completo →",
-      detailEnglishCalloutTitle: "Teardown completo em inglês",
-      detailEnglishCalloutBody:
-        "O teardown Hook / Story / Offer completo – com rótulos Wrong Person / Weak Offer / Weak Belief e o teardown de preço relacionado – está publicado em inglês na URL canônica:",
-      detailCtaSecondary: "Todos os teardowns",
     },
   },
   // -------------------------------------------------------------------------
@@ -410,42 +237,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "The full pricing teardown – tier map, anchor analysis, mechanic breakdown, related funnel teardown – is published in English at the canonical URL:",
       detailCtaSecondary: "All pricing teardowns",
     },
-    es: {
-      seoTitle:
-        "Teardowns de precio – estructura de tiers, anclas y mecánicas de precio",
-      seoDescription:
-        "Teardowns honestos de precio de productos SaaS reales: escalera de tiers, movidas de ancla, mecánicas de free trial, qué vende el precio que la página no vende.",
-      breadcrumbHub: "Teardowns de precio",
-      hubEyebrow: "Mecánicas de precio",
-      hubHeadline:
-        "La página de precio dice una cosa. La mecánica de precio dice otra.",
-      hubLede:
-        "Cada teardown mapea la escalera de tiers, la movida de ancla, la mecánica de free trial, y la brecha entre lo que el precio implica y lo que la página promete. El precio es un mecanismo de creencia; así es como se mueve realmente.",
-      hubListAriaLabel: "Lista de teardowns de precio",
-      hubReadMoreLabel: "Leer el teardown de precio completo →",
-      detailEnglishCalloutTitle: "Teardown de precio completo en inglés",
-      detailEnglishCalloutBody:
-        "El teardown de precio completo – mapa de tiers, análisis de ancla, desglose de mecánica, teardown de funnel relacionado – está publicado en inglés en la URL canónica:",
-      detailCtaSecondary: "Todos los teardowns de precio",
-    },
-    "pt": {
-      seoTitle:
-        "Teardowns de preço – estrutura de tiers, âncoras e mecânicas de preço",
-      seoDescription:
-        "Teardowns honestos de preço de produtos SaaS reais: escada de tiers, jogadas de âncora, mecânicas de free trial, o que o preço vende que a página não vende.",
-      breadcrumbHub: "Teardowns de preço",
-      hubEyebrow: "Mecânicas de preço",
-      hubHeadline:
-        "A página de preço diz uma coisa. A mecânica de preço diz outra.",
-      hubLede:
-        "Cada teardown mapeia a escada de tiers, a jogada de âncora, a mecânica de free trial, e o gap entre o que o preço implica e o que a página promete. Preço é um mecanismo de crença; é assim que ele de fato se move.",
-      hubListAriaLabel: "Lista de teardowns de preço",
-      hubReadMoreLabel: "Ler o teardown de preço completo →",
-      detailEnglishCalloutTitle: "Teardown de preço completo em inglês",
-      detailEnglishCalloutBody:
-        "O teardown de preço completo – mapa de tiers, análise de âncora, desmembramento de mecânica, teardown de funnel relacionado – está publicado em inglês na URL canônica:",
-      detailCtaSecondary: "Todos os teardowns de preço",
-    },
   },
   // -------------------------------------------------------------------------
   // /answers
@@ -467,38 +258,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "The full answer – with supporting bullets and related questions – is published in English at the canonical URL:",
       detailCtaSecondary: "All answers",
     },
-    es: {
-      seoTitle: "Respuestas – respuestas directas a preguntas de founders",
-      seoDescription:
-        "Respuestas directas a las preguntas específicas que hacen los founders de SaaS post-launch pre-revenue. Dos a cuatro oraciones, sin relleno, sin upsell en cada párrafo.",
-      breadcrumbHub: "Respuestas",
-      hubEyebrow: "Respuestas directas",
-      hubHeadline: "La respuesta primero. El contexto después.",
-      hubLede:
-        "Cada entrada es una pregunta específica de un founder y la respuesta directa en dos a cuatro oraciones. Sin relleno, sin upsell en cada párrafo. Si la respuesta necesita más, los bullets de apoyo siguen.",
-      hubListAriaLabel: "Lista de respuestas",
-      hubReadMoreLabel: "Leer la respuesta completa →",
-      detailEnglishCalloutTitle: "Respuesta completa en inglés",
-      detailEnglishCalloutBody:
-        "La respuesta completa – con bullets de apoyo y preguntas relacionadas – está publicada en inglés en la URL canónica:",
-      detailCtaSecondary: "Todas las respuestas",
-    },
-    "pt": {
-      seoTitle: "Respostas – respostas diretas a perguntas de founders",
-      seoDescription:
-        "Respostas diretas pras perguntas específicas que founders de SaaS pós-launch sem receita fazem. Duas a quatro frases, sem enrolação, sem upsell em cada parágrafo.",
-      breadcrumbHub: "Respostas",
-      hubEyebrow: "Respostas diretas",
-      hubHeadline: "A resposta primeiro. O contexto depois.",
-      hubLede:
-        "Cada entrada é uma pergunta específica de um founder e a resposta direta em duas a quatro frases. Sem enrolação, sem upsell em cada parágrafo. Se a resposta precisar de mais, os bullets de apoio seguem.",
-      hubListAriaLabel: "Lista de respostas",
-      hubReadMoreLabel: "Ler a resposta completa →",
-      detailEnglishCalloutTitle: "Resposta completa em inglês",
-      detailEnglishCalloutBody:
-        "A resposta completa – com bullets de apoio e perguntas relacionadas – está publicada em inglês na URL canônica:",
-      detailCtaSecondary: "Todas as respostas",
-    },
   },
   // -------------------------------------------------------------------------
   // /should-i
@@ -519,38 +278,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
       detailEnglishCalloutBody:
         "The full verdict – with supporting bullets and related decisions – is published in English at the canonical URL:",
       detailCtaSecondary: "All decisions",
-    },
-    es: {
-      seoTitle: "¿Debería…? – veredictos binarios para decisiones de founders",
-      seoDescription:
-        "Veredictos sí / no / depende / todavía no para las decisiones que los founders de SaaS post-launch pre-revenue enfrentan en realidad. Un veredicto, dos a cuatro oraciones de razonamiento, bullets de apoyo. Sin hedging.",
-      breadcrumbHub: "¿Debería…?",
-      hubEyebrow: "Decisiones de founders, veredictos directos",
-      hubHeadline: "El veredicto primero. El razonamiento después.",
-      hubLede:
-        "Cada entrada es una decisión específica que enfrenta un founder con un único veredicto binario – sí, no, depende o todavía no – más el razonamiento en dos a cuatro oraciones. Pensado para que asistentes de IA lo citen y para usarse como chequeo rápido a mitad de build.",
-      hubListAriaLabel: "Lista de decisiones",
-      hubReadMoreLabel: "Leer el veredicto completo →",
-      detailEnglishCalloutTitle: "Veredicto completo en inglés",
-      detailEnglishCalloutBody:
-        "El veredicto completo – con bullets de apoyo y decisiones relacionadas – está publicado en inglés en la URL canónica:",
-      detailCtaSecondary: "Todas las decisiones",
-    },
-    "pt": {
-      seoTitle: "Devo…? – vereditos binários pra decisões de founders",
-      seoDescription:
-        "Vereditos sim / não / depende / ainda não pras decisões que founders de SaaS pós-launch sem receita realmente enfrentam. Um veredito, duas a quatro frases de raciocínio, bullets de apoio. Sem enrolação.",
-      breadcrumbHub: "Devo…?",
-      hubEyebrow: "Decisões de founders, vereditos diretos",
-      hubHeadline: "O veredito primeiro. O raciocínio depois.",
-      hubLede:
-        "Cada entrada é uma decisão específica que um founder enfrenta com um único veredito binário – sim, não, depende ou ainda não – mais o raciocínio em duas a quatro frases. Feito pra ser citado por assistentes de IA e usado como check rápido no meio do build.",
-      hubListAriaLabel: "Lista de decisões",
-      hubReadMoreLabel: "Ler o veredito completo →",
-      detailEnglishCalloutTitle: "Veredito completo em inglês",
-      detailEnglishCalloutBody:
-        "O veredito completo – com bullets de apoio e decisões relacionadas – está publicado em inglês na URL canônica:",
-      detailCtaSecondary: "Todas as decisões",
     },
   },
   // -------------------------------------------------------------------------
@@ -574,42 +301,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "The full triage – with the Wrong Person / Weak Offer / Weak Belief labels and the test plan – is published in English at the canonical URL:",
       detailCtaSecondary: "All triages",
     },
-    es: {
-      seoTitle:
-        "¿Por qué mi … no funciona? – triage por elemento del funnel en las palabras del founder",
-      seoDescription:
-        "Pregunta específica del founder («¿por qué mi landing no convierte?», «¿por qué mi checkout no se completa?») respondida con triage Wrong Person / Weak Offer / Weak Belief aplicada a un elemento del funnel.",
-      breadcrumbHub: "¿Por qué mi…?",
-      hubEyebrow: "Triage por elemento de funnel",
-      hubHeadline:
-        "Elegí el elemento que no está funcionando. Recibí el triage.",
-      hubLede:
-        "Cada página aplica la misma triage Wrong Person / Weak Offer / Weak Belief a un elemento específico del funnel. No es consejo genérico – es un diagnóstico etiquetado de qué está roto con más probabilidad y qué testear primero.",
-      hubListAriaLabel: "Lista de triages por elemento de funnel",
-      hubReadMoreLabel: "Leer el triage completo →",
-      detailEnglishCalloutTitle: "Triage completo en inglés",
-      detailEnglishCalloutBody:
-        "El triage completo – con las etiquetas Wrong Person / Weak Offer / Weak Belief y el plan de test – está publicado en inglés en la URL canónica:",
-      detailCtaSecondary: "Todos los triages",
-    },
-    "pt": {
-      seoTitle:
-        "Por que meu … não funciona – triagem por elemento de funnel nas palavras do founder",
-      seoDescription:
-        "Pergunta específica do founder (“por que minha landing não converte?”, “por que meu checkout não completa?”) respondida com triagem Wrong Person / Weak Offer / Weak Belief aplicada a um elemento do funnel.",
-      breadcrumbHub: "Por que meu…?",
-      hubEyebrow: "Triagem por elemento de funnel",
-      hubHeadline:
-        "Escolha o elemento que não está funcionando. Receba a triagem.",
-      hubLede:
-        "Cada página aplica a mesma triagem Wrong Person / Weak Offer / Weak Belief a um elemento específico do funnel. Não é conselho genérico – é um diagnóstico rotulado do que está mais provavelmente quebrado e o que testar primeiro.",
-      hubListAriaLabel: "Lista de triagens por elemento de funnel",
-      hubReadMoreLabel: "Ler a triagem completa →",
-      detailEnglishCalloutTitle: "Triagem completa em inglês",
-      detailEnglishCalloutBody:
-        "A triagem completa – com os rótulos Wrong Person / Weak Offer / Weak Belief e o plano de teste – está publicada em inglês na URL canônica:",
-      detailCtaSecondary: "Todas as triagens",
-    },
   },
   // -------------------------------------------------------------------------
   // /for
@@ -630,38 +321,6 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
       detailEnglishCalloutBody:
         "The full profile – with funnel-stage diagnosis and 60-day expectation – is published in English at the canonical URL:",
       detailCtaSecondary: "All profiles",
-    },
-    es: {
-      seoTitle: "Unlock SaaS para … – producto + targeting por nicho",
-      seoDescription:
-        "Páginas «Unlock SaaS para [nicho]» que nombran el perfil específico de founder, el problema específico de funnel en su etapa, y qué produce el Playbook para ese perfil en 60 días.",
-      breadcrumbHub: "Para",
-      hubEyebrow: "Targeting por nicho",
-      hubHeadline: "Elegí el perfil. Leé qué hace el Playbook para él.",
-      hubLede:
-        "Cada página nombra el perfil específico de founder, el problema específico de funnel en su etapa, y qué produce el Playbook de 60 días para ese perfil. Si tu perfil no está listado, el diagnóstico igual funciona.",
-      hubListAriaLabel: "Lista de perfiles por nicho",
-      hubReadMoreLabel: "Leer el perfil completo →",
-      detailEnglishCalloutTitle: "Perfil completo en inglés",
-      detailEnglishCalloutBody:
-        "El perfil completo – con diagnóstico por etapa de funnel y expectativa a 60 días – está publicado en inglés en la URL canónica:",
-      detailCtaSecondary: "Todos los perfiles",
-    },
-    "pt": {
-      seoTitle: "Unlock SaaS pra … – produto + targeting por nicho",
-      seoDescription:
-        "Páginas “Unlock SaaS pra [nicho]” que nomeiam o perfil específico de founder, o problema específico de funnel no estágio dele, e o que o Playbook produz pra esse perfil em 60 dias.",
-      breadcrumbHub: "Pra",
-      hubEyebrow: "Targeting por nicho",
-      hubHeadline: "Escolha o perfil. Leia o que o Playbook faz por ele.",
-      hubLede:
-        "Cada página nomeia o perfil específico de founder, o problema específico de funnel no estágio dele, e o que o Playbook de 60 dias produz pra esse perfil. Se seu perfil não está listado, o diagnóstico ainda funciona.",
-      hubListAriaLabel: "Lista de perfis por nicho",
-      hubReadMoreLabel: "Ler o perfil completo →",
-      detailEnglishCalloutTitle: "Perfil completo em inglês",
-      detailEnglishCalloutBody:
-        "O perfil completo – com diagnóstico por estágio de funnel e expectativa de 60 dias – está publicado em inglês na URL canônica:",
-      detailCtaSecondary: "Todos os perfis",
     },
   },
 } as const;
