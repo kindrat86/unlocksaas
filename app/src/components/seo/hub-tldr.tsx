@@ -89,5 +89,5 @@ export function HubTldr({
     items.push({ term: "License", definition: license });
   }
 
-  return <TldrSummary headingLabel={headingLabel} items={items} />;
+  return <TldrSummary headingLabel={headingLabel} lead={intent} items={items} />;
 }

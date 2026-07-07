@@ -66,6 +66,22 @@ export interface TldrSummaryProps {
   headingLabel?: string;
   /** Visible eyebrow label, uppercase. Defaults to "TL;DR". */
   eyebrow?: string;
+  /**
+   * Optional plain-prose one-sentence summary rendered as a real `<p>`
+   * paragraph directly under the eyebrow, prefixed with "TL;DR: ".
+   *
+   * Why a prose line in addition to the `<dl>` rows
+   * ------------------------------------------------
+   * Answer engines (ChatGPT, Claude, Perplexity, Google AI Overviews)
+   * quote a contiguous prose sentence far more readily than they
+   * recombine `<dt>`/`<dd>` pairs into one. The `<dl data-llm-summary>`
+   * block stays the structured extraction canvas; this leading `<p>`
+   * gives retrievers a ready-made citable abstract. It also satisfies
+   * top-of-page TL;DR detectors that scan leading `<p>` text rather
+   * than definition lists. Pass the same one-line intent the hub already
+   * declares — never synthesize new claims here (Brunson Hard-Rule).
+   */
+  lead?: string;
   /** Key/value rows to render. Empty rows filtered. */
   items: ReadonlyArray<TldrSummaryItem>;
 }
@@ -74,12 +90,15 @@ export function TldrSummary({
   headingId = "tldr",
   headingLabel = "Summary",
   eyebrow = "TL;DR",
+  lead,
   items,
 }: TldrSummaryProps) {
   const rows = items.filter(
     (row) => row.term.trim().length > 0 && row.definition.trim().length > 0,
   );
   if (rows.length === 0) return null;
+
+  const leadText = lead && lead.trim().length > 0 ? lead.trim() : "";
 
   return (
     <section
@@ -94,6 +113,14 @@ export function TldrSummary({
           <p className="text-xs uppercase tracking-widest text-primary mb-4">
             {eyebrow}
           </p>
+          {leadText ? (
+            <p
+              data-llm-tldr
+              className="text-sm leading-relaxed mb-4 font-medium text-foreground"
+            >
+              TL;DR: {leadText}
+            </p>
+          ) : null}
           <dl data-llm-summary className="space-y-3">
             {rows.map((row) => (
               <div
