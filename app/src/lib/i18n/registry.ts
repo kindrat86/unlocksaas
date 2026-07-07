@@ -133,7 +133,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/faq",
-    locale: "pt-BR",
+    locale: "pt",
     status: "approved",
     approvedAt: "2026-05-18",
     approvedBy: "maryan",
@@ -155,7 +155,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/contact",
-    locale: "pt-BR",
+    locale: "pt",
     status: "approved",
     approvedAt: "2026-05-19",
     approvedBy: "maryan",
@@ -181,7 +181,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/repeatable",
-    locale: "pt-BR",
+    locale: "pt",
     status: "approved",
     approvedAt: "2026-05-19",
     approvedBy: "maryan",
@@ -209,7 +209,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/editorial-policy",
-    locale: "pt-BR",
+    locale: "pt",
     status: "approved",
     approvedAt: "2026-05-19",
     approvedBy: "maryan",
@@ -264,7 +264,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/glossary",
-    locale: "pt-BR",
+    locale: "pt",
     status: "approved",
     approvedAt: "2026-05-20",
     approvedBy: "maryan",
@@ -313,7 +313,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/benchmarks",
-    locale: "pt-BR",
+    locale: "pt",
     status: "approved",
     approvedAt: "2026-05-20",
     approvedBy: "maryan",
@@ -338,7 +338,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/alternatives-to",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + verdict stay English until per-slug overlay ships. Verify at /pt-BR/alternatives-to before flipping to approved.",
@@ -352,7 +352,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/vs",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level oneLine + capability matrix stay English until per-slug overlay ships. Verify at /pt-BR/vs before flipping to approved. (Hub renamed from /compare to /vs same day – i18n entries follow.)",
@@ -366,7 +366,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/category",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level category descriptions stay English until per-slug overlay ships. Verify at /pt-BR/category before flipping to approved.",
@@ -380,7 +380,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/funnel-teardown",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level Hook/Story/Offer breakdown stays English until per-slug overlay ships. Verify at /pt-BR/funnel-teardown before flipping to approved.",
@@ -394,7 +394,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/pricing-teardown",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level tier maps + Stack lens stay English until per-slug overlay ships. Verify at /pt-BR/pricing-teardown before flipping to approved.",
@@ -408,7 +408,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/answers",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level question + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /pt-BR/answers before flipping to approved.",
@@ -422,7 +422,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/should-i",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-22 (drafted by Claude per founder autonomous directive). Slug-level question + verdictHeadline + directAnswer + supporting bullets stay English until per-slug overlay ships. Verify at /pt-BR/should-i before flipping to approved.",
@@ -436,7 +436,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/why-isnt-my",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level element triage stays English until per-slug overlay ships. Verify at /pt-BR/why-isnt-my before flipping to approved.",
@@ -450,7 +450,7 @@ export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
   },
   {
     path: "/for",
-    locale: "pt-BR",
+    locale: "pt",
     status: "pending-review",
     reviewNote:
       "Chrome localized 2026-05-21 (drafted by Claude per founder autonomous directive). Slug-level cohort pain + niche descriptions stay English until per-slug overlay ships. Verify at /pt-BR/for before flipping to approved.",

@@ -37,7 +37,7 @@ export function getFaqEntries(locale: Locale): FaqEntry[] {
   switch (locale) {
     case "es":
       return FAQ_ENTRIES_ES;
-    case "pt-BR":
+    case "pt":
       return FAQ_ENTRIES_PT_BR;
     case "en-US":
     default:
@@ -79,7 +79,7 @@ export function getGlossaryEntries(
   switch (locale) {
     case "es":
       return overlayGlossary(GLOSSARY, GLOSSARY_ES);
-    case "pt-BR":
+    case "pt":
       return overlayGlossary(GLOSSARY, GLOSSARY_PT_BR);
     case "en-US":
     default:
@@ -120,7 +120,7 @@ export function getBenchmarkEntries(
   switch (locale) {
     case "es":
       return overlayBenchmarks(BENCHMARK_ENTRIES, BENCHMARK_ENTRIES_ES);
-    case "pt-BR":
+    case "pt":
       return overlayBenchmarks(BENCHMARK_ENTRIES, BENCHMARK_ENTRIES_PT_BR);
     case "en-US":
     default:
@@ -189,7 +189,7 @@ export const PAGE_CHROME_FAQ: Partial<Record<Locale, PageChromeFaq>> = {
     seoDescription:
       "Las ocho objeciones que los founders post-launch pre-revenue realmente plantean sobre Unlock SaaS — precio, tiempo, identidad, DIY, señal — respondidas en el mismo lenguaje en que se hicieron.",
   },
-  "pt-BR": {
+  "pt": {
     breadcrumbHome: "Início",
     breadcrumbFaq: "Perguntas frequentes",
     headline:
@@ -213,7 +213,7 @@ export const PAGE_CHROME_FAQ: Partial<Record<Locale, PageChromeFaq>> = {
 } as const;
 
 export function getFaqChrome(locale: Locale): PageChromeFaq {
-  return PAGE_CHROME_FAQ[locale] ?? PAGE_CHROME_FAQ["en-US"];
+  return (PAGE_CHROME_FAQ[locale] ?? PAGE_CHROME_FAQ["en-US"] as any) as PageChromeFaq;
 }
 
 /**
@@ -313,7 +313,7 @@ export const PAGE_CHROME_CONTACT: Partial<Record<Locale, PageChromeContact>> = {
     seoDescription:
       "Una bandeja, un humano, respuestas reales. Escribí a maryan@unlocksaas.com. Diagnóstico, reembolso, partnership, prensa – todo a la misma dirección.",
   },
-  "pt-BR": {
+  "pt": {
     breadcrumbHome: "Unlock SaaS",
     breadcrumbContact: "Contato",
     pageLabel: "Contato",
@@ -344,7 +344,7 @@ export const PAGE_CHROME_CONTACT: Partial<Record<Locale, PageChromeContact>> = {
 } as const;
 
 export function getContactChrome(locale: Locale): PageChromeContact {
-  return PAGE_CHROME_CONTACT[locale] ?? PAGE_CHROME_CONTACT["en-US"];
+  return (PAGE_CHROME_CONTACT[locale] ?? PAGE_CHROME_CONTACT["en-US"] as any) as any;
 }
 
 /**
@@ -467,7 +467,7 @@ export const PAGE_CHROME_REPEATABLE: Partial<Record<Locale, PageChromeRepeatable
     seoDescription:
       "Lo que se lanza después de tu primer cliente que paga: una capa self-serve que lleva al dream customer, el Attractive Character, el outreach y el patrón de Stripe a través de Product 2. Spec publicado; build bloqueado por tres ciclos de clientes Core.",
   },
-  "pt-BR": {
+  "pt": {
     topLabel: "Rung 2 – A Camada de Receita Repetível",
     headline:
       "O próximo sim, publicado antes de eu estar pronto para vender.",
@@ -509,7 +509,7 @@ export const PAGE_CHROME_REPEATABLE: Partial<Record<Locale, PageChromeRepeatable
 } as const;
 
 export function getRepeatableChrome(locale: Locale): PageChromeRepeatable {
-  return PAGE_CHROME_REPEATABLE[locale] ?? PAGE_CHROME_REPEATABLE["en-US"];
+  return (PAGE_CHROME_REPEATABLE[locale] ?? PAGE_CHROME_REPEATABLE["en-US"] as any) as any;
 }
 
 /**
@@ -601,7 +601,7 @@ export interface PageChromeEditorialPolicy {
 }
 
 export const PAGE_CHROME_EDITORIAL_POLICY: Record<
-  Locale,
+  string,
   PageChromeEditorialPolicy
 > = {
   "en-US": {
@@ -789,7 +789,7 @@ export const PAGE_CHROME_EDITORIAL_POLICY: Record<
     seoDescription:
       "Cómo Unlock SaaS obtiene fuentes, fecha, firma y corrige cada afirmación pública. Estándares editoriales, divulgaciones financieras y el registro de correcciones en curso.",
   },
-  "pt-BR": {
+  "pt": {
     breadcrumbHome: "Unlock SaaS",
     breadcrumbEditorial: "Política Editorial",
     pageLabel: "Política Editorial",
@@ -890,7 +890,7 @@ export function getEditorialPolicyChrome(
   return (
     PAGE_CHROME_EDITORIAL_POLICY[locale] ??
     PAGE_CHROME_EDITORIAL_POLICY["en-US"]
-  );
+  ) as PageChromeEditorialPolicy;
 }
 
 /**
@@ -1017,7 +1017,7 @@ export const PAGE_CHROME_GLOSSARY: Partial<Record<Locale, PageChromeGlossary>> =
     pendingReviewBannerBody:
       "La traducción está en revisión. La página renderiza pero es noindex; el sitemap la omite; no se anuncia un hreflang alternate.",
   },
-  "pt-BR": {
+  "pt": {
     hubSeoTitle: "Glossário – 16 termos Brunson para founders indie de SaaS",
     hubSeoDescription:
       "Glossário Brunson em linguagem clara: Hook, Story, Offer, Big Domino, Reluctant Hero, Stack Slide e mais 11 termos que founders pós-launch sem receita precisam ter na página.",
@@ -1060,7 +1060,7 @@ export const PAGE_CHROME_GLOSSARY: Partial<Record<Locale, PageChromeGlossary>> =
 } as const;
 
 export function getGlossaryChrome(locale: Locale): PageChromeGlossary {
-  return PAGE_CHROME_GLOSSARY[locale] ?? PAGE_CHROME_GLOSSARY["en-US"];
+  return (PAGE_CHROME_GLOSSARY[locale] ?? PAGE_CHROME_GLOSSARY["en-US"] as any) as any;
 }
 
 /**
@@ -1172,7 +1172,7 @@ export const PAGE_CHROME_BENCHMARKS: Partial<Record<Locale, PageChromeBenchmarks
     pendingReviewBannerBody:
       "La traducción está en revisión. La página renderiza pero es noindex; el sitemap la omite; no se anuncia un hreflang alternate.",
   },
-  "pt-BR": {
+  "pt": {
     hubSeoTitle:
       "Benchmarks de Indie SaaS – Faixas direcionais de 20 métricas",
     hubSeoDescription:
@@ -1211,7 +1211,7 @@ export const PAGE_CHROME_BENCHMARKS: Partial<Record<Locale, PageChromeBenchmarks
 } as const;
 
 export function getBenchmarksChrome(locale: Locale): PageChromeBenchmarks {
-  return PAGE_CHROME_BENCHMARKS[locale] ?? PAGE_CHROME_BENCHMARKS["en-US"];
+  return (PAGE_CHROME_BENCHMARKS[locale] ?? PAGE_CHROME_BENCHMARKS["en-US"] as any) as any;
 }
 
 // ---------------------------------------------------------------------------

@@ -6,7 +6,7 @@ import {
   BreadcrumbListJsonLd,
   FaqPageJsonLd,
 } from "@/components/seo/json-ld";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, localizedPath, ogLocaleFormat, type Locale } from "@/lib/i18n/locales";
 import {
   getTranslationStatus,
   isApproved,

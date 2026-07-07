@@ -89,9 +89,9 @@ export async function generateImageMetadata({
   const entry = getGlossaryEntries(locale).find((e) => e.slug === slug);
   const chrome = getGlossaryChrome(locale);
   const name = entry?.term ?? chrome.hubBreadcrumbGlossary;
-  const altByLocale: Record<Exclude<Locale, "en-US">, string> = {
+  const altByLocale: Record<string, string> = {
     es: `${name} – definición para founders indie de SaaS, del glosario Brunson de Unlock SaaS`,
-    "pt-BR": `${name} – definição para founders indie de SaaS, do glossário Brunson da Unlock SaaS`,
+    "pt": `${name} – definição para founders indie de SaaS, do glossário Brunson da Unlock SaaS`,
   };
   return [
     {
