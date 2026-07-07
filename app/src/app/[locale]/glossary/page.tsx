@@ -60,7 +60,7 @@ export async function generateMetadata({
       url: localised,
       siteName: "Unlock SaaS",
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: {
       card: "summary",

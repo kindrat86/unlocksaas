@@ -7,201 +7,102 @@
  *
  * Composition (Brunson Hard-Rule Reluctant Hero):
  *   - Two short paragraphs in first-person, signed "— Maryan"
- *   - Trust columns (E-E-A-T) preserved as a quiet row underneath
- *   - © line stays at the bottom as the last legal-required word, small
+ *   - Structured link columns (NOT flex-wrap soup) — readable on mobile.
+ *   - © line stays at the bottom as the last legal-required word, small.
  *
  * Visual treatment: shadcn tokens only, no script fonts, no special framing.
  * Matches the rest-of-app aesthetic.
+ *
+ * UX upgrade (2026-07-06): the 23 links were previously a single flex-wrap
+ * <p> — unreadable on mobile and no visual hierarchy. Now organized into
+ * clear column groups: Company, Resources, Legal. Mobile = stacked accordion-
+ * like sections; desktop = 3-column grid.
  */
 import Link from "next/link";
 
+const FOOTER_LINKS = {
+  company: [
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/press", label: "Press" },
+    { href: "/open", label: "The numbers" },
+    { href: "/youtube", label: "The Founder's Diary" },
+    { href: "/founder-diary", label: "Founder Diary" },
+    { href: "/faq", label: "FAQ" },
+  ],
+  resources: [
+    { href: "/glossary", label: "Glossary" },
+    { href: "/who", label: "Who we serve" },
+    { href: "/dream-100", label: "Dream 100" },
+    { href: "/community-atlas", label: "Community Atlas" },
+    { href: "/hso", label: "HSO Matrix" },
+    { href: "/ad-library", label: "Ad Library" },
+    { href: "/editorial-policy", label: "Editorial Policy" },
+    { href: "/numbers", label: "The Numbers" },
+    { href: "/dont-buy-unlock-saas", label: "Don't buy this" },
+    { href: "/builders", label: "Verified Builders" },
+    { href: "/bridge", label: "Came from a cold ad?" },
+  ],
+  legal: [
+    { href: "/privacy", label: "Privacy" },
+    { href: "/terms", label: "Terms" },
+  ],
+} as const;
+
+function LinkCol({ title, links }: { title: string; links: readonly { href: string; label: string }[] }) {
+  return (
+    <div>
+      <h3 className="text-xs uppercase tracking-widest text-muted-foreground font-semibold mb-3">
+        {title}
+      </h3>
+      <ul className="space-y-2">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline transition-colors"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function SignatureFooter() {
   return (
-    <footer className="py-12 sm:py-16 px-4 sm:px-6 border-t border-border">
-      <div className="max-w-2xl mx-auto">
-        <div className="space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed mb-10">
-          <p>
-            I&apos;m Maryan. I built this because I was that founder – a
-            non-engineer who shipped products nobody paid for, and refused
-            to look at the flat Stripe line for almost a year.
-          </p>
-          <p>
-            The Playbook is what I wish someone had handed me back then. If you
-            take it for a spin, reply to any email and you&apos;ll get me, not
-            a support queue.
-          </p>
-          <p className="text-foreground">— Maryan</p>
+    <footer className="border-t border-border bg-card/30">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        {/* Founder signature — the personal close. */}
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <div className="space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
+            <p>
+              I&apos;m Maryan. I built this because I was that founder – a
+              non-engineer who shipped products nobody paid for, and refused
+              to look at the flat Stripe line for almost a year.
+            </p>
+            <p>
+              The Playbook is what I wish someone had handed me back then. If you
+              take it for a spin, reply to any email and you&apos;ll get me, not
+              a support queue.
+            </p>
+            <p className="text-foreground font-medium">— Maryan</p>
+          </div>
         </div>
 
-        {/* E-E-A-T trust columns — kept quiet but present. */}
-        <div className="text-center text-xs text-muted-foreground">
-          <p className="mb-3 flex flex-wrap justify-center gap-x-4 gap-y-1">
-            <Link
-              href="/about"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/press"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Press
-            </Link>
-            {/*
-              /open – build-in-public transparency dashboard. Sits next to
-              Press in the trust column: Press = what others say, Open =
-              what the numbers say. Live MRR + subscriber + churn data,
-              refreshed on every paid Stripe event. Per the 2026 indie
-              distribution research, transparent revenue pages are the
-              dominant solo-founder trust signal.
-            */}
-            <Link
-              href="/open"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              The numbers
-            </Link>
-            {/*
-              The Founder's Diary – the faceless YouTube channel (channel #5,
-              additive to the locked launch-minimum-four). Grouped with the
-              other founder-authored content surfaces (Press = mentions of
-              him; this = his own series) rather than the legal column.
-              See strategy/youtube-faceless-channel.md.
-            */}
-            <Link
-              href="/youtube"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              The Founder&apos;s Diary on YouTube
-            </Link>
-            {/*
-              Founder Diary – the text/blog arm of the same content
-              franchise the YouTube channel covers. One indexable URL per
-              build day. Grouped with the founder-authored surfaces above
-              (YouTube = video, Diary = text, Numbers = data) rather than
-              the legal column.
-            */}
-            <Link
-              href="/founder-diary"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Founder Diary
-            </Link>
-            <Link
-              href="/faq"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              FAQ
-            </Link>
-            <Link
-              href="/glossary"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Glossary
-            </Link>
-            {/*
-              Traffic Secrets distribution pages — sitewide footer links so
-              the congregation/atlas/HSO surfaces get full PageRank flow from
-              every page on the site, not just the homepage ExploreResources
-              section. Without these, the 5 highest-value Traffic Secrets
-              pages are 2+ clicks deep from most entry points.
-            */}
-            <Link
-              href="/who"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Who we serve
-            </Link>
-            <Link
-              href="/dream-100"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Dream 100
-            </Link>
-            <Link
-              href="/community-atlas"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Community Atlas
-            </Link>
-            <Link
-              href="/hso"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              HSO Matrix
-            </Link>
-            <Link
-              href="/ad-library"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Ad Library
-            </Link>
-            <Link
-              href="/editorial-policy"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Editorial Policy
-            </Link>
-            {/*
-              Build-in-public trust signal. The Numbers page shows honest
-              MRR, customer count, and weekly founder commentary. Gated by
-              NEXT_PUBLIC_NUMBERS_VISIBLE env var -- the URL always resolves,
-              showing a placeholder until the operator flips the gate.
-              See app/data/public-metrics.json for the data file.
-            */}
-            <Link
-              href="/numbers"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              The Numbers
-            </Link>
-            {/*
-              Quiet polarity link. Put after Press (canonical trust columns)
-              and before Verified Builder (positive-space proof) so the
-              negative-space "who we aren't for" sits structurally between
-              "who vouches for us" and "who's already crossed the cycle".
-              Surprising-but-not-shouted — the page itself is the artifact,
-              the footer link is just discovery.
-            */}
-            <Link
-              href="/dont-buy-unlock-saas"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Don&apos;t buy this
-            </Link>
-            <Link
-              href="/builders"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Verified Builder directory
-            </Link>
-            <Link
-              href="/bridge"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Came from a cold ad?
-            </Link>
-            <Link
-              href="/privacy"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="underline underline-offset-4 hover:text-foreground transition-colors"
-            >
-              Terms
-            </Link>
-          </p>
-          <p>
+        {/* Structured link columns — readable on mobile + desktop. */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-10">
+          <LinkCol title="Company" links={FOOTER_LINKS.company} />
+          <LinkCol title="Resources" links={FOOTER_LINKS.resources} />
+          <div className="col-span-2 sm:col-span-1">
+            <LinkCol title="Legal" links={FOOTER_LINKS.legal} />
+          </div>
+        </div>
+
+        <div className="border-t border-border pt-6 text-center">
+          <p className="text-xs text-muted-foreground">
             &copy; 2026 Unlock SaaS. Built by a non-engineer who shipped
             anyway.
           </p>

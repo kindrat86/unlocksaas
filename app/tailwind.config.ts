@@ -45,6 +45,7 @@ const config: Config = {
         },
       },
       borderRadius: {
+        xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
@@ -52,6 +53,63 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "monospace"],
+      },
+      /* Elevation scale wired to CSS custom properties so dark mode
+         swaps shadows automatically (defined in globals.css). */
+      boxShadow: {
+        xs: "var(--shadow-xs)",
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+        glow: "var(--shadow-glow)",
+      },
+      transitionTimingFunction: {
+        "out-soft": "var(--ease-out-soft)",
+        "in-out-soft": "var(--ease-in-out-soft)",
+      },
+      transitionDuration: {
+        fast: "var(--duration-fast)",
+        normal: "var(--duration-normal)",
+        slow: "var(--duration-slow)",
+      },
+      /* Keyframe animations for interactive micro-interactions. */
+      keyframes: {
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        "fade-up": {
+          from: { opacity: "0", transform: "translateY(12px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          from: { opacity: "0", transform: "scale(0.95)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        "slide-in-right": {
+          from: { transform: "translateX(100%)" },
+          to: { transform: "translateX(0)" },
+        },
+        "slide-in-up": {
+          from: { transform: "translateY(100%)" },
+          to: { transform: "translateY(0)" },
+        },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in var(--duration-normal) var(--ease-out-soft) both",
+        "fade-up": "fade-up var(--duration-slow) var(--ease-out-soft) both",
+        "scale-in": "scale-in var(--duration-normal) var(--ease-out-soft) both",
+        "slide-in-right": "slide-in-right var(--duration-normal) var(--ease-out-soft) both",
+        "slide-in-up": "slide-in-up var(--duration-normal) var(--ease-out-soft) both",
       },
     },
   },

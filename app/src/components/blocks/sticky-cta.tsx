@@ -17,8 +17,9 @@
  * Mobile: full-width strip with the diagnostic CTA only.
  * Desktop: same strip with secondary $1 link + tiny newsletter text link.
  *
- * Visual treatment: restrained shadcn – background/border tokens, default
- * Button. Same aesthetic as the rest of the app.
+ * UX upgrade (2026-07-06): respects safe-area-inset-bottom so the bar
+ * clears the iPhone home indicator; subtle slide-in animation on appear;
+ * shadow for depth separation from page content.
  */
 
 import { useEffect, useState } from "react";
@@ -49,7 +50,8 @@ export function StickyCta() {
     <div
       role="region"
       aria-label="Persistent offer bar"
-      className="fixed bottom-0 inset-x-0 z-40 bg-background/95 backdrop-blur-md border-t border-border px-3 sm:px-4 py-3"
+      className="fixed bottom-0 inset-x-0 z-40 bg-background/95 backdrop-blur-md border-t border-border px-3 sm:px-4 pt-3 pb-safe shadow-lg animate-slide-in-up"
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
     >
       <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
         <div className="hidden sm:block flex-1 min-w-0">
@@ -63,7 +65,10 @@ export function StickyCta() {
         </div>
 
         <div className="flex items-center gap-3 flex-1 sm:flex-initial">
-          <Button asChild className="flex-1 sm:flex-initial">
+          <Button
+            asChild
+            className="flex-1 sm:flex-initial btn-glow"
+          >
             <Link href="/diagnostic">Free 2-min diagnosis</Link>
           </Button>
           <Link

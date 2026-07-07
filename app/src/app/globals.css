@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Unlock SaaS — World-class design system layer
+   All additions are additive (no existing token changed). Every animation
+   is guarded by prefers-reduced-motion. Every elevation uses the token
+   palette — no new colors introduced.
+   ========================================================================== */
+
 @layer base {
   :root {
     /* Money Green — Brunson Direction A.
@@ -28,7 +35,23 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 158 94% 30%;
-    --radius: 0.5rem;
+    --radius: 0.625rem;
+
+    /* Elevation scale — subtle, token-native shadows for depth without
+       leaving the shadcn aesthetic. Cards lift on hover, popovers float. */
+    --shadow-xs: 0 1px 2px 0 hsl(240 10% 3.9% / 0.04);
+    --shadow-sm: 0 1px 3px 0 hsl(240 10% 3.9% / 0.06), 0 1px 2px -1px hsl(240 10% 3.9% / 0.06);
+    --shadow-md: 0 4px 6px -1px hsl(240 10% 3.9% / 0.07), 0 2px 4px -2px hsl(240 10% 3.9% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(240 10% 3.9% / 0.08), 0 4px 6px -4px hsl(240 10% 3.9% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(240 10% 3.9% / 0.10), 0 8px 10px -6px hsl(240 10% 3.9% / 0.05);
+    --shadow-glow: 0 0 0 1px hsl(158 94% 30% / 0.08), 0 4px 16px -2px hsl(158 94% 30% / 0.12);
+
+    /* Motion tokens — consistent easing across the whole site. */
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 400ms;
   }
 
   .dark {
@@ -51,7 +74,16 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 158 84% 42%;
-    --radius: 0.5rem;
+    --radius: 0.625rem;
+
+    /* Dark-mode shadows use foreground (near-white) at low opacity so
+       elevations read correctly against the dark surface. */
+    --shadow-xs: 0 1px 2px 0 hsl(0 0% 0% / 0.20);
+    --shadow-sm: 0 1px 3px 0 hsl(0 0% 0% / 0.30), 0 1px 2px -1px hsl(0 0% 0% / 0.20);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.35), 0 2px 4px -2px hsl(0 0% 0% / 0.25);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.40), 0 4px 6px -4px hsl(0 0% 0% / 0.25);
+    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.45), 0 8px 10px -6px hsl(0 0% 0% / 0.30);
+    --shadow-glow: 0 0 0 1px hsl(158 84% 42% / 0.15), 0 4px 16px -2px hsl(158 84% 42% / 0.20);
   }
 }
 
@@ -66,6 +98,8 @@
     text-size-adjust: 100%;
     /* Smoother momentum scrolling on iOS. */
     -webkit-overflow-scrolling: touch;
+    /* Smooth scroll for anchor links — guard below for reduced motion. */
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-background text-foreground;
@@ -79,6 +113,10 @@
        want to bleed under can opt out by overriding padding. */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+    /* Anti-aliasing for crisper Geist rendering on retina. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   /* Interactive elements get 300ms tap-delay removed and a clearer touch
      surface. `manipulation` keeps double-tap-to-zoom out of the way of
@@ -102,5 +140,161 @@
     max-width: 100%;
     height: auto;
   }
+
+  /* ---- Branded selection (world-class detail) ---- */
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+    color: hsl(var(--foreground));
+  }
+  .dark ::selection {
+    background: hsl(var(--primary) / 0.28);
+  }
+
+  /* ---- Global focus-visible ring for ALL interactive elements ----
+     Previously only <button> had a ring (via buttonVariants). Links,
+     summary, and custom interactive elements relied on the browser default
+     which Tailwind's reset strips. This gives every focusable element a
+     consistent, branded, visible focus indicator (WCAG 2.4.7 / 2.4.11). */
+  a:focus-visible,
+  summary:focus-visible,
+  [role="button"]:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background rounded-sm;
+  }
+
+  /* ---- Custom scrollbar (desktop; mobile uses overlay scrollbar) ---- */
+  @media (pointer: fine) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: hsl(var(--border)) transparent;
+    }
+    *::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    *::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--border));
+      border-radius: 9999px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+    *::-webkit-scrollbar-thumb:hover {
+      background-color: hsl(var(--muted-foreground) / 0.5);
+      background-clip: content-box;
+    }
+  }
+
+  /* ---- Typographic polish: text-wrap pretty on body paragraphs ----
+     text-balance is already on headings; text-pretty avoids the orphan
+     word on the last line of paragraphs. */
+  p {
+    text-wrap: pretty;
+  }
 }
 
+@layer components {
+  /* ---- Card elevation utility ----
+     Lifts cards on hover with a token-native shadow + subtle border
+     tighten. Opt-in via className="card-hover". */
+  .card-hover {
+    transition: box-shadow var(--duration-normal) var(--ease-out-soft),
+      border-color var(--duration-normal) var(--ease-out-soft),
+      transform var(--duration-normal) var(--ease-out-soft);
+  }
+  .card-hover:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ---- Primary button glow on hover ----
+     Adds a soft brand glow to primary CTAs without changing the token. */
+  .btn-glow {
+    transition: box-shadow var(--duration-normal) var(--ease-out-soft),
+      background-color var(--duration-fast) var(--ease-out-soft),
+      transform var(--duration-fast) var(--ease-out-soft);
+  }
+  .btn-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-glow:active {
+    transform: scale(0.97);
+  }
+}
+
+@layer utilities {
+  /* ---- Scroll-driven entrance animations (progressive enhancement) ----
+     Uses CSS animation-timeline: view() — zero JS, zero RSC impact.
+     Browsers without support (older Safari/Firefox) render content
+     immediately = graceful degradation, no regression from current state.
+     The @supports guard ensures only capable browsers apply the hidden
+     initial state. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-up var(--duration-slow) var(--ease-out-soft) both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+    .reveal-fade {
+      animation: reveal-fade var(--duration-slow) var(--ease-out-soft) both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes reveal-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ---- Safe-area bottom padding utility ----
+     For fixed bottom elements (sticky CTA, back-to-top) that must clear
+     the iPhone home indicator. */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .bottom-safe {
+    bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ==========================================================================
+   Reduced-motion guard — kills ALL animations/transitions site-wide for
+   users who request reduced motion (WCAG 2.3.3). Must be outside @layer
+   so it wins specificity over utility classes.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Reveal classes become no-ops — content is always visible. */
+  .reveal,
+  .reveal-fade {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -26,6 +26,7 @@ import {
   isPreVerifiedSource,
 } from "@/lib/email-verification";
 import { writeFounderMemoryAfter } from "@/lib/founder-memory";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 /**
  * Free Diagnostic submission endpoint.
@@ -72,6 +73,21 @@ function clientIp(req: NextRequest): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit: 5 diagnostics per IP per 10 min. Each diagnostic costs
+  // ~30-45s of Claude API time (deep analysis). This prevents LLM-cost
+  // abuse from a single IP flooding the endpoint.
+  const rl = checkRateLimit(req, {
+    limit: 5,
+    windowMs: 600_000,
+    keyPrefix: "diagnostic",
+  });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited", message: "Too many diagnostics. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
   // BotID protection: blocks confirmed bot traffic (LLM-scraping / Anthropic
   // cost prevention). Fail-open: any verification error lets the request
   // through so a BotID outage never blocks a real founder's diagnostic.

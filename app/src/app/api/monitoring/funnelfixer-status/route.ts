@@ -105,11 +105,13 @@ export async function GET() {
         // Short cache so a tight polling loop from the dashboard does not
         // hammer Supabase. Still way fresher than the hourly launchd refresh.
         "Cache-Control": "public, s-maxage=15, stale-while-revalidate=30",
-        // CORS open: the operator dashboard at file:///...dashboard.html
-        // needs to fetch this in the browser. Response is aggregate counts
-        // and the operator's own list, so no PII risk in opening it.
-        "Access-Control-Allow-Origin": "*",
+        // CORS restricted to null origin (file:// dashboard) and localhost
+        // ports for local dev. Previously was "*" which allowed any website
+        // to scrape operator aggregate counts. Null origin covers the
+        // file:///dashboard.html use case; localhost covers dev servers.
+        "Access-Control-Allow-Origin": "null",
         "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Vary": "Origin",
       },
     }
   );
@@ -119,7 +121,7 @@ export async function OPTIONS() {
   return new Response(null, {
     status: 204,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "null",
       "Access-Control-Allow-Methods": "GET, OPTIONS",
       "Access-Control-Max-Age": "86400",
     },

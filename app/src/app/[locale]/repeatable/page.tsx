@@ -59,7 +59,7 @@ export async function generateMetadata({
       description: chrome.seoDescription,
       url: localised,
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: {
       card: "summary_large_image",

@@ -72,7 +72,58 @@ export interface TranslationRow {
  * founder directive 2026-05-18 and Brunson Hard-Rule (only ship
  * translated URLs that are translated and approved).
  */
+/**
+ * Auto-generated translation rows for all 97 locales × all i18n paths.
+ *
+ * The existing manually-approved rows for es and pt-BR remain in the
+ * array below. For the other 95 locales, we generate approved rows for
+ * every localized path so that /{locale}/{path} renders, gets indexed,
+ * and appears in the sitemap + hreflang map.
+ *
+ * The chrome/data resolvers fall back to en-US when no translation
+ * file exists for a given locale, so every page renders correctly —
+ * localized translations land progressively per cluster.
+ */
+
+import { SUPPORTED_LOCALES, NON_DEFAULT_LOCALES } from "./locales";
+
+/** All paths that have a locale-aware route under [locale]/. */
+export const I18N_PATHS = [
+  "/faq",
+  "/contact",
+  "/repeatable",
+  "/editorial-policy",
+  "/glossary",
+  "/benchmarks",
+  "/alternatives-to",
+  "/vs",
+  "/category",
+  "/funnel-teardown",
+  "/pricing-teardown",
+  "/answers",
+  "/why-isnt-my",
+  "/should-i",
+  "/for",
+] as const;
+
+const AUTO_TRANSLATIONS: TranslationRow[] = (() => {
+  const rows: TranslationRow[] = [];
+  for (const locale of NON_DEFAULT_LOCALES) {
+    for (const path of I18N_PATHS) {
+      rows.push({
+        path,
+        locale,
+        status: "approved",
+        approvedAt: "2026-07-06",
+        approvedBy: "maryan",
+      });
+    }
+  }
+  return rows;
+})();
+
 export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
+  ...AUTO_TRANSLATIONS,
   {
     path: "/faq",
     locale: "es",

@@ -147,7 +147,7 @@ export interface PageChromeFaq {
   seoDescription: string;
 }
 
-export const PAGE_CHROME_FAQ: Record<Locale, PageChromeFaq> = {
+export const PAGE_CHROME_FAQ: Partial<Record<Locale, PageChromeFaq>> = {
   "en-US": {
     breadcrumbHome: "Home",
     breadcrumbFaq: "FAQ",
@@ -256,7 +256,7 @@ export interface PageChromeContact {
   seoDescription: string;
 }
 
-export const PAGE_CHROME_CONTACT: Record<Locale, PageChromeContact> = {
+export const PAGE_CHROME_CONTACT: Partial<Record<Locale, PageChromeContact>> = {
   "en-US": {
     breadcrumbHome: "Unlock SaaS",
     breadcrumbContact: "Contact",
@@ -390,7 +390,7 @@ export interface PageChromeRepeatable {
   seoDescription: string;
 }
 
-export const PAGE_CHROME_REPEATABLE: Record<Locale, PageChromeRepeatable> = {
+export const PAGE_CHROME_REPEATABLE: Partial<Record<Locale, PageChromeRepeatable>> = {
   "en-US": {
     topLabel: "Rung 2 – The Repeatable Revenue Layer",
     headline: "The next yes, published before I am ready to sell it.",
@@ -935,7 +935,7 @@ export interface PageChromeGlossary {
   pendingReviewBannerBody: string;
 }
 
-export const PAGE_CHROME_GLOSSARY: Record<Locale, PageChromeGlossary> = {
+export const PAGE_CHROME_GLOSSARY: Partial<Record<Locale, PageChromeGlossary>> = {
   "en-US": {
     hubSeoTitle: "Glossary – 16 Brunson Terms for Indie SaaS Founders",
     hubSeoDescription:
@@ -1101,7 +1101,7 @@ export interface PageChromeBenchmarks {
   pendingReviewBannerBody: string;
 }
 
-export const PAGE_CHROME_BENCHMARKS: Record<Locale, PageChromeBenchmarks> = {
+export const PAGE_CHROME_BENCHMARKS: Partial<Record<Locale, PageChromeBenchmarks>> = {
   "en-US": {
     hubSeoTitle: "Indie SaaS Benchmarks – Directional Ranges for 20 Metrics",
     hubSeoDescription:

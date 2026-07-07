@@ -67,7 +67,7 @@ export interface PageChromePseoShared {
   detailEnglishCalloutSuffix: string;
 }
 
-export const PAGE_CHROME_PSEO_SHARED: Record<Locale, PageChromePseoShared> = {
+export const PAGE_CHROME_PSEO_SHARED: Partial<Record<Locale, PageChromePseoShared>> = {
   "en-US": {
     breadcrumbHome: "Home",
     hubCtaHeading: "Not sure if Unlock SaaS is right for you?",
@@ -160,7 +160,7 @@ type ClusterKey =
 
 type ClusterChromeMap = Record<
   ClusterKey,
-  Record<Locale, PageChromePseoCluster>
+  Partial<Record<Locale, PageChromePseoCluster>>
 >;
 
 export const PAGE_CHROME_PSEO: ClusterChromeMap = {

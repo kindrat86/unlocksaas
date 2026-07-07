@@ -173,7 +173,7 @@ async function ExploreResources() {
 
   return (
     <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-4xl mx-auto">
-      <div className="text-center mb-10">
+      <div className="text-center mb-10 reveal">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           Free resources
         </p>
@@ -184,7 +184,7 @@ async function ExploreResources() {
           Hundreds of teardowns, benchmarks, and guides. No email gate, no paywall.
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal">
         {categories.map((cat) => (
           <div key={cat.title}>
             <h3 className="text-sm font-semibold text-foreground mb-3">
@@ -195,7 +195,7 @@ async function ExploreResources() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group block rounded-md border border-border bg-card p-3 transition-colors hover:border-primary/40 hover:bg-accent/50"
+                    className="group block rounded-lg border border-border bg-card p-3 card-hover hover:border-primary/40 hover:bg-accent/50 hover:shadow-md"
                   >
                     <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                       {link.label}
@@ -219,7 +219,7 @@ async function ManifestoSection({ manifestoTitle }: { manifestoTitle: string }) 
   cacheLife("days");
   return (
     <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
-      <div className="text-center mb-7">
+      <div className="text-center mb-7 reveal">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           The Movement
         </p>
@@ -274,7 +274,7 @@ async function TimelineSection() {
   cacheLife("days");
   return (
     <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
-      <div className="text-center mb-10">
+      <div className="text-center mb-10 reveal">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           Receipts
         </p>
@@ -337,7 +337,7 @@ async function ComparisonSection() {
   cacheLife("days");
   return (
     <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-3xl mx-auto">
-      <div className="text-center mb-10">
+      <div className="text-center mb-10 reveal">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           What you have been trying
         </p>
@@ -415,7 +415,7 @@ async function FaqSection() {
   cacheLife("days");
   return (
     <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-2xl mx-auto">
-      <div className="text-center mb-8">
+      <div className="text-center mb-8 reveal">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
           Honest objections
         </p>
@@ -435,7 +435,7 @@ async function FaqSection() {
       </div>
       <div className="space-y-6">
         {HOMEPAGE_FAQS.map((item) => (
-          <div key={item.q}>
+          <div key={item.q} className="group rounded-lg border border-border bg-card p-5 card-hover hover:border-primary/30 hover:shadow-md">
             <p className="font-semibold">{item.q}</p>
             <p className="text-sm text-muted-foreground leading-relaxed mt-1">
               {item.a}

@@ -77,7 +77,7 @@ export function GuaranteeHero() {
           className="block w-full rounded-xl border border-border bg-muted shadow-sm"
           poster="/founder-guarantee-poster.jpg"
           controls
-          preload="auto"
+          preload="metadata"
           playsInline
         >
           <source src="/founder-guarantee.mp4" type="video/mp4" />

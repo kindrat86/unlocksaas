@@ -65,7 +65,7 @@ export async function generateMetadata({
       publishedTime: POLICY_PUBLISHED_AT,
       authors: ["Maryan"],
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: {
       card: "summary",

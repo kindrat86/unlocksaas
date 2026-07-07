@@ -246,6 +246,7 @@ export async function proxy(request: NextRequest) {
       response.cookies.set(AI_ENGINE_COOKIE, detectedEngine, {
         maxAge: AI_ENGINE_COOKIE_MAX_AGE,
         sameSite: "lax",
+        secure: true,
         path: "/",
       });
     }
@@ -272,6 +273,7 @@ export async function proxy(request: NextRequest) {
     response.cookies.set(IDENTITY_COOKIE, variant, {
       maxAge: AB_COOKIE_MAX_AGE,
       sameSite: "lax",
+      secure: true,
       path: "/",
     });
   }
@@ -283,6 +285,7 @@ export async function proxy(request: NextRequest) {
     response.cookies.set(SUBJECT_COOKIE, subjectId, {
       maxAge: AB_COOKIE_MAX_AGE,
       sameSite: "lax",
+      secure: true,
       path: "/",
     });
   }

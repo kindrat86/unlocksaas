@@ -53,12 +53,12 @@ export function SocialProofBar({ verifiedCount }: SocialProofBarProps = {}) {
   return (
     <section
       aria-label="What this is built on"
-      className="border-y border-border/60 bg-card/40 py-6 px-6"
+      className="border-y border-border/60 bg-card/40 py-8 sm:py-6 px-4 sm:px-6"
     >
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-        <div className="flex items-start gap-3 md:justify-start justify-center">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+        <div className="flex items-start gap-3 justify-center sm:justify-start reveal">
           <Stamp className="h-5 w-5 text-primary mt-0.5 shrink-0" aria-hidden="true" />
-          <div>
+          <div className="text-left">
             <p className="text-sm font-semibold leading-tight">
               Refund enforced by code
             </p>
@@ -67,9 +67,9 @@ export function SocialProofBar({ verifiedCount }: SocialProofBarProps = {}) {
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-3 md:justify-start justify-center">
+        <div className="flex items-start gap-3 justify-center sm:justify-start reveal">
           <Wallet className="h-5 w-5 text-primary mt-0.5 shrink-0" aria-hidden="true" />
-          <div>
+          <div className="text-left">
             <p className="text-sm font-semibold leading-tight">
               12 shipped products, one flat line
             </p>
@@ -78,17 +78,10 @@ export function SocialProofBar({ verifiedCount }: SocialProofBarProps = {}) {
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-3 md:justify-start justify-center">
+        <div className="flex items-start gap-3 justify-center sm:justify-start reveal">
           <Users className="h-5 w-5 text-primary mt-0.5 shrink-0" aria-hidden="true" />
           {showVerifiedSlot ? (
-            /*
-              Verified-Builder count slot. The headline number matches
-              `aggregateRating.ratingCount` exactly (both read from the
-              same Supabase view). Subtitle states the verification
-              mechanism — no marketing softeners, no "happy customers"
-              language, just the binary fact the count represents.
-            */
-            <div>
+            <div className="text-left">
               <p className="text-sm font-semibold leading-tight">
                 {verifiedCount} Verified{" "}
                 {verifiedCount === 1 ? "Builder" : "Builders"}
@@ -98,7 +91,7 @@ export function SocialProofBar({ verifiedCount }: SocialProofBarProps = {}) {
               </p>
             </div>
           ) : (
-            <div>
+            <div className="text-left">
               <p className="text-sm font-semibold leading-tight">
                 10+ founder conversations
               </p>
