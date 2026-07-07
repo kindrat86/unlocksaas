@@ -1,17 +1,11 @@
 /**
  * Supported locales for UnlockSaaS.
  *
- * en-US is the canonical, always-shipped locale. All other locales live
- * under /{locale}/... and fall back to en-US chrome/data when no
- * translation file exists (the getters handle the fallback). This lets
- * 97 locales ship as URL routes immediately — translations land
- * progressively per cluster.
+ * en-US is the canonical and only shipped locale.
  */
 
 export const SUPPORTED_LOCALES = [
   "en-US",
-  // Top 6 by SaaS developer traffic (reduced to stay under Vercel's 2048 route limit)
-  "zh-CN", "es", "fr", "de", "ja", "pt",
 ] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -49,17 +43,6 @@ export function ogLocaleFormat(locale: Locale): string {
 /** Human-readable display name for the language switcher. */
 export const LOCALE_DISPLAY_NAMES: Record<Locale, string> = {
   "en-US": "English",
-  "zh-CN": "中文",
-  "es": "Español",
-  "fr": "Français",
-  "de": "Deutsch",
-  "ja": "日本語",
-  "pt": "Português",
-  "ru": "Русский",
-  "ko": "한국어",
-  "it": "Italiano",
-  "hi": "हिन्दी",
-  "ar": "العربية",
 };
 
 /** RTL locales — need dir="rtl" on the html/div wrapper. */
