@@ -8,6 +8,7 @@ import {
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { FOUNDER_WORK_EXAMPLES } from "@/lib/seo/founder-works";
+import { ID, ORGANIZATION } from "@/lib/seo/entity";
 
 /**
  * About page. E-E-A-T author anchor for the whole site.
@@ -61,11 +62,50 @@ const TRAIL = [
   { name: "About", url: "https://unlocksaas.com/about" },
 ] as const;
 
+// --- JSON-LD: Organization + ContactPoint + AboutPage (module-hoisted) ---
+const BASE = "https://unlocksaas.com";
+const ABOUT_ORG_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ID.organization,
+      name: ORGANIZATION.name,
+      url: BASE,
+      logo: `${BASE}/icon.svg`,
+      description: ORGANIZATION.description,
+      slogan: ORGANIZATION.slogan,
+      foundingDate: ORGANIZATION.foundingDate,
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "hello@unlocksaas.com",
+        url: `${BASE}/contact`,
+      },
+    },
+    {
+      "@type": "AboutPage",
+      "@id": `${BASE}/about`,
+      url: `${BASE}/about`,
+      name: "About Unlock SaaS",
+      description:
+        "Unlock SaaS is a SaaS launch toolkit and community — alternatives directory, launch checklist, SaaS mistakes guide, revenue projector, LTV calculator, and the SaaS playbook.",
+      isPartOf: { "@id": ID.website },
+      about: { "@id": ID.organization },
+      mainEntity: { "@id": ID.person },
+    },
+  ],
+});
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <PersonJsonLd />
       <BreadcrumbListJsonLd trail={TRAIL} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: ABOUT_ORG_JSON }}
+      />
 
       <article className="max-w-2xl mx-auto">
         <nav

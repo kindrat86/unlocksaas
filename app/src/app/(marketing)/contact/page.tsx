@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { ID, ORGANIZATION } from "@/lib/seo/entity";
 
 /**
  * Contact page. E-E-A-T trust column + the canonical inbound channel.
@@ -39,10 +40,48 @@ const TRAIL = [
   { name: "Contact", url: "https://unlocksaas.com/contact" },
 ] as const;
 
+// --- JSON-LD: Organization + ContactPoint + ContactPage (module-hoisted) ---
+const BASE = "https://unlocksaas.com";
+const CONTACT_ORG_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ID.organization,
+      name: ORGANIZATION.name,
+      url: BASE,
+      logo: `${BASE}/icon.svg`,
+      description: ORGANIZATION.description,
+      slogan: ORGANIZATION.slogan,
+      foundingDate: ORGANIZATION.foundingDate,
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "hello@unlocksaas.com",
+        url: `${BASE}/contact`,
+      },
+    },
+    {
+      "@type": "ContactPage",
+      "@id": `${BASE}/contact`,
+      url: `${BASE}/contact`,
+      name: "Contact Unlock SaaS",
+      description:
+        "One inbox, one human. Reach the Unlock SaaS team for diagnostic questions, refunds, partnerships, or press.",
+      isPartOf: { "@id": ID.website },
+      about: { "@id": ID.organization },
+    },
+  ],
+});
+
 export default function ContactPage() {
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <BreadcrumbListJsonLd trail={TRAIL} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: CONTACT_ORG_JSON }}
+      />
 
       <article className="max-w-2xl mx-auto">
         <nav

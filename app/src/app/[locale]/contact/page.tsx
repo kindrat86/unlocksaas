@@ -11,6 +11,7 @@ import {
 } from "@/lib/i18n/registry";
 import { localeAlternates } from "@/lib/seo/markdown-alternates";
 import { getContactChrome } from "@/lib/i18n/translations";
+import { ID, ORGANIZATION } from "@/lib/seo/entity";
 
 /**
  * Locale-aware Contact surface – mirrors the canonical /contact
@@ -76,6 +77,40 @@ export function generateStaticParams() {
   return renderableLocalesForPath("/contact").map((locale) => ({ locale }));
 }
 
+// --- JSON-LD: Organization + ContactPoint + ContactPage (module-hoisted) ---
+const BASE = "https://unlocksaas.com";
+const CONTACT_ORG_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ID.organization,
+      name: ORGANIZATION.name,
+      url: BASE,
+      logo: `${BASE}/icon.svg`,
+      description: ORGANIZATION.description,
+      slogan: ORGANIZATION.slogan,
+      foundingDate: ORGANIZATION.foundingDate,
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "hello@unlocksaas.com",
+        url: `${BASE}/contact`,
+      },
+    },
+    {
+      "@type": "ContactPage",
+      "@id": `${BASE}/contact`,
+      url: `${BASE}/contact`,
+      name: "Contact Unlock SaaS",
+      description:
+        "One inbox, one human. Reach the Unlock SaaS team for diagnostic questions, refunds, partnerships, or press.",
+      isPartOf: { "@id": ID.website },
+      about: { "@id": ID.organization },
+    },
+  ],
+});
+
 export default async function LocalizedContactPage({
   params,
 }: {
@@ -107,6 +142,10 @@ export default async function LocalizedContactPage({
   return (
     <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6">
       <BreadcrumbListJsonLd trail={breadcrumbTrail} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: CONTACT_ORG_JSON }}
+      />
 
       {row.status === "pending-review" ? (
         <div
