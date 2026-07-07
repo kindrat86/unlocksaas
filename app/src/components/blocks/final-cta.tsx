@@ -37,7 +37,7 @@ export function FinalCta() {
 
         {/* PRIMARY close – the diagnostic. */}
         <div className="max-w-md mx-auto mb-4">
-          <Button asChild size="lg" className="w-full text-base sm:text-lg py-7">
+          <Button asChild size="lg" className="w-full text-base sm:text-lg py-7 btn-glow">
             <Link href="/diagnostic">
               Get my free 2-minute diagnosis →
             </Link>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>UnlockSaaS</title>
+    <link>https://unlocksaas.com</link>
+    <description>SaaS launch toolkit and indie hacker community.</description>
+    <language>en</language>
+    <lastBuildDate>Tue, 07 Jul 2026 14:57:21 GMT</lastBuildDate>
+    <atom:link href="https://unlocksaas.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Homepage</title>
+      <link>https://unlocksaas.com/</link>
+      <guid isPermaLink="true">https://unlocksaas.com/</guid>
+      <description>SaaS launch toolkit</description>
+    </item>
+    <item>
+      <title>Pricing</title>
+      <link>https://unlocksaas.com/pricing-teardown</link>
+      <guid isPermaLink="true">https://unlocksaas.com/pricing-teardown</guid>
+      <description>UnlockSaaS pricing</description>
+    </item>
+    <item>
+      <title>Churn Cost Calculator</title>
+      <link>https://unlocksaas.com/tools/churn-cost-calculator</link>
+      <guid isPermaLink="true">https://unlocksaas.com/tools/churn-cost-calculator</guid>
+      <description>Free tool</description>
+    </item>
+    <item>
+      <title>LTV Calculator</title>
+      <link>https://unlocksaas.com/tools/ltv-calculator</link>
+      <guid isPermaLink="true">https://unlocksaas.com/tools/ltv-calculator</guid>
+      <description>Free tool</description>
+    </item>
+    <item>
+      <title>Alternatives</title>
+      <link>https://unlocksaas.com/alternatives-to</link>
+      <guid isPermaLink="true">https://unlocksaas.com/alternatives-to</guid>
+      <description>Compare vs other tools</description>
+    </item>
+  </channel>
+</rss>

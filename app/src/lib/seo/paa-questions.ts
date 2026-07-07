@@ -94,7 +94,7 @@ interface PaaStems {
   heading: string;
 }
 
-const STEMS: Record<Locale, PaaStems> = {
+const STEMS: Partial<Record<Locale, PaaStems>> = {
   "en-US": {
     whatIs: (x) => `What is ${x}?`,
     howDoesItWork: (x) => `How does ${x} work?`,
@@ -121,7 +121,7 @@ const STEMS: Record<Locale, PaaStems> = {
     howToImprove: (x) => `¿Cómo mejoro mi ${x}?`,
     heading: "La gente también pregunta",
   },
-  "pt-BR": {
+  "pt": {
     whatIs: (x) => `O que é ${x}?`,
     howDoesItWork: (x) => `Como funciona ${x}?`,
     whyDoesItMatter: (x) =>
@@ -138,7 +138,7 @@ const STEMS: Record<Locale, PaaStems> = {
 
 /** Resolve the PAA "People also ask" section heading for a given locale. */
 export function paaHeadingForLocale(locale: Locale): string {
-  return STEMS[locale].heading;
+  return (STEMS[locale]?.heading ?? STEMS["en-US"]?.heading) as string;
 }
 
 // ----------------------------------------------------------------------------
@@ -149,7 +149,7 @@ export function paaForGlossary(
   g: GlossaryEntry,
   locale: Locale = "en-US",
 ): PaaPair[] {
-  const s = STEMS[locale];
+  const s = STEMS[locale] ?? STEMS["en-US"]!;
   const out: PaaPair[] = [
     { q: s.whatIs(g.term), a: g.shortDefinition },
     { q: s.howDoesItWork(g.term), a: firstParagraph(g.longDefinition) },
@@ -168,7 +168,7 @@ export function paaForBenchmark(
   e: BenchmarkEntry,
   locale: Locale = "en-US",
 ): PaaPair[] {
-  const s = STEMS[locale];
+  const s = STEMS[locale] ?? STEMS["en-US"]!;
   const typicalBand = e.bands.find((b) => b.label === "Typical range");
   const lowBand = e.bands.find((b) => b.label === "Underperforming");
   const out: PaaPair[] = [{ q: s.whatIsGood(e.metric), a: e.aeoAnswer }];

@@ -99,9 +99,9 @@ export async function generateImageMetadata({
   const entry = getBenchmarkEntries(locale).find((e) => e.slug === slug);
   const chrome = getBenchmarksChrome(locale);
   const name = entry?.metric ?? chrome.hubBreadcrumbBenchmarks;
-  const altByLocale: Record<Exclude<Locale, "en-US">, string> = {
+  const altByLocale: Record<string, string> = {
     es: `${name} – rango direccional para founders indie de SaaS, del set de benchmarks de Unlock SaaS`,
-    "pt-BR": `${name} – faixa direcional para founders indie de SaaS, do conjunto de benchmarks da Unlock SaaS`,
+    "pt": `${name} – faixa direcional para founders indie de SaaS, do conjunto de benchmarks da Unlock SaaS`,
   };
   return [
     {

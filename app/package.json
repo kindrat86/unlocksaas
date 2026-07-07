@@ -66,13 +66,16 @@
       "devalue": "5.8.1"
     },
     "@workflow/world-local": {
-      "undici": "7.25.0"
+      "undici": "7.28.0"
     },
     "@workflow/world-vercel": {
-      "undici": "7.25.0"
+      "undici": "7.28.0"
     },
     "next": {
       "postcss": "8.5.15"
-    }
+    },
+    "shell-quote": "1.8.4",
+    "piscina": "4.9.3",
+    "protobufjs": "7.5.3"
   }
 }

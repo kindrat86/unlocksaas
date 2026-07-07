@@ -71,7 +71,7 @@ export function VslBlock(_props: Props = {}) {
           className="block w-full rounded-xl border border-border bg-muted shadow-sm"
           poster={POSTER_SRC}
           controls
-          preload="auto"
+          preload="metadata"
           playsInline
         >
           <source src={VIDEO_SRC} type="video/mp4" />

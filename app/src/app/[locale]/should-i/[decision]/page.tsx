@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, localizedPath, ogLocaleFormat, type Locale } from "@/lib/i18n/locales";
 import {
   getTranslationStatus,
   isApproved,
@@ -90,7 +90,7 @@ export async function generateMetadata({
       url: localised,
       siteName: "Unlock SaaS",
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: { card: "summary_large_image", title, description },
   };
@@ -142,7 +142,7 @@ export default async function LocalizedShouldIDetail({
   const path = `${PATH}/${decision}`;
   const localised = localizedPath(path, locale);
   const canonicalUrl = `${BASE_URL}${localised}`;
-  const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const inLanguage = locale as string === "pt" ? "pt-BR" : "es";
   const enCanonicalUrl = `${BASE_URL}${path}`;
   const shared = getPseoSharedChrome(locale);
   const cluster = getPseoClusterChrome("should-i", locale);

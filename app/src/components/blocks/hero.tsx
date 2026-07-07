@@ -96,7 +96,7 @@ export function Hero({ variant }: HeroProps = {}) {
           {/* Eyebrow + scarcity/channel cue – source-aware. */}
           <Badge
             variant="secondary"
-            className="mb-7 gap-2 px-3 py-1 text-xs uppercase tracking-widest font-medium"
+            className="mb-7 gap-2 px-3 py-1 text-xs uppercase tracking-widest font-medium animate-fade-up"
           >
             <span
               aria-hidden="true"
@@ -106,7 +106,7 @@ export function Hero({ variant }: HeroProps = {}) {
           </Badge>
 
           {/* Hook – emotional promise + polarity move. Source-aware. */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6 text-balance">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6 text-balance animate-fade-up" style={{ animationDelay: "60ms" }}>
             {copy.headlineLead}{" "}
             <span className="text-muted-foreground">
               {copy.headlineLeadMuted}
@@ -120,29 +120,29 @@ export function Hero({ variant }: HeroProps = {}) {
 
           {/* Scar-tissue subhead – founder authority. Source-aware first
               paragraph; closer (founder credit) is variant-specific. */}
-          <p className="text-base sm:text-lg text-muted-foreground mb-2 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground mb-2 max-w-2xl mx-auto leading-relaxed animate-fade-up" style={{ animationDelay: "120ms" }}>
             {copy.subheadOpener}
           </p>
-          <p className="text-sm text-foreground/80 mb-10">
+          <p className="text-sm text-foreground/80 mb-10 animate-fade-up" style={{ animationDelay: "160ms" }}>
             {copy.subheadCloser}
           </p>
 
           {/* PRIMARY CTA – the free diagnostic. One large button. Source-
               aware verb so the button copy matches the channel-native
               eyebrow without breaking the destination (/diagnostic). */}
-          <div className="mx-auto max-w-md mb-3">
-            <Button asChild size="lg" className="w-full text-base sm:text-lg py-7">
+          <div className="mx-auto max-w-md mb-3 animate-fade-up" style={{ animationDelay: "220ms" }}>
+            <Button asChild size="lg" className="w-full text-base sm:text-lg py-7 btn-glow">
               <Link href="/diagnostic">{copy.primaryCta}</Link>
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground mb-8 leading-relaxed max-w-md mx-auto">
+          <p className="text-xs text-muted-foreground mb-8 leading-relaxed max-w-md mx-auto animate-fade-up" style={{ animationDelay: "260ms" }}>
             Paste your live URL. In 90 seconds I tell you why it is flat –
             Wrong Person, Weak Offer, or Weak Belief – and the one move that
             fixes it. No card. No login. No newsletter.
           </p>
 
           {/* Secondary door – Starter $1. */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center max-w-md mx-auto mb-6">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center max-w-md mx-auto mb-6 animate-fade-up" style={{ animationDelay: "300ms" }}>
             <Button asChild variant="outline" size="default" className="flex-1">
               <Link href="/starter">Start the Playbook for $1</Link>
             </Button>

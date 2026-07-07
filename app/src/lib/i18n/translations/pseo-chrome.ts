@@ -67,7 +67,7 @@ export interface PageChromePseoShared {
   detailEnglishCalloutSuffix: string;
 }
 
-export const PAGE_CHROME_PSEO_SHARED: Record<Locale, PageChromePseoShared> = {
+export const PAGE_CHROME_PSEO_SHARED: Partial<Record<Locale, PageChromePseoShared>> = {
   "en-US": {
     breadcrumbHome: "Home",
     hubCtaHeading: "Not sure if Unlock SaaS is right for you?",
@@ -104,7 +104,7 @@ export const PAGE_CHROME_PSEO_SHARED: Record<Locale, PageChromePseoShared> = {
     detailEnglishCalloutSuffix:
       "Cuando se publique la traducción de este slug, el contenido completo se renderiza acá en tu idioma.",
   },
-  "pt-BR": {
+  "pt": {
     breadcrumbHome: "Início",
     hubCtaHeading: "Não tem certeza se Unlock SaaS é pra você?",
     hubCtaBody: "O diagnóstico de 90 segundos responde isso.",
@@ -125,7 +125,7 @@ export const PAGE_CHROME_PSEO_SHARED: Record<Locale, PageChromePseoShared> = {
 } as const;
 
 export function getPseoSharedChrome(locale: Locale): PageChromePseoShared {
-  return PAGE_CHROME_PSEO_SHARED[locale] ?? PAGE_CHROME_PSEO_SHARED["en-US"];
+  return (PAGE_CHROME_PSEO_SHARED[locale] ?? PAGE_CHROME_PSEO_SHARED["en-US"] as any) as PageChromePseoShared;
 }
 
 // ---------------------------------------------------------------------------
@@ -160,7 +160,7 @@ type ClusterKey =
 
 type ClusterChromeMap = Record<
   ClusterKey,
-  Record<Locale, PageChromePseoCluster>
+  Partial<Record<Locale, PageChromePseoCluster>>
 >;
 
 export const PAGE_CHROME_PSEO: ClusterChromeMap = {
@@ -204,7 +204,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "La comparación completa – tabla de capacidades, veredicto honesto, FAQ y alternativas relacionadas – está publicada en inglés en la URL canónica:",
       detailCtaSecondary: "Todas las comparaciones",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle:
         "Alternativas honestas ao Unlock SaaS – e por que a maioria são produtos diferentes",
       seoDescription:
@@ -259,7 +259,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "La comparación mano a mano completa – matriz de capacidades, anclas de precio, veredicto, FAQ – está publicada en inglés en la URL canónica:",
       detailCtaSecondary: "Todas las comparaciones",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle: "Comparações de SaaS frente a frente – ferramenta A vs ferramenta B",
       seoDescription:
         "Comparações honestas dimensão por dimensão entre as ferramentas SaaS que founders avaliam lado a lado. Capacidades, âncoras de preço, pra quem cada uma é.",
@@ -313,7 +313,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "El resumen completo de la categoría – mapa de productos, veredictos honestos, teardowns relacionados – está publicado en inglés en la URL canónica:",
       detailCtaSecondary: "Todas las categorías",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle: "Resumos de categorias SaaS – o panorama honesto por nicho",
       seoDescription:
         "Panoramas de categoria curados: quem joga nesse espaço, entre o que o founder típico está de fato escolhendo, e pra que cada produto é honestamente.",
@@ -369,7 +369,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "El teardown Hook / Story / Offer completo – con etiquetas Wrong Person / Weak Offer / Weak Belief y el teardown de precio relacionado – está publicado en inglés en la URL canónica:",
       detailCtaSecondary: "Todos los teardowns",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle:
         "Teardowns de funnel – Hook / Story / Offer em páginas SaaS reais",
       seoDescription:
@@ -428,7 +428,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "El teardown de precio completo – mapa de tiers, análisis de ancla, desglose de mecánica, teardown de funnel relacionado – está publicado en inglés en la URL canónica:",
       detailCtaSecondary: "Todos los teardowns de precio",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle:
         "Teardowns de preço – estrutura de tiers, âncoras e mecânicas de preço",
       seoDescription:
@@ -483,7 +483,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "La respuesta completa – con bullets de apoyo y preguntas relacionadas – está publicada en inglés en la URL canónica:",
       detailCtaSecondary: "Todas las respuestas",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle: "Respostas – respostas diretas a perguntas de founders",
       seoDescription:
         "Respostas diretas pras perguntas específicas que founders de SaaS pós-launch sem receita fazem. Duas a quatro frases, sem enrolação, sem upsell em cada parágrafo.",
@@ -536,7 +536,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "El veredicto completo – con bullets de apoyo y decisiones relacionadas – está publicado en inglés en la URL canónica:",
       detailCtaSecondary: "Todas las decisiones",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle: "Devo…? – vereditos binários pra decisões de founders",
       seoDescription:
         "Vereditos sim / não / depende / ainda não pras decisões que founders de SaaS pós-launch sem receita realmente enfrentam. Um veredito, duas a quatro frases de raciocínio, bullets de apoio. Sem enrolação.",
@@ -592,7 +592,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "El triage completo – con las etiquetas Wrong Person / Weak Offer / Weak Belief y el plan de test – está publicado en inglés en la URL canónica:",
       detailCtaSecondary: "Todos los triages",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle:
         "Por que meu … não funciona – triagem por elemento de funnel nas palavras do founder",
       seoDescription:
@@ -647,7 +647,7 @@ export const PAGE_CHROME_PSEO: ClusterChromeMap = {
         "El perfil completo – con diagnóstico por etapa de funnel y expectativa a 60 días – está publicado en inglés en la URL canónica:",
       detailCtaSecondary: "Todos los perfiles",
     },
-    "pt-BR": {
+    "pt": {
       seoTitle: "Unlock SaaS pra … – produto + targeting por nicho",
       seoDescription:
         "Páginas “Unlock SaaS pra [nicho]” que nomeiam o perfil específico de founder, o problema específico de funnel no estágio dele, e o que o Playbook produz pra esse perfil em 60 dias.",
@@ -672,7 +672,7 @@ export function getPseoClusterChrome(
 ): PageChromePseoCluster {
   return (
     PAGE_CHROME_PSEO[cluster][locale] ?? PAGE_CHROME_PSEO[cluster]["en-US"]
-  );
+  ) as any;
 }
 
 export type { ClusterKey };

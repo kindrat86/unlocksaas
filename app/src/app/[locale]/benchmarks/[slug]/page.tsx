@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, localizedPath, ogLocaleFormat, type Locale } from "@/lib/i18n/locales";
 import {
   getTranslationStatus,
   isApproved,
@@ -59,7 +59,7 @@ function primaryQuestion(metric: string, locale: Locale): string {
   switch (locale) {
     case "es":
       return `¿Cuál es una buena ${metric}?`;
-    case "pt-BR":
+    case "pt":
       return `Qual é uma boa ${metric}?`;
     default:
       return `What's a good ${metric}?`;
@@ -97,7 +97,7 @@ export async function generateMetadata({
       url: localised,
       siteName: "Unlock SaaS",
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: {
       card: "summary_large_image",
@@ -246,7 +246,7 @@ export default async function LocalizedBenchmarkDetail({
   const chrome = getBenchmarksChrome(locale);
   const localised = localizedPath(`/benchmarks/${slug}`, locale);
   const canonicalUrl = `${BASE_URL}${localised}`;
-  const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const inLanguage = locale as string === "pt" ? "pt-BR" : "es";
 
   const paaPairs = paaForBenchmark(e, locale);
   const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);

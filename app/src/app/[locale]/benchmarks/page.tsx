@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, localizedPath, ogLocaleFormat, type Locale } from "@/lib/i18n/locales";
 import {
   getTranslationStatus,
   isApproved,
@@ -55,7 +55,7 @@ export async function generateMetadata({
       url: localised,
       siteName: "Unlock SaaS",
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: {
       card: "summary_large_image",
@@ -89,7 +89,7 @@ export default async function LocalizedBenchmarksHub({
   const entries = getBenchmarkEntries(locale);
   const localised = localizedPath(path, locale);
   const absoluteUrl = `${BASE_URL}${localised}`;
-  const inLanguage = locale === "pt-BR" ? "pt-BR" : "es";
+  const inLanguage = locale as string === "pt" ? "pt-BR" : "es";
 
   const collectionJson = JSON.stringify({
     "@context": "https://schema.org",

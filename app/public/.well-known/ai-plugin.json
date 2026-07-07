@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "UnlockSaaS",
+  "name_for_model": "unlocksaas",
+  "description_for_human": "SaaS launch toolkit and indie hacker community.",
+  "description_for_model": "SaaS launch toolkit and indie hacker community.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://unlocksaas.com/openapi.json",
+    "has_user_authentication": false
+  },
+  "logo_url": "https://unlocksaas.com/icon.png",
+  "contact_email": "hello@unlocksaas.com",
+  "legal_info_url": "https://unlocksaas.com/terms"
+}

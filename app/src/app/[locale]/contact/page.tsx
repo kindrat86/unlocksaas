@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
-import { isLocale, localizedPath, type Locale } from "@/lib/i18n/locales";
+import { isLocale, localizedPath, ogLocaleFormat, type Locale } from "@/lib/i18n/locales";
 import {
   getTranslationStatus,
   isApproved,
@@ -61,7 +61,7 @@ export async function generateMetadata({
       description: chrome.seoDescription,
       url: localised,
       locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+        ogLocaleFormat(locale),
     },
     twitter: {
       card: "summary_large_image",

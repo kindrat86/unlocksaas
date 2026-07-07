@@ -11,6 +11,7 @@ import { REF_COOKIE } from "@/lib/affiliate";
 import { captureServer } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
 import { getOfferPriceId, type OfferId } from "@/lib/offers";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 /**
  * priceType values:
@@ -71,6 +72,20 @@ const OTO_PRICE_TYPE_TO_OFFER: Record<string, OfferId> = {
 };
 
 export async function POST(req: NextRequest) {
+  // Rate limit: 10 checkout attempts per IP per 60s. Prevents card-testing
+  // bursts even if BotID is bypassed or fail-opens.
+  const rl = checkRateLimit(req, {
+    limit: 10,
+    windowMs: 60_000,
+    keyPrefix: "checkout",
+  });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
   // BotID protection: blocks confirmed bot traffic (card-testing prevention).
   // Fail-open: any verification error lets the request through so a BotID
   // outage never blocks a legitimate checkout.

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { isLocale, type Locale } from "@/lib/i18n/locales";
+import { isLocale, ogLocaleFormat, type Locale, isRTL } from "@/lib/i18n/locales";
 import { localesWithRenderableContent } from "@/lib/i18n/registry";
 
 /**
@@ -40,7 +40,11 @@ interface LocaleLayoutProps {
  * given path 404s at the page layer, not the shell layer.
  */
 export function generateStaticParams() {
-  return localesWithRenderableContent().map((locale) => ({ locale }));
+  // Render locale shells for all 97 locales so /{locale}/* routes exist.
+  // The page layer gates which (path, locale) pairs actually render.
+  return (
+    localesWithRenderableContent().map((locale) => ({ locale }))
+  );
 }
 
 export async function generateMetadata({
@@ -55,8 +59,7 @@ export async function generateMetadata({
       "content-language": locale,
     },
     openGraph: {
-      locale:
-        locale === "pt-BR" ? "pt_BR" : locale === "es" ? "es_ES" : "en_US",
+      locale: ogLocaleFormat(locale),
     },
   };
 }
@@ -70,6 +73,6 @@ export default async function LocaleLayout({
     notFound();
   }
   const locale = rawLocale as Exclude<Locale, "en-US">;
-  return <div lang={locale}>{children}</div>;
+  return <div lang={locale} dir={isRTL(locale) ? "rtl" : "ltr"}>{children}</div>;
 }
 

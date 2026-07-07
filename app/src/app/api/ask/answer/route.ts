@@ -50,6 +50,7 @@ import {
   buildAnswerSystemPrompt,
   buildEmptyCorpusFallbackPrompt,
 } from "@/lib/nlweb/answer-prompt";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 // Vercel Fluid Compute: 60s ceiling matches the /api/chat sibling.
 export const maxDuration = 60;
@@ -106,6 +107,20 @@ function toNlWebItem(input: z.infer<typeof CitationInput>): NlWebItem {
 }
 
 export async function POST(request: Request) {
+  // Rate limit: 20 LLM-glossed answers per IP per 5 min. Prevents
+  // automated cost abuse of the streaming endpoint.
+  const rl = checkRateLimit(request, {
+    limit: 20,
+    windowMs: 300_000,
+    keyPrefix: "ask",
+  });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();

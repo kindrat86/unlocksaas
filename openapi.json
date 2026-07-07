@@ -1,0 +1,23 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "UnlockSaaS",
+    "description": "SaaS launch toolkit and indie hacker community.",
+    "version": "1.0.0",
+    "contact": {
+      "url": "https://unlocksaas.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://unlocksaas.com"
+    }
+  ],
+  "paths": {},
+  "tags": [
+    {
+      "name": "content",
+      "description": "Site content"
+    }
+  ]
+}

@@ -470,7 +470,7 @@ function BridgePage({ row }: { row: LeadRow }) {
             className="block w-full rounded-xl border border-border bg-muted shadow-sm"
             poster="/founder-result-poster.jpg"
             controls
-            preload="auto"
+            preload="metadata"
             playsInline
           >
             <source src="/founder-result.mp4" type="video/mp4" />

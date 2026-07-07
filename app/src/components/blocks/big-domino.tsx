@@ -48,7 +48,7 @@ export function BigDomino() {
       className="py-14 sm:py-20 px-4 sm:px-6"
     >
       <div className="max-w-2xl mx-auto text-center">
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-6 reveal">
           <div className="h-12 w-12 rounded-full bg-primary/10 grid place-items-center text-primary">
             <Target className="h-6 w-6" strokeWidth={2} aria-hidden="true" />
           </div>
@@ -59,7 +59,7 @@ export function BigDomino() {
         >
           The one thing this page has to prove
         </p>
-        <p className="text-xl sm:text-2xl md:text-3xl font-semibold leading-snug tracking-tight text-balance">
+        <p className="text-xl sm:text-2xl md:text-3xl font-semibold leading-snug tracking-tight text-balance reveal">
           If a playbook{" "}
           <span className="text-muted-foreground">– refunded in code –</span>{" "}
           can produce your first paying Stripe charge in 60 days, every other
@@ -77,7 +77,7 @@ export function BigDomino() {
           </p>
           <div className="space-y-3">
             {WHAT_IF_YOU_DO_NOTHING.map((row) => (
-              <Card key={row.timeframe} className="border-border/60">
+              <Card key={row.timeframe} className="border-border/60 card-hover hover:shadow-md">
                 <CardContent className="pt-5 flex items-start gap-4">
                   <div className="shrink-0 text-xs uppercase tracking-wider text-muted-foreground font-semibold w-20">
                     {row.timeframe}

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Suspense } from "react";
 /**
  * Geist Sans + Geist Mono via `geist/font` (v1.7.0). Audited 2026-05-21:
  * `geist/dist/sans.js` and `geist/dist/mono.js` call `next/font/local`
@@ -19,6 +18,7 @@ import { Suspense } from "react";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+import { Suspense } from "react";
 import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageView } from "@/components/analytics/posthog-pageview";
@@ -27,6 +27,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { buildVerification } from "@/lib/seo/verification";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
 import { SiteHeader } from "@/components/blocks/site-header";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ReadingProgress } from "@/components/ui/reading-progress";
+import { BackToTop } from "@/components/ui/back-to-top";
+import { SkipToContent } from "@/components/ui/skip-to-content";
 
 /**
  * Third-party connection hints (2026-05-20 SEO audit fix #8 / CWV +5).
@@ -182,7 +186,17 @@ export default function RootLayout({
         ) : null}
       </head>
       <body className="antialiased bg-background text-foreground">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
         <PostHogProvider>
+          {/* Reading progress bar — zero-JS-cost orientation on long pages. */}
+          <ReadingProgress />
+          {/* Skip-to-content link — first focusable element (WCAG 2.4.1). */}
+          <SkipToContent />
           {/* PageView lives in Suspense because useSearchParams forces CSR. */}
           <Suspense fallback={null}>
             <PostHogPageView />
@@ -253,7 +267,7 @@ export default function RootLayout({
                   "https://unlocksaas.com/glossary",
                   "https://unlocksaas.com/benchmarks",
                   "https://unlocksaas.com/funnel-teardown",
-                  "https://unlocksaas.com/compare",
+                  "https://unlocksaas.com/vs",
                   "https://unlocksaas.com/alternatives-to",
                   "https://unlocksaas.com/how-to",
                   "https://unlocksaas.com/tools",
@@ -262,10 +276,21 @@ export default function RootLayout({
             }}
           />
           {/* Site-wide header navigation (2026-07-06 audit). Puts every major
-              content hub within one click of every page. */}
-          <SiteHeader />
-          {children}
+              content hub within one click of every page. Wrapped in Suspense
+              because the header uses usePathname() for active-link state,
+              which forces client-side rendering and must be isolated from
+              cached/static page shells. */}
+          <Suspense fallback={<div className="h-14 border-b border-border" />}>
+            <SiteHeader />
+          </Suspense>
+          {/* main landmark with id for skip-link target. */}
+          <main id="main-content">
+            {children}
+          </main>
+          {/* Floating back-to-top on long pages. */}
+          <BackToTop />
         </PostHogProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
