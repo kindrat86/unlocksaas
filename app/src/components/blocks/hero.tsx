@@ -96,7 +96,7 @@ export function Hero({ variant }: HeroProps = {}) {
           {/* Eyebrow + scarcity/channel cue – source-aware. */}
           <Badge
             variant="secondary"
-            className="mb-7 gap-2 px-3 py-1 text-xs uppercase tracking-widest font-medium animate-fade-up"
+            className="mb-7 gap-2 px-3 py-1 text-xs uppercase tracking-widest font-medium lcp-hero"
           >
             <span
               aria-hidden="true"
@@ -106,7 +106,7 @@ export function Hero({ variant }: HeroProps = {}) {
           </Badge>
 
           {/* Hook – emotional promise + polarity move. Source-aware. */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6 text-balance animate-fade-up" style={{ animationDelay: "60ms" }}>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6 text-balance lcp-hero">
             {copy.headlineLead}{" "}
             <span className="text-muted-foreground">
               {copy.headlineLeadMuted}
@@ -120,10 +120,10 @@ export function Hero({ variant }: HeroProps = {}) {
 
           {/* Scar-tissue subhead – founder authority. Source-aware first
               paragraph; closer (founder credit) is variant-specific. */}
-          <p className="text-base sm:text-lg text-muted-foreground mb-2 max-w-2xl mx-auto leading-relaxed animate-fade-up" style={{ animationDelay: "120ms" }}>
+          <p className="text-base sm:text-lg text-muted-foreground mb-2 max-w-2xl mx-auto leading-relaxed lcp-hero">
             {copy.subheadOpener}
           </p>
-          <p className="text-sm text-foreground/80 mb-10 animate-fade-up" style={{ animationDelay: "160ms" }}>
+          <p className="text-sm text-foreground/80 mb-10 lcp-hero">
             {copy.subheadCloser}
           </p>
 

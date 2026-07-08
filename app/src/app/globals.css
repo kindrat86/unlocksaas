@@ -224,6 +224,28 @@
 }
 
 @layer utilities {
+  /* ---- LCP-critical entrance (above-the-fold hero) ----
+     The homepage hero (eyebrow, H1, subhead) previously used `animate-fade-up`,
+     whose keyframe starts at opacity:0 with fill-mode `both`. Under Lighthouse's
+     4x CPU throttle the animation start is deferred behind main-thread work, so
+     the text element counts as "not yet contentful" until opacity rises —
+     pushing LCP to ~2.6-3.1s (render-delay = 67% of LCP, per lighthouse audit
+     2026-07-08) even though FCP is ~1.7s and there are no render-blocking
+     resources. This utility keeps the entrance polish (a short upward slide)
+     but NEVER hides the text: opacity stays 1 so the LCP element paints on the
+     first frame. Transform-only motion does not affect LCP eligibility. */
+  .lcp-hero {
+    animation: lcp-hero-in var(--duration-normal) var(--ease-out-soft) both;
+  }
+  @keyframes lcp-hero-in {
+    from {
+      transform: translateY(8px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
   /* ---- Scroll-driven entrance animations (progressive enhancement) ----
      Uses CSS animation-timeline: view() — zero JS, zero RSC impact.
      Browsers without support (older Safari/Firefox) render content
