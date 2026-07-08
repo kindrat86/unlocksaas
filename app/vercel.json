@@ -1,8 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/parables", "destination": "/stories", "permanent": true },
-    { "source": "/parables.md", "destination": "/stories.md", "permanent": true }
+    {
+      "source": "/parables",
+      "destination": "/stories",
+      "permanent": true
+    },
+    {
+      "source": "/parables.md",
+      "destination": "/stories.md",
+      "permanent": true
+    },
+    {
+      "source": "/AGENTS.md",
+      "destination": "/.well-known/agents.md",
+      "permanent": true
+    }
   ],
   "crons": [
     {
