@@ -525,7 +525,18 @@ async function FunnelHubBody() {
   // Brunson Hard-Rule: SocialProofBar's `verifiedCount` prop falls back
   // to the conversation-corpus copy when the count is 0 — no "0
   // Verified Builders" line ever ships.
-  const verifiedBadgeCount = await getVerifiedBadgeCount();
+  // Timeout-guarded: Supabase cold-starts can exceed 10s. Fall back
+  // to 0 on timeout so the page renders immediately; the CDN cache
+  // (vercel.json s-maxage=3600) covers subsequent requests.
+  let verifiedBadgeCount = 0;
+  try {
+    verifiedBadgeCount = await Promise.race([
+      getVerifiedBadgeCount(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 5000))
+    ]) as number;
+  } catch {
+    verifiedBadgeCount = 0;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
