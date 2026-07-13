@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Churn Rate Calculator — Free, No Signup — Unlock SaaS</title>
+<meta name="description" content="Free SaaS churn rate calculator. Calculate monthly and annual churn, see how you compare to industry benchmarks, and get actionable insights. No signup required.">
+<link rel="canonical" href="https://unlocksaas.com/tools/churn-rate-calculator.html">
+<meta property="og:title" content="SaaS Churn Rate Calculator — Free, No Signup — Unlock SaaS">
+<meta property="og:description" content="Free SaaS churn rate calculator. Calculate monthly and annual churn, see how you compare to industry benchmarks, and get actionable insights. No signup required.">
+<meta property="og:url" content="https://unlocksaas.com/tools/churn-rate-calculator.html">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "Unlock SaaS", "url": "https://unlocksaas.com"}, {"@context": "https://schema.org", "@type": "WebApplication", "name": "SaaS Churn Rate Calculator", "url": "https://unlocksaas.com/tools/churn-rate-calculator.html", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "Unlock SaaS"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a good churn rate for SaaS?", "acceptedAnswer": {"@type": "Answer", "text": "A monthly churn rate under 3% is excellent (top quartile). 3-5% is healthy for early-stage SaaS. 5-7% is the industry median. Above 8% is critical and means your product or onboarding has a fundamental problem."}}, {"@type": "Question", "name": "How is SaaS churn calculated?", "acceptedAnswer": {"@type": "Answer", "text": "Churn rate = (customers lost during period / customers at start of period) x 100. Customers lost = start customers + new customers - end customers. This accounts for growth during the period."}}, {"@type": "Question", "name": "What is the difference between gross and net churn?", "acceptedAnswer": {"@type": "Answer", "text": "Gross churn only counts lost customers. Net churn subtracts expansion revenue (upgrades, cross-sells) from lost revenue. A SaaS with 5% gross churn but 3% expansion MRR has 2% net revenue churn."}}]}]</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;max-width:760px;margin:0 auto;padding:24px 16px;line-height:1.7;color:#1a1a1a}
+h1{font-size:1.875rem;font-weight:800;margin:0 0 8px;line-height:1.15}
+h2{font-size:1.25rem;font-weight:700;margin:28px 0 8px}
+h3{font-size:1rem;font-weight:600;margin:20px 0 6px}
+p{margin:0 0 12px}
+.badge{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:2px 10px;border-radius:12px;font-size:0.8rem;font-weight:600}
+.calc{background:#f8f9fa;border:1px solid #e0e0e0;border-radius:12px;padding:24px;margin:20px 0}
+.calc label{display:block;font-weight:600;margin-bottom:4px;font-size:0.9rem}
+.calc input{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;margin-bottom:12px}
+.calc button{background:#0066cc;color:#fff;border:none;padding:12px 28px;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;width:100%}
+.calc button:hover{background:#0052a3}
+.result{background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:16px;margin-top:16px;font-size:1.1rem;font-weight:700;text-align:center;display:none}
+.result.show{display:block}
+.result .big{font-size:2rem;display:block;margin:4px 0}
+.result .label{font-size:0.85rem;font-weight:400;color:#555}
+.insight{background:#fff3cd;border:1px solid #ffe082;border-radius:8px;padding:12px;margin-top:12px;font-size:0.9rem}
+.cta{background:#f0f7ff;border:1px solid #cce4ff;border-radius:8px;padding:20px;margin:32px 0;text-align:center}
+.cta a{color:#0066cc;font-weight:600;text-decoration:none}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{border:1px solid #e0e0e0;padding:8px 12px;text-align:left;font-size:0.9rem}
+th{background:#f5f5f5;font-weight:600}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #e0e0e0;font-size:0.85rem;color:#666}
+footer a{color:#0066cc}
+</style>
+</head>
+<body>
+<h1>Free SaaS Churn Rate Calculator</h1>
+<p><span class="badge">Free Tool</span> <span class="badge">No signup required</span></p>
+<p>Free SaaS churn rate calculator. Calculate monthly and annual churn, see how you compare to industry benchmarks, and get actionable insights. No signup required.</p>
+
+<div class="calc">
+
+<label>Customers at start of period</label>
+<input type="number" id="start_customers" value="100" min="0">
+<label>Customers at end of period</label>
+<input type="number" id="end_customers" value="92" min="0">
+<label>New customers acquired during period</label>
+<input type="number" id="new_customers" value="5" min="0">
+<label>Period length (months)</label>
+<input type="number" id="period_months" value="1" min="1">
+
+<button onclick="calculate()">Calculate</button>
+<div id="result" class="result"></div>
+<div id="insight" class="insight" style="display:none"></div>
+</div>
+
+<script>
+
+function calculate() {
+  const s = parseFloat(document.getElementById('start_customers').value);
+  const e = parseFloat(document.getElementById('end_customers').value);
+  const n = parseFloat(document.getElementById('new_customers').value);
+  const m = parseFloat(document.getElementById('period_months').value);
+  const lost = s + n - e;
+  const churnRate = s > 0 ? (lost / s * 100) : 0;
+  const monthly = churnRate / m;
+  const annual = Math.pow(1 - lost/s, 12/m) * 100;
+  let verdict = '', color = '';
+  if (monthly < 3) { verdict = 'Excellent — top quartile SaaS'; color = '#2e7d32'; }
+  else if (monthly < 5) { verdict = 'Good — healthy for early-stage SaaS'; color = '#2e7d32'; }
+  else if (monthly < 8) { verdict = 'Warning — above industry median (5-7%)'; color = '#f57f17'; }
+  else { verdict = 'Critical — churn is killing your growth'; color = '#c62828'; }
+  document.getElementById('result').innerHTML = 
+    '<span class="label">Monthly Churn Rate</span>' +
+    '<span class="big" style="color:' + color + '">' + monthly.toFixed(2) + '%</span>' +
+    '<span class="label">Customers lost: ' + lost + ' · Annual projected: ' + (100-annual).toFixed(1) + '% retention</span>';
+  document.getElementById('result').classList.add('show');
+  document.getElementById('insight').innerHTML = '<strong>Verdict:</strong> ' + verdict + 
+    '<br><strong>Benchmark:</strong> Median SaaS churn is 5-7% monthly. Top quartile is under 3%. ' +
+    'Source: <a href="https://unlocksaas.com/benchmarks/saas-churn-rate">SaaS Churn Benchmarks 2026</a>';
+  document.getElementById('insight').style.display = 'block';
+}
+
+</script>
+
+<h2>Frequently Asked Questions</h2>
+<h3>What is a good churn rate for SaaS?</h3><p>A monthly churn rate under 3% is excellent (top quartile). 3-5% is healthy for early-stage SaaS. 5-7% is the industry median. Above 8% is critical and means your product or onboarding has a fundamental problem.</p><h3>How is SaaS churn calculated?</h3><p>Churn rate = (customers lost during period / customers at start of period) x 100. Customers lost = start customers + new customers - end customers. This accounts for growth during the period.</p><h3>What is the difference between gross and net churn?</h3><p>Gross churn only counts lost customers. Net churn subtracts expansion revenue (upgrades, cross-sells) from lost revenue. A SaaS with 5% gross churn but 3% expansion MRR has 2% net revenue churn.</p>
+
+<h2>About This Calculator</h2>
+<p>This free churn rate calculator is provided by <a href="https://unlocksaas.com">Unlock SaaS</a> — a playbook for post-launch, pre-revenue founders. Target search volume: ~12000/month. No data is stored. All calculations run in your browser.</p>
+
+<div class="cta">
+<p><strong>Struggling to get your first paying customer?</strong></p>
+<p><a href="/diagnostic">Take the free 2-minute diagnostic →</a><br>
+<small>The playbook that turns a shipped SaaS into a verified paying customer in 60 days.</small></p>
+</div>
+
+<footer>
+<p><a href="/">Unlock SaaS</a> — Tools, playbooks, and benchmarks for indie SaaS founders.</p>
+<p><a href="/best/saas-launch-tools.html">Best SaaS Tools</a> · <a href="/integrations/stripe.html">Stripe Integration</a> · <a href="/case-studies/senja.html">Case Studies</a> · <a href="/benchmarks">Benchmarks</a> · <a href="/diagnostic">Free Diagnostic</a></p>
+</footer>
+</body>
+</html>

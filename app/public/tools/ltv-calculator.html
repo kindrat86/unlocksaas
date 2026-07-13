@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS LTV Calculator — Lifetime Value, Free — Unlock SaaS</title>
+<meta name="description" content="Free SaaS LTV (Lifetime Value) calculator. Enter ARPU, gross margin, and churn rate to instantly calculate customer lifetime value. Includes LTV:CAC ratio guidance.">
+<link rel="canonical" href="https://unlocksaas.com/tools/ltv-calculator.html">
+<meta property="og:title" content="SaaS LTV Calculator — Lifetime Value, Free — Unlock SaaS">
+<meta property="og:description" content="Free SaaS LTV (Lifetime Value) calculator. Enter ARPU, gross margin, and churn rate to instantly calculate customer lifetime value. Includes LTV:CAC ratio guidance.">
+<meta property="og:url" content="https://unlocksaas.com/tools/ltv-calculator.html">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "Unlock SaaS", "url": "https://unlocksaas.com"}, {"@context": "https://schema.org", "@type": "WebApplication", "name": "SaaS LTV Calculator", "url": "https://unlocksaas.com/tools/ltv-calculator.html", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "Unlock SaaS"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a good LTV for SaaS?", "acceptedAnswer": {"@type": "Answer", "text": "A LTV above $300 is healthy for consumer SaaS. For B2B SaaS, $1,000+ is typical. The key ratio is LTV:CAC \u2014 aim for 3:1 or higher. If your LTV is under $100, focus on reducing churn or raising prices before spending on acquisition."}}, {"@type": "Question", "name": "How do you calculate LTV for SaaS?", "acceptedAnswer": {"@type": "Answer", "text": "LTV = (ARPU x Gross Margin) / Monthly Churn Rate. For example: $49 ARPU, 80% margin, 5% monthly churn = ($49 x 0.80) / 0.05 = $784 LTV. Simple and accurate for early-stage SaaS."}}, {"@type": "Question", "name": "Should I use simple or cohort-based LTV?", "acceptedAnswer": {"@type": "Answer", "text": "Use simple LTV (ARPU x margin / churn) when you have under 100 customers and uniform pricing. Switch to cohort-based LTV when you have multiple pricing tiers, expansion revenue, or 500+ customers where averages mislead."}}]}]</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;max-width:760px;margin:0 auto;padding:24px 16px;line-height:1.7;color:#1a1a1a}
+h1{font-size:1.875rem;font-weight:800;margin:0 0 8px;line-height:1.15}
+h2{font-size:1.25rem;font-weight:700;margin:28px 0 8px}
+h3{font-size:1rem;font-weight:600;margin:20px 0 6px}
+p{margin:0 0 12px}
+.badge{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:2px 10px;border-radius:12px;font-size:0.8rem;font-weight:600}
+.calc{background:#f8f9fa;border:1px solid #e0e0e0;border-radius:12px;padding:24px;margin:20px 0}
+.calc label{display:block;font-weight:600;margin-bottom:4px;font-size:0.9rem}
+.calc input{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;margin-bottom:12px}
+.calc button{background:#0066cc;color:#fff;border:none;padding:12px 28px;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;width:100%}
+.calc button:hover{background:#0052a3}
+.result{background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:16px;margin-top:16px;font-size:1.1rem;font-weight:700;text-align:center;display:none}
+.result.show{display:block}
+.result .big{font-size:2rem;display:block;margin:4px 0}
+.result .label{font-size:0.85rem;font-weight:400;color:#555}
+.insight{background:#fff3cd;border:1px solid #ffe082;border-radius:8px;padding:12px;margin-top:12px;font-size:0.9rem}
+.cta{background:#f0f7ff;border:1px solid #cce4ff;border-radius:8px;padding:20px;margin:32px 0;text-align:center}
+.cta a{color:#0066cc;font-weight:600;text-decoration:none}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{border:1px solid #e0e0e0;padding:8px 12px;text-align:left;font-size:0.9rem}
+th{background:#f5f5f5;font-weight:600}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #e0e0e0;font-size:0.85rem;color:#666}
+footer a{color:#0066cc}
+</style>
+</head>
+<body>
+<h1>Free SaaS Lifetime Value (LTV) Calculator</h1>
+<p><span class="badge">Free Tool</span> <span class="badge">No signup required</span></p>
+<p>Free SaaS LTV (Lifetime Value) calculator. Enter ARPU, gross margin, and churn rate to instantly calculate customer lifetime value. Includes LTV:CAC ratio guidance.</p>
+
+<div class="calc">
+
+<label>Average Revenue Per User (ARPU) — monthly ($)</label>
+<input type="number" id="arpu" value="49" min="0">
+<label>Gross margin (%)</label>
+<input type="number" id="margin" value="80" min="0" max="100">
+<label>Monthly churn rate (%)</label>
+<input type="number" id="churn" value="5" min="0.1" max="100" step="0.1">
+
+<button onclick="calculate()">Calculate</button>
+<div id="result" class="result"></div>
+<div id="insight" class="insight" style="display:none"></div>
+</div>
+
+<script>
+
+function calculate() {
+  const arpu = parseFloat(document.getElementById('arpu').value);
+  const margin = parseFloat(document.getElementById('margin').value) / 100;
+  const churn = parseFloat(document.getElementById('churn').value) / 100;
+  if (churn === 0) { alert('Churn rate must be greater than 0'); return; }
+  const ltv = (arpu * margin) / churn;
+  const customerLifetime = 1 / churn;
+  const ltvCac = ltv / 100; // assuming $100 CAC for ratio
+  let verdict = '', color = '';
+  if (ltv > 1000) { verdict = 'Strong LTV — supports aggressive paid acquisition'; color = '#2e7d32'; }
+  else if (ltv > 300) { verdict = 'Healthy LTV — room to grow CAC'; color = '#2e7d32'; }
+  else if (ltv > 100) { verdict = 'Moderate LTV — focus on reducing churn or increasing ARPU'; color = '#f57f17'; }
+  else { verdict = 'Low LTV — churn or pricing needs work before scaling'; color = '#c62828'; }
+  document.getElementById('result').innerHTML = 
+    '<span class="label">Customer Lifetime Value</span>' +
+    '<span class="big" style="color:' + color + '">$' + ltv.toFixed(0) + '</span>' +
+    '<span class="label">Avg customer lifetime: ' + customerLifetime.toFixed(1) + ' months</span>';
+  document.getElementById('result').classList.add('show');
+  document.getElementById('insight').innerHTML = '<strong>Verdict:</strong> ' + verdict +
+    '<br><strong>LTV:CAC ratio (at $100 CAC):</strong> ' + ltvCac.toFixed(1) + ':1 — target 3:1 or higher.' +
+    '<br><strong>Formula:</strong> LTV = (ARPU x Gross Margin) / Monthly Churn';
+  document.getElementById('insight').style.display = 'block';
+}
+
+</script>
+
+<h2>Frequently Asked Questions</h2>
+<h3>What is a good LTV for SaaS?</h3><p>A LTV above $300 is healthy for consumer SaaS. For B2B SaaS, $1,000+ is typical. The key ratio is LTV:CAC — aim for 3:1 or higher. If your LTV is under $100, focus on reducing churn or raising prices before spending on acquisition.</p><h3>How do you calculate LTV for SaaS?</h3><p>LTV = (ARPU x Gross Margin) / Monthly Churn Rate. For example: $49 ARPU, 80% margin, 5% monthly churn = ($49 x 0.80) / 0.05 = $784 LTV. Simple and accurate for early-stage SaaS.</p><h3>Should I use simple or cohort-based LTV?</h3><p>Use simple LTV (ARPU x margin / churn) when you have under 100 customers and uniform pricing. Switch to cohort-based LTV when you have multiple pricing tiers, expansion revenue, or 500+ customers where averages mislead.</p>
+
+<h2>About This Calculator</h2>
+<p>This free LTV calculator is provided by <a href="https://unlocksaas.com">Unlock SaaS</a> — a playbook for post-launch, pre-revenue founders. Target search volume: ~8000/month. No data is stored. All calculations run in your browser.</p>
+
+<div class="cta">
+<p><strong>Struggling to get your first paying customer?</strong></p>
+<p><a href="/diagnostic">Take the free 2-minute diagnostic →</a><br>
+<small>The playbook that turns a shipped SaaS into a verified paying customer in 60 days.</small></p>
+</div>
+
+<footer>
+<p><a href="/">Unlock SaaS</a> — Tools, playbooks, and benchmarks for indie SaaS founders.</p>
+<p><a href="/best/saas-launch-tools.html">Best SaaS Tools</a> · <a href="/integrations/stripe.html">Stripe Integration</a> · <a href="/case-studies/senja.html">Case Studies</a> · <a href="/benchmarks">Benchmarks</a> · <a href="/diagnostic">Free Diagnostic</a></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Pricing Calculator — Value-Based, Free — Unlock SaaS</title>
+<meta name="description" content="Free SaaS pricing calculator. Enter your value delivered, target customers, and costs to get a data-driven recommended monthly price. Value-based pricing for indie SaaS.">
+<link rel="canonical" href="https://unlocksaas.com/tools/saas-pricing-calculator.html">
+<meta property="og:title" content="SaaS Pricing Calculator — Value-Based, Free — Unlock SaaS">
+<meta property="og:description" content="Free SaaS pricing calculator. Enter your value delivered, target customers, and costs to get a data-driven recommended monthly price. Value-based pricing for indie SaaS.">
+<meta property="og:url" content="https://unlocksaas.com/tools/saas-pricing-calculator.html">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "Unlock SaaS", "url": "https://unlocksaas.com"}, {"@context": "https://schema.org", "@type": "WebApplication", "name": "SaaS Pricing Calculator", "url": "https://unlocksaas.com/tools/saas-pricing-calculator.html", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "Unlock SaaS"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How should I price my SaaS product?", "acceptedAnswer": {"@type": "Answer", "text": "Use value-based pricing: charge 10-30% of the value you deliver. If your SaaS saves a customer $500/month, charge $50-150/month. Never price based on your costs alone \u2014 price based on the customer's perceived value."}}, {"@type": "Question", "name": "Should I offer a free tier?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but make it a true free tier (not a trial). A free tier that solves a real micro-problem drives organic traffic, word-of-mouth, and upsell opportunities. The paid tier should offer 10x the value of free."}}, {"@type": "Question", "name": "How do I know if my SaaS price is too low?", "acceptedAnswer": {"@type": "Answer", "text": "If fewer than 5% of users complain about price, your price is likely too low. If more than 30% complain, it may be too high. The sweet spot: 10-20% of prospects object to price \u2014 they see the value but feel the stretch."}}]}]</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;max-width:760px;margin:0 auto;padding:24px 16px;line-height:1.7;color:#1a1a1a}
+h1{font-size:1.875rem;font-weight:800;margin:0 0 8px;line-height:1.15}
+h2{font-size:1.25rem;font-weight:700;margin:28px 0 8px}
+h3{font-size:1rem;font-weight:600;margin:20px 0 6px}
+p{margin:0 0 12px}
+.badge{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:2px 10px;border-radius:12px;font-size:0.8rem;font-weight:600}
+.calc{background:#f8f9fa;border:1px solid #e0e0e0;border-radius:12px;padding:24px;margin:20px 0}
+.calc label{display:block;font-weight:600;margin-bottom:4px;font-size:0.9rem}
+.calc input{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;margin-bottom:12px}
+.calc button{background:#0066cc;color:#fff;border:none;padding:12px 28px;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;width:100%}
+.calc button:hover{background:#0052a3}
+.result{background:#e8f5e9;border:1px solid #c8e6c9;border-radius:8px;padding:16px;margin-top:16px;font-size:1.1rem;font-weight:700;text-align:center;display:none}
+.result.show{display:block}
+.result .big{font-size:2rem;display:block;margin:4px 0}
+.result .label{font-size:0.85rem;font-weight:400;color:#555}
+.insight{background:#fff3cd;border:1px solid #ffe082;border-radius:8px;padding:12px;margin-top:12px;font-size:0.9rem}
+.cta{background:#f0f7ff;border:1px solid #cce4ff;border-radius:8px;padding:20px;margin:32px 0;text-align:center}
+.cta a{color:#0066cc;font-weight:600;text-decoration:none}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{border:1px solid #e0e0e0;padding:8px 12px;text-align:left;font-size:0.9rem}
+th{background:#f5f5f5;font-weight:600}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid #e0e0e0;font-size:0.85rem;color:#666}
+footer a{color:#0066cc}
+</style>
+</head>
+<body>
+<h1>Free SaaS Pricing Calculator</h1>
+<p><span class="badge">Free Tool</span> <span class="badge">No signup required</span></p>
+<p>Free SaaS pricing calculator. Enter your value delivered, target customers, and costs to get a data-driven recommended monthly price. Value-based pricing for indie SaaS.</p>
+
+<div class="calc">
+
+<label>Value delivered to customer per month ($)</label>
+<input type="number" id="value_delivered" value="500" min="0">
+<label>How many customers do you need to be profitable?</label>
+<input type="number" id="target_customers" value="100" min="1">
+<label>Your monthly costs ($)</label>
+<input type="number" id="monthly_costs" value="2000" min="0">
+<label>Customer acquisition cost — estimated ($)</label>
+<input type="number" id="cac" value="50" min="0">
+
+<button onclick="calculate()">Calculate</button>
+<div id="result" class="result"></div>
+<div id="insight" class="insight" style="display:none"></div>
+</div>
+
+<script>
+
+function calculate() {
+  const value = parseFloat(document.getElementById('value_delivered').value);
+  const customers = parseFloat(document.getElementById('target_customers').value);
+  const costs = parseFloat(document.getElementById('monthly_costs').value);
+  const cac = parseFloat(document.getElementById('cac').value);
+  // Value-based pricing: charge 10-30% of value delivered
+  const lowPrice = value * 0.10;
+  const midPrice = value * 0.20;
+  const highPrice = value * 0.30;
+  // Break-even price
+  const breakEven = (costs / customers) + (cac * 0.1); // rough: costs spread + 10% of CAC
+  const mrr = midPrice * customers;
+  const profit = mrr - costs;
+  const paybackMonths = cac / midPrice;
+  let verdict = '';
+  if (midPrice < breakEven) verdict = 'Warning: recommended price is below break-even. Either increase value delivered or reduce costs.';
+  else verdict = 'Recommended price covers costs with ' + (profit > 0 ? 'positive' : 'negative') + ' MRR at target volume.';
+  document.getElementById('result').innerHTML = 
+    '<span class="label">Recommended Monthly Price</span>' +
+    '<span class="big">$' + midPrice.toFixed(0) + '/mo</span>' +
+    '<span class="label">Range: $' + lowPrice.toFixed(0) + ' (entry) — $' + highPrice.toFixed(0) + ' (premium)</span>';
+  document.getElementById('result').classList.add('show');
+  document.getElementById('insight').innerHTML = 
+    '<strong>Break-even price:</strong> $' + breakEven.toFixed(2) + '/mo<br>' +
+    '<strong>Projected MRR at ' + customers + ' customers:</strong> $' + mrr.toFixed(0) + '/mo<br>' +
+    '<strong>CAC payback:</strong> ' + paybackMonths.toFixed(1) + ' months (target: under 12)<br>' +
+    '<strong>Rule:</strong> Charge 10-30% of the value you deliver. If you save them $500/mo, charge $50-150/mo.';
+  document.getElementById('insight').style.display = 'block';
+}
+
+</script>
+
+<h2>Frequently Asked Questions</h2>
+<h3>How should I price my SaaS product?</h3><p>Use value-based pricing: charge 10-30% of the value you deliver. If your SaaS saves a customer $500/month, charge $50-150/month. Never price based on your costs alone — price based on the customer's perceived value.</p><h3>Should I offer a free tier?</h3><p>Yes, but make it a true free tier (not a trial). A free tier that solves a real micro-problem drives organic traffic, word-of-mouth, and upsell opportunities. The paid tier should offer 10x the value of free.</p><h3>How do I know if my SaaS price is too low?</h3><p>If fewer than 5% of users complain about price, your price is likely too low. If more than 30% complain, it may be too high. The sweet spot: 10-20% of prospects object to price — they see the value but feel the stretch.</p>
+
+<h2>About This Calculator</h2>
+<p>This free SaaS pricing calculator is provided by <a href="https://unlocksaas.com">Unlock SaaS</a> — a playbook for post-launch, pre-revenue founders. Target search volume: ~5000/month. No data is stored. All calculations run in your browser.</p>
+
+<div class="cta">
+<p><strong>Struggling to get your first paying customer?</strong></p>
+<p><a href="/diagnostic">Take the free 2-minute diagnostic →</a><br>
+<small>The playbook that turns a shipped SaaS into a verified paying customer in 60 days.</small></p>
+</div>
+
+<footer>
+<p><a href="/">Unlock SaaS</a> — Tools, playbooks, and benchmarks for indie SaaS founders.</p>
+<p><a href="/best/saas-launch-tools.html">Best SaaS Tools</a> · <a href="/integrations/stripe.html">Stripe Integration</a> · <a href="/case-studies/senja.html">Case Studies</a> · <a href="/benchmarks">Benchmarks</a> · <a href="/diagnostic">Free Diagnostic</a></p>
+</footer>
+</body>
+</html>
