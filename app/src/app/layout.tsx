@@ -291,12 +291,14 @@ export default function RootLayout({
           <BackToTop />
 
           {/* Traffic Secrets Dream-100 congregation footer —
-              only verified-resolving (HTTP 200) links. */}
+              only verified-resolving (HTTP 200) links. x.com/unlocksaas
+              verified in a real browser 2026-07-14 (Maryan's profile);
+              linked as x.com since twitter.com adds a redirect hop. */}
           <footer className="border-t border-border/40 mt-16">
             <div className="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
               <strong className="text-foreground/60">Find us where indie hackers are:</strong>
               {" "}
-              <a href="https://twitter.com/unlocksaas" rel="me noopener" className="hover:text-foreground transition-colors">X / Twitter</a>
+              <a href="https://x.com/unlocksaas" rel="me noopener" className="hover:text-foreground transition-colors">X / Twitter</a>
               {" · "}
               <a href="https://github.com/kindrat86" rel="me noopener" className="hover:text-foreground transition-colors">GitHub</a>
             </div>

@@ -136,6 +136,32 @@ export const OFFERS: Record<OfferId, OfferDefinition> = {
 } as const;
 
 /**
+ * Core funnel price ids – the $1 Starter and the $49/mo Playbook – follow
+ * the same operator opt-in pattern as the OTO stack: until the operator
+ * pastes the Stripe price id into the env, every buy CTA must degrade to
+ * an honest founding-waitlist email capture. Never a dead button, never a
+ * fake "sold out". Server-only; reads process.env.
+ */
+const CORE_PRICE_ENV_VARS = {
+  starter: "STRIPE_STARTER_PRICE_ID",
+  playbook: "STRIPE_MACHINE_PRICE_ID",
+} as const;
+
+export type CorePriceType = keyof typeof CORE_PRICE_ENV_VARS;
+
+export function isCorePriceConfigured(priceType: CorePriceType): boolean {
+  const raw = process.env[CORE_PRICE_ENV_VARS[priceType]]?.trim();
+  if (!raw) return false;
+  if (!raw.startsWith("price_")) {
+    console.warn(
+      `[offers] ${CORE_PRICE_ENV_VARS[priceType]} does not look like a Stripe price id; treating checkout as closed`,
+    );
+    return false;
+  }
+  return true;
+}
+
+/**
  * Resolve the Stripe price id for an offer. Server-only; reads process.env.
  * Returns null when the env var is unset – callers MUST treat null as
  * "offer disabled" and never show the CTA.

@@ -1,109 +1,83 @@
-"use client";
-
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
+import { connection } from "next/server";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { WelcomeClient } from "./welcome-client";
 
 /**
- * Profit Maximizer / Return Path.
+ * /welcome — post-purchase landing.
  *
- * Lands here when the visitor:
- *   - declines the $49 OTO (?path=starter_only), OR
- *   - successfully buys the $49 Playbook (?path=core_activated)
+ * Server-component entry. The old implementation was a "use client" page
+ * reading ?path= via useSearchParams() inside <Suspense fallback={null}>,
+ * which server-rendered an EMPTY <main>: a buyer reopening the link from
+ * email (or any crawler) saw a blank page until JS hydrated.
  *
- * Workbook 04 §4 (Return Path). Avoids a $19 downsell — locked lean
- * ladder discipline (workbook 02 §3). Captures the no-vote with a
- * future-pace + reassurance + queues the soap opera, so the decision
- * is not a dead-end.
+ * Current shape mirrors /starter and /oto: synchronous Suspense wrapper,
+ * async body that calls `await connection()` before awaiting searchParams,
+ * then:
+ *
+ *   - routing params present (?path= and/or ?session_id=) → the existing
+ *     client behavior (per-path copy + 12s auto-redirect).
+ *   - no params → a generic server-rendered "you're in" with honest next
+ *     steps (free diagnostic, homepage). No blank page, no dead-end.
  */
-export default function Welcome() {
+export default function Welcome(props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   return (
     <Suspense fallback={null}>
-      <WelcomeInner />
+      <WelcomeBody searchParams={props.searchParams} />
     </Suspense>
   );
 }
 
-function WelcomeInner() {
-  const params = useSearchParams();
-  const path = params.get("path") ?? "starter_only";
-  const router = useRouter();
+async function WelcomeBody(props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  await connection();
+  const searchParams = await props.searchParams;
+  const rawPath = searchParams.path;
+  const path = (Array.isArray(rawPath) ? rawPath[0] : rawPath) ?? "";
+  const rawSession = searchParams.session_id;
+  const sessionId =
+    (Array.isArray(rawSession) ? rawSession[0] : rawSession) ?? "";
 
-  // After 12s, route to the member area or first-win onboarding so the
-  // visitor never sits on a dead-end page. 12s = comfortable read time
-  // without trapping them.
-  useEffect(() => {
-    const t = window.setTimeout(() => {
-      const dest = path === "starter_only" ? "/first-win" : "/playbook";
-      router.push(dest);
-    }, 12_000);
-    return () => window.clearTimeout(t);
-  }, [router, path]);
-
-  if (path === "core_activated") {
-    return (
-      <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
-        <div className="max-w-lg text-center">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
-            Core activated
-          </p>
-          <h1 className="text-3xl font-bold mb-6">
-            The 60-day clock is now running.
-          </h1>
-          <p className="text-muted-foreground leading-relaxed mb-8">
-            Steps 3 through 7 are unlocked. The Outreach Room is unlocked.
-            The 14-Day Sprint timer is unlocked. The guarantee is in
-            writing in your member area, and the refund logic is in code,
-            not in my inbox. — Maryan
-          </p>
-          <Button asChild size="lg" className="w-full text-lg py-6">
-            <Link href="/playbook">Go to the Playbook</Link>
-          </Button>
-          <p className="text-xs text-muted-foreground mt-4">
-            Auto-redirecting in 12 seconds.
-          </p>
-        </div>
-      </div>
-    );
+  if (path || sessionId) {
+    return <WelcomeClient path={path || "starter_only"} />;
   }
 
-  // path === "starter_only" (default)
+  return <WelcomeFallback />;
+}
+
+/**
+ * No-params fallback — fully server-rendered. A visitor landing here cold
+ * (old email link, shared URL, crawler) gets a real page instead of a
+ * blank one.
+ */
+function WelcomeFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-lg text-center">
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
-          Starter delivered
+          Welcome
         </p>
         <h1 className="text-2xl md:text-3xl font-bold mb-6">
-          You said no to the $49 for now. Good. That is exactly the call
-          the page told you was honest.
+          You&apos;re in.
         </h1>
-        <p className="text-muted-foreground leading-relaxed mb-6">
-          Playbook Steps 1 and 2 are in your member area. They are yours to
-          keep. Finish them this week, see if a real WHO and a real WHAT
-          changes anything in your Stripe line. If they do, you will not
-          need me to sell you the rest.
+        <p className="text-muted-foreground leading-relaxed mb-8">
+          If you just bought something and landed here without your session
+          link, the purchase still went through — your receipt and welcome
+          email are in your inbox. If you arrived cold, the honest place to
+          start is the free 90-second diagnostic. — Maryan
         </p>
-
-        <Card className="mb-8 text-left">
-          <CardContent className="pt-6">
-            <p className="text-sm font-semibold mb-2">What happens next</p>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>— One short email a day for five days, walking you through the work without selling at you.</li>
-              <li>— Email 5 is the offer for the full Playbook, in case you want it back.</li>
-              <li>— Reply STOP at any time. No drip-forever traps.</li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        <Button asChild size="lg" className="w-full text-lg py-6">
-          <Link href="/first-win">Get your first-win drafts</Link>
-        </Button>
-        <p className="text-xs text-muted-foreground mt-4">
-          Auto-redirecting in 12 seconds. — Maryan
-        </p>
+        <div className="flex flex-col gap-3">
+          <Button asChild size="lg" className="w-full text-lg py-6">
+            <Link href="/diagnostic">Run the free diagnostic</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="w-full">
+            <Link href="/">Back to the homepage</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

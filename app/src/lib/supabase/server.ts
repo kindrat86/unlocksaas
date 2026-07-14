@@ -13,9 +13,20 @@ function isValidUrl(value: string | undefined): value is string {
   }
 }
 
+/**
+ * Placeholder hosts ship in .env.example (and, regrettably, shipped to
+ * production once). Treat them as "not configured" so every caller takes
+ * its degraded path instead of dialing a dead host and 500ing.
+ */
+function isPlaceholderSupabaseUrl(value: string): boolean {
+  return /placeholder|your-project-ref|example/i.test(value);
+}
+
 export function hasSupabaseAdminConfig(): boolean {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   return (
-    isValidUrl(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+    isValidUrl(url) &&
+    !isPlaceholderSupabaseUrl(url) &&
     Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY?.trim())
   );
 }

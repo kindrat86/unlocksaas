@@ -61,6 +61,6 @@ export const FAQ_ENTRIES: FaqEntry[] = [
   {
     category: "Pricing risk",
     q: "Will the price go up later? Am I locked in at $49?",
-    a: "$49/mo is the only Core price. If I introduce annual or a Pro tier, your monthly stays $49 until you choose to change it. There is no startup-discount expiration, no usage-based metering, no \"your team grew so now it is $149.\" The price is the price.",
+    a: "$49/mo is the founding rate, locked for life for the first 100 builders. After builder #100 the standard rate becomes $79/mo — but if you are in at $49, your monthly stays $49 until you choose to change it. There is no startup-discount expiration, no usage-based metering, no \"your team grew so now it is $149.\" Your rate is your rate.",
   },
 ];

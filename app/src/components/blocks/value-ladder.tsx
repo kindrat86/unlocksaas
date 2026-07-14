@@ -18,10 +18,24 @@
  * Placement: after the Stack Slide (the offer reveal) but before the Guarantee,
  * so the visitor sees the path upward before they see the refund backstop.
  *
+ * 2026-07-14 conversion audit: the homepage had ZERO links to /challenge
+ * (the free 14-Day Sprint — strongest free nurture asset) and ZERO links to
+ * /apply (the high-ticket rung). Both now sit in the ladder: the free Sprint
+ * as the habit rung after the diagnostic, the Done-With-You Sprint as the
+ * application-only top rung. Prices quoted verbatim from /challenge (free)
+ * and /apply ($997 / $1,997) — no invented numbers.
+ *
  * Voice: Reluctant Hero, factual stack values, no fabricated prices.
  */
 import Link from "next/link";
-import { ArrowDown, DollarSign, Zap, Crown, Infinity } from "lucide-react";
+import {
+  CalendarCheck,
+  DollarSign,
+  Zap,
+  Crown,
+  Infinity,
+  Users,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -52,6 +66,20 @@ const LADDER: LadderRung[] = [
     cta: "Run the diagnosis",
     href: "/diagnostic",
     icon: <Zap className="h-4 w-4" />,
+  },
+  {
+    label: "14-Day Sprint",
+    price: "$0",
+    oneLiner: "Fourteen days, fourteen actions, one per day.",
+    whatYouGet: [
+      "One email a day naming the single selling action for that day.",
+      "The work most founders skip between launch and revenue.",
+      "No card, no course — email only.",
+    ],
+    equivalentValue: "Free, email-only",
+    cta: "Join the free Sprint",
+    href: "/challenge",
+    icon: <CalendarCheck className="h-4 w-4" />,
   },
   {
     label: "Starter",
@@ -97,6 +125,20 @@ const LADDER: LadderRung[] = [
     href: "/oto/lifetime",
     icon: <Infinity className="h-4 w-4" />,
   },
+  {
+    label: "Done-With-You Sprint",
+    price: "$997+",
+    oneLiner: "Thirty days working the system with Maryan. Application only.",
+    whatYouGet: [
+      "The full Playbook run WITH you, not handed to you.",
+      "$997 self-paced or $1,997 with a 1-hour 1:1.",
+      "Six honest application questions — no pitch on the call.",
+    ],
+    equivalentValue: "Application-gated",
+    cta: "Apply for the Sprint",
+    href: "/apply",
+    icon: <Users className="h-4 w-4" />,
+  },
 ];
 
 export function ValueLadder() {
@@ -114,12 +156,14 @@ export function ValueLadder() {
             id="value-ladder-heading"
             className="text-2xl sm:text-3xl font-bold leading-tight text-balance"
           >
-            Four rungs. Each one earns the next.
+            Six rungs. Each one earns the next.
           </h2>
           <p className="text-sm text-muted-foreground italic leading-relaxed mt-3 max-w-xl mx-auto">
-            The diagnostic labels the problem. The Starter names the person and
-            the promise. The Core Playbook delivers the customer. The lifetime
-            option removes the clock. You climb one rung at a time.
+            The diagnostic labels the problem. The free Sprint builds the daily
+            habit. The Starter names the person and the promise. The Core
+            Playbook delivers the customer. The lifetime option removes the
+            clock. The Done-With-You Sprint is for founders who want Maryan in
+            the room. You climb one rung at a time.
           </p>
         </div>
 

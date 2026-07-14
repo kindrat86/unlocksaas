@@ -671,8 +671,18 @@ export const MENTIONED_ENTITIES: ReadonlyArray<{
   },
   // Brunson trilogy – named verbatim in /about, /stories, /funnel-teardown.
   { name: "DotCom Secrets", url: "https://www.dotcomsecretsbook.com", type: "Book" },
-  { name: "Expert Secrets", url: "https://www.expertsecretsbook.com", type: "Book" },
-  { name: "Traffic Secrets", url: "https://www.trafficsecretsbook.com", type: "Book" },
+  // expertsecretsbook.com / trafficsecretsbook.com went NXDOMAIN (2026-07-14
+  // crawl); Amazon product pages are the stable canonical references now.
+  {
+    name: "Expert Secrets",
+    url: "https://www.amazon.com/Expert-Secrets-Underground-Playbook-Advice/dp/1401970605",
+    type: "Book",
+  },
+  {
+    name: "Traffic Secrets",
+    url: "https://www.amazon.com/Traffic-Secrets-Underground-Playbook-Customers/dp/1401957900",
+    type: "Book",
+  },
   // ClickFunnels is the canonical reference funnel-builder we explicitly
   // contrast with – "no ClickFunnels 1.0 look" appears in feedback memory.
   {

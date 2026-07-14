@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createAdminClient } from "@/lib/supabase/server";
+import {
+  createAdminClient,
+  hasSupabaseAdminConfig,
+} from "@/lib/supabase/server";
+import { subscribeViaEngine } from "@/lib/email-engine";
 import { sendNextFoundingAndAdvance } from "@/lib/founding/dispatch";
 import { readIdentityFromCookies } from "@/lib/ab";
 import {
@@ -37,6 +41,13 @@ interface PostBody {
  *
  * Returns 200 even when PLE1 sending fails so the form completes — the row
  * is in the DB and the cron will retry. last_error is stamped for visibility.
+ *
+ * Degraded mode (2026-07-14): when the Supabase admin config is missing or
+ * a placeholder (production shipped one once), the subscriber is handed to
+ * the shared email-engine (src/lib/email-engine.ts) instead of 500ing, and
+ * the response carries the same pending-confirmation success shape as the
+ * double-opt-in branch. The engine is also the last-resort rescue when the
+ * upsert itself fails.
  */
 export async function POST(request: NextRequest) {
   let body: PostBody;
@@ -68,6 +79,29 @@ export async function POST(request: NextRequest) {
       );
     }
     email = deliverability.normalized;
+  }
+
+  // Degraded-mode path: no (real) Supabase config → hand the subscriber to
+  // the shared email-engine instead of 500ing on createAdminClient(). The
+  // engine owns double-opt-in, so the client-facing semantics are the same
+  // as the pending-confirmation branch below. Mirrors the fallback in
+  // src/lib/soap-opera/subscribe.ts.
+  if (!hasSupabaseAdminConfig()) {
+    const engine = await subscribeViaEngine(email, source ?? "founding_waitlist");
+    if (engine.ok) {
+      console.log("[founding-waitlist] engine_fallback_ok", { email, source });
+      return NextResponse.json({
+        ok: true,
+        subscribed: true,
+        pending_confirmation: true,
+      });
+    }
+    console.error("[founding-waitlist] engine_fallback_failed", {
+      email,
+      source,
+      error: engine.error,
+    });
+    return NextResponse.json({ error: "waitlist_write_failed" }, { status: 500 });
   }
 
   // A/B identity variant — same cookie scheme as the rest of the site so a
@@ -111,6 +145,17 @@ export async function POST(request: NextRequest) {
 
   if (upsertError || !row) {
     console.error("[founding-waitlist] upsert_failed", upsertError?.message);
+    // Supabase is configured but unreachable/broken — last-resort engine
+    // rescue so a transient outage never drops a waitlister on the floor.
+    const engine = await subscribeViaEngine(email, source ?? "founding_waitlist");
+    if (engine.ok) {
+      console.log("[founding-waitlist] engine_rescue_ok", { email, source });
+      return NextResponse.json({
+        ok: true,
+        subscribed: true,
+        pending_confirmation: true,
+      });
+    }
     return NextResponse.json({ error: "waitlist_write_failed" }, { status: 500 });
   }
 

@@ -25,7 +25,7 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { POST_MORTEM_SLUGS } from "@/lib/post-mortems";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
-import { COMPARE_SLUGS } from "@/lib/compare-catalog";
+import { RESOLVING_COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
@@ -144,7 +144,7 @@ const PSEO_COUNTS = Object.freeze({
   pricingTeardown: PRICING_TEARDOWN_SLUGS.length,
   postMortem: POST_MORTEM_SLUGS.length,
   compare: COMPARISON_SLUGS.length,
-  compareShop: COMPARE_SLUGS.length,
+  compareShop: RESOLVING_COMPARE_SLUGS.length,
   category: CATEGORY_SLUGS.length,
   whyIsntMy: WHY_ISNT_MY_SLUGS.length,
   niches: NICHE_SLUGS.length,
@@ -359,7 +359,7 @@ const PSEO_CATALOGS = Object.freeze({
     markdownPattern: "/compare/{slug}/md",
     description:
       "Switzerland-style shopping comparator. Lighter sister surface to /vs: 5-7 criteria scored symmetrically, pick-A-if / pick-B-if bullets, an honest 'when neither fits' callout that earns trust by admitting both can be wrong, and an indie-founder pick. Non-overlapping slugs to extend head-to-head SERP coverage without duplicating editorial work.",
-    slugs: COMPARE_SLUGS,
+    slugs: RESOLVING_COMPARE_SLUGS,
     count: PSEO_COUNTS.compareShop,
   },
   category: {

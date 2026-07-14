@@ -12,9 +12,18 @@ import type { Database } from "@/lib/database.types";
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // No (real) Supabase config → nothing to refresh. Without this guard a
+  // missing env crashes createServerClient and 500s EVERY page the proxy
+  // touches; the placeholder host would instead stall on a dead fetch.
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anonKey || /placeholder|your-project-ref/i.test(url)) {
+    return response;
+  }
+
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {

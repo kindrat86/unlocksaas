@@ -41,12 +41,14 @@
  *      diagnostic is the lead funnel now. One large primary button.
  *      Source-aware verb so the button copy matches the channel-native
  *      eyebrow without breaking the destination (/diagnostic).
- *   5. Secondary door – "Start the Playbook for $1" for the visitor who
- *      is already further down the ladder.
- *   6. Tertiary text links – the full $49/mo page AND the newsletter
- *      subscribe link, both subordinated to the diagnostic.
- *   7. Reverse-squeeze bridge – "read the five stories first" gives the
- *      hard-skeptic an exit ramp into content instead of bouncing.
+ *   5. Quiet Playbook link – single text link to /playbook-sales for the
+ *      visitor who is already further down the ladder. Demoted from a
+ *      two-button row 2026-07-14 (conversion audit): three above-the-fold
+ *      CTAs were splitting clicks the diagnostic should take, and the
+ *      paid doors are env-gated on Stripe price IDs right now anyway.
+ *   6. Reverse-squeeze bridge – "read the five stories first" + newsletter
+ *      link give the hard-skeptic an exit ramp into content instead of
+ *      bouncing.
  *
  * Visual treatment: subtle radial spotlight using shadcn primary token at 6%
  * opacity. No new colors introduced.
@@ -138,18 +140,20 @@ export function Hero({ variant }: HeroProps = {}) {
           <p className="text-xs text-muted-foreground mb-8 leading-relaxed max-w-md mx-auto animate-fade-up" style={{ animationDelay: "260ms" }}>
             Paste your live URL. In 90 seconds I tell you why it is flat –
             Wrong Person, Weak Offer, or Weak Belief – and the one move that
-            fixes it. No card. No login. No newsletter.
+            fixes it. No card. No login. Report by email, plus five short
+            founder letters – unsubscribe in one click.
           </p>
 
-          {/* Secondary door – Starter $1. */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center max-w-md mx-auto mb-6 animate-fade-up" style={{ animationDelay: "300ms" }}>
-            <Button asChild variant="outline" size="default" className="flex-1">
-              <Link href="/starter">Start the Playbook for $1</Link>
-            </Button>
-            <Button asChild variant="ghost" size="default" className="flex-1">
-              <Link href="/playbook-sales">Full Playbook – $49/mo</Link>
-            </Button>
-          </div>
+          {/* Quiet Playbook link – the single demoted door for the visitor
+              who is already further down the ladder. */}
+          <p className="text-sm text-muted-foreground mb-6 animate-fade-up" style={{ animationDelay: "300ms" }}>
+            <Link
+              href="/playbook-sales"
+              className="underline underline-offset-4 hover:text-foreground transition-colors"
+            >
+              or see the Playbook – $49/mo
+            </Link>
+          </p>
 
           {/* Tertiary – content exit + small newsletter link. */}
           <p className="text-sm text-muted-foreground">

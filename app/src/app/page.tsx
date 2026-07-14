@@ -84,9 +84,11 @@ import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server
  *  16. Newsletter tail   — small subscribe block for the visitor who is
  *                          still not ready to paste a URL.
  *  17. Final CTA         — three doors one more time (close before close).
- *  18. Signature footer  — Maryan signature (Cookbook Swipe 4).
- *  19. Sticky CTA        — always-visible offer bar below the hero.
- *  20. Exit-intent popup — last-chance diagnostic + newsletter offer.
+ *  18. Explore resources — collapsed link hub AFTER the close (2026-07-14
+ *                          audit: 20+ exit links must not interrupt the arc).
+ *  19. Signature footer  — Maryan signature (Cookbook Swipe 4).
+ *  20. Sticky CTA        — always-visible offer bar below the hero.
+ *  21. Exit-intent popup — last-chance diagnostic + newsletter offer.
  */
 async function getVerifiedBadgeCount(): Promise<number> {
   "use cache";
@@ -111,6 +113,14 @@ async function getVerifiedBadgeCount(): Promise<number> {
  * SEO purpose: distributes PageRank from the homepage (strongest page) to
  * 20+ high-value pSEO hubs. Before this section, those hubs were reachable
  * only via footer links and sitemap. Now they are one click from home.
+ *
+ * Funnel demotion (2026-07-14 conversion audit): the homepage was carrying
+ * 70 anchors / 42 unique exit destinations — a website, not a funnel. This
+ * section is the biggest offender (20+ exits mid-persuasion-arc), so it now
+ * (a) renders BELOW the Final CTA, after the close, and (b) collapses into
+ * a closed-by-default <details> block. The links stay in the DOM (Google
+ * renders <details> content and passes PageRank); the visitor scrolling the
+ * persuasion arc never sees 20 open doors before the offer.
  *
  * Categories mirror the visitor journey:
  *   - Learn: glossary, benchmarks, teardowns, case studies
@@ -172,44 +182,48 @@ async function ExploreResources() {
   ];
 
   return (
-    <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-4xl mx-auto">
-      <div className="text-center mb-10 reveal">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-          Free resources
-        </p>
-        <h2 className="text-2xl sm:text-3xl font-bold leading-tight text-balance">
-          Everything we know about getting to the first customer.
-        </h2>
-        <p className="text-sm text-muted-foreground italic leading-relaxed mt-3 max-w-xl mx-auto">
-          Hundreds of teardowns, benchmarks, and guides. No email gate, no paywall.
-        </p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal">
-        {categories.map((cat) => (
-          <div key={cat.title}>
-            <h3 className="text-sm font-semibold text-foreground mb-3">
-              {cat.title}
-            </h3>
-            <ul className="space-y-2">
-              {cat.links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="group block rounded-lg border border-border bg-card p-3 card-hover hover:border-primary/40 hover:bg-accent/50 hover:shadow-md"
-                  >
-                    <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                      {link.label}
-                    </span>
-                    <span className="block text-xs text-muted-foreground mt-0.5">
-                      {link.desc}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+    <section className="py-10 sm:py-14 px-4 sm:px-6 max-w-4xl mx-auto">
+      {/* Closed by default: one quiet summary line instead of 20 open exit
+          doors. The full link grid stays in the server-rendered DOM. */}
+      <details className="group rounded-lg border border-border bg-card">
+        <summary className="cursor-pointer list-none px-5 py-4 text-center [&::-webkit-details-marker]:hidden">
+          <span className="text-sm font-semibold text-foreground">
+            Explore 200+ free resources
+          </span>
+          <span className="block text-xs text-muted-foreground mt-1">
+            Teardowns, benchmarks, and guides — no email gate, no paywall.
+            <span aria-hidden="true" className="ml-1 inline-block transition-transform group-open:rotate-180">
+              ↓
+            </span>
+          </span>
+        </summary>
+        <div className="px-5 pb-6 pt-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {categories.map((cat) => (
+            <div key={cat.title}>
+              <h3 className="text-sm font-semibold text-foreground mb-3">
+                {cat.title}
+              </h3>
+              <ul className="space-y-2">
+                {cat.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="group/link block rounded-lg border border-border bg-card p-3 card-hover hover:border-primary/40 hover:bg-accent/50 hover:shadow-md"
+                    >
+                      <span className="block text-sm font-medium text-foreground group-hover/link:text-primary transition-colors">
+                        {link.label}
+                      </span>
+                      <span className="block text-xs text-muted-foreground mt-0.5">
+                        {link.desc}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </details>
     </section>
   );
 }
@@ -677,17 +691,15 @@ async function FunnelHubBody() {
 
       <Separator className="max-w-4xl mx-auto" />
 
-      {/* ---------------- 15.5. EXPLORE RESOURCES — internal linking hub ----------------
-          Added 2026-07-06. The homepage previously linked to ~20 pages (mostly
-          in the footer). This section adds 20+ more contextual links to the
-          highest-value pSEO hubs, putting them within ONE click of the homepage
-          and distributing PageRank from the strongest page on the site. */}
-      <ExploreResources />
-
-      <Separator className="max-w-4xl mx-auto" />
-
       {/* ---------------- 16. FINAL CTA — close-the-loop ---------------- */}
       <FinalCta />
+
+      {/* ---------------- 16.5. EXPLORE RESOURCES — internal linking hub ----------------
+          Added 2026-07-06; demoted 2026-07-14 (conversion audit). Moved BELOW
+          the Final CTA and collapsed into a closed-by-default accordion so the
+          20+ pSEO-hub exit links never interrupt the persuasion arc. Links
+          stay server-rendered in the DOM for crawl + PageRank distribution. */}
+      <ExploreResources />
 
       {/* ---------------- 17. SIGNATURE FOOTER ---------------- */}
       <SignatureFooter />

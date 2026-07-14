@@ -322,9 +322,10 @@ async function DiagnosticSqueezePageBody(
 
         {/* Trust-line. Honest. */}
         <p className="text-xs text-muted-foreground text-center">
-          The diagnostic is free forever. No card. The email is so I can send
-          the read-out and follow up with one short note a day for five days.
-          Reply STOP to unsubscribe. The link to{" "}
+          The diagnostic is free forever. No card. Your report is delivered
+          to your email, and the same address gets my five founder letters —
+          one short note a day for five days, then it stops. Unsubscribe any
+          time, one click. The link to{" "}
           <Link
             href="/starter"
             className="underline underline-offset-4 hover:text-foreground"

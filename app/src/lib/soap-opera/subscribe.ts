@@ -20,7 +20,11 @@
  * Intentional — most repeats are users re-taking the diagnostic with a new URL.
  */
 
-import { createAdminClient } from "@/lib/supabase/server";
+import {
+  createAdminClient,
+  hasSupabaseAdminConfig,
+} from "@/lib/supabase/server";
+import { subscribeViaEngine } from "@/lib/email-engine";
 import { sendNextAndAdvance } from "./dispatch";
 import type { DiagnosticResult } from "./emails";
 import {
@@ -104,6 +108,30 @@ export async function subscribeToSoapOpera(
     emailRaw = check.normalized;
   }
 
+  // Degraded-mode path: no (real) Supabase config → hand the subscriber to
+  // the shared email-engine, which owns double-opt-in + the linearized SOS.
+  // The visitor experience is identical ("check your inbox to confirm").
+  if (!hasSupabaseAdminConfig()) {
+    const engine = await subscribeViaEngine(emailRaw, input.source);
+    if (engine.ok) {
+      console.log("[soap-opera-subscribe] engine_fallback_ok", {
+        email: emailRaw,
+        source: input.source,
+      });
+      return {
+        ok: true,
+        id: "engine-fallback",
+        day_0_send: "deferred_pending_confirmation",
+      };
+    }
+    console.error("[soap-opera-subscribe] engine_fallback_failed", {
+      email: emailRaw,
+      source: input.source,
+      error: engine.error,
+    });
+    return { ok: false, reason: "db_upsert_failed", detail: engine.error };
+  }
+
   const supabase = createAdminClient();
   const nowIso = new Date().toISOString();
 
@@ -142,6 +170,20 @@ export async function subscribeToSoapOpera(
       source: input.source,
       error: upsertError?.message,
     });
+    // Supabase is configured but unreachable/broken — last-resort engine
+    // fallback so a transient outage never drops a subscriber on the floor.
+    const engine = await subscribeViaEngine(emailRaw, input.source);
+    if (engine.ok) {
+      console.log("[soap-opera-subscribe] engine_rescue_ok", {
+        email: emailRaw,
+        source: input.source,
+      });
+      return {
+        ok: true,
+        id: "engine-fallback",
+        day_0_send: "deferred_pending_confirmation",
+      };
+    }
     return {
       ok: false,
       reason: "db_upsert_failed",

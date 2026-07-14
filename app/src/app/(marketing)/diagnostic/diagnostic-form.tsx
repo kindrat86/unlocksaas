@@ -684,6 +684,14 @@ export function DiagnosticForm({
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email}</p>
             )}
+            {/* Honest disclosure at the point of capture: the report comes
+                by email AND the address joins the five-letter founder arc.
+                No silent enrollment. */}
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Your report arrives at this address, followed by my five
+              founder letters — one a day for five days, then it stops.
+              Unsubscribe any time, one click.
+            </p>
           </div>
 
           {errors.form && (

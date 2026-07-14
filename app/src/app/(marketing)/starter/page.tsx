@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
+import { isCorePriceConfigured } from "@/lib/offers";
 import { StarterSalesClient } from "./starter-client";
 
 /**
@@ -65,5 +66,15 @@ async function StarterSalesPageBody(props: {
   // export.
   await connection();
   const searchParams = await props.searchParams;
-  return <StarterSalesClient searchParams={searchParams} />;
+  // Server-side env check: until STRIPE_STARTER_PRICE_ID is pasted, the buy
+  // CTA degrades to the honest founding-waitlist capture (never a dead
+  // button, never a 500). Resolved here because the client bundle must not
+  // read process.env.
+  const checkoutEnabled = isCorePriceConfigured("starter");
+  return (
+    <StarterSalesClient
+      searchParams={searchParams}
+      checkoutEnabled={checkoutEnabled}
+    />
+  );
 }

@@ -4,10 +4,9 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
 /**
  * Per-page metadata wrapper for /welcome.
  *
- * Why a layout: welcome/page.tsx is marked "use client" because it reads
- * post-purchase routing params via useSearchParams() (?path=starter_only |
- * core_activated). Next.js does not allow `export const metadata` from
- * client components.
+ * Why a layout: historically welcome/page.tsx was a client component
+ * (metadata could not live there). The page is a server component now, but
+ * the metadata stays here to avoid churning the metadata surface.
  *
  * /welcome is also already in the robots.ts disallow list — this layout's
  * `robots: { index: false }` is a belt-and-suspenders signal sent in the

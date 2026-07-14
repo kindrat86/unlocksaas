@@ -4,7 +4,7 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { POST_MORTEM_SLUGS } from "@/lib/post-mortems";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
-import { COMPARE_SLUGS } from "@/lib/compare-catalog";
+import { RESOLVING_COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
@@ -551,6 +551,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // with non-overlapping slugs. Catalog: src/lib/compare-catalog.ts.
     // Each detail page is Article + FAQPage + BreadcrumbList JSON-LD; the
     // hub uses CollectionPage + Dataset.
+    //
+    // 2026-07-14: detail entries filtered to RESOLVING_COMPARE_SLUGS —
+    // every /compare URL 308s to /vs (see the constant's comment above),
+    // so only slugs with a live /vs counterpart are listed. The hub entry
+    // stays: /compare 308s to /vs, which resolves.
     // ---------------------------------------------------------------------
     {
       url: `${base}/compare`,
@@ -559,7 +564,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/compare`),
     },
-    ...COMPARE_SLUGS.map((slug) => ({
+    ...RESOLVING_COMPARE_SLUGS.map((slug) => ({
       url: `${base}/compare/${slug}`,
       lastModified: now,
       changeFrequency: "monthly" as const,

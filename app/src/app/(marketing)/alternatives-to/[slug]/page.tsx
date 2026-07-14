@@ -628,8 +628,8 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               Paste the URL of the product you already shipped. The diagnostic
               labels what is broken — Wrong Person, Weak Offer, or Weak Belief
-              — and hands you the door that fixes it. No email gate to see the
-              diagnosis category.
+              — and hands you the door that fixes it. No card, no login; the
+              report arrives by email.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>

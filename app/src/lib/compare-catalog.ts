@@ -33,6 +33,8 @@
  * analytics, SEO, AI writing.
  */
 
+import { COMPARISON_SLUGS } from "@/lib/comparisons";
+
 export type CompareCriterionWinner = "A" | "B" | "tie" | "different";
 
 export interface CompareCriterion {
@@ -1118,6 +1120,20 @@ export const COMPARE_ENTRIES: ReadonlyArray<CompareEntry> =
 /** Slug list, exported for sitemap, llms-feed, and generateStaticParams. */
 export const COMPARE_SLUGS: ReadonlyArray<string> = Object.freeze(
   COMPARE_ENTRIES.map((e) => e.slug),
+);
+
+/**
+ * Slugs safe to advertise publicly. next.config.mjs 308s every
+ * /compare/:slug to /vs/:slug, so a compare slug without a matching
+ * comparisons.ts entry redirects into a 404 (10 such slugs were live in
+ * the 2026-07-14 crawl). Self-maintaining: porting an entry into
+ * comparisons.ts re-adds its URL on the next build. If the blanket
+ * redirect is ever removed to resurrect this surface, delete this filter.
+ */
+export const RESOLVING_COMPARE_SLUGS: ReadonlyArray<string> = Object.freeze(
+  COMPARE_SLUGS.filter((slug) =>
+    (COMPARISON_SLUGS as readonly string[]).includes(slug),
+  ),
 );
 
 /** O(1) lookup. */

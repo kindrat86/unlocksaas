@@ -7,11 +7,16 @@ import { Button } from "@/components/ui/button";
  * Cart-open claim button. POSTs to /api/checkout with priceType=playbook and
  * attribution.from=founding so the Stripe webhook can stamp the founding
  * seat on subscription.created.
+ *
+ * `claimedAtRender` is null when the live seat count is unavailable — in
+ * that case the label omits the seat number entirely. We never render a
+ * fabricated count.
  */
-export function FoundingClaimButton(props: { claimedAtRender: number }) {
+export function FoundingClaimButton(props: { claimedAtRender: number | null }) {
   const [state, setState] = useState<"idle" | "submitting" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const nextSeat = props.claimedAtRender + 1;
+  const nextSeat =
+    props.claimedAtRender === null ? null : props.claimedAtRender + 1;
 
   async function onClick() {
     if (state === "submitting") return;
@@ -55,10 +60,13 @@ export function FoundingClaimButton(props: { claimedAtRender: number }) {
       >
         {state === "submitting"
           ? "Opening checkout..."
-          : `Claim seat #${nextSeat} for $49/mo`}
+          : nextSeat === null
+            ? "Claim your founding seat for $49/mo"
+            : `Claim seat #${nextSeat} for $49/mo`}
       </Button>
       <p className="text-xs text-muted-foreground mt-3">
-        $49 a month. Lifetime price lock. 60-day Stripe-verified guarantee.
+        $49 a month, locked for life. $79/mo after builder #100. 60-day
+        Stripe-verified guarantee.
       </p>
       {state === "error" && errorMessage && (
         <p className="text-sm text-red-600 mt-3">{errorMessage}</p>

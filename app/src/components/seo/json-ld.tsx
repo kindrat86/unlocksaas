@@ -313,6 +313,26 @@ export const ACCESS_MODE_TEXTUAL = Object.freeze({
  */
 const SAME_AS = ORGANIZATION_SAME_AS;
 
+/**
+ * Live-URL overrides for mentioned entities whose registered domains have
+ * lapsed (2026-07-14 link audit): expertsecretsbook.com and
+ * trafficsecretsbook.com no longer resolve (NXDOMAIN), so the Book nodes
+ * in Organization.mentions pointed at dead hosts — the same drift class as
+ * a fabricated claim to a structured-data validator. The Amazon product
+ * pages below are the live canonical listings (verified 200 at audit
+ * time). dotcomsecretsbook.com still resolves and is untouched.
+ *
+ * Applied at consumption so entity.ts (the shared source of truth, also
+ * consumed by /llms-feed.json and /.well-known/entity.jsonld) stays owned
+ * by its own audit cycle.
+ */
+const MENTION_URL_OVERRIDES: Readonly<Record<string, string>> = Object.freeze({
+  "https://www.expertsecretsbook.com":
+    "https://www.amazon.com/Expert-Secrets-Underground-Playbook-Advice/dp/1401970605",
+  "https://www.trafficsecretsbook.com":
+    "https://www.amazon.com/Traffic-Secrets-Underground-Playbook-Customers/dp/1401957900",
+});
+
 // --- Pre-built JSON strings (module-level; serialized once at import time) ---
 
 // `logo` resolves to /icon.svg — served by app/icon.svg via Next.js' file-based
@@ -491,7 +511,8 @@ const ORGANIZATION_JSON = JSON.stringify({
   mentions: MENTIONED_ENTITIES.map((m) => ({
     "@type": m.type,
     name: m.name,
-    url: m.url,
+    // Dead-domain remap (see MENTION_URL_OVERRIDES above).
+    url: MENTION_URL_OVERRIDES[m.url] ?? m.url,
   })),
   founder: {
     "@type": "Person",

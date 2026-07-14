@@ -14,6 +14,7 @@ import {
 import { VslPlayer } from "@/components/vsl/vsl-player";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { OrderBumpBlock } from "@/components/checkout/order-bump-block";
+import { FoundingWaitlistForm } from "../founding/waitlist-form";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
@@ -95,6 +96,33 @@ const DIAGNOSTIC_HANDOFF: Record<string, { title: string; body: string }> = {
   },
 };
 
+/**
+ * Honest degraded CTA — rendered in place of the buy button while
+ * STRIPE_STARTER_PRICE_ID is unset. Checkout opens with the founding
+ * cohort; until then the only honest ask is the waitlist email.
+ * Module-scope (not nested in the page component) so the email input
+ * never remounts mid-typing on a parent re-render.
+ */
+function WaitlistCta({ waitlistSource }: { waitlistSource: string }) {
+  return (
+    <div className="max-w-md mx-auto">
+      <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+        The $1 checkout opens with the founding cohort. Leave your email
+        and you get a note the moment the door opens — and the founding
+        rate on the full Playbook ($49/mo for the first 100 builders,
+        $79/mo after) stays locked for you.
+      </p>
+      <FoundingWaitlistForm
+        source={waitlistSource}
+        ctaLabel="Lock the founding rate"
+      />
+      <p className="text-xs text-muted-foreground mt-3">
+        No charge today. Unsubscribe any time, one click.
+      </p>
+    </div>
+  );
+}
+
 function DiagnosticHandoffBanner({
   searchParams,
 }: {
@@ -149,12 +177,22 @@ function DiagnosticHandoffBanner({
  */
 export function StarterSalesClient({
   searchParams,
+  checkoutEnabled,
 }: {
   searchParams: StarterSearchParams;
+  /**
+   * Server-resolved: STRIPE_STARTER_PRICE_ID is set and valid. When false,
+   * every buy CTA on this page degrades to the honest founding-waitlist
+   * capture — checkout opens with the founding cohort. Never a dead button.
+   */
+  checkoutEnabled: boolean;
 }) {
   // Order bump state. Owned at the page level (not inside OrderBumpBlock) so
   // both CTAs (above and below the fold) submit the same flag to checkout.
   const [bumpChecked, setBumpChecked] = useState(false);
+  // Set when a live checkout attempt fails (Stripe error, network) so the
+  // visitor gets an honest message instead of a silently dead button.
+  const [checkoutError, setCheckoutError] = useState(false);
 
   // Stable across renders so the click handler closes over the right values.
   // The bucket joins label as a first-class attribution key so the Stripe
@@ -185,21 +223,29 @@ export function StarterSalesClient({
       bump_included: bumpChecked,
       ...(attribution ?? {}),
     });
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        priceType: "starter",
-        // Stripe webhook reads bump_included from session metadata to know
-        // whether to record a starter_bump row in billing_payments.
-        bump: bumpChecked,
-        // Forwarded to Stripe session metadata so the webhook can stamp
-        // diagnostic_leads.converted_to_starter_at on this row.
-        attribution,
-      }),
-    });
-    const { url } = await res.json();
-    if (url) window.location.href = url;
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          priceType: "starter",
+          // Stripe webhook reads bump_included from session metadata to know
+          // whether to record a starter_bump row in billing_payments.
+          bump: bumpChecked,
+          // Forwarded to Stripe session metadata so the webhook can stamp
+          // diagnostic_leads.converted_to_starter_at on this row.
+          attribution,
+        }),
+      });
+      const { url } = (await res.json()) as { url?: string };
+      if (url) {
+        window.location.href = url;
+        return;
+      }
+      setCheckoutError(true);
+    } catch {
+      setCheckoutError(true);
+    }
   }
 
   return (
@@ -423,7 +469,9 @@ export function StarterSalesClient({
         <Card className="mb-8">
           <CardContent className="pt-6">
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-              What happens when you click
+              {checkoutEnabled
+                ? "What happens when you click"
+                : "What happens when the door opens"}
             </p>
             <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside leading-relaxed">
               <li>Stripe charges your card $1. One time. Not a subscription.</li>
@@ -611,22 +659,39 @@ export function StarterSalesClient({
 
         {/* Order Bump – Brunson DCS Secret 14 (Cart Funnel). Renders only when
             STRIPE_BUMP_DREAM100_PRICE_ID is set; otherwise this block silently
-            collapses and the page reads exactly as before. */}
-        <OrderBumpBlock
-          checked={bumpChecked}
-          onCheckedChange={setBumpChecked}
-        />
+            collapses and the page reads exactly as before. Suppressed entirely
+            while the Starter checkout itself is unpriced — a bump with no cart
+            is noise. */}
+        {checkoutEnabled && (
+          <OrderBumpBlock
+            checked={bumpChecked}
+            onCheckedChange={setBumpChecked}
+          />
+        )}
 
-        {/* CTA */}
+        {/* CTA — live checkout, or the honest founding-waitlist capture while
+            the Stripe price id is unset. */}
         <div className="text-center mb-2">
-          <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-            {bumpChecked
-              ? "Start the Playbook + add the bump – $28"
-              : "Start the Playbook for $1"}
-          </Button>
-          <p className="text-xs text-muted-foreground mt-3">
-            One-time payment. No subscription. No auto-upgrade.
-          </p>
+          {checkoutEnabled ? (
+            <>
+              <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
+                {bumpChecked
+                  ? "Start the Playbook + add the bump – $28"
+                  : "Start the Playbook for $1"}
+              </Button>
+              <p className="text-xs text-muted-foreground mt-3">
+                One-time payment. No subscription. No auto-upgrade.
+              </p>
+              {checkoutError && (
+                <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                  Checkout could not start — nothing was charged. Try again in
+                  a minute, or email me at maryan@unlocksaas.com.
+                </p>
+              )}
+            </>
+          ) : (
+            <WaitlistCta waitlistSource="starter_page" />
+          )}
         </div>
 
         {/* Reluctant Hero signature – per project_unlocksaas_email_identity
@@ -654,14 +719,26 @@ export function StarterSalesClient({
           One dollar. Ninety minutes. Steps 1 and 2 of the Playbook, finished,
           yours to keep – whether you upgrade or not.
         </p>
-        <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
-          {bumpChecked
-            ? "Start the Playbook + add the bump – $28"
-            : "Start the Playbook for $1"}
-        </Button>
-        <p className="text-xs text-muted-foreground mt-3">
-          One-time payment. No subscription. No auto-upgrade.
-        </p>
+        {checkoutEnabled ? (
+          <>
+            <Button size="lg" className="text-lg px-8 py-6" onClick={handleCheckout}>
+              {bumpChecked
+                ? "Start the Playbook + add the bump – $28"
+                : "Start the Playbook for $1"}
+            </Button>
+            <p className="text-xs text-muted-foreground mt-3">
+              One-time payment. No subscription. No auto-upgrade.
+            </p>
+            {checkoutError && (
+              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
+                Checkout could not start — nothing was charged. Try again in
+                a minute, or email me at maryan@unlocksaas.com.
+              </p>
+            )}
+          </>
+        ) : (
+          <WaitlistCta waitlistSource="starter_page_footer" />
+        )}
       </div>
     </div>
   );

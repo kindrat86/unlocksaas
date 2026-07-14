@@ -47,11 +47,16 @@ export function FinalCta() {
           </p>
         </div>
 
-        {/* Subordinate doors for the visitor who is already ready. */}
+        {/* Subordinate doors for the visitor who is already ready. The free
+            14-Day Sprint is the nurture rung between the diagnostic and the
+            paid doors (2026-07-14 audit: /challenge had zero homepage links). */}
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
           Or pick a door
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+          <Button asChild variant="outline" size="lg">
+            <Link href="/challenge">Free 14-Day Sprint</Link>
+          </Button>
           <Button asChild variant="outline" size="lg">
             <Link href="/starter">Start the Playbook for $1</Link>
           </Button>

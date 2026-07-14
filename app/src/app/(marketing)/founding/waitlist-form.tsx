@@ -5,10 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 /**
- * Pre-launch waitlist form. POSTs to /api/founding/waitlist which subscribes
- * the email to the PLE1-PLE6 sequence and sends PLE1 inline.
+ * Founding-waitlist form. POSTs to /api/founding/waitlist which subscribes
+ * the email to the pre-launch founder-letter sequence and sends the first
+ * letter inline.
+ *
+ * Reused by other surfaces (e.g. /starter, /oto fallbacks) whenever a buy
+ * CTA has to degrade to an honest "lock the founding rate" capture because
+ * checkout is not configured yet. Pass `source` so attribution stays clean.
  */
-export function FoundingWaitlistForm() {
+export function FoundingWaitlistForm({
+  source = "founding_page",
+  ctaLabel = "Lock the founding rate",
+}: {
+  source?: string;
+  ctaLabel?: string;
+} = {}) {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "submitting" | "ok" | "error">(
     "idle"
@@ -25,7 +36,7 @@ export function FoundingWaitlistForm() {
       const res = await fetch("/api/founding/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "founding_page" }),
+        body: JSON.stringify({ email, source }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !data.ok) {
@@ -72,7 +83,7 @@ export function FoundingWaitlistForm() {
         className="flex-1"
       />
       <Button type="submit" size="lg" disabled={state === "submitting"}>
-        {state === "submitting" ? "Adding..." : "Hold a founding seat"}
+        {state === "submitting" ? "Adding..." : ctaLabel}
       </Button>
       {state === "error" && errorMessage && (
         <p className="text-sm text-red-600 sm:absolute sm:mt-14">

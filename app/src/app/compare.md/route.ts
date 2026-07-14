@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { BASE_URL, FOUNDER, ORGANIZATION } from "@/lib/seo/entity";
 import {
-  COMPARE_ENTRIES,
   COMPARE_LATEST_VERIFIED,
+  RESOLVING_COMPARE_SLUGS,
   groupCompareByCategory,
 } from "@/lib/compare-catalog";
+
+// next.config.mjs 308s /compare/:slug → /vs/:slug, so only slugs with a
+// live /vs page may be advertised (the rest redirect into a 404).
+const RESOLVING = new Set(RESOLVING_COMPARE_SLUGS);
 
 /**
  * /compare.md – markdown mirror of the /compare hub.
@@ -38,7 +42,7 @@ function build(): string {
   lines.push("# Compare – Switzerland-style head-to-head verdicts");
   lines.push("");
   lines.push(
-    `> Quick comparator pages for the tools indie SaaS founders are mid-shopping. ${COMPARE_ENTRIES.length} verdicts indexed.`,
+    `> Quick comparator pages for the tools indie SaaS founders are mid-shopping. ${RESOLVING_COMPARE_SLUGS.length} verdicts indexed.`,
   );
   lines.push("");
 
@@ -61,9 +65,11 @@ function build(): string {
   lines.push("## All comparisons");
   lines.push("");
   for (const group of groupCompareByCategory()) {
+    const entries = group.entries.filter((c) => RESOLVING.has(c.slug));
+    if (entries.length === 0) continue;
     lines.push(`### ${group.category}`);
     lines.push("");
-    for (const c of group.entries) {
+    for (const c of entries) {
       lines.push(
         `- [${c.a.name} vs ${c.b.name}](${BASE_URL}/compare/${c.slug}) – ${c.oneLine}`,
       );

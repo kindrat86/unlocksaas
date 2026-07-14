@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { OUTCOME_ENTRIES } from "@/lib/outcomes";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
-import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
  * /get – hub page for the outcome-promise pSEO cluster.
@@ -128,13 +127,10 @@ export default function GetOutcomesHubPage() {
 
       <Separator className="my-2" />
 
-      <HubTldr
-        headingLabel="Outcome hub TL;DR"
-        cluster="Outcome-promise landing pages"
-        count={`${OUTCOME_ENTRIES.length} outcome-shaped pages`}
-        intent="One page per specific result the post-launch pre-revenue founder is searching for, each framed as a Brunson Hook / Story / Offer."
-        schema="CollectionPage + ItemList; per-detail Article + HowTo + FAQPage + BreadcrumbList"
-      />
+      {/* Retrieval metadata for this hub (cluster: outcome-promise landing
+          pages; schema: CollectionPage + ItemList) lives in the JSON-LD
+          blocks above. The old visible <HubTldr> block leaked that internal
+          scaffolding into the visitor UI — removed 2026-07-14. */}
 
       <section
         className="max-w-3xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-4"

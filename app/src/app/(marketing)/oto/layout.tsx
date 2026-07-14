@@ -4,9 +4,10 @@ import { pageAlternates } from "@/lib/seo/markdown-alternates";
 /**
  * Per-page metadata wrapper for /oto.
  *
- * Why a layout: oto/page.tsx is marked "use client" because it fires
- * tracking events on mount and POSTs to /api/checkout on click. Next.js
- * does not allow `export const metadata` from client components.
+ * Why a layout: historically oto/page.tsx was a client component (metadata
+ * could not live there). The page is a server component now, but the
+ * metadata stays here so the layout remains the single metadata surface
+ * for the /oto subtree (vault / cold-emails / lifetime override locally).
  *
  * /oto is in the robots.ts disallow list (strategy/google-strategy.md §A.4
  * rationale: the OTO has no context outside the $1 purchase — indexing it
