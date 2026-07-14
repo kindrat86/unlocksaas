@@ -2,13 +2,14 @@
  * Fallback path to the shared email-engine autoresponder
  * (https://email-engine-fawn.vercel.app, sequences/unlocksaas.yaml).
  *
- * The in-app Soap Opera Sequence (Supabase + Vercel crons + engagement
- * branches) is the primary system. When the Supabase admin config is
- * missing or unreachable — as in production while the real project env
- * vars are unset — every subscribe surface degrades to this engine call
- * instead of 500ing. The engine owns double-opt-in and schedules the
- * linearized SOS (day 0/2/4/6/8) via Resend scheduled_at, so the visitor
- * experience stays: submit → "check your inbox" → confirm → letters.
+ * ARCHITECTURE DECISION (owner, 2026-07-14): local-first, no cloud DB.
+ * This engine path is the PRIMARY production subscribe system — the
+ * Supabase-driven in-app SOS remains in the codebase but only activates
+ * if a real Supabase env is ever configured. The engine owns double-opt-in
+ * and schedules the linearized SOS (day 0/2/4/6/8) via Resend
+ * scheduled_at: submit → "check your inbox" → confirm → letters. The
+ * durable local record lives on the Mac mini in ~/.unlocksaas/funnel.db
+ * (hourly sync from Resend + Stripe; scripts/sync-local-db.py).
  *
  * The engine's copy is a verbatim port of the in-app spine (see
  * ~/email-engine/sequences/unlocksaas.yaml), so subscribers migrated

@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
-# Restore the unlocksaas Vercel production env — one-shot, interactive.
+# LEGACY / OPTIONAL — cloud-DB restore for the unlocksaas Vercel env.
 #
-# WHY: production currently has NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co
-# and is missing RESEND_API_KEY / CRON_SECRET / UNSUBSCRIBE_SECRET / STRIPE_*.
-# Until fixed, the in-app Soap Opera Sequence, crons, webhooks, and checkout
-# are dark (subscribes fall back to the shared email-engine).
+# DECISION 2026-07-14 (owner): no Supabase, local-first. The live
+# architecture is: subscribes -> shared email-engine -> Resend (SOS days
+# 0/2/4/6/8), with the durable local record in ~/.unlocksaas/funnel.db
+# (hourly launchd sync `com.unlocksaas.funnel-db-sync` pulling Resend +
+# Stripe). Paid checkout stays as founding-waitlist capture until a
+# Vercel-reachable DB exists for the member area.
 #
-# WHAT IT NEEDS FROM YOU: the real Supabase project URL + anon key + service
-# role key (Supabase dashboard -> Project Settings -> API). Everything else
-# is derived automatically.
-#
-# Order matters: Stripe price IDs are set LAST and only if you confirm —
-# checkout must not go live while the app (Supabase) cannot deliver access.
+# Run this ONLY if you later reintroduce a cloud DB for /playbook.
 set -euo pipefail
+read -rp "Local-first is the current architecture (no cloud DB needed). Continue anyway? (y/N): " CONT
+[[ "$CONT" == "y" || "$CONT" == "Y" ]] || { echo "Aborted — nothing to do in local-first mode."; exit 0; }
 cd "$(dirname "$0")/../app"
 
 echo "== unlocksaas production env restore =="

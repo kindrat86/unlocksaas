@@ -68,6 +68,10 @@ import { SkipToContent } from "@/components/ui/skip-to-content";
  */
 function parseOrigin(url: string | undefined | null): string | null {
   if (!url) return null;
+  // placeholder.supabase.co parses fine but is a dead host — a preconnect
+  // to it shipped to production once. Same placeholder detection as
+  // lib/supabase/server.ts.
+  if (/placeholder|your-project-ref/i.test(url)) return null;
   try {
     return new URL(url).origin;
   } catch {
