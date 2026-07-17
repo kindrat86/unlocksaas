@@ -175,7 +175,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     headlineTailLead: "Or your money back,",
     headlineTailMuted: "automatically.",
     subheadOpener:
-      "I shipped 12 AI products and nobody paid for any of them. Then I figured out why, and I built the playbook I wish someone had handed me before I burned a year of evenings on the wrong work.",
+      "Unlock SaaS gets you your first paying customer in 60 days with a free 90-second funnel diagnostic — Wrong Person, Weak Offer, or Weak Belief — and a $49/mo playbook that fixes what the diagnosis found; if 60 days pass without a paying customer, the refund fires automatically. I built it after shipping 12 AI products nobody paid for and finally figuring out why.",
     subheadCloser: "– Maryan, non-engineer founder",
     primaryCta: "Get my free 2-minute diagnosis →",
   },

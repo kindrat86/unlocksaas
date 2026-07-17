@@ -110,9 +110,13 @@ export function TldrSummary({
       </h2>
       <Card className="border-primary/30 bg-primary/5">
         <CardContent className="pt-6">
-          <p className="text-xs uppercase tracking-widest text-primary mb-4">
+          {/* Eyebrow is a <span>, not a <p>: crawlers and answer engines
+              that pick "the first paragraph starting with TL;DR" must land
+              on the substantive lead sentence below, never on this bare
+              two-word label. (C1 answer-first audit, 2026-07-17.) */}
+          <span className="block text-xs uppercase tracking-widest text-primary mb-4">
             {eyebrow}
-          </p>
+          </span>
           {leadText ? (
             <p
               data-llm-tldr
