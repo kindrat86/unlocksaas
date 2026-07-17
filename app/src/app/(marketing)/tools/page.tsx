@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { HubQuestions } from "@/components/seo/hub-questions";
 import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
@@ -214,6 +215,19 @@ export default function ToolsHubPage() {
             customers through them.
           </p>
         </section>
+
+        <HubQuestions
+          questions={[
+            {
+              q: "Do these calculators require an email or signup?",
+              a: "No. All five calculators — lifetime value, churn cost, revenue projection, CAC payback, and pricing power — run entirely in your browser with no email gate, no signup wall, and no card. They use the same unit-economics math the $49 Playbook walks paid customers through, published free because utility earns links.",
+            },
+            {
+              q: "Which calculator should I start with?",
+              a: "Start with the LTV calculator if you already have paying customers, because lifetime value sets what every other number is allowed to cost. If you are pre-revenue, the revenue projector shows how growth and churn assumptions compound over time. The other three sharpen the same unit-economics model from different angles.",
+            },
+          ]}
+        />
       </article>
     </div>
   );

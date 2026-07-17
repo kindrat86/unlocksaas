@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { DEFINED_TERMS, BASE_URL, ID } from "@/lib/seo/entity";
 import { glossaryTermSlug } from "@/lib/glossary";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
+import { HubQuestions } from "@/components/seo/hub-questions";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
@@ -292,6 +293,28 @@ export default function GlossaryPage() {
       </section>
 
       <Separator className="my-2" />
+
+      <HubQuestions
+        questions={[
+          {
+            q: "What does this glossary cover?",
+            a: (
+              <>
+                {DEFINED_TERMS.length} Russell Brunson sales-funnel terms — the
+                working vocabulary of DotCom Secrets and Expert Secrets —
+                defined the way the Unlock SaaS playbook actually applies them.
+                Every term links to a long-form page with action bullets, a
+                worked example, common confusions, and related terms, plus a
+                stable anchor for citation.
+              </>
+            ),
+          },
+          {
+            q: "Are these the official Brunson definitions?",
+            a: "No — they are working definitions: how Unlock SaaS applies each concept to a shipped SaaS product that has zero paying customers. Where our usage narrows the original framework, the per-term page says so under common confusions. For the canonical treatment, read DotCom Secrets and Expert Secrets directly.",
+          },
+        ]}
+      />
 
       {/* Where these terms live in the rest of the site. Pure internal-link
           equity moves: keep the reader in the topical cluster without an

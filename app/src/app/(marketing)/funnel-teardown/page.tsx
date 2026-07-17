@@ -10,6 +10,7 @@ import {
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+import { HubQuestions } from "@/components/seo/hub-questions";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 /**
@@ -264,6 +265,27 @@ export default function FunnelTeardownHub() {
           ))}
         </div>
       </section>
+
+      <HubQuestions
+        questions={[
+          {
+            q: "What is a funnel teardown?",
+            a: "A funnel teardown walks through a live SaaS marketing funnel and labels what each step is doing through Russell Brunson's Hook, Story, Offer framework: the hook that earns attention, the story that builds belief, and the offer that asks for money. The goal is pattern-level lessons, not a scorecard on someone else's business.",
+          },
+          {
+            q: "How many funnels are analyzed here?",
+            a: (
+              <>
+                {TEARDOWNS.length} indie SaaS funnels so far, each read through
+                the same Hook / Story / Offer lens so the teardowns stay
+                comparable. Every entry ends with the pattern an indie founder
+                can adapt to their own landing page rather than a verdict on
+                the company being studied.
+              </>
+            ),
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-12" aria-labelledby="cta">

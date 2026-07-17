@@ -31,6 +31,7 @@ import {
 } from "@/lib/dream-100";
 import { BASE_URL, ID } from "@/lib/seo/entity";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { HubQuestions } from "@/components/seo/hub-questions";
 import { HubTldr } from "@/components/seo/hub-tldr";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 
@@ -281,6 +282,28 @@ export default function Dream100HubPage() {
       )}
 
       <Separator className="my-2" />
+
+      <HubQuestions
+        questions={[
+          {
+            q: "What is a Dream 100 list?",
+            a: "A Dream 100 list is Russell Brunson's traffic method: name the specific people, communities, newsletters, and platforms that already have your dream customer's attention, then systematically become useful to them before making any ask. It replaces cold outreach with warm relationships that compound into distribution over time.",
+          },
+          {
+            q: "How many targets does this list track?",
+            a: (
+              <>
+                This page tracks {DREAM_100_TOTAL} named targets across{" "}
+                {DREAM_100_COUNTS.length} categories, each with an honest
+                engagement status, so the outreach pipeline is public instead
+                of imagined. The list is Unlock SaaS&rsquo;s own working Dream
+                100 — real accounts and communities our dream customer follows
+                — updated as relationships progress.
+              </>
+            ),
+          },
+        ]}
+      />
 
       <section
         className="max-w-3xl mx-auto px-6 py-12"

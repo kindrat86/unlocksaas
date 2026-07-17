@@ -7,6 +7,7 @@ import { ALTERNATIVES } from "@/lib/alternatives";
 import { markdownAlternate } from "@/lib/seo/markdown-alternates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
 import { HubDatasetJsonLd } from "@/components/seo/json-ld";
+import { HubQuestions } from "@/components/seo/hub-questions";
 import { HubTldr } from "@/components/seo/hub-tldr";
 
 // Latest lastVerified across the manifest – feeds Dataset.dateModified.
@@ -207,6 +208,44 @@ export default function AlternativesHub() {
           </Card>
         ))}
       </section>
+
+      <HubQuestions
+        questions={[
+          {
+            q: "How many alternatives does this hub compare?",
+            a: (
+              <>
+                This hub currently compares {ALTERNATIVES.length} named tools
+                and programs against Unlock SaaS, grouped by category. Each
+                comparison names the real category difference — a course, a
+                boilerplate codebase, a community, an app builder — instead of
+                pretending every product competes on the same axis. Use the
+                category label on each card to jump straight to your own
+                evaluation set.
+              </>
+            ),
+          },
+          {
+            q: "Why compare tools that are not direct competitors?",
+            a: (
+              <>
+                Because founders evaluating Unlock SaaS are usually choosing
+                between categories of help — a boilerplate, a course, a
+                community, or a playbook — not between two identical products.
+                Naming the category difference honestly tells you faster
+                whether Unlock SaaS fits your situation, and the free{" "}
+                <Link
+                  href="/diagnostic"
+                  className="underline underline-offset-4 hover:text-foreground"
+                >
+                  90-second diagnostic
+                </Link>{" "}
+                settles it when the answer is still unclear.
+              </>
+            ),
+          },
+        ]}
+      />
 
       {/* CTA */}
       <section className="max-w-3xl mx-auto px-6 py-12" aria-labelledby="cta">
