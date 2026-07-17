@@ -93,11 +93,16 @@ export default function NumbersPage() {
   const isVisible = process.env.NEXT_PUBLIC_NUMBERS_VISIBLE === "true";
 
   if (!isVisible) {
+    // Pre-publication state. The C4 thin-content audit (2026-07-17) flagged
+    // this placeholder at 68 words; it now explains -- honestly -- what will
+    // be published and why it is not live yet, without inventing a single
+    // number. Every claim below describes the visible-state page code in
+    // this same file or pages that already exist on the site.
     return (
       <main className="min-h-screen py-20 px-4 sm:px-6">
-        <div className="max-w-xl mx-auto text-center space-y-5">
+        <div className="max-w-2xl mx-auto space-y-6">
           <p className="text-xs uppercase tracking-widest text-muted-foreground">
-            Coming soon
+            Build in public · Coming soon
           </p>
           <h1 className="text-2xl font-bold">The Numbers</h1>
           <p className="text-muted-foreground leading-relaxed">
@@ -105,14 +110,57 @@ export default function NumbersPage() {
             is in. Honest revenue, real customer count, week-by-week commentary
             -- no polish.
           </p>
-          <p className="text-sm">
+          <h2 className="text-lg font-semibold">What will be published here?</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Seven headline metrics, straight from Stripe and the mailing list:
+            monthly recurring revenue, annual run rate, paying customers, $1
+            Starter purchases, diagnostic submissions, email subscribers, and
+            weeks since launch. Under them, a weekly log -- one honest founder
+            note per week on what happened, what was learned, and what changed
+            on the Stripe line.
+          </p>
+          <h2 className="text-lg font-semibold">Why is it not live yet?</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Because publishing starts when the first full week of Stripe data
+            exists, not before. Zero is an honest number and will be shown as
+            zero: no vanity metrics, no screenshots cropped at a flattering
+            angle. The metrics live in a version-controlled file, so the git
+            history doubles as the audit trail for every figure.
+          </p>
+          <h2 className="text-lg font-semibold">Why publish revenue at all?</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            The playbook this site sells tells founders to name one person,
+            write one promise, and sell it before it feels ready. Publishing
+            the raw numbers holds Unlock SaaS to the same standard it asks of
+            its customers -- and shows pre-revenue founders exactly what the
+            early weeks of that work look like.
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            In the meantime, the rest of the site is already public: the{" "}
             <Link
               href="/diagnostic"
               className="font-semibold underline underline-offset-4"
             >
-              Run your free diagnostic --&gt;
-            </Link>
+              90-second diagnostic
+            </Link>{" "}
+            labels what is broken on a shipped product, the{" "}
+            <Link
+              href="/stories"
+              className="font-semibold underline underline-offset-4"
+            >
+              five founder stories
+            </Link>{" "}
+            explain the frame the playbook teaches, and the{" "}
+            <Link
+              href="/tools"
+              className="font-semibold underline underline-offset-4"
+            >
+              five free calculators
+            </Link>{" "}
+            run the same unit-economics math the paid tier walks through -- no
+            email gate on any of them.
           </p>
+          <p className="text-sm text-muted-foreground">-- Maryan</p>
         </div>
       </main>
     );

@@ -93,6 +93,23 @@ export default function ColdTrafficBridge() {
 
         <Separator className="my-10" />
 
+        {/* Below-the-fold context block. The C4 thin-content audit
+            (2026-07-17) flagged this page at 252 words; this block adds the
+            post-diagnostic mechanics -- facts already stated on /diagnostic
+            and the homepage -- without touching the single-CTA funnel shape
+            above the fold. */}
+        <h2 className="text-sm font-semibold mb-2">
+          What happens after the diagnosis?
+        </h2>
+        <p className="text-xs text-muted-foreground leading-relaxed mb-6">
+          The report lands in your inbox with one of three labels -- Wrong
+          Person, Weak Offer, or Weak Belief -- plus the single next move that
+          label points to. Over the following five days you get five short
+          founder letters, one lesson each. If you want the full system
+          afterwards, the $1 Starter and the $49/mo Playbook are the two
+          doors; if you do not, the diagnosis is still yours to keep.
+        </p>
+
         <p className="text-xs text-muted-foreground italic">
           Why this page exists: cold traffic does not buy a $49/mo
           subscription from a single ad. It buys a labelled diagnosis from
