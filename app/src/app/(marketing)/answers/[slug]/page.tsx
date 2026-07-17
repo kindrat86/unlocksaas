@@ -468,10 +468,18 @@ export default async function AnswerDetailPage(props: {
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
               See this applied to your page
             </h2>
+            {/* 40-60 words by design: this paragraph renders on every
+                /answers page, so keeping it snippet-length gives each of
+                the ~60 pages one extraction-ready summary of the offer.
+                Every claim restates the diagnostic mechanics already
+                published on /diagnostic and /bridge. */}
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-              The free 90-second Launch Diagnostic applies the Hook / Story
-              / Offer triage to your actual URL and labels what&rsquo;s
-              broken. Same triage that informs every answer on this site.
+              The free 90-second Launch Diagnostic applies the same Hook /
+              Story / Offer triage to your actual URL and labels what is
+              broken — Wrong Person, Weak Offer, or Weak Belief — plus the
+              one move that fixes it. Two fields, no card, no login; the
+              report arrives by email. Same triage that informs every answer
+              on this site.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>

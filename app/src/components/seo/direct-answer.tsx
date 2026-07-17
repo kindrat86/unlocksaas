@@ -134,9 +134,13 @@ export function DirectAnswer({
       </h2>
       <Card className="border-primary/40 bg-primary/5">
         <CardContent className="pt-6">
-          <p className="text-xs uppercase tracking-widest text-primary mb-3">
+          {/* Eyebrow is a <span>, not a <p>: snippet extractors that grab
+              the first TL;DR-prefixed paragraph must land on the answer
+              body, never on this bare label. (E3 snippet audit, 2026-07-17;
+              same fix as TldrSummary.) */}
+          <span className="block text-xs uppercase tracking-widest text-primary mb-3">
             {eyebrow}
-          </p>
+          </span>
           <div data-speakable={speakableSlot} data-llm-summary>
             <DateStampedAnswer
               lastVerified={lastVerified}

@@ -625,11 +625,16 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
               Run the 90-second diagnostic
             </h2>
+            {/* 40-60 words by design: renders on every /alternatives-to
+                page, giving each one an extraction-ready snippet paragraph.
+                All claims restate the diagnostic mechanics already published
+                on /diagnostic and /bridge. */}
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               Paste the URL of the product you already shipped. The diagnostic
               labels what is broken — Wrong Person, Weak Offer, or Weak Belief
               — and hands you the door that fixes it. No card, no login; the
-              report arrives by email.
+              report arrives by email, followed by five short founder letters,
+              one lesson a day for five days.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>

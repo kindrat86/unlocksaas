@@ -524,10 +524,16 @@ export default async function BenchmarkDetailPage(props: {
             <h2 id="cta" className="text-xl font-bold mb-3 leading-tight">
               See where your page falls on this metric
             </h2>
+            {/* 40-60 words by design: renders on every /benchmarks page,
+                giving each one an extraction-ready snippet paragraph. All
+                claims restate the diagnostic mechanics already published on
+                /diagnostic and /bridge. */}
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               The free 90-second Launch Diagnostic applies the same triage to
               your actual page and tells you which band you&rsquo;re in plus
-              what to fix first.
+              what to fix first. It labels the problem Wrong Person, Weak
+              Offer, or Weak Belief — two fields, no card, no login, and the
+              report arrives by email.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
