@@ -1432,42 +1432,35 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
       model: "Freemium with brand-removal upgrade trigger",
       tiers: [
         {
-          name: "Free (Starter)",
-          pricePoint: "$0",
+          name: "Free",
+          pricePoint: "$0 (verified 2026-07-17)",
           includes:
-            "Text and video testimonial collection, basic Wall of Love widget, Senja branding visible, limited integrations.",
+            "Collect up to 15 video and text testimonials, unlimited testimonial widgets, unlimited Walls of Love, Senja branding visible.",
           audience: "Indie founders collecting first testimonials before publishing.",
         },
         {
-          name: "Starter (paid)",
-          pricePoint: "approximately $19/mo (verified 2026-05-17)",
+          name: "Starter",
+          pricePoint: "$29/mo (verified 2026-07-17)",
           includes:
-            "Brand removal, custom forms, custom Wall of Love, video uploads, more integrations.",
+            "Unlimited testimonials, your own branding (Senja attribution removed), Spin the Wheel incentives.",
           audience: "Indie SaaS ready to publish testimonials on the marketing site.",
         },
         {
-          name: "Premium",
-          pricePoint: "approximately $59/mo (verified 2026-05-17)",
+          name: "Pro",
+          pricePoint: "$59/mo (verified 2026-07-17)",
           includes:
-            "Team workspace, advanced customization, video editing, embed analytics, API access.",
+            "Unlimited testimonials, unlimited forms, team access with 5 seats included; extra seats and projects for a fee.",
           audience: "Agencies and SaaS with multiple team members managing testimonials.",
         },
-        {
-          name: "Enterprise",
-          pricePoint: "Custom (sales contact)",
-          includes:
-            "Custom contracts, SSO, dedicated support, larger limits.",
-          audience: "Larger organizations or agencies serving many clients.",
-        },
       ],
-      paymentFrequency: "Monthly or annual with annual discount",
-      freeTrialBehavior:
-        "Free tier IS the trial; paid features can be sampled via a brief trial on signup.",
+      paymentFrequency:
+        "Monthly or annual; yearly billing advertised at 17% off (verified 2026-07-17)",
+      freeTrialBehavior: "Free tier IS the trial.",
     },
     anchorAnalysis: {
       pattern: "Brand-removal-trigger anchor",
       analysis:
-        "Senja's pricing-page center of gravity is the brand-removal trigger between Free and Starter. The Premium tier at approximately $59/mo anchors above, making Starter at approximately $19/mo read as the natural choice for the indie buyer. The structural upgrade trigger (publishing to marketing site without Senja branding) does most of the work; the anchor mechanics support it but are not the primary driver.",
+        "Senja's pricing-page center of gravity is the brand-removal trigger between Free and Starter. The Pro tier at $59/mo anchors above, making Starter at $29/mo read as the natural choice for the indie buyer. The structural upgrade trigger (publishing to marketing site without Senja branding) does most of the work; the anchor mechanics support it but are not the primary driver.",
     },
     upgradeTrigger: {
       pattern: "Brand removal at marketing-surface publication",
@@ -1477,9 +1470,9 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     whatsWorking: [
       "Brand-removal trigger aligns the upgrade moment with structural willingness-to-pay spike.",
       "Free tier with branding feeds the visible-customer flywheel — every Senja widget on someone else's marketing site is an ad.",
-      "Premium tier anchors the price ladder while Starter captures the indie-founder mainstream.",
+      "Pro tier anchors the price ladder while Starter captures the indie-founder mainstream.",
       "Universal-pain category (testimonials) removes the awareness-stage funnel work; buyers arrive already qualified.",
-      "Video-first positioning lands the high-conversion testimonial format as a differentiator on Starter and above.",
+      "Video-first positioning lands the high-conversion testimonial format from the free tier up — the first 15 collected testimonials can already be video.",
     ],
     whatToAdapt: [
       "Identify the specific behavioral moment where buyer willingness-to-pay spikes, and price the trigger.",
@@ -1493,9 +1486,9 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     ],
     brunsonLens: {
       stack: "Modest stack — free tier is functional, paid tiers extend without dramatically restructuring value.",
-      valueLadder: "Four-rung ladder (Free → Starter → Premium → Enterprise) with brand removal as the structural front-end trigger.",
-      decoyOrAnchor: "Premium tier as anchor; Starter as the indie-friendly mainstream; Free as flywheel seed.",
-      paymentMechanics: "Monthly or annual subscription; no usage metering or per-seat scaling below Premium tier.",
+      valueLadder: "Three-rung ladder (Free → Starter → Pro) with brand removal as the structural front-end trigger.",
+      decoyOrAnchor: "Pro tier as anchor; Starter as the indie-friendly mainstream; Free as flywheel seed.",
+      paymentMechanics: "Monthly or annual subscription (yearly at 17% off); seat scaling starts at the Pro tier, which includes 5 seats.",
     },
     faqs: [
       {
@@ -1507,8 +1500,12 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
         a: "Only when your output is published on a customer's public marketing surface. Form tools, testimonial tools, video tools, link-in-bio tools all work. Internal SaaS, dashboards, admin tools do not — the attribution is invisible to anyone but the buyer.",
       },
       {
-        q: "Why is the Premium tier so much more expensive than Starter?",
-        a: "Premium serves a different buyer (agency or team) with team-collaboration features. Pricing it well above Starter is intentional anchoring — it makes Starter read as the indie choice and Premium as the professional choice. The price gap reinforces the segment difference.",
+        q: "What is Senja's official pricing?",
+        a: "As of 2026-07-17, Senja's official pricing page lists three tiers: Free at $0 with up to 15 testimonials, Starter at $29 per month, and Pro at $59 per month, with yearly billing advertised at 17% off. Always confirm on senja.io/pricing — this teardown analyzes the structure, and prices can change.",
+      },
+      {
+        q: "Why is the Pro tier so much more expensive than Starter?",
+        a: "Pro serves a different buyer (agency or team) with team-collaboration features and 5 included seats. Pricing it well above Starter is intentional anchoring — it makes Starter read as the indie choice and Pro as the professional choice. The price gap reinforces the segment difference.",
       },
       {
         q: "What is the Brunson lens on Senja's pricing?",
@@ -1518,7 +1515,7 @@ const PRICING_TEARDOWNS_LIST: PricingTeardown[] = [
     tags: ["brand-removal-trigger", "visible-customer", "freemium", "social-proof"],
     homepageUrl: "https://senja.io/",
     pricingPageUrl: "https://senja.io/pricing",
-    lastVerified: "2026-05-17",
+    lastVerified: "2026-07-17",
   },
 
   {

@@ -357,20 +357,22 @@ export const ANSWER_ENTRIES: ReadonlyArray<AnswerEntry> = [
   },
   {
     slug: "what-is-the-attractive-character-in-brunson",
-    question: "What is the Attractive Character in Brunson's framework?",
-    metaTitle: "Attractive Character Explained (Brunson Framework)",
+    question: "What is the Attractive Character in Russell Brunson's framework?",
+    metaTitle: "Attractive Character: Russell Brunson's Framework Explained",
     metaDescription:
-      "The Attractive Character is the founder persona presented to the audience: a person with backstory, parables, polarity, and identity-revealing flaws.",
+      "Russell Brunson's Attractive Character is the founder persona presented to the audience: backstory, parables, polarity, and identity-revealing flaws.",
     directAnswer:
       "The Attractive Character is Russell Brunson's framework for the founder persona presented to an audience. It has four elements: a backstory the audience can identify with, parables (stories that teach), polarity (clear positions on issues, even controversial ones), and identity-revealing flaws (vulnerability that builds trust). The Attractive Character is the voice the audience buys before they buy the product.",
     supporting: [
+      "Brunson introduces the Attractive Character in DotCom Secrets and builds on it in Expert Secrets – it is the persona layer of both books.",
       "The Attractive Character isn't a fictional persona – it's the founder being deliberate about which dimensions of themselves to share publicly.",
+      "Brunson also names four identity archetypes the character can wear – Leader, Adventurer, Reporter, and Reluctant Hero – so founders who dislike self-promotion can still publish (the Reluctant Hero exists for exactly that founder).",
       "Polarity is the most under-used dimension. Founders who take clear stands attract their dream customers and repel non-fits, which is the goal.",
       "Used across the entire funnel: blog posts, email Soap Opera, VSL, sales page. Consistent voice compounds trust across surfaces.",
     ],
     relatedGlossary: ["story", "seinfeld-email"],
     category: "positioning",
-    lastVerified: "2026-05-19",
+    lastVerified: "2026-07-17",
   },
   {
     slug: "what-is-the-dream-100-method",
