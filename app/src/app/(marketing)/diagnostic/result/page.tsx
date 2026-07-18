@@ -466,11 +466,13 @@ function BridgePage({ row }: { row: LeadRow }) {
             never be crawled and would only mislead pipelines that did
             crawl). */}
         <div className="mx-auto mb-8 w-full max-w-xs">
+          {/* aspect-[9/16] reserves the portrait box before the poster loads
+              (CLS guard); preload="none" defers the MP4 until play. */}
           <video
-            className="block w-full rounded-xl border border-border bg-muted shadow-sm"
+            className="block w-full aspect-[9/16] rounded-xl border border-border bg-muted shadow-sm"
             poster="/founder-result-poster.jpg"
             controls
-            preload="metadata"
+            preload="none"
             playsInline
           >
             <source src="/founder-result.mp4" type="video/mp4" />

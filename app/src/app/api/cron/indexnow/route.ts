@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireCronSecret } from "@/lib/cron-auth";
 import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
@@ -121,11 +122,9 @@ function buildUrlList(): string[] {
 
 export async function GET(req: NextRequest) {
   // ─── Auth ────────────────────────────────────────────────────────────
-  const expected = process.env.CRON_SECRET;
-  const provided = req.headers.get("authorization");
-  if (expected && provided !== `Bearer ${expected}`) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
+  // Fail closed: unset CRON_SECRET rejects exactly like a mismatch.
+  const unauthorized = requireCronSecret(req);
+  if (unauthorized) return unauthorized;
 
   // ─── Pre-flight ──────────────────────────────────────────────────────
   const key = process.env.INDEXNOW_KEY;

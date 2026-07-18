@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { sendNextFoundingAndAdvance } from "@/lib/founding/dispatch";
 import { FOUNDING_SEQUENCE_LENGTH } from "@/lib/founding/pre-launch-emails";
 
@@ -32,6 +32,13 @@ export async function GET(request: NextRequest) {
   }
   if (auth !== `Bearer ${secret}`) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  // LOCAL-FIRST mode: no Supabase backing store configured — skip
+  // cleanly instead of throwing inside createAdminClient() on every tick.
+  if (!hasSupabaseAdminConfig()) {
+    console.log("[cron-founding] skipped: supabase_not_configured");
+    return NextResponse.json({ ok: true, skipped: "supabase_not_configured" });
   }
 
   const supabase = createAdminClient();

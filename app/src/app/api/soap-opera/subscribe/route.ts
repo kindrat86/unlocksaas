@@ -4,6 +4,7 @@ import {
   coerceDiagnosis,
   coerceIdentityVariant,
 } from "@/lib/soap-opera/subscribe";
+import { guardPublicForm, honeypotTripped } from "@/lib/form-guard";
 
 
 interface SubscribeBody {
@@ -14,6 +15,8 @@ interface SubscribeBody {
   diagnostic_result?: unknown;
   /** Optional A/B test bucket from the opt-in form. */
   identity_variant?: unknown;
+  /** Honeypot — humans leave it empty. See @/lib/form-guard. */
+  _gotcha?: unknown;
 }
 
 /**
@@ -31,6 +34,11 @@ interface SubscribeBody {
  * diagnostic label is captured atomically with the subscription.
  */
 export async function POST(req: NextRequest) {
+  // Rate limit + BotID, same stack as /api/checkout — this endpoint
+  // triggers a real outbound Resend send per accepted email.
+  const guarded = await guardPublicForm(req, "soap-subscribe");
+  if (guarded) return guarded;
+
   let body: SubscribeBody;
   try {
     body = (await req.json()) as SubscribeBody;
@@ -38,11 +46,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
+  // Honeypot tripped: plausible fake success, no send, no DB write.
+  if (honeypotTripped(body as Record<string, unknown>)) {
+    return NextResponse.json({ ok: true, subscribed: true });
+  }
+
   const outcome = await subscribeToSoapOpera({
     email: typeof body.email === "string" ? body.email : "",
     source:
       typeof body.source === "string" && body.source.length > 0
-        ? body.source
+        ? body.source.slice(0, 64)
         : "funnel_hub",
     diagnostic_result: coerceDiagnosis(body.diagnostic_result),
     identity_variant: coerceIdentityVariant(body.identity_variant),

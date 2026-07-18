@@ -6,6 +6,7 @@ import {
 import { hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { subscribeViaEngine } from "@/lib/email-engine";
 import { verifyDeliverableEmail } from "@/lib/email-verification";
+import { guardPublicForm, honeypotTripped } from "@/lib/form-guard";
 
 
 interface SubscribeBody {
@@ -14,6 +15,8 @@ interface SubscribeBody {
   product_url?: unknown;
   source?: unknown;
   identity_variant?: unknown;
+  /** Honeypot — humans leave it empty. See @/lib/form-guard. */
+  _gotcha?: unknown;
 }
 
 /**
@@ -35,11 +38,26 @@ interface SubscribeBody {
  * engine is also the last-resort rescue when the upsert itself fails.
  */
 export async function POST(req: NextRequest) {
+  // Rate limit + BotID, same stack as /api/checkout — this endpoint
+  // triggers a real outbound Resend send per accepted email.
+  const guarded = await guardPublicForm(req, "challenge-subscribe");
+  if (guarded) return guarded;
+
   let body: SubscribeBody;
   try {
     body = (await req.json()) as SubscribeBody;
   } catch {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  }
+
+  // Honeypot tripped: plausible fake success, no send, no DB write.
+  if (honeypotTripped(body as Record<string, unknown>)) {
+    return NextResponse.json({
+      ok: true,
+      subscribed: true,
+      day_0_send: "deferred_pending_confirmation",
+      pending_confirmation: true,
+    });
   }
 
   const input = {

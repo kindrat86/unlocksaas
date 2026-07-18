@@ -73,11 +73,13 @@ export function GuaranteeHero() {
           polarity claim without dominating the section. The receipts grid
           below carries the structural detail. */}
       <div className="mx-auto mb-10 w-full max-w-xs">
+        {/* aspect-[9/16] reserves the portrait box before the poster loads
+            (CLS guard); preload="none" defers the MP4 until play. */}
         <video
-          className="block w-full rounded-xl border border-border bg-muted shadow-sm"
+          className="block w-full aspect-[9/16] rounded-xl border border-border bg-muted shadow-sm"
           poster="/founder-guarantee-poster.jpg"
           controls
-          preload="metadata"
+          preload="none"
           playsInline
         >
           <source src="/founder-guarantee.mp4" type="video/mp4" />

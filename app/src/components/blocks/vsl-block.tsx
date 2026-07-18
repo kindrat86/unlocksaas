@@ -67,11 +67,14 @@ export function VslBlock(_props: Props = {}) {
       </div>
 
       <div className="mx-auto mb-8 w-full max-w-xs">
+        {/* aspect-[9/16] reserves the portrait box before the poster loads
+            (CLS guard); preload="none" keeps the 14MB MP4 from streaming
+            until the visitor actually presses play. */}
         <video
-          className="block w-full rounded-xl border border-border bg-muted shadow-sm"
+          className="block w-full aspect-[9/16] rounded-xl border border-border bg-muted shadow-sm"
           poster={POSTER_SRC}
           controls
-          preload="metadata"
+          preload="none"
           playsInline
         >
           <source src={VIDEO_SRC} type="video/mp4" />

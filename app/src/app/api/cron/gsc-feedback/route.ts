@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireCronSecret } from "@/lib/cron-auth";
 import { captureServer } from "@/lib/analytics/server";
 import {
   querySearchAnalytics,
@@ -87,11 +88,9 @@ export async function GET(req: NextRequest) {
   const started = Date.now();
 
   // ── Auth: CRON_SECRET bearer ─────────────────────────────────────────
-  const expected = process.env.CRON_SECRET;
-  const provided = req.headers.get("authorization");
-  if (expected && provided !== `Bearer ${expected}`) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
+  // Fail closed: unset CRON_SECRET rejects exactly like a mismatch.
+  const unauthorized = requireCronSecret(req);
+  if (unauthorized) return unauthorized;
 
   // ── Config presence ──────────────────────────────────────────────────
   const config = readGscConfig();

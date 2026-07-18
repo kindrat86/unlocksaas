@@ -38,6 +38,8 @@ export function ApplicationForm({ source }: { source: string }) {
   const [budgetChoice, setBudgetChoice] = useState<"" | "yes" | "no">("");
   const [preferredTier, setPreferredTier] = useState<PreferredTier>("");
   const [calendar, setCalendar] = useState<CalendarPreference>("");
+  // Honeypot — humans never see or fill it; bots that do get a fake success.
+  const [gotcha, setGotcha] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,6 +84,7 @@ export function ApplicationForm({ source }: { source: string }) {
           preferred_tier: preferredTier || null,
           calendar_preference: calendar || null,
           source,
+          _gotcha: gotcha,
         }),
       });
 
@@ -109,6 +112,17 @@ export function ApplicationForm({ source }: { source: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot — display:none keeps it out of human reach. */}
+      <input
+        type="text"
+        name="_gotcha"
+        value={gotcha}
+        onChange={(e) => setGotcha(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <Field label="Your first name" htmlFor="first_name" required>
         <Input
           id="first_name"

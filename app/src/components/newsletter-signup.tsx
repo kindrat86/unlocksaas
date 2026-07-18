@@ -38,6 +38,8 @@ export function NewsletterSignup({
   source = "funnel_hub",
 }: Props = {}) {
   const [email, setEmail] = useState("");
+  // Honeypot — humans never see or fill it; bots that do get a fake success.
+  const [gotcha, setGotcha] = useState("");
   const [state, setState] = useState<State>({ kind: "idle" });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -56,7 +58,7 @@ export function NewsletterSignup({
       const res = await fetch("/api/soap-opera/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, source }),
+        body: JSON.stringify({ email: trimmed, source, _gotcha: gotcha }),
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
@@ -94,6 +96,17 @@ export function NewsletterSignup({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3" noValidate>
+      {/* Honeypot — display:none keeps it out of human reach. */}
+      <input
+        type="text"
+        name="_gotcha"
+        value={gotcha}
+        onChange={(e) => setGotcha(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <Input
         type="email"
         inputMode="email"

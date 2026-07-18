@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/server";
+import { requireCronSecret } from "@/lib/cron-auth";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import {
   sendNextCartRecoveryAndAdvance,
   type CartRecoveryDueRow,
@@ -28,10 +29,15 @@ export const maxDuration = 300;
  * is enforced inside the dispatcher, not here, so we don't double-check.
  */
 export async function GET(req: NextRequest) {
-  const expected = process.env.CRON_SECRET;
-  const provided = req.headers.get("authorization");
-  if (expected && provided !== `Bearer ${expected}`) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  // Fail closed: unset CRON_SECRET rejects exactly like a mismatch.
+  const unauthorized = requireCronSecret(req);
+  if (unauthorized) return unauthorized;
+
+  // LOCAL-FIRST mode: no Supabase backing store configured — skip
+  // cleanly instead of throwing inside createAdminClient() on every tick.
+  if (!hasSupabaseAdminConfig()) {
+    console.log("[cron-cart-recovery] skipped: supabase_not_configured");
+    return NextResponse.json({ ok: true, skipped: "supabase_not_configured" });
   }
 
   const supabase = createAdminClient();

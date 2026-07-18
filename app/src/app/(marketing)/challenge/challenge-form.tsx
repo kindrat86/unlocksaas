@@ -21,6 +21,8 @@ export function ChallengeForm({ source }: { source: string }) {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [productUrl, setProductUrl] = useState("");
+  // Honeypot — humans never see or fill it; bots that do get a fake success.
+  const [gotcha, setGotcha] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +45,7 @@ export function ChallengeForm({ source }: { source: string }) {
           first_name: firstName.trim(),
           product_url: productUrl.trim() || null,
           source,
+          _gotcha: gotcha,
         }),
       });
 
@@ -79,6 +82,17 @@ export function ChallengeForm({ source }: { source: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Honeypot — display:none keeps it out of human reach. */}
+      <input
+        type="text"
+        name="_gotcha"
+        value={gotcha}
+        onChange={(e) => setGotcha(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <div className="space-y-2">
         <label htmlFor="firstName" className="text-sm font-medium block">
           First name

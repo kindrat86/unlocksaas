@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { captureServer, captureServerAndFlush } from "@/lib/analytics/server";
 import {
   Event,
@@ -111,11 +111,13 @@ export async function GET(req: NextRequest) {
 
   // ── Supabase service-role client ─────────────────────────────────────
   // The cron writes with the admin client so RLS doesn't apply. We
-  // bail before any provider call if the service-role key is missing —
-  // there's no point burning paid LLM tokens we can't persist.
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  // bail before any provider call if the admin config is missing (unset
+  // OR placeholder URL — the key-only check used to let a placeholder URL
+  // through to a createAdminClient() throw) — there's no point burning
+  // paid LLM tokens we can't persist.
+  if (!hasSupabaseAdminConfig()) {
     return NextResponse.json(
-      { error: "supabase_service_role_key_unset" },
+      { error: "supabase_admin_config_missing" },
       { status: 503 },
     );
   }

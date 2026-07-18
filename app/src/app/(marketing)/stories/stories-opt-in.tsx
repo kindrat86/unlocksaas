@@ -36,6 +36,8 @@ type Props = {
  */
 export function StoriesOptIn({ placement, ctaLabel, trustLine }: Props) {
   const [email, setEmail] = useState("");
+  // Honeypot — humans never see or fill it; bots that do get a fake success.
+  const [gotcha, setGotcha] = useState("");
   const [state, setState] = useState<
     | { kind: "idle" }
     | { kind: "submitting" }
@@ -70,6 +72,7 @@ export function StoriesOptIn({ placement, ctaLabel, trustLine }: Props) {
         body: JSON.stringify({
           email: email.trim(),
           source,
+          _gotcha: gotcha,
         }),
       });
       const body = (await res.json().catch(() => ({}))) as {
@@ -124,6 +127,17 @@ export function StoriesOptIn({ placement, ctaLabel, trustLine }: Props) {
       noValidate
       aria-label={`Subscribe – ${placement.replace("_", " ")}`}
     >
+      {/* Honeypot — display:none keeps it out of human reach. */}
+      <input
+        type="text"
+        name="_gotcha"
+        value={gotcha}
+        onChange={(e) => setGotcha(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <div className="space-y-1.5">
         <label
           htmlFor={`stories-email-${placement}`}

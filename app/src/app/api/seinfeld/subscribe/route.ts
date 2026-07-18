@@ -6,6 +6,7 @@ import {
   newConfirmationToken,
   sendConfirmationEmail,
 } from "@/lib/double-opt-in";
+import { guardPublicForm, honeypotTripped } from "@/lib/form-guard";
 
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,6 +16,8 @@ type Source = (typeof ALLOWED_SOURCES)[number];
 interface SubscribeBody {
   email?: unknown;
   source?: unknown;
+  /** Honeypot — humans leave it empty. See @/lib/form-guard. */
+  _gotcha?: unknown;
 }
 
 /**
@@ -34,11 +37,21 @@ interface SubscribeBody {
  * the rotation.
  */
 export async function POST(req: NextRequest) {
+  // Rate limit + BotID, same stack as /api/checkout — accepted emails end
+  // up in a Resend-dispatching rotation.
+  const guarded = await guardPublicForm(req, "seinfeld-subscribe");
+  if (guarded) return guarded;
+
   let body: SubscribeBody;
   try {
     body = (await req.json()) as SubscribeBody;
   } catch {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  }
+
+  // Honeypot tripped: plausible fake success, no send, no DB write.
+  if (honeypotTripped(body as Record<string, unknown>)) {
+    return NextResponse.json({ ok: true, subscribed: true, created: true });
   }
 
   const emailRaw =

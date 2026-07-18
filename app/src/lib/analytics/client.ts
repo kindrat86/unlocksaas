@@ -39,6 +39,17 @@
 import type { PostHog } from "posthog-js";
 import type { EventName } from "./events";
 
+// Public client-side project token (safe to ship in the bundle — same
+// fallback pattern as the rest of the portfolio). Env vars still win when
+// set; the fallback exists because the Vercel team policy marks new env
+// vars "sensitive", which bakes empty strings into CI builds and silently
+// disabled all tracking after the 2026-07-07 deploy.
+const POSTHOG_KEY =
+  process.env.NEXT_PUBLIC_POSTHOG_KEY ||
+  "phc_lyZCgvTpicjLzAO3rY2GhxuX5WUc5jQjP8ZVwwJqauX";
+const POSTHOG_HOST =
+  process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://eu.i.posthog.com";
+
 // Lazy module reference. Resolves on first call to loadPostHog(); null
 // before that, the actual PostHog instance after. Held in a Promise so
 // concurrent calls during the load window all await the same instance and
@@ -75,10 +86,7 @@ type Queued = QueuedCapture | QueuedIdentify | QueuedReset | QueuedRegister;
 const queue: Queued[] = [];
 
 export function isPostHogConfigured(): boolean {
-  return Boolean(
-    process.env.NEXT_PUBLIC_POSTHOG_KEY &&
-      process.env.NEXT_PUBLIC_POSTHOG_HOST,
-  );
+  return Boolean(POSTHOG_KEY && POSTHOG_HOST);
 }
 
 /**
@@ -111,8 +119,8 @@ function loadPostHog(): Promise<PostHog | null> {
   // Dynamic import – this is what pulls posthog-js OUT of the initial
   // chunk into its own webpack chunk loaded on demand.
   posthogPromise = import("posthog-js").then(({ default: posthog }) => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+    posthog.init(POSTHOG_KEY, {
+      api_host: POSTHOG_HOST,
       // App Router fires pageviews manually from PostHogPageView – do not
       // double-fire.
       capture_pageview: false,

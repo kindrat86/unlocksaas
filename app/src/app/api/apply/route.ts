@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { submitApplication, type RawSubmission } from "@/lib/apply/submit";
 import { REF_COOKIE } from "@/lib/affiliate";
 import { readIdentityFromCookies } from "@/lib/ab";
+import { guardPublicForm, honeypotTripped } from "@/lib/form-guard";
 
 export const maxDuration = 60;
 
@@ -18,11 +19,25 @@ export const maxDuration = 60;
  * The client form follows the `redirect` field after the POST resolves.
  */
 export async function POST(req: NextRequest) {
+  // Rate limit + BotID, same stack as /api/checkout — an accepted
+  // application triggers operator notification email.
+  const guarded = await guardPublicForm(req, "apply");
+  if (guarded) return guarded;
+
   let json: Record<string, unknown>;
   try {
     json = (await req.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  }
+
+  // Honeypot tripped: plausible fake response, nothing persisted or sent.
+  if (honeypotTripped(json)) {
+    return NextResponse.json({
+      ok: true,
+      qualification: "not_yet",
+      redirect: "/apply/not-yet",
+    });
   }
 
   // Read attribution cookies server-side. Cookie reads in route handlers are
