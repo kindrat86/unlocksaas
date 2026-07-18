@@ -1,0 +1,83 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "Brand"
+      ],
+      "@id": "https://unlocksaas.com/#organization",
+      "name": "Unlock SaaS",
+      "url": "https://unlocksaas.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://unlocksaas.com/og-image.png",
+        "width": 1200,
+        "height": 630
+      },
+      "image": "https://unlocksaas.com/og-image.png",
+      "description": "Free SaaS optimization tools and benchmarks for growth-stage companies.",
+      "sameAs": [
+        "https://x.com/data_nerd",
+        "https://github.com/kindrat86",
+        "https://gitdealflow.com",
+        "https://sipiteno.com",
+        "https://signals.gitdealflow.com",
+        "https://invisibleexit.com",
+        "https://voicelogpro.com",
+        "https://carshake.online",
+        "https://churnlens.site",
+        "https://sanctionsai.dev",
+        "https://sipi.bot"
+      ],
+      "knowsAbout": [
+        "SaaS optimization",
+        "Subscription analytics",
+        "MRR growth",
+        "Churn reduction",
+        "Pricing strategy",
+        "SaaS metrics",
+        "Revenue retention",
+        "Customer lifetime value",
+        "SaaS benchmarks",
+        "B2B SaaS growth"
+      ]
+    },
+    {
+      "@type": "SpeakableSpecification",
+      "@id": "https://unlocksaas.com/#speakable",
+      "cssSelector": [
+        "h1",
+        ".hero-title",
+        ".tagline",
+        "main p:first-of-type",
+        "meta[name='description']"
+      ],
+      "xPath": [
+        "/html/head/title",
+        "/html/head/meta[@name='description']"
+      ]
+    },
+    {
+      "@type": "Brand",
+      "@id": "https://unlocksaas.com/#brand",
+      "name": "Unlock SaaS",
+      "url": "https://unlocksaas.com",
+      "logo": "https://unlocksaas.com/og-image.png",
+      "description": "Free SaaS optimization tools and benchmarks for growth-stage companies.",
+      "sameAs": [
+        "https://x.com/data_nerd",
+        "https://github.com/kindrat86",
+        "https://gitdealflow.com",
+        "https://sipiteno.com",
+        "https://signals.gitdealflow.com",
+        "https://invisibleexit.com",
+        "https://voicelogpro.com",
+        "https://carshake.online",
+        "https://churnlens.site",
+        "https://sanctionsai.dev",
+        "https://sipi.bot"
+      ]
+    }
+  ]
+}
