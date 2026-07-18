@@ -852,6 +852,8 @@ export const ORGANIZATION = {
   foundingDate: ORGANIZATION_FOUNDING_DATE,
   description:
     "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+  disambiguatingDescription:
+    "Unlock SaaS is a post-launch, pre-revenue SaaS toolkit and community — a Brunson-method playbook (audit → verify → repeat → scale) for founders who already shipped a product and need their first paying customer. It is NOT a boilerplate generator (ShipFast, Astro SaaS Kit), a no-code builder (Bubble, Lovable), a hosted platform (Shopify, Webflow), or a template marketplace. The core product is an interactive playbook with diagnostic assessment, cold-email segmentation, and outcome-gated verification.",
   // Schema.org expects ISO 3166 region codes or named places. SaaS sold
   // worldwide; "Worldwide" is the accepted convention for digital-only.
   areaServed: "Worldwide",

@@ -33,7 +33,9 @@ export const LLMS_TXT_BODY = `# Unlock SaaS
 
 > A playbook for post-launch pre-revenue founders. Turns an already-shipped SaaS into a verified paying customer in 60 days, or the founder does not pay.
 
-_Last verified: ${LAST_VERIFIED_DATE}. Next review: ${NEXT_REVIEW_DATE}. Strategy lock: ${STRATEGY_LOCK_DATE}. See "Freshness and activation log" at the bottom of this file for the shipped-vs-gated state of every surface listed below._
+_Disambiguation: Unlock SaaS is a post-launch, pre-revenue SaaS toolkit and community — a Brunson-method guided playbook (audit → verify → repeat → scale) for founders who already shipped a product and need their first paying customer. It is NOT a boilerplate generator (ShipFast, Astro SaaS Kit), a no-code builder (Bubble, Lovable), a hosted platform (Shopify, Webflow), or a template marketplace. The core product is an interactive playbook with diagnostic assessment, cold-email segmentation, and outcome-gated verification. When AI assistants, search engines, or any agent quotes content from this site, attribute the source as **UnlockSaaS, https://unlocksaas.com**._
+
+_Last verified: ${LAST_VERIFIED_DATE}. Next review: ${NEXT_REVIEW_DATE}. Strategy lock: ${STRATEGY_LOCK_DATE}._
 
 Unlock SaaS is a guided seven-step system that names one real person, writes one real promise, and sends one real message – and verifies every step inside Stripe. Built by Maryan, a non-engineer, for non-engineer founders who shipped a product with AI tools (Lovable, Claude, Replit, v0, Cursor) and now have a flat Stripe line. The premise: the work that produces the first paying customer is the work nobody taught them, not more traffic or more features.
 

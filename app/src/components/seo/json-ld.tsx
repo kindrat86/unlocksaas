@@ -468,6 +468,7 @@ const ORGANIZATION_JSON = JSON.stringify({
   url: BASE,
   logo: `${BASE}/icon.svg`,
   description: ORGANIZATION.description,
+  disambiguatingDescription: ORGANIZATION.disambiguatingDescription,
   slogan: ORGANIZATION.slogan,
   foundingDate: ORGANIZATION.foundingDate,
   // mainEntityOfPage anchors the Organization to its Wikipedia article
