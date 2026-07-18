@@ -119,6 +119,7 @@ const DEFINED_TERM_SET_JSON = JSON.stringify({
     "@type": "DefinedTerm",
     "@id": `${BASE_URL}/glossary#${glossaryTermSlug(t.term)}`,
     name: t.term,
+    termCode: glossaryTermSlug(t.term),
     description: t.definition,
     inDefinedTermSet: `${BASE_URL}/glossary#defined-term-set`,
     url: `${BASE_URL}/glossary#${glossaryTermSlug(t.term)}`,
