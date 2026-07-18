@@ -108,11 +108,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://unlocksaas.com"),
   title: {
-    default: "Unlock SaaS — Your First Paying Customer in 60 Days",
+    default: "Unlock SaaS — Land Your First Paying Customer in 60 Days",
     template: "%s — Unlock SaaS",
   },
   description:
-    "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+    "A playbook that turns your already-shipped product into a verified paying customer with zero fluff. If it does not deliver a customer, you do not pay.",
   applicationName: "Unlock SaaS",
   authors: [{ name: "Maryan", url: "https://unlocksaas.com/about" }],
   creator: "Maryan",
@@ -149,17 +149,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Unlock SaaS",
-    title: "Unlock SaaS — Your First Paying Customer in 60 Days",
+    title: "Unlock SaaS — Land Your First Paying Customer in 60 Days",
     description:
-      "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "A playbook that turns your already-shipped product into a verified paying customer with zero fluff. If it does not deliver a customer, you do not pay.",
     url: "/",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Unlock SaaS — Your First Paying Customer in 60 Days",
+    title: "Unlock SaaS — Land Your First Paying Customer in 60 Days",
     description:
-      "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "A playbook that turns your already-shipped product into a verified paying customer with zero fluff. If it does not deliver a customer, you do not pay.",
     creator: "@maryan",
   },
 };
