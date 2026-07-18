@@ -443,6 +443,21 @@ export default function RootLayout({
             </a>
     </nav>
 </section>` }} />
+        {/* Brunson Trust Bar — Dotcom Secrets Ch 7 */}
+        <div dangerouslySetInnerHTML={{ __html: `<!-- BRUNSON TRUST BAR -- idempotency:trust-bar-v1 -->
+<section class="brunson-trust-bar" style="background:linear-gradient(135deg, #0f172a, #1e293b);color:#e8eaed;padding:40px 24px;margin:60px 0 0;border-top:3px solid #00d4aa;text-align:center;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-bottom:28px">
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">60 days</span><br><span style="font-size:.82rem;color:#94a3b8">To First Paying Customer</span></div>
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">7 steps</span><br><span style="font-size:.82rem;color:#94a3b8">Proven Playbook</span></div>
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">100%</span><br><span style="font-size:.82rem;color:#94a3b8">Money-Back Guarantee</span></div>
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">$49</span><br><span style="font-size:.82rem;color:#94a3b8">Founding Price /mo</span></div>
+    </div>
+    <p style="font-size:1.05rem;margin-bottom:24px;color:#cbd5e1">You shipped. Nobody paid. The playbook breaks the pattern or the code refunds you automatically.</p>
+    <a href="https://unlocksaas.com/diagnostic" style="display:inline-block;background:linear-gradient(135deg,#00d4aa,#2deec0);color:#04130e;padding:14px 32px;border-radius:12px;font-weight:700;text-decoration:none;font-size:.95rem;box-shadow:0 8px 24px -10px rgba(0,212,170,.5)">Get Free Diagnosis</a>
+    <p style="margin-top:18px;font-size:.78rem;color:#6b7178">Refund enforced by Stripe webhook, not a support ticket. 100% automated.</p>
+  </div>
+</section>` }} />
       </body>
     </html>
   );
