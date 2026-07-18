@@ -153,6 +153,13 @@ const OPEN_ACCESS_SURFACES: readonly string[] = Object.freeze([
   "/dataset",
   "/dataset/*",
   "/mcp",
+  // Static reference layer (canonical .html pages, no route equivalent) —
+  // indexed in /llms.txt as of 2026-07-18.
+  "/best/*",
+  "/integrations/*",
+  "/industries/*",
+  "/case-studies",
+  "/case-studies/*",
 ]);
 
 // ---------------------------------------------------------------------------

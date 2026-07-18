@@ -131,6 +131,42 @@ The diagnostic flow is identical across surfaces: the GPT Action calls POST /api
   - [/tools/cac-payback-calculator](${BASE_URL}/tools/cac-payback-calculator): Months until a paid customer recovers their acquisition cost. Formula: Payback = CAC / (ARPU × Gross Margin). Zone semantics: <12mo healthy, 12-18 yellow, >18 unprofitable.
   - [/tools/pricing-power-calculator](${BASE_URL}/tools/pricing-power-calculator): Side-by-side comparison of two prices on LTV, CAC payback, and LTV-to-CAC ratio. Shows what a price change actually does to unit economics.
 
+## Best-SaaS-tools ranked guides
+
+Ranked, honest tool guides for indie founders – named picks with who-each-is-for, not affiliate filler. Static reference pages; each is the canonical URL for its topic (no route equivalent).
+
+- [/best/saas-launch-tools.html](${BASE_URL}/best/saas-launch-tools.html): Best SaaS launch tools in 2026, ranked for indie founders shipping their first product.
+- [/best/churn-analysis-tools.html](${BASE_URL}/best/churn-analysis-tools.html): Best churn-analysis tools – Baremetrics vs ChartMogul vs ProfitWell, judged on what a pre-revenue founder actually needs.
+- [/best/indie-hacker-tools.html](${BASE_URL}/best/indie-hacker-tools.html): Best tools for indie hackers – the AI-build stack (Cursor, Lovable, Replit, v0) and where each fits.
+- [/best/saas-pricing-tools.html](${BASE_URL}/best/saas-pricing-tools.html): Best SaaS pricing / billing tools – Stripe vs Lemon Squeezy vs Paddle for a first paid product.
+
+## SaaS integration guides
+
+How each core tool fits the "first paying customer" stack. Static reference pages; canonical URLs (no route equivalent).
+
+- [/integrations/stripe.html](${BASE_URL}/integrations/stripe.html): Stripe – payment infrastructure that proves and verifies the first real charge.
+- [/integrations/supabase.html](${BASE_URL}/integrations/supabase.html): Supabase – database, auth, and real-time for an indie SaaS backend.
+- [/integrations/vercel.html](${BASE_URL}/integrations/vercel.html): Vercel – deploy a SaaS from GitHub in seconds.
+- [/integrations/resend.html](${BASE_URL}/integrations/resend.html): Resend – transactional email for SaaS onboarding and lifecycle.
+
+## Industry / vertical launch playbooks
+
+The same Hook / Story / Offer system applied to one industry's vocabulary and buyers. Static reference pages; canonical URLs (no route equivalent).
+
+- [/industries/fintech.html](${BASE_URL}/industries/fintech.html): SaaS launch playbook for fintech founders.
+- [/industries/devtools.html](${BASE_URL}/industries/devtools.html): SaaS launch playbook for developer-tools founders.
+- [/industries/martech.html](${BASE_URL}/industries/martech.html): SaaS launch playbook for marketing-technology founders.
+
+## Indie SaaS case studies (external companies)
+
+How well-known indie SaaS products reached scale, analyzed through the Unlock SaaS Hook / Story / Offer lens. Figures are the subject companies' own publicly-stated numbers, not Unlock SaaS metrics. Static reference pages; canonical URLs (no route equivalent).
+
+- [/case-studies/senja.html](${BASE_URL}/case-studies/senja.html): How Senja grew to $100K MRR – free tools plus viral testimonial badges as the distribution engine.
+- [/case-studies/bannerbear.html](${BASE_URL}/case-studies/bannerbear.html): How Bannerbear grew to $500K+ ARR solo – API-first product with docs-as-marketing.
+- [/case-studies/typefully.html](${BASE_URL}/case-studies/typefully.html): How Typefully grew past $1M ARR – niche focus beating feature breadth.
+
+Distinct from Unlock SaaS's own first-customer case studies at [${BASE_URL}/case-studies](${BASE_URL}/case-studies).
+
 ## Programmatic SEO surfaces – panic-mode diagnostics
 
 - [Why isn't my funnel converting hub](${BASE_URL}/why-isnt-my): Eight per-element diagnostic pages for indie SaaS founders. Each labels the issue as Wrong Person, Weak Offer, or Weak Belief, names the most common cause, and gives the one fix to ship this week.
