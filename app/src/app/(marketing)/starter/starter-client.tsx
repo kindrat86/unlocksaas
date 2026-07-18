@@ -15,6 +15,7 @@ import { VslPlayer } from "@/components/vsl/vsl-player";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { OrderBumpBlock } from "@/components/checkout/order-bump-block";
 import { FoundingWaitlistForm } from "../founding/waitlist-form";
+import { HdyhauSurvey, getStoredHdyhau } from "@/components/checkout/hdyhau-survey";
 import { track } from "@/lib/analytics/client";
 import { Event } from "@/lib/analytics/events";
 
@@ -217,10 +218,16 @@ export function StarterSalesClient({
   }, [attribution]);
 
   async function handleCheckout() {
+    // Read the HDYHAU answer at the exact moment of checkout intent so
+    // the Stripe session metadata (and therefore the webhook's
+    // conversion record) carries the self-reported acquisition channel.
+    // Null when the visitor skipped the survey; that's honest.
+    const hdyhau = getStoredHdyhau();
     track(Event.StarterCheckoutClicked, {
       price_type: "starter",
       surface: "starter",
       bump_included: bumpChecked,
+      ...(hdyhau ? { hdyhau_source: hdyhau.source, hdyhau_detail: hdyhau.detail } : {}),
       ...(attribution ?? {}),
     });
     try {
@@ -235,6 +242,10 @@ export function StarterSalesClient({
           // Forwarded to Stripe session metadata so the webhook can stamp
           // diagnostic_leads.converted_to_starter_at on this row.
           attribution,
+          // Self-reported acquisition channel from the HDYHAU survey.
+          // Forwarded to Stripe session metadata so converted customers
+          // can be joined back to the channel they attribute themselves to.
+          hdyhau,
         }),
       });
       const { url } = (await res.json()) as { url?: string };
@@ -657,7 +668,7 @@ export function StarterSalesClient({
           </p>
         </section>
 
-        {/* Order Bump – Brunson DCS Secret 14 (Cart Funnel). Renders only when
+        {/* Order Bump – Brunson DCS Secret #14 (Cart Funnel). Renders only when
             STRIPE_BUMP_DREAM100_PRICE_ID is set; otherwise this block silently
             collapses and the page reads exactly as before. Suppressed entirely
             while the Starter checkout itself is unpriced — a bump with no cart
@@ -668,6 +679,16 @@ export function StarterSalesClient({
             onCheckedChange={setBumpChecked}
           />
         )}
+
+        {/* HDYHAU survey — self-reported acquisition channel at the moment
+            of highest purchase intent. Renders once, then suppresses
+            itself (localStorage) so returning visitors won't see it twice.
+            Placed here (above the primary CTA, below the trial-close +
+            order bump) because this is the surface where intent is
+            highest and the visitor is most willing to answer one
+            question. Always visible regardless of checkoutEnabled so the
+            survey still fires even when the price id isn't set yet. */}
+        <HdyhauSurvey />
 
         {/* CTA — live checkout, or the honest founding-waitlist capture while
             the Stripe price id is unset. */}

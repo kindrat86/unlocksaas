@@ -165,6 +165,20 @@ export const Event = {
   // LLMO measurement loop called out in the 2026 trend research.
   LlmoCitationWon: "llmo_citation_won",
   LlmoCitationsSynced: "llmo_citations_synced",
+
+  // Self-reported attribution (client-side). The HDYHAU ("How Did You
+  // Hear About Us?") survey on /starter captures the acquisition channel
+  // the visitor actually attributes themselves to — the ground truth
+  // UTM/ai_engine autocapture cannot see, because AI-search referrals
+  // frequently land as "direct" (no referrer) hours or days after the
+  // real first touch. The AEO methodology names this survey as the
+  // single most reliable way to tie AI visibility to revenue.
+  //
+  // Fired from src/components/checkout/hdyhau-survey.tsx. The stored
+  // answer is also forwarded on `starter_checkout_clicked` and into
+  // /api/checkout session metadata so the Stripe webhook can stamp it
+  // on the converted customer.
+  HdyhauAnswered: "hdyhau_answered",
 } as const;
 
 export type EventName = (typeof Event)[keyof typeof Event];

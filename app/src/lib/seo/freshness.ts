@@ -58,7 +58,7 @@
  *   4. Bump LAST_VERIFIED_DATE to today's UTC date.
  *   5. Commit with message: `chore(llms): quarterly freshness review`.
  */
-export const LAST_VERIFIED_DATE = "2026-05-18";
+export const LAST_VERIFIED_DATE = "2026-07-18";
 
 /**
  * The strategy-lock date. Ten Brunson workbooks completed,
@@ -158,7 +158,7 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
     item: "same_as_off_platform_anchors",
     state: "operator",
     note:
-      "sameAs env slots for X, LinkedIn, GitHub, Indie Hackers, YouTube, Crunchbase, Product Hunt, Wikidata, and Wikipedia are empty until the corresponding profile exists and credibly links back.",
+      "sameAs env slots for X, LinkedIn, GitHub, Indie Hackers, YouTube, Crunchbase, Product Hunt, Wikidata, and Wikipedia ship empty by default; each slot lights up the moment the operator sets the matching NEXT_PUBLIC_UNLOCKSAAS_<PLATFORM>_URL on Vercel. As of 2026-07-18 the X (Twitter) profile is verified live and bidirectional (bio links back to unlocksaas.com), so NEXT_PUBLIC_UNLOCKSAAS_X_URL is set and Organization.sameAs now emits one row. The remaining slots (LinkedIn, GitHub, YouTube channel, Crunchbase, Product Hunt, Indie Hackers, Wikidata, Wikipedia) stay unset until each profile is created and links back — Brunson Hard-Rule bars fabricating handles.",
   },
   {
     item: "media_mentions",
@@ -230,7 +230,7 @@ export const ACTIVATION_LOG: ReadonlyArray<ActivationLogEntry> = Object.freeze([
     item: "quarterly_strategy_review",
     state: "shipped",
     note:
-      `Every ${REVIEW_CADENCE_DAYS} days the strategy doc and this freshness log are re-read end-to-end; next review ${NEXT_REVIEW_DATE}.`,
+      `Every ${REVIEW_CADENCE_DAYS} days the strategy doc and this freshness log are re-read end-to-end; next review ${NEXT_REVIEW_DATE}. 2026-07-18 review: spot-checked 36 public surfaces (all core hubs, sample pSEO slugs across /alternatives-to, /answers, /benchmarks, /tools, /vs, /funnel-teardown, /pricing-teardown, /glossary, /for, /stack-for, /launch-checklist, /why-isnt-my, /funnel-playbook, /category, /case-studies, /integrations, /industries, /best, /founder-diary, /youtube, /podcast, /press, /open, /dataset + per-table CSVs, /state-of-saas snapshot + 2026 edition, all markdown mirrors, .well-known entity.jsonld, MCP, OpenAPI, NLWeb) — every URL returned HTTP 200 against the deployed site. Sitemap holds steady at 786 URLs. sameAs gained its first live row (X). HDYHAU self-reported attribution survey added to /starter checkout (PostHog event hdyhau_answered + Stripe session metadata forwarding).`,
   },
 ]);
 

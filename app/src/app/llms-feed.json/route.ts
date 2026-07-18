@@ -789,7 +789,9 @@ function buildPayload() {
      * 2026-05-22). One entry per build day at /founder-diary/<YYYY-MM-DD>,
      * each grounded in a public artifact (merged PR, deployed surface,
      * shipped env var). The text arm of The Founder's Diary content
-     * franchise; the YouTube channel of the same name is the video arm.
+     * franchise; the planned faceless YouTube series at /youtube is the
+     * video arm (hub shipped, episodes honest-empty until the channel
+     * launches).
      *
      * JSON consumers that want the canonical citation URL for a given
      * build day's log read `entries[].url` directly. The hub URL is the

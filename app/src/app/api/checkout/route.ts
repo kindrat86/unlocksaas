@@ -51,6 +51,18 @@ type CheckoutBody = {
     bucket?: string;
     lead?: string;
   } | null;
+  /**
+   * Self-reported HDYHAU ("How Did You Hear About Us?") answer from the
+   * /starter survey. Captures the acquisition channel the visitor
+   * attributes themselves to — ground truth that UTM/ai_engine
+   * autocapture cannot see because AI-search referrals frequently land
+   * as "direct" (no referrer) hours or days after the real first touch.
+   *
+   * Forwarded to Stripe session metadata so the webhook can stamp it on
+   * the converted customer, closing the loop from "AI mentioned us" →
+   * "real Stripe charge". Null when the visitor skipped the survey.
+   */
+  hdyhau?: { source?: string; detail?: string } | null;
 };
 
 // Stripe metadata only accepts string values up to 500 chars. Coerce + clamp.
@@ -98,7 +110,7 @@ export async function POST(req: NextRequest) {
     console.warn("[botid] checkout verification failed, proceeding fail-open", err);
   }
 
-  const { priceType, attribution, bump, parentSessionId } =
+  const { priceType, attribution, bump, parentSessionId, hdyhau } =
     (await req.json()) as CheckoutBody;
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -127,6 +139,15 @@ export async function POST(req: NextRequest) {
   if (diagnosticLeadId && /^[0-9a-f-]{36}$/i.test(diagnosticLeadId)) {
     abMetadata.diagnostic_lead_id = diagnosticLeadId;
   }
+
+  // Self-reported acquisition channel from the HDYHAU survey on /starter.
+  // Stamped on Stripe session metadata so the webhook can join converted
+  // customers back to the channel they attribute themselves to — the
+  // ground-truth signal UTM/ai_engine autocapture cannot see.
+  const hdyhauSource = clampMeta(hdyhau?.source);
+  const hdyhauDetail = clampMeta(hdyhau?.detail);
+  if (hdyhauSource) abMetadata.hdyhau_source = hdyhauSource;
+  if (hdyhauDetail) abMetadata.hdyhau_detail = hdyhauDetail;
 
   // OTO chain: stitch each session back to the original $1 Starter session so
   // the operator can run "AOV per Starter cart" reports without a manual join.
