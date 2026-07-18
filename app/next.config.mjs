@@ -447,6 +447,23 @@ const nextConfig = {
       { source: "/machine-sales.md", destination: "/playbook-sales.md", permanent: true },
 
       /**
+       * 308 permanent redirects for the 3 legacy static /tools/*.html
+       * calculators that duplicate their route equivalents (2026-07-18).
+       * The static .html files are deleted in the same change; these
+       * redirects preserve inbound link equity and AI-cached URLs (the old
+       * llms.txt advertised the .html paths) by pointing them at the
+       * canonical route calculator. The two UNIQUE static tools –
+       * /tools/churn-rate-calculator.html (computes the rate %, vs the
+       * route's churn-COST tool) and /tools/saas-pricing-calculator.html
+       * (value-based recommendation, vs the route's two-price compare) –
+       * have no route twin, so they are kept, indexed in /llms.txt, and NOT
+       * redirected.
+       */
+      { source: "/tools/ltv-calculator.html", destination: "/tools/ltv-calculator", permanent: true },
+      { source: "/tools/cac-payback-calculator.html", destination: "/tools/cac-payback-calculator", permanent: true },
+      { source: "/tools/mrr-calculator.html", destination: "/tools/revenue-projector", permanent: true },
+
+      /**
        * 308 permanent redirects for the /compare → /vs rename (2026-05-21).
        *
        * "[A] vs [B]" is the keyword shape Google actually serves for the

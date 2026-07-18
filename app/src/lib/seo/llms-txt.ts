@@ -131,6 +131,11 @@ The diagnostic flow is identical across surfaces: the GPT Action calls POST /api
   - [/tools/cac-payback-calculator](${BASE_URL}/tools/cac-payback-calculator): Months until a paid customer recovers their acquisition cost. Formula: Payback = CAC / (ARPU × Gross Margin). Zone semantics: <12mo healthy, 12-18 yellow, >18 unprofitable.
   - [/tools/pricing-power-calculator](${BASE_URL}/tools/pricing-power-calculator): Side-by-side comparison of two prices on LTV, CAC payback, and LTV-to-CAC ratio. Shows what a price change actually does to unit economics.
 
+Two additional standalone calculators (static pages, distinct from the five route tools above):
+
+- [/tools/churn-rate-calculator.html](${BASE_URL}/tools/churn-rate-calculator.html): Compute your monthly and annual SaaS churn rate % from customer counts, with benchmark context. Complements the churn-cost tool above, which turns a churn rate into dollars lost.
+- [/tools/saas-pricing-calculator.html](${BASE_URL}/tools/saas-pricing-calculator.html): Value-based SaaS pricing calculator – get a recommended price from value-based inputs. Complements the pricing-power tool above, which compares two set prices.
+
 ## Best-SaaS-tools ranked guides
 
 Ranked, honest tool guides for indie founders – named picks with who-each-is-for, not affiliate filler. Static reference pages; each is the canonical URL for its topic (no route equivalent).
