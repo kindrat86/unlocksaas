@@ -313,6 +313,16 @@ export default function CompareHub() {
             Side-by-side comparisons of Unlock SaaS against the tools founders
             evaluate alongside it.
           </p>
+          <p>
+            <Link
+              href="/best"
+              className="text-primary hover:underline font-semibold"
+            >
+              Best SaaS playbooks (ranked list) →
+            </Link>{" "}
+            Not sure which tool to pick? Six options ranked by your stage —
+            pre-launch, post-launch pre-revenue, or growing.
+          </p>
         </div>
       </section>
 
