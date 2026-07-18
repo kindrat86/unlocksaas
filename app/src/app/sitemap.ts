@@ -780,6 +780,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: hreflang(`${base}/funnel-playbook`),
     },
+    // ---------------------------------------------------------------------
+    // /best — the "best SaaS customer acquisition playbooks" listicle.
+    // Canonical AEO listicle format (43.8% of ChatGPT citations are
+    // listicles/comparisons per the Ahrefs AEO study). Title matches the
+    // literal query an indie founder asks ChatGPT. CollectionPage +
+    // ItemList + FAQPage + BreadcrumbList JSON-LD. Data source:
+    // src/lib/best-playbooks.ts. Honest ranked list of six real options
+    // (Unlock SaaS, ShipFast, One Funnel Away, Starter Story, MicroConf,
+    // Demand Curve) — Brunson Hard-Rule: every price + verdict verifiable.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/best`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      alternates: hreflang(`${base}/best`),
+    },
     ...FUNNEL_PLAYBOOK_SLUGS.map((slug) => ({
       url: `${base}/funnel-playbook/${slug}`,
       lastModified: now,
