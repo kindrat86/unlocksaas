@@ -26,6 +26,29 @@ const nextConfig = {
    * See: https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages
    */
   serverExternalPackages: ["c2pa-node"],
+
+  /**
+   * Build-time timestamp injection (2026-07-18 SEO fix).
+   *
+   * `BUILD_TIMESTAMP` is evaluated once when this config module is imported
+   * at the start of `next build`, then inlined as a literal string wherever
+   * `process.env.BUILD_TIMESTAMP` is referenced. sitemap.ts uses it as the
+   * `lastModified` value for the static marketing / pSEO routes.
+   *
+   * Why this matters: under Next 16 Cache Components (`cacheComponents: true`
+   * above), calling `new Date()` — a request-time / uncached API — inside
+   * sitemap() opted the whole sitemap route into DYNAMIC rendering. Every
+   * crawl of /sitemap.xml then regenerated all ~780 <lastmod> values to the
+   * exact request time (verified live: three curls 2s apart returned three
+   * different timestamps, `x-vercel-cache: MISS`, `max-age=0`). Google and
+   * AI crawlers learn to distrust a lastmod that is always "now", discarding
+   * the crawl-prioritisation signal entirely. Sourcing the timestamp from an
+   * inlined build constant keeps every lastmod stable between deploys (the
+   * documented intent in sitemap.ts) and lets the route be statically cached.
+   */
+  env: {
+    BUILD_TIMESTAMP: new Date().toISOString(),
+  },
   webpack: (config, { isServer }) => {
     // Defence-in-depth: also mark external for webpack codepath.
     if (isServer) {

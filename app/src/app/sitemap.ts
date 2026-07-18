@@ -54,9 +54,18 @@ import { localizedPath } from "@/lib/i18n/locales";
  * pages, the login flow, the entire API) are excluded by omission AND
  * confirmed non-indexable via per-page `robots: { index: false }` metadata.
  *
- * `lastModified` is set to the build time, which is fine for static
- * marketing pages — the actual content changes are infrequent and a
- * build is the right cadence for "this page was updated."
+ * `lastModified` is set to the build time (via the inlined
+ * `BUILD_TIMESTAMP` env constant defined in next.config.mjs), which is
+ * fine for static marketing pages — the actual content changes are
+ * infrequent and a build is the right cadence for "this page was updated."
+ *
+ * IMPORTANT: do NOT change `now` back to a bare `new Date()`. Under Next 16
+ * Cache Components, `new Date()` is a request-time dynamic API: it forced
+ * the whole sitemap route to render dynamically and uncached, so every
+ * crawl stamped all ~780 URLs with the current request time (a lastmod that
+ * is always "now" trains crawlers to ignore the signal). The build-time
+ * constant keeps lastmod stable between deploys and keeps the route
+ * statically cacheable. See the next.config.mjs `env` block for detail.
  *
  * Programmatic surface (added 2026-05-17): /alternatives-to (hub) and each
  * /alternatives-to/[slug] page are generated from src/lib/alternatives.ts.
@@ -73,7 +82,12 @@ import { localizedPath } from "@/lib/i18n/locales";
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://unlocksaas.com";
-  const now = new Date();
+  // Build-time constant, inlined by next.config.mjs `env.BUILD_TIMESTAMP`.
+  // NOT `new Date()` — see the file header note (Cache Components dynamic-
+  // render trap that made every crawl stamp all URLs with the request time).
+  const now = new Date(
+    process.env.BUILD_TIMESTAMP ?? "2026-07-18T00:00:00.000Z",
+  );
 
   /**
    * Image sitemap helper – returns the best OG image URL for a path.
