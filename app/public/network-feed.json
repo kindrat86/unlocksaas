@@ -4,7 +4,7 @@
   "home_page_url": "https://unlocksaas.com/network/",
   "feed_url": "https://unlocksaas.com/network/feed.json",
   "description": "Cross-portfolio content feed for UnlockSaaS \u2014 AI-readable discovery feed of related platforms.",
-  "date_modified": "2026-07-18T18:26:05.646757+00:00",
+  "date_modified": "2026-07-18T17:31:50.873435+00:00",
   "authors": [
     {
       "name": "UnlockSaaS"
@@ -25,7 +25,7 @@
         "angel investing"
       ],
       "totalPages": 254,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:sipiteno",
@@ -40,8 +40,8 @@
         "ai agents",
         "productivity"
       ],
-      "totalPages": 709,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "totalPages": 703,
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:signals",
@@ -57,7 +57,7 @@
         "analytics"
       ],
       "totalPages": 2529,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:invisibleexit",
@@ -72,8 +72,8 @@
         "business strategy",
         "valuation"
       ],
-      "totalPages": 834,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "totalPages": 837,
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:voicelogpro",
@@ -88,8 +88,8 @@
         "communication",
         "analysis"
       ],
-      "totalPages": 140,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "totalPages": 165,
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:carshake",
@@ -104,8 +104,8 @@
         "rental",
         "car-sharing"
       ],
-      "totalPages": 109,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "totalPages": 112,
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:churnlens",
@@ -120,8 +120,8 @@
         "retention",
         "benchmarks"
       ],
-      "totalPages": 394,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "totalPages": 267,
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:sanctionsai",
@@ -137,7 +137,7 @@
         "risk"
       ],
       "totalPages": 222,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     },
     {
       "id": "pin:sipi_bot",
@@ -153,7 +153,7 @@
         "api"
       ],
       "totalPages": 186,
-      "dateModified": "2026-07-18T18:26:05.646757+00:00"
+      "dateModified": "2026-07-18T17:31:50.873435+00:00"
     }
   ]
 }
