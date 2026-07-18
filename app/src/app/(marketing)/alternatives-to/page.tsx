@@ -315,6 +315,17 @@ export default function AlternativesHub() {
             Symmetric dimension-by-dimension breakdowns of the tools you
             are mid-evaluation on. Both sides get a fair read.
           </p>
+          <p>
+            <Link
+              href="/best"
+              className="text-primary hover:underline font-semibold"
+            >
+              Best SaaS playbooks (ranked list) →
+            </Link>{" "}
+            Six real options for getting your first paying customer, ranked
+            honestly with prices and verdicts. If you are evaluating multiple
+            alternatives, this sorts them by your stage.
+          </p>
         </div>
       </section>
 

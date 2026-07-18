@@ -407,6 +407,13 @@ export default function GlossaryPage() {
             – 30 direct AEO-formatted answers to the most-asked indie SaaS
             funnel questions.
           </li>
+          <li>
+            <Link href="/best" className="text-primary hover:underline">
+              Best SaaS playbooks (2026)
+            </Link>{" "}
+            – six honest-ranked options for getting your first paying
+            customer. Prices, best-for verdicts, and named limitations.
+          </li>
         </ul>
       </section>
     </main>
