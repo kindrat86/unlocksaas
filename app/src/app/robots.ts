@@ -49,13 +49,16 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  * explicitly labelled legacy/undocumented fallback that is blocked.
  *
  * Disallow list for `*` blocks:
- *  - /playbook/*         -- authenticated member area; per-user data
  *  - /api/*              -- server routes, never indexable
  *  - /auth/*             -- login / callback flow
  *  - /diagnostic/result  -- per-lead diagnosis (already index:false)
  *  - /login              -- auth surface
  *  - /oto, /welcome      -- post-purchase transitions; out-of-context
  *  - /onboarding         -- post-purchase intake; auth-gated downstream
+ *
+ * 2026-07-18: /playbook/ removed from disallow list — the /playbook page is a
+ * public marketing landing page ("Your First Paying Customer in 60 Days"), not
+ * an authenticated area. AI bots should be able to crawl it for AEO citations.
  *
  * Verified Builder strategy update (2026-05-18)
  * ---------------------------------------------
@@ -81,7 +84,6 @@ export default function robots(): MetadataRoute.Robots {
   // Bingbot, Yandex, Applebot, and every AI crawler we allow-list below
   // per RFC 9309 §2.2.
   const PRIVATE_DISALLOW_CANONICAL = [
-    "/playbook/",
     "/api/",
     "/auth/",
     "/diagnostic/result",
