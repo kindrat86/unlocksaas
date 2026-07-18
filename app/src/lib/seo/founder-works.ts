@@ -338,6 +338,11 @@ export function toCreativeWorkNode(
   };
   if (work.type === "Article") {
     base.headline = work.name;
+    // Article rich-result eligibility requires an image. The canonical
+    // OG image at /opengraph-image is the page-level default; per-article
+    // overrides can layer on top when the data source carries an
+    // article-specific imageUrl field.
+    base.image = `${BASE_URL}/opengraph-image`;
   }
   if (work.type === "Dataset") {
     base.license = DATASET_LICENSE_URL;

@@ -1179,6 +1179,7 @@ function buildPersonSubjectOf(mentions: readonly MediaMention[]) {
       "@id": `${BASE}/stories`,
       headline: "Five Stories for the Flat Stripe Line",
       url: `${BASE}/stories`,
+      image: `${BASE}/opengraph-image`,
     },
     {
       "@type": "ProfilePage",
