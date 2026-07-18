@@ -25,3 +25,4 @@ monitoring/dashboard.html
 
 # Supabase CLI per-machine cache (project-ref, pooler URL, version metadata)
 supabase/.temp/
+app/.env.portfolio-extract
