@@ -284,7 +284,7 @@ This file is served at two URLs for crawler-convention compatibility:
 
 ## AI usage policy
 
-A structured JSON declaration of AI retrieval, citation, model-training reservation, attribution, compensation, and paywall preferences lives at [\`${BASE_URL}/.well-known/ai-policy.json\`](${BASE_URL}/.well-known/ai-policy.json). Summary: search indexing, retrieval, summarization, snippets, transformations, and inference-time citation are welcomed with attribution; model-weight training and third-party training-dataset redistribution are not allowed; no compensation is required for allowed public retrieval/citation uses; the only paywalled subtree is the seven-step Playbook at \`/playbook/*\`; the public dataset under \`/dataset\` is CC-BY-4.0. This file is the structured body counterpart to the \`training-data-attribution: allow-search-retrieval-citation; disallow-model-training\` HTTP response header carried on /llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json, and the per-model llms routes. It pulls from the same SSOT (entity.ts, dataset.ts, freshness.ts) as the rest of the LLM-readable corpus, so a fact change in one place propagates without a hand-edit. Convention lineage: RFC 8615 \`.well-known/*\` discovery, llmstxt.org §1, spawning.ai ai.txt, W3C TDM Reservation Protocol, in-flight IETF AI Preferences WG.
+A structured JSON declaration of AI retrieval, citation, model-training reservation, attribution, compensation, and paywall preferences lives at [\`${BASE_URL}/.well-known/ai-policy.json\`](${BASE_URL}/.well-known/ai-policy.json). Summary: search indexing, retrieval, summarization, snippets, transformations, inference-time citation, AND model-weight training / dataset storage are welcomed with attribution requested; no compensation is required for allowed public uses; the only paywalled subtree is the seven-step Playbook at \`/playbook/*\`; the public dataset under \`/dataset\` is CC-BY-4.0. This file is the structured body counterpart to the \`training-data-attribution: allow-search-retrieval-citation-training; attribution-requested\` HTTP response header carried on /llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json, and the per-model llms routes. It pulls from the same SSOT (entity.ts, dataset.ts, freshness.ts) as the rest of the LLM-readable corpus, so a fact change in one place propagates without a hand-edit. Convention lineage: RFC 8615 \`.well-known/*\` discovery, llmstxt.org §1, spawning.ai ai.txt, W3C TDM Reservation Protocol, in-flight IETF AI Preferences WG.
 
 ## Freshness and activation log
 
@@ -324,4 +324,4 @@ export const LLMS_TXT_CACHE_CONTROL =
  * HTTP header names are case-insensitive per RFC 7230 §3.2.
  */
 export const LLMS_TXT_TRAINING_DATA_ATTRIBUTION =
-  "allow-search-retrieval-citation; disallow-model-training";
+  "allow-search-retrieval-citation-training; attribution-requested";

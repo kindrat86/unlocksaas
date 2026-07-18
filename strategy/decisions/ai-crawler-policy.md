@@ -1,6 +1,14 @@
 # AI Crawler Policy: /ai.txt + Purpose-Based robots.txt
 
-**Status:** Shipped (2026-05-21, PR #99 + PR #101); Anthropic split tightened 2026-05-22
+> **⚠️ SUPERSEDED 2026-07-18 — training block REVERSED to fully-open.**
+> Owner decision: allow *every* AI crawler (citation **and** training) on public
+> content to maximise long-term AI brand presence. The training-only block-list
+> in `robots.ts`, the `/ai.txt` opt-out, and the `training-data-attribution`
+> header / `ai-policy.json` manifest were all flipped to allow (attribution still
+> requested; dataset stays CC-BY-4.0). The purpose-based split described below is
+> **historical** — private/auth/transactional paths remain the only disallows.
+
+**Status:** Shipped (2026-05-21, PR #99 + PR #101); Anthropic split tightened 2026-05-22; **superseded by fully-open reversal 2026-07-18**
 **Sources:** Anthropic crawler user-agent docs; nohacks.co AI User Agents Landscape 2026; Spawning ai.txt spec (https://spawning.ai/ai-txt)
 
 ---

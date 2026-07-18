@@ -15,30 +15,31 @@ import { localesWithApprovedContent } from "@/lib/i18n/registry";
  *                          Mistral, You.com, Cohere inference, GoogleOther).
  *                          Distribution > scrape-protection for a pre-revenue
  *                          SaaS where AI-answer citation IS the channel.
- *   3. AI training-only  -- explicit Disallow for crawlers that ONLY feed model
- *                          training corpora with no citation/retrieval surface
- *                          (ClaudeBot, GPTBot, Google-Extended, CCBot,
+ *   3. AI training       -- explicit Allow (public content) for model-training
+ *                          crawlers (ClaudeBot, GPTBot, Google-Extended, CCBot,
  *                          Bytespider, Meta, Apple-Extended, Amazon,
- *                          Cohere-training, Diffbot).
- *                          Paired with /ai.txt (Spawning spec) for belt-and-
- *                          suspenders training opt-out signalling.
+ *                          Cohere-training, Diffbot). 2026-07-18: reversed from
+ *                          a Disallow block to fully-open per owner decision;
+ *                          /ai.txt and /.well-known/ai-policy.json updated to
+ *                          match so no surface contradicts the other.
  *   4. Indie search      -- explicit Allow for Brave, Mojeek, Marginalia, Kagi.
  *                          Tiny share each, but the demographic they index
  *                          matches the UnlockSaaS buyer profile exactly.
  *   5. Bad-actor         -- reserved for scrapers with no retrieval surface;
  *                          none currently needed beyond group 3.
  *
- * Training-opt-out rationale (2026-05-21)
- * ----------------------------------------
- * Allowing training crawlers was the default pre-revenue stance. As the
- * site matures, the tradeoff shifts: training bots add no citation
- * surface -- they do not link back, do not drive traffic, and consume
- * crawl budget. Blocking them redirects that budget toward the bots that
- * actually surface UnlockSaaS in answers (ChatGPT, Claude, Perplexity).
- * Anthropic now publishes separate user-agent tokens for model-training
- * crawl (ClaudeBot), user-directed fetches (Claude-User), and search-result
- * quality indexing (Claude-SearchBot). That lets this file allow Claude
- * citation/retrieval while blocking model-weight training.
+ * Training policy history
+ * -----------------------
+ * 2026-05-21: blocked training-only crawlers to steer crawl budget toward
+ *   citation bots (search/answer visibility was the only lever driving
+ *   measurable traffic at the time).
+ * 2026-07-18 (current): REVERSED to fully-open. Every AI crawler — citation
+ *   AND training — is allowed on public content. Rationale: near-term citation
+ *   visibility was never at risk (those bots were always allowed), and for a
+ *   brand with little third-party footprint, letting our own pages into
+ *   training corpora is a real long-game lever (unprompted brand recall in
+ *   ChatGPT/Claude/Gemini). Crawl-budget cost is negligible at this size.
+ *   /ai.txt + /.well-known/ai-policy.json were updated in the same change.
  *
  * Full machine-readable AI policy: /.well-known/ai-policy.json
  * Spawning opt-out declaration:    /ai.txt
@@ -212,11 +213,14 @@ export default function robots(): MetadataRoute.Robots {
     "cohere-ai",
   ];
 
-  // AI crawlers used exclusively for model training or dataset building
-  // with no citation/retrieval surface. They consume crawl budget without
-  // driving traffic or citations. Blocked here; also opted-out via /ai.txt
-  // (Spawning spec) as a belt-and-suspenders training opt-out signal.
-  const AI_TRAINING_BLOCK_USER_AGENTS = [
+  // AI model-training crawlers. As of 2026-07-18 these are FULLY ALLOWED on
+  // public content (owner decision: reversed the 2026-05-21 training opt-out to
+  // maximise long-term training-data presence — the compounding "unprompted
+  // brand recall" lever). They still respect PRIVATE_DISALLOW, so auth /
+  // transactional / API surfaces stay out of every corpus. The paired /ai.txt
+  // and /.well-known/ai-policy.json were updated in the same change so no
+  // surface emits a contradictory training-opt-out signal.
+  const AI_TRAINING_USER_AGENTS = [
     // Anthropic ClaudeBot -- model-development crawl; Claude-SearchBot and
     // Claude-User remain allowed for citation/retrieval surfaces.
     "ClaudeBot",
@@ -270,13 +274,15 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: PRIVATE_DISALLOW,
       })),
-      // ── AI training-only block-list ───────────────────────────────────────
-      // Full site disallow. These bots add no citation surface and redirect
-      // crawl budget away from the bots that matter for AI-search visibility.
-      // Paired with /ai.txt for the Spawning opt-out protocol layer.
-      ...AI_TRAINING_BLOCK_USER_AGENTS.map((ua) => ({
+      // ── AI training crawlers — explicit allow-list (2026-07-18) ───────────
+      // Fully open on public content; same private/transactional disallow as
+      // every other allowed bot. Reversed from the prior training block so
+      // UnlockSaaS content can also seed model-training corpora (long-game
+      // brand recall), not just live citation surfaces.
+      ...AI_TRAINING_USER_AGENTS.map((ua) => ({
         userAgent: ua,
-        disallow: ["/"],
+        allow: "/",
+        disallow: PRIVATE_DISALLOW,
       })),
       // ── Indie-search explicit allow-list ─────────────────────────────────
       // Brave, Mojeek, Marginalia, Kagi. Public marketing allowed;

@@ -2,27 +2,24 @@ import { NextResponse } from "next/server";
 import { BASE_URL } from "@/lib/seo/entity";
 
 /**
- * /ai.txt -- Spawning AI training opt-out declaration.
+ * /ai.txt -- Spawning AI usage declaration.
  *
  * Specification: https://spawning.ai/ai-txt
- * Added: 2026-05-21 (purpose-based AI bot policy)
+ * Added: 2026-05-21 · Updated 2026-07-18 (fully-open reversal)
  *
  * Context
  * -------
- * UnlockSaaS is a pre-revenue SaaS where AI-search citation IS the
- * distribution channel. We therefore split AI bot policy into two tiers:
+ * As of 2026-07-18 UnlockSaaS is fully open to AI usage on public content:
  *
- *   ALLOWED   -- search indexing, retrieval, answer-engine citation,
- *                summarization, and general inference uses.
- *   DISALLOWED -- use of this content as training data for ML model
- *                 weights, or storing content in datasets distributed
- *                 to third parties for that purpose.
+ *   ALLOWED  -- search indexing, retrieval, answer-engine citation,
+ *               summarization, general inference, AND model training /
+ *               dataset storage. Attribution back to the canonical URL is
+ *               requested for reuse (see /.well-known/ai-policy.json).
  *
- * This file implements the Spawning spec for the training-opt-out layer.
- * The crawl-level enforcement for the same distinction lives in robots.ts
- * (search/answer bots are explicitly allowed; training-only bots are
- * blocked). Together the two files give AI pipeline operators a
- * belt-and-suspenders signal.
+ * This reverses the 2026-05-21 training opt-out. The crawl-level policy in
+ * robots.ts now allows every AI crawler (citation + training) on public
+ * surfaces; this file and /.well-known/ai-policy.json were updated in the
+ * same change so every AI-consent signal agrees.
  *
  * Related policy surfaces
  * -----------------------
@@ -39,93 +36,27 @@ const CACHE_CONTROL =
   "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800";
 
 const AI_TXT_BODY = `\
-# ai.txt -- UnlockSaaS AI training opt-out
+# ai.txt -- UnlockSaaS AI usage declaration
 # Specification: https://spawning.ai/ai-txt
-# Effective: 2026-05-21
+# Updated: 2026-07-18
 #
 # Summary
 # -------
-# UnlockSaaS (${BASE_URL}) consents to AI-powered search, retrieval,
-# and answer-engine citation of this content.
-# We do NOT consent to use of this content as training data for AI or
-# machine-learning model weights, or storage in third-party datasets
-# distributed for that purpose.
+# UnlockSaaS (${BASE_URL}) consents to AI use of its public content:
+# search, retrieval, answer-engine citation, summarization, inference,
+# AND model training / dataset storage. Attribution back to the canonical
+# URL is requested for reuse. The only non-open subtrees are the paid
+# Playbook (/playbook/*) and auth/transactional surfaces.
 #
 # Additional machine-readable policy:
 #   ${BASE_URL}/.well-known/ai-policy.json
 #   ${BASE_URL}/llms.txt
 #   ${BASE_URL}/editorial-policy
 #
-# -- Default: block training/storing for all unrecognised crawlers.
+# -- Default: all AI uses allowed for every crawler on public content.
 User-Agent: *
-Disallow: Training
-Disallow: Storing
-
-# -- OpenAI GPTBot (training crawler; ChatGPT-User + OAI-SearchBot are
-#    the search/answer surfaces and are welcome via robots.txt).
-User-Agent: GPTBot
-Disallow: Training
-Disallow: Storing
-
-# -- Anthropic ClaudeBot (model-development crawler; Claude-SearchBot and
-#    Claude-User are the search/user-fetch surfaces welcomed via robots.txt).
-User-Agent: ClaudeBot
-Disallow: Training
-Disallow: Storing
-
-# -- Legacy/undocumented Anthropic tokens: deny training/storing until a
-#    non-training citation role is documented.
-User-Agent: Claude-Web
-Disallow: Training
-Disallow: Storing
-
-User-Agent: anthropic-ai
-Disallow: Training
-Disallow: Storing
-
-# -- Google-Extended (Google AI training; separate from Googlebot search).
-User-Agent: Google-Extended
-Disallow: Training
-Disallow: Storing
-
-# -- Common Crawl (open corpus used for training many open-weight models).
-User-Agent: CCBot
-Disallow: Training
-Disallow: Storing
-
-# -- ByteDance training crawler (Doubao / Coze AI stack).
-User-Agent: Bytespider
-Disallow: Training
-Disallow: Storing
-
-# -- Meta AI training crawlers.
-User-Agent: Meta-ExternalAgent
-Disallow: Training
-Disallow: Storing
-
-User-Agent: FacebookBot
-Disallow: Training
-Disallow: Storing
-
-# -- Apple AI training (distinct from Applebot search/Spotlight crawler).
-User-Agent: Applebot-Extended
-Disallow: Training
-Disallow: Storing
-
-# -- Amazon Alexa AI training.
-User-Agent: Amazonbot
-Disallow: Training
-Disallow: Storing
-
-# -- Cohere training-specific crawler (cohere-ai inference is welcome).
-User-Agent: cohere-training-data-crawler
-Disallow: Training
-Disallow: Storing
-
-# -- Diffbot (knowledge-graph training; no citation surface for this site).
-User-Agent: Diffbot
-Disallow: Training
-Disallow: Storing
+Allow: Training
+Allow: Storing
 `;
 
 export function GET() {

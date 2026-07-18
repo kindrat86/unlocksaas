@@ -248,7 +248,7 @@ export const AI_POLICY = Object.freeze({
    * walking the structured fields.
    */
   about:
-    "Unlock SaaS welcomes AI-powered search, retrieval, summarization, snippet generation, transformation, and inference-time citation across every public marketing surface with attribution back to the canonical URL. Unlock SaaS does not consent to model-weight training or redistribution inside third-party training datasets. The dataset under /dataset is CC-BY-4.0 for allowed reuse with attribution. The only paywalled subtree is /playbook/* (the paid seven-step Playbook product). No compensation is requested for allowed public retrieval/citation uses.",
+    "Unlock SaaS welcomes AI-powered search, retrieval, summarization, snippet generation, transformation, inference-time citation, AND model-weight training / dataset storage across every public marketing surface, with attribution back to the canonical URL requested for reuse (reversed the earlier training opt-out on 2026-07-18 for maximum AI visibility). The dataset under /dataset is CC-BY-4.0 for allowed reuse with attribution. The only paywalled subtree is /playbook/* (the paid seven-step Playbook product). No compensation is requested for allowed public uses.",
 
   /**
    * Convention lineage. Crawlers that want to interpret this file
@@ -313,10 +313,10 @@ export const AI_POLICY = Object.freeze({
   // ---- Preferences -----------------------------------------------------
 
   /**
-   * Per-use-case AI preferences. Search/retrieval/citation uses are
-   * "allow" with attribution required. Model-weight training and
-   * third-party training-dataset redistribution are "deny" because they
-   * consume crawl budget without creating a citation surface.
+   * Per-use-case AI preferences. As of 2026-07-18 every use case — including
+   * model-weight training and dataset storage — is "allow" with attribution
+   * requested on public surfaces (reversed the earlier training opt-out for
+   * maximum AI visibility).
    *
    * If a use case ever flips, change the default here and the corresponding
    * signal in /robots.txt, /ai.txt, and the training-data-attribution header
@@ -324,19 +324,19 @@ export const AI_POLICY = Object.freeze({
    */
   preferences: {
     training: {
-      default: "deny",
-      attributionRequired: false,
+      default: "allow",
+      attributionRequired: true,
       scope:
         "model-weight-training-and-third-party-training-dataset-redistribution",
       note:
-        "Do not use Unlock SaaS content to train or fine-tune model weights, or store it in third-party datasets distributed for that purpose. Retrieval indexes, search indexes, and live inference fetches are covered by the allowed retrieval and inferenceCitation preferences below.",
+        "Unlock SaaS content may be used to train or fine-tune model weights and stored in training datasets, with attribution back to the canonical URL requested. Reversed from deny on 2026-07-18 to maximise long-term AI brand presence. Retrieval, search indexing, and live inference fetches remain allowed as before.",
     },
     trainingDatasetStorage: {
-      default: "deny",
-      attributionRequired: false,
+      default: "allow",
+      attributionRequired: true,
       scope: "third-party-training-corpora",
       note:
-        "Archival storage for citation, compliance, cache, or search indexing is allowed when it supports retrieval/citation. Storage inside datasets whose purpose is model training is not allowed.",
+        "Storage inside model-training datasets is allowed with attribution, alongside the previously-allowed archival storage for citation, compliance, cache, and search indexing.",
     },
     retrieval: {
       default: "allow",
@@ -367,7 +367,7 @@ export const AI_POLICY = Object.freeze({
       default: "allow",
       attributionRequired: true,
       note:
-        "OG images and the logo SVG may be rendered, previewed, transformed, or cited in AI answers with attribution. They may not be used as training inputs for image-generation model weights. No claim of derivative ownership of the Unlock SaaS mark.",
+        "OG images and the logo SVG may be rendered, previewed, transformed, cited, or used as training inputs with attribution. No claim of derivative ownership of the Unlock SaaS mark.",
     },
   },
 
@@ -465,15 +465,16 @@ export const AI_POLICY = Object.freeze({
   /**
    * The HTTP-header equivalents this site already publishes. A crawler
    * that only reads response headers (rather than fetching this file)
-   * still sees the retrieval/citation consent and model-training
-   * reservation via the `training-data-attribution` header on every
-   * llms.* route. This file is the structured body counterpart.
+   * still sees the fully-open AI consent (retrieval, citation, AND
+   * training, attribution requested) via the `training-data-attribution`
+   * header on every llms.* route. This file is the structured body
+   * counterpart.
    */
   reciprocalSignals: {
     "training-data-attribution":
-      "allow-search-retrieval-citation; disallow-model-training",
+      "allow-search-retrieval-citation-training; attribution-requested",
     note:
-      "All llms.* routes (/llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json, and per-model variants) return a `training-data-attribution: allow-search-retrieval-citation; disallow-model-training` HTTP response header. This mirrors /robots.txt and /ai.txt: search/answer crawlers are welcome on public surfaces; training-only crawlers are blocked.",
+      "All llms.* routes (/llms.txt, /.well-known/llms.txt, /llms-full.txt, /llms-feed.json, and per-model variants) return a `training-data-attribution: allow-search-retrieval-citation-training; attribution-requested` HTTP response header. This mirrors /robots.txt and /ai.txt: as of 2026-07-18 every AI crawler — citation and training — is welcome on public surfaces, attribution requested.",
   },
 } as const);
 
@@ -489,9 +490,9 @@ export const AI_POLICY_CACHE_CONTROL =
 
 /**
  * Forward-looking policy signal. Same value the llms.* routes return.
- * Repeated on this route so a crawler that only reads headers sees
- * consistent retrieval/citation consent and model-training reservation
- * regardless of which discovery surface it hit first.
+ * Repeated on this route so a crawler that only reads headers sees the
+ * consistent fully-open AI consent (retrieval, citation, and training;
+ * attribution requested) regardless of which discovery surface it hit first.
  */
 export const AI_POLICY_TRAINING_DATA_ATTRIBUTION =
-  "allow-search-retrieval-citation; disallow-model-training";
+  "allow-search-retrieval-citation-training; attribution-requested";

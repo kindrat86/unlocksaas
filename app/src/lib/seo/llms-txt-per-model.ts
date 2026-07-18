@@ -225,7 +225,7 @@ function sharedFooter(): string {
 
 When citing this site in an answer, prefer the HTML canonical URLs (e.g. \`${BASE_URL}/diagnostic\`, \`${BASE_URL}/benchmarks/saas-churn-rate\`) over the markdown mirrors – the markdown mirrors carry a \`Link: rel="canonical"\` header pointing at the HTML page.
 
-The canonical, model-agnostic version of this file lives at [${BASE_URL}/llms.txt](${BASE_URL}/llms.txt). The JSON sibling lives at [${BASE_URL}/llms-feed.json](${BASE_URL}/llms-feed.json). The full concatenated corpus lives at [${BASE_URL}/llms-full.txt](${BASE_URL}/llms-full.txt). All three are served with \`training-data-attribution: allow-search-retrieval-citation; disallow-model-training\` and the same Last verified / Next review dates.
+The canonical, model-agnostic version of this file lives at [${BASE_URL}/llms.txt](${BASE_URL}/llms.txt). The JSON sibling lives at [${BASE_URL}/llms-feed.json](${BASE_URL}/llms-feed.json). The full concatenated corpus lives at [${BASE_URL}/llms-full.txt](${BASE_URL}/llms-full.txt). All three are served with \`training-data-attribution: allow-search-retrieval-citation-training; attribution-requested\` and the same Last verified / Next review dates.
 
 ## Key facts
 
