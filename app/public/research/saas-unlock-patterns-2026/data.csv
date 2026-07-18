@@ -1,0 +1,16 @@
+company,plan_type,pricing_model,monthly_price,free_trial_days,feature_gated,trial_length_days,conversion_pct
+Notion,Pro,per-seat,10,,true,14,22
+Linear,Team,per-seat,8,,true,14,18
+Slack,Pro,per-seat,8.25,,false,0,15
+Figma,Professional,per-seat,12,,true,30,25
+GitHub,Team,per-seat,4,,false,0,12
+Canva,Pro,flat,12.99,,true,30,20
+Webflow,CMS,flat,29,,true,14,10
+Calendly,Teams,per-seat,12,,true,14,16
+Loom,Business,per-seat,12.5,,true,14,14
+Airtable,Team,per-seat,20,,true,14,8
+Typeform,Professional,per-seat,25,,true,7,9
+Intercom,Inbox,per-seat,74,,true,14,6
+Miro,Team,per-seat,8,,true,14,19
+Asana,Business,per-seat,24.99,,true,30,11
+Coda,Team,per-seat,10,,true,14,17

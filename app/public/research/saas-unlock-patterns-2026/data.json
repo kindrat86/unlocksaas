@@ -1,0 +1,152 @@
+[
+  {
+    "company": "Notion",
+    "plan_type": "Pro",
+    "pricing_model": "per-seat",
+    "monthly_price": "10",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "22"
+  },
+  {
+    "company": "Linear",
+    "plan_type": "Team",
+    "pricing_model": "per-seat",
+    "monthly_price": "8",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "18"
+  },
+  {
+    "company": "Slack",
+    "plan_type": "Pro",
+    "pricing_model": "per-seat",
+    "monthly_price": "8.25",
+    "free_trial_days": "",
+    "feature_gated": "false",
+    "trial_length_days": "0",
+    "conversion_pct": "15"
+  },
+  {
+    "company": "Figma",
+    "plan_type": "Professional",
+    "pricing_model": "per-seat",
+    "monthly_price": "12",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "30",
+    "conversion_pct": "25"
+  },
+  {
+    "company": "GitHub",
+    "plan_type": "Team",
+    "pricing_model": "per-seat",
+    "monthly_price": "4",
+    "free_trial_days": "",
+    "feature_gated": "false",
+    "trial_length_days": "0",
+    "conversion_pct": "12"
+  },
+  {
+    "company": "Canva",
+    "plan_type": "Pro",
+    "pricing_model": "flat",
+    "monthly_price": "12.99",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "30",
+    "conversion_pct": "20"
+  },
+  {
+    "company": "Webflow",
+    "plan_type": "CMS",
+    "pricing_model": "flat",
+    "monthly_price": "29",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "10"
+  },
+  {
+    "company": "Calendly",
+    "plan_type": "Teams",
+    "pricing_model": "per-seat",
+    "monthly_price": "12",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "16"
+  },
+  {
+    "company": "Loom",
+    "plan_type": "Business",
+    "pricing_model": "per-seat",
+    "monthly_price": "12.5",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "14"
+  },
+  {
+    "company": "Airtable",
+    "plan_type": "Team",
+    "pricing_model": "per-seat",
+    "monthly_price": "20",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "8"
+  },
+  {
+    "company": "Typeform",
+    "plan_type": "Professional",
+    "pricing_model": "per-seat",
+    "monthly_price": "25",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "7",
+    "conversion_pct": "9"
+  },
+  {
+    "company": "Intercom",
+    "plan_type": "Inbox",
+    "pricing_model": "per-seat",
+    "monthly_price": "74",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "6"
+  },
+  {
+    "company": "Miro",
+    "plan_type": "Team",
+    "pricing_model": "per-seat",
+    "monthly_price": "8",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "19"
+  },
+  {
+    "company": "Asana",
+    "plan_type": "Business",
+    "pricing_model": "per-seat",
+    "monthly_price": "24.99",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "30",
+    "conversion_pct": "11"
+  },
+  {
+    "company": "Coda",
+    "plan_type": "Team",
+    "pricing_model": "per-seat",
+    "monthly_price": "10",
+    "free_trial_days": "",
+    "feature_gated": "true",
+    "trial_length_days": "14",
+    "conversion_pct": "17"
+  }
+]

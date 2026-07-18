@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SaaS Launch Readiness Score</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0f172a;color:#e2e8f0;padding:1rem;min-height:100vh}
+a{color:#EC4899;text-decoration:none}
+h3{font-size:1rem;margin-bottom:.5rem;color:#f1f5f9}
+p{font-size:.75rem;color:#94a3b8;margin-bottom:.75rem}
+/* Momentum checker */
+.mc-widget,.lr-widget{max-width:340px;margin:0 auto}
+#mc-form{display:flex;gap:.5rem;margin-bottom:.75rem}
+#mc-input{flex:1;padding:.5rem .75rem;background:#1e293b;border:1px solid #334155;border-radius:.375rem;color:#e2e8f0;font-size:.875rem}
+#mc-input::placeholder{color:#64748b}
+button{padding:.5rem 1rem;background:#EC4899;color:#fff;border:none;border-radius:.375rem;font-size:.875rem;font-weight:600;cursor:pointer;white-space:nowrap}
+button:hover{opacity:.9}
+.mc-card{background:#1e293b;border:1px solid #334155;border-radius:.5rem;padding:1rem;text-align:center}
+.mc-score{font-size:2.5rem;font-weight:800;line-height:1}
+.mc-score.high{color:#10b981}.mc-score.mid{color:#f59e0b}.mc-score.low{color:#ef4444}
+.mc-label{font-size:.75rem;color:#94a3b8;margin-top:.25rem}
+.mc-stats{display:flex;justify-content:center;gap:1rem;margin-top:.5rem;font-size:.75rem;color:#cbd5e1}
+.mc-stats strong{color:#f1f5f9}
+.mc-sector{font-size:.625rem;color:#64748b;margin-top:.5rem;text-transform:uppercase;letter-spacing:.05em}
+.mc-empty{padding:1rem;text-align:center;font-size:.8rem;color:#94a3b8}
+/* Launch readiness */
+.lr-sliders{display:flex;flex-direction:column;gap:.5rem}
+.lr-sliders label{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:#cbd5e1;gap:.5rem}
+.lr-slider{width:120px;accent-color:#EC4899}
+.lr-result{margin-top:.75rem;text-align:center;padding-top:.75rem;border-top:1px solid #334155}
+.lr-score{font-size:2.5rem;font-weight:800;color:#EC4899;line-height:1}
+.lr-label{font-size:.8rem;color:#94a3b8;margin-top:.25rem}
+.brand{margin-top:.75rem;text-align:center;font-size:.625rem;color:#475569}
+.brand a{color:#EC4899;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="lr-widget">
+    <h3>🚀 SaaS Launch Readiness Score</h3>
+    <div class="lr-sliders">
+        <label>1. Idea validated <input type="range" class="lr-slider" min="0" max="100" value="20"></label>
+        <label>2. MVP built <input type="range" class="lr-slider" min="0" max="100" value="10"></label>
+        <label>3. First user <input type="range" class="lr-slider" min="0" max="100" value="0"></label>
+        <label>4. First paying customer <input type="range" class="lr-slider" min="0" max="100" value="0"></label>
+        <label>5. 10+ customers <input type="range" class="lr-slider" min="0" max="100" value="0"></label>
+        <label>6. Product-market fit <input type="range" class="lr-slider" min="0" max="100" value="0"></label>
+        <label>7. Scaling <input type="range" class="lr-slider" min="0" max="100" value="0"></label>
+    </div>
+    <div class="lr-result">
+        <div class="lr-score" id="lr-score">0</div>
+        <div class="lr-label" id="lr-label">🔧 Keep Building</div>
+    </div>
+</div>
+
+<div class="brand">Powered by <a href="https://unlocksaas.com" target="_blank" rel="noopener">UnlockSaaS</a></div>
+<script>
+const sliders = document.querySelectorAll('.lr-slider');
+const scoreEl = document.getElementById('lr-score');
+const labelEl = document.getElementById('lr-label');
+const labels = ['Idea validated', 'MVP built', 'First user', 'First $', '10 customers', 'Product-market fit', 'Scaling'];
+const weights = [10, 15, 15, 20, 15, 15, 10];
+function update() {
+    let score = 0;
+    sliders.forEach((s, i) => { score += (parseInt(s.value) / 100) * weights[i]; });
+    score = Math.round(score);
+    scoreEl.textContent = score;
+    const tier = score >= 80 ? '🚀 Launch Ready!' : score >= 50 ? '⚡ Getting Close' : '🔧 Keep Building';
+    labelEl.textContent = tier;
+}
+sliders.forEach(s => s.addEventListener('input', update));
+update();
+
+</script>
+</body>
+</html>

@@ -6,6 +6,11 @@ Disallow: /dashboard/
 Disallow: /account/
 Disallow: /login/
 
+max-image-preview:large
+max-video-preview:-1
+max-snippet:-1
+max-image-render:Standard
+
 User-Agent: GPTBot
 Allow: /
 
@@ -22,6 +27,24 @@ User-Agent: anthropic-ai
 Allow: /
 
 User-Agent: Google-Extended
+Allow: /
+
+User-Agent: OAI-SearchBot
+Allow: /
+
+User-Agent: Cohere-AI
+Allow: /
+
+User-Agent: CCBot
+Allow: /
+
+User-Agent: FacebookBot
+Allow: /
+
+User-Agent: Applebot
+Allow: /
+
+User-Agent: Bytespider
 Allow: /
 
 User-Agent: Bingbot
