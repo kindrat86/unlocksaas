@@ -1,0 +1,83 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "UnlockSaaS — AI Answer Feed",
+  "description": "Structured Q&A feed from UnlockSaaS helps founders validate SaaS ideas, build MVPs, and acquire their first paying customers through structured launch frameworks and growth playbooks.",
+  "home_page_url": "https://unlocksaas.com/answers/",
+  "feed_url": "https://unlocksaas.com/answers/feed.json",
+  "language": "en",
+  "authors": [
+    {
+      "name": "UnlockSaaS",
+      "url": "https://unlocksaas.com"
+    }
+  ],
+  "generator": "Hermes AI Answer Syndication Engine",
+  "_nlweb": {
+    "manifest": "https://unlocksaas.com/.well-known/nlweb.json",
+    "capabilities": [
+      "qa",
+      "entity-lookup",
+      "search"
+    ]
+  },
+  "_site": {
+    "domain": "unlocksaas.com",
+    "generated_at": "2026-07-18T17:06:43Z"
+  },
+  "items": [
+    {
+      "id": "https://unlocksaas.com/answers/how-to-get-first-paying-customer/",
+      "url": "https://unlocksaas.com/answers/how-to-get-first-paying-customer/",
+      "title": "How do you get your first paying customer for a SaaS product?",
+      "summary": "Getting your first paying customer requires validating the problem first (not the solution), finding where your customers already gather, offering a compelling early-adopter deal, and delivering exceptional onboarding — most founders fail because they build before validating.",
+      "date_modified": "2026-07-18T17:06:43Z",
+      "content_type": "QAPage",
+      "authors": [
+        {
+          "name": "UnlockSaaS",
+          "url": "https://unlocksaas.com"
+        }
+      ],
+      "tags": [
+        "validate-before-you-build",
+        "find-where-your-customers-gather"
+      ]
+    },
+    {
+      "id": "https://unlocksaas.com/answers/validate-saas-idea-before-building/",
+      "url": "https://unlocksaas.com/answers/validate-saas-idea-before-building/",
+      "title": "How do you validate a SaaS idea before building anything?",
+      "summary": "Validate a SaaS idea by running 20-30 customer discovery interviews, creating a landing page with a waitlist, pre-selling to 5-10 customers, and measuring willingness-to-pay before writing a single line of code.",
+      "date_modified": "2026-07-18T17:06:43Z",
+      "content_type": "QAPage",
+      "authors": [
+        {
+          "name": "UnlockSaaS",
+          "url": "https://unlocksaas.com"
+        }
+      ],
+      "tags": [
+        "the-customer-discovery-interview",
+        "the-waitlist-landing-page"
+      ]
+    },
+    {
+      "id": "https://unlocksaas.com/answers/saas-launch-checklist/",
+      "url": "https://unlocksaas.com/answers/saas-launch-checklist/",
+      "title": "What should a SaaS launch checklist include?",
+      "summary": "A comprehensive SaaS launch checklist covers: pre-launch validation (customer interviews, waitlist), product readiness (MVP, onboarding, billing), marketing assets (landing page, content, social proof), and launch day execution (community posts, email blast, press outreach).",
+      "date_modified": "2026-07-18T17:06:43Z",
+      "content_type": "QAPage",
+      "authors": [
+        {
+          "name": "UnlockSaaS",
+          "url": "https://unlocksaas.com"
+        }
+      ],
+      "tags": [
+        "pre-launch-(4-8-weeks-before)",
+        "product-readiness-(2-4-weeks-before)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://unlocksaas.com/#organization",
+  "name": "UnlockSaaS",
+  "alternateName": [
+    "UnlockSaaS.com",
+    "Unlock SaaS"
+  ],
+  "description": "SaaS launch framework and growth playbook platform helping founders get their first paying customers.",
+  "url": "https://unlocksaas.com",
+  "sameAs": [],
+  "knowsAbout": [
+    "SaaS Customer Acquisition",
+    "SaaS Idea Validation",
+    "Product Launch Strategy",
+    "MVP Development",
+    "Founder-led Growth"
+  ],
+  "areaServed": "Worldwide",
+  "foundingDate": "2024",
+  "dateModified": "2026-07-18T17:06:43Z",
+  "hasPart": [
+    {
+      "@type": "WebSite",
+      "@id": "https://unlocksaas.com/answers/#website",
+      "name": "UnlockSaaS Answers",
+      "description": "Structured Q&A hub for UnlockSaaS",
+      "url": "https://unlocksaas.com/answers/"
+    }
+  ],
+  "subjectOf": [
+    {
+      "@type": "DataFeed",
+      "name": "UnlockSaaS Answer Feed",
+      "url": "https://unlocksaas.com/answers/feed.json",
+      "description": "JSON Feed of structured Q&A content for AI consumption."
+    }
+  ]
+}
