@@ -1,0 +1,296 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "UnlockSaaS",
+  "description": "Ship Your SaaS Faster — the launch toolkit and indie hacker community. Alternatives directory (vs Notion, Airtable, Lovable, Replit, Cursor), launch checklist, SaaS mistakes guide, revenue projector, LTV calculator, and the SaaS playbook.",
+  "home_page_url": "https://unlocksaas.com/",
+  "feed_url": "https://unlocksaas.com/feed.json",
+  "language": "en",
+  "authors": [
+    {
+      "name": "UnlockSaaS",
+      "url": "https://unlocksaas.com/about"
+    }
+  ],
+  "_hubs": [
+    "https://pubsubhubbub.appspot.com/",
+    "https://pubsubhubbub.superfeedr.com/",
+    "https://websubhub.com/"
+  ],
+  "_site": {
+    "domain": "unlocksaas.com",
+    "generator": "Hermes WebSub Feed Generator",
+    "generated_at": "2026-07-18T09:01:57Z"
+  },
+  "items": [
+    {
+      "id": "https://unlocksaas.com",
+      "url": "https://unlocksaas.com",
+      "title": "Unlock SaaS — Your First Paying Customer in 60 Days",
+      "content_text": "A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.",
+      "date_published": "2026-05-17T00:00:00Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image?10347cba1875c594",
+      "banner_image": "https://unlocksaas.com/opengraph-image?10347cba1875c594"
+    },
+    {
+      "id": "https://unlocksaas.com/pricing-teardown",
+      "url": "https://unlocksaas.com/pricing-teardown",
+      "title": "Pricing Teardowns — How Indie SaaS Actually Price Their Products — Unlock SaaS",
+      "content_text": "Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens. Built for post-launch pre-revenue founders building their own pricing page.",
+      "date_published": "2026-07-16T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/faq",
+      "url": "https://unlocksaas.com/faq",
+      "title": "FAQ — Every objection answered in the founder's exact words — Unlock SaaS",
+      "content_text": "The eight objections post-launch pre-revenue founders actually raise about Unlock SaaS — price, time, identity, DIY, signal — answered in the same language they were asked in. Sourced from real Indie Hackers and Hacker News threads.",
+      "date_published": "2026-07-14T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/vs",
+      "url": "https://unlocksaas.com/vs",
+      "title": "Compare — Honest Head-to-Head Comparisons of the Tools Indie SaaS Founders Evaluate — Unlock SaaS",
+      "content_text": "Symmetric head-to-head comparisons. Dimension-by-dimension verdicts, honest take, and the right pick for indie SaaS founders specifically.",
+      "date_published": "2026-07-12T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/for",
+      "url": "https://unlocksaas.com/for",
+      "title": "Founder Funnel Diagnostics by Niche — Unlock SaaS",
+      "content_text": "Twelve niche-specific landing pages. Same Hook / Story / Offer diagnostic, tuned to the vocabulary, money mechanics, and common mistakes of each cohort.",
+      "date_published": "2026-07-10T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/why-isnt-my",
+      "url": "https://unlocksaas.com/why-isnt-my",
+      "title": "Why Isn't My Funnel Converting? Eight Founder Diagnostics — Unlock SaaS",
+      "content_text": "Panic-mode diagnostic guides for indie SaaS founders. Eight specific funnel-element pages, each labeling the issue Wrong Person, Weak Offer, or Weak Belief, with the fix to ship this week.",
+      "date_published": "2026-07-08T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/stories",
+      "url": "https://unlocksaas.com/stories",
+      "title": "Five Stories for the Flat Stripe Line — Unlock SaaS",
+      "content_text": "Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. Read free. No email required.",
+      "date_published": "2026-05-17T00:00:00Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/starter",
+      "url": "https://unlocksaas.com/starter",
+      "title": "The $1 Starter — finish your dream customer and offer this week — Unlock SaaS",
+      "content_text": "One dollar. One week. Steps 1 and 2 of The Playbook: pin one real customer, write one real offer for them. The two pieces of work most founders quietly skip between launch and revenue.",
+      "date_published": "2026-05-17T00:00:00Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/stack-for",
+      "url": "https://unlocksaas.com/stack-for",
+      "title": "The Indie SaaS Stack, Per Niche – 12 Cohort-Tuned Tool Rosters — Unlock SaaS",
+      "content_text": "Twelve opinionated indie SaaS stacks. The same category-leading tools, picked and ordered for one specific cohort: course creators, agency owners, SaaS founders, coaches, and 8 others.",
+      "date_published": "2026-07-02T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/repeatable",
+      "url": "https://unlocksaas.com/repeatable",
+      "title": "The Repeatable Revenue Layer — Rung 2 — Unlock SaaS",
+      "content_text": "What ships after your first paying customer: a self-serve layer that carries dream customer, attractive character, outreach, and Stripe pattern across Product 2. Spec published; build gated on three Core customer cycles.",
+      "date_published": "2026-06-30T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image?10347cba1875c594",
+      "banner_image": "https://unlocksaas.com/opengraph-image?10347cba1875c594"
+    },
+    {
+      "id": "https://unlocksaas.com/post-mortem",
+      "url": "https://unlocksaas.com/post-mortem",
+      "title": "Post-Mortems – Why SaaS and Consumer-Tech Companies Failed, Through the Brunson Lens — Unlock SaaS",
+      "content_text": "Honest structural post-mortems of well-known failed SaaS and consumer-tech bets, diagnosed through the same Brunson Hook / Story / Offer framework Unlock SaaS runs against your live page.",
+      "date_published": "2026-06-28T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ]
+    },
+    {
+      "id": "https://unlocksaas.com/playbook-sales",
+      "url": "https://unlocksaas.com/playbook-sales",
+      "title": "The Playbook — First Paying Customer in 60 Days or You Don't Pay — Unlock SaaS",
+      "content_text": "A seven-step playbook for already-shipped, pre-revenue SaaS founders. $49/month. If it does not produce a verified paying customer in 60 days, you do not pay. Built by a non-engineer for non-engineer founders.",
+      "date_published": "2026-06-26T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/mistakes",
+      "url": "https://unlocksaas.com/mistakes",
+      "title": "Indie SaaS Mistakes to Avoid — Hard-Earned Lessons (Unlock SaaS) — Unlock SaaS",
+      "content_text": "Real mistakes real indie SaaS founders make that keep the Stripe line at zero. Each one comes with a specific fix you can apply today.",
+      "date_published": "2026-06-24T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ]
+    },
+    {
+      "id": "https://unlocksaas.com/launch-checklist",
+      "url": "https://unlocksaas.com/launch-checklist",
+      "title": "Launch Checklists by Niche – Pre-Revenue Founder Plans for 12 Cohorts — Unlock SaaS",
+      "content_text": "Ten-step pre-revenue launch checklists, tuned per niche. Course creators, SaaS founders, agency owners, coaches, AI wrappers, and 7 other cohorts.",
+      "date_published": "2026-06-22T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ]
+    },
+    {
+      "id": "https://unlocksaas.com/how-to",
+      "url": "https://unlocksaas.com/how-to",
+      "title": "How to Get Your First SaaS Customer — Step-by-Step Guides (Unlock SaaS) — Unlock SaaS",
+      "content_text": "Step-by-step playbooks for getting your first paying customer. Cold DM, community, content marketing, free tiers — every channel with an actionable system.",
+      "date_published": "2026-06-20T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ]
+    },
+    {
+      "id": "https://unlocksaas.com/glossary",
+      "url": "https://unlocksaas.com/glossary",
+      "title": "Glossary – Hook, Story, Offer, Value Ladder, and 13 Other Brunson Terms — Unlock SaaS",
+      "content_text": "Working definitions of the 16 sales-funnel concepts Unlock SaaS teaches, in the founder's own words. Hook. Story. Offer. Big Domino. Value Ladder. Stack Slide. Perfect Webinar. Dream 100. Wrong Person, Weak Offer, Weak Belief.",
+      "date_published": "2026-06-18T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/glossary/opengraph-image-k5mayy?d1ead6e84d4e3d66",
+      "banner_image": "https://unlocksaas.com/glossary/opengraph-image-k5mayy?d1ead6e84d4e3d66"
+    },
+    {
+      "id": "https://unlocksaas.com/funnel-teardown",
+      "url": "https://unlocksaas.com/funnel-teardown",
+      "title": "Funnel Teardowns — What Indie SaaS Founders Can Learn From the Best Marketing Pages — Unlock SaaS",
+      "content_text": "Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking. Hook, Story, Offer breakdowns through the Brunson lens, with what to adapt and what to skip.",
+      "date_published": "2026-06-16T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/funnel-playbook",
+      "url": "https://unlocksaas.com/funnel-playbook",
+      "title": "Brunson Funnel Playbooks (Tripwire, VSL, Webinar, OTO, Ladder) — Unlock SaaS",
+      "content_text": "Step-by-step playbooks for the eight Brunson funnel archetypes: tripwire, VSL, challenge, Perfect Webinar, Soap Opera, OTO, Seinfeld Email, and Value Ladder.",
+      "date_published": "2026-06-14T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/founding",
+      "url": "https://unlocksaas.com/founding",
+      "title": "The Founding Cohort — $49/mo locked for life for the first 100 builders — Unlock SaaS",
+      "content_text": "The first 100 builders get The Playbook at $49/mo, locked for the life of their subscription. After builder #100 the standard price is $79/mo. First paying customer verified by Stripe within 60 days or a full refund, enforced by code.",
+      "date_published": "2026-06-12T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ],
+      "image": "https://unlocksaas.com/opengraph-image",
+      "banner_image": "https://unlocksaas.com/opengraph-image"
+    },
+    {
+      "id": "https://unlocksaas.com/founders-in",
+      "url": "https://unlocksaas.com/founders-in",
+      "title": "Micro-SaaS Founders by City – 25 Local Scenes — Unlock SaaS",
+      "content_text": "Geo landing pages for indie founders building micro-SaaS in 25 cities. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.",
+      "date_published": "2026-06-10T09:01:57Z",
+      "authors": [
+        {
+          "name": "UnlockSaaS"
+        }
+      ]
+    }
+  ]
+}

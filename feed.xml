@@ -1,41 +1,193 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>UnlockSaaS</title>
     <link>https://unlocksaas.com</link>
-    <description>SaaS launch toolkit and indie hacker community.</description>
+    <description>Ship Your SaaS Faster — the launch toolkit and indie hacker community. Alternatives directory (vs Notion, Airtable, Lovable, Replit, Cursor), launch checklist, SaaS mistakes guide, revenue projector, LTV calculator, and the SaaS playbook.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 07 Jul 2026 14:57:21 GMT</lastBuildDate>
-    <atom:link href="https://unlocksaas.com/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Jul 2026 09:01:57 GMT</lastBuildDate>
+    <generator>Hermes WebSub Feed Generator</generator>
+    <ttl>60</ttl>
+    <atom:link href="https://unlocksaas.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://unlocksaas.com/rss.xml" rel="alternate" type="application/rss+xml"/>
+    <atom:link href="https://unlocksaas.com/feed.json" rel="alternate" type="application/json"/>
+    <atom:link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
+    <atom:link href="https://pubsubhubbub.superfeedr.com/" rel="hub"/>
+    <atom:link href="https://websubhub.com/" rel="hub"/>
     <item>
-      <title>Homepage</title>
-      <link>https://unlocksaas.com/</link>
-      <guid isPermaLink="true">https://unlocksaas.com/</guid>
-      <description>SaaS launch toolkit</description>
+      <title>Unlock SaaS — Your First Paying Customer in 60 Days</title>
+      <link>https://unlocksaas.com</link>
+      <guid isPermaLink="true">https://unlocksaas.com</guid>
+      <description>A playbook that turns your already-shipped product into a verified paying customer. If it does not, you do not pay.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sat, 16 May 2026 21:00:00 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image?10347cba1875c594" medium="image"/>
     </item>
     <item>
-      <title>Pricing</title>
+      <title>Pricing Teardowns — How Indie SaaS Actually Price Their Products — Unlock SaaS</title>
       <link>https://unlocksaas.com/pricing-teardown</link>
       <guid isPermaLink="true">https://unlocksaas.com/pricing-teardown</guid>
-      <description>UnlockSaaS pricing</description>
+      <description>Pattern-level teardowns of indie SaaS pricing models. Tier structure, anchor mechanics, upgrade triggers, and Brunson Stack lens. Built for post-launch pre-revenue founders building their own pricing page.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Thu, 16 Jul 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
     </item>
     <item>
-      <title>Churn Cost Calculator</title>
-      <link>https://unlocksaas.com/tools/churn-cost-calculator</link>
-      <guid isPermaLink="true">https://unlocksaas.com/tools/churn-cost-calculator</guid>
-      <description>Free tool</description>
+      <title>FAQ — Every objection answered in the founder&#x27;s exact words — Unlock SaaS</title>
+      <link>https://unlocksaas.com/faq</link>
+      <guid isPermaLink="true">https://unlocksaas.com/faq</guid>
+      <description>The eight objections post-launch pre-revenue founders actually raise about Unlock SaaS — price, time, identity, DIY, signal — answered in the same language they were asked in. Sourced from real Indie Hackers and Hacker News threads.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Tue, 14 Jul 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
     </item>
     <item>
-      <title>LTV Calculator</title>
-      <link>https://unlocksaas.com/tools/ltv-calculator</link>
-      <guid isPermaLink="true">https://unlocksaas.com/tools/ltv-calculator</guid>
-      <description>Free tool</description>
+      <title>Compare — Honest Head-to-Head Comparisons of the Tools Indie SaaS Founders Evaluate — Unlock SaaS</title>
+      <link>https://unlocksaas.com/vs</link>
+      <guid isPermaLink="true">https://unlocksaas.com/vs</guid>
+      <description>Symmetric head-to-head comparisons. Dimension-by-dimension verdicts, honest take, and the right pick for indie SaaS founders specifically.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sun, 12 Jul 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
     </item>
     <item>
-      <title>Alternatives</title>
-      <link>https://unlocksaas.com/alternatives-to</link>
-      <guid isPermaLink="true">https://unlocksaas.com/alternatives-to</guid>
-      <description>Compare vs other tools</description>
+      <title>Founder Funnel Diagnostics by Niche — Unlock SaaS</title>
+      <link>https://unlocksaas.com/for</link>
+      <guid isPermaLink="true">https://unlocksaas.com/for</guid>
+      <description>Twelve niche-specific landing pages. Same Hook / Story / Offer diagnostic, tuned to the vocabulary, money mechanics, and common mistakes of each cohort.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Fri, 10 Jul 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>Why Isn&#x27;t My Funnel Converting? Eight Founder Diagnostics — Unlock SaaS</title>
+      <link>https://unlocksaas.com/why-isnt-my</link>
+      <guid isPermaLink="true">https://unlocksaas.com/why-isnt-my</guid>
+      <description>Panic-mode diagnostic guides for indie SaaS founders. Eight specific funnel-element pages, each labeling the issue Wrong Person, Weak Offer, or Weak Belief, with the fix to ship this week.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Wed, 08 Jul 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>Five Stories for the Flat Stripe Line — Unlock SaaS</title>
+      <link>https://unlocksaas.com/stories</link>
+      <guid isPermaLink="true">https://unlocksaas.com/stories</guid>
+      <description>Five short stories about the work non-engineer founders skip — the Blank Offer Page, the Stripe Refresh, the SEO Escape Hatch, the Mirror in Ten Founders, the Door That Opened. Read free. No email required.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sat, 16 May 2026 21:00:00 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>The $1 Starter — finish your dream customer and offer this week — Unlock SaaS</title>
+      <link>https://unlocksaas.com/starter</link>
+      <guid isPermaLink="true">https://unlocksaas.com/starter</guid>
+      <description>One dollar. One week. Steps 1 and 2 of The Playbook: pin one real customer, write one real offer for them. The two pieces of work most founders quietly skip between launch and revenue.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sat, 16 May 2026 21:00:00 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>The Indie SaaS Stack, Per Niche – 12 Cohort-Tuned Tool Rosters — Unlock SaaS</title>
+      <link>https://unlocksaas.com/stack-for</link>
+      <guid isPermaLink="true">https://unlocksaas.com/stack-for</guid>
+      <description>Twelve opinionated indie SaaS stacks. The same category-leading tools, picked and ordered for one specific cohort: course creators, agency owners, SaaS founders, coaches, and 8 others.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Thu, 02 Jul 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>The Repeatable Revenue Layer — Rung 2 — Unlock SaaS</title>
+      <link>https://unlocksaas.com/repeatable</link>
+      <guid isPermaLink="true">https://unlocksaas.com/repeatable</guid>
+      <description>What ships after your first paying customer: a self-serve layer that carries dream customer, attractive character, outreach, and Stripe pattern across Product 2. Spec published; build gated on three Core customer cycles.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Tue, 30 Jun 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image?10347cba1875c594" medium="image"/>
+    </item>
+    <item>
+      <title>Post-Mortems – Why SaaS and Consumer-Tech Companies Failed, Through the Brunson Lens — Unlock SaaS</title>
+      <link>https://unlocksaas.com/post-mortem</link>
+      <guid isPermaLink="true">https://unlocksaas.com/post-mortem</guid>
+      <description>Honest structural post-mortems of well-known failed SaaS and consumer-tech bets, diagnosed through the same Brunson Hook / Story / Offer framework Unlock SaaS runs against your live page.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sun, 28 Jun 2026 09:01:57 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Playbook — First Paying Customer in 60 Days or You Don&#x27;t Pay — Unlock SaaS</title>
+      <link>https://unlocksaas.com/playbook-sales</link>
+      <guid isPermaLink="true">https://unlocksaas.com/playbook-sales</guid>
+      <description>A seven-step playbook for already-shipped, pre-revenue SaaS founders. $49/month. If it does not produce a verified paying customer in 60 days, you do not pay. Built by a non-engineer for non-engineer founders.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Fri, 26 Jun 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>Indie SaaS Mistakes to Avoid — Hard-Earned Lessons (Unlock SaaS) — Unlock SaaS</title>
+      <link>https://unlocksaas.com/mistakes</link>
+      <guid isPermaLink="true">https://unlocksaas.com/mistakes</guid>
+      <description>Real mistakes real indie SaaS founders make that keep the Stripe line at zero. Each one comes with a specific fix you can apply today.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Wed, 24 Jun 2026 09:01:57 GMT</pubDate>
+    </item>
+    <item>
+      <title>Launch Checklists by Niche – Pre-Revenue Founder Plans for 12 Cohorts — Unlock SaaS</title>
+      <link>https://unlocksaas.com/launch-checklist</link>
+      <guid isPermaLink="true">https://unlocksaas.com/launch-checklist</guid>
+      <description>Ten-step pre-revenue launch checklists, tuned per niche. Course creators, SaaS founders, agency owners, coaches, AI wrappers, and 7 other cohorts.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Mon, 22 Jun 2026 09:01:57 GMT</pubDate>
+    </item>
+    <item>
+      <title>How to Get Your First SaaS Customer — Step-by-Step Guides (Unlock SaaS) — Unlock SaaS</title>
+      <link>https://unlocksaas.com/how-to</link>
+      <guid isPermaLink="true">https://unlocksaas.com/how-to</guid>
+      <description>Step-by-step playbooks for getting your first paying customer. Cold DM, community, content marketing, free tiers — every channel with an actionable system.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sat, 20 Jun 2026 09:01:57 GMT</pubDate>
+    </item>
+    <item>
+      <title>Glossary – Hook, Story, Offer, Value Ladder, and 13 Other Brunson Terms — Unlock SaaS</title>
+      <link>https://unlocksaas.com/glossary</link>
+      <guid isPermaLink="true">https://unlocksaas.com/glossary</guid>
+      <description>Working definitions of the 16 sales-funnel concepts Unlock SaaS teaches, in the founder&#x27;s own words. Hook. Story. Offer. Big Domino. Value Ladder. Stack Slide. Perfect Webinar. Dream 100. Wrong Person, Weak Offer, Weak Belief.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Thu, 18 Jun 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/glossary/opengraph-image-k5mayy?d1ead6e84d4e3d66" medium="image"/>
+    </item>
+    <item>
+      <title>Funnel Teardowns — What Indie SaaS Founders Can Learn From the Best Marketing Pages — Unlock SaaS</title>
+      <link>https://unlocksaas.com/funnel-teardown</link>
+      <guid isPermaLink="true">https://unlocksaas.com/funnel-teardown</guid>
+      <description>Honest pattern-level teardowns of the funnels indie SaaS founders are already funnel-hacking. Hook, Story, Offer breakdowns through the Brunson lens, with what to adapt and what to skip.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Tue, 16 Jun 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>Brunson Funnel Playbooks (Tripwire, VSL, Webinar, OTO, Ladder) — Unlock SaaS</title>
+      <link>https://unlocksaas.com/funnel-playbook</link>
+      <guid isPermaLink="true">https://unlocksaas.com/funnel-playbook</guid>
+      <description>Step-by-step playbooks for the eight Brunson funnel archetypes: tripwire, VSL, challenge, Perfect Webinar, Soap Opera, OTO, Seinfeld Email, and Value Ladder.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Sun, 14 Jun 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>The Founding Cohort — $49/mo locked for life for the first 100 builders — Unlock SaaS</title>
+      <link>https://unlocksaas.com/founding</link>
+      <guid isPermaLink="true">https://unlocksaas.com/founding</guid>
+      <description>The first 100 builders get The Playbook at $49/mo, locked for the life of their subscription. After builder #100 the standard price is $79/mo. First paying customer verified by Stripe within 60 days or a full refund, enforced by code.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Fri, 12 Jun 2026 09:01:57 GMT</pubDate>
+      <media:content url="https://unlocksaas.com/opengraph-image" medium="image"/>
+    </item>
+    <item>
+      <title>Micro-SaaS Founders by City – 25 Local Scenes — Unlock SaaS</title>
+      <link>https://unlocksaas.com/founders-in</link>
+      <guid isPermaLink="true">https://unlocksaas.com/founders-in</guid>
+      <description>Geo landing pages for indie founders building micro-SaaS in 25 cities. Where the local scene meets, plus the free Hook / Story / Offer diagnostic.</description>
+      <dc:creator>UnlockSaaS</dc:creator>
+      <pubDate>Wed, 10 Jun 2026 09:01:57 GMT</pubDate>
     </item>
   </channel>
 </rss>
