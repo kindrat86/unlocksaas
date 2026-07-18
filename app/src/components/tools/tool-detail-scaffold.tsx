@@ -146,6 +146,40 @@ export function ToolDetailScaffold({
           {widget}
         </section>
 
+        {/* Embed this calculator — editorial backlink farm */}
+        <section
+          aria-labelledby="embed"
+          className="mb-12"
+        >
+          <Card className="border-border/60">
+            <CardHeader>
+              <CardTitle
+                id="embed"
+                className="text-sm font-semibold uppercase tracking-widest text-muted-foreground"
+              >
+                📋 Embed this calculator
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Copy this snippet into your blog post or article. The widget loads in
+                an iframe and includes a credit link back to UnlockSaaS.
+              </p>
+              <pre className="block overflow-x-auto rounded-md bg-muted p-3 text-xs font-mono leading-relaxed">
+{`<iframe src="https://unlocksaas.com/embed/tools/${tool.slug}.html" width="100%" height="380" style="border:none;border-radius:8px;" loading="lazy" title="${tool.title}"></iframe>`}
+              </pre>
+              <p className="text-xs text-muted-foreground">
+                <a
+                  href="/embed/"
+                  className="underline underline-offset-4 hover:text-foreground"
+                >
+                  See all embeddable widgets →
+                </a>
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
         <section
           aria-labelledby="faq"
           className="space-y-4 mb-12"
