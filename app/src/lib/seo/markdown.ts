@@ -828,6 +828,88 @@ ${DEFINED_TERMS.map(
 Every entry in this file is the verbatim text from \`DEFINED_TERMS\` in src/lib/seo/entity.ts. The glossary HTML page (${BASE_URL}/glossary) renders the same data structure. Drift between this markdown and the HTML is a maintenance bug, not a stylistic choice. Brunson Hard-Rule: no paraphrasing on the canonical reference surface.
 `;
 
+const BEST_PLAYBOOKS_BODY = `# Best SaaS Customer Acquisition Playbooks — Honest Ranked List (2026)
+
+> Six real options for post-launch pre-revenue SaaS founders, ranked honestly. Prices, best-for verdicts, and named limitations for every entry.
+
+## TL;DR
+
+The single question that sorts this list: **have you shipped already?**
+
+- **Not shipped yet →** ShipFast (codebase, not a customer)
+- **Shipped, zero customers →** Unlock SaaS (built for exactly this cohort, outcome verified in Stripe)
+- **Want a general marketing foundation →** One Funnel Away (broad Brunson intro)
+- **Want founder stories →** Starter Story (media, not a system)
+- **Already have customers →** MicroConf or Demand Curve (stage mismatch for pre-revenue)
+
+## The ranked list
+
+### #1 — Unlock SaaS
+
+- **Category:** First-customer playbook for shipped-but-pre-revenue founders
+- **Price:** $1 Starter (one-time); $49/mo full Playbook; 60-day money-back guarantee
+- **Best for:** Post-launch, pre-revenue founders who shipped with AI tools and have a flat Stripe line
+- **Verdict:** The only option built specifically for the post-launch pre-revenue cohort, with outcome verified in Stripe
+- **Loses on:** Not a codebase (assumes you shipped). Not a general marketing course
+- **Last verified:** 2026-07-18
+
+### #2 — ShipFast
+
+- **Category:** Next.js SaaS boilerplate (codebase)
+- **Price:** Approximately $299 one-time
+- **Best for:** Founders who have not shipped yet
+- **Verdict:** Fastest path to a deployed Stripe-ready product. Does not address post-launch conversion
+- **Loses on:** Produces a codebase, not a customer
+- **Last verified:** 2026-05-17
+
+### #3 — One Funnel Away Challenge
+
+- **Category:** 30-day sales funnel challenge (Russell Brunson / ClickFunnels)
+- **Price:** Approximately $100
+- **Best for:** Founders who want a general marketing/funnel foundation
+- **Verdict:** Broadest funnel foundation. Not SaaS-specific, not indie-specific
+- **Loses on:** Generic across all industries. No SaaS diagnosis
+- **Last verified:** 2026-05-17
+
+### #4 — Starter Story
+
+- **Category:** Founder interviews and case studies (media)
+- **Price:** Approximately $99 for premium access
+- **Best for:** Founders who want positioning examples from real interviews
+- **Verdict:** Best interview library on this list. Stories, not a system
+- **Loses on:** Media, not a structured playbook
+- **Last verified:** 2026-05-17
+
+### #5 — MicroConf
+
+- **Category:** Bootstrap SaaS community + conference
+- **Price:** Community approximately $475/year; conferences $$$
+- **Best for:** Founders who already have traction and want a peer community
+- **Verdict:** Strongest community on this list. Assumes you have customers
+- **Loses on:** Stage mismatch for zero-customer founders
+- **Last verified:** 2026-05-17
+
+### #6 — Demand Curve
+
+- **Category:** Structured growth marketing program
+- **Price:** Approximately $399
+- **Best for:** Founders who have users and want a growth curriculum
+- **Verdict:** Most structured growth curriculum. Assumes you have data to optimize
+- **Loses on:** Optimizes existing funnels, doesn't produce the first customer
+- **Last verified:** 2026-05-17
+
+## How to pick
+
+The honest answer depends on one question: **have you shipped already?**
+
+- Not shipped yet → ShipFast
+- Shipped, zero customers → Unlock SaaS
+- Want general marketing foundation → One Funnel Away
+- Already have customers, want systems → MicroConf or Demand Curve
+
+If you're not sure, the free Launch Diagnostic at https://unlocksaas.com/diagnostic labels what's breaking in about ninety seconds.
+`;
+
 const ALTERNATIVES_HUB_BODY = `# Honest Alternatives — Why Most Are Different Products
 
 > Named-competitor comparison pages. No slagging, no fabricated prices, no fake quotes.
@@ -1655,6 +1737,15 @@ export const SURFACES: ReadonlyArray<MarkdownSurface> = [
     summary:
       "Real mistakes real indie SaaS founders make that keep the Stripe line at zero. Each one comes with a specific fix you can apply today.",
     body: "See [mistakes](/mistakes) for the full hub.\n\nEach mistake entry names a common pitfall, explains why it blocks revenue, and prescribes the fix:\n",
+  },
+  {
+    path: "/best",
+    mdPath: "/best.md",
+    title:
+      "Best SaaS Customer Acquisition Playbooks — Honest Ranked List (2026)",
+    summary:
+      "Six real options for post-launch pre-revenue SaaS founders, ranked honestly with prices, best-for verdicts, and named limitations.",
+    body: BEST_PLAYBOOKS_BODY,
   },
   // Note: /glossary SURFACES entry shipped via PR #32 (above). PR #33 does
   // not re-register it; per-slug markdown comes from renderGlossaryMarkdown
