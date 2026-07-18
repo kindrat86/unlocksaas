@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Revenue Projector</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1.25rem;
+  }
+  .calc {
+    max-width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .calc h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; color: #f1f5f9; }
+  .calc .sub { font-size: 0.75rem; color: #94a3b8; margin-bottom: 1rem; }
+  .field { margin-bottom: 0.75rem; }
+  .field label {
+    display: block; font-size: 0.75rem; font-weight: 600; color: #94a3b8;
+    margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .field input {
+    width: 100%; padding: 0.5rem 0.75rem; background: #0f172a;
+    border: 1px solid #334155; border-radius: 8px; color: #e2e8f0;
+    font-size: 0.9rem; font-family: inherit; transition: border-color 0.15s;
+  }
+  .field input:focus { outline: none; border-color: #8b5cf6; box-shadow: 0 0 0 2px rgba(139,92,246,0.2); }
+  .field .unit { font-size: 0.7rem; color: #64748b; margin-top: 0.15rem; }
+  .result {
+    margin-top: 1rem; padding: 1rem;
+    background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(34,197,94,0.1));
+    border: 1px solid rgba(14,165,233,0.2); border-radius: 10px; text-align: center;
+  }
+  .result .mrr12 { font-size: 1.5rem; font-weight: 800; color: #38bdf8; }
+  .result .arr { font-size: 0.85rem; color: #94a3b8; margin-top: 0.15rem; }
+  .result .growth { font-size: 0.7rem; color: #64748b; margin-top: 0.5rem; }
+  table {
+    width: 100%; margin-top: 0.75rem; border-collapse: collapse; font-size: 0.7rem;
+  }
+  th, td { padding: 0.3rem 0.5rem; text-align: right; }
+  th { color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #334155; }
+  td { color: #94a3b8; border-bottom: 1px solid #1e293b; }
+  td:first-child, th:first-child { text-align: left; }
+  .brand { margin-top: 0.75rem; text-align: center; font-size: 0.65rem; color: #475569; }
+  .brand a { color: #8b5cf6; text-decoration: none; }
+  .brand a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="calc">
+  <h3>📊 Revenue Projector</h3>
+  <p class="sub">12-month forecast from current MRR</p>
+  <div class="field">
+    <label>Current MRR ($)</label>
+    <input type="number" id="mrr" value="5000" min="0" step="100">
+    <div class="unit">Your current monthly recurring revenue</div>
+  </div>
+  <div class="field">
+    <label>Monthly Growth Rate (%)</label>
+    <input type="number" id="growth" value="10" min="0" max="100" step="1">
+    <div class="unit">Assumed month-over-month growth</div>
+  </div>
+  <div class="result">
+    <div class="mrr12" id="mrr12-result">$15,692</div>
+    <div class="arr" id="arr-result">$188,309 ARR</div>
+    <div class="growth" id="mult-result">3.1× MRR in 12 months</div>
+    <table>
+      <thead><tr><th>Month</th><th>MRR</th><th>ARR</th></tr></thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+  <div class="brand">
+    Powered by <a href="https://unlocksaas.com/tools/revenue-projector" target="_blank" rel="noopener">UnlockSaaS Revenue Projector</a>
+  </div>
+</div>
+<script>
+const mrrEl = document.getElementById('mrr');
+const growthEl = document.getElementById('growth');
+function fmt(n) { return '$' + n.toLocaleString('en-US', {maximumFractionDigits:0}); }
+function calc() {
+  const mrr = parseFloat(mrrEl.value) || 0;
+  const growth = parseFloat(growthEl.value) || 0;
+  let current = mrr;
+  let rows = '';
+  for (let m = 1; m <= 12; m++) {
+    current = current * (1 + growth / 100);
+    rows += `<tr><td>Month ${m}</td><td>${fmt(current)}</td><td>${fmt(current * 12)}</td></tr>`;
+  }
+  document.getElementById('mrr12-result').textContent = fmt(current);
+  document.getElementById('arr-result').textContent = fmt(current * 12) + ' ARR';
+  document.getElementById('mult-result').textContent = (current / mrr).toFixed(1) + '× MRR in 12 months';
+  document.getElementById('table-body').innerHTML = rows;
+}
+mrrEl.addEventListener('input', calc);
+growthEl.addEventListener('input', calc);
+calc();
+</script>
+</body>
+</html>

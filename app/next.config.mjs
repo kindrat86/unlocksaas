@@ -436,15 +436,31 @@ const nextConfig = {
       // ── 3. Baseline security headers on every response ───────────────
       { source: "/:path*", headers: BASE_SECURITY_HEADERS },
 
-      // ── 4. CSP override for cross-origin-embeddable builder iframes ──
+      // ── 4. CSP override for cross-origin-embeddable iframes ──
       // Placed AFTER the baseline so the later-wins ordering rule replaces
       // the default `frame-ancestors 'none'` with `frame-ancestors *`.
+      // Builder badge embeds (Verified Builder program).
       {
         source: "/builder/:slug/embed",
         headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
       },
       {
         source: "/builder/:slug/embed.html",
+        headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
+      },
+      // Embed hub + widget pages — the editorial-backlink farm.
+      {
+        source: "/embed/:path*",
+        headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
+      },
+      // Network widget (cross-portfolio discovery widget, iframeable).
+      {
+        source: "/network/widget.html",
+        headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
+      },
+      // Cross-portfolio embeddable widgets.
+      {
+        source: "/widgets/:path*",
         headers: [{ key: "Content-Security-Policy", value: EMBED_CSP }],
       },
     ];

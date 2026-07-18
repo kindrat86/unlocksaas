@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embeddable Widgets – UnlockSaaS</title>
+<meta name="description" content="Free embeddable SaaS calculators and widgets for your blog or website. Copy-paste iframe snippets. No signup required.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://unlocksaas.com/embed/">
+<meta property="og:title" content="Embeddable SaaS Widgets – UnlockSaaS">
+<meta property="og:description" content="Free embeddable SaaS calculators and widgets. Copy, paste, earn editorial backlinks.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://unlocksaas.com/embed/">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    line-height: 1.6;
+  }
+  .container { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+  .subtitle { color: #94a3b8; font-size: 1.1rem; margin-bottom: 2.5rem; }
+  .widget-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .widget-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .widget-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem; }
+  .widget-card .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+  .badge-calc { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+  .badge-widget { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+  
+  .embed-preview {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .embed-preview iframe {
+    border: none;
+    width: 100%;
+    height: 320px;
+  }
+  .embed-code {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    position: relative;
+  }
+  .embed-code pre {
+    color: #cbd5e1;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    padding-right: 3rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.3rem 0.75rem;
+    background: #334155;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    color: #e2e8f0;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: #475569; }
+  .copy-btn.copied { background: #059669; border-color: #059669; }
+  
+  .why-embed {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 16px;
+  }
+  .why-embed h3 { font-size: 1.1rem; margin-bottom: 0.75rem; color: #c4b5fd; }
+  .why-embed ul { list-style: none; }
+  .why-embed li { padding: 0.3rem 0; color: #94a3b8; }
+  .why-embed li::before { content: "✓ "; color: #8b5cf6; font-weight: 700; }
+  
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #334155;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.8rem;
+  }
+  footer a { color: #8b5cf6; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Embeddable SaaS Widgets</h1>
+  <p class="subtitle">Free, no-signup widgets for your blog or website. Copy an iframe snippet, paste it into your article, and give your readers interactive tools that earn you editorial backlinks.</p>
+
+  <!-- CHURN COST CALCULATOR -->
+  <div class="widget-card" id="churn-cost">
+    <span class="badge badge-calc">Interactive Calculator</span>
+    <h2>📉 Monthly Churn Cost Calculator</h2>
+    <p>Your readers can compute how much revenue churn destroys each month. The number that makes founders fix their onboarding.</p>
+    <div class="embed-preview">
+      <iframe src="/embed/tools/churn-cost-calculator.html" loading="lazy" title="Churn Cost Calculator preview"></iframe>
+    </div>
+    <div class="embed-code">
+      <pre id="code-churn">&lt;iframe src="https://unlocksaas.com/embed/tools/churn-cost-calculator.html" width="100%" height="380" style="border:none;border-radius:8px;" loading="lazy" title="SaaS Churn Cost Calculator"&gt;&lt;/iframe&gt;</pre>
+      <button class="copy-btn" onclick="copyCode('code-churn', this)">Copy</button>
+    </div>
+  </div>
+
+  <!-- LTV CALCULATOR -->
+  <div class="widget-card" id="ltv">
+    <span class="badge badge-calc">Interactive Calculator</span>
+    <h2>💰 SaaS LTV Calculator</h2>
+    <p>Compute customer lifetime value from ARPU, gross margin, and monthly churn. The canonical David Skok formula.</p>
+    <div class="embed-preview">
+      <iframe src="/embed/tools/ltv-calculator.html" loading="lazy" title="LTV Calculator preview"></iframe>
+    </div>
+    <div class="embed-code">
+      <pre id="code-ltv">&lt;iframe src="https://unlocksaas.com/embed/tools/ltv-calculator.html" width="100%" height="380" style="border:none;border-radius:8px;" loading="lazy" title="SaaS LTV Calculator"&gt;&lt;/iframe&gt;</pre>
+      <button class="copy-btn" onclick="copyCode('code-ltv', this)">Copy</button>
+    </div>
+  </div>
+
+  <!-- REVENUE PROJECTOR -->
+  <div class="widget-card" id="revenue">
+    <span class="badge badge-calc">Interactive Calculator</span>
+    <h2>📊 Revenue Projector</h2>
+    <p>12-month revenue forecast from current MRR and growth assumptions. Pure browser math.</p>
+    <div class="embed-preview">
+      <iframe src="/embed/tools/revenue-projector.html" loading="lazy" title="Revenue Projector preview"></iframe>
+    </div>
+    <div class="embed-code">
+      <pre id="code-revenue">&lt;iframe src="https://unlocksaas.com/embed/tools/revenue-projector.html" width="100%" height="420" style="border:none;border-radius:8px;" loading="lazy" title="SaaS Revenue Projector"&gt;&lt;/iframe&gt;</pre>
+      <button class="copy-btn" onclick="copyCode('code-revenue', this)">Copy</button>
+    </div>
+  </div>
+
+  <!-- NETWORK WIDGET -->
+  <div class="widget-card" id="network">
+    <span class="badge badge-widget">Discovery Widget</span>
+    <h2>🔗 Related Tools Network Widget</h2>
+    <p>A cross-portfolio discovery widget linking to SaaS tools your readers might find useful. Dark-themed, zero JS, one iframe.</p>
+    <div class="embed-preview">
+      <iframe src="/network/widget.html" loading="lazy" title="Network widget preview" style="height:260px;"></iframe>
+    </div>
+    <div class="embed-code">
+      <pre id="code-network">&lt;iframe src="https://unlocksaas.com/network/widget.html" width="100%" height="260" style="border:none;border-radius:8px;" loading="lazy" title="Related SaaS Tools"&gt;&lt;/iframe&gt;</pre>
+      <button class="copy-btn" onclick="copyCode('code-network', this)">Copy</button>
+    </div>
+  </div>
+
+  <!-- WHY EMBED -->
+  <div class="why-embed">
+    <h3>Why embed these widgets?</h3>
+    <ul>
+      <li>They're free — no signup, no API key, no expiration</li>
+      <li>They're fast — static HTML, loads in under 200ms</li>
+      <li>Dark-mode by default, looks great on any blog</li>
+      <li>Each widget includes a small "Powered by UnlockSaaS" credit</li>
+      <li>Your readers get interactive tools without leaving your site</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="https://unlocksaas.com">UnlockSaaS</a> — Launch your SaaS in 60 days.</p>
+  </footer>
+</div>
+
+<script>
+function copyCode(id, btn) {
+  const pre = document.getElementById(id);
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

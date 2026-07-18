@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monthly Churn Cost Calculator</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1.25rem;
+  }
+  .calc {
+    max-width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .calc h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #f1f5f9;
+  }
+  .calc .sub {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+  .field {
+    margin-bottom: 0.75rem;
+  }
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .field input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  }
+  .field .unit {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 0.15rem;
+  }
+  .result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 10px;
+    text-align: center;
+  }
+  .result .monthly {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #f472b6;
+  }
+  .result .annual {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+  }
+  .result .formula {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'SF Mono', monospace;
+  }
+  .brand {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 0.65rem;
+    color: #475569;
+  }
+  .brand a {
+    color: #8b5cf6;
+    text-decoration: none;
+  }
+  .brand a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="calc">
+  <h3>📉 Monthly Churn Cost</h3>
+  <p class="sub">How much revenue evaporates each month?</p>
+
+  <div class="field">
+    <label>Customers</label>
+    <input type="number" id="customers" value="100" min="1" step="1">
+    <div class="unit">Current paying customers</div>
+  </div>
+
+  <div class="field">
+    <label>Monthly Churn Rate (%)</label>
+    <input type="number" id="churn" value="5" min="0" max="100" step="0.1">
+    <div class="unit">% of customers who cancel each month</div>
+  </div>
+
+  <div class="field">
+    <label>ARPU ($)</label>
+    <input type="number" id="arpu" value="49" min="0" step="1">
+    <div class="unit">Average revenue per user per month</div>
+  </div>
+
+  <div class="result">
+    <div class="monthly" id="monthly-result">$245</div>
+    <div class="annual" id="annual-result">$2,940/year</div>
+    <div class="formula">Customers × Churn% × ARPU</div>
+  </div>
+
+  <div class="brand">
+    Powered by <a href="https://unlocksaas.com/tools/churn-cost-calculator" target="_blank" rel="noopener">UnlockSaaS Churn Cost Calculator</a>
+  </div>
+</div>
+
+<script>
+const customersEl = document.getElementById('customers');
+const churnEl = document.getElementById('churn');
+const arpuEl = document.getElementById('arpu');
+const monthlyEl = document.getElementById('monthly-result');
+const annualEl = document.getElementById('annual-result');
+
+function formatUSD(n) { return '$' + n.toLocaleString('en-US', {maximumFractionDigits: 0}); }
+
+function calc() {
+  const customers = parseFloat(customersEl.value) || 0;
+  const churnPct = parseFloat(churnEl.value) || 0;
+  const arpu = parseFloat(arpuEl.value) || 0;
+  const monthly = customers * (churnPct / 100) * arpu;
+  const annual = monthly * 12;
+  monthlyEl.textContent = formatUSD(monthly);
+  annualEl.textContent = formatUSD(annual) + '/year';
+}
+
+customersEl.addEventListener('input', calc);
+churnEl.addEventListener('input', calc);
+arpuEl.addEventListener('input', calc);
+calc();
+</script>
+</body>
+</html>
