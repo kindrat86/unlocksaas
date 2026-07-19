@@ -877,7 +877,9 @@ function buildPlaybookProductJson(opts?: {
     "Read-only MCP server exposing diagnostic, Playbook, and offer tools",
     "Affiliate program at 50% lifetime revenue share on /r/<code> tracking",
   ].join(", "),
-  softwareVersion: "2026-Q2",
+  softwareVersion: "2026-Q3",
+  datePublished: "2026-05-17",
+  dateModified: "2026-07-19",
   // areaServed: explicit "Worldwide" declaration on the Product /
   // SoftwareApplication / LearningResource node. Mirrors Service.areaServed
   // (diagnostic) and Organization.areaServed. The Brunson Hard-Rule check
@@ -1741,7 +1743,7 @@ const EDITORIAL_POLICY_JSON = JSON.stringify({
     "How Unlock SaaS sources, dates, signs, and corrects every public claim. Editorial standards, financial disclosures, and the running corrections log.",
   url: `${BASE}/editorial-policy`,
   datePublished: "2026-05-17",
-  dateModified: "2026-05-21",
+  dateModified: "2026-07-19",
   inLanguage: "en-US",
   isPartOf: { "@id": ID.website },
   publisher: { "@id": ID.organization },
@@ -3236,7 +3238,7 @@ const CLAIM_REVIEW_JSON = JSON.stringify({
     author: { "@id": ID.person },
   },
   datePublished: "2026-05-17",
-  dateModified: "2026-05-21",
+  dateModified: "2026-07-19",
   inLanguage: "en-US",
 });
 
