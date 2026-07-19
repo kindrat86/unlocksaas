@@ -1,0 +1,27 @@
+SaaS Category,Median Monthly Price,Price Range Low,Price Range High,Pricing Model,Free Tier,Typical Customer,ARR Per Customer,Churn Impact
+Project Management,$25,$9,$99,Per user,Yes (5 users),$300,Medium
+CRM,$45,$15,$300,Per user,Yes (3 users),$540,High
+Email Marketing,$49,$15,$500,Tiered usage,Yes (500 contacts),$588,Low
+Help Desk,$39,$19,$199,Per agent,Yes (3 agents),$468,Medium
+Analytics/BI,$99,$29,$999,Tiered usage,Yes (limited),$1,188,Low
+Marketing Automation,$149,$49,$1,500,Tiered usage,Yes (limited),$1,788,Medium
+Accounting/Invoicing,$29,$9,$199,Flat,Yes (limited)$348,Low
+File Sharing/Storage,$15,$5,$50,Per user,Yes (5GB),$180,Low
+Team Communication,$8,$4,$25,Per user,Yes (limited),$96,Low
+HR/Payroll,$49,$25,$300,Per employee,No,$588,Low
+DevTools/CI-CD,$30,$9,$300,Per user,Yes (limited),$360,Medium
+Social Media Management,$59,$19,$499,Tiered usage,Yes (limited),$708,Medium
+Video Hosting,$49,$15,$500,Tiered storage,Yes (limited)$588,Low
+Design/Prototyping,$45,$15,$200,Per user,Yes (limited)$540,Medium
+Forms & Surveys,$39,$15,$300,Tiered usage,Yes (limited)$468,Low
+Website Builder,$29,$9,$200,Flat,Yes (limited)$348,Medium
+Booking/Scheduling,$25,$9,$150,Flat,Yes (limited)$300,Low
+E-commerce Platform,$79,$29,$500,Tiered usage,Yes (limited)$948,Low
+SMS/WhatsApp Marketing,$59,$19,$999,Per message,Yes (limited)$708,Medium
+Knowledge Base/Wiki,$15,$5,$99,Per user,Yes (5 users)$180,Low
+CMS,$49,$19,$500,Flat,Yes (limited)$588,Low
+Sales Enablement,$99,$29,$999,Per user,No,$1,188,Medium
+AB Testing,$199,$49,$1,500,Tiered usage,No,$2,388,Low
+Monitoring/Uptime,$30,$9,$500,Per server,Yes (1 server)$360,Low
+Security/Compliance,$199,$49,$999,Per user,No,$2,388,Low
+Source: Pricing analysis of 200+ SaaS products, 2024-2026. Median prices reflect published standard tier pricing. CC BY 4.0. Cite as: UnlockSaaS (unlocksaas.com), "SaaS Pricing Benchmarks by Category", 2026.
