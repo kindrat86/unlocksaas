@@ -1,0 +1,64 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "UnlockSaaS",
+  "description": "SaaS launch toolkit and indie hacker community. Alternatives directory, launch checklist, revenue projector, LTV calculator, churn cost calculator, and the SaaS playbook.",
+  "home_page_url": "https://unlocksaas.com/",
+  "feed_url": "https://unlocksaas.com/feed.json",
+  "language": "en",
+  "authors": [
+    {
+      "name": "UnlockSaaS",
+      "url": "https://unlocksaas.com"
+    }
+  ],
+  "items": [
+    {
+      "id": "https://unlocksaas.com/",
+      "url": "https://unlocksaas.com/",
+      "title": "UnlockSaaS — Ship Your SaaS Faster",
+      "content_text": "SaaS launch toolkit: alternatives directory, launch checklist, revenue/LTV/churn calculators, and the SaaS playbook for indie hackers.",
+      "date_published": "2026-07-18T00:00:00Z",
+      "authors": [{ "name": "UnlockSaaS" }]
+    },
+    {
+      "id": "https://unlocksaas.com/pricing-teardown",
+      "url": "https://unlocksaas.com/pricing-teardown",
+      "title": "Pricing Teardown — founder-friendly UnlockSaaS plans",
+      "content_text": "UnlockSaaS pricing teardown — founder-friendly plans for indie SaaS builders.",
+      "date_published": "2026-07-17T00:00:00Z",
+      "authors": [{ "name": "UnlockSaaS" }]
+    },
+    {
+      "id": "https://unlocksaas.com/tools/ltv-calculator",
+      "url": "https://unlocksaas.com/tools/ltv-calculator",
+      "title": "SaaS LTV Calculator — free, no signup",
+      "content_text": "Compute customer lifetime value from ARPU, gross margin, and monthly churn. Pure browser math, no email gate. The canonical David Skok formula every SaaS investor uses.",
+      "date_published": "2026-07-16T00:00:00Z",
+      "authors": [{ "name": "UnlockSaaS" }]
+    },
+    {
+      "id": "https://unlocksaas.com/tools/churn-cost-calculator",
+      "url": "https://unlocksaas.com/tools/churn-cost-calculator",
+      "title": "Monthly Churn Cost Calculator — free, no signup",
+      "content_text": "See how much revenue churn destroys every month at your current customer count and ARPU. Pure browser math.",
+      "date_published": "2026-07-15T00:00:00Z",
+      "authors": [{ "name": "UnlockSaaS" }]
+    },
+    {
+      "id": "https://unlocksaas.com/alternatives-to",
+      "url": "https://unlocksaas.com/alternatives-to",
+      "title": "Alternatives Directory — compare SaaS tools",
+      "content_text": "Compare SaaS tools vs Notion, Airtable, Lovable, Replit, v0, Cursor, ClickUp, Framer, ShipFast.",
+      "date_published": "2026-07-14T00:00:00Z",
+      "authors": [{ "name": "UnlockSaaS" }]
+    },
+    {
+      "id": "https://unlocksaas.com/starter",
+      "url": "https://unlocksaas.com/starter",
+      "title": "SaaS Launch Checklist",
+      "content_text": "Step-by-step checklist to launch your SaaS — from first commit to first paying customer.",
+      "date_published": "2026-07-13T00:00:00Z",
+      "authors": [{ "name": "UnlockSaaS" }]
+    }
+  ]
+}

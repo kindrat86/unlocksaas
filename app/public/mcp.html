@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UnlockSaaS MCP Server — Install in Claude, Cursor, Windsurf</title>
+<meta name="description" content="UnlockSaaS MCP server. Free SaaS unit-economics tools (LTV, churn cost, revenue projection) callable from Claude Desktop, Cursor, and Windsurf. No auth. Stateful HTTP transport.">
+<link rel="canonical" href="https://unlocksaas.com/mcp">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"UnlockSaaS MCP Server","applicationCategory":"DeveloperApplication","operatingSystem":"Any","url":"https://unlocksaas.com/mcp","downloadUrl":"https://unlocksaas.com/api/mcp","description":"Free SaaS unit-economics MCP server: LTV, churn cost, and revenue projection calculators callable from any MCP client.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 2rem 1rem; line-height: 1.6; }
+.container { max-width: 760px; margin: 0 auto; }
+.badge { display: inline-block; background: #EC4899; color: #fff; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; margin-bottom: 1rem; letter-spacing: 0.02em; }
+h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 0.5rem; }
+h1 span { color: #EC4899; }
+p.lede { color: #94a3b8; margin-bottom: 1.5rem; font-size: 1.05rem; }
+h2 { font-size: 1.25rem; font-weight: 600; margin: 2.25rem 0 0.75rem; color: #f1f5f9; border-bottom: 1px solid #1e293b; padding-bottom: 0.4rem; }
+.endpoint { background: #1e293b; border: 1px solid #334155; border-left: 3px solid #EC4899; border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.9rem; color: #e2e8f0; word-break: break-all; }
+pre { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 1rem; overflow-x: auto; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.85rem; color: #e2e8f0; line-height: 1.55; margin: 0.75rem 0; }
+code { color: #f8bbd0; }
+.tool { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; }
+.tool h3 { font-size: 0.95rem; font-weight: 600; color: #f1f5f9; }
+.tool h3 code { color: #EC4899; font-family: 'SF Mono', monospace; font-size: 0.9rem; }
+.tool p { color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem; }
+ul { padding-left: 1.25rem; color: #94a3b8; font-size: 0.9rem; }
+ul li { margin-bottom: 0.4rem; }
+a { color: #EC4899; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #1e293b; text-align: center; color: #64748b; font-size: 0.85rem; }
+.footer a { color: #94a3b8; }
+.note { background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.25); border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.85rem; color: #cbd5e1; margin: 1rem 0; }
+</style>
+</head>
+<body>
+<div class="container">
+<span class="badge">MCP Server · Free · No auth</span>
+<h1>UnlockSaaS <span>MCP Server</span></h1>
+<p class="lede">Call UnlockSaaS SaaS unit-economics calculators from Claude Desktop, Cursor, or Windsurf. One endpoint. Stateless Streamable HTTP. No API key.</p>
+
+<div class="endpoint">https://unlocksaas.com/api/mcp</div>
+
+<p class="note">All three tools are pure functions of public SaaS-finance formulas (David Skok / Bessemer / Tunguz). No sign-up, no email gate — the same math the $49 Playbook walks through.</p>
+
+<h2>Install in Claude Desktop</h2>
+<p style="color:#94a3b8;font-size:0.9rem;margin-bottom:0.5rem">Add to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS):</p>
+<pre><code>{
+  "mcpServers": {
+    "unlocksaas": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://unlocksaas.com/api/mcp"]
+    }
+  }
+}</code></pre>
+
+<h2>Install in Cursor</h2>
+<p style="color:#94a3b8;font-size:0.9rem;margin-bottom:0.5rem">Add to <code>.cursor/mcp.json</code> in your project root:</p>
+<pre><code>{
+  "mcpServers": {
+    "unlocksaas": {
+      "url": "https://unlocksaas.com/api/mcp"
+    }
+  }
+}</code></pre>
+
+<h2>Install in Windsurf</h2>
+<p style="color:#94a3b8;font-size:0.9rem;margin-bottom:0.5rem">Settings → MCP Servers → Add new MCP server → Type: <code>url</code>:</p>
+<pre><code>{
+  "mcpServers": {
+    "unlocksaas": {
+      "serverUrl": "https://unlocksaas.com/api/mcp"
+    }
+  }
+}</code></pre>
+
+<h2>Inspect / debug</h2>
+<pre><code>npx @modelcontextprotocol/inspector https://unlocksaas.com/api/mcp</code></pre>
+
+<h2>Available tools (3)</h2>
+
+<div class="tool">
+<h3><code>get_ltv</code></h3>
+<p>Customer lifetime value from ARPU, gross margin, and monthly churn. LTV = (ARPU × Gross Margin) / Monthly Churn.</p>
+</div>
+
+<div class="tool">
+<h3><code>get_churn_cost</code></h3>
+<p>Monthly revenue lost to churn from MRR, churn rate, and optional customer count. Returns lost MRR, annualized loss, and per-customer cost.</p>
+</div>
+
+<div class="tool">
+<h3><code>project_revenue</code></h3>
+<p>Project SaaS revenue forward from current MRR and a monthly growth rate. Returns a month-by-month series.</p>
+</div>
+
+<h2>Try it</h2>
+<pre><code>curl -X POST https://unlocksaas.com/api/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"get_ltv","arguments":{"arpu":49,"gross_margin":0.85,"monthly_churn":0.05}}}'}</code></pre>
+
+<h2>Discovery</h2>
+<ul>
+<li><a href="/.well-known/mcp.json">/.well-known/mcp.json</a> — MCP discovery manifest</li>
+<li><a href="/api/mcp">GET /api/mcp</a> — live server manifest</li>
+<li><a href="/feed.json">/feed.json</a> — JSON Feed</li>
+<li><a href="/tools">/tools</a> — interactive browser calculators</li>
+</ul>
+
+<div class="footer">
+<p><a href="https://unlocksaas.com">← Back to UnlockSaaS</a> · The SaaS launch toolkit for indie hackers</p>
+</div>
+</div>
+<!-- BRUNSON TRUST BAR -- idempotency:trust-bar-v1 -->
+<section class="brunson-trust-bar" style="background:linear-gradient(135deg, #0f172a, #1e293b);color:#e8eaed;padding:40px 24px;margin:60px 0 0;border-top:3px solid #00d4aa;text-align:center;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:28px;margin-bottom:28px">
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">60 days</span><br><span style="font-size:.82rem;color:#94a3b8">To First Paying Customer</span></div>
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">7 steps</span><br><span style="font-size:.82rem;color:#94a3b8">Proven Playbook</span></div>
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">100%</span><br><span style="font-size:.82rem;color:#94a3b8">Money-Back Guarantee</span></div>
+      <div><span style="font-size:1.6rem;font-weight:700;color:#00d4aa">$49</span><br><span style="font-size:.82rem;color:#94a3b8">Founding Price /mo</span></div>
+    </div>
+    <p style="font-size:1.05rem;margin-bottom:24px;color:#cbd5e1">You shipped. Nobody paid. The playbook breaks the pattern or the code refunds you automatically.</p>
+    <a href="https://unlocksaas.com/diagnostic" style="display:inline-block;background:linear-gradient(135deg,#00d4aa,#2deec0);color:#04130e;padding:14px 32px;border-radius:12px;font-weight:700;text-decoration:none;font-size:.95rem;box-shadow:0 8px 24px -10px rgba(0,212,170,.5)">Get Free Diagnosis</a>
+    <p style="margin-top:18px;font-size:.78rem;color:#6b7178">Refund enforced by Stripe webhook, not a support ticket. 100% automated.</p>
+  </div>
+</section>
+
+</body>
+</html>
