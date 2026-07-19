@@ -151,6 +151,25 @@ export async function proxy(request: NextRequest) {
   // markdown mirrors, feeds, manifests, dataset assets, and similar URLs do
   // not receive Supabase refresh cookies or sticky A/B attribution cookies.
   if (isMachineReadablePath(originalPathname)) {
+    // ── CSP override for cross-origin-embeddable iframes ─────────────
+    // Editorial-backlink widget farm. /embed/*, /network/widget.html,
+    // /widgets/* MUST be iframeable so bloggers can embed the UnlockSaaS
+    // calculators (with "Powered by UnlockSaaS" credit link) and earn us
+    // genuine inbound links. These .html paths land in this branch via
+    // MACHINE_READABLE_FILE_EXT_RE; we must apply the override HERE before
+    // the early return, because the main response-shaping block below is
+    // never reached.
+    const EMBED_PATH_RE =
+      /^\/(?:embed|network\/widget\.html|widgets)(?:\/|$)/;
+    if (EMBED_PATH_RE.test(originalPathname)) {
+      const embedResponse = NextResponse.next();
+      embedResponse.headers.set(
+        "Content-Security-Policy",
+        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *",
+      );
+      embedResponse.headers.delete("X-Frame-Options");
+      return embedResponse;
+    }
     return NextResponse.next();
   }
 
@@ -288,6 +307,26 @@ export async function proxy(request: NextRequest) {
       secure: true,
       path: "/",
     });
+  }
+
+  // ── CSP override for cross-origin-embeddable iframes ─────────────────
+  // The editorial-backlink widget farm: /embed/*, /network/widget.html,
+  // /widgets/* MUST be iframeable from any origin so bloggers can embed
+  // UnlockSaaS calculators (with a "Powered by UnlockSaaS" credit link) and
+  // earn us genuine inbound links. The baseline CSP sets frame-ancestors
+  // 'none' everywhere; the vercel.json + next.config.mjs header overrides
+  // proved unreliable (Next's terminal catch-all route overwrites them in
+  // the Build Output config). Middleware is the final authority — its
+  // response.headers overwrite whatever the framework/route produced.
+  // See skill: authority-backlink-building.
+  const EMBED_PATH_RE =
+    /^\/(?:embed|network\/widget\.html|widgets)(?:\/|$)/;
+  if (EMBED_PATH_RE.test(originalPathname)) {
+    response.headers.set(
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors *",
+    );
+    response.headers.delete("X-Frame-Options");
   }
 
   setCanonicalLinkHeader(response, originalPathname);
