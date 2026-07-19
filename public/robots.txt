@@ -1,0 +1,9 @@
+User-Agent: *
+Allow: /
+
+max-image-preview:large
+max-video-preview:-1
+max-snippet:-1
+
+Sitemap: https://unlocksaas.com/sitemap.xml
+Sitemap: https://unlocksaas.com/image-sitemap.xml

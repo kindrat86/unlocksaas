@@ -31,10 +31,7 @@ import { SignatureFooter } from "@/components/blocks/signature-footer";
 import { ExitIntentPopup } from "@/components/exit-intent-popup";
 import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
-  DefinedTermSetJsonLd,
-  FaqPageJsonLd,
   FounderVslAudioJsonLd,
-  PersonJsonLd,
   SoftwareApplicationJsonLd,
 } from "@/components/seo/json-ld";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
@@ -563,10 +560,14 @@ async function FunnelHubBody() {
         surfaces that need the founder reference @id instead of
         inlining the full Person block.
       */}
-      <PersonJsonLd />
+      {/* Person, SoftwareApplication, FAQPage, and DefinedTermSet JSON-LD
+          moved to their canonical pages (/about, /glossary, /faq) —
+          saved ~15KB on homepage payload. The homepage was shipping 6
+          distinct JSON-LD blocks (~26KB total) vs. just Organization +
+          WebSite (~7KB) from the layout. Only SoftwareApplication and
+          BreadcrumbList stay — these are genuinely page-level declarations.
+          AEO 2026-07-19 page-weight audit. */}
       <SoftwareApplicationJsonLd />
-      <FaqPageJsonLd items={HOMEPAGE_FAQS} />
-      <DefinedTermSetJsonLd />
       {/* Homepage breadcrumb (2026-07-06 audit) — single-item trail for the
           root URL. Google requires BreadcrumbList on content pages; the
           homepage self-references as the root crumb. */}
