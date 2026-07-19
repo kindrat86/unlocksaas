@@ -112,7 +112,7 @@ export const metadata: Metadata = {
     template: "%s — Unlock SaaS",
   },
   description:
-    "A playbook that turns your already-shipped product into a verified paying customer with zero fluff. If it does not deliver a customer, you do not pay.",
+    "A 7-step playbook that turns your already-shipped SaaS into a verified paying customer in 60 days — or your money back, enforced by code, not a ticket.",
   applicationName: "Unlock SaaS",
   authors: [{ name: "Maryan", url: "https://unlocksaas.com/about" }],
   creator: "Maryan",
@@ -151,7 +151,7 @@ export const metadata: Metadata = {
     siteName: "Unlock SaaS",
     title: "Unlock SaaS — Land Your First Paying Customer in 60 Days",
     description:
-      "A playbook that turns your already-shipped product into a verified paying customer with zero fluff. If it does not deliver a customer, you do not pay.",
+      "A 7-step playbook that turns your already-shipped SaaS into a verified paying customer in 60 days — or your money back, enforced by code, not a ticket.",
     url: "/",
     locale: "en_US",
   },
@@ -159,7 +159,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Unlock SaaS — Land Your First Paying Customer in 60 Days",
     description:
-      "A playbook that turns your already-shipped product into a verified paying customer with zero fluff. If it does not deliver a customer, you do not pay.",
+      "A 7-step playbook that turns your already-shipped SaaS into a verified paying customer in 60 days — or your money back, enforced by code, not a ticket.",
     creator: "@maryan",
   },
 };
