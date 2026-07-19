@@ -42,6 +42,7 @@ const FOOTER_LINKS = {
     { href: "/dont-buy-unlock-saas", label: "Don't buy this" },
     { href: "/builders", label: "Verified Builders" },
     { href: "/bridge", label: "Came from a cold ad?" },
+    { href: "https://x.com/sipiteno", label: "X / Twitter" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy" },
