@@ -340,6 +340,7 @@ const nextConfig = {
       "form-action 'self' https://connect.stripe.com",
       "frame-ancestors 'none'",
       "upgrade-insecure-requests",
+      "require-trusted-types-for 'script'",
     ].join("; ");
 
     // CSP override for /builder/<slug>/embed* — these routes MUST be
@@ -373,6 +374,8 @@ const nextConfig = {
           "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), interest-cohort=()",
       },
       { key: "Content-Security-Policy", value: STRICT_CSP },
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
     ];
 
     const NOINDEX_HEADERS = [
