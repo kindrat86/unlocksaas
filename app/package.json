@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/build-workbook-bundle.mjs",
     "build": "next build",
+    "postbuild": "node scripts/postbuild-csp.mjs",
     "audit:prod": "npm audit --omit=dev --audit-level=low",
     "audit:crawlers": "node scripts/audit-crawler-citation.mjs",
     "start": "next start",
