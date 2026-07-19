@@ -21,7 +21,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { cn } from "@/lib/utils";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
-import { PostHogPageView } from "@/components/analytics/posthog-pageview";
+import { PostHogPageViewClient } from "@/components/analytics/posthog-pageview-client";
 import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { buildVerification } from "@/lib/seo/verification";
@@ -173,6 +173,20 @@ export default function RootLayout({
     <html lang="en-US" className={cn(GeistSans.variable, GeistMono.variable)}>
       <head>
         {/*
+          Register a Trusted Types default policy. The CSP enforces
+          require-trusted-types-for 'script' (added in the recent CSP
+          hardening pass) with no policy ever registered, which blocks
+          Next.js's own runtime script-loading (chunk loader assigns
+          script.src as a plain string) and stalls hydration entirely —
+          confirmed live as a full white-screen. Must run before any
+          other script, including Next's own inline hydration scripts.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(window.trustedTypes&&window.trustedTypes.createPolicy){window.trustedTypes.createPolicy('default',{createHTML:function(s){return s},createScript:function(s){return s},createScriptURL:function(s){return s}});}`,
+          }}
+        />
+        {/*
           Connection hints – see THIRD_PARTY_ORIGINS at the top of this file
           for the per-origin rationale (preconnect vs dns-prefetch, why
           Resend is excluded, Brunson Hard-Rule on env-driven hosts).
@@ -206,7 +220,7 @@ export default function RootLayout({
           <SkipToContent />
           {/* PageView lives in Suspense because useSearchParams forces CSR. */}
           <Suspense fallback={null}>
-            <PostHogPageView />
+            <PostHogPageViewClient />
           </Suspense>
           {/*
             Core Web Vitals + Next custom-timing beacon. Reports LCP, INP,

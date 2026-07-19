@@ -96,7 +96,7 @@ export function ExitIntentPopup() {
           type="button"
           onClick={close}
           aria-label="Close"
-          className="absolute right-3 top-3 h-8 w-8 rounded-full grid place-items-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          className="absolute right-3 top-3 h-11 w-11 rounded-full grid place-items-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
           <span aria-hidden="true" className="text-lg leading-none">
             ×

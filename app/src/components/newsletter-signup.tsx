@@ -107,7 +107,11 @@ export function NewsletterSignup({
         autoComplete="off"
         aria-hidden="true"
       />
+      <label htmlFor="newsletter-email" className="sr-only">
+        Email address
+      </label>
       <Input
+        id="newsletter-email"
         type="email"
         inputMode="email"
         autoComplete="email"
@@ -116,6 +120,8 @@ export function NewsletterSignup({
         onChange={(e) => setEmail(e.target.value)}
         disabled={state.kind === "submitting"}
         required
+        aria-invalid={state.kind === "error"}
+        aria-describedby={state.kind === "error" ? "newsletter-email-error" : undefined}
       />
       <Button
         type="submit"
@@ -126,7 +132,7 @@ export function NewsletterSignup({
         {state.kind === "submitting" ? "Subscribing..." : submitLabel}
       </Button>
       {state.kind === "error" && (
-        <p className="text-xs text-destructive text-left">{state.message}</p>
+        <p id="newsletter-email-error" role="alert" className="text-xs text-destructive text-left">{state.message}</p>
       )}
       <p className="text-xs text-muted-foreground text-left">
         Five emails over five days. Reply STOP anytime. No spam, ever.
