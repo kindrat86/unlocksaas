@@ -4,6 +4,10 @@
     {
       "source": "/mcp",
       "destination": "/mcp.html"
+    },
+    {
+      "source": "/related-tools",
+      "destination": "/related-tools.html"
     }
   ],
   "redirects": [

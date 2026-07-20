@@ -1,10 +1,9 @@
 {
   "protocolVersion": "0.3.0",
   "name": "UnlockSaaS Agent",
-  "description": "UnlockSaaS is a SaaS launch toolkit and community. Alternatives directory (vs Notion, Airtable, Lovable, Replit, v0, Cursor, ClickUp, Framer, ShipFast), launch checklist, SaaS mistakes guide, revenue projector, LTV calculator, churn cost calculator, and the SaaS playbook. Founder stories and a press",
-  "url": "https://unlocksaas.com",
+  "description": "SaaS launch toolkit and community. Alternatives directory, launch checklist, SaaS mistakes guide, revenue projector, LTV calculator, churn cost calculator, and SaaS playbook.",
+  "url": "https://unlocksaas.com/api/a2a",
   "preferredTransport": "JSONRPC",
-  "iconUrl": "https://unlocksaas.com/icon.png",
   "version": "1.0.0",
   "capabilities": {
     "streaming": false,
@@ -22,43 +21,48 @@
   "skills": [
     {
       "id": "get_churn_cost",
-      "name": "Get Churn Cost",
+      "name": "Calculate Churn Cost",
       "description": "Calculate the cost of SaaS churn based on MRR, churn rate, and CAC.",
       "tags": [
-        "saas launcher",
-        "ship saas",
-        "indie hackers",
-        "saas alternatives",
-        "saas calculator"
+        "saas",
+        "churn",
+        "metrics",
+        "calculator"
       ],
-      "examples": []
+      "examples": [
+        "What's my churn cost?",
+        "How much is churn costing me?"
+      ]
     },
     {
       "id": "get_ltv",
-      "name": "Get Ltv",
-      "description": "Calculate customer lifetime value (LTV) for a SaaS business from ARPU, gross margin, and churn rate.",
+      "name": "Calculate LTV",
+      "description": "Calculate customer lifetime value (LTV) from ARPU, gross margin, and churn rate.",
       "tags": [
-        "saas launcher",
-        "ship saas",
-        "indie hackers",
-        "saas alternatives",
-        "saas calculator"
+        "saas",
+        "ltv",
+        "metrics",
+        "calculator"
       ],
-      "examples": []
+      "examples": [
+        "Calculate my LTV",
+        "What's my customer lifetime value?"
+      ]
     },
     {
       "id": "project_revenue",
       "name": "Project Revenue",
       "description": "Project SaaS revenue 12 months forward from current MRR and growth assumptions.",
       "tags": [
-        "saas launcher",
-        "ship saas",
-        "indie hackers",
-        "saas alternatives",
-        "saas calculator"
+        "saas",
+        "revenue",
+        "projection",
+        "calculator"
       ],
-      "examples": []
+      "examples": [
+        "Project my revenue",
+        "Forecast MRR growth"
+      ]
     }
-  ],
-  "attribution": "UnlockSaaS, https://unlocksaas.com"
+  ]
 }

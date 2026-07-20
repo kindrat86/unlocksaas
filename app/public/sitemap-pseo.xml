@@ -25,4 +25,6 @@
   <url><loc>https://unlocksaas.com/vs/shipfast</loc><lastmod>2026-07-18</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://unlocksaas.com/vs/unlocksaas-vs-indie-hackers</loc><lastmod>2026-07-18</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://unlocksaas.com/vs/unlocksaas-vs-microconf</loc><lastmod>2026-07-18</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <!-- Data assets -->
+  <url><loc>https://unlocksaas.com/data/saas-pricing-benchmarks</loc><lastmod>2026-07-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
