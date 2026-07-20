@@ -198,6 +198,17 @@ const nextConfig = {
     root: appRoot,
   },
 
+  /** Standard /pricing URL redirect (revenue fix: pricing lives at /pricing-teardown) */
+  async redirects() {
+    return [
+      {
+        source: "/pricing",
+        destination: "/pricing-teardown",
+        permanent: false,
+      },
+    ];
+  },
+
   poweredByHeader: false,
 
   /**
