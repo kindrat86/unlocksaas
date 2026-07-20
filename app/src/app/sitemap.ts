@@ -1240,6 +1240,71 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.55,
       alternates: hreflang(`${base}/tools/${slug}`),
     })),
+
+    // ---------------------------------------------------------------------
+    // Embeddable widget tools — editorial backlink play (2026-07-21).
+    // Each tool is a self-contained HTML page in public/embed/tools/ that
+    // any blog or website can iframe-embed. The embed hub page at /embed/
+    // plus each tool page earn editorial backlinks from SaaS blogs,
+    // founder landing pages, and investor updates. Every embed is one
+    // permanent contextual backlink (Codecov/WakaTime viral model).
+    //
+    // The SaaS Health Score (new 2026-07-21) is the anchor tool —
+    // founders compute a composite grade from 5 metrics and get an
+    // embeddable badge for their own landing page. Each embedded badge
+    // links back to unlocksaas.com.
+    // ---------------------------------------------------------------------
+    // Embed hub — widget gallery with copy-paste iframe snippets
+    {
+      url: `${base}/embed/`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
+      alternates: hreflang(`${base}/embed/`),
+    },
+    // Individual embeddable tool pages
+    {
+      url: `${base}/embed/tools/saas-health-score.html`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+      alternates: hreflang(`${base}/embed/tools/saas-health-score.html`),
+    },
+    {
+      url: `${base}/embed/tools/churn-cost-calculator.html`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/embed/tools/churn-cost-calculator.html`),
+    },
+    {
+      url: `${base}/embed/tools/ltv-calculator.html`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/embed/tools/ltv-calculator.html`),
+    },
+    {
+      url: `${base}/embed/tools/revenue-projector.html`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.55,
+      alternates: hreflang(`${base}/embed/tools/revenue-projector.html`),
+    },
+    {
+      url: `${base}/embed/tools/saas-launch-readiness.html`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/embed/tools/saas-launch-readiness.html`),
+    },
+    {
+      url: `${base}/embed/tools/portfolio-network.html`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.45,
+      alternates: hreflang(`${base}/embed/tools/portfolio-network.html`),
+    },
     {
       url: `${base}/contact`,
       lastModified: now,

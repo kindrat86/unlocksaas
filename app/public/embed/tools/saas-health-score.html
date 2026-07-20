@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Health Score — Interactive Diagnostic</title>
+<meta name="description" content="Compute your SaaS Health Score from 5 metrics. Get an embeddable badge for your landing page. Free, no signup.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://unlocksaas.com/embed/tools/saas-health-score.html">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 1.25rem;
+  }
+  .calc {
+    max-width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .calc h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #f1f5f9;
+  }
+  .calc .sub {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+  .field {
+    margin-bottom: 0.75rem;
+  }
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  }
+  .field .hint {
+    font-size: 0.65rem;
+    color: #64748b;
+    margin-top: 0.15rem;
+  }
+  .result {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 10px;
+    text-align: center;
+  }
+  .result .score-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    border: 3px solid;
+  }
+  .result .grade { font-size: 1.1rem; font-weight: 700; }
+  .result .label { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; }
+  .result .breakdown {
+    margin-top: 1rem;
+    text-align: left;
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+  .result .breakdown .metric-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  }
+  .result .breakdown .metric-row .val { color: #cbd5e1; font-weight: 600; }
+  
+  .embed-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 8px;
+  }
+  .embed-section h4 {
+    font-size: 0.8rem;
+    color: #a78bfa;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .embed-section .badge-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .badge-svg {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .badge-left {
+    padding: 0.3rem 0.6rem;
+    background: #334155;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-right {
+    padding: 0.3rem 0.6rem;
+    color: #fff;
+  }
+  .embed-code-block {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    position: relative;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.72rem;
+    color: #cbd5e1;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    padding-right: 4rem;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    background: #334155;
+    border: 1px solid #475569;
+    border-radius: 5px;
+    color: #e2e8f0;
+    font-size: 0.65rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .copy-btn:hover { background: #475569; }
+  .copy-btn.copied { background: #059669; border-color: #059669; }
+  
+  .brand {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 0.65rem;
+    color: #475569;
+  }
+  .brand a {
+    color: #8b5cf6;
+    text-decoration: none;
+  }
+  .brand a:hover { text-decoration: underline; }
+
+  .score-A { color: #059669; border-color: #059669; }
+  .score-B { color: #0284c7; border-color: #0284c7; }
+  .score-C { color: #d97706; border-color: #d97706; }
+  .score-D { color: #ea580c; border-color: #ea580c; }
+  .score-F { color: #dc2626; border-color: #dc2626; }
+</style>
+</head>
+<body>
+<div class="calc">
+  <h3>🩺 SaaS Health Score</h3>
+  <p class="sub">Five metrics, one composite score. The diagnostic that VCs and acquirers run on your SaaS.</p>
+
+  <div class="field">
+    <label>Monthly Recurring Revenue ($)</label>
+    <input type="number" id="mrr" value="15000" min="0" step="100">
+    <div class="hint">Your current MRR</div>
+  </div>
+
+  <div class="field">
+    <label>Monthly Churn Rate (%)</label>
+    <input type="number" id="churn" value="4.5" min="0" max="100" step="0.1">
+    <div class="hint">% of customers who cancel each month</div>
+  </div>
+
+  <div class="field">
+    <label>Month-over-Month Growth Rate (%)</label>
+    <input type="number" id="growth" value="8" min="-100" max="500" step="0.1">
+    <div class="hint">Average MRR growth per month (organic + paid)</div>
+  </div>
+
+  <div class="field">
+    <label>Net Revenue Retention (%)</label>
+    <input type="number" id="nrr" value="108" min="0" max="300" step="1">
+    <div class="hint">120%+ = best-in-class; below 100% = shrinking per-customer</div>
+  </div>
+
+  <div class="field">
+    <label>Burn Multiple</label>
+    <select id="burn">
+      <option value="0.8" selected>Below 1.0x — Efficient</option>
+      <option value="1.5">1.0–2.0x — Normal</option>
+      <option value="2.5">2.0–3.0x — Concerning</option>
+      <option value="4">Above 3.0x — Red flag</option>
+    </select>
+    <div class="hint">Net burn ÷ net new ARR (lower is better)</div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="score-circle score-C" id="scoreCircle">72</div>
+    <div class="grade" id="gradeText">Grade C — Decent</div>
+    <div class="label" id="labelText">Your SaaS is healthy but has room to improve</div>
+    <div class="breakdown" id="breakdown"></div>
+  </div>
+
+  <div class="embed-section" id="embedSection">
+    <h4>🔗 Embed This Badge</h4>
+    <p style="font-size:0.7rem;color:#94a3b8;margin-bottom:0.75rem;">Copy the iframe below and paste it into your landing page, pitch deck, or investor update. Each embed links back to your UnlockSaaS diagnostic.</p>
+    <div class="badge-preview">
+      <div class="badge-svg" id="badgePreview">
+        <span class="badge-left">SaaS Health</span>
+        <span class="badge-right" id="badgeRight" style="background:#d97706;">72/100</span>
+      </div>
+      <span style="font-size:0.65rem;color:#64748b;">Live preview — updates with your inputs</span>
+    </div>
+    <div class="embed-code-block" id="embedCode" style="position:relative;">
+      <span id="embedCodeText">&lt;iframe src="https://unlocksaas.com/embed/tools/saas-health-score.html?mrr=15000&churn=4.5&growth=8&nrr=108&burn=0.8" width="100%" height="520" style="border:none;border-radius:12px;" loading="lazy" title="SaaS Health Score by UnlockSaaS"&gt;&lt;/iframe&gt;</span>
+      <button class="copy-btn" onclick="copyEmbed(this)">Copy</button>
+    </div>
+  </div>
+
+  <div class="brand">
+    Powered by <a href="https://unlocksaas.com" target="_top">UnlockSaaS</a> — Your first paying customer in 60 days.
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SaaS Health Score",
+  "url": "https://unlocksaas.com/embed/tools/saas-health-score.html",
+  "description": "Compute your SaaS business health score from MRR, churn, growth, NRR, and burn multiple. Free interactive diagnostic.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "UnlockSaaS",
+    "url": "https://unlocksaas.com"
+  }
+}
+</script>
+
+<script>
+(function() {
+  const $ = (id) => document.getElementById(id);
+  
+  const scoreColors = {
+    A: { color: '#059669', grade: 'Grade A — Excellent', label: 'Top-decile SaaS. Investors will compete to fund you.', min: 85 },
+    B: { color: '#0284c7', grade: 'Grade B — Strong', label: 'Well-run SaaS with clear product-market fit.', min: 65 },
+    C: { color: '#d97706', grade: 'Grade C — Decent', label: 'Healthy fundamentals but addressable weaknesses.', min: 45 },
+    D: { color: '#ea580c', grade: 'Grade D — At Risk', label: 'Multiple red flags. Fix churn or burn rate urgently.', min: 25 },
+    F: { color: '#dc2626', grade: 'Grade F — Critical', label: 'Immediate intervention needed. Run the UnlockSaaS diagnostic.', min: 0 },
+  };
+
+  function getGrade(score) {
+    for (const [g, cfg] of Object.entries(scoreColors)) {
+      if (score >= cfg.min) return { ...cfg, grade: g };
+    }
+    return { ...scoreColors.F, grade: 'F' };
+  }
+
+  // Sub-scores (each 0-20) 
+  function churnSubScore(rate) {
+    if (rate <= 2) return 20;
+    if (rate <= 3) return 18;
+    if (rate <= 5) return 14;
+    if (rate <= 8) return 8;
+    if (rate <= 12) return 4;
+    return 0;
+  }
+  function growthSubScore(pct) {
+    if (pct >= 20) return 20;
+    if (pct >= 12) return 18;
+    if (pct >= 7) return 15;
+    if (pct >= 3) return 10;
+    if (pct >= 1) return 5;
+    if (pct >= 0) return 2;
+    return 0;
+  }
+  function mrrSubScore(mrr) {
+    if (mrr >= 50000) return 15;
+    if (mrr >= 20000) return 13;
+    if (mrr >= 5000) return 10;
+    if (mrr >= 1000) return 6;
+    return 2;
+  }
+  function nrrSubScore(nrr) {
+    if (nrr >= 130) return 20;
+    if (nrr >= 120) return 18;
+    if (nrr >= 110) return 15;
+    if (nrr >= 100) return 10;
+    if (nrr >= 90) return 5;
+    return 2;
+  }
+  function burnSubScore(burn) {
+    if (burn <= 0.8) return 12;
+    if (burn <= 1.2) return 10;
+    if (burn <= 1.5) return 7;
+    if (burn <= 2.0) return 4;
+    return 1;
+  }
+
+  function compute() {
+    const mrr = parseFloat($('mrr').value) || 0;
+    const churn = parseFloat($('churn').value) || 0;
+    const growth = parseFloat($('growth').value) || 0;
+    const nrr = parseFloat($('nrr').value) || 0;
+    const burn = parseFloat($('burn').value) || 1;
+
+    const subs = {
+      'MRR Scale': { score: mrrSubScore(mrr), max: 20 },
+      'Churn Rate': { score: churnSubScore(churn), max: 20 },
+      'MoM Growth': { score: growthSubScore(growth), max: 20 },
+      'Net Rev Retention': { score: nrrSubScore(nrr), max: 20 },
+      'Burn Efficiency': { score: burnSubScore(burn), max: 12 },
+    };
+
+    // Total: 20+20+20+20+12 = 92, scaled to 100
+    let totalRaw = 0, totalMax = 0;
+    for (const s of Object.values(subs)) { totalRaw += s.score; totalMax += s.max; }
+    const score = Math.min(100, Math.round((totalRaw / totalMax) * 100));
+    
+    const info = getGrade(score);
+    const sc = $('scoreCircle');
+    const gt = $('gradeText');
+    const lt = $('labelText');
+    const bd = $('breakdown');
+    const br = $('badgeRight');
+
+    sc.textContent = score;
+    sc.className = 'score-circle score-' + info.grade;
+    gt.textContent = info.grade;
+    lt.textContent = info.label;
+    br.textContent = score + '/100';
+    br.style.background = info.color;
+
+    let html = '';
+    for (const [name, s] of Object.entries(subs)) {
+      html += `<div class="metric-row"><span>${name}</span><span class="val">${s.score}/${s.max}</span></div>`;
+    }
+    html += `<div class="metric-row" style="font-weight:700;color:#e2e8f0;border-top:1px solid rgba(139,92,246,0.3);margin-top:0.25rem;padding-top:0.5rem;"><span>Composite</span><span class="val">${score}/100 ${info.grade}</span></div>`;
+    bd.innerHTML = html;
+
+    // Update embed code with current params
+    const params = new URLSearchParams({ mrr, churn, growth, nrr, burn });
+    const embedUrl = 'https://unlocksaas.com/embed/tools/saas-health-score.html?' + params.toString();
+    const embedHtml = '&lt;iframe src="' + embedUrl + '" width="100%" height="520" style="border:none;border-radius:12px;" loading="lazy" title="SaaS Health Score by UnlockSaaS"&gt;&lt;/iframe&gt;';
+    $('embedCodeText').textContent = embedHtml;
+  }
+
+  // Read params from URL (for shared/embedded state)
+  function readParams() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('mrr')) $('mrr').value = sp.get('mrr');
+    if (sp.has('churn')) $('churn').value = sp.get('churn');
+    if (sp.has('growth')) $('growth').value = sp.get('growth');
+    if (sp.has('nrr')) $('nrr').value = sp.get('nrr');
+    if (sp.has('burn')) {
+      const b = sp.get('burn');
+      const sel = $('burn');
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === b) { sel.selectedIndex = i; break; }
+      }
+    }
+  }
+
+  // Make copyEmb available globally for inline onclick
+  window.copyEmbed = function(btn) {
+    const text = $('embedCodeText').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  };
+
+  ['mrr','churn','growth','nrr','burn'].forEach(id => {
+    $(id).addEventListener('input', compute);
+    $(id).addEventListener('change', compute);
+  });
+
+  readParams();
+  compute();
+})();
+</script>
+</body>
+</html>
