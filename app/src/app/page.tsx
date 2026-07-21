@@ -18,8 +18,11 @@ import { ManifestoSection } from "@/components/blocks/manifesto-section";
 import {
   FounderVslAudioJsonLd,
   SoftwareApplicationJsonLd,
+  FaqPageJsonLd,
 } from "@/components/seo/json-ld";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
+import { FaqAccordion } from "@/components/blocks/faq-accordion";
+import { FAQ_ENTRIES } from "@/lib/faq-data";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 
@@ -148,6 +151,7 @@ export default function FunnelHub() {
               { name: "Unlock SaaS", url: "https://unlocksaas.com" },
             ]}
           />
+          <FaqPageJsonLd items={FAQ_ENTRIES.slice(0, 5)} />
           <FounderVslAudioJsonLd />
           <AbExposureBeacon />
           <FunnelHubViewedTracker />
@@ -166,6 +170,9 @@ export default function FunnelHub() {
 
         {/* DYNAMIC: Everything below the fold — code-split chunk */}
         <BelowFoldContent />
+
+        {/* FAQ Accordion — interactive, with FAQPage JSON-LD (schema above) */}
+        <FaqAccordion count={5} />
 
         {/* Sticky CTA + Exit-intent popup (still separate dynamic imports) */}
         <LazyStickyCta />
