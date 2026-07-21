@@ -74,7 +74,11 @@ const STACK: StackItem[] = [
   },
 ];
 
-export function StackSlide() {
+import { cacheLife } from "next/cache";
+
+export async function StackSlide() {
+  "use cache";
+  cacheLife("days");
   return (
     <section className="bg-muted/60 border-y border-border">
       <div className="py-16 px-6 max-w-3xl mx-auto">

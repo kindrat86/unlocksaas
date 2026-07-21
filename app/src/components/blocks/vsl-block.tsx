@@ -44,7 +44,11 @@ interface Props {
   autoplay?: boolean;
 }
 
-export function VslBlock(_props: Props = {}) {
+import { cacheLife } from "next/cache";
+
+export async function VslBlock(_props: Props = {}) {
+  "use cache";
+  cacheLife("days");
   return (
     <section className="py-16 px-6 max-w-3xl mx-auto">
       <VideoJsonLd

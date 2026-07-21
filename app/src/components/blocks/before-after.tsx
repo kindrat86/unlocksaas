@@ -12,7 +12,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingDown, TrendingUp } from "lucide-react";
 
-export function BeforeAfter() {
+import { cacheLife } from "next/cache";
+
+export async function BeforeAfter() {
+  "use cache";
+  cacheLife("days");
   return (
     <section className="py-16 px-6 max-w-4xl mx-auto">
       <div className="text-center mb-10">

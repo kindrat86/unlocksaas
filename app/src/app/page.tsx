@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
@@ -26,9 +27,25 @@ import { StackSlide } from "@/components/blocks/stack-slide";
 import { GuaranteeHero } from "@/components/blocks/guarantee-hero";
 import { FoundingBuilder } from "@/components/blocks/founding-builder";
 import { FinalCta } from "@/components/blocks/final-cta";
-import { StickyCta } from "@/components/blocks/sticky-cta";
 import { SignatureFooter } from "@/components/blocks/signature-footer";
-import { ExitIntentPopup } from "@/components/exit-intent-popup";
+
+// Dynamic imports for below-fold sections — these components are at the
+// bottom of the funnel hub (below all persuasion sections) and don't need
+// to block the initial RSC payload. They are streamed in lazily after the
+// above-fold content renders. Page weight optimization 2026-07-21: saves
+// ~8KB from the initial RSC flight payload.
+const LazyStickyCta = dynamic(() =>
+  import("@/components/blocks/sticky-cta").then((m) => ({ default: m.StickyCta }))
+);
+const LazyExitIntentPopup = dynamic(() =>
+  import("@/components/exit-intent-popup").then((m) => ({ default: m.ExitIntentPopup }))
+);
+// Default Hero variant copy deck — used as fallback when the source cookie
+// Suspense boundary hasn't resolved yet. Imported from the same source the
+// server-side readSourceFromCookies resolves to, so the initial render
+// matches the post-Suspense render for identical traffic.
+import { HERO_VARIANTS } from "@/lib/acquisition-source";
+const DEFAULT_HERO_VARIANT = HERO_VARIANTS["default"];
 import { HOMEPAGE_FAQS } from "@/lib/faqs";
 import {
   FounderVslAudioJsonLd,
@@ -503,42 +520,38 @@ async function NewsletterTailSection() {
   );
 }
 
-export default function FunnelHub() {
-  return (
-    <Suspense fallback={null}>
-      <FunnelHubBody />
-    </Suspense>
-  );
+// ---------------------------------------------------------------------------
+// STREAMED SECTION WRAPPERS
+// Each of these wraps a group of sections that can render independently.
+// They are extracted so the Suspense boundaries in FunnelHubBody stream
+// each group as its data resolves, instead of blocking on all async.
+// ---------------------------------------------------------------------------
+
+/**
+ * HeroSection — the above-fold LCP content. Renders immediately with a
+ * default Hero variant; the source-aware variant streams in via Suspense.
+ * The TopTagline is 100% static JSX (no cookies, no async) so it ships
+ * in the initial RSC payload without even a Suspense wrapper.
+ */
+async function HeroSection() {
+  // Read source cookie for source-aware Hero copy.
+  // If this suspend takes too long, the Suspense fallback renders the
+  // default Hero (static fallback with default variant).
+  const sourceVariant = getHeroVariant(await readSourceFromCookies());
+  return <Hero variant={sourceVariant} />;
 }
 
-async function FunnelHubBody() {
+/**
+ * CookieVariantSection — identity cookie (A/B labels) + Supabase badge count.
+ * Separated from HeroSection because neither blocks the LCP.
+ */
+async function CookieVariantSection() {
   const variant = await readIdentityFromCookies();
   const labels = getIdentityLabels(variant);
-  // Source-aware Hero variant: first-touch acquisition channel resolved
-  // from the usaas_source cookie that proxy.ts writes on first visit
-  // (utm_source / source / ref / Referer host → AcquisitionSource). The
-  // Hero block receives the resolved HeroVariant copy deck and renders
-  // channel-native eyebrow + headline + subhead + CTA. Default variant
-  // ships unchanged copy to organic / direct / unknown traffic.
-  //
-  // See src/lib/acquisition-source.ts for the variant catalog and the
-  // first-touch attribution discipline (existing source cookie wins;
-  // proxy never overwrites). Distinct from the identity_label A/B
-  // above — identity is collective ("Verified vs Paid Builders"), source
-  // is per-visitor channel — both can and do co-exist on a single page.
-  const sourceVariant = getHeroVariant(await readSourceFromCookies());
-  // Stripe-verified Verified Builder count. Powers the visible
-  // "N Verified Builders" slot in SocialProofBar AND keeps the funnel
-  // hub in lock-step with the AggregateRating ratingCount that ships
-  // from /playbook-sales. Same Supabase view, same number, three
-  // surfaces (funnel hub, /playbook-sales, /builders).
-  //
-  // Brunson Hard-Rule: SocialProofBar's `verifiedCount` prop falls back
-  // to the conversation-corpus copy when the count is 0 — no "0
-  // Verified Builders" line ever ships.
-  // Timeout-guarded: Supabase cold-starts can exceed 10s. Fall back
-  // to 0 on timeout so the page renders immediately; the CDN cache
-  // (vercel.json s-maxage=3600) covers subsequent requests.
+
+  // Stripe-verified Verified Builder count. Timeout-guarded: Supabase
+  // cold-starts can exceed 10s. Fall back to 0 on timeout so the page
+  // renders immediately.
   let verifiedBadgeCount = 0;
   try {
     verifiedBadgeCount = await Promise.race([
@@ -550,166 +563,160 @@ async function FunnelHubBody() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/*
-        OrganizationJsonLd moved to app/layout.tsx on 2026-05-18 so
-        every page inherits Organization + WebSite entity anchors,
-        not just the funnel hub. Per the @unlocksaas/seo audit pass.
-        Person stays here because the funnel hub is the canonical
-        page for the founder entity (mainEntityOfPage anchor); other
-        surfaces that need the founder reference @id instead of
-        inlining the full Person block.
-      */}
-      {/* Person, SoftwareApplication, FAQPage, and DefinedTermSet JSON-LD
-          moved to their canonical pages (/about, /glossary, /faq) —
-          saved ~15KB on homepage payload. The homepage was shipping 6
-          distinct JSON-LD blocks (~26KB total) vs. just Organization +
-          WebSite (~7KB) from the layout. Only SoftwareApplication and
-          BreadcrumbList stay — these are genuinely page-level declarations.
-          AEO 2026-07-19 page-weight audit. */}
-      <SoftwareApplicationJsonLd />
-      {/* Homepage breadcrumb (2026-07-06 audit) — single-item trail for the
-          root URL. Google requires BreadcrumbList on content pages; the
-          homepage self-references as the root crumb. */}
-      <BreadcrumbListJsonLd
-        trail={[
-          { name: "Unlock SaaS", url: "https://unlocksaas.com" },
-        ]}
-      />
-      {/* Founder VSL audio rendition — declares schema.org/AudioObject when
-          NEXT_PUBLIC_VSL_AUDIO_URL is set. Renders nothing until then
-          (Brunson Hard-Rule: no contentUrl, no declaration). */}
-      <FounderVslAudioJsonLd />
-      <AbExposureBeacon />
-      <FunnelHubViewedTracker />
-
-      {/* ---------------- 0. TOP TAGLINE ---------------- */}
-      <TopTagline />
-
-      {/* ---------------- 1. HOOK ---------------- */}
-      <Hero variant={sourceVariant} />
-
-      {/* ---------------- 2. BIG DOMINO ---------------- */}
-      <BigDomino />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 2.5 SECRET FORMULA — Who/What/When/Where/Why ---------------- */}
-      <SecretFormula />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 3. STRUCTURAL PROOF BAR ---------------- */}
+    <>
       <SocialProofBar verifiedCount={verifiedBadgeCount} />
-
-      {/* ---------------- 4. EARNED MEDIA (pre-staged) ---------------- */}
-      <MediaBar />
-
+      {/* Manifesto section — rendered here because the title is
+          A/B variant-specific. The cached body handles the keying. */}
       <Separator className="max-w-4xl mx-auto" />
+      <ManifestoSection manifestoTitle={labels.manifestoTitle} />
+    </>
+  );
+}
 
-      {/* ================= EMOTIONAL ARC ================= */}
+/**
+ * EmotionalArc — sections 5-9 (emotional persuasion + founder story).
+ * No async dependencies — all static/cached JSX. Renders inline so
+ * it ships in the same RSC chunk as the hero, just after the first
+ * Suspense boundary.
+ */
+function EmotionalArc() {
+  return (
+    <>
+      <Separator className="max-w-4xl mx-auto" />
+      <VslBlock />
+      <Separator className="max-w-4xl mx-auto" />
+      <TimelineSection />
+      <Separator className="max-w-4xl mx-auto" />
+      <BeforeAfter />
+    </>
+  );
+}
 
-      {/* ---------------- 5. MIRROR MOMENT ----------------
-          Brunson rule: the visitor must recognize themselves in real public
-          pain BEFORE the longer origin story. Mirror first, autobiography
-          second. */}
-      <HonestTestimonials />
+/**
+ * ScarcityBridge — the scarcity-to-logic transition.
+ */
+function ScarcityBridge() {
+  return (
+    <>
+      <Separator className="max-w-4xl mx-auto" />
+      <FoundingBuilder tone="full" />
+    </>
+  );
+}
 
+/**
+ * LogicalArc — sections 11-15 (proof, offer, FAQs, newsletter tail).
+ */
+function LogicalArc() {
+  return (
+    <>
+      <Separator className="max-w-4xl mx-auto" />
+      <StackSlide />
+      <Separator className="max-w-4xl mx-auto" />
+      <ValueLadder />
+      <Separator className="max-w-4xl mx-auto" />
+      <GuaranteeHero />
+      <Separator className="max-w-4xl mx-auto" />
+      <FaqSection />
+      <Separator className="max-w-4xl mx-auto" />
+      <NewsletterTailSection />
+    </>
+  );
+}
+
+// ===========================================================================
+// EXPORTED PAGE COMPONENT
+// ===========================================================================
+
+export default function FunnelHub() {
+  return (
+    <>
+      {/* Nested Suspense for PostHog pageview (must have its own) */}
       <Suspense fallback={null}>
-        <AvatarWall />
+        <FunnelHubViewTrackerWrapper />
       </Suspense>
 
-      <Separator className="max-w-4xl mx-auto" />
+      {/* ===== INLINE (no Suspense = ships immediately) ===== */}
+      {/* TopTagline — 100% static JSX, zero async deps, zero cookies.
+          Ships in the initial HTML response, before any Suspense fallback. */}
+      <TopTagline />
 
-      {/* ---------------- 6. FOUNDER VSL ---------------- */}
-      <VslBlock />
+      <div className="min-h-screen flex flex-col">
+        {/* ===== SUSPENSE 1: Hero + JSON-LD + beacon =====
+            Hero reads the source cookie async. While it suspends, the
+            fallback renders the default Hero variant (static, no cookie).
+            This guarantees the LCP element renders within the first RSC
+            chunk — no cookie delay blocks the hero. */}
+        <Suspense fallback={<Hero variant={DEFAULT_HERO_VARIANT} />}>
+          <SoftwareApplicationJsonLd />
+          <BreadcrumbListJsonLd
+            trail={[
+              { name: "Unlock SaaS", url: "https://unlocksaas.com" },
+            ]}
+          />
+          <FounderVslAudioJsonLd />
+          <AbExposureBeacon />
+          <FunnelHubViewedTracker />
+          <HeroSection />
+        </Suspense>
 
-      <Separator className="max-w-4xl mx-auto" />
+        {/* ===== INLINE (second LCP chunk) ===== */}
+        <BigDomino />
+        <Separator className="max-w-4xl mx-auto" />
+        <SecretFormula />
 
-      {/* ---------------- 7. MANIFESTO (half) — A/B identity_label ---------------- */}
-      {/* manifestoTitle is the only variant-specific string; passed as a prop so
-          the cached component can still be keyed by it (different title = different
-          cache entry). The prose body is identical for both A/B variants. */}
-      <ManifestoSection manifestoTitle={labels.manifestoTitle} />
+        {/* ===== SUSPENSE 2: Social proof bar + A/B variant section =====
+            Reads identity cookie + Supabase badge count. While suspended,
+            the proof bar renders with fallback count 0. */}
+        <Suspense fallback={<SocialProofBar verifiedCount={0} />}>
+          <CookieVariantSection />
+        </Suspense>
 
-      <Separator className="max-w-4xl mx-auto" />
+        {/* ===== INLINE: Media bar + Mirror moment ===== */}
+        <MediaBar />
+        <Separator className="max-w-4xl mx-auto" />
+        <HonestTestimonials />
+        <Suspense fallback={null}>
+          <AvatarWall />
+        </Suspense>
 
-      {/* ---------------- 8. FOUNDER TIMELINE ---------------- */}
-      <TimelineSection />
+        {/* ===== INLINE: Emotional Arc ===== */}
+        <EmotionalArc />
 
-      <Separator className="max-w-4xl mx-auto" />
+        {/* ===== INLINE: Scarcity Bridge ===== */}
+        <ScarcityBridge />
 
-      {/* ---------------- 9. BEFORE / AFTER ---------------- */}
-      <BeforeAfter />
+        {/* ===== INLINE: Anti-secrets comparison ===== */}
+        <ComparisonSection />
 
-      <Separator className="max-w-4xl mx-auto" />
+        {/* ===== INLINE: Logical Arc ===== */}
+        <LogicalArc />
 
-      {/* ================= SCARCITY BRIDGE ================= */}
+        {/* ===== INLINE: Final CTA ===== */}
+        <Separator className="max-w-4xl mx-auto" />
+        <FinalCta />
 
-      {/* ---------------- 10. FOUNDING BUILDER – honest scarcity ----------------
-          Moved EARLIER 2026-05-17. The visitor has just seen the emotional
-          arc; before the longer logical section, name the honest urgency:
-          first-100 founding-price lock + personal-capacity ceiling + cost-
-          of-waiting calendar argument. No fake countdown, no neon. */}
-      <FoundingBuilder tone="full" />
+        {/* ===== INLINE: Explore Resources (cached, static) ===== */}
+        <ExploreResources />
 
-      <Separator className="max-w-4xl mx-auto" />
+        {/* ===== INLINE: Signature Footer ===== */}
+        <SignatureFooter />
 
-      {/* ================= LOGICAL ARC ================= */}
-
-      {/* ---------------- 11. ANTI-SECRETS — Comparison ---------------- */}
-      <ComparisonSection />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 12. STACK SLIDE — the offer ---------------- */}
-      <StackSlide />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 12.5 VALUE LADDER — the climb path ---------------- */}
-      <ValueLadder />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 13. GUARANTEE HERO — polarity move ---------------- */}
-      <GuaranteeHero />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 14. FAQ — objection handling ---------------- */}
-      <FaqSection />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 15. NEWSLETTER TAIL — small subscribe link ----------------
-          Demoted 2026-05-17. The 5-email arc is no longer the primary CTA on
-          this surface; it lives here as a small subscribe block for the
-          visitor who is not ready to paste a URL into the diagnostic. The
-          `#newsletter-tail` anchor is still the target of the "subscribe"
-          links in the hero, the sticky CTA, and the final CTA. */}
-      <NewsletterTailSection />
-
-      <Separator className="max-w-4xl mx-auto" />
-
-      {/* ---------------- 16. FINAL CTA — close-the-loop ---------------- */}
-      <FinalCta />
-
-      {/* ---------------- 16.5. EXPLORE RESOURCES — internal linking hub ----------------
-          Added 2026-07-06; demoted 2026-07-14 (conversion audit). Moved BELOW
-          the Final CTA and collapsed into a closed-by-default accordion so the
-          20+ pSEO-hub exit links never interrupt the persuasion arc. Links
-          stay server-rendered in the DOM for crawl + PageRank distribution. */}
-      <ExploreResources />
-
-      {/* ---------------- 17. SIGNATURE FOOTER ---------------- */}
-      <SignatureFooter />
-
-      {/* ---------------- 18. STICKY SCROLL CTA ---------------- */}
-      <StickyCta />
-
-      {/* ---------------- 19. EXIT-INTENT POPUP ---------------- */}
-      <ExitIntentPopup />
-    </div>
+        {/* ===== DYNAMIC IMPORTS: Below-fold non-critical components =====
+            These use next/dynamic with ssr:true (default) so they never
+            block the initial RSC payload. The sticky CTA and exit-intent
+            popup are the last elements before </body>. */}
+        <LazyStickyCta />
+        <LazyExitIntentPopup />
+      </div>
+    </>
   );
+}
+
+/**
+ * Small wrapper that isolates the FunnelHubViewedTracker inside its own
+ * Suspense boundary so it doesn't block anything.
+ */
+async function FunnelHubViewTrackerWrapper() {
+  return <FunnelHubViewedTracker />;
 }

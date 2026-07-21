@@ -141,7 +141,11 @@ const LADDER: LadderRung[] = [
   },
 ];
 
-export function ValueLadder() {
+import { cacheLife } from "next/cache";
+
+export async function ValueLadder() {
+  "use cache";
+  cacheLife("days");
   return (
     <section
       aria-labelledby="value-ladder-heading"

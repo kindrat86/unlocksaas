@@ -15,7 +15,11 @@
  */
 import { getEarnedMentions, shouldRenderMediaBar } from "@/lib/media-mentions";
 
-export function MediaBar() {
+import { cacheLife } from "next/cache";
+
+export async function MediaBar() {
+  "use cache";
+  cacheLife("days");
   if (!shouldRenderMediaBar()) {
     // Pre-stage discipline: the component exists, ready for the moment three
     // earned mentions exist. Until then, render nothing — the funnel hub's

@@ -45,7 +45,11 @@ const REFUND_CONDITIONS = [
   },
 ];
 
-export function GuaranteeHero() {
+import { cacheLife } from "next/cache";
+
+export async function GuaranteeHero() {
+  "use cache";
+  cacheLife("days");
   return (
     <section className="bg-accent/40 border-y border-border">
       <div className="py-16 px-6 max-w-3xl mx-auto">

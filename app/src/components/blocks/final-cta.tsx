@@ -17,7 +17,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export function FinalCta() {
+import { cacheLife } from "next/cache";
+
+export async function FinalCta() {
+  "use cache";
+  cacheLife("days");
   return (
     <section className="bg-muted/60 border-y border-border">
       <div className="py-16 px-6 max-w-2xl mx-auto text-center">

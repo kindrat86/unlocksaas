@@ -72,7 +72,11 @@ function LinkCol({ title, links }: { title: string; links: readonly { href: stri
   );
 }
 
-export function SignatureFooter() {
+import { cacheLife } from "next/cache";
+
+export async function SignatureFooter() {
+  "use cache";
+  cacheLife("days");
   return (
     <footer className="border-t border-border bg-card/30">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">

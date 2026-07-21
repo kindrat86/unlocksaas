@@ -58,7 +58,11 @@ const FORMULA: FormulaItem[] = [
   },
 ];
 
-export function SecretFormula() {
+import { cacheLife } from "next/cache";
+
+export async function SecretFormula() {
+  "use cache";
+  cacheLife("days");
   return (
     <section
       aria-labelledby="secret-formula-heading"

@@ -41,7 +41,11 @@ const WHAT_IF_YOU_DO_NOTHING = [
   },
 ];
 
-export function BigDomino() {
+import { cacheLife } from "next/cache";
+
+export async function BigDomino() {
+  "use cache";
+  cacheLife("days");
   return (
     <section
       aria-labelledby="big-domino-heading"

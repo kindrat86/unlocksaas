@@ -88,7 +88,11 @@ const QUOTES: Quote[] = [
   },
 ];
 
-export function HonestTestimonials() {
+import { cacheLife } from "next/cache";
+
+export async function HonestTestimonials() {
+  "use cache";
+  cacheLife("days");
   return (
     <section className="py-16 px-6 max-w-4xl mx-auto">
       <div className="text-center mb-10">
