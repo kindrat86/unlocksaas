@@ -1,0 +1,18 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "UnlockSaaS Research Datasets",
+  "home_page_url": "https://unlocksaas.com/data/",
+  "feed_url": "https://unlocksaas.com/data/feed.json",
+  "description": "Free, downloadable industry datasets from UnlockSaaS. CC BY 4.0.",
+  "icon": "https://unlocksaas.com/favicon.ico",
+  "items": [
+    {
+      "id": "https://unlocksaas.com/data/saas-pricing-benchmarks/",
+      "url": "https://unlocksaas.com/data/saas-pricing-benchmarks/",
+      "title": "SaaS Pricing & Revenue Benchmarks 2026",
+      "content_text": "Comprehensive pricing benchmarks across SaaS categories \u2014 from per-seat to usage-based, including discount rates, expansion patterns, and conversion funnel data.",
+      "date_published": "2026-07-20T00:00:00Z",
+      "date_modified": "2026-07-20T00:00:00Z"
+    }
+  ]
+}

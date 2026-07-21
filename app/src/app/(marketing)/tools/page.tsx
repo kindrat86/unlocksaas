@@ -7,6 +7,7 @@ import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
 } from "@/components/seo/json-ld";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import {
   TOOLS,
   TOOLS_HUB_DESCRIPTION,
@@ -56,9 +57,7 @@ import {
 export const metadata: Metadata = {
   title: TOOLS_HUB_TITLE,
   description: TOOLS_HUB_DESCRIPTION,
-  alternates: {
-    canonical: TOOLS_HUB_PATH,
-  },
+  alternates: pageAlternates(TOOLS_HUB_PATH),
   openGraph: {
     type: "website",
     title: TOOLS_HUB_TITLE,

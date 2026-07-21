@@ -1,0 +1,47 @@
+[
+  {
+    "label": "Median SaaS monthly price per seat (SMB)",
+    "value": "$29",
+    "source": "OpenView Partners SaaS Benchmarks 2025"
+  },
+  {
+    "label": "Median SaaS monthly price per seat (Enterprise)",
+    "value": "$149",
+    "source": "OpenView Partners SaaS Benchmarks 2025"
+  },
+  {
+    "label": "Usage-based pricing adoption (2025)",
+    "value": "46% of SaaS",
+    "source": "OpenView Usage-Based Pricing Report 2025"
+  },
+  {
+    "label": "Average annual discount for annual billing",
+    "value": "17%",
+    "source": "ProfitWell SaaS Pricing Report 2025"
+  },
+  {
+    "label": "Free trial conversion rate (median)",
+    "value": "4.8%",
+    "source": "Userpilot SaaS Benchmarks 2025"
+  },
+  {
+    "label": "Freemium to paid conversion rate (median)",
+    "value": "2.4%",
+    "source": "Userpilot SaaS Benchmarks 2025"
+  },
+  {
+    "label": "Average SaaS gross margin",
+    "value": "73%",
+    "source": "KeyBanc SaaS Survey 2025"
+  },
+  {
+    "label": "Pricing page A/B test lift (median)",
+    "value": "+12% MRR",
+    "source": "PriceIntelligently SaaS Pricing Study 2025"
+  },
+  {
+    "label": "Share of SaaS with transparent public pricing",
+    "value": "55%",
+    "source": "SaaSworthy Pricing Transparency Index 2025"
+  }
+]

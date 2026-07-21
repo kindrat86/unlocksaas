@@ -3,13 +3,14 @@ import type { Metadata } from "next";
 import { ToolDetailScaffold } from "@/components/tools/tool-detail-scaffold";
 import { CacPaybackWidget } from "@/components/tools/cac-payback-widget";
 import { TOOL_BY_SLUG } from "@/lib/tools-catalog";
+import { pageAlternates } from "@/lib/seo/markdown-alternates";
 
 const tool = TOOL_BY_SLUG.get("cac-payback-calculator")!;
 
 export const metadata: Metadata = {
   title: tool.metaTitle,
   description: tool.description,
-  alternates: { canonical: tool.path },
+  alternates: pageAlternates(tool.path),
   openGraph: {
     type: "article",
     title: tool.title,
