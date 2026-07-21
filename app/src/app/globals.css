@@ -300,6 +300,84 @@
    users who request reduced motion (WCAG 2.3.3). Must be outside @layer
    so it wins specificity over utility classes.
    ========================================================================== */
+/* ==========================================================================
+   Portfolio Network Footer — web ring across the 10-site portfolio.
+   Inlined as dangerouslySetInnerHTML in layout.tsx; CSS extracted here
+   to avoid shipping the same <style> block on every page.
+   ========================================================================== */
+.portfolio-network {
+    max-width: 1200px;
+    margin: 4rem auto 2rem;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+.portfolio-network h3 {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9ca3af;
+    margin: 0 0 1rem;
+    text-align: center;
+}
+.network-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+.network-card {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+    background: #f9fafb;
+}
+.network-card:hover {
+    background: #f3f4f6;
+}
+.network-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.network-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #111827;
+    white-space: nowrap;
+}
+.network-tagline {
+    font-size: 0.6875rem;
+    color: #9ca3af;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .portfolio-network { border-top-color: #374151; }
+    .portfolio-network h3 { color: #6b7280; }
+    .network-card { background: #1f2937; }
+    .network-card:hover { background: #374151; }
+    .network-name { color: #f9fafb; }
+    .network-tagline { color: #6b7280; }
+}
+
+/* Brunson Trust Bar — Dotcom Secrets Ch 7 */
+.brunson-trust-bar {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #e8eaed;
+  padding: 40px 24px;
+  margin: 60px 0 0;
+  border-top: 3px solid #00d4aa;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

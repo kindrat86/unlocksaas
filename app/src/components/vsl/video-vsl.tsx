@@ -137,7 +137,7 @@ export function VideoVsl({ src, poster, surface, onReachedOffer }: Props) {
         src={src}
         poster={poster}
         controls
-        preload="auto"
+        preload="metadata"
         playsInline
         onPlay={handlePlay}
         onTimeUpdate={handleTimeUpdate}
