@@ -10,7 +10,12 @@ const tool = TOOL_BY_SLUG.get("pricing-power-calculator")!;
 export const metadata: Metadata = {
   title: tool.metaTitle,
   description: tool.description,
-  alternates: pageAlternates(tool.path),
+  alternates: {
+    ...pageAlternates(tool.path),
+    types: {
+      "application/json+oembed": `https://unlocksaas.com/embed/tools/${tool.slug}/oembed.json`,
+    },
+  },
   openGraph: {
     type: "article",
     title: tool.title,

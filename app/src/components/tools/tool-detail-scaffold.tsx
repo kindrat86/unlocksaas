@@ -18,6 +18,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CopyButton } from "@/components/copy-button";
 import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
@@ -162,19 +163,27 @@ export function ToolDetailScaffold({
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Copy this snippet into your blog post or article. The widget loads in
-                an iframe and includes a credit link back to UnlockSaaS.
+                Free to embed. Paste this snippet anywhere that allows an iframe
+                — blogs, Notion, Substack, Webflow, Ghost.
               </p>
               <pre className="block overflow-x-auto rounded-md bg-muted p-3 text-xs font-mono leading-relaxed">
-{`<iframe src="https://unlocksaas.com/embed/tools/${tool.slug}.html" width="100%" height="380" style="border:none;border-radius:8px;" loading="lazy" title="${tool.title}"></iframe>`}
+{`<iframe src="https://unlocksaas.com/embed/tools/${tool.slug}" title="${tool.title} by UnlockSaaS" width="100%" height="560" frameborder="0" loading="lazy" style="border:0;max-width:640px"></iframe>`}
               </pre>
+              <CopyButton
+                text={`<iframe src="https://unlocksaas.com/embed/tools/${tool.slug}" title="${tool.title} by UnlockSaaS" width="100%" height="560" frameborder="0" loading="lazy" style="border:0;max-width:640px"></iframe>`}
+              />
               <p className="text-xs text-muted-foreground">
-                <a
+                Also auto-embeds when you paste{" "}
+                <code className="text-xs bg-muted px-1 rounded">
+                  https://unlocksaas.com/tools/{tool.slug}
+                </code>{" "}
+                into oEmbed-aware editors.{" "}
+                <Link
                   href="/embed/"
                   className="underline underline-offset-4 hover:text-foreground"
                 >
                   See all embeddable widgets →
-                </a>
+                </Link>
               </p>
             </CardContent>
           </Card>
