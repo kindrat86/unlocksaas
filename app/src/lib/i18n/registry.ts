@@ -123,6 +123,7 @@ const AUTO_TRANSLATIONS: TranslationRow[] = (() => {
 })();
 
 export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
+  ...AUTO_TRANSLATIONS,
 ]);
 export function getTranslationStatus(
   path: string,
@@ -177,7 +178,16 @@ export function isArchived(
 export function renderableLocalesForPath(
   path: string,
 ): ReadonlyArray<Locale> {
-  return ["en-US"];
+  const seen = new Set<Locale>();
+  for (const row of TRANSLATIONS) {
+    if (
+      row.path === path &&
+      (row.status === "approved" || row.status === "pending-review")
+    ) {
+      seen.add(row.locale);
+    }
+  }
+  return Array.from(seen);
 }
 
 /**
@@ -204,7 +214,8 @@ export function renderableLocalesForPath(
 export function renderableLocalesForPathOrStub(
   path: string,
 ): ReadonlyArray<Locale> {
-  return ["en-US"];
+  const real = renderableLocalesForPath(path);
+  return real.length > 0 ? real : ["en-US"];
 }
 
 /**
@@ -224,7 +235,15 @@ export function renderableLocalesForPathOrStub(
 export function localesWithRenderableContent(): ReadonlyArray<
   Locale
 > {
-  return ["en-US"];
+  const seen = new Set<Locale>();
+  for (const row of TRANSLATIONS) {
+    if (row.status === "approved" || row.status === "pending-review") {
+      seen.add(row.locale);
+    }
+  }
+  // Always include en-US (the canonical locale renders the site root)
+  seen.add("en-US" as Locale);
+  return Array.from(seen);
 }
 
 /**

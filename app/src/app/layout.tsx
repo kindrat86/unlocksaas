@@ -121,14 +121,10 @@ export const metadata: Metadata = {
   publisher: "Unlock SaaS",
   alternates: {
     canonical: "/",
-    // Self-referencing hreflang for a deliberately monolingual surface.
-    // `x-default` tells Google there is no language-specific alternate; the
-    // en-US page IS the canonical for every locale. Without this declaration
-    // a single-language site looks "unspecified" and forfeits International
-    // SEO signal points it could trivially claim. See google-strategy.md §A.4
-    // (locale declarations) — extension landing 2026-05-17.
     languages: {
       "en-US": "/",
+      "de": "/de",
+      "es": "/es",
       "x-default": "/",
     },
   },

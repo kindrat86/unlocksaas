@@ -6,6 +6,8 @@
 
 export const SUPPORTED_LOCALES = [
   "en-US",
+  "de",
+  "es",
 ] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -31,12 +33,19 @@ export function localizedPath(path: string, locale: Locale): string {
  * BCP 47 → OpenGraph locale format. og:locale uses underscores.
  */
 export function ogLocaleFormat(locale: Locale): string {
-  return "en_US";
+  const map: Record<Locale, string> = {
+    "en-US": "en_US",
+    "de": "de_DE",
+    "es": "es_ES",
+  };
+  return map[locale] ?? "en_US";
 }
 
 /** Human-readable display name for the language switcher. */
 export const LOCALE_DISPLAY_NAMES: Record<Locale, string> = {
   "en-US": "English",
+  "de": "Deutsch",
+  "es": "Español",
 };
 
 /** RTL locales — need dir="rtl" on the html/div wrapper. */

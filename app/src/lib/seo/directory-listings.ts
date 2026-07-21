@@ -174,6 +174,17 @@ export const DIRECTORY_LISTINGS: ReadonlyArray<DirectoryListing> = Object.freeze
     // real product. AI Overviews cite AlternativeTo extensively when
     // answering "X alternatives" queries.
     {
+      id: "crunchbase",
+      name: "Crunchbase",
+      hostname: "crunchbase.com",
+      category: "discovery",
+      submissionUrl: "https://www.crunchbase.com/contribute/start",
+      profileUrlEnvVar: "NEXT_PUBLIC_UNLOCKSAAS_CRUNCHBASE_URL",
+      priority: 45,
+      note: "Company registry with DA 90+. A Crunchbase listing is a foundational entity anchor — Google KG uses it for organization disambiguation. Requires a registered Crunchbase user to create the profile via the web UI.",
+      runbookSlug: "crunchbase",
+    },
+    {
       id: "alternativeto",
       name: "AlternativeTo",
       hostname: "alternativeto.net",
