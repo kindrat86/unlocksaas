@@ -647,7 +647,17 @@ export default function FunnelHub() {
             fallback renders the default Hero variant (static, no cookie).
             This guarantees the LCP element renders within the first RSC
             chunk — no cookie delay blocks the hero. */}
-        <Suspense fallback={<Hero variant={DEFAULT_HERO_VARIANT} />}>
+        <Suspense fallback={
+          <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6" aria-label="Loading hero section">
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="h-8 w-48 bg-muted/30 rounded animate-pulse mx-auto mb-7" />
+              <div className="h-12 sm:h-14 md:h-16 bg-muted/20 rounded animate-pulse mx-auto mb-6 max-w-lg" />
+              <div className="h-5 bg-muted/20 rounded animate-pulse mx-auto mb-2 max-w-md" />
+              <div className="h-5 bg-muted/20 rounded animate-pulse mx-auto mb-10 max-w-sm" />
+              <div className="h-14 bg-muted/20 rounded animate-pulse mx-auto max-w-md" />
+            </div>
+          </div>
+        }>
           <SoftwareApplicationJsonLd />
           <BreadcrumbListJsonLd
             trail={[

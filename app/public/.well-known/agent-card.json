@@ -23,46 +23,22 @@
       "id": "get_churn_cost",
       "name": "Calculate Churn Cost",
       "description": "Calculate the cost of SaaS churn based on MRR, churn rate, and CAC.",
-      "tags": [
-        "saas",
-        "churn",
-        "metrics",
-        "calculator"
-      ],
-      "examples": [
-        "What's my churn cost?",
-        "How much is churn costing me?"
-      ]
+      "tags": ["saas", "churn", "metrics", "calculator"],
+      "examples": ["What's my churn cost?", "How much is churn costing me?"]
     },
     {
       "id": "get_ltv",
       "name": "Calculate LTV",
       "description": "Calculate customer lifetime value (LTV) from ARPU, gross margin, and churn rate.",
-      "tags": [
-        "saas",
-        "ltv",
-        "metrics",
-        "calculator"
-      ],
-      "examples": [
-        "Calculate my LTV",
-        "What's my customer lifetime value?"
-      ]
+      "tags": ["saas", "ltv", "metrics", "calculator"],
+      "examples": ["Calculate my LTV", "What's my customer lifetime value?"]
     },
     {
       "id": "project_revenue",
       "name": "Project Revenue",
       "description": "Project SaaS revenue 12 months forward from current MRR and growth assumptions.",
-      "tags": [
-        "saas",
-        "revenue",
-        "projection",
-        "calculator"
-      ],
-      "examples": [
-        "Project my revenue",
-        "Forecast MRR growth"
-      ]
+      "tags": ["saas", "revenue", "projection", "calculator"],
+      "examples": ["Project my revenue", "Forecast MRR growth"]
     }
   ]
 }
