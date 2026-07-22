@@ -227,6 +227,18 @@ export default async function PlaybookSalesPage() {
             The $49 Playbook
           </Badge>
 
+          {/* Direct checkout for ready buyers — skips the long-form read */}
+          <p className="mb-4">
+            <CheckoutButton
+              priceType="playbook"
+              surface="playbook_sales"
+              size="sm"
+              className="text-sm underline underline-offset-4 text-muted-foreground hover:text-foreground transition-colors h-auto px-0 py-0"
+            >
+              Skip the story — start the $49/mo Playbook
+            </CheckoutButton>
+          </p>
+
           {/* GEO -- answer-first factual description before the persuasive
               hook copy. 72.4% of ChatGPT-cited pages have a direct answer
               in the first 60 words. This sentence is the canonical product

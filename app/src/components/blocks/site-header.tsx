@@ -28,7 +28,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { Menu, X } from "lucide-react";
+import { Menu, X, BookOpen } from "lucide-react";
 
 /**
  * Primary navigation sections — the highest-traffic, highest-intent hubs.
@@ -48,6 +48,7 @@ export function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
 
   /* Close drawer on route change. */
   useEffect(() => {
@@ -98,28 +99,38 @@ export function SiteHeader() {
           Unlock SaaS
         </Link>
 
-        {/* Desktop nav links */}
+        {/* Desktop nav links — reduced on homepage to avoid diluting the primary CTA */}
         <nav
           className="hidden items-center gap-0.5 lg:flex"
           aria-label="Primary"
         >
-          {NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={active ? "page" : undefined}
-                className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
-                  active
-                    ? "text-foreground bg-accent/60"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+          {isHome ? (
+            <Link
+              href="/how-to"
+              className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            >
+              <BookOpen className="h-3.5 w-3.5 inline mr-1.5" />
+              Learn
+            </Link>
+          ) : (
+            NAV_LINKS.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
+                    active
+                      ? "text-foreground bg-accent/60"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })
+          )}
         </nav>
 
         {/* Right cluster: theme toggle + CTA (desktop) + hamburger (mobile) */}
@@ -183,24 +194,36 @@ export function SiteHeader() {
               aria-label="Mobile primary"
             >
               <ul className="space-y-1">
-                {NAV_LINKS.map((link) => {
-                  const active = pathname === link.href;
-                  return (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        aria-current={active ? "page" : undefined}
-                        className={`flex min-h-[48px] items-center rounded-md px-4 text-base font-medium transition-colors ${
-                          active
-                            ? "bg-accent text-accent-foreground"
-                            : "text-foreground hover:bg-accent hover:text-accent-foreground"
-                        }`}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  );
-                })}
+                {isHome ? (
+                  <li>
+                    <Link
+                      href="/how-to"
+                      className="flex min-h-[48px] items-center rounded-md px-4 text-base font-medium text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      <BookOpen className="h-5 w-5 mr-3" />
+                      Learn
+                    </Link>
+                  </li>
+                ) : (
+                  NAV_LINKS.map((link) => {
+                    const active = pathname === link.href;
+                    return (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          aria-current={active ? "page" : undefined}
+                          className={`flex min-h-[48px] items-center rounded-md px-4 text-base font-medium transition-colors ${
+                            active
+                              ? "bg-accent text-accent-foreground"
+                              : "text-foreground hover:bg-accent hover:text-accent-foreground"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    );
+                  })
+                )}
               </ul>
             </nav>
             {/* Drawer footer CTA */}

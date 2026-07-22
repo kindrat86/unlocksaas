@@ -19,6 +19,7 @@ import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CopyButton } from "@/components/copy-button";
+import { PostResultEmailCapture } from "@/components/tools/post-result-email-capture";
 import {
   ArticleJsonLd,
   BreadcrumbListJsonLd,
@@ -145,6 +146,11 @@ export function ToolDetailScaffold({
             Calculator
           </h2>
           {widget}
+        </section>
+
+        {/* Optional post-result email capture — after the result, never a gate */}
+        <section aria-labelledby="benchmark-data" className="mb-12">
+          <PostResultEmailCapture source={`tools_${slug}`} />
         </section>
 
         {/* Embed this calculator — editorial backlink farm */}
