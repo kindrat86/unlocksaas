@@ -208,7 +208,7 @@ export default function FaqPage() {
         <footer className="mt-16 text-center">
           <p className="text-xs text-muted-foreground italic leading-relaxed">
             All quotes attributed to public Indie Hackers / Hacker News
-            threads sourced in strategy/dollar-objections.md.
+            threads written by founders matching the indie-founder profile.
           </p>
         </footer>
       </article>

@@ -177,7 +177,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "Unlock SaaS gets you your first paying customer in 60 days with a free 90-second funnel diagnostic — Wrong Person, Weak Offer, or Weak Belief — and a $49/mo playbook that fixes what the diagnosis found; if 60 days pass without a paying customer, the refund fires automatically. I built it after shipping 12 AI products nobody paid for and finally figuring out why.",
     subheadCloser: "– Maryan, non-engineer founder",
-    primaryCta: "Get my free 2-minute diagnosis →",
+    primaryCta: "Get my free 90-second diagnosis →",
   },
 
   indiehackers: {
@@ -189,7 +189,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "If you came over from IH, you already know the pattern: shipped, posted, flat Stripe line. Same loop I was in. This is the playbook that broke it, written for the founder who has tried the IH-favourite tactics and still has zero MRR.",
     subheadCloser: "– Maryan, fellow IH builder",
-    primaryCta: "Run the free 2-minute diagnosis →",
+    primaryCta: "Run the free 90-second diagnosis →",
   },
 
   marclou: {
@@ -201,7 +201,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "Marc's playbook ships fast. The piece that is harder to copy is the offer that earns the first Stripe charge after the launch tweet. That is what this diagnostic labels, and what the $49 playbook fixes, without replacing anything in your ShipFast stack.",
     subheadCloser: "– Maryan, non-engineer founder",
-    primaryCta: "Diagnose my offer (free, 2 min) →",
+    primaryCta: "Diagnose my offer (free, 90 sec) →",
   },
 
   twitter: {
@@ -213,7 +213,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "If you have been reading my build-in-public posts, this is the inside view. The diagnostic labels the same three flaws I keep posting receipts on: Wrong Person, Weak Offer, Weak Belief. The playbook is the work that actually moves the line.",
     subheadCloser: "– Maryan, building in public",
-    primaryCta: "Get my free 2-minute diagnosis →",
+    primaryCta: "Get my free 90-second diagnosis →",
   },
 
   hackernews: {
@@ -225,7 +225,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "For HN: it is not another funnel-bro course. A Stripe webhook checks for a real customer charge on day 60. If none, the refund fires without a support ticket. Editorial policy, corrections log, and the public CC-BY-4.0 dataset of teardowns are all linked in the footer.",
     subheadCloser: "– Maryan, shipped 12 AI products, two paid",
-    primaryCta: "Run the free 2-minute diagnostic →",
+    primaryCta: "Run the free 90-second diagnostic →",
   },
 
   linkedin: {
@@ -237,7 +237,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "If you saw this on LinkedIn, you probably saw the receipts first: 12 shipped products, two paid me, the line stayed flat until I stopped fixing products and started fixing the order. This is the playbook that ran the new order, end to end.",
     subheadCloser: "– Maryan, non-engineer founder",
-    primaryCta: "Get my free 2-minute diagnosis →",
+    primaryCta: "Get my free 90-second diagnosis →",
   },
 
   microconf: {
@@ -249,7 +249,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "MicroConf hammers one lesson: the bottleneck is rarely the product, it is the offer and the conversation. This is the playbook for the conversation, written specifically for the founder who has shipped, posted, and is still pre-revenue.",
     subheadCloser: "– Maryan, non-engineer founder",
-    primaryCta: "Run the free 2-minute diagnostic →",
+    primaryCta: "Run the free 90-second diagnostic →",
   },
 
   reddit: {
@@ -261,7 +261,7 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     subheadOpener:
       "Honest version: I shipped 12 AI products and only two paid me. The playbook I wish someone had handed me at zero MRR is built into this site. Diagnostic is free, no email, no card. The $49 tier is the work that follows the diagnosis.",
     subheadCloser: "– Maryan, non-engineer founder",
-    primaryCta: "Run the free 2-minute diagnostic →",
+    primaryCta: "Run the free 90-second diagnostic →",
   },
 
   directory: {
@@ -271,9 +271,9 @@ export const HERO_VARIANTS: Record<AcquisitionSource, HeroVariant> = {
     headlineTailLead: "Or refunded,",
     headlineTailMuted: "automatically.",
     subheadOpener:
-      "Discovered this on a launch directory? Short version: a free 2-minute diagnostic labels what is broken on your offer page, then a $1 Starter shows you the fix in action. Code-enforced refund on day 60 if no real Stripe charge.",
+      "Discovered this on a launch directory? Short version: a free 90-second diagnostic labels what is broken on your offer page, then a $1 Starter shows you the fix in action. Code-enforced refund on day 60 if no real Stripe charge.",
     subheadCloser: "– Maryan, non-engineer founder",
-    primaryCta: "Run the free 2-minute diagnostic →",
+    primaryCta: "Run the free 90-second diagnostic →",
   },
 };
 

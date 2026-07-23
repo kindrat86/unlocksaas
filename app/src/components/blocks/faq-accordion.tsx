@@ -79,8 +79,7 @@ export function FaqAccordion({ count }: { count?: number }) {
       </ul>
 
       <p className="text-xs text-muted-foreground italic text-center mt-8 leading-relaxed">
-        All quotes attributed to public Indie Hackers / Hacker News threads sourced in
-        strategy/dollar-objections.md.
+        All quotes attributed to public Indie Hackers / Hacker News threads written by founders matching the indie-founder profile.
       </p>
     </section>
   );

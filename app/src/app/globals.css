@@ -248,18 +248,29 @@
 
   /* ---- Scroll-driven entrance animations (progressive enhancement) ----
      Uses CSS animation-timeline: view() — zero JS, zero RSC impact.
-     Browsers without support (older Safari/Firefox) render content
-     immediately = graceful degradation, no regression from current state.
-     The @supports guard ensures only capable browsers apply the hidden
-     initial state. */
+     Content is VISIBLE by default (opacity: 1). The animation only triggers
+     on scroll as an enhancement — content is never hidden if the animation
+     fails to fire (prevents the bug where late-mounted React Suspense
+     content remained at opacity: 0 because animation-timeline didn't
+     compute the initial scroll position correctly for dynamic chunks).
+     
+     The @supports guard inside the keyframes keeps unsupported browsers
+     from seeing a flash of hidden content — the fallback is always visible. */
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-fade {
+    opacity: 1;
+  }
   @supports (animation-timeline: view()) {
     .reveal {
-      animation: reveal-up var(--duration-slow) var(--ease-out-soft) both;
+      animation: reveal-up var(--duration-slow) var(--ease-out-soft) backwards;
       animation-timeline: view();
       animation-range: entry 5% cover 30%;
     }
     .reveal-fade {
-      animation: reveal-fade var(--duration-slow) var(--ease-out-soft) both;
+      animation: reveal-fade var(--duration-slow) var(--ease-out-soft) backwards;
       animation-timeline: view();
       animation-range: entry 5% cover 30%;
     }
