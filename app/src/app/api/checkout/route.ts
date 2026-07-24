@@ -220,6 +220,9 @@ export async function POST(req: NextRequest) {
         metadata: abMetadata,
         payment_intent_data: { metadata: abMetadata },
         allow_promotion_codes: false,
+        // Ties the eventual webhook purchase event back to this same
+        // browser distinct_id — see stripeDistinctId in analytics/server.ts.
+        client_reference_id: distinctId !== "anonymous" ? distinctId : undefined,
       });
 
       // Server-side mirror of the click. Useful when the browser event was
@@ -254,6 +257,7 @@ export async function POST(req: NextRequest) {
         cancel_url: `${appUrl}/oto/vault`,
         metadata: abMetadata,
         subscription_data: { metadata: abMetadata },
+        client_reference_id: distinctId !== "anonymous" ? distinctId : undefined,
       });
 
       captureServer(distinctId, Event.CheckoutSessionCreated, {
@@ -314,6 +318,7 @@ export async function POST(req: NextRequest) {
         payment_intent_data: { metadata: abMetadata },
         // No promotion codes on the OTO chain – the price IS the offer.
         allow_promotion_codes: false,
+        client_reference_id: distinctId !== "anonymous" ? distinctId : undefined,
       });
 
       captureServer(distinctId, Event.CheckoutSessionCreated, {
