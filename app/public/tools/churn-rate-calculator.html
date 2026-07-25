@@ -65,6 +65,16 @@ footer a{color:#0066cc}
 
 <script>
 
+// This origin sets CSP `require-trusted-types-for 'script'`, so a bare
+// innerHTML assignment throws TypeError and the result never renders. It does
+// not reproduce over file:// — only on the deployed site. Pass-through is sound
+// here: every interpolated value is a number from parseFloat() or an in-page
+// constant string; there is no free-text or URL-derived input.
+const TT = window.trustedTypes && window.trustedTypes.createPolicy
+  ? window.trustedTypes.createPolicy('churn-rate-results', { createHTML: s => s })
+  : null;
+function setHTML(el, html) { el.innerHTML = TT ? TT.createHTML(html) : html; }
+
 function calculate() {
   const s = parseFloat(document.getElementById('start_customers').value);
   const e = parseFloat(document.getElementById('end_customers').value);
@@ -79,14 +89,14 @@ function calculate() {
   else if (monthly < 5) { verdict = 'Good — healthy for early-stage SaaS'; color = '#2e7d32'; }
   else if (monthly < 8) { verdict = 'Warning — above industry median (5-7%)'; color = '#f57f17'; }
   else { verdict = 'Critical — churn is killing your growth'; color = '#c62828'; }
-  document.getElementById('result').innerHTML = 
+  setHTML(document.getElementById('result'),
     '<span class="label">Monthly Churn Rate</span>' +
     '<span class="big" style="color:' + color + '">' + monthly.toFixed(2) + '%</span>' +
-    '<span class="label">Customers lost: ' + lost + ' · Annual projected: ' + (100-annual).toFixed(1) + '% retention</span>';
+    '<span class="label">Customers lost: ' + lost + ' · Annual projected: ' + (100-annual).toFixed(1) + '% retention</span>');
   document.getElementById('result').classList.add('show');
-  document.getElementById('insight').innerHTML = '<strong>Verdict:</strong> ' + verdict + 
+  setHTML(document.getElementById('insight'), '<strong>Verdict:</strong> ' + verdict +
     '<br><strong>Benchmark:</strong> Median SaaS churn is 5-7% monthly. Top quartile is under 3%. ' +
-    'Source: <a href="https://unlocksaas.com/benchmarks/saas-churn-rate">SaaS Churn Benchmarks 2026</a>';
+    'Source: <a href="https://unlocksaas.com/benchmarks/saas-churn-rate">SaaS Churn Benchmarks 2026</a>');
   document.getElementById('insight').style.display = 'block';
 }
 

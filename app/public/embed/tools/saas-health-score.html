@@ -284,7 +284,17 @@
 <script>
 (function() {
   const $ = (id) => document.getElementById(id);
-  
+
+  // This origin sets CSP `require-trusted-types-for 'script'`, so a bare
+  // innerHTML assignment throws TypeError and the metric breakdown never
+  // renders. Not reproducible over file:// — only on the deployed site.
+  // Pass-through is sound: the rows are built from computed sub-scores and the
+  // in-page `subs` key names; no free-text or URL-derived input.
+  const TT = window.trustedTypes && window.trustedTypes.createPolicy
+    ? window.trustedTypes.createPolicy('embed-health-score-breakdown', { createHTML: s => s })
+    : null;
+  const setHTML = (el, html) => { el.innerHTML = TT ? TT.createHTML(html) : html; };
+
   const scoreColors = {
     A: { color: '#059669', grade: 'Grade A — Excellent', label: 'Top-decile SaaS. Investors will compete to fund you.', min: 85 },
     B: { color: '#0284c7', grade: 'Grade B — Strong', label: 'Well-run SaaS with clear product-market fit.', min: 65 },
@@ -380,7 +390,7 @@
       html += `<div class="metric-row"><span>${name}</span><span class="val">${s.score}/${s.max}</span></div>`;
     }
     html += `<div class="metric-row" style="font-weight:700;color:#e2e8f0;border-top:1px solid rgba(139,92,246,0.3);margin-top:0.25rem;padding-top:0.5rem;"><span>Composite</span><span class="val">${score}/100 ${info.grade}</span></div>`;
-    bd.innerHTML = html;
+    setHTML(bd, html);
 
     // Update embed code with current params
     const params = new URLSearchParams({ mrr, churn, growth, nrr, burn });

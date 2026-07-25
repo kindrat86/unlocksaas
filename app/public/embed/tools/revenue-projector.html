@@ -84,6 +84,14 @@
 const mrrEl = document.getElementById('mrr');
 const growthEl = document.getElementById('growth');
 function fmt(n) { return '$' + n.toLocaleString('en-US', {maximumFractionDigits:0}); }
+// This origin sets CSP `require-trusted-types-for 'script'`, so a bare
+// innerHTML assignment throws TypeError and the projection table never fills.
+// Not reproducible over file:// — only on the deployed site. Pass-through is
+// sound: the rows are built from parseFloat() numbers and a loop counter.
+const TT = window.trustedTypes && window.trustedTypes.createPolicy
+  ? window.trustedTypes.createPolicy('revenue-projector-rows', { createHTML: s => s })
+  : null;
+function setHTML(el, html) { el.innerHTML = TT ? TT.createHTML(html) : html; }
 function calc() {
   const mrr = parseFloat(mrrEl.value) || 0;
   const growth = parseFloat(growthEl.value) || 0;
@@ -96,7 +104,7 @@ function calc() {
   document.getElementById('mrr12-result').textContent = fmt(current);
   document.getElementById('arr-result').textContent = fmt(current * 12) + ' ARR';
   document.getElementById('mult-result').textContent = (current / mrr).toFixed(1) + '× MRR in 12 months';
-  document.getElementById('table-body').innerHTML = rows;
+  setHTML(document.getElementById('table-body'), rows);
 }
 mrrEl.addEventListener('input', calc);
 growthEl.addEventListener('input', calc);

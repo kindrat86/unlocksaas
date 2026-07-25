@@ -89,6 +89,17 @@ h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg,
 <div class="footer-link">Powered by <a href="https://churnlens.site">ChurnLens</a> · <a href="https://unlocksaas.com">UnlockSaaS</a> · <a href="https://sipiteno.com">SipiTeno</a></div>
 
 <script>
+// This origin sets CSP `require-trusted-types-for 'script'`, so a bare
+// innerHTML assignment throws TypeError mid-function — here that left the
+// composite score updating while the breakdown and recommendation silently
+// stopped. Not reproducible over file://, only on the deployed site.
+// Pass-through is sound: every interpolated value is a number from
+// parseFloat()/parseInt() or an in-page constant; no free-text or URL input.
+const TT = window.trustedTypes && window.trustedTypes.createPolicy
+  ? window.trustedTypes.createPolicy('saas-health-score-results', { createHTML: s => s })
+  : null;
+function setHTML(el, html) { el.innerHTML = TT ? TT.createHTML(html) : html; }
+
 function updateScore() {
   const churn = parseFloat(document.getElementById('churn').value);
   const growth = parseInt(document.getElementById('growth').value);
@@ -130,7 +141,7 @@ function updateScore() {
   document.getElementById('meter-fill').style.width = total + '%';
   document.getElementById('meter-fill').style.background = total >= 80 ? '#10b981' : total >= 60 ? '#6366f1' : total >= 40 ? '#f59e0b' : '#ef4444';
   document.getElementById('verdict').textContent = total >= 85 ? '🏆 Excellent — Top Quartile SaaS' : total >= 70 ? '✅ Healthy — Above Average' : total >= 50 ? '⚠️ Needs Attention — Below Average' : '🔴 Critical — Immediate Action Needed';
-  document.getElementById('breakdown').innerHTML = breakdownHTML;
+  setHTML(document.getElementById('breakdown'), breakdownHTML);
 
   const recs = [];
   if (scores.churn < 60) recs.push('High churn is your #1 risk. Implement a churn prediction model and proactive save workflow.');
@@ -138,7 +149,7 @@ function updateScore() {
   if (scores.ltvcac < 50) recs.push('Unit economics need work. Raise prices, reduce CAC, or improve retention to get LTV/CAC above 3x.');
   if (scores.burn < 50) recs.push('Burn multiple is too high. Reduce discretionary spend or focus on capital-efficient growth channels.');
   if (scores.conc < 50) recs.push('Customer concentration risk. Diversify your revenue base — no single customer should be >20% of MRR.');
-  document.getElementById('recommendation').innerHTML = recs.length ? '<strong>🎯 Top Priority:</strong> ' + recs[0] : '<strong>✅ Looking great!</strong> All dimensions are in healthy ranges. Focus on scaling.';
+  setHTML(document.getElementById('recommendation'), recs.length ? '<strong>🎯 Top Priority:</strong> ' + recs[0] : '<strong>✅ Looking great!</strong> All dimensions are in healthy ranges. Focus on scaling.');
 }
 
 updateScore();
