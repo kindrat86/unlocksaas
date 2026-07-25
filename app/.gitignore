@@ -35,3 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env.portfolio-extract
+
+# swc build cache — platform-specific wasm plugins (~8 MB). SWC writes its
+# own .swc/.gitignore but it lands empty here, so the cache stays untracked
+# and is one `git add -A` away from being committed.
+.swc/
