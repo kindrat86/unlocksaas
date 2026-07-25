@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Launch Readiness Score — UnlockSaaS</title>
+<meta name="description" content="Answer 8 questions about your SaaS and get a readiness score from 0–100. Discover which areas need work before you launch.">
+<meta property="og:title" content="SaaS Launch Readiness Score">
+<meta property="og:description" content="Answer 8 questions about your SaaS and get a readiness score from 0–100. Discover which areas need work before you launch.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://unlocksaas.com/tools/saas-readiness/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://unlocksaas.com/tools/saas-readiness/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "WebApplication"],
+  "name": "SaaS Launch Readiness Score",
+  "description": "Answer 8 questions about your SaaS and get a readiness score from 0–100. Discover which areas need work before you launch.",
+  "applicationCategory": "Business",
+  "operatingSystem": "Web",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Organization", "name": "UnlockSaaS", "url": "https://unlocksaas.com/"},
+  "url": "https://unlocksaas.com/tools/saas-readiness/",
+  "browserRequirements": "Requires JavaScript"
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0b0f19;color:#e2e8f0;line-height:1.6;min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
+header{text-align:center;margin-bottom:2.5rem}
+header h1{font-size:2rem;font-weight:700;color:#f1f5f9;margin-bottom:0.5rem;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{color:#94a3b8;font-size:1.05rem;max-width:600px;margin:0 auto}
+.card{background:linear-gradient(135deg,#1e293b,#1a2332);border:1px solid #334155;border-radius:16px;padding:2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;color:#94a3b8;margin-bottom:1.5rem;font-weight:500;text-transform:uppercase;letter-spacing:0.05em}
+.input-group{margin-bottom:1.2rem}
+.input-group label{display:block;font-size:0.9rem;color:#cbd5e1;margin-bottom:0.4rem;font-weight:500}
+.input-field,.input-range{width:100%;padding:0.7rem 0.9rem;background:#0f172a;border:1px solid #334155;border-radius:10px;color:#e2e8f0;font-size:0.95rem;transition:border-color 0.2s}
+.input-field:focus,.input-range:focus{outline:none;border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,0.15)}
+select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+.range-val{color:#60a5fa;font-weight:600;font-size:0.85rem;margin-left:0.5rem}
+.unit{color:#64748b;font-size:0.8rem;font-weight:400}
+.btn{display:block;width:100%;padding:0.9rem;background:linear-gradient(135deg,#3b82f6,#6366f1);color:white;border:none;border-radius:12px;font-size:1.05rem;font-weight:600;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;margin-top:1rem}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(59,130,246,0.3)}
+.btn:active{transform:translateY(0)}
+.result{display:none}
+.result.show{display:block}
+.score-circle{width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2.8rem;font-weight:800;border:4px solid;flex-direction:column}
+.score-circle .label{font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;margin-top:0.2rem}
+.score-high{background:rgba(34,197,94,0.12);border-color:#22c55e;color:#4ade80}
+.score-mid{background:rgba(234,179,8,0.12);border-color:#eab308;color:#facc15}
+.score-low{background:rgba(239,68,68,0.12);border-color:#ef4444;color:#f87171}
+.verdict{text-align:center;font-size:1.2rem;font-weight:600;margin-bottom:1.5rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.8rem;margin-bottom:1.5rem}
+.metric{background:#0f172a;border-radius:10px;padding:1rem;text-align:center}
+.metric .val{font-size:1.5rem;font-weight:700;color:#f1f5f9}
+.metric .lbl{font-size:0.75rem;color:#64748b;margin-top:0.2rem;text-transform:uppercase}
+.recommendations{background:#0f172a;border-radius:10px;padding:1.2rem;margin-top:1rem}
+.recommendations h3{font-size:0.85rem;color:#94a3b8;margin-bottom:0.8rem;text-transform:uppercase;letter-spacing:0.05em}
+.recommendations li{color:#cbd5e1;font-size:0.9rem;margin-bottom:0.4rem;padding-left:1.2rem;position:relative}
+.recommendations li::before{content:'→';position:absolute;left:0;color:#60a5fa}
+.share-bar{display:flex;gap:0.6rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+.share-btn{padding:0.5rem 1rem;border-radius:8px;font-size:0.85rem;font-weight:500;cursor:pointer;border:1px solid #334155;background:#1e293b;color:#cbd5e1;transition:all 0.15s;white-space:nowrap}
+.share-btn:hover{border-color:#60a5fa;color:#e2e8f0}
+.share-btn.copy{background:#1e3a5f;border-color:#3b82f6}
+.embed-card{background:#0f172a;border:1px dashed #334155;border-radius:10px;padding:1rem;margin-top:1rem}
+.embed-card textarea{width:100%;background:#020617;color:#94a3b8;border:1px solid #1e293b;border-radius:8px;padding:0.7rem;font-family:'SF Mono',monospace;font-size:0.8rem;resize:vertical;height:80px}
+.embed-card .label{font-size:0.75rem;color:#64748b;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em}
+.powered-by{text-align:center;margin-top:2rem;color:#475569;font-size:0.8rem}
+.powered-by a{color:#60a5fa;text-decoration:none}
+footer{text-align:center;padding:2rem;color:#475569;font-size:0.8rem}
+@media(max-width:600px){.container{padding:1rem}.card{padding:1.2rem}header h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>SaaS Launch Readiness Score</h1>
+    <p>Answer 8 questions about your SaaS and get a readiness score from 0–100. Discover which areas need work before you launch.</p>
+  </header>
+
+  <div class="card" id="input-card">
+    <h2>⚙️ Your Details</h2>
+    
+            <div class="input-group">
+              <label for="mcp_ready">Have you validated the problem with 10+ potential customers?</label>
+              <select id="mcp_ready" class="input-field">              <option value="No, it&#x27;s just an idea">No, it&#x27;s just an idea</option>
+              <option value="Talked to 3-5 people" selected>Talked to 3-5 people</option>
+              <option value="Yes, 10+ conversations with ICP">Yes, 10+ conversations with ICP</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="landing_page">Do you have a landing page with a waitlist?</label>
+              <select id="landing_page" class="input-field">              <option value="Not yet">Not yet</option>
+              <option value="Landing page, no waitlist" selected>Landing page, no waitlist</option>
+              <option value="Landing page + waitlist + email capture">Landing page + waitlist + email capture</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="mvp_status">What&#x27;s your MVP status?</label>
+              <select id="mvp_status" class="input-field">              <option value="Not started">Not started</option>
+              <option value="Building" selected>Building</option>
+              <option value="Live with beta users">Live with beta users</option>
+              <option value="Live with paying customers">Live with paying customers</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="pricing">Do you have a pricing model?</label>
+              <select id="pricing" class="input-field">              <option value="Not decided">Not decided</option>
+              <option value="Free only">Free only</option>
+              <option value="Freemium with paid tiers" selected>Freemium with paid tiers</option>
+              <option value="Paid from day one">Paid from day one</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="distribution">How will you acquire customers?</label>
+              <select id="distribution" class="input-field">              <option value="Not sure yet">Not sure yet</option>
+              <option value="One channel (social/content/ads)" selected>One channel (social/content/ads)</option>
+              <option value="Two channels">Two channels</option>
+              <option value="Multi-channel with data">Multi-channel with data</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="analytics">Do you have analytics set up?</label>
+              <select id="analytics" class="input-field">              <option value="Nothing">Nothing</option>
+              <option value="Basic GA/PostHog" selected>Basic GA/PostHog</option>
+              <option value="Full funnel tracking + cohorts">Full funnel tracking + cohorts</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="support">Customer support plan?</label>
+              <select id="support" class="input-field">              <option value="None">None</option>
+              <option value="Email only">Email only</option>
+              <option value="Email + docs/knowledge base" selected>Email + docs/knowledge base</option>
+              <option value="Email + docs + live chat">Email + docs + live chat</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="legal">Legal/compliance readiness?</label>
+              <select id="legal" class="input-field">              <option value="Nothing">Nothing</option>
+              <option value="Privacy policy only" selected>Privacy policy only</option>
+              <option value="Privacy + ToS + GDPR ready">Privacy + ToS + GDPR ready</option>
+              <option value="Full compliance + DPA">Full compliance + DPA</option>
+              </select>
+            </div>
+    <button class="btn" onclick="calculate()">Calculate Results →</button>
+  </div>
+
+  <div class="card result" id="result-card">
+    <div id="result-content"></div>
+    
+    <div class="share-bar">
+      <button class="share-btn copy" onclick="copyLink()">📋 Copy Share Link</button>
+      <button class="share-btn" onclick="shareTwitter()">𝕏 Share on X</button>
+      <button class="share-btn" onclick="shareLinkedIn()">💼 Share on LinkedIn</button>
+    </div>
+    
+    <div class="embed-card">
+      <div class="label">🔗 Embed this tool on your site</div>
+      <textarea readonly onclick="this.select()" id="embed-code">&lt;iframe src="https://unlocksaas.com/tools/saas-readiness/" width="100%" height="700" frameborder="0" style="border-radius:12px;background:#0b0f19"&gt;&lt;/iframe&gt;</textarea>
+    </div>
+  </div>
+  
+  <div class="powered-by">
+    Powered by <a href="https://unlocksaas.com/">UnlockSaaS</a> — free to use, no signup required
+  </div>
+</div>
+
+<footer>
+  <a href="https://unlocksaas.com/llms.txt">llms.txt</a> · <a href="https://unlocksaas.com/sitemap.xml">Sitemap</a>
+</footer>
+
+<script>
+function encodeState(obj) {
+  const compressed = btoa(encodeURIComponent(JSON.stringify(obj)));
+  window.location.hash = compressed;
+  return compressed;
+}
+
+function decodeState() {
+  try {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return null;
+    return JSON.parse(decodeURIComponent(atob(hash)));
+  } catch(e) { return null; }
+}
+
+function calculate() {
+  const mcp_ready = document.getElementById('mcp_ready').value || "Talked to 3-5 people";
+  const landing_page = document.getElementById('landing_page').value || "Landing page, no waitlist";
+  const mvp_status = document.getElementById('mvp_status').value || "Building";
+  const pricing = document.getElementById('pricing').value || "Freemium with paid tiers";
+  const distribution = document.getElementById('distribution').value || "One channel (social/content/ads)";
+  const analytics = document.getElementById('analytics').value || "Basic GA/PostHog";
+  const support = document.getElementById('support').value || "Email + docs/knowledge base";
+  const legal = document.getElementById('legal').value || "Privacy policy only";
+  
+  // Encode inputs for sharing
+  const inputState = {};
+  inputState['mcp_ready'] = mcp_ready;
+  inputState['landing_page'] = landing_page;
+  inputState['mvp_status'] = mvp_status;
+  inputState['pricing'] = pricing;
+  inputState['distribution'] = distribution;
+  inputState['analytics'] = analytics;
+  inputState['support'] = support;
+  inputState['legal'] = legal;
+  encodeState({inputs: inputState});
+  
+
+  const scores = {
+    'mcp_ready': {'No, it\'s just an idea': 0, 'Talked to 3-5 people': 35, 'Yes, 10+ conversations with ICP': 100},
+    'landing_page': {'Not yet': 0, 'Landing page, no waitlist': 30, 'Landing page + waitlist + email capture': 100},
+    'mvp_status': {'Not started': 0, 'Building': 25, 'Live with beta users': 65, 'Live with paying customers': 100},
+    'pricing': {'Not decided': 0, 'Free only': 30, 'Freemium with paid tiers': 80, 'Paid from day one': 100},
+    'distribution': {'Not sure yet': 0, 'One channel (social/content/ads)': 40, 'Two channels': 70, 'Multi-channel with data': 100},
+    'analytics': {'Nothing': 0, 'Basic GA/PostHog': 50, 'Full funnel tracking + cohorts': 100},
+    'support': {'None': 0, 'Email only': 30, 'Email + docs/knowledge base': 70, 'Email + docs + live chat': 100},
+    'legal': {'Nothing': 0, 'Privacy policy only': 40, 'Privacy + ToS + GDPR ready': 75, 'Full compliance + DPA': 100}
+  };
+  
+  const answers = {mcp_ready, landing_page, mvp_status, pricing, distribution, analytics, support, legal};
+  let total = 0, count = 0;
+  const details = [];
+  for (const [k, v] of Object.entries(answers)) {
+    const s = (scores[k] || {})[v] || 0;
+    total += s;
+    count++;
+    details.push({key: k, value: v, score: s});
+  }
+  const avg = Math.round(total / count);
+  const tier = avg >= 80 ? '🚀 Launch Ready' : avg >= 55 ? '🔧 Almost There' : avg >= 30 ? '📋 Early Stage' : '💡 Idea Phase';
+  
+  const weaknesses = details.filter(d => d.score < 50).map(d => d.key);
+  const strengths = details.filter(d => d.score >= 80).map(d => d.key);
+  
+  return {
+    score: avg,
+    tier: tier,
+    strengths: strengths,
+    weaknesses: weaknesses,
+    recommendation: avg >= 80 ? 'You\'re ready to launch. Focus on distribution.' : avg >= 55 ? 'Close the gaps in ' + weaknesses.slice(0,2).join(' and ') + '.' : 'Start with customer validation before building.'
+  };
+
+  
+  displayResults(result);
+  document.getElementById('result-card').classList.add('show');
+  document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
+}
+
+function displayResults(r) {
+  if (r.error) {
+    document.getElementById('result-content').innerHTML = '<div class="verdict" style="color:#f87171">' + r.error + '</div>';
+    return;
+  }
+  
+  let html = '';
+  
+  // Score circle if present
+  const scoreVal = r.score || r.risk_score || r.overall;
+  if (scoreVal !== undefined) {
+    const scoreClass = scoreVal >= 80 ? 'score-high' : scoreVal >= 50 ? 'score-mid' : 'score-low';
+    const scoreLabel = r.score !== undefined ? 'SCORE' : r.risk_score !== undefined ? 'RISK' : 'RATING';
+    html += '<div class="score-circle ' + scoreClass + '">' + scoreVal + '<span class="label">' + scoreLabel + '</span></div>';
+  }
+  
+  // Verdict
+  if (r.verdict || r.tier) {
+    html += '<div class="verdict">' + (r.verdict || r.tier) + '</div>';
+  }
+  
+  // Key metrics
+  html += '<div class="metrics">';
+  const skipKeys = ['score', 'risk_score', 'verdict', 'tier', 'error', 'providers', 'scenarios', 'alternatives', 'dimensions', 'recommendations', 'red_flags', 'recommendation', 'gaps', 'key_action', 'username', 'disclaimer', 'note', 'method', 'type', 'agent_risk_level', 'cheapest', 'savings_vs_most_expensive'];
+  
+  // Show key numeric/string results
+  for (const [k, v] of Object.entries(r)) {
+    if (skipKeys.includes(k)) continue;
+    if (typeof v === 'object' || Array.isArray(v)) continue;
+    const label = k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    html += '<div class="metric"><div class="val">' + v + '</div><div class="lbl">' + label + '</div></div>';
+  }
+  
+  // Provider table for cost calculators
+  if (r.providers) {
+    html += '</div><div style="margin-top:1rem">';
+    html += '<table style="width:100%;border-collapse:collapse;font-size:0.85rem">';
+    html += '<tr style="color:#64748b;text-align:left"><th style="padding:0.5rem">Provider</th><th style="padding:0.5rem;text-align:right">Monthly</th><th style="padding:0.5rem;text-align:right">Annual</th></tr>';
+    for (const p of r.providers) {
+      html += '<tr style="border-top:1px solid #1e293b"><td style="padding:0.5rem;color:#e2e8f0">' + p.name + '</td><td style="padding:0.5rem;text-align:right;font-weight:600;color:#60a5fa">' + p.monthly + '</td><td style="padding:0.5rem;text-align:right;color:#94a3b8">' + p.annual + '</td></tr>';
+    }
+    html += '</table>';
+  }
+  
+  // Scenarios table
+  if (r.scenarios) {
+    html += '</div><div style="margin-top:1rem">';
+    for (const s of r.scenarios) {
+      html += '<div class="metric"><div class="val">$' + Number(s.proceeds).toLocaleString() + '</div><div class="lbl">' + s.label + '</div></div>';
+    }
+  }
+  
+  // Alternatives
+  if (r.alternatives) {
+    html += '</div><div style="margin-top:1rem">';
+    for (const a of r.alternatives) {
+      html += '<div class="metric"><div class="val">$' + Number(a.cost).toLocaleString() + '</div><div class="lbl">' + a.shop + '</div></div>';
+    }
+  }
+  
+  html += '</div>';
+  
+  // Recommendations
+  if (r.recommendations && r.recommendations.length > 0) {
+    html += '<div class="recommendations"><h3>💡 Recommendations</h3><ul>';
+    for (const rec of r.recommendations) {
+      html += '<li>' + rec + '</li>';
+    }
+    html += '</ul></div>';
+  } else if (r.recommendation) {
+    html += '<div class="recommendations"><h3>💡 Recommendation</h3><p style="color:#cbd5e1;font-size:0.9rem">' + r.recommendation + '</p></div>';
+  }
+  
+  // Red flags
+  if (r.red_flags && r.red_flags.length > 0) {
+    html += '<div class="recommendations" style="border:1px solid #7f1d1d"><h3 style="color:#f87171">🚩 Red Flags</h3><ul>';
+    for (const f of r.red_flags) {
+      html += '<li style="color:#fca5a5">' + f + '</li>';
+    }
+    html += '</ul></div>';
+  }
+  
+  // Gaps
+  if (r.gaps && r.gaps.length > 0) {
+    html += '<div class="recommendations"><h3>⚠️ Gaps to Address</h3><ul>';
+    for (const g of r.gaps) {
+      html += '<li>' + g.replace(/_/g, ' ') + '</li>';
+    }
+    html += '</ul></div>';
+  }
+  
+  document.getElementById('result-content').innerHTML = html;
+}
+
+function copyLink() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    btn.style.background = '#14532d';
+    btn.style.borderColor = '#22c55e';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = '#1e3a5f'; btn.style.borderColor = '#3b82f6'; }, 2000);
+  });
+}
+
+function shareTwitter() {
+  const text = encodeURIComponent(document.title + ' — Check your score:');
+  const url = encodeURIComponent(window.location.href);
+  window.open('https://x.com/intent/tweet?text=' + text + '&url=' + url, '_blank');
+}
+
+function shareLinkedIn() {
+  const url = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent(document.title);
+  window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url, '_blank');
+}
+
+// Range input live updates
+document.querySelectorAll('.input-range').forEach(el => {
+  el.addEventListener('input', function() {
+    const valSpan = document.getElementById(this.id + '-val');
+    if (valSpan) {
+      const unit = valSpan.textContent.replace(/[0-9.-]/g, '');
+      valSpan.textContent = this.value + (unit || '');
+    }
+  });
+});
+
+// Restore state from URL hash on load
+window.addEventListener('DOMContentLoaded', function() {
+  const state = decodeState();
+  if (state && state.inputs) {
+    for (const [key, val] of Object.entries(state.inputs)) {
+      const el = document.getElementById(key);
+      if (el) {
+        if (el.type === 'range') {
+          el.value = val;
+          const vs = document.getElementById(key + '-val');
+          if (vs) vs.textContent = val + (vs.textContent.replace(/[0-9.-]/g, '') || '');
+        } else {
+          el.value = val;
+        }
+      }
+    }
+    // Auto-calculate on page load with shared state
+    calculate();
+  }
+});
+</script>
+</body>
+</html>
