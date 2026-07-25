@@ -658,10 +658,27 @@ export const ALTERNATE_NAMES: readonly string[] = Object.freeze([
  * that names the entity. No name belongs here that the site does not
  * actually discuss in body copy.
  */
+/**
+ * ⚠️ TYPE UNION IS DELIBERATELY NARROW — do NOT "improve" an entry back to
+ * `SoftwareApplication` / `Book` / `Product`.
+ *
+ * These are third-party entities we merely cite. A product-eligible `@type`
+ * (Product + subtypes, SoftwareApplication, WebApplication, MobileApplication,
+ * Book) with none of `offers` / `review` / `aggregateRating` is a CRITICAL
+ * Google Search Console "Product snippets" error: "Either 'offers', 'review'
+ * or 'aggregateRating' should be specified." It fired on invisibleexit.com on
+ * 2026-07-25 for exactly this shape, and these `mentions[]` nodes ship in the
+ * sitewide Organization block — i.e. on EVERY page of this site.
+ *
+ * We cannot state an honest `offers` for Cursor or Lovable and will not invent
+ * a rating, so the entities stay as non-product types: `Thing` for tools,
+ * `CreativeWork` for books. Name + url still carry the full entity-linkage
+ * value; only the unsupportable product claim is gone.
+ */
 export const MENTIONED_ENTITIES: ReadonlyArray<{
   name: string;
   url: string;
-  type: "Person" | "Organization" | "Book" | "SoftwareApplication";
+  type: "Person" | "Organization" | "CreativeWork" | "Thing";
 }> = Object.freeze([
   // The single most-cited author across the strategy/ folder.
   {
@@ -670,18 +687,18 @@ export const MENTIONED_ENTITIES: ReadonlyArray<{
     type: "Person",
   },
   // Brunson trilogy – named verbatim in /about, /stories, /funnel-teardown.
-  { name: "DotCom Secrets", url: "https://www.dotcomsecretsbook.com", type: "Book" },
+  { name: "DotCom Secrets", url: "https://www.dotcomsecretsbook.com", type: "CreativeWork" },
   // expertsecretsbook.com / trafficsecretsbook.com went NXDOMAIN (2026-07-14
   // crawl); Amazon product pages are the stable canonical references now.
   {
     name: "Expert Secrets",
     url: "https://www.amazon.com/Expert-Secrets-Underground-Playbook-Advice/dp/1401970605",
-    type: "Book",
+    type: "CreativeWork",
   },
   {
     name: "Traffic Secrets",
     url: "https://www.amazon.com/Traffic-Secrets-Underground-Playbook-Customers/dp/1401957900",
-    type: "Book",
+    type: "CreativeWork",
   },
   // ClickFunnels is the canonical reference funnel-builder we explicitly
   // contrast with – "no ClickFunnels 1.0 look" appears in feedback memory.
@@ -692,13 +709,13 @@ export const MENTIONED_ENTITIES: ReadonlyArray<{
   },
   // AI tools the dream customer ships with – named in /about, /faq,
   // /playbook-sales, llms.txt, and every pSEO body.
-  { name: "Lovable", url: "https://lovable.dev", type: "SoftwareApplication" },
-  { name: "Claude", url: "https://claude.ai", type: "SoftwareApplication" },
-  { name: "Replit", url: "https://replit.com", type: "SoftwareApplication" },
-  { name: "v0 by Vercel", url: "https://v0.app", type: "SoftwareApplication" },
-  { name: "Cursor", url: "https://cursor.com", type: "SoftwareApplication" },
-  { name: "Bolt.new", url: "https://bolt.new", type: "SoftwareApplication" },
-  { name: "Bubble", url: "https://bubble.io", type: "SoftwareApplication" },
+  { name: "Lovable", url: "https://lovable.dev", type: "Thing" },
+  { name: "Claude", url: "https://claude.ai", type: "Thing" },
+  { name: "Replit", url: "https://replit.com", type: "Thing" },
+  { name: "v0 by Vercel", url: "https://v0.app", type: "Thing" },
+  { name: "Cursor", url: "https://cursor.com", type: "Thing" },
+  { name: "Bolt.new", url: "https://bolt.new", type: "Thing" },
+  { name: "Bubble", url: "https://bubble.io", type: "Thing" },
   // Infrastructure named in the guarantee mechanics + transactional surface.
   { name: "Stripe", url: "https://stripe.com", type: "Organization" },
 ]);
