@@ -96,7 +96,7 @@ export function NewsletterSignup({
       : "Send me the five emails");
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" noValidate>
+    <form method="post" onSubmit={handleSubmit} className="space-y-3" noValidate>
       {/* Honeypot — display:none keeps it out of human reach. */}
       <input
         type="text"
@@ -113,6 +113,7 @@ export function NewsletterSignup({
       </label>
       <Input
         id="newsletter-email"
+          name="newsletter-email"
         type="email"
         inputMode="email"
         autoComplete="email"

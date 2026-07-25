@@ -81,7 +81,7 @@ export function ChallengeForm({ source }: { source: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form method="post" onSubmit={handleSubmit} className="space-y-4">
       {/* Honeypot — display:none keeps it out of human reach. */}
       <input
         type="text"
@@ -99,6 +99,7 @@ export function ChallengeForm({ source }: { source: string }) {
         </label>
         <Input
           id="firstName"
+          name="firstName"
           type="text"
           autoComplete="given-name"
           required
@@ -116,6 +117,7 @@ export function ChallengeForm({ source }: { source: string }) {
         </label>
         <Input
           id="email"
+          name="email"
           type="email"
           autoComplete="email"
           required
@@ -133,6 +135,7 @@ export function ChallengeForm({ source }: { source: string }) {
         </label>
         <Input
           id="productUrl"
+          name="productUrl"
           type="url"
           inputMode="url"
           maxLength={2048}
