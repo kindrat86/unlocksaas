@@ -52,6 +52,8 @@
  *   without false-positives on the Brunson @id convention.
  */
 
+import { readFileSync } from "node:fs";
+
 const BASE_URL = process.env.VALIDATE_BASE_URL || "http://localhost:3000";
 const FETCH_TIMEOUT_MS = Number.parseInt(
   process.env.VALIDATE_FETCH_TIMEOUT_MS || "60000",
@@ -63,6 +65,36 @@ const FETCH_TIMEOUT_MS = Number.parseInt(
  * every machine-readable surface. Slugs are real, verified-live ones from
  * the relevant manifest so the page renders with full data (not a 404).
  */
+/**
+ * Locale samples are DERIVED from src/lib/i18n/locales.ts, never hardcoded.
+ * The shipped locale set has been trimmed twice to stay under Vercel's 2048
+ * route limit (12 → 6 → en-US+de+es), and each trim silently turned a
+ * hardcoded sample into a 404 — that is exactly how `/pt-BR/faq` started
+ * failing this job. `/faq` is locale-aware for every non-default locale
+ * (see I18N_PATHS in src/lib/i18n/registry.ts), so one sample per locale
+ * stays valid on its own.
+ *
+ * @returns {string[]}
+ */
+function localeSampleUrls() {
+  const src = readFileSync(
+    new URL("../src/lib/i18n/locales.ts", import.meta.url),
+    "utf8",
+  );
+  const listMatch = src.match(/SUPPORTED_LOCALES\s*=\s*\[([^\]]*)\]/);
+  if (!listMatch) {
+    throw new Error(
+      "validate-jsonld: could not parse SUPPORTED_LOCALES from src/lib/i18n/locales.ts",
+    );
+  }
+  const defaultLocale =
+    src.match(/DEFAULT_LOCALE[^=]*=\s*"([^"]+)"/)?.[1] ?? "en-US";
+  return [...listMatch[1].matchAll(/"([^"]+)"/g)]
+    .map((m) => m[1])
+    .filter((locale) => locale !== defaultLocale)
+    .map((locale) => `/${locale}/faq`);
+}
+
 const URLS = [
   // ── Authority surface ───────────────────────────────────────────────
   "/",
@@ -105,9 +137,8 @@ const URLS = [
   "/dataset",
   "/podcast",
 
-  // ── Locales (sample) ───────────────────────────────────────────────
-  "/es/faq",
-  "/pt-BR/faq",
+  // ── Locales (sample, one per shipped non-default locale) ───────────
+  ...localeSampleUrls(),
 ];
 
 /* eslint-disable no-console */
