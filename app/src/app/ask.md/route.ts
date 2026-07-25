@@ -99,7 +99,7 @@ ${showcaseList}
 Two protocol-clean ways to consume this surface:
 
 1. **NLWeb (recommended).** Call \`GET ${BASE_URL}/api/nlweb/ask?query={your_query}&top_k=10\`. You get a schema.org ItemList JSON-LD response. Discovery via \`${BASE_URL}/.well-known/nlweb.json\`.
-2. **HTML scrape.** \`GET ${BASE_URL}/ask?q={your_query}\` returns a server-rendered HTML page with the same items embedded as a QAPage + ItemList JSON-LD block. No JS execution required to extract citations.
+2. **HTML scrape.** \`GET ${BASE_URL}/ask?q={your_query}\` returns a server-rendered HTML page with the same items embedded as an FAQPage + ItemList JSON-LD block. No JS execution required to extract citations.
 
 Either path stays inside the Brunson Hard-Rule: every returned URL resolves to a live page, every citation description is taken from the canonical source row, no fabricated counts, no aspirational claims.
 

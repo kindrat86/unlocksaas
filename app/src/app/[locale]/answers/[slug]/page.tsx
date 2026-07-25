@@ -142,23 +142,32 @@ export default async function LocalizedAnswerDetail({
     ],
   });
 
+  // FAQPage, not QAPage: Google requires user-submitted answers for QAPage and
+  // names publisher-written answer pages as an invalid use. mainEntity must be
+  // an array. No answerCount — FAQPage does not use it and it was the field GSC
+  // complained about. Do NOT switch this back to QAPage.
   const qaJson = JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "QAPage",
+    "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: e.question,
     inLanguage,
-    mainEntity: {
-      "@type": "Question",
-      name: e.question,
-      text: e.question,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: e.directAnswer,
-        inLanguage,
-        author: { "@id": ID.person },
-        url: `${canonicalUrl}#answer`,
+    author: { "@id": ID.person },
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: e.question,
+        text: e.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: e.directAnswer,
+          inLanguage,
+          author: { "@id": ID.person },
+          url: `${canonicalUrl}#answer`,
+        },
       },
-    },
+    ],
   });
 
   return (

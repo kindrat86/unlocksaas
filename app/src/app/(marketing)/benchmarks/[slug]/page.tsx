@@ -98,25 +98,21 @@ function buildJsonLd(
     '[data-speakable="faq-a"]',
   );
 
-  const qaPage = {
-    "@context": "https://schema.org",
-    "@type": "QAPage",
-    inLanguage: "en-US",
-    speakable,
-    ...ACCESS_MODE_TEXTUAL,
-    mainEntity: {
-      "@type": "Question",
-      name: primaryQuestion,
-      text: primaryQuestion,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: e.aeoAnswer,
-        inLanguage: "en-US",
-        upvoteCount: 0,
-        author: { "@id": ID.person },
-        url: `${canonicalUrl}#answer`,
-      },
+  // QAPage is invalid here: Google requires that users be able to submit
+  // answers, and names "an FAQ page written by the site itself" as an invalid
+  // use. The primary Q&A now leads the page's single FAQPage instead. No
+  // answerCount / upvoteCount — FAQPage needs neither and inventing them
+  // fabricates engagement. Do NOT add a QAPage node back.
+  const primaryQuestionNode = {
+    "@type": "Question",
+    name: primaryQuestion,
+    text: primaryQuestion,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: e.aeoAnswer,
+      inLanguage: "en-US",
+      author: { "@id": ID.person },
+      url: `${canonicalUrl}#answer`,
     },
   };
 
@@ -157,18 +153,24 @@ function buildJsonLd(
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: primaryQuestion,
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
     inLanguage: "en-US",
     speakable,
     ...ACCESS_MODE_TEXTUAL,
-    mainEntity: faqsForSchema.map((f) => ({
+    mainEntity: [primaryQuestionNode, ...faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        url: canonicalUrl,
         inLanguage: "en-US",
       },
-    })),
+    }))],
   };
 
   const breadcrumbs = {
@@ -192,7 +194,6 @@ function buildJsonLd(
   };
 
   return [
-    JSON.stringify(qaPage),
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
@@ -218,7 +219,7 @@ export default async function BenchmarkDetailPage(props: {
   const canonicalUrl = `${BASE_URL}/benchmarks/${e.slug}`;
   const paaPairs = paaForBenchmark(e);
   const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
-  const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
     mergedFaqs,
@@ -232,7 +233,6 @@ export default async function BenchmarkDetailPage(props: {
 
   return (
     <article className="min-h-screen">
-      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />

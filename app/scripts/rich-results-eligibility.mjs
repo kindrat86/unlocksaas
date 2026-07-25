@@ -359,19 +359,15 @@ function validateFAQPage(node) {
 
 /** @param {Record<string, unknown>} node */
 function validateQAPage(node) {
-  /** @type {string[]} */
-  const gaps = [];
-  const me = node.mainEntity;
-  // QAPage expects a single Question (not array), per Google.
-  if (Array.isArray(me)) {
-    gaps.push(`QAPage: mainEntity is array (${me.length}); Google expects a single Question`);
-  } else if (me && typeof me === "object") {
-    const q = /** @type {Record<string, unknown>} */ (me);
-    if (!q.acceptedAnswer && !q.suggestedAnswer) {
-      gaps.push("QAPage: Question missing acceptedAnswer AND suggestedAnswer");
-    }
-  }
-  return gaps;
+  // Not an eligibility check any more — a hard policy gap. Google restricts
+  // QAPage to pages where users can submit answers ("an FAQ page written by the
+  // site itself" is a documented invalid use), so nothing this site publishes
+  // qualifies. Reporting it as a gap is deliberate: it keeps the type visible
+  // in the report instead of silently passing.
+  void node;
+  return [
+    "QAPage: invalid for publisher-authored Q&A — Google requires user-submitted answers. Convert to FAQPage (mainEntity as an array).",
+  ];
 }
 
 /** @param {Record<string, unknown>} node */

@@ -1756,7 +1756,7 @@ const handler = createMcpHandler(
       {
         title: "Ask a natural-language question against the UnlockSaaS corpus",
         description:
-          "Search the UnlockSaaS schema.org corpus (700+ items across Articles, HowTos, Products, DefinedTerms, FAQPages, QAPages) using natural-language keywords. Returns the top-k matching items with a deterministic one-paragraph summary. Uses BM25 ranking for deterministic, sub-millisecond retrieval. Items span all surfaces: funnel teardowns, pricing teardowns, comparisons, alternatives, categories, Playbook steps, glossary terms, FAQ entries, direct answers, and benchmarks. Useful for helping agents discover relevant content without hardcoding paths or iterating through list_* tools.",
+          "Search the UnlockSaaS schema.org corpus (700+ items across Articles, HowTos, Products, DefinedTerms, FAQPages) using natural-language keywords. Returns the top-k matching items with a deterministic one-paragraph summary. Uses BM25 ranking for deterministic, sub-millisecond retrieval. Items span all surfaces: funnel teardowns, pricing teardowns, comparisons, alternatives, categories, Playbook steps, glossary terms, FAQ entries, direct answers, and benchmarks. Useful for helping agents discover relevant content without hardcoding paths or iterating through list_* tools.",
         inputSchema: {
           query: z
             .string()

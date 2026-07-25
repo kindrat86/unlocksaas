@@ -459,21 +459,28 @@ function AskJsonLd({
 }) {
   const canonicalUrl = `${BASE_URL}/ask?q=${encodeURIComponent(query)}`;
 
+  // FAQPage, not QAPage: Google requires user-submitted answers for QAPage and
+  // names publisher-written answer pages as an invalid use. mainEntity must be
+  // an array. No answerCount — FAQPage does not use it and it was the field GSC
+  // complained about. Do NOT switch this back to QAPage.
   const qaPage = {
     "@context": "https://schema.org",
-    "@type": "QAPage",
-    "@id": canonicalUrl,
-    mainEntity: {
-      "@type": "Question",
-      name: query,
-      text: query,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: summary,
-        url: canonicalUrl,
+    "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: query,
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: query,
+        text: query,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: summary,
+          url: canonicalUrl,
+        },
       },
-    },
+    ],
     isPartOf: { "@id": `${BASE_URL}/#website` },
     inLanguage: "en-US",
   };

@@ -290,10 +290,11 @@ function buildCorpus(): readonly NlWebItem[] {
     });
   }
 
-  // Answer pages – QAPage-shaped AEO-format direct answers.
+  // Answer pages – FAQPage-shaped AEO-format direct answers. (Not QAPage:
+  // Google restricts that type to pages where users submit answers.)
   for (const a of ANSWER_ENTRIES) {
     items.push({
-      "@type": "QAPage",
+      "@type": "FAQPage",
       "@id": `${BASE_URL}/answers/${a.slug}`,
       name: a.question,
       description: a.directAnswer,

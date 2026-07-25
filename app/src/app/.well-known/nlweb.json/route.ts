@@ -87,12 +87,13 @@ const MANIFEST = {
   // schema.org @type values present in the corpus. Agents can use this
   // to pre-filter queries (e.g. "give me only DefinedTerm matches").
   schema_org_types: [
-    "Product",
+    // "QAPage" was listed here until 2026-07-25; the corpus now types answer
+    // pages FAQPage (QAPage requires user-submitted answers).
+    "FAQPage",
     "Article",
     "HowTo",
     "DefinedTerm",
     "Question",
-    "QAPage",
   ],
   // Live corpus size + surface inventory. Read at module load from the
   // corpus aggregator so the manifest cannot drift from what /ask

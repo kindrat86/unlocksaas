@@ -304,7 +304,7 @@ npx mcp-remote ${BASE_URL}/api/mcp
 - [Alternatives](${BASE_URL}/alternatives-to) – named-competitor honest comparisons.
 - [Category roundups](${BASE_URL}/category) – payments, forms, analytics, newsletter, scheduling, email-api, docs, testimonials, video, workspace, project-management, design, hosting.
 - [Benchmarks](${BASE_URL}/benchmarks) – directional ranges for twenty indie SaaS funnel metrics.
-- [Answers](${BASE_URL}/answers) – thirty direct AEO-formatted answers (QAPage schema).
+- [Answers](${BASE_URL}/answers) – thirty direct AEO-formatted answers (FAQPage schema).
 - [Why isn't my funnel converting](${BASE_URL}/why-isnt-my) – per-element diagnostic.
 - [Funnel playbooks](${BASE_URL}/funnel-playbook) – Brunson archetypes with HowTo schema.
 - [Niche pages](${BASE_URL}/for) – cohort-tuned landing pages.
@@ -345,7 +345,7 @@ Both operations have explicit operationId, request/response schemas, and example
 
 Examples: \`${BASE_URL}/benchmarks/saas-churn-rate\`, \`${BASE_URL}/benchmarks/landing-page-conversion-rate\`, \`${BASE_URL}/benchmarks/checkout-completion-rate\`, \`${BASE_URL}/benchmarks/email-open-rate\`, \`${BASE_URL}/benchmarks/trial-to-paid-conversion\`.
 
-### Direct answers (QAPage + Article)
+### Direct answers (FAQPage + Article)
 
 [Hub](${BASE_URL}/answers) | 30 questions with 2–4 sentence direct answers designed for AI-assistant citation. Organized into six categories: funnel mechanics, pricing, email, metrics, positioning, value ladder.
 
@@ -428,7 +428,7 @@ Every defined term, benchmark, and dataset version has stable citation URLs at \
 
 ## Direct answers (AEO-formatted)
 
-[Hub](${BASE_URL}/answers) | 30 questions with 2–4 sentence direct answers across six categories. Each page emits QAPage + Article + BreadcrumbList JSON-LD.
+[Hub](${BASE_URL}/answers) | 30 questions with 2–4 sentence direct answers across six categories. Each page emits FAQPage + Article + BreadcrumbList JSON-LD.
 
 ## Funnel diagnostic (primary action)
 
@@ -497,7 +497,7 @@ Every per-detail page carries Article + FAQPage + BreadcrumbList JSON-LD with ex
 - [Alternatives](${BASE_URL}/alternatives-to) – Article + FAQPage (honest competitor comparison)
 - [Glossary](${BASE_URL}/glossary) – DefinedTermSet + per-term DefinedTerm + Article + FAQPage
 - [Benchmarks](${BASE_URL}/benchmarks) – Article + FAQPage with directional ranges
-- [Answers](${BASE_URL}/answers) – QAPage + Article + BreadcrumbList (30 direct answers)
+- [Answers](${BASE_URL}/answers) – FAQPage + Article + BreadcrumbList (30 direct answers)
 - [Why isn't my X](${BASE_URL}/why-isnt-my) – Article + FAQPage (per-element diagnostic)
 - [Funnel playbooks](${BASE_URL}/funnel-playbook) – Article + HowTo + FAQPage
 - [Niche pages](${BASE_URL}/for) – Article + FAQPage (cohort-tuned)
@@ -650,9 +650,9 @@ function appleBody(): string {
 
 Apple Intelligence + on-device assistants weight terse, AEO-shaped direct answers and stable schema graphs. This view surfaces the AEO direct-answer catalog and the FAQ first; long-form prose last.
 
-## Direct answers (QAPage schema)
+## Direct answers (FAQPage schema)
 
-[Hub](${BASE_URL}/answers) – 30 questions with 2–4 sentence direct answers. Organized into six categories: funnel mechanics, pricing, email, metrics, positioning, value ladder. Each page carries QAPage + Article + BreadcrumbList JSON-LD.
+[Hub](${BASE_URL}/answers) – 30 questions with 2–4 sentence direct answers. Organized into six categories: funnel mechanics, pricing, email, metrics, positioning, value ladder. Each page carries FAQPage + Article + BreadcrumbList JSON-LD.
 
 ## Benchmarks (directional ranges)
 
@@ -713,7 +713,7 @@ Every defined term, benchmark, and dataset version has stable URLs at \`${BASE_U
 
 ## Schema-typed pages
 
-[Glossary](${BASE_URL}/glossary) (DefinedTermSet + per-term DefinedTerm) | [Benchmarks](${BASE_URL}/benchmarks) | [Answers](${BASE_URL}/answers) (QAPage) | [Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Playbooks](${BASE_URL}/funnel-playbook).
+[Glossary](${BASE_URL}/glossary) (DefinedTermSet + per-term DefinedTerm) | [Benchmarks](${BASE_URL}/benchmarks) | [Answers](${BASE_URL}/answers) (FAQPage) | [Funnel teardowns](${BASE_URL}/funnel-teardown) | [Pricing teardowns](${BASE_URL}/pricing-teardown) | [Comparisons](${BASE_URL}/vs) | [Alternatives](${BASE_URL}/alternatives-to) | [Categories](${BASE_URL}/category) | [Niches](${BASE_URL}/for) | [Playbooks](${BASE_URL}/funnel-playbook).
 
 ## Funnel + diagnostic
 
@@ -737,7 +737,7 @@ Mistral's retrieval weights structured pages with explicit schema and dated last
 ## Schema-typed catalogs
 
 - [Benchmarks](${BASE_URL}/benchmarks) – Article + FAQPage + directional ranges
-- [Answers](${BASE_URL}/answers) – QAPage + Article + BreadcrumbList
+- [Answers](${BASE_URL}/answers) – FAQPage + Article + BreadcrumbList
 - [Glossary](${BASE_URL}/glossary) – DefinedTermSet + per-term DefinedTerm
 - [Funnel teardowns](${BASE_URL}/funnel-teardown) – Article + FAQPage (Hook/Story/Offer)
 - [Pricing teardowns](${BASE_URL}/pricing-teardown) – Article + FAQPage (tier structure)

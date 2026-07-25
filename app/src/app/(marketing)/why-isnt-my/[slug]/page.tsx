@@ -120,19 +120,46 @@ function buildJsonLd(
     ...ACCESS_MODE_TEXTUAL,
   };
 
+  // QAPage is invalid here: Google requires that users be able to submit
+  // answers, and names "an FAQ page written by the site itself" as an invalid
+  // use. The primary Q&A now leads the page's single FAQPage. The three
+  // diagnoses that used to ride along as `suggestedAnswer` are dropped from the
+  // markup — suggestedAnswer only means anything on a community QAPage, and the
+  // Article node already covers that body content. No answerCount/upvoteCount.
+  const primaryQuestion = {
+    "@type": "Question",
+    name: `Why isn't my ${e.element} converting?`,
+    text: `Why isn't my ${e.element} converting?`,
+    author: { "@id": ID.person },
+    dateCreated: e.lastVerified,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: e.tldr,
+      url: canonicalUrl,
+      author: { "@id": ID.person },
+      dateCreated: e.lastVerified,
+    },
+  };
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: `Why isn't my ${e.element} converting?`,
+    dateModified: e.lastVerified,
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
     inLanguage: "en-US",
-    mainEntity: faqsForSchema.map((f) => ({
+    mainEntity: [primaryQuestion, ...faqsForSchema.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        url: canonicalUrl,
         inLanguage: "en-US",
       },
-    })),
+    }))],
   };
 
   const breadcrumbs = {
@@ -164,39 +191,11 @@ function buildJsonLd(
   // preferentially cite QAPage-typed surfaces for direct-answer queries.
   // FAQPage is the citation surface for ancillary "people also ask" hits.
   // Shipping both on the same URL is the documented schema.org pattern.
-  const qaPage = {
-    "@context": "https://schema.org",
-    "@type": "QAPage",
-    "@id": `${canonicalUrl}#qa`,
-    url: canonicalUrl,
-    inLanguage: "en-US",
-    mainEntity: {
-      "@type": "Question",
-      name: `Why isn't my ${e.element} converting?`,
-      text: `Why isn't my ${e.element} converting?`,
-      author: { "@id": ID.person },
-      dateCreated: e.lastVerified,
-      answerCount: 1 + e.diagnoses.length,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: e.tldr,
-        author: { "@id": ID.person },
-        dateCreated: e.lastVerified,
-      },
-      suggestedAnswer: e.diagnoses.map((d) => ({
-        "@type": "Answer",
-        text: `${d.label}: ${d.appearance} Fix to try this week: ${d.fix}`,
-        author: { "@id": ID.person },
-        dateCreated: e.lastVerified,
-      })),
-    },
-  };
 
   return [
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
-    JSON.stringify(qaPage),
   ];
 }
 
@@ -219,7 +218,7 @@ export default async function WhyIsntMyDetailPage(props: {
   const canonicalUrl = `${BASE_URL}/why-isnt-my/${e.slug}`;
   const paaPairs = paaForWhyIsntMy(e);
   const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
-  const [articleJson, faqJson, breadcrumbJson, qaJson] = buildJsonLd(
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
     mergedFaqs,
@@ -234,7 +233,6 @@ export default async function WhyIsntMyDetailPage(props: {
 
   return (
     <article className="min-h-screen">
-      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />

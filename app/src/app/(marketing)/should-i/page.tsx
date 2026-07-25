@@ -141,7 +141,7 @@ export default function ShouldIHubPage() {
         cluster="Decision-helper AEO answers"
         count={`${SHOULD_I_ENTRIES.length} yes / no / depends / not-yet verdicts across ${SHOULD_I_CATEGORIES.length} categories`}
         intent="Decision-tree shaped AEO answers. Each carries a single verdict plus reasoning, designed for AI assistant citation in the 'should I X?' query shape."
-        schema="CollectionPage + ItemList; per-detail QAPage + Article + BreadcrumbList"
+        schema="CollectionPage + ItemList; per-detail FAQPage + Article + BreadcrumbList"
       />
 
       {SHOULD_I_CATEGORIES.map((category) => {

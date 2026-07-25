@@ -448,7 +448,7 @@ const PSEO_CATALOGS = Object.freeze({
     slugPattern: "/answers/{slug}",
     markdownPattern: null,
     description:
-      "Direct AEO-formatted answers to 30 specific founder questions across funnel mechanics, pricing, email, metrics, positioning, and the value ladder. Each page carries QAPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for citation by AI assistants.",
+      "Direct AEO-formatted answers to 30 specific founder questions across funnel mechanics, pricing, email, metrics, positioning, and the value ladder. Each page carries FAQPage + Article + BreadcrumbList JSON-LD with a 2-4 sentence direct answer designed for citation by AI assistants.",
     slugs: ANSWER_SLUGS,
     count: PSEO_COUNTS.answers,
   },
@@ -457,7 +457,7 @@ const PSEO_CATALOGS = Object.freeze({
     slugPattern: "/should-i/{decision}",
     markdownPattern: "/should-i/{decision}/md",
     description:
-      "Decision-helper AEO pages in the 'should I X?' query shape that LLM assistants cite verbatim (ChatGPT, Perplexity, Claude, Google AI Overviews). Each page carries a single binary verdict (yes / no / depends / not-yet), a one-clause verdict headline, a 2-4 sentence direct answer, and 2-4 supporting bullets. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per detail.",
+      "Decision-helper AEO pages in the 'should I X?' query shape that LLM assistants cite verbatim (ChatGPT, Perplexity, Claude, Google AI Overviews). Each page carries a single binary verdict (yes / no / depends / not-yet), a one-clause verdict headline, a 2-4 sentence direct answer, and 2-4 supporting bullets. FAQPage + Article + BreadcrumbList JSON-LD per detail.",
     slugs: SHOULD_I_SLUGS,
     count: PSEO_COUNTS.shouldI,
   },

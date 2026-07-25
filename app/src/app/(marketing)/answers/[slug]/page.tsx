@@ -79,10 +79,6 @@ function buildJsonLd(
   canonicalUrl: string,
   paaPairs: ReadonlyArray<{ q: string; a: string }>,
 ): string[] {
-  // QAPage is the right schema for a direct-answer page (Q + accepted answer).
-  // Google's structured-data team explicitly documents QAPage as the
-  // citation-friendly format for single-question pages.
-  //
   // SpeakableSpecification curated per-page so voice engines (Google
   // Assistant, ChatGPT Voice, Perplexity voice) extract exactly the
   // question + direct answer + supporting bullets, not nav or CTA.
@@ -93,24 +89,23 @@ function buildJsonLd(
     '[data-speakable="supporting"]',
   );
 
-  const qaPage = {
-    "@context": "https://schema.org",
-    "@type": "QAPage",
-    inLanguage: "en-US",
-    speakable,
-    ...ACCESS_MODE_TEXTUAL,
-    mainEntity: {
-      "@type": "Question",
-      name: e.question,
-      text: e.question,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: e.directAnswer,
-        inLanguage: "en-US",
-        upvoteCount: 0,
-        author: { "@id": ID.person },
-      },
+  // Google restricts QAPage to pages where users submit answers ("Don't use
+  // QAPage markup for content that has only one answer for a given question
+  // with no way for users to add alternative answers"; "an FAQ page written by
+  // the site itself" is a named invalid use). These pages are editorial, so the
+  // primary Q&A lives in the page's FAQPage instead — FIRST in mainEntity,
+  // ahead of the follow-ups. No answerCount, no upvoteCount: FAQPage needs
+  // neither and inventing them fabricates engagement. Do NOT add a QAPage node.
+  const primaryQuestion = {
+    "@type": "Question",
+    name: e.question,
+    text: e.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: e.directAnswer,
+      url: canonicalUrl,
+      inLanguage: "en-US",
+      author: { "@id": ID.person },
     },
   };
 
@@ -152,28 +147,37 @@ function buildJsonLd(
     ],
   };
 
-  // FAQPage emitted alongside QAPage: the PAA H3s rendered on the page
+  // ONE FAQPage for the whole page: the primary question first, then the PAA
+  // H3s rendered on the page
   // (the primary question + the supporting-point follow-ups) feed
-  // FAQPage rich-result eligibility. QAPage handles the canonical "one
-  // question, one accepted answer" intent; FAQPage handles the
-  // multi-question PAA-style nuance.
+  // FAQPage rich-result eligibility, together with the page's own primary
+  // question and answer.
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: e.question,
+    datePublished: e.lastVerified,
+    dateModified: e.lastVerified,
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
     inLanguage: "en-US",
-    mainEntity: paaPairs.map((f) => ({
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
+    mainEntity: [primaryQuestion, ...paaPairs.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: {
         "@type": "Answer",
         text: f.a,
+        url: canonicalUrl,
         inLanguage: "en-US",
       },
-    })),
+    }))],
   };
 
   return [
-    JSON.stringify(qaPage),
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
@@ -198,7 +202,7 @@ export default async function AnswerDetailPage(props: {
 
   const canonicalUrl = `${BASE_URL}/answers/${e.slug}`;
   const paaPairs = paaForAnswer(e);
-  const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
     paaPairs,
@@ -217,7 +221,6 @@ export default async function AnswerDetailPage(props: {
 
   return (
     <article className="min-h-screen">
-      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />
@@ -311,7 +314,7 @@ export default async function AnswerDetailPage(props: {
 
       {/* People Also Ask – PAA H3s sourced from this entry's
           supporting points; the entry's question + directAnswer is the
-          QAPage primary, and these are the nuance follow-ups. */}
+          primary question is first in the FAQPage, and these are the nuance follow-ups. */}
       <PeopleAlsoAsk pairs={paaPairs} />
 
       <section
