@@ -175,7 +175,12 @@ const REQUIRED_BY_TYPE = {
   WebSite: ["name", "url"],
   WebPage: [],
   CollectionPage: [],
-  ProfilePage: [],
+  // Google's ProfilePage rich-result spec makes `mainEntity` REQUIRED (the
+  // Person/Organization the profile is about). This was `[]` until 2026-07-25,
+  // which let bare `{"@type":"ProfilePage","@id":…}` reference stubs ship on
+  // every page rendering PersonJsonLd. GSC files those as "Missing field
+  // 'mainEntity'".
+  ProfilePage: ["mainEntity"],
   BreadcrumbList: ["itemListElement"],
   FAQPage: ["mainEntity"],
   QAPage: ["mainEntity"],

@@ -1188,6 +1188,12 @@ function buildPersonSubjectOf(mentions: readonly MediaMention[]) {
       "@type": "ProfilePage",
       "@id": `${BASE}/about`,
       url: `${BASE}/about`,
+      // `mainEntity` is a REQUIRED field on ProfilePage in Google's rich-result
+      // spec. Without it every page that renders PersonJsonLd (/about, /press,
+      // /press/topics, /press/topics/[slug]) ships a typed-but-empty
+      // ProfilePage node and GSC files "Missing field 'mainEntity'" against it.
+      // Same defect Google flagged on invisibleexit.com/about (2026-07).
+      mainEntity: { "@id": ID.person },
     },
   ] as const;
   const mentionEntries = mentions.map((m) => ({
@@ -1224,6 +1230,9 @@ function buildPersonJson(): string {
     mainEntityOfPage: {
       "@type": "ProfilePage",
       "@id": `${BASE}/about`,
+      // Closes the inverse pair (Person -> mainEntityOfPage -> ProfilePage ->
+      // mainEntity -> Person). Required field; see buildPersonSubjectOf above.
+      mainEntity: { "@id": ID.person },
     },
     email: "maryan@unlocksaas.com",
     jobTitle: "Founder",
