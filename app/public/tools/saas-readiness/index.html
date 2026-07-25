@@ -248,9 +248,22 @@ function calculate() {
   document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
 }
 
+// This document is served with CSP `require-trusted-types-for 'script'`, so a
+// bare innerHTML assignment throws TypeError and the results never render. That
+// is invisible in local file:// testing — it only fails on the deployed origin.
+// Pass-through is sound HERE because every string below is built from in-page
+// constants: the only externally-controlled input is the share hash, and those
+// values are assigned solely to <select>.value, which silently drops anything
+// outside the fixed option list. Do NOT copy this policy to a tool that renders
+// free text.
+const TT = window.trustedTypes && window.trustedTypes.createPolicy
+  ? window.trustedTypes.createPolicy('saas-readiness-results', { createHTML: s => s })
+  : null;
+function setHTML(el, html) { el.innerHTML = TT ? TT.createHTML(html) : html; }
+
 function displayResults(r) {
   if (r.error) {
-    document.getElementById('result-content').innerHTML = '<div class="verdict" style="color:#f87171">' + r.error + '</div>';
+    setHTML(document.getElementById('result-content'), '<div class="verdict" style="color:#f87171">' + r.error + '</div>');
     return;
   }
   
@@ -341,7 +354,7 @@ function displayResults(r) {
     html += '</ul></div>';
   }
   
-  document.getElementById('result-content').innerHTML = html;
+  setHTML(document.getElementById('result-content'), html);
 }
 
 function copyLink() {
