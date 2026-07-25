@@ -124,7 +124,7 @@ export default function AnswersHubPage() {
         cluster="Direct AEO answers"
         count={`${ANSWER_ENTRIES.length} direct AEO-formatted answers across ${ANSWER_CATEGORIES.length} categories`}
         intent="Direct AEO-formatted answers to the most-asked indie SaaS funnel questions. Each carries a 2–4 sentence direct answer designed for AI assistant citation."
-        schema="CollectionPage + ItemList; per-detail QAPage + Article + BreadcrumbList"
+        schema="CollectionPage + ItemList; per-detail FAQPage + Article + BreadcrumbList"
       />
 
       {ANSWER_CATEGORIES.map((category) => {

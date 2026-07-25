@@ -40,8 +40,10 @@ export type { SoftwareApplicationInput } from "./softwareapplication.js";
 export { buildClaimReview } from "./claimreview.js";
 export type { ClaimReviewInput, ClaimReviewRatingInput } from "./claimreview.js";
 
-export { buildQAPage } from "./qapage.js";
-export type { QAPageInput, QAEntry } from "./qapage.js";
+// buildQAPage removed 2026-07-25: it emitted QAPage (invalid for
+// publisher-authored Q&A — Google requires user-submitted answers) and
+// hardcoded `upvoteCount: 1` on every Answer, a fabricated engagement signal.
+// It had no callers. Use buildFAQPage instead.
 
 export { buildReview } from "./review.js";
 export type { ReviewInput } from "./review.js";

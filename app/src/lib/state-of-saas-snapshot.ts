@@ -467,7 +467,7 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
       value: ANSWER_SLUGS.length,
       unit: "pages",
       description:
-        "Two-to-four-sentence direct answers under /answers, formatted for AI assistant citation. QAPage + Article + BreadcrumbList JSON-LD per page.",
+        "Two-to-four-sentence direct answers under /answers, formatted for AI assistant citation. FAQPage + Article + BreadcrumbList JSON-LD per page.",
       sourceUrl: `${BASE_URL}/answers`,
       asOf: ANSWER_AS_OF,
     },
@@ -478,7 +478,7 @@ function buildSnapshot(): ReadonlyArray<SnapshotObservation> {
       value: SHOULD_I_SLUGS.length,
       unit: "pages",
       description:
-        "Binary-verdict decision-helper pages under /should-i targeting the 'should I X?' query shape that LLM assistants cite verbatim. Each page carries one yes / no / depends / not-yet verdict plus reasoning. QAPage + Article + FAQPage + BreadcrumbList JSON-LD per page.",
+        "Binary-verdict decision-helper pages under /should-i targeting the 'should I X?' query shape that LLM assistants cite verbatim. Each page carries one yes / no / depends / not-yet verdict plus reasoning. FAQPage + Article + BreadcrumbList JSON-LD per page.",
       sourceUrl: `${BASE_URL}/should-i`,
       asOf: SHOULD_I_AS_OF,
     },

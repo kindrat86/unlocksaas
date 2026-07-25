@@ -14,7 +14,6 @@
  *      - Article: headline, datePublished, author
  *      - BreadcrumbList: itemListElement (≥ 1 entry, each w/ position+name)
  *      - FAQPage: mainEntity (≥ 1 Question with acceptedAnswer.text)
- *      - QAPage: mainEntity Question + acceptedAnswer.text
  *      - Organization: name, url
  *      - Person: name
  *      - WebSite: name, url
@@ -183,7 +182,6 @@ const REQUIRED_BY_TYPE = {
   ProfilePage: ["mainEntity"],
   BreadcrumbList: ["itemListElement"],
   FAQPage: ["mainEntity"],
-  QAPage: ["mainEntity"],
   Product: ["name"],
   SoftwareApplication: ["name"],
   Service: ["name"],
@@ -320,6 +318,22 @@ function walk(node, url, blockIndex, path) {
           !(/** @type {Record<string, unknown>} */ (target).urlTemplate)))
     ) {
       fail(url, blockIndex, `${path}: SearchAction.target must be a string or { urlTemplate }`);
+    }
+  }
+
+  // Banned types. QAPage is invalid for everything this site publishes: Google
+  // requires that users be able to submit answers, and names "an FAQ page
+  // written by the site itself" as an invalid use. Every /answers, /should-i,
+  // /benchmarks, /why-isnt-my and /ask page emitted it until 2026-07-25. Fail
+  // the build rather than let it come back — the GSC warnings it produces
+  // (missing answerCount / upvoteCount) tempt you into fabricating engagement.
+  for (const t of types) {
+    if (t === "QAPage") {
+      fail(
+        url,
+        blockIndex,
+        `${path}: QAPage is banned — Google requires user-submitted answers. Use FAQPage with mainEntity as an array.`,
+      );
     }
   }
 

@@ -84,24 +84,21 @@ function buildJsonLd(e: ShouldIEntry, canonicalUrl: string): string[] {
 
   const acceptedAnswerText = `${e.verdictHeadline} ${e.directAnswer}`;
 
-  const qaPage = {
-    "@context": "https://schema.org",
-    "@type": "QAPage",
-    inLanguage: "en-US",
-    speakable,
-    ...ACCESS_MODE_TEXTUAL,
-    mainEntity: {
-      "@type": "Question",
-      name: e.question,
-      text: e.question,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: acceptedAnswerText,
-        inLanguage: "en-US",
-        upvoteCount: 0,
-        author: { "@id": ID.person },
-      },
+  // QAPage is invalid here: Google requires that users be able to submit
+  // answers, and names "an FAQ page written by the site itself" as an invalid
+  // use. The primary Q&A now leads the page's single FAQPage instead. No
+  // answerCount / upvoteCount — FAQPage needs neither and inventing them
+  // fabricates engagement. Do NOT add a QAPage node back.
+  const primaryQuestion = {
+    "@type": "Question",
+    name: e.question,
+    text: e.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: acceptedAnswerText,
+      url: canonicalUrl,
+      inLanguage: "en-US",
+      author: { "@id": ID.person },
     },
   };
 
@@ -147,20 +144,27 @@ function buildJsonLd(e: ShouldIEntry, canonicalUrl: string): string[] {
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: e.question,
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
     inLanguage: "en-US",
-    mainEntity: e.supporting.map((s, i) => ({
+    speakable,
+    ...ACCESS_MODE_TEXTUAL,
+    mainEntity: [primaryQuestion, ...e.supporting.map((s, i) => ({
       "@type": "Question",
       name: `Why? (point ${i + 1})`,
       acceptedAnswer: {
         "@type": "Answer",
         text: s,
+        url: canonicalUrl,
         inLanguage: "en-US",
       },
-    })),
+    }))],
   };
 
   return [
-    JSON.stringify(qaPage),
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
@@ -217,7 +221,7 @@ export default async function ShouldIDetailPage(props: {
   if (!e) notFound();
 
   const canonicalUrl = `${BASE_URL}/should-i/${e.slug}`;
-  const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
   );
@@ -237,7 +241,6 @@ export default async function ShouldIDetailPage(props: {
 
   return (
     <article className="min-h-screen">
-      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />

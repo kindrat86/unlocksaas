@@ -37,7 +37,7 @@ import { TldrSummary } from "@/components/seo/tldr-summary";
  * Cross-product generateStaticParams: renderableLocalesForPath('/benchmarks')
  * × BENCHMARK_SLUGS.
  *
- * JSON-LD: QAPage + Article + FAQPage + BreadcrumbList. The QAPage primary
+ * JSON-LD: FAQPage + Article + BreadcrumbList. The FAQPage's primary
  * question is localized ("¿Cuál es una buena {metric}?" / "Qual é uma boa
  * {metric}?") matching the LLM citation intent in the target language.
  */
@@ -109,23 +109,19 @@ function buildJsonLd(
   faqsForSchema: ReadonlyArray<{ q: string; a: string }>,
 ): string[] {
   const q = primaryQuestion(e.metric, locale);
-  const qaPage = {
-    "@context": "https://schema.org",
-    "@type": "QAPage",
-    inLanguage,
-    mainEntity: {
-      "@type": "Question",
-      name: q,
-      text: q,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: e.aeoAnswer,
-        inLanguage,
-        upvoteCount: 0,
-        author: { "@id": ID.person },
-        url: `${canonicalUrl}#answer`,
-      },
+  // QAPage is invalid for publisher-written answers (Google requires that users
+  // be able to submit answers). The primary Q&A leads the page's FAQPage
+  // instead; no answerCount / upvoteCount. Do NOT add a QAPage node back.
+  const primaryQuestionNode = {
+    "@type": "Question",
+    name: q,
+    text: q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: e.aeoAnswer,
+      inLanguage,
+      author: { "@id": ID.person },
+      url: `${canonicalUrl}#answer`,
     },
   };
 
@@ -152,16 +148,25 @@ function buildJsonLd(
   const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    url: canonicalUrl,
+    name: q,
     inLanguage,
-    mainEntity: faqsForSchema.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: f.a,
-        inLanguage,
-      },
-    })),
+    author: { "@id": ID.person },
+    publisher: { "@id": ID.organization },
+    mainEntity: [
+      primaryQuestionNode,
+      ...faqsForSchema.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: f.a,
+          url: canonicalUrl,
+          inLanguage,
+        },
+      })),
+    ],
   };
 
   const breadcrumbs = {
@@ -190,7 +195,6 @@ function buildJsonLd(
   };
 
   return [
-    JSON.stringify(qaPage),
     JSON.stringify(article),
     JSON.stringify(faqPage),
     JSON.stringify(breadcrumbs),
@@ -243,7 +247,7 @@ export default async function LocalizedBenchmarkDetail({
 
   const paaPairs = paaForBenchmark(e, locale);
   const mergedFaqs = mergePaaIntoFaqs(e.faqs, paaPairs);
-  const [qaJson, articleJson, faqJson, breadcrumbJson] = buildJsonLd(
+  const [articleJson, faqJson, breadcrumbJson] = buildJsonLd(
     e,
     canonicalUrl,
     inLanguage,
@@ -254,7 +258,6 @@ export default async function LocalizedBenchmarkDetail({
 
   return (
     <article className="min-h-screen">
-      <JsonLdBlock json={qaJson} />
       <JsonLdBlock json={articleJson} />
       <JsonLdBlock json={faqJson} />
       <JsonLdBlock json={breadcrumbJson} />

@@ -827,7 +827,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Programmatic SEO block #11 — direct-answer AEO pages.
     // Data source: src/lib/answers.ts. Pure citation-bait: each page
     // is a single founder-question with a 2-4 sentence direct answer
-    // plus supporting bullets. QAPage + Article + BreadcrumbList JSON-LD.
+    // plus supporting bullets. FAQPage + Article + BreadcrumbList JSON-LD.
     // ---------------------------------------------------------------------
     {
       url: `${base}/answers`,
@@ -849,7 +849,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // "should I X?" query shape that ChatGPT / Perplexity / Claude cite
     // verbatim (decision-tree response shape). Each page carries a
     // single yes / no / depends / not-yet verdict plus reasoning.
-    // QAPage + Article + FAQPage + BreadcrumbList JSON-LD.
+    // FAQPage + Article + BreadcrumbList JSON-LD.
     // ---------------------------------------------------------------------
     {
       url: `${base}/should-i`,
@@ -1352,7 +1352,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/ask`),
     },
     // Pre-rendered Q&A URLs for the curated showcase queries. Each one
-    // is a server-rendered page with QAPage + ItemList JSON-LD and a
+    // is a server-rendered page with FAQPage + ItemList JSON-LD and a
     // grounded BM25 answer, so AI crawlers landing here get the full
     // answer surface — same content as /ask?q=… typed manually but
     // discoverable via sitemap. Brunson Hard-Rule: every query in
