@@ -80,7 +80,8 @@ export function BrunsonTrustBar() {
           Get Free Diagnosis
         </a>
         <p style={{ marginTop: 18, fontSize: ".78rem", color: "#6b7178" }}>
-          Refund enforced by Stripe webhook, not a support ticket. 100% automated.
+          Refund runs from your dashboard, not a support ticket — the server
+          re-checks eligibility and issues it through Stripe automatically.
         </p>
       </div>
     </section>
