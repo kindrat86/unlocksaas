@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireCronSecret } from "@/lib/cron-auth";
-import { captureServer } from "@/lib/analytics/server";
+import { captureServer, resolveKey, resolveHost } from "@/lib/analytics/server";
 import {
   querySearchAnalytics,
   readGscConfig,
@@ -143,8 +143,12 @@ export async function GET(req: NextRequest) {
   // `captureServer()` ships with `flushAt: 1` (correct default for the
   // webhook hot-path where every event matters individually) but it
   // would melt our quota and the API rate-limit here.
-  const ph = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "", {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://eu.i.posthog.com",
+  // Same key resolution as captureServer() — see resolveKey(). Reading the
+  // raw env here would reintroduce the exact failure that helper exists to
+  // prevent: an empty or display-masked value is truthy, so it passes ??,
+  // and PostHog answers 200 for it while discarding every event.
+  const ph = new PostHog(resolveKey(), {
+    host: resolveHost(),
     flushAt: 100,
     flushInterval: 0,
   });
@@ -154,9 +158,9 @@ export async function GET(req: NextRequest) {
   // guard. We still return the row count to the cron dashboard so the
   // operator can verify GSC auth works end-to-end before turning on
   // analytics.
-  const phConfigured = Boolean(
-    process.env.NEXT_PUBLIC_POSTHOG_KEY && process.env.NEXT_PUBLIC_POSTHOG_HOST,
-  );
+  // resolveKey() always returns a usable key (env when valid, public project
+  // token otherwise), so PostHog is now always configured here.
+  const phConfigured = true;
 
   // Resolve SERP-variant attribution once per unique page in the row set.
   // The variant table is sparse (only opted-in pages appear), so most

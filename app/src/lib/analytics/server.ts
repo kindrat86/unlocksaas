@@ -21,19 +21,52 @@ import type { EventName } from "./events";
 
 let cached: PostHog | null = null;
 
-function isConfigured(): boolean {
-  return Boolean(
-    process.env.NEXT_PUBLIC_POSTHOG_KEY &&
-      process.env.NEXT_PUBLIC_POSTHOG_HOST,
+/**
+ * Resolve a usable project key, rejecting an unusable env value.
+ *
+ * Two ways this file has been able to die silently, both observed in this
+ * portfolio:
+ *   1. Empty string — the Vercel team policy marks new env vars "sensitive"
+ *      and bakes empty strings into CI builds. That is what disabled tracking
+ *      here after the 2026-07-07 deploy; client.ts grew its fallback for it,
+ *      but this file never did, so server capture stayed dead.
+ *   2. A display-masked key — sanctionsai.dev's POSTHOG_API_KEY was set to
+ *      `phc_ly..` (13 chars, copied out of the dashboard UI). Every event it
+ *      sent was discarded, and nothing could detect it: PostHog's capture
+ *      endpoint answers 200 {"status":"Ok"} for an unknown key.
+ *
+ * So validate the key's SHAPE, not its truthiness — a masked value is truthy
+ * and passes `Boolean(...)`, `||` and `??` alike. The fallback is the same
+ * public, write-only token client.ts already ships in the browser bundle.
+ */
+const POSTHOG_FALLBACK_KEY = "phc_lyZCgvTpicjLzAO3rY2GhxuX5WUc5jQjP8ZVwwJqauX";
+
+export function resolveKey(): string {
+  const key = (process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "").trim();
+  if (key.startsWith("phc_") && key.length >= 40 && !key.includes(".")) {
+    return key;
+  }
+  if (key) {
+    console.warn(
+      `[posthog] NEXT_PUBLIC_POSTHOG_KEY looks masked or malformed ` +
+        `(len=${key.length}); using the public project key instead.`,
+    );
+  }
+  return POSTHOG_FALLBACK_KEY;
+}
+
+export function resolveHost(): string {
+  return (
+    (process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "").trim() ||
+    "https://eu.i.posthog.com"
   );
 }
 
 function getClient(): PostHog | null {
   if (cached) return cached;
-  if (!isConfigured()) return null;
 
-  cached = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST!,
+  cached = new PostHog(resolveKey(), {
+    host: resolveHost(),
     // Serverless functions: flush every event right away. Don't batch — the
     // function will freeze before the batch goes out.
     flushAt: 1,
