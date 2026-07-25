@@ -235,7 +235,7 @@ function calculate() {
   const weaknesses = details.filter(d => d.score < 50).map(d => d.key);
   const strengths = details.filter(d => d.score >= 80).map(d => d.key);
   
-  return {
+  const result = {
     score: avg,
     tier: tier,
     strengths: strengths,
@@ -243,7 +243,6 @@ function calculate() {
     recommendation: avg >= 80 ? 'You\'re ready to launch. Focus on distribution.' : avg >= 55 ? 'Close the gaps in ' + weaknesses.slice(0,2).join(' and ') + '.' : 'Start with customer validation before building.'
   };
 
-  
   displayResults(result);
   document.getElementById('result-card').classList.add('show');
   document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
@@ -258,7 +257,9 @@ function displayResults(r) {
   let html = '';
   
   // Score circle if present
-  const scoreVal = r.score || r.risk_score || r.overall;
+  // ?? not || — a legitimate score of 0 is falsy, and || silently dropped the
+  // score circle for anyone answering worst-case to every question.
+  const scoreVal = r.score ?? r.risk_score ?? r.overall;
   if (scoreVal !== undefined) {
     const scoreClass = scoreVal >= 80 ? 'score-high' : scoreVal >= 50 ? 'score-mid' : 'score-low';
     const scoreLabel = r.score !== undefined ? 'SCORE' : r.risk_score !== undefined ? 'RISK' : 'RATING';
