@@ -7,7 +7,7 @@
     "prebuild": "node scripts/build-workbook-bundle.mjs",
     "build": "next build",
     "postbuild": "node scripts/postbuild-csp.mjs && node scripts/verify-jsonld.mjs .next",
-    "audit:prod": "npm audit --omit=dev --audit-level=low",
+    "audit:prod": "node scripts/audit-prod.mjs",
     "audit:crawlers": "node scripts/audit-crawler-citation.mjs",
     "start": "next start",
     "validate:jsonld": "node scripts/validate-jsonld.mjs",
@@ -37,7 +37,7 @@
     "geist": "^1.7.0",
     "lucide-react": "^1.16.0",
     "mcp-handler": "^1.1.0",
-    "next": "^16.2.6",
+    "next": "^16.2.11",
     "next-themes": "^0.4.6",
     "pdf-lib": "^1.17.1",
     "posthog-js": "^1.373.5",
@@ -45,7 +45,6 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "resend": "^6.12.3",
-    "shadcn": "^4.7.0",
     "stripe": "^22.1.1",
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
@@ -57,8 +56,9 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9",
-    "eslint-config-next": "^16.2.6",
-    "postcss": "^8",
+    "eslint-config-next": "^16.2.11",
+    "postcss": "^8.5.23",
+    "shadcn": "^4.7.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },
@@ -72,10 +72,12 @@
     "@workflow/world-vercel": {
       "undici": "7.28.0"
     },
-    "next": {
-      "postcss": "8.5.15"
-    },
-    "shell-quote": "1.8.4",
+    "postcss": "$postcss",
+    "shell-quote": "1.10.0",
+    "sharp": "0.35.3",
+    "fast-uri": "3.1.4",
+    "body-parser": "2.3.0",
+    "dompurify": "3.4.12",
     "piscina": "4.9.3",
     "protobufjs": "7.5.3"
   }
