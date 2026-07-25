@@ -111,7 +111,7 @@ export function ApplicationForm({ source }: { source: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form method="post" onSubmit={handleSubmit} className="space-y-6">
       {/* Honeypot — display:none keeps it out of human reach. */}
       <input
         type="text"
@@ -126,6 +126,7 @@ export function ApplicationForm({ source }: { source: string }) {
       <Field label="Your first name" htmlFor="first_name" required>
         <Input
           id="first_name"
+          name="first_name"
           type="text"
           autoComplete="given-name"
           required
@@ -140,6 +141,7 @@ export function ApplicationForm({ source }: { source: string }) {
       <Field label="Your email" htmlFor="email" required>
         <Input
           id="email"
+          name="email"
           type="email"
           autoComplete="email"
           required
@@ -157,6 +159,7 @@ export function ApplicationForm({ source }: { source: string }) {
       >
         <Input
           id="product_url"
+          name="product_url"
           type="url"
           inputMode="url"
           maxLength={2048}
@@ -174,6 +177,7 @@ export function ApplicationForm({ source }: { source: string }) {
       >
         <select
           id="mrr_band"
+          name="mrr_band"
           required
           value={mrrBand}
           onChange={(e) => setMrrBand(e.target.value as "" | MrrBand)}
@@ -199,6 +203,7 @@ export function ApplicationForm({ source }: { source: string }) {
       >
         <Textarea
           id="biggest_blocker"
+          name="biggest_blocker"
           required
           minLength={10}
           maxLength={1000}
@@ -218,6 +223,7 @@ export function ApplicationForm({ source }: { source: string }) {
       >
         <Textarea
           id="why_now"
+          name="why_now"
           required
           minLength={10}
           maxLength={1000}
@@ -260,6 +266,7 @@ export function ApplicationForm({ source }: { source: string }) {
       >
         <select
           id="preferred_tier"
+          name="preferred_tier"
           value={preferredTier}
           onChange={(e) => setPreferredTier(e.target.value as PreferredTier)}
           disabled={submitting}
@@ -282,6 +289,7 @@ export function ApplicationForm({ source }: { source: string }) {
       >
         <select
           id="calendar"
+          name="calendar"
           value={calendar}
           onChange={(e) =>
             setCalendar(e.target.value as CalendarPreference)
@@ -298,11 +306,9 @@ export function ApplicationForm({ source }: { source: string }) {
         </select>
       </Field>
 
-      {error && (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      )}
+      <p className="text-sm text-destructive empty:hidden" role="alert" aria-live="assertive">
+        {error}
+      </p>
 
       <Button
         type="submit"

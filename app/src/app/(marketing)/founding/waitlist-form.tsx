@@ -70,10 +70,13 @@ export function FoundingWaitlistForm({
   return (
     <form
       onSubmit={onSubmit}
+      method="post"
       className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
     >
       <Input
         type="email"
+        name="email"
+        aria-label="Email address"
         required
         autoComplete="email"
         placeholder="you@example.com"
@@ -85,11 +88,13 @@ export function FoundingWaitlistForm({
       <Button type="submit" size="lg" disabled={state === "submitting"}>
         {state === "submitting" ? "Adding..." : ctaLabel}
       </Button>
-      {state === "error" && errorMessage && (
-        <p className="text-sm text-red-600 sm:absolute sm:mt-14">
-          {errorMessage}
-        </p>
-      )}
+      <p
+        role="alert"
+        aria-live="assertive"
+        className="text-sm text-red-600 sm:absolute sm:mt-14 empty:hidden"
+      >
+        {state === "error" ? errorMessage : ""}
+      </p>
     </form>
   );
 }

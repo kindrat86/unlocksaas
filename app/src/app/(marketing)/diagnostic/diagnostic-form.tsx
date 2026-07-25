@@ -553,7 +553,7 @@ export function DiagnosticForm({
       </div>
 
       {step === 1 && (
-        <form onSubmit={handleUrlSubmit} className="space-y-4" noValidate>
+        <form method="post" onSubmit={handleUrlSubmit} className="space-y-4" noValidate>
           <div className="space-y-1.5">
             <label
               htmlFor="diagnostic-url"
@@ -657,7 +657,7 @@ export function DiagnosticForm({
       )}
 
       {step === 8 && (
-        <form onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
+        <form method="post" onSubmit={handleEmailSubmit} className="space-y-4" noValidate>
           <div className="space-y-1.5">
             <label
               htmlFor="diagnostic-email"
