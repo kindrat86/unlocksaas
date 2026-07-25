@@ -47,7 +47,7 @@ export async function FinalCta() {
             </Link>
           </Button>
           <p className="text-xs text-muted-foreground mt-2 italic">
-            Founding rate ($49/mo for life) closes at 100 builders.
+            Founding cohort — capped at 100. $49/mo locked for life.
           </p>
         </div>
 

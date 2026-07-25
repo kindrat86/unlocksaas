@@ -69,7 +69,7 @@ export function StickyCta() {
             asChild
             className="flex-1 sm:flex-initial btn-glow"
           >
-            <Link href="/diagnostic">Free 2-min diagnosis</Link>
+            <Link href="/diagnostic">Free 90-sec diagnosis</Link>
           </Button>
           <Link
             href="/starter"

@@ -162,14 +162,12 @@ async function FoundingPageBody() {
           <p className="text-base font-semibold">
             {foundingFull
               ? `All ${FOUNDING_COHORT_SIZE} founding seats claimed.`
-              : claimed === null
-                ? "Founding cohort: open"
-                : `${claimed} of ${FOUNDING_COHORT_SIZE} founding seats claimed`}
+              : "Founding cohort: open"}
           </p>
           <p className="text-sm text-muted-foreground mt-1 leading-snug">
-            $49/mo locked for life for the first {FOUNDING_COHORT_SIZE}{" "}
-            builders. After builder #{FOUNDING_COHORT_SIZE}, the standard
-            price is $79/mo.
+            Founding rate is capped at {FOUNDING_COHORT_SIZE} builders. $49/mo
+            locked for life. After builder #{FOUNDING_COHORT_SIZE}, the
+            standard price is $79/mo.
           </p>
         </div>
 

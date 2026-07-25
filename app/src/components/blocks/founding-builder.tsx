@@ -139,8 +139,8 @@ export function FoundingBuilder({ tone = "full" }: { tone?: "full" | "starter" }
         <p className="text-xs text-muted-foreground italic text-center mt-8 max-w-xl mx-auto leading-relaxed">
           If any of this reads like manufactured urgency, walk. The $98 cap and
           the code-enforced refund are still on the table the day you do come
-          back. The only thing that changes is whether you are inside the first
-          100 or not.
+          back. The only thing that changes is whether you are inside the
+          founding cohort or not.
         </p>
       </div>
     </section>

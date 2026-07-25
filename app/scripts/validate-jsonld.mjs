@@ -52,6 +52,8 @@
  *   without false-positives on the Brunson @id convention.
  */
 
+import { readFileSync } from "node:fs";
+
 const BASE_URL = process.env.VALIDATE_BASE_URL || "http://localhost:3000";
 const FETCH_TIMEOUT_MS = Number.parseInt(
   process.env.VALIDATE_FETCH_TIMEOUT_MS || "60000",
@@ -63,6 +65,36 @@ const FETCH_TIMEOUT_MS = Number.parseInt(
  * every machine-readable surface. Slugs are real, verified-live ones from
  * the relevant manifest so the page renders with full data (not a 404).
  */
+/**
+ * Locale samples are DERIVED from src/lib/i18n/locales.ts, never hardcoded.
+ * The shipped locale set has been trimmed twice to stay under Vercel's 2048
+ * route limit (12 → 6 → en-US+de+es), and each trim silently turned a
+ * hardcoded sample into a 404 — that is exactly how `/pt-BR/faq` started
+ * failing this job. `/faq` is locale-aware for every non-default locale
+ * (see I18N_PATHS in src/lib/i18n/registry.ts), so one sample per locale
+ * stays valid on its own.
+ *
+ * @returns {string[]}
+ */
+function localeSampleUrls() {
+  const src = readFileSync(
+    new URL("../src/lib/i18n/locales.ts", import.meta.url),
+    "utf8",
+  );
+  const listMatch = src.match(/SUPPORTED_LOCALES\s*=\s*\[([^\]]*)\]/);
+  if (!listMatch) {
+    throw new Error(
+      "validate-jsonld: could not parse SUPPORTED_LOCALES from src/lib/i18n/locales.ts",
+    );
+  }
+  const defaultLocale =
+    src.match(/DEFAULT_LOCALE[^=]*=\s*"([^"]+)"/)?.[1] ?? "en-US";
+  return [...listMatch[1].matchAll(/"([^"]+)"/g)]
+    .map((m) => m[1])
+    .filter((locale) => locale !== defaultLocale)
+    .map((locale) => `/${locale}/faq`);
+}
+
 const URLS = [
   // ── Authority surface ───────────────────────────────────────────────
   "/",
@@ -105,9 +137,8 @@ const URLS = [
   "/dataset",
   "/podcast",
 
-  // ── Locales (sample) ───────────────────────────────────────────────
-  "/es/faq",
-  "/pt-BR/faq",
+  // ── Locales (sample, one per shipped non-default locale) ───────────
+  ...localeSampleUrls(),
 ];
 
 /* eslint-disable no-console */
@@ -368,6 +399,18 @@ async function processUrl(url) {
     // HEAD optional; ignore.
   }
 
+  processHtmlBlocks(html, url);
+}
+
+/**
+ * Shared block-extraction + validation, used by both the rendered-route
+ * crawl (processUrl, fetch-based) and the static-file scan
+ * (processStaticFile, fs-based) below.
+ *
+ * @param {string} html
+ * @param {string} label
+ */
+function processHtmlBlocks(html, label) {
   /** @type {RegExpExecArray | null} */
   let m;
   let blockIndex = 0;
@@ -379,10 +422,10 @@ async function processUrl(url) {
     const localIndex = blockIndex++;
 
     if (UNDEFINED_LEAK_RE.test(raw)) {
-      fail(url, localIndex, `contains the literal string ":\"undefined\"" — template leak`);
+      fail(label, localIndex, `contains the literal string ":\"undefined\"" — template leak`);
     }
     if (NULL_STRING_LEAK_RE.test(raw)) {
-      fail(url, localIndex, `contains the literal string ":\"null\"" — template leak`);
+      fail(label, localIndex, `contains the literal string ":\"null\"" — template leak`);
     }
 
     /** @type {unknown} */
@@ -390,7 +433,7 @@ async function processUrl(url) {
     try {
       parsed = JSON.parse(raw);
     } catch (/** @type {any} */ e) {
-      fail(url, localIndex, `invalid JSON: ${e?.message ?? e}`);
+      fail(label, localIndex, `invalid JSON: ${e?.message ?? e}`);
       continue;
     }
 
@@ -398,9 +441,9 @@ async function processUrl(url) {
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
       const obj = /** @type {Record<string, unknown>} */ (parsed);
       if (Array.isArray(obj["@graph"])) {
-        validate(parsed, url, localIndex); // top-level @context check
+        validate(parsed, label, localIndex); // top-level @context check
         obj["@graph"].forEach((node, i) =>
-          walk(node, url, localIndex, `@graph[${i}]`),
+          walk(node, label, localIndex, `@graph[${i}]`),
         );
         continue;
       }
@@ -408,10 +451,10 @@ async function processUrl(url) {
 
     if (Array.isArray(parsed)) {
       parsed.forEach((node, i) => {
-        validate(node, url, localIndex);
+        validate(node, label, localIndex);
       });
     } else {
-      validate(parsed, url, localIndex);
+      validate(parsed, label, localIndex);
     }
   }
 
@@ -419,7 +462,46 @@ async function processUrl(url) {
     // Some routes legitimately ship zero JSON-LD (e.g., /humans.txt would
     // if it were in this list). For the URLs we DO list, every one should
     // ship at least one block — they're all marketing-surface routes.
-    warn(url, -1, "no application/ld+json blocks found in HTML");
+    warn(label, -1, "no application/ld+json blocks found in HTML");
+  }
+}
+
+/**
+ * Static-file scan of app/public/**\/*.html — plain files served verbatim
+ * by Next.js that never go through a rendered route, so processUrl()'s
+ * fetch-based crawl never sees them. This gap is exactly how the
+ * 2026-07-24 "https://***@type" corruption bug (12 integrations/use-cases
+ * pages) shipped to production undetected. Complements, does not replace,
+ * the URLS crawl above (which also covers type-specific required-key rules
+ * this pass doesn't run against static files without a route context).
+ */
+async function scanStaticPublicFiles() {
+  const { readdir, readFile } = await import("node:fs/promises");
+  const { join, relative } = await import("node:path");
+  const publicDir = join(new URL(".", import.meta.url).pathname, "..", "public");
+
+  /** @param {string} dir @returns {Promise<string[]>} */
+  async function walkDir(dir) {
+    const entries = await readdir(dir, { withFileTypes: true });
+    const files = await Promise.all(
+      entries.map(async (entry) => {
+        const full = join(dir, entry.name);
+        if (entry.isDirectory()) return walkDir(full);
+        return entry.name.endsWith(".html") ? [full] : [];
+      }),
+    );
+    return files.flat();
+  }
+
+  const htmlFiles = await walkDir(publicDir);
+  console.log(`[validate-jsonld] static public/ files = ${htmlFiles.length}`);
+  for (const filePath of htmlFiles) {
+    const label = `public/${relative(publicDir, filePath)}`;
+    const html = await readFile(filePath, "utf8");
+    const before = errors.length;
+    processHtmlBlocks(html, label);
+    if (errors.length === before) console.log(`  ${label} … ✓`);
+    else console.log(`  ${label} … ✗`);
   }
 }
 
@@ -440,6 +522,8 @@ async function main() {
     if (errs === 0 && wrns === 0) console.log("✓");
     else console.log(`✗ ${errs} error(s), ${wrns} warning(s)`);
   }
+
+  await scanStaticPublicFiles();
 
   console.log("");
   if (warnings.length > 0) {

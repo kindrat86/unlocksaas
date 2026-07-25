@@ -818,7 +818,11 @@ async function capturePurchase(session: Stripe.Checkout.Session) {
     }
   }
 
-  const distinctId = stripeDistinctId(customerId, supabaseUserId);
+  const distinctId = stripeDistinctId(
+    customerId,
+    supabaseUserId,
+    session.client_reference_id,
+  );
 
   // OTO branch: pick the dedicated *Purchased event so funnel reports can
   // see the AOV stack without untangling starter_purchased from oto rows.

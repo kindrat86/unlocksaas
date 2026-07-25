@@ -151,7 +151,7 @@ export function Hero({ variant }: HeroProps = {}) {
               href="/playbook-sales"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
             >
-              or see the Playbook – $49/mo
+              Skip the diagnostic — start the $49/mo Playbook
             </Link>
           </p>
 

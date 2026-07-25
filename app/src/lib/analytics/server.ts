@@ -46,6 +46,8 @@ function getClient(): PostHog | null {
  * Fire-and-forget capture for non-critical server events. Will be batched if
  * the function stays warm; lost if the function freezes immediately.
  */
+const SERVER_EVENT_DEFAULTS = { $host: "unlocksaas.com", product: "unlocksaas" };
+
 export function captureServer(
   distinctId: string,
   event: EventName,
@@ -56,7 +58,7 @@ export function captureServer(
   client.capture({
     distinctId,
     event,
-    properties,
+    properties: { ...SERVER_EVENT_DEFAULTS, ...properties },
   });
 }
 
@@ -76,7 +78,7 @@ export async function captureServerAndFlush(
   client.capture({
     distinctId,
     event,
-    properties,
+    properties: { ...SERVER_EVENT_DEFAULTS, ...properties },
   });
   // shutdownAsync() flushes the queue, but we don't want to kill the client
   // on every webhook — just flush.
@@ -102,15 +104,22 @@ export async function identifyServer(
 }
 
 /**
- * Distinct-id helper. Prefer Supabase user id; fall back to Stripe customer
- * id with a prefix so server events on anonymous purchases still attach
- * cleanly until we backfill.
+ * Distinct-id helper. Prefer Supabase user id (persists across sessions);
+ * then the client_reference_id we stamped on the Checkout Session at
+ * creation time (ties the purchase back to the exact browser distinct_id
+ * that clicked through the funnel — this is what makes click→purchase
+ * attribution possible instead of every revenue event landing under an
+ * unattributed `stripe:cus_*` id with no prior funnel history); finally
+ * fall back to the stripe: prefix so server events on anonymous purchases
+ * still attach cleanly.
  */
 export function stripeDistinctId(
   stripeCustomerId: string | null | undefined,
   supabaseUserId?: string | null,
+  clientReferenceId?: string | null,
 ): string {
   if (supabaseUserId) return supabaseUserId;
+  if (clientReferenceId && clientReferenceId !== "anonymous") return clientReferenceId;
   if (stripeCustomerId) return `stripe:${stripeCustomerId}`;
   return "anonymous";
 }

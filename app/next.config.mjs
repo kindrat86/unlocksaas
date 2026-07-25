@@ -486,7 +486,7 @@ const nextConfig = {
    */
   async redirects() {
     return [
-      { source: "/pricing", destination: "/pricing-teardown", permanent: false },
+      { source: "/pricing", destination: "/playbook-sales", permanent: false },
       { source: "/machine", destination: "/playbook", permanent: true },
       { source: "/machine/:path*", destination: "/playbook/:path*", permanent: true },
       { source: "/machine-sales", destination: "/playbook-sales", permanent: true },
