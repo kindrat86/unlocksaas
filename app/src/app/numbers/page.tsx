@@ -24,20 +24,38 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import metrics from "../../../data/public-metrics.json";
 
-export const metadata: Metadata = {
-  title: "The Numbers | UnlockSaaS",
-  description:
-    "Real-time MRR, customer count, and weekly milestones from UnlockSaaS -- published publicly by the founder.",
-  alternates: { canonical: "/numbers" },
-  openGraph: {
-    type: "website",
+/**
+ * Metadata is a function, not a constant, because `robots` has to track the
+ * same NEXT_PUBLIC_NUMBERS_VISIBLE gate the body below uses. While the gate is
+ * off this route serves a "coming soon" placeholder with no metrics in it, and
+ * a static `index: true` invited Google to index exactly that -- a thin page
+ * whose own description promises "real-time MRR, customer count, and weekly
+ * milestones" that are not on it. Same Brunson Hard-Rule as the rest of the
+ * file: do not advertise numbers that are not there.
+ *
+ * NEXT_PUBLIC_* is inlined at build time, so this stays a static render.
+ * `follow: true` in both states -- the outbound links are real either way.
+ */
+export function generateMetadata(): Metadata {
+  const isVisible = process.env.NEXT_PUBLIC_NUMBERS_VISIBLE === "true";
+
+  return {
     title: "The Numbers | UnlockSaaS",
     description:
-      "Honest MRR, customer count, and weekly founder commentary. No agency polish -- just the actual Stripe numbers.",
-    url: "/numbers",
-  },
-  robots: { index: true, follow: true },
-};
+      "Real-time MRR, customer count, and weekly milestones from UnlockSaaS -- published publicly by the founder.",
+    alternates: { canonical: "/numbers" },
+    openGraph: {
+      type: "website",
+      title: "The Numbers | UnlockSaaS",
+      description:
+        "Honest MRR, customer count, and weekly founder commentary. No agency polish -- just the actual Stripe numbers.",
+      url: "/numbers",
+    },
+    robots: isVisible
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
+  };
+}
 
 const DATASET_JSONLD = {
   "@context": "https://schema.org",
