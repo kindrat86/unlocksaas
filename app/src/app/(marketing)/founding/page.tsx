@@ -226,6 +226,14 @@ async function FoundingPageBody() {
                 value="$4,900+"
                 emphasis
               />
+              {/* Kept in sync with components/blocks/stack-slide.tsx per the note on
+                  STACK_LINES above. The figures are equivalent-market-cost anchors,
+                  never prices we charged — which the reader had no way of knowing. */}
+              <p className="text-xs text-muted-foreground leading-relaxed pt-1">
+                Those figures are what an equivalent course, consultant, or SaaS charges
+                for the same deliverable — not prices UnlockSaaS has ever charged. What
+                you pay is $49/mo, or $1 once for the Starter.
+              </p>
             </CardContent>
           </Card>
 

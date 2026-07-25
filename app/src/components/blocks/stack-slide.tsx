@@ -147,6 +147,16 @@ export async function StackSlide() {
             Or refunded in full at Day 60 if the line stays flat after you
             completed Steps 1–5 and logged 20 outreach actions.
           </p>
+          {/* The "value" figures above are comparison anchors, not prices anyone has
+              paid us. This file's own identity guardrail says each is what an
+              equivalent course/consultant/SaaS charges for the same deliverable — but
+              the reader could not see that, so a bare "$997 value" read as a claim
+              about what we charge. State the basis instead of deleting the anchor. */}
+          <p className="text-xs text-muted-foreground mt-3 leading-relaxed max-w-md mx-auto">
+            The figures above are what an equivalent course, consultant, or SaaS charges
+            for the same deliverable — not prices UnlockSaaS has ever charged. What you
+            pay is $49/mo, or $1 once for the Starter.
+          </p>
 
           <div className="mt-7 flex flex-col items-center gap-3">
             <Button asChild size="lg">
