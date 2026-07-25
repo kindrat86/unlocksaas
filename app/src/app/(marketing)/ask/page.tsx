@@ -18,7 +18,7 @@
  *      pSEO pages. Lower-friction entry than scrolling 15 hubs.
  *
  *   2. GEO/AEO surface: every showcase query is a crawlable Q&A page
- *      (sitemap-listed, QAPage JSON-LD, markdown-mirrored at /ask.md).
+ *      (sitemap-listed, FAQPage JSON-LD, markdown-mirrored at /ask.md).
  *      The Unlock SaaS AI engine indexes its own corpus and renders
  *      pre-answered URLs that AI Overviews, Perplexity, Claude can
  *      cite directly. Same content franchise as the static pSEO hubs,
@@ -30,7 +30,7 @@
  *     - BM25 retrieval against the static corpus.
  *     - Deterministic-template summary (lib/nlweb/summary.ts).
  *     - Numbered citation cards linking to the canonical surfaces.
- *     - QAPage + ItemList JSON-LD when a query is set.
+ *     - FAQPage + ItemList JSON-LD when a query is set.
  *
  *   Layer 2 (client island, progressive enhancement):
  *     - Streaming LLM gloss grounded in the layer-1 citations.
@@ -430,23 +430,25 @@ function AnswerSection({
 }
 
 /**
- * QAPage + ItemList JSON-LD for the answered state.
+ * FAQPage + ItemList JSON-LD for the answered state.
  *
  * Two schema blocks emitted:
  *
- *   1. QAPage — Google's canonical "this page answers a specific
- *      question" type. mainEntity is the Question with an AcceptedAnswer
- *      whose text is the deterministic summary (NOT the streamed LLM
- *      gloss, which varies per request and per model). The summary is
- *      stable and cacheable.
+ *   1. FAQPage — a publisher-written answer to a specific question.
+ *      mainEntity is a single-element array holding the Question, whose
+ *      acceptedAnswer text is the deterministic summary (NOT the streamed
+ *      LLM gloss, which varies per request and per model). The summary is
+ *      stable and cacheable. This was QAPage until 2026-07-25; see the
+ *      comment on the block itself for why it must not go back.
  *
  *   2. ItemList — mirrors the /api/nlweb/ask response shape. Lets AI
  *      agents that index the HTML page see the same ranked items they
  *      would get from the NLWeb endpoint.
  *
- * Both blocks include `mainEntityOfPage` pointing at the canonical
- * /ask?q= URL so a crawler that finds either block elsewhere can
- * resolve back to the surface.
+ * Both blocks carry an `@id` derived from the canonical /ask?q= URL, and
+ * the FAQPage also sets `url` and an `isPartOf` pointer to the website
+ * node, so a crawler that finds either block elsewhere can resolve back
+ * to the surface.
  */
 function AskJsonLd({
   query,
@@ -463,7 +465,7 @@ function AskJsonLd({
   // names publisher-written answer pages as an invalid use. mainEntity must be
   // an array. No answerCount — FAQPage does not use it and it was the field GSC
   // complained about. Do NOT switch this back to QAPage.
-  const qaPage = {
+  const faqPage = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "@id": `${canonicalUrl}#faq`,
@@ -508,7 +510,7 @@ function AskJsonLd({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(qaPage) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
       />
       <script
         type="application/ld+json"
