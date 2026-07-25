@@ -107,10 +107,18 @@ function joinText(parts: readonly (string | undefined)[]): string {
 function buildCorpus(): readonly NlWebItem[] {
   const items: NlWebItem[] = [];
 
-  // Alternatives – Product-shaped pages (UnlockSaaS vs X).
+  // Alternatives – comparison pages (UnlockSaaS vs X).
+  //
+  // Typed WebPage, not Product. These entries surface as JSON-LD on /ask, and
+  // a Product node carrying none of offers/review/aggregateRating trips
+  // Google's critical "Either offers, review, or aggregateRating should be
+  // specified" check. A comparison page is a page, not a priced product — and
+  // the /alternatives-to/* pages emit no Product node of their own, so nothing
+  // rich-result-eligible is lost. Same call as the sitewide third-party
+  // retype in 13645f6.
   for (const a of ALTERNATIVES) {
     items.push({
-      "@type": "Product",
+      "@type": "WebPage",
       "@id": `${BASE_URL}/alternatives-to/${a.slug}`,
       name: `UnlockSaaS vs ${a.displayName}`,
       description: a.oneLine,
