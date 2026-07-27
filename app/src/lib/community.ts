@@ -27,7 +27,7 @@
  * Core cohort is < 50 members through the founding window – manual is fine.
  */
 import { after } from "next/server";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import { createAdminClient } from "@/lib/supabase/server";
 import { sendCommunityInviteEmail } from "@/lib/community-invite-email";
 

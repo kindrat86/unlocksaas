@@ -22,7 +22,7 @@
  * It also lazily creates the `projects` row on first visit so the user
  * never sees a 500 if their checkout fired before any project state existed.
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 
 const SIXTY_DAYS_MS = 60 * 24 * 60 * 60 * 1000;

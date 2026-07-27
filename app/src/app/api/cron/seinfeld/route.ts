@@ -70,24 +70,24 @@ export async function GET(req: NextRequest) {
     // until the testimonial-farm offer has fired (or until the operator
     // bypasses by manually stamping testimonial_offer_sent_at). Non-funnelfixer
     // graduates flow straight through.
-    const eligible = graduates.filter((g) => {
+    const eligible = graduates.filter((g:any) => {
       const isFunnelfixer =
         typeof g.source === "string" &&
         g.source.startsWith("funnelfixer_");
       if (!isFunnelfixer) return true;
       return g.testimonial_offer_sent_at != null;
     });
-    const emails = eligible.map((g) => g.email);
+    const emails = eligible.map((g:any) => g.email);
     const { data: existing } = emails.length === 0
       ? { data: [] as { email: string }[] }
       : await supabase
           .from("seinfeld_subscribers")
           .select("email")
           .in("email", emails);
-    const existingEmails = new Set((existing ?? []).map((r) => r.email));
+    const existingEmails = new Set((existing ?? []).map((r:any) => r.email));
     const newRows = eligible
-      .filter((g) => !existingEmails.has(g.email))
-      .map((g) => ({
+      .filter((g:any) => !existingEmails.has(g.email))
+      .map((g:any) => ({
         email: g.email,
         source: "soap_opera_graduate" as const,
         source_subscriber_id: g.id,

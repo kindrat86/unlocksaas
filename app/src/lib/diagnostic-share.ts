@@ -12,7 +12,7 @@
  * created-at date, and the bucket tag.
  */
 
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import type { Bucket, DiagnosticLabel } from "@/lib/diagnostic";
 
 const UUID_RE =

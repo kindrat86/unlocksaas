@@ -23,7 +23,7 @@
  *
  * Pure functions take a `now` argument so tests can pin the clock.
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import type Stripe from "stripe";
 
 // ── constants ─────────────────────────────────────────────────────────────────

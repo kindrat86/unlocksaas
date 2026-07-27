@@ -14,7 +14,7 @@
  *   Refunds DO NOT revoke the badge. The customer was real, even if the
  *   user later left. Visibility is user-controlled (private by default).
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 
 // ── slug ──────────────────────────────────────────────────────────────────────
 
@@ -289,10 +289,10 @@ export async function loadVerifiedBuilders(
     typeof totalRaw === "number" && totalRaw > 0 ? totalRaw : data.length;
 
   const cleaned = data.filter(
-    (row) => Boolean(row.builder_slug) && Boolean(row.first_customer_at),
+    (row:any) => Boolean(row.builder_slug) && Boolean(row.first_customer_at),
   );
 
-  return cleaned.map((row, i) => ({
+  return cleaned.map((row:any, i:any) => ({
     id: row.id as string,
     slug: row.builder_slug as string,
     builderName: (row.builder_name as string | null) ?? "Verified Builder",

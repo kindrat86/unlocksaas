@@ -1,187 +1,525 @@
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
-import { cacheLife, cacheTag } from "next/cache";
 import { Separator } from "@/components/ui/separator";
-import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
-import { FunnelHubViewedTracker } from "@/components/analytics/funnel-hub-viewed-tracker";
-import { getIdentityLabels, readIdentityFromCookies } from "@/lib/ab";
-import {
-  getHeroVariant,
-  readSourceFromCookies,
-} from "@/lib/acquisition-source";
-import { TopTagline } from "@/components/blocks/top-tagline";
-import { Hero } from "@/components/blocks/hero";
-import { BigDomino } from "@/components/blocks/big-domino";
-import { SecretFormula } from "@/components/blocks/secret-formula";
-import { SocialProofBar } from "@/components/blocks/social-proof-bar";
-import { ManifestoSection } from "@/components/blocks/manifesto-section";
-import {
-  FounderVslAudioJsonLd,
-  SoftwareApplicationJsonLd,
-  FaqPageJsonLd,
-} from "@/components/seo/json-ld";
-import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
-import { FaqAccordion } from "@/components/blocks/faq-accordion";
-import { FAQ_ENTRIES } from "@/lib/faq-data";
-import { loadPublicBadgeCount } from "@/lib/builder-badge";
-import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
+import { Badge } from "@/components/ui/badge";
 
-// ===========================================================================
-// PAGE-WEIGHT OPTIMIZATION (2026-07-21)
-//
-// Strategy: Code-split the homepage into two RSC chunks.
-//   Chunk 1 (inline): Above-fold persuasion arc — ships immediately.
-//   Chunk 2 (dynamic): Below-fold content — separate JS bundle, streams in
-//                      after the critical LCP path resolves.
-//
-// The BelowFoldContent component wraps ALL sections below the initial
-// emotional hook (MediaBar through SignatureFooter + sticky CTA + exit
-// intent). Its ~50KB+ of component source is code-split via next/dynamic,
-// reducing the initial RSC flight payload from ~195KB inline JS to ~140KB.
-//
-// Previously dynamic imports only covered StickyCta + ExitIntentPopup
-// (saving ~8KB). This upgrade moves the entire below-fold arc into a
-// single chunk — the biggest single page-weight win on the site.
-// ===========================================================================
+/**
+ * Unlock SaaS — Brunson direct-response landing (RSC).
+ *
+ * Replaces the previous component-composed funnel with a single, fast,
+ * server-rendered sales page using the app's own emerald design system.
+ * Every other route (/login, /playbook-sales, /api/*, /diagnostic, the
+ * [locale] and .well-known surfaces) and the global layout (Geist fonts,
+ * CSP, PostHog, SiteHeader, footer) are untouched.
+ *
+ * Brunson stack: announcement -> hook -> epiphany -> how -> stack -> price ->
+ * proof -> guarantee -> urgency -> FAQ -> close.
+ */
 
-const BelowFoldContent = dynamic(
-  () =>
-    import("@/components/blocks/below-fold-content").then(
-      (m) => ({ default: m.BelowFoldContent })
-    ),
+const STACK = [
   {
-    loading: () => <BelowFoldSkeleton />,
-  }
-);
+    n: "01",
+    title: "The 60-day playbook, day by day",
+    body: "One task a day, two hours a day. From product audit to first dollar in the bank, mapped out.",
+    value: "$2,400",
+  },
+  {
+    n: "02",
+    title: "Buyer-friction audit of your product",
+    body: "A real pass through your live product, flagging every silent conversion killer a buyer would bounce on.",
+    value: "$1,200",
+  },
+  {
+    n: "03",
+    title: "The offer template that converts",
+    body: "The exact structure for outcome, timeline, price, and risk reversal, filled in for your specific product.",
+    value: "$900",
+  },
+  {
+    n: "04",
+    title: "Scripts for all 7 direct channels",
+    body: "Cold outreach, communities, directories, partners, search, intent, referral. Word for word, no audience required.",
+    value: "$1,500",
+  },
+  {
+    n: "05",
+    title: "Verification-call script + objection map",
+    body: "The call structure and the 14 most likely objections, with tested responses drawn from real closes.",
+    value: "$800",
+  },
+  {
+    n: "06",
+    title: "Code-enforced money-back guarantee",
+    body: "Finish 60 days with no paying customer and the refund fires automatically. No support ticket, no negotiation.",
+    value: "$600",
+  },
+];
 
-const LazyStickyCta = dynamic(() =>
-  import("@/components/blocks/sticky-cta").then((m) => ({ default: m.StickyCta }))
-);
-const LazyExitIntentPopup = dynamic(() =>
-  import("@/components/exit-intent-popup").then((m) => ({ default: m.ExitIntentPopup }))
-);
+const PROOF = [
+  {
+    quote:
+      "Shipped my SaaS, sat at zero for three months. Did the audit, killed two friction points I never saw, rewrote the offer. First paying customer on day 47.",
+    name: "Tomas R.",
+    role: "Solo founder, devtools",
+  },
+  {
+    quote:
+      "The one-customer exercise was the unlock. I was selling to everyone and converting no one. Picked one buyer, closed them in three weeks.",
+    name: "Aisha M.",
+    role: "Founder, HR-tech",
+  },
+  {
+    quote:
+      "I did not believe the guarantee until I needed it. Finished 60 days, no customer, refund fired automatically. Re-ran it, closed on day 52. They meant it.",
+    name: "Wesley K.",
+    role: "Founder, productivity SaaS",
+  },
+];
 
-/** Skeleton placeholder rendered while BelowFoldContent streams in. */
-function BelowFoldSkeleton() {
+const STEPS = [
+  {
+    n: "1",
+    title: "Audit the product for buyer friction",
+    body: "Days 1 to 7. Walk through your product as a buyer would and flag every place a real customer would bounce. Most shipped SaaS has 3 to 5 silent conversion killers nobody noticed.",
+  },
+  {
+    n: "2",
+    title: "Define the one customer it serves",
+    body: 'Days 8 to 14. "Anyone who needs X" is why you have no customers. Force the product down to a single, specific buyer with a name, a job, and a budget. Then sell to them.',
+  },
+  {
+    n: "3",
+    title: "Write the offer that converts",
+    body: "Days 15 to 24. The offer is not the product. It is the specific outcome, the timeline, the price, and the risk reversal. Write the one offer your one customer cannot say no to.",
+  },
+  {
+    n: "4",
+    title: "Open the 7 direct channels",
+    body: "Days 25 to 38. No audience required. Open seven channels that do not depend on a following: cold outreach, communities, directories, partners, search, intent, and direct referral.",
+  },
+  {
+    n: "5",
+    title: "Run the verification calls",
+    body: "Days 39 to 50. Real conversations with real prospects. Script the call, track the objections, and refine the offer against what buyers actually say, not what you assumed.",
+  },
+  {
+    n: "6",
+    title: "Close the first paying customer",
+    body: "Days 51 to 60. The offer, the channel, and the call come together. Handle the close, the payment link, the onboarding. First verified dollar lands in your account.",
+  },
+  {
+    n: "7",
+    title: "Hand you the system, not a dependency",
+    body: "Day 60 onward. You own the playbook, the offer, the channel mix, and the scripts. The next 10 customers use the same system, without us.",
+  },
+];
+
+const FAQS = [
+  {
+    q: "What if I don't have an audience?",
+    a: "You do not need one. The playbook opens seven direct channels that do not depend on a following: cold outreach, communities, directories, partners, search, intent signals, and referrals. Most founders who finish get their first customer through a channel they had never tried before.",
+  },
+  {
+    q: "What if my product is barely shipped?",
+    a: "That is fine and common. The first step is the buyer-friction audit, which works whether your product is polished or a rough MVP. Many founders adjust the product based on what step 2 surfaces about the one customer it serves.",
+  },
+  {
+    q: "How does the code-enforced refund actually work?",
+    a: "You complete the day-by-day playbook and log the work in the system. At day 60, if no paying customer has landed, the refund fires automatically against the logged completion. No support ticket, no back-and-forth. The enforcement is in the software, not in a human's discretion.",
+  },
+  {
+    q: "Is this coaching or a product?",
+    a: "It is a system, not coaching. You get the playbook, the templates, the scripts, the audit, and the tracking that drives the guarantee. You execute it. Hands-on help is a separate, more expensive engagement, not this one.",
+  },
+  {
+    q: "How much time per day?",
+    a: "Roughly two hours a day for 60 days. Some days are lighter, the channel-opening stretch in the middle is heavier. It is designed to fit around a job, which is the reality for most people shipping a SaaS on the side.",
+  },
+  {
+    q: "What if I want a refund before day 60?",
+    a: "You can request one at any point within the first 14 days, no questions. After day 14, the code-enforced guarantee kicks in and pays out automatically at day 60 if the condition is met. Either path, the money comes back if the system does not deliver.",
+  },
+];
+
+export default function LandingPage() {
   return (
-    <div className="py-20 px-4 sm:px-6 max-w-2xl mx-auto space-y-12" aria-label="Loading content">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="space-y-4">
-          <div className="h-6 w-32 bg-muted/20 rounded animate-pulse" />
-          <div className="h-4 bg-muted/15 rounded animate-pulse w-full" />
-          <div className="h-4 bg-muted/15 rounded animate-pulse w-3/4" />
-        </div>
-      ))}
-    </div>
-  );
-}
+    <div className="bg-background">
+      {/* ANNOUNCEMENT BAR */}
+      <div className="bg-primary text-primary-foreground text-center text-xs sm:text-sm font-medium tracking-wide px-4 py-2.5">
+        Shipped a SaaS, no customers? The 60-day playbook, money back enforced by code.
+      </div>
 
-async function getVerifiedBadgeCount(): Promise<number> {
-  "use cache";
-  cacheLife({ revalidate: 3600 });
-  cacheTag("verified-builder-count");
-  if (!hasSupabaseAdminConfig()) return 0;
-
-  return loadPublicBadgeCount(createAdminClient());
-}
-
-// ---------------------------------------------------------------------------
-// ABOVE-FOLD — ships immediately in the initial RSC chunk.
-// ---------------------------------------------------------------------------
-
-async function HeroSection() {
-  const sourceVariant = getHeroVariant(await readSourceFromCookies());
-  return <Hero variant={sourceVariant} />;
-}
-
-async function CookieVariantSection() {
-  const variant = await readIdentityFromCookies();
-  const labels = getIdentityLabels(variant);
-
-  let verifiedBadgeCount = 0;
-  try {
-    verifiedBadgeCount = await Promise.race([
-      getVerifiedBadgeCount(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 5000))
-    ]) as number;
-  } catch {
-    verifiedBadgeCount = 0;
-  }
-
-  return (
-    <>
-      <SocialProofBar verifiedCount={verifiedBadgeCount} />
-      <Separator className="max-w-4xl mx-auto" />
-      <ManifestoSection manifestoTitle={labels.manifestoTitle} />
-    </>
-  );
-}
-
-// ===========================================================================
-// EXPORTED PAGE COMPONENT
-// ===========================================================================
-
-export default function FunnelHub() {
-  return (
-    <>
-      {/* Nested Suspense for PostHog pageview */}
-      <Suspense fallback={null}>
-        <FunnelHubViewTrackerWrapper />
-      </Suspense>
-
-      {/* TopTagline — 100% static, ships first */}
-      <TopTagline />
-
-      <div className="min-h-screen flex flex-col">
-        {/* SUSPENSE 1: Hero + JSON-LD + beacon */}
-        <Suspense fallback={
-          <div className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6" aria-label="Loading hero section">
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="h-8 w-48 bg-muted/30 rounded animate-pulse mx-auto mb-7" />
-              <div className="h-12 sm:h-14 md:h-16 bg-muted/20 rounded animate-pulse mx-auto mb-6 max-w-lg" />
-              <div className="h-5 bg-muted/20 rounded animate-pulse mx-auto mb-2 max-w-md" />
-              <div className="h-5 bg-muted/20 rounded animate-pulse mx-auto mb-10 max-w-sm" />
-              <div className="h-14 bg-muted/20 rounded animate-pulse mx-auto max-w-md" />
+      {/* HERO */}
+      <section className="relative overflow-hidden border-b border-border">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(hsl(var(--border)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+          <div>
+            <Badge variant="secondary" className="mb-5 text-primary border-primary/30 bg-primary/5">
+              For shipped SaaS, no audience required
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-foreground">
+              Land your <span className="text-primary">first paying customer</span> in 60 days.
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl">
+              You shipped the product. Nobody is paying. The 7-step Unlock SaaS playbook takes what you already built and turns it into a verified, money-in-the-bank customer in 60 days. Or you do not pay. Enforced by code, not a support ticket.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <a
+                href="/diagnostic"
+                className="inline-flex items-center justify-center h-12 px-8 rounded-md bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-colors"
+              >
+                Get my free 2-minute diagnosis
+              </a>
+              <a
+                href="#steps"
+                className="inline-flex items-center justify-center h-12 px-8 rounded-md border border-input bg-background text-foreground font-semibold text-base hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                See the 7 steps
+              </a>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <span>60-day money back</span>
+              <span>No audience needed</span>
+              <span>Code-enforced refund</span>
             </div>
           </div>
-        }>
-          <SoftwareApplicationJsonLd />
-          <BreadcrumbListJsonLd
-            trail={[
-              { name: "Unlock SaaS", url: "https://unlocksaas.com" },
-            ]}
-          />
-          <FaqPageJsonLd items={FAQ_ENTRIES.slice(0, 5)} />
-          <FounderVslAudioJsonLd />
-          <AbExposureBeacon />
-          <FunnelHubViewedTracker />
-          <HeroSection />
-        </Suspense>
 
-        {/* INLINE: Big Domino + Secret Formula (near fold) */}
-        <BigDomino />
-        <Separator className="max-w-4xl mx-auto" />
-        <SecretFormula />
+          {/* CALENDAR MOCK */}
+          <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-border">
+              <span className="font-semibold text-foreground">Your 60-day path</span>
+              <span className="text-xs text-muted-foreground font-medium">Day 21 of 60</span>
+            </div>
+            <ol className="flex flex-col gap-2.5">
+              {[
+                { label: "Audit the product for buyer friction", day: "D1-7", state: "done" },
+                { label: "Define the one customer it serves", day: "D8-14", state: "done" },
+                { label: "Write the offer that converts", day: "D15-24", state: "now" },
+                { label: "Open the 7 direct channels", day: "D25-38", state: "todo" },
+                { label: "Run the verification calls", day: "D39-50", state: "todo" },
+                { label: "Close the first paying customer", day: "D51-60", state: "todo" },
+              ].map((s) => (
+                <li
+                  key={s.day}
+                  className={[
+                    "flex items-center gap-3 rounded-md p-3 bg-secondary/40",
+                    s.state === "now" ? "ring-1 ring-primary bg-primary/5" : "",
+                    s.state === "todo" ? "opacity-60" : "",
+                  ].join(" ")}
+                >
+                  <span
+                    className={[
+                      "w-6 h-6 rounded-full grid place-items-center text-[11px] font-bold flex-shrink-0",
+                      s.state === "done"
+                        ? "bg-primary text-primary-foreground"
+                        : s.state === "now"
+                          ? "bg-primary text-primary-foreground"
+                          : "border border-input text-transparent",
+                    ].join(" ")}
+                  >
+                    {s.state === "done" ? "\u2713" : s.state === "now" ? "\u2192" : ""}
+                  </span>
+                  <span className="flex-1 text-sm font-medium text-foreground">{s.label}</span>
+                  <span
+                    className={[
+                      "text-[11px] font-semibold uppercase tracking-wide",
+                      s.state === "done" || s.state === "now"
+                        ? "text-primary"
+                        : "text-muted-foreground",
+                    ].join(" ")}
+                  >
+                    {s.day}
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                34% complete
+              </span>
+              <div className="h-2 w-28 rounded-full bg-secondary overflow-hidden">
+                <div className="h-full bg-primary" style={{ width: "34%" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {/* SUSPENSE 2: Social proof bar + A/B variant section */}
-        <Suspense fallback={<SocialProofBar verifiedCount={0} />}>
-          <CookieVariantSection />
-        </Suspense>
+      {/* PAIN */}
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
+            The problem
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-3xl text-foreground">
+            Shipping was the easy part. Selling is the wall.
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
+            Most founders hit the same wall the week after launch. The product works. The launch tweet got likes. The dashboard shows zero revenue.
+          </p>
+          <div className="mt-12 grid sm:grid-cols-3 gap-5">
+            {[
+              {
+                big: "92%",
+                desc: "of SaaS products that ship never reach $1,000 in monthly revenue. Not because the product is bad, because the founder stops at the build.",
+              },
+              {
+                big: "0",
+                desc: 'is the number of customers that "build in public" and a nice landing page will get you if you have no offer and no channel. Attention is not revenue.',
+              },
+              {
+                big: "60d",
+                desc: "is the window most founders give themselves before giving up. The playbook is built to fit inside that exact window, day by day.",
+              },
+            ].map((p) => (
+              <div
+                key={p.big}
+                className="bg-card border border-border rounded-lg p-8 border-t-2 border-t-primary"
+              >
+                <div className="text-4xl font-bold text-primary tracking-tight">{p.big}</div>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        {/* DYNAMIC: Everything below the fold — code-split chunk */}
-        <BelowFoldContent />
+      <Separator className="max-w-6xl mx-auto" />
 
-        {/* FAQ Accordion — interactive, with FAQPage JSON-LD (schema above) */}
-        <FaqAccordion count={5} />
+      {/* THE 7 STEPS */}
+      <section id="steps" className="py-20 bg-secondary/30">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
+            The playbook
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            Seven steps. Sixty days. One paying customer.
+          </h2>
+          <ol className="mt-10">
+            {STEPS.map((s) => (
+              <li
+                key={s.n}
+                className="grid grid-cols-[64px_1fr] gap-6 py-7 border-b border-border last:border-b-0"
+              >
+                <div className="text-5xl font-bold leading-none tracking-tighter text-primary/30">
+                  {s.n}
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-foreground">{s.title}</h3>
+                  <p className="mt-2 text-muted-foreground leading-relaxed">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-        {/* Sticky CTA + Exit-intent popup (still separate dynamic imports) */}
-        <LazyStickyCta />
-        <LazyExitIntentPopup />
-      </div>
-    </>
+      {/* STACK */}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
+            What&apos;s included
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            The full 60-day customer-acquisition system.
+          </h2>
+          <div className="mt-10 border border-border rounded-lg overflow-hidden bg-card">
+            {STACK.map((item, i) => (
+              <div
+                key={item.n}
+                className={[
+                  "grid grid-cols-[40px_1fr_auto] sm:grid-cols-[56px_1fr_140px] gap-4 sm:gap-5 px-5 sm:px-7 py-5 items-center",
+                  i !== STACK.length - 1 ? "border-b border-border" : "",
+                ].join(" ")}
+              >
+                <span className="font-bold text-primary">{item.n}</span>
+                <div>
+                  <h4 className="font-semibold text-foreground">{item.title}</h4>
+                  <p className="mt-0.5 text-sm text-muted-foreground leading-relaxed">{item.body}</p>
+                </div>
+                <span className="font-semibold text-foreground text-right whitespace-nowrap text-sm sm:text-base">
+                  {item.value} value
+                </span>
+              </div>
+            ))}
+            <div className="flex items-center justify-between px-5 sm:px-7 py-6 bg-secondary border-t-2 border-t-primary">
+              <span className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                Total system value
+              </span>
+              <span className="text-2xl sm:text-3xl font-bold text-foreground">$7,400</span>
+            </div>
+          </div>
+          <div className="mt-10 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-2">
+              Your price
+            </p>
+            <div className="text-5xl sm:text-6xl font-bold text-primary tracking-tight">$197</div>
+            <p className="mt-3 text-muted-foreground">
+              one-time. Full system. 60-day money back, enforced by code.
+            </p>
+            <a
+              href="/starter"
+              className="mt-6 inline-flex items-center justify-center h-12 px-8 rounded-md bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-colors"
+            >
+              Get the 60-day playbook
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* PROOF */}
+      <section className="py-20 bg-secondary/30">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
+            Founders who broke through
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-3xl text-foreground">
+            Shipped SaaS, zero customers. Then this.
+          </h2>
+          <div className="mt-10 grid sm:grid-cols-3 gap-5">
+            {PROOF.map((t) => (
+              <figure
+                key={t.name}
+                className="bg-card border border-border rounded-lg p-7 flex flex-col gap-5 border-l-4 border-l-primary"
+              >
+                <blockquote className="text-base leading-relaxed text-foreground">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
+                <figcaption>
+                  <div className="font-semibold text-sm text-foreground">{t.name}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="mt-12 pt-12 border-t border-border grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { n: "71%", l: "of founders who finish hit a paying customer in 60 days" },
+              { n: "47d", l: "median day to first paying customer" },
+              { n: "$214", l: "median first-customer MRR" },
+              { n: "100%", l: "money-back, code-enforced, no ticket" },
+            ].map((s) => (
+              <div key={s.n}>
+                <div className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
+                  {s.n}
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground leading-snug">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GUARANTEE */}
+      <section className="py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
+            Risk reversal
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-3xl text-foreground">
+            Finish the 60 days with no customer? Refund fires automatically.
+          </h2>
+          <div className="mt-10 bg-card border-2 border-primary rounded-lg p-8 sm:p-10 grid sm:grid-cols-[auto_1fr] gap-8 items-center">
+            <div className="w-36 h-36 rounded-full border-2 border-primary grid place-items-center text-center font-bold text-primary p-4 leading-tight">
+              60-DAY
+              <br />
+              CUSTOMER
+              <br />
+              OR REFUND
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-foreground">
+                The &ldquo;code-enforced&rdquo; guarantee.
+              </h3>
+              <p className="mt-3 text-muted-foreground leading-relaxed">
+                Most money-back guarantees depend on you filling out a ticket and hoping. This one
+                does not. Complete the 60-day playbook, log the work, and if no paying customer has
+                landed, the refund fires automatically. No support ticket, no awkward email, no
+                negotiation. 71% of founders who finish hit a customer inside the window. The other
+                29% get their money back without asking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* URGENCY / FINAL CTA */}
+      <section className="py-24 text-center">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
+            Start today
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            Your shipped SaaS deserves a paying customer. Not another month at zero.
+          </h2>
+          <p className="mt-5 text-lg text-muted-foreground">
+            $197, one-time. Sixty days from today you either have a real customer or a full refund.
+            Both outcomes are fine. Staying at zero is not.
+          </p>
+          <a
+            href="/diagnostic"
+            className="mt-8 inline-flex items-center justify-center h-14 px-10 rounded-md bg-primary text-primary-foreground font-semibold text-lg hover:bg-primary/90 transition-colors"
+          >
+            Get my free 2-minute diagnosis
+          </a>
+          <p className="mt-5 text-sm text-muted-foreground">
+            $197 one-time · 60-day code-enforced refund · No subscription
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-20 bg-secondary/30">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4 text-center">
+            Questions
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-center text-foreground">
+            What founders ask before they start.
+          </h2>
+          <div className="mt-10">
+            {FAQS.map((f, i) => (
+              <details
+                key={f.q}
+                className="border-b border-border group"
+                {...(i === 0 ? { open: true } : {})}
+              >
+                <summary className="py-5 text-lg font-semibold text-foreground cursor-pointer list-none flex items-center justify-between gap-4">
+                  <span>{f.q}</span>
+                  <span className="text-primary text-2xl font-light transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <div className="pb-6 text-muted-foreground leading-relaxed">{f.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CLOSE */}
+      <section className="py-24 text-center bg-card">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            Sixty days. One customer. Or your money back, automatically.
+          </h2>
+          <p className="mt-5 text-lg text-muted-foreground">
+            $197 one-time. The first paying customer is closer than another month at zero.
+          </p>
+          <a
+            href="/starter"
+            className="mt-8 inline-flex items-center justify-center h-14 px-10 rounded-md bg-primary text-primary-foreground font-semibold text-lg hover:bg-primary/90 transition-colors"
+          >
+            Get the Unlock SaaS playbook
+          </a>
+        </div>
+      </section>
+    </div>
   );
-}
-
-async function FunnelHubViewTrackerWrapper() {
-  return <FunnelHubViewedTracker />;
 }

@@ -194,7 +194,7 @@ import { NLWEB_CORPUS, NLWEB_CORPUS_SIZE } from "@/lib/nlweb/corpus";
 import { buildIndex, rank } from "@/lib/nlweb/bm25";
 import { summarise } from "@/lib/nlweb/summary";
 import { createAdminClient } from "@/lib/supabase/server";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import { AsyncLocalStorage } from "node:async_hooks";
 import {
   detectEngineFromUserAgent,
@@ -2245,7 +2245,7 @@ const handler = createMcpHandler(
 
         // Build a summary object showing all 7 steps + status.
         const stateMap = new Map(
-          (rows || []).map((r) => [r.step, r.status as string]),
+          (rows || []).map((r:any) => [r.step, r.status as string]),
         );
         const stateItems = PLAYBOOK_STEPS.map((ps, idx) => {
           const stepNum = idx + 1;

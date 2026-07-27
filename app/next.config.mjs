@@ -332,7 +332,7 @@ const nextConfig = {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://eu.i.posthog.com https://api.stripe.com https://connect.stripe.com https://api.indexnow.org",
+      "connect-src 'self' https://api.carshake.online https://eu.i.posthog.com https://api.stripe.com https://connect.stripe.com https://api.indexnow.org",
       "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://stream.mux.com",
       "media-src 'self' https://stream.mux.com https://image.mux.com data: blob:",
       "worker-src 'self' blob:",

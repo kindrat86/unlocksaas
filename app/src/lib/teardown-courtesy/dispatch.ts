@@ -30,7 +30,7 @@
  * "did we send X?" question is answerable by SQL alone.
  */
 
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import { getResend, FROM_ADDRESS, REPLY_TO } from "@/lib/resend";
 import { getTargetByCatalogSlug, type CourtesyCatalog } from "./targets";
 import { buildCourtesyEmail } from "./template";

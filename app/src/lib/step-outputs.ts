@@ -20,7 +20,7 @@
  * Brunson deliverable in the user's own voice; structured fields are added
  * later as the engine grows richer.
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 
 /** Step id → project_state column. Steps 6 (outreach log) and 7 (Stripe verifier) don't produce engine deliverables. */
 export const STEP_TO_STATE_KEY = {

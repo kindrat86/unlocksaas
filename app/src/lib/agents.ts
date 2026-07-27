@@ -23,7 +23,7 @@
  * Voice: Reluctant Hero. The agents do not write like a marketing tool; they
  * write like the founder's blunt friend who has already shipped.
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import { generateText } from "ai";
 import { model, MODEL_ID } from "@/lib/anthropic";
 import { loadStepOutputs, type EngineStepId } from "@/lib/step-outputs";

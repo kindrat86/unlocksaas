@@ -33,7 +33,7 @@
  * agent_kind = 'first_win_starter'. The /first-win page rehydrates from that
  * row on revisit so the founder never re-runs the same generation on F5.
  */
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@/lib/supabase/types";
 import { streamText } from "ai";
 import { model, MODEL_ID } from "@/lib/anthropic";
 
