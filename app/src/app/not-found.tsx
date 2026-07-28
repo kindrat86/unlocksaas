@@ -37,9 +37,13 @@ export const metadata: Metadata = {
   description:
     "The page you tried to open is not here. Run the free diagnostic, search the site, or jump to one of the stable entry points below.",
   robots: { index: false, follow: false },
-  // Do not advertise a canonical for a 404 — it has no canonical URL.
-  // openGraph and twitter intentionally omitted so a misshared 404 link
-  // does not get a glamorous social card.
+  // Suppress inherited canonical + hreflang from root layout.
+  // Without this override, the 404 page inherits the homepage canonical
+  // ("https://unlocksaas.com/") from layout.tsx, which tells Google the
+  // 404 URL is a duplicate of the homepage — causing "Blocked due to
+  // other 4xx issue" and "Duplicate, Google chose different canonical"
+  // errors in Search Console. A 404 has NO canonical.
+  alternates: {},
 };
 
 // 404 is fully static — no per-request data, no cookies, no auth gating.

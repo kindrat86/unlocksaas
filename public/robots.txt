@@ -6,4 +6,3 @@ max-video-preview:-1
 max-snippet:-1
 
 Sitemap: https://unlocksaas.com/sitemap.xml
-Sitemap: https://unlocksaas.com/image-sitemap.xml

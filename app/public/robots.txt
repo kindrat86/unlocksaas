@@ -51,6 +51,3 @@ User-Agent: Bingbot
 Allow: /
 
 Sitemap: https://unlocksaas.com/sitemap.xml
-
-# Image sitemap for Google Images indexing
-Sitemap: https://unlocksaas.com/image-sitemap.xml
