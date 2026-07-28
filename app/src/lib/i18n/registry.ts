@@ -73,19 +73,19 @@ export interface TranslationRow {
  * translated URLs that are translated and approved).
  */
 /**
- * Auto-generated translation rows for all 97 locales × all i18n paths.
+ * Approved translations — only locales with REAL, founder-reviewed
+ * translation files under src/lib/i18n/translations/.
  *
- * The existing manually-approved rows for es and pt-BR remain in the
- * array below. For the other 95 locales, we generate approved rows for
- * every localized path so that /{locale}/{path} renders, gets indexed,
- * and appears in the sitemap + hreflang map.
+ * PREVIOUSLY (2026-07-06): an AUTO_TRANSLATIONS block generated
+ * 97 locales × 15 paths = 1,455 fake "approved" rows. Only es and
+ * pt-BR had real translation files (faq, benchmarks, glossary). All
+ * other locale URLs served English content verbatim. Google saw
+ * 1,400+ duplicate-content pages, ignored the self-referencing
+ * canonicals, and flagged "Duplicate, Google chose different canonical
+ * than user" in Search Console.
  *
- * The chrome/data resolvers fall back to en-US when no translation
- * file exists for a given locale, so every page renders correctly —
- * localized translations land progressively per cluster.
+ * FIX: only list rows backed by an actual translation file.
  */
-
-import { SUPPORTED_LOCALES, NON_DEFAULT_LOCALES } from "./locales";
 
 /** All paths that have a locale-aware route under [locale]/. */
 export const I18N_PATHS = [
@@ -106,24 +106,16 @@ export const I18N_PATHS = [
   "/for",
 ] as const;
 
-const AUTO_TRANSLATIONS: TranslationRow[] = (() => {
-  const rows: TranslationRow[] = [];
-  for (const locale of NON_DEFAULT_LOCALES) {
-    for (const path of I18N_PATHS) {
-      rows.push({
-        path,
-        locale,
-        status: "approved",
-        approvedAt: "2026-07-06",
-        approvedBy: "maryan",
-      });
-    }
-  }
-  return rows;
-})();
-
 export const TRANSLATIONS: readonly TranslationRow[] = Object.freeze([
-  ...AUTO_TRANSLATIONS,
+  // /faq — approved 2026-05-18 (es, pt-BR)
+  { path: "/faq", locale: "es", status: "approved", approvedAt: "2026-05-18T00:00:00.000Z", approvedBy: "maryan" },
+  { path: "/faq", locale: "pt-BR", status: "approved", approvedAt: "2026-05-18T00:00:00.000Z", approvedBy: "maryan" },
+  // /benchmarks — approved 2026-05-18 (es, pt-BR)
+  { path: "/benchmarks", locale: "es", status: "approved", approvedAt: "2026-05-18T00:00:00.000Z", approvedBy: "maryan" },
+  { path: "/benchmarks", locale: "pt-BR", status: "approved", approvedAt: "2026-05-18T00:00:00.000Z", approvedBy: "maryan" },
+  // /glossary — approved 2026-05-18 (es, pt-BR)
+  { path: "/glossary", locale: "es", status: "approved", approvedAt: "2026-05-18T00:00:00.000Z", approvedBy: "maryan" },
+  { path: "/glossary", locale: "pt-BR", status: "approved", approvedAt: "2026-05-18T00:00:00.000Z", approvedBy: "maryan" },
 ]);
 export function getTranslationStatus(
   path: string,

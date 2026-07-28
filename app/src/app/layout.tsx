@@ -108,7 +108,7 @@ export const viewport: Viewport = {
 // production origin, which Search Console + AI Overviews + Twitter/X cards
 // all rely on. Per-page metadata exports inherit unless they override.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://unlocksaas.com"),
+  metadataBase: new URL("https://unlocksaas.com/"),
   title: {
     default: "Unlock SaaS — Land Your First Paying Customer in 60 Days",
     template: "%s — Unlock SaaS",
@@ -120,12 +120,18 @@ export const metadata: Metadata = {
   creator: "Maryan",
   publisher: "Unlock SaaS",
   alternates: {
-    canonical: "/",
+    canonical: "https://unlocksaas.com/",
     languages: {
-      "en-US": "/",
-      "x-default": "/",
+      "en-US": "https://unlocksaas.com/",
+      "x-default": "https://unlocksaas.com/",
     },
   },
+  // FIX: Vercel's HTTP Link header emits canonical as
+  // "https://unlocksaas.com/" (trailing slash) but metadataBase +
+  // canonical: "/" resolved to "https://unlocksaas.com" (no slash).
+  // Google treated these as different URLs → "Duplicate, Google chose
+  // different canonical than user". Using the absolute URL with trailing
+  // slash makes the HTML <link rel="canonical"> match the HTTP header.
   robots: { index: true, follow: true },
   // Search-engine ownership verification — env-driven slots, empty until
   // the operator drops a value in Vercel. Each tag is a real, currently-

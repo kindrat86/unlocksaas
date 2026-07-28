@@ -5,7 +5,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { getEditorialPolicyChrome } from "@/lib/i18n/translations";
 import {
   getTranslationStatus,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 
 /**
@@ -34,7 +34,7 @@ export const alt =
   "Unlock SaaS – Editorial Policy – sourcing, datelines, disclosures, corrections workflow";
 
 export function generateStaticParams() {
-  return renderableLocalesForPath("/editorial-policy").map((locale) => ({
+  return renderableLocalesForPathOrStub("/editorial-policy").map((locale) => ({
     locale,
   }));
 }

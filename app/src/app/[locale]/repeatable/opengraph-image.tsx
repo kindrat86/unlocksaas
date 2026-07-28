@@ -5,7 +5,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { getRepeatableChrome } from "@/lib/i18n/translations";
 import {
   getTranslationStatus,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 
 /**
@@ -34,7 +34,7 @@ export const alt =
   "Unlock SaaS – Rung 2 – The Repeatable Revenue Layer (spec published, build gated)";
 
 export function generateStaticParams() {
-  return renderableLocalesForPath("/repeatable").map((locale) => ({ locale }));
+  return renderableLocalesForPathOrStub("/repeatable").map((locale) => ({ locale }));
 }
 
 export default async function OgImage({
