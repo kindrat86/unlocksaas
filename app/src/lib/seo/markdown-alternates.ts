@@ -90,30 +90,24 @@ const HUBS_WITH_DETAIL_LOCALE_INHERITANCE: readonly string[] = [
 ];
 
 /**
- * Resolve approved locales for a canonical path, with hub→detail
- * inheritance.
+ * Resolve approved locales for a canonical path.
  *
- *   - Exact-match registry row → return its approved locales.
- *   - Detail path under an inheriting hub → return the hub's locales.
- *   - Anything else → empty (honest monolingual).
+ * Hub→detail inheritance is DISABLED (2026-07-28 GSC fix).
  *
- * Brunson Hard-Rule reconciliation: inheritance is registry-driven and
- * gated by `HUBS_WITH_DETAIL_LOCALE_INHERITANCE`. A hub does NOT inherit
- * by default; adding one to the list is a deliberate editorial decision
- * that the slug translations are reviewed as a unit. The exact-match
- * lookup still wins when both apply.
+ * Previously, approving /es/glossary made every /glossary/<slug> child
+ * page emit hreflang alternates to /es/glossary/<slug>. But those locale
+ * child pages serve ENGLISH content (no per-slug translation files).
+ * Google crawled the hreflang targets, found byte-identical English
+ * duplicates, and flagged 72 pages as "Duplicate, Google chose different
+ * canonical than user."
+ *
+ * Only return approved locales for paths with their OWN explicit
+ * registry row.
  */
 function localesForPathWithHubFallback(
   canonical: string,
 ): ReadonlyArray<ReturnType<typeof approvedLocalesForPath>[number]> {
-  const exact = approvedLocalesForPath(canonical);
-  if (exact.length > 0) return exact;
-  for (const hub of HUBS_WITH_DETAIL_LOCALE_INHERITANCE) {
-    if (canonical.startsWith(`${hub}/`)) {
-      return approvedLocalesForPath(hub);
-    }
-  }
-  return [];
+  return approvedLocalesForPath(canonical);
 }
 
 /**

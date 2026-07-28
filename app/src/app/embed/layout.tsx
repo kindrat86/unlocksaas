@@ -3,6 +3,11 @@ import "../globals.css";
 
 export const metadata = {
   robots: { index: false, follow: true },
+  // No trailing slash on canonical — aligns with trailingSlash: false
+  // in next.config.mjs so /embed (not /embed/) is the self-canonical URL.
+  alternates: {
+    canonical: "/embed",
+  },
 };
 
 /**

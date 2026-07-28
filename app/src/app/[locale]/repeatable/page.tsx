@@ -8,7 +8,7 @@ import { isLocale, localizedPath, ogLocaleFormat, type Locale } from "@/lib/i18n
 import {
   getTranslationStatus,
   isApproved,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 import { localeAlternates } from "@/lib/seo/markdown-alternates";
 import { getRepeatableChrome } from "@/lib/i18n/translations";
@@ -71,7 +71,7 @@ export async function generateMetadata({
 
 
 export function generateStaticParams() {
-  return renderableLocalesForPath("/repeatable").map((locale) => ({ locale }));
+  return renderableLocalesForPathOrStub("/repeatable").map((locale) => ({ locale }));
 }
 
 export default async function LocalizedRepeatablePage({

@@ -1,13 +1,17 @@
 /**
  * Supported locales for UnlockSaaS.
  *
- * en-US is the canonical and only shipped locale.
+ * en-US is the canonical locale. es and pt-BR have real, founder-
+ * reviewed translation files under src/lib/i18n/translations/.
+ *
+ * FIX: previously listed "de" (no translation files exist) and omitted
+ * "pt-BR" (translation files exist). Swapped to match reality.
  */
 
 export const SUPPORTED_LOCALES = [
   "en-US",
-  "de",
   "es",
+  "pt-BR",
 ] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -35,8 +39,8 @@ export function localizedPath(path: string, locale: Locale): string {
 export function ogLocaleFormat(locale: Locale): string {
   const map: Record<Locale, string> = {
     "en-US": "en_US",
-    "de": "de_DE",
     "es": "es_ES",
+    "pt-BR": "pt_BR",
   };
   return map[locale] ?? "en_US";
 }
@@ -44,8 +48,8 @@ export function ogLocaleFormat(locale: Locale): string {
 /** Human-readable display name for the language switcher. */
 export const LOCALE_DISPLAY_NAMES: Record<Locale, string> = {
   "en-US": "English",
-  "de": "Deutsch",
   "es": "Español",
+  "pt-BR": "Português (Brasil)",
 };
 
 /** RTL locales — need dir="rtl" on the html/div wrapper. */

@@ -4,7 +4,6 @@ import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { POST_MORTEM_SLUGS } from "@/lib/post-mortems";
 import { COMPARISON_SLUGS } from "@/lib/comparisons";
-import { RESOLVING_COMPARE_SLUGS } from "@/lib/compare-catalog";
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
@@ -161,16 +160,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // and noindex). Patterns omitted from this list intentionally.
   ];
   const rootOg = `${base}/opengraph-image`;
-  const ogImageFor = (urlPath: string): string => {
-    if (urlPath === "/") return rootOg;
-    if (DEDICATED_OG_HUBS.has(urlPath)) {
-      return `${base}${urlPath}/opengraph-image`;
-    }
-    if (DEDICATED_OG_DETAIL_PATTERNS.some((re) => re.test(urlPath))) {
-      return `${base}${urlPath}/opengraph-image`;
-    }
-    return rootOg;
-  };
+  /**
+   * Image sitemap helper (2026-07-28 GSC fix — simplified).
+   *
+   * PREVIOUSLY this function generated per-path OG image URLs like
+   * `/alternatives-to/notion/opengraph-image`. But Next.js routes that use
+   * `generateImageMetadata` serve their images at build-hash-suffixed URLs
+   * (e.g. `/alternatives-to/notion/opengraph-image-1pxfoj/card?fafa8afa711c9562`).
+   * The bare `/opengraph-image` URLs all returned 404, and the hash-suffixed
+   * URLs from a prior deploy returned 500 after the next build changed the
+   * hash. This caused GSC "Blocked due to other 4xx issue" on every image
+   * sitemap entry.
+   *
+   * FIX: point every image sitemap entry at the root `/opengraph-image`,
+   * which is a stable, always-200 route. Per-page OG images are still
+   * discovered by crawlers via the `<meta property="og:image">` tag in
+   * each page's HTML — the image sitemap is a secondary discovery channel,
+   * not the primary one.
+   */
+  const ogImageFor = (_urlPath: string): string => rootOg;
 
   /**
    * Per-URL hreflang map, READ FROM THE TRANSLATION REGISTRY.
@@ -264,14 +272,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/benchmarks",
   ]);
   const localesForPath = (path: string) => {
-    const exact = approvedLocalesForPath(path);
-    if (exact.length > 0) return exact;
-    for (const hub of HUBS_WITH_DETAIL_LOCALE_INHERITANCE) {
-      if (path.startsWith(`${hub}/`)) {
-        return approvedLocalesForPath(hub);
-      }
-    }
-    return exact;
+    // Hub→detail locale inheritance DISABLED (2026-07-28 GSC fix).
+    //
+    // Previously, approving /es/glossary (the hub) made every English
+    // /glossary/<slug> child page advertise hreflang alternates to
+    // /es/glossary/<slug>, /pt-BR/glossary/<slug>, etc. But those
+    // locale child pages serve ENGLISH content (no per-slug
+    // translation files exist). Google crawled the hreflang targets,
+    // found byte-identical English pages with self-referencing
+    // canonicals, ignored them, and flagged all 72 as "Duplicate,
+    // Google chose different canonical than user."
+    //
+    // Only advertise hreflang alternates for paths with their OWN
+    // explicit approval row in the registry.
+    return approvedLocalesForPath(path);
   };
 
   const hreflang = (absUrl: string) => {
@@ -560,31 +574,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: hreflang(`${base}/vs/${slug}`),
     })),
     // ---------------------------------------------------------------------
-    // Programmatic SEO block #4b — /compare Switzerland-style shopping
-    // comparator. Sister surface to /vs/[slug]: lighter quick-verdict shape
-    // with non-overlapping slugs. Catalog: src/lib/compare-catalog.ts.
-    // Each detail page is Article + FAQPage + BreadcrumbList JSON-LD; the
-    // hub uses CollectionPage + Dataset.
+    // /compare URLs REMOVED from sitemap (2026-07-28 GSC fix).
     //
-    // 2026-07-14: detail entries filtered to RESOLVING_COMPARE_SLUGS —
-    // every /compare URL 308s to /vs (see the constant's comment above),
-    // so only slugs with a live /vs counterpart are listed. The hub entry
-    // stays: /compare 308s to /vs, which resolves.
+    // Every /compare URL 308-redirects to /vs (see redirects() in
+    // next.config.mjs). Listing redirected URLs in the sitemap causes
+    // GSC "Duplicate, Google chose different canonical than user" because
+    // Google indexes the /vs canonical but the sitemap declares /compare.
+    // The /vs entries below already cover all comparison content.
     // ---------------------------------------------------------------------
-    {
-      url: `${base}/compare`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-      alternates: hreflang(`${base}/compare`),
-    },
-    ...RESOLVING_COMPARE_SLUGS.map((slug) => ({
-      url: `${base}/compare/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-      alternates: hreflang(`${base}/compare/${slug}`),
-    })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #5 — category roundup pages.
     // Data source: src/lib/categories.ts. Each canonical category bucket
@@ -1242,69 +1239,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     // ---------------------------------------------------------------------
-    // Embeddable widget tools — editorial backlink play (2026-07-21).
-    // Each tool is a self-contained HTML page in public/embed/tools/ that
-    // any blog or website can iframe-embed. The embed hub page at /embed/
-    // plus each tool page earn editorial backlinks from SaaS blogs,
-    // founder landing pages, and investor updates. Every embed is one
-    // permanent contextual backlink (Codecov/WakaTime viral model).
+    // Embeddable widget tools REMOVED from sitemap (2026-07-28 GSC fix).
     //
-    // The SaaS Health Score (new 2026-07-21) is the anchor tool —
-    // founders compute a composite grade from 5 metrics and get an
-    // embeddable badge for their own landing page. Each embedded badge
-    // links back to unlocksaas.com.
+    // The /embed/ layout (src/app/embed/layout.tsx) sets
+    // robots: { index: false, follow: true } — these pages are designed
+    // for cross-origin iframe embedding, NOT for Google indexing. Listing
+    // noindex pages in the sitemap is contradictory and the trailing-slash
+    // URL (/embed/) conflicts with the global trailingSlash: false setting,
+    // causing a 308 redirect that GSC reports as a canonical mismatch.
+    // The .html embed tool pages remain accessible directly; they just
+    // don't belong in the XML sitemap.
     // ---------------------------------------------------------------------
-    // Embed hub — widget gallery with copy-paste iframe snippets
-    {
-      url: `${base}/embed/`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.65,
-      alternates: hreflang(`${base}/embed/`),
-    },
-    // Individual embeddable tool pages
-    {
-      url: `${base}/embed/tools/saas-health-score.html`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-      alternates: hreflang(`${base}/embed/tools/saas-health-score.html`),
-    },
-    {
-      url: `${base}/embed/tools/churn-cost-calculator.html`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.55,
-      alternates: hreflang(`${base}/embed/tools/churn-cost-calculator.html`),
-    },
-    {
-      url: `${base}/embed/tools/ltv-calculator.html`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.55,
-      alternates: hreflang(`${base}/embed/tools/ltv-calculator.html`),
-    },
-    {
-      url: `${base}/embed/tools/revenue-projector.html`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.55,
-      alternates: hreflang(`${base}/embed/tools/revenue-projector.html`),
-    },
-    {
-      url: `${base}/embed/tools/saas-launch-readiness.html`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-      alternates: hreflang(`${base}/embed/tools/saas-launch-readiness.html`),
-    },
-    {
-      url: `${base}/embed/tools/portfolio-network.html`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.45,
-      alternates: hreflang(`${base}/embed/tools/portfolio-network.html`),
-    },
     {
       url: `${base}/contact`,
       lastModified: now,
@@ -1843,9 +1788,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/repeatable",
         "/editorial-policy",
       ]);
-      const ogUrl = PER_LOCALE_OG_PATHS.has(row.path)
-        ? `${localised}/opengraph-image`
-        : rootOg;
+      // 2026-07-28 GSC fix: locale OG image routes serve at build-hash-
+      // suffixed URLs that 404/500 on the bare path. Use root OG for all
+      // locale entries — per-page og:image meta tags handle social discovery.
+      const ogUrl = rootOg;
       return {
         url: localised,
         lastModified: row.approvedAt ? new Date(row.approvedAt) : now,
@@ -1891,42 +1837,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Hubs without per-slug locale cards fall back to the root card via
     // the post-processing pass at the bottom of this file.
     // -------------------------------------------------------------------------
-    ...allApprovedTranslations().flatMap((row) => {
-      let slugs: readonly string[] = [];
-      if (row.path === "/glossary") slugs = GLOSSARY_SLUGS;
-      if (row.path === "/benchmarks") slugs = BENCHMARK_SLUGS;
-      if (slugs.length === 0) return [];
-      const hubLocales = approvedLocalesForPath(row.path);
-      const hasPerLocaleDetailOg =
-        HUBS_WITH_PER_LOCALE_DETAIL_OG.has(row.path);
-      return slugs.map((slug) => {
-        const childPath = `${row.path}/${slug}`;
-        const localised = `${base}${localizedPath(childPath, row.locale)}`;
-        const canonicalUrl = `${base}${childPath}`;
-        const ogUrl = hasPerLocaleDetailOg
-          ? `${localised}/opengraph-image`
-          : rootOg;
-        return {
-          url: localised,
-          lastModified: row.approvedAt ? new Date(row.approvedAt) : now,
-          changeFrequency: "monthly" as const,
-          priority: 0.5,
-          alternates: {
-            languages: {
-              "en-US": canonicalUrl,
-              "x-default": canonicalUrl,
-              ...Object.fromEntries(
-                hubLocales.map((loc) => [
-                  loc,
-                  `${base}${localizedPath(childPath, loc)}`,
-                ]),
-              ),
-            },
-          },
-          images: [ogUrl],
-        };
-      });
-    }),
+    // NOTE: Hub→detail locale fan-out REMOVED (2026-07-28 GSC fix).
+    //
+    // Previously, approving /es/glossary (the hub) auto-listed every
+    // /es/glossary/<slug> child in the sitemap. But those child pages
+    // serve ENGLISH content — only the hub pages (/es/glossary,
+    // /es/benchmarks, /es/faq) have real translations. The 72 auto-
+    // generated child URLs (/es/glossary/hook, /es/benchmarks/saas-churn-
+    // rate, × 2 locales) were byte-identical to their English counterparts
+    // except for a self-referencing canonical. Google ignored the self-
+    // canonicals, flagged all 72 as "Duplicate, Google chose different
+    // canonical than user," and the pages were de-indexed.
+    //
+    // Fix: only list locale URLs that have REAL translated content.
+    // The approved hub entries above (/es/faq, /es/benchmarks, etc.) are
+    // still listed. Child slug translations must be individually approved
+    // in the registry with their own translation files before they appear.
   ];
 
   /**

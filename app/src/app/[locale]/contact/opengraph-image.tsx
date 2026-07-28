@@ -5,7 +5,7 @@ import { isLocale, type Locale } from "@/lib/i18n/locales";
 import { getContactChrome } from "@/lib/i18n/translations";
 import {
   getTranslationStatus,
-  renderableLocalesForPath,
+  renderableLocalesForPathOrStub,
 } from "@/lib/i18n/registry";
 
 /**
@@ -33,7 +33,7 @@ export const alt =
   "Unlock SaaS – Contact – one inbox, one human, real replies";
 
 export function generateStaticParams() {
-  return renderableLocalesForPath("/contact").map((locale) => ({ locale }));
+  return renderableLocalesForPathOrStub("/contact").map((locale) => ({ locale }));
 }
 
 export default async function OgImage({
