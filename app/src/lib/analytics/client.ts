@@ -38,6 +38,7 @@
 
 import type { PostHog } from "posthog-js";
 import type { EventName } from "./events";
+import { detectClientBot } from "./bot-detection";
 
 // Public client-side project token (safe to ship in the bundle — same
 // fallback pattern as the rest of the portfolio). Env vars still win when
@@ -143,6 +144,12 @@ function loadPostHog(): Promise<PostHog | null> {
     });
 
     posthogInstance = posthog;
+
+    // Super property so traffic queries can filter `is_bot = false`.
+    // Registered BEFORE the queue drains, so events fired during the lazy
+    // SDK load carry the flag too — otherwise every pre-load event would
+    // land unflagged and read as human.
+    posthog.register({ is_bot: detectClientBot() });
 
     // Drain queued events in arrival order. Once this loop completes the
     // queue stays empty for the rest of the session.
