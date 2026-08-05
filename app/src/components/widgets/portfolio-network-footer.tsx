@@ -75,6 +75,13 @@ const SITES = [
     title: "SanctionsAI: AI agent payment compliance",
   },
   {
+    href: "https://hirenika.com",
+    label: "HireNika",
+    tagline: "AI Employees",
+    dot: "#EAB308",
+    title: "HireNika: AI employees for small business — bookkeeping, admin, calls from $0.40/task",
+  },
+  {
     href: "https://sipi.bot",
     label: "Sipi.bot",
     tagline: "AI Infrastructure",
