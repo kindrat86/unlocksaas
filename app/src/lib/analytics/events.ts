@@ -33,7 +33,27 @@ export const Event = {
   VslReplayed: "vsl_replayed",
   VslCompleted: "vsl_completed",
   DiagnosticPageViewed: "diagnostic_page_viewed",
+  // NOT a conversion. Despite the name this is a step-progress event: the
+  // squeeze fires it from eight call sites (every step advance, the Google
+  // handoff, the final submit, each engine-stream boundary, the stream-done
+  // boundary, and both already-used branches). One person walking steps 1→8
+  // emits it 8×. Read it as "where did they stall", never as "how many
+  // emails did we get" — see DiagnosticEmailCaptured for the latter.
   DiagnosticFormSubmitted: "diagnostic_form_submitted",
+  // THE email-capture conversion. Fired server-side, exactly once, at the
+  // only moment an address we did not previously hold lands in
+  // `diagnostic_leads`: immediately after a successful INSERT in
+  // /api/diagnostic/stream (email path) or /api/diagnostic (Google OAuth
+  // path). Deliberately not fired for:
+  //   - `already_used` (the one-report-per-email quota gate matched a prior
+  //     row — we already had that address, so it is not a new capture),
+  //   - the 23505 concurrent-first-submit race (the winning request fires it),
+  //   - anything before the row exists (an abandoned or failed stream is not
+  //     a capture).
+  // Because the quota gate admits at most one row per address, the event is
+  // deduped by person at the strongest level available: one lifetime capture
+  // per email. distinct_id is `lead:<row id>`.
+  DiagnosticEmailCaptured: "diagnostic_email_captured",
   DiagnosticResultViewed: "diagnostic_result_viewed",
   // Bait Hook variant attribution (Eugene Schwartz awareness mapping —
   // strategy/workbooks/10-growth-hacking.md §4 + Brunson DCS Chapter 11).
@@ -223,6 +243,24 @@ export interface ConversionProps {
 export interface DiagnosticResultProps {
   label: "wrong_person" | "weak_offer" | "weak_belief" | "indeterminate";
   product_url?: string;
+}
+
+/**
+ * Properties on `diagnostic_email_captured`.
+ *
+ * No raw address is ever sent — only the domain, which is what the funnel
+ * reports actually slice on (personal vs company mailbox). `capture_surface`
+ * separates the two lead-creation paths so a regression in one is visible
+ * without joining tables.
+ */
+export interface DiagnosticEmailCapturedProps {
+  /** Everything after the "@" of the captured address. */
+  email_domain: string;
+  /** `diagnostic_leads.id` of the row that was just created. */
+  lead_id: string;
+  product_url: string;
+  /** "stream" = /api/diagnostic/stream, "sync" = /api/diagnostic. */
+  capture_surface: "stream" | "sync";
 }
 
 /**

@@ -28,6 +28,7 @@ import {
   isPreVerifiedSource,
 } from "@/lib/email-verification";
 import { writeFounderMemoryAfter } from "@/lib/founder-memory";
+import { captureDiagnosticEmail } from "@/lib/analytics/email-capture";
 
 /**
  * Streaming variant of /api/diagnostic.
@@ -470,6 +471,20 @@ export async function POST(req: NextRequest) {
               "I read your page but could not save the result. Try again in a minute, or email me at maryan@unlocksaas.com.",
           });
           return;
+        }
+
+        // Primary conversion. Gated on `data?.id` rather than `rowId`: on the
+        // 23505 race above `rowId` is the *winning* request's row, and that
+        // request fires its own capture — counting it here too would double
+        // one address. Awaited so the event is out before the stream closes
+        // and the function freezes.
+        if (data?.id) {
+          await captureDiagnosticEmail({
+            leadId: data.id as string,
+            email,
+            productUrl,
+            capture_surface: "stream",
+          });
         }
 
         // Persistent founder memory – fire-and-forget. Mirrors the
