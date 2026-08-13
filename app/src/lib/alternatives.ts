@@ -1408,7 +1408,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     },
     homepageUrl: "https://webflow.com/",
     tags: ["no-code", "website-builder", "for-pre-launch", "design"],
-    lastVerified: "2026-08-14",
+    lastVerified: "2026-08-13",
   },
   {
     slug: "bubble",
@@ -1455,7 +1455,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     },
     homepageUrl: "https://bubble.io/",
     tags: ["no-code", "app-builder", "for-pre-launch", "ai-tool"],
-    lastVerified: "2026-08-14",
+    lastVerified: "2026-08-13",
   },
   {
     slug: "zapier",
@@ -1502,7 +1502,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     },
     homepageUrl: "https://zapier.com/",
     tags: ["automation", "integrations", "for-post-launch", "operations"],
-    lastVerified: "2026-08-14",
+    lastVerified: "2026-08-13",
   },
   {
     slug: "skool",
@@ -1510,7 +1510,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     creator: "Sam Ovens",
     category: "Community and course platform",
     oneLine: "Skool hosts a community. Unlock SaaS runs the playbook that gets you customers to put in one. Different layers.",
-    pricingNote: "Skool is a flat-rate platform at approximately $99/month per group (verified 2026-08-14). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    pricingNote: "Skool is a flat-rate platform at approximately $99/month per group (verified 2026-08-13). Unlock SaaS is $1 Starter + $49/month Playbook.",
     whatItIs: [
       "A flat-fee platform for running a paid community and courses",
       "A place to host members, lessons, and discussion in one product",
@@ -1549,7 +1549,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     },
     homepageUrl: "https://www.skool.com/",
     tags: ["community", "course-platform", "creator-economy", "for-post-launch"],
-    lastVerified: "2026-08-14",
+    lastVerified: "2026-08-13",
   },
   {
     slug: "gumroad",
@@ -1557,7 +1557,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     creator: "Gumroad, Inc.",
     category: "Creator commerce and digital-product checkout",
     oneLine: "Gumroad sells digital products. Unlock SaaS gets you a SaaS customer. Different products, different checkout.",
-    pricingNote: "Gumroad is free to use and charges a flat fee per sale (10% as of 2026-08-14). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    pricingNote: "Gumroad is free to use and charges a flat fee per sale (10% as of 2026-08-13). Unlock SaaS is $1 Starter + $49/month Playbook.",
     whatItIs: [
       "A fast checkout for digital products, courses, and memberships",
       "A low-friction way for creators to sell without building a store",
@@ -1596,7 +1596,7 @@ const ALTERNATIVES_LIST: Alternative[] = [
     },
     homepageUrl: "https://gumroad.com/",
     tags: ["creator-economy", "payments", "for-post-launch", "digital-products"],
-    lastVerified: "2026-08-14",
+    lastVerified: "2026-08-13",
   },
 ];
 
