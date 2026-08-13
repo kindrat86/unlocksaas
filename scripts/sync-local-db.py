@@ -12,13 +12,18 @@ No cloud DB anywhere: Resend + Stripe are upstream operational stores,
 this file is the durable local copy. Idempotent upserts; safe to run any
 time. Scheduled hourly via launchd `com.unlocksaas.funnel-db-sync`.
 
+When a run fails it drops ~/.unlocksaas/SYNC-BROKEN.md and clears it on the
+next good run — stdout goes to ~/.unlocksaas/sync.log, which nobody reads.
+
 Run manually:  ~/portfolio/.venv/bin/python ~/unlocksaas/scripts/sync-local-db.py
 """
 import json
 import re
 import sqlite3
+import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,10 +33,39 @@ from lib.vault import Vault  # noqa: E402
 
 DB_DIR = Path.home() / ".unlocksaas"
 DB_PATH = DB_DIR / "funnel.db"
-RESEND_KEY = re.search(
-    r"RESEND_API_KEY=(\S+)", (Path.home() / "email-engine/.env").read_text()
-).group(1)
+ALERT_PATH = DB_DIR / "SYNC-BROKEN.md"
+ENV_PATH = Path.home() / "email-engine/.env"
 AUDIENCES = ["UnlockSaaS", "VoiceLogPro"]
+
+
+class ResendFatalError(RuntimeError):
+    """Resend rejected the request outright — retrying cannot help."""
+
+
+_key_cache = {}
+
+
+def resend_key():
+    """The Resend key, vault-first.
+
+    ~/email-engine/.env is a deployment artifact, not the source of truth — its
+    own header says so ("source of truth: portfolio vault global:RESEND_API_KEY
+    ... Re-sync from there if rotated"). The 2026-08-08 rotation updated the
+    vault and left .env holding the revoked key, so every hourly run from
+    2026-08-08T09:24Z on died on "API key is invalid". Reading the vault first
+    makes a rotation self-heal; .env stays as the fallback.
+    """
+    if "key" not in _key_cache:
+        key = (Vault().get_key("RESEND_API_KEY") or "").strip()
+        if not key:
+            m = re.search(r"^RESEND_API_KEY=(\S+)", ENV_PATH.read_text(), re.M)
+            key = m.group(1) if m else ""
+        if not key:
+            raise ResendFatalError(
+                f"no RESEND_API_KEY in the portfolio vault (global:) or {ENV_PATH}"
+            )
+        _key_cache["key"] = key
+    return _key_cache["key"]
 
 
 def resend(path):
@@ -39,13 +73,23 @@ def resend(path):
         f"https://api.resend.com{path}",
         # Cloudflare rejects urllib's default UA with 403/1010
         headers={
-            "Authorization": f"Bearer {RESEND_KEY}",
+            "Authorization": f"Bearer {resend_key()}",
             "User-Agent": "unlocksaas-local-sync/1.0 (+curl-compatible)",
         },
     )
     for attempt in range(3):
         try:
             return json.load(urllib.request.urlopen(req, timeout=30))
+        except urllib.error.HTTPError as e:
+            # str(HTTPError) is only "HTTP Error 400: Bad Request"; the body is
+            # where Resend says *why*. Dropping it is what let four days of
+            # "API key is invalid" read as a generic upstream blip.
+            body = e.read().decode("utf-8", "replace").strip()[:200]
+            if e.code in (400, 401, 403):
+                raise ResendFatalError(f"HTTP {e.code} on {path}: {body}") from None
+            if attempt == 2:
+                raise RuntimeError(f"HTTP {e.code} on {path}: {body}") from None
+            time.sleep(2 * (attempt + 1))
         except Exception:
             if attempt == 2:
                 raise
@@ -72,6 +116,55 @@ def stripe_paged(resource, key, params=""):
         if not page.get("has_more"):
             return items
         starting_after = page["data"][-1]["id"]
+
+
+def raise_alarm(db, err, now):
+    """Leave a marker a human will actually trip over.
+
+    The launchd job's stdout lands in ~/.unlocksaas/sync.log and 91 failed runs
+    sat there unread for four days. This writes a standalone file next to the
+    DB that says in plain words which snapshot funnel.db is stuck on, so a
+    frozen table is never mistaken for a real absence of signups.
+    """
+    last_ok = db.execute("SELECT MAX(at) FROM sync_runs WHERE ok=1").fetchone()[0]
+    fails = db.execute(
+        "SELECT COUNT(*) FROM sync_runs WHERE ok=0 AND at > ?", (last_ok or "",)
+    ).fetchone()[0]
+    first = not ALERT_PATH.exists()
+    ALERT_PATH.write_text(
+        f"""# funnel.db sync is BROKEN
+
+    last successful sync : {last_ok or "never"}
+    failed runs since    : {fails}
+    latest failure       : {now}
+    error                : {err}
+
+**~/.unlocksaas/funnel.db is FROZEN at the last successful sync.** Every table
+in it — subscribers, email_events, stripe_customers, stripe_subs — is a
+snapshot from {last_ok or "before any successful run"}, not a current picture.
+While this file exists, do not read those row counts as evidence about
+signups, sends or conversions: missing rows are this bug, not a market signal.
+
+Fix: the Resend key's source of truth is the portfolio vault
+(global:RESEND_API_KEY). It is mirrored into ~/email-engine/.env and into the
+Vercel `email-engine` project env, and a rotation that updates only the vault
+leaves both mirrors dead. If the vault copy is rejected too, the key was
+rotated at the Resend end and every mirror needs the new value.
+
+This file is deleted automatically by the next successful run.
+"""
+    )
+    if first:
+        # Best effort — a launchd context without a GUI session just won't show it.
+        try:
+            subprocess.run(
+                ["osascript", "-e",
+                 'display notification "funnel.db sync failed - see '
+                 '~/.unlocksaas/SYNC-BROKEN.md" with title "UnlockSaaS"'],
+                timeout=10, check=False,
+            )
+        except Exception:
+            pass
 
 
 def main():
@@ -171,9 +264,21 @@ def main():
          counts["customers"], counts["subs"], err),
     )
     db.commit()
+
+    if err is None:
+        ALERT_PATH.unlink(missing_ok=True)
+        status = "OK"
+    else:
+        raise_alarm(db, err, now)
+        # "PARTIAL" flattered a run that wrote nothing at all: the Resend
+        # section runs first, so its failure skips Stripe too.
+        status = f"PARTIAL ({err})" if any(counts.values()) else f"FAILED ({err})"
     db.close()
-    status = "OK" if err is None else f"PARTIAL ({err})"
+
     print(f"[{now}] {status} " + " ".join(f"{k}={v}" for k, v in counts.items()))
+    if err is not None:
+        # launchd merges both streams into sync.log, so don't repeat the line
+        print(f"  -> funnel.db is stale; see {ALERT_PATH}", file=sys.stderr)
     sys.exit(0 if err is None else 1)
 
 
