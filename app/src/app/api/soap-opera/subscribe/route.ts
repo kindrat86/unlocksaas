@@ -15,6 +15,8 @@ interface SubscribeBody {
   diagnostic_result?: unknown;
   /** Optional A/B test bucket from the opt-in form. */
   identity_variant?: unknown;
+  /** Browser-reported IANA timezone (e.g. "Europe/Athens"). */
+  tz?: unknown;
   /** Honeypot — humans leave it empty. See @/lib/form-guard. */
   _gotcha?: unknown;
 }
@@ -59,6 +61,10 @@ export async function POST(req: NextRequest) {
         : "funnel_hub",
     diagnostic_result: coerceDiagnosis(body.diagnostic_result),
     identity_variant: coerceIdentityVariant(body.identity_variant),
+    tz:
+      typeof body.tz === "string" && body.tz.includes("/")
+        ? body.tz.slice(0, 64)
+        : undefined,
   });
 
   if (outcome.ok) {

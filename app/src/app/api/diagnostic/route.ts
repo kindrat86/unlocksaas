@@ -107,6 +107,7 @@ export async function POST(req: NextRequest) {
     referrer?: unknown;
     source?: unknown;
     survey?: unknown;
+    tz?: unknown;
   };
   try {
     body = await req.json();
@@ -130,6 +131,10 @@ export async function POST(req: NextRequest) {
     typeof body.source === "string" && body.source.trim()
       ? body.source.trim()
       : null;
+  const tz =
+    typeof body.tz === "string" && body.tz.includes("/")
+      ? body.tz.slice(0, 64)
+      : undefined;
 
   // Survey answers (Brunson Survey Funnel — DCS Secret 15).
   //
@@ -347,6 +352,7 @@ export async function POST(req: NextRequest) {
       source: source ?? "free_diagnostic",
       diagnostic_result: diagnosis.label as SoapDiagnosis,
       identity_variant: identityVariant,
+      tz,
     });
     if (outcome.ok) {
       subscriberId = outcome.id;

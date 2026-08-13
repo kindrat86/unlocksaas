@@ -1,5 +1,6 @@
 "use client";
 
+import { browserTimezone } from '@/lib/browser-tz';
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +59,7 @@ export function NewsletterSignup({
       const res = await fetch("/api/soap-opera/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, source, _gotcha: gotcha }),
+        body: JSON.stringify({ email: trimmed, source, tz: browserTimezone(), _gotcha: gotcha }),
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
