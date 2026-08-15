@@ -11,6 +11,7 @@ import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
 import { NICHE_SLUGS } from "@/lib/niches";
 import { PARTNER_SLUGS } from "@/lib/partners";
 import { STACK_SLUGS } from "@/lib/stacks";
+import { STACK_SLUGS as STACK_CATALOG_SLUGS } from "@/lib/stacks-catalog";
 import { CITY_SLUGS } from "@/lib/founders-in";
 import { LAUNCH_CHECKLIST_SLUGS } from "@/lib/launch-checklists";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
@@ -43,6 +44,25 @@ import {
   approvedLocalesForPath,
 } from "@/lib/i18n/registry";
 import { localizedPath } from "@/lib/i18n/locales";
+import { AUDIENCE_SLUGS } from "@/lib/audiences";
+import { BUSINESS_TERM_SLUGS } from "@/lib/business-terms";
+import { CHECKLIST_SLUGS } from "@/lib/checklists";
+import { EXPERIMENT_SLUGS } from "@/lib/experiments";
+import { FOUNDER_MISTAKE_SLUGS } from "@/lib/founder-mistakes";
+import { JOURNEY_SLUGS } from "@/lib/journeys";
+import { INTEGRATION_SLUGS } from "@/lib/integrations";
+import { LAUNCH_SLUGS } from "@/lib/launches";
+import { MIGRATE_FROM_SLUGS } from "@/lib/migrate-from";
+import { OBJECTION_SLUGS } from "@/lib/objections";
+import { ONBOARDING_PATTERN_SLUGS } from "@/lib/onboarding-patterns";
+import { POSITIONING_SLUGS } from "@/lib/positioning";
+import { PRICING_MODEL_SLUGS } from "@/lib/pricing-models";
+import { RETENTION_TACTIC_SLUGS } from "@/lib/retention-tactics";
+import { SAAS_FEATURE_PATTERN_SLUGS } from "@/lib/saas-feature-patterns";
+import { SAAS_METRIC_SLUGS } from "@/lib/saas-metrics";
+import { SHOULD_I_BUILD_SLUGS } from "@/lib/should-i-build";
+import { SKILL_SLUGS } from "@/lib/skills";
+import { TEMPLATE_SLUGS } from "@/lib/templates";
 
 /**
  * Sitemap for UnlockSaaS — Surface A of the Google strategy.
@@ -1853,6 +1873,385 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // The approved hub entries above (/es/faq, /es/benchmarks, etc.) are
     // still listed. Child slug translations must be individually approved
     // in the registry with their own translation files before they appear.
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /audience hub + details (ported from PR #46).
+    // Data source: src/lib/audience.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/audience`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/audience`),
+    },
+    ...AUDIENCE_SLUGS.map((slug) => ({
+      url: `${base}/audience/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/audience/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /business-term hub + details (ported from PR #46).
+    // Data source: src/lib/business.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/business-term`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/business-term`),
+    },
+    ...BUSINESS_TERM_SLUGS.map((slug) => ({
+      url: `${base}/business-term/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/business-term/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /checklist hub + details (ported from PR #46).
+    // Data source: src/lib/checklist.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/checklist`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/checklist`),
+    },
+    ...CHECKLIST_SLUGS.map((slug) => ({
+      url: `${base}/checklist/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/checklist/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /experiment hub + details (ported from PR #46).
+    // Data source: src/lib/experiment.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/experiment`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/experiment`),
+    },
+    ...EXPERIMENT_SLUGS.map((slug) => ({
+      url: `${base}/experiment/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/experiment/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /founder-mistake hub + details (ported from PR #46).
+    // Data source: src/lib/founder.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/founder-mistake`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/founder-mistake`),
+    },
+    ...FOUNDER_MISTAKE_SLUGS.map((slug) => ({
+      url: `${base}/founder-mistake/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/founder-mistake/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /from-x-to-y hub + details (ported from PR #46).
+    // Data source: src/lib/from.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/from-x-to-y`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/from-x-to-y`),
+    },
+    ...JOURNEY_SLUGS.map((slug) => ({
+      url: `${base}/from-x-to-y/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/from-x-to-y/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /integration hub + details (ported from PR #46).
+    // Data source: src/lib/integration.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/integration`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/integration`),
+    },
+    ...INTEGRATION_SLUGS.map((slug) => ({
+      url: `${base}/integration/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/integration/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /launch hub + details (ported from PR #46).
+    // Data source: src/lib/launch.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/launch`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/launch`),
+    },
+    ...LAUNCH_SLUGS.map((slug) => ({
+      url: `${base}/launch/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/launch/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /migrate-from hub + details (ported from PR #46).
+    // Data source: src/lib/migrate.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/migrate-from`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/migrate-from`),
+    },
+    ...MIGRATE_FROM_SLUGS.map((slug) => ({
+      url: `${base}/migrate-from/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/migrate-from/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /objection hub + details (ported from PR #46).
+    // Data source: src/lib/objection.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/objection`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/objection`),
+    },
+    ...OBJECTION_SLUGS.map((slug) => ({
+      url: `${base}/objection/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/objection/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /onboarding-pattern hub + details (ported from PR #46).
+    // Data source: src/lib/onboarding.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/onboarding-pattern`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/onboarding-pattern`),
+    },
+    ...ONBOARDING_PATTERN_SLUGS.map((slug) => ({
+      url: `${base}/onboarding-pattern/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/onboarding-pattern/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /positioning hub + details (ported from PR #46).
+    // Data source: src/lib/positioning.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/positioning`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/positioning`),
+    },
+    ...POSITIONING_SLUGS.map((slug) => ({
+      url: `${base}/positioning/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/positioning/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /pricing-model hub + details (ported from PR #46).
+    // Data source: src/lib/pricing.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/pricing-model`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/pricing-model`),
+    },
+    ...PRICING_MODEL_SLUGS.map((slug) => ({
+      url: `${base}/pricing-model/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/pricing-model/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /retention-tactic hub + details (ported from PR #46).
+    // Data source: src/lib/retention.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/retention-tactic`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/retention-tactic`),
+    },
+    ...RETENTION_TACTIC_SLUGS.map((slug) => ({
+      url: `${base}/retention-tactic/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/retention-tactic/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /saas-feature-pattern hub + details (ported from PR #46).
+    // Data source: src/lib/saas.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/saas-feature-pattern`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/saas-feature-pattern`),
+    },
+    ...SAAS_FEATURE_PATTERN_SLUGS.map((slug) => ({
+      url: `${base}/saas-feature-pattern/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/saas-feature-pattern/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /saas-metric hub + details (ported from PR #46).
+    // Data source: src/lib/saas.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/saas-metric`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/saas-metric`),
+    },
+    ...SAAS_METRIC_SLUGS.map((slug) => ({
+      url: `${base}/saas-metric/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/saas-metric/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /should-i-build hub + details (ported from PR #46).
+    // Data source: src/lib/should.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/should-i-build`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/should-i-build`),
+    },
+    ...SHOULD_I_BUILD_SLUGS.map((slug) => ({
+      url: `${base}/should-i-build/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/should-i-build/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /skill hub + details (ported from PR #46).
+    // Data source: src/lib/skill.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/skill`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/skill`),
+    },
+    ...SKILL_SLUGS.map((slug) => ({
+      url: `${base}/skill/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/skill/${slug}`),
+    })),
+
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /template hub + details (ported from PR #46).
+    // Data source: src/lib/template.ts family.
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/template`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/template`),
+    },
+    ...TEMPLATE_SLUGS.map((slug) => ({
+      url: `${base}/template/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/template/${slug}`),
+    })),
+    // ---------------------------------------------------------------------
+    // Programmatic SEO block — /stack hub + details (ported from PR #46).
+    // Data source: src/lib/stacks-catalog.ts (category stacks; distinct
+    // from /stack-for niche stacks in src/lib/stacks.ts).
+    // ---------------------------------------------------------------------
+    {
+      url: `${base}/stack`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: hreflang(`${base}/stack`),
+    },
+    ...STACK_CATALOG_SLUGS.map((slug) => ({
+      url: `${base}/stack/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+      alternates: hreflang(`${base}/stack/${slug}`),
+    })),
   ];
 
   /**
