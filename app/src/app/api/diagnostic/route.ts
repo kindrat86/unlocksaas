@@ -27,6 +27,7 @@ import {
 } from "@/lib/email-verification";
 import { writeFounderMemoryAfter } from "@/lib/founder-memory";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { captureDiagnosticEmail } from "@/lib/analytics/email-capture";
 
 /**
  * Free Diagnostic submission endpoint.
@@ -436,6 +437,16 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (data?.id) {
+    // Primary conversion. This branch means THIS request created the row, so
+    // the address is new to us. The 23505 branch below deliberately stays
+    // silent — there the winning request already fired the capture.
+    await captureDiagnosticEmail({
+      leadId: data.id as string,
+      email,
+      productUrl,
+      capture_surface: "sync",
+    });
+
     // Persistent founder memory – fire-and-forget. Hydrates founder_memory
     // from the deep-analysis findings so every downstream surface (dashboard,
     // onboarding, future chat sidebar) reads from the same blob instead of

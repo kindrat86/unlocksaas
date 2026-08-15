@@ -1,6 +1,6 @@
 /**
  * Fallback path to the shared email-engine autoresponder
- * (https://email-engine-fawn.vercel.app, sequences/unlocksaas.yaml).
+ * (https://email-engine-pink.vercel.app, sequences/unlocksaas.yaml).
  *
  * ARCHITECTURE DECISION (owner, 2026-07-14): local-first, no cloud DB.
  * This engine path is the PRIMARY production subscribe system — the
@@ -16,7 +16,16 @@
  * between systems never see contradictory emails.
  */
 
-const ENGINE_URL = "https://email-engine-fawn.vercel.app/api/subscribe";
+// Host note (2026-08-09): was `email-engine-fawn` until the 2026-08-06 Vercel
+// team consolidation deleted that project; it returned as `email-engine-pink`.
+// The old URL 404'd for 3 days, so every /api/founding/waitlist and
+// /api/challenge/subscribe signup silently failed to reach the engine — and
+// because this runs server-side, the dead host never appeared in any client
+// bundle, so a browser check could not have caught it. ENGINE_BASE_URL lets
+// the host be corrected without a redeploy next time.
+const ENGINE_URL =
+  (process.env.ENGINE_BASE_URL ?? "https://email-engine-pink.vercel.app") +
+  "/api/subscribe";
 const PRODUCT = "unlocksaas";
 
 export type EngineSubscribeResult =
