@@ -126,6 +126,18 @@ function setCanonicalLinkHeader(
 export async function proxy(request: NextRequest) {
   const originalPathname = request.nextUrl.pathname;
 
+  // Older drip emails pointed subscribers at the paid member area. Those
+  // messages already contain utm_source=email, so redirect them before the
+  // auth gate while preserving every campaign parameter.
+  if (
+    originalPathname === "/playbook" &&
+    request.nextUrl.searchParams.get("utm_source") === "email"
+  ) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = "/playbook-sales";
+    return NextResponse.redirect(destination, 307);
+  }
+
   // 1) Markdown content negotiation — runs before session refresh because
   //    .md routes are pure static content; no Supabase or A/B work needed.
   if (
