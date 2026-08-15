@@ -35,37 +35,7 @@ import { spawnSync } from 'node:child_process';
  * package out of `dependencies` (that last one is why `shadcn` — a codegen CLI
  * that no runtime code imports — is a devDependency).
  */
-const ACCEPTED = [
-  {
-    id: 'GHSA-frvp-7c67-39w9',
-    package: '@hono/node-server',
-    expires: '2026-10-25',
-    reason:
-      'Path traversal in serveStatic on Windows via encoded backslash. Reached only ' +
-      'through @modelcontextprotocol/sdk -> mcp-handler, and the SDK imports ' +
-      '@hono/node-server purely to convert Node req/res to Web Standard objects — it ' +
-      'never touches serveStatic (grep streamableHttp.js). The runtime is Linux on ' +
-      'Vercel, and the advisory is Windows-only. Patched in 2.0.5, but the SDK pins ' +
-      '^1.19.9; forcing a major on the live MCP endpoint is the larger risk. Drop this ' +
-      'entry once @modelcontextprotocol/sdk widens its range to hono node-server 2.x.',
-  },
-  {
-    id: 'GHSA-mh99-v99m-4gvg',
-    package: 'brace-expansion',
-    expires: '2026-10-25',
-    reason:
-      'DoS via unbounded expansion length (OOM). Only fixed in brace-expansion 5.0.8; ' +
-      'the 1.x/2.x lines are EOL for it, and correspondingly only minimatch 10.0.3+ is ' +
-      'clean. The vulnerable copies are minimatch 3/5/9 under npm-run-all (a c2pa-node ' +
-      'dependency), filelist->jake->ejs->@oclif/core (a workflow CLI dependency) and ' +
-      '@swc/cli — all build/CLI tooling that never runs in the Next.js request path, ' +
-      'and all fed glob patterns from their own package.json, not from user input. A ' +
-      'global override to brace-expansion 5 is not viable: v5 CJS exports ' +
-      '{ expand, ... } rather than the bare function that minimatch 3/5 call, so it ' +
-      'would break glob at runtime. Drop this entry when c2pa-node and workflow move ' +
-      'their tooling to devDependencies or onto minimatch 10.',
-  },
-];
+const ACCEPTED = [];
 
 const today = new Date().toISOString().slice(0, 10);
 
