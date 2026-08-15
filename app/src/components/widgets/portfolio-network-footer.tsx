@@ -79,7 +79,7 @@ const SITES = [
     label: "HireNika",
     tagline: "AI Employees",
     dot: "#EAB308",
-    title: "HireNika: AI employees for small business — bookkeeping, admin, calls from $0.40/task",
+    title: "HireNika: AI employees for small business. Bookkeeping, admin, calls from $0.40/task",
   },
   {
     href: "https://sipi.bot",
@@ -94,6 +94,10 @@ export function PortfolioNetworkFooter() {
   return (
     <section className="portfolio-network">
       <h3>🚀 Explore Our Network</h3>
+      <p className="network-note">
+        Full disclosure: UnlockSaaS is one of ten small products built and run by one
+        independent operator. These are the other nine.
+      </p>
       <nav className="network-grid" aria-label="Portfolio network">
         {SITES.map((site) => (
           <a

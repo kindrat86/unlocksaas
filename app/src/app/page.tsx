@@ -55,18 +55,21 @@ const STACK = [
 
 const PROOF = [
   {
+    when: "Customer on day 47",
     quote:
       "Shipped my SaaS, sat at zero for three months. Did the audit, killed two friction points I never saw, rewrote the offer. First paying customer on day 47.",
     name: "Tomas R.",
     role: "Solo founder, devtools",
   },
   {
+    when: "Customer in 3 weeks",
     quote:
       "The one-customer exercise was the unlock. I was selling to everyone and converting no one. Picked one buyer, closed them in three weeks.",
     name: "Aisha M.",
     role: "Founder, HR-tech",
   },
   {
+    when: "Refunded day 60, closed day 52 on rerun",
     quote:
       "I did not believe the guarantee until I needed it. Finished 60 days, no customer, refund fired automatically. Re-ran it, closed on day 52. They meant it.",
     name: "Wesley K.",
@@ -161,13 +164,14 @@ export default function LandingPage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
           <div>
             <Badge variant="secondary" className="mb-5 text-primary border-primary/30 bg-primary/5">
-              For shipped SaaS, no audience required
+              Money back enforced by code, not a support ticket
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-foreground">
               Land your <span className="text-primary">first paying customer</span> in 60 days.
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl">
-              You shipped the product. Nobody is paying. The 7-step Unlock SaaS playbook takes what you already built and turns it into a verified, money-in-the-bank customer in 60 days. Or you do not pay. Enforced by code, not a support ticket.
+              The 7-step playbook turns the SaaS you already shipped into a verified first
+              customer. If it does not land within 60 days, the refund fires without asking.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <a
@@ -182,11 +186,6 @@ export default function LandingPage() {
               >
                 See the 7 steps
               </a>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-              <span>60-day money back</span>
-              <span>No audience needed</span>
-              <span>Code-enforced refund</span>
             </div>
           </div>
 
@@ -270,8 +269,8 @@ export default function LandingPage() {
                 desc: "of SaaS products that ship never reach $1,000 in monthly revenue. Not because the product is bad, because the founder stops at the build.",
               },
               {
-                big: "0",
-                desc: 'is the number of customers that "build in public" and a nice landing page will get you if you have no offer and no channel. Attention is not revenue.',
+                big: "71%",
+                desc: "of founders who finish this playbook land a paying customer inside the 60 days. Median day to first dollar: 47.",
               },
               {
                 big: "60d",
@@ -388,6 +387,9 @@ export default function LandingPage() {
                 key={t.name}
                 className="bg-card border border-border rounded-lg p-7 flex flex-col gap-5 border-l-4 border-l-primary"
               >
+                <div className="inline-flex self-start items-center rounded-full bg-primary/10 border border-primary/30 px-3 py-1 text-xs font-semibold text-primary">
+                  {t.when}
+                </div>
                 <blockquote className="text-base leading-relaxed text-foreground">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
@@ -398,20 +400,12 @@ export default function LandingPage() {
               </figure>
             ))}
           </div>
-          <div className="mt-12 pt-12 border-t border-border grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { n: "71%", l: "of founders who finish hit a paying customer in 60 days" },
-              { n: "47d", l: "median day to first paying customer" },
-              { n: "$214", l: "median first-customer MRR" },
-              { n: "100%", l: "money-back, code-enforced, no ticket" },
-            ].map((s) => (
-              <div key={s.n}>
-                <div className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
-                  {s.n}
-                </div>
-                <div className="mt-2 text-sm text-muted-foreground leading-snug">{s.l}</div>
-              </div>
-            ))}
+          <div className="mt-12 pt-12 border-t border-border">
+            <p className="text-sm text-muted-foreground max-w-2xl">
+              Every result above is dated against the 60-day window. The median finisher
+              lands a customer on day 47. Founders who do not land one get refunded
+              automatically, and some close on the rerun.
+            </p>
           </div>
         </div>
       </section>
@@ -439,11 +433,32 @@ export default function LandingPage() {
               </h3>
               <p className="mt-3 text-muted-foreground leading-relaxed">
                 Most money-back guarantees depend on you filling out a ticket and hoping. This one
-                does not. Complete the 60-day playbook, log the work, and if no paying customer has
-                landed, the refund fires automatically. No support ticket, no awkward email, no
-                negotiation. 71% of founders who finish hit a customer inside the window. The other
-                29% get their money back without asking.
+                does not. Here is the mechanism, step by step:
               </p>
+              <ol className="mt-4 space-y-2 text-foreground">
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary">1.</span>
+                  <span>
+                    <strong className="font-semibold">Log the work.</strong> Each day&apos;s task
+                    gets marked done in the system. The log, not a claim, is the record.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary">2.</span>
+                  <span>
+                    <strong className="font-semibold">Day 60 checks itself.</strong> The system
+                    looks for one verified paying customer against your logged completion.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="font-bold text-primary">3.</span>
+                  <span>
+                    <strong className="font-semibold">No customer, refund fires.</strong>{" "}
+                    Automatically, against the log. No support ticket, no awkward email, no
+                    negotiation. The other 29% get their money back without asking.
+                  </span>
+                </li>
+              </ol>
             </div>
           </div>
         </div>
@@ -452,9 +467,6 @@ export default function LandingPage() {
       {/* URGENCY / FINAL CTA */}
       <section className="py-24 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
-            Start today
-          </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
             Your shipped SaaS deserves a paying customer. Not another month at zero.
           </h2>
@@ -516,7 +528,7 @@ export default function LandingPage() {
             href="/starter"
             className="mt-8 inline-flex items-center justify-center h-14 px-10 rounded-md bg-primary text-primary-foreground font-semibold text-lg hover:bg-primary/90 transition-colors"
           >
-            Get the Unlock SaaS playbook
+            Get the 60-day playbook
           </a>
         </div>
       </section>
