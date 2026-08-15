@@ -336,6 +336,20 @@ This file was last verified end-to-end against the live HTML, the strategy docum
 What is shipped, operator-gated, and evidence-gated – mirrored from strategy/google-strategy.md §Activation log:
 
 ${activationLogAsMarkdown()}
+
+## Programmatic SEO surfaces — decision and playbook catalogs (2026-08 port)
+
+Nineteen additional catalog surfaces, each a hub plus per-slug detail pages, all following the same Brunson Hard-Rule discipline (honest verdicts, dated claims, no fabricated metrics):
+
+- [Audience playbooks](${BASE_URL}/audience) — sustained audience-building motions per platform (X, LinkedIn, newsletter, podcast, YouTube, Reddit, indie communities) with honest 6-24 month time bands.
+- [Business terms](${BASE_URL}/business-term) — working definitions for non-engineer founders.
+- [SaaS launch checklists](${BASE_URL}/checklist), [launch motions](${BASE_URL}/launch), [launch experiments](${BASE_URL}/experiment) — pre-launch and launch-week systems.
+- [Founder mistakes](${BASE_URL}/founder-mistake) and [objection handling](${BASE_URL}/objection) — the failure catalog and the rebuttal catalog.
+- [From-X-to-Y transitions](${BASE_URL}/from-x-to-y) and [platform migrations](${BASE_URL}/migrate-from) — pivot and exit-ramp decision pages.
+- [Integration guides](${BASE_URL}/integration), [onboarding patterns](${BASE_URL}/onboarding-pattern), [retention tactics](${BASE_URL}/retention-tactic) — the post-signup lifecycle.
+- [Positioning](${BASE_URL}/positioning), [pricing models](${BASE_URL}/pricing-model), [SaaS feature patterns](${BASE_URL}/saas-feature-pattern), [SaaS metrics](${BASE_URL}/saas-metric) — strategy decision pages.
+- [Should-I-build verdicts](${BASE_URL}/should-i-build) — honest yes/no/depends pre-revenue verdicts, several deliberately negative.
+- [Skill practice plans](${BASE_URL}/skill), [category stack catalogs](${BASE_URL}/stack), [build templates](${BASE_URL}/template) — execution and toolkit catalogs.
 `;
 
 /**
