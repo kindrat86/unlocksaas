@@ -1,5 +1,6 @@
 "use client";
 
+import { browserTimezone } from '@/lib/browser-tz';
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,6 +73,7 @@ export function StoriesOptIn({ placement, ctaLabel, trustLine }: Props) {
         body: JSON.stringify({
           email: email.trim(),
           source,
+          tz: browserTimezone(),
           _gotcha: gotcha,
         }),
       });

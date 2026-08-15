@@ -1,5 +1,6 @@
 "use client";
 
+import { browserTimezone } from '@/lib/browser-tz';
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,7 +46,7 @@ export function PostResultEmailCapture({ source }: { source: string }) {
           fetch("/api/soap-opera/subscribe", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: email.trim(), source }),
+            body: JSON.stringify({ email: email.trim(), source, tz: browserTimezone() }),
           });
           setState("submitted");
         }}

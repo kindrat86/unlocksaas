@@ -25,7 +25,8 @@ export type EngineSubscribeResult =
 
 export async function subscribeViaEngine(
   email: string,
-  source: string
+  source: string,
+  tz?: string
 ): Promise<EngineSubscribeResult> {
   try {
     const res = await fetch(ENGINE_URL, {
@@ -33,7 +34,7 @@ export async function subscribeViaEngine(
       headers: { "Content-Type": "application/json" },
       // The engine keys everything on {product, email}; source rides along
       // for log correlation only (ignored by the current engine).
-      body: JSON.stringify({ product: PRODUCT, email, source }),
+      body: JSON.stringify({ product: PRODUCT, email, source, tz }),
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) {

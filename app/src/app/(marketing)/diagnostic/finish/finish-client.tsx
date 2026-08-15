@@ -1,5 +1,6 @@
 "use client";
 
+import { browserTimezone } from '@/lib/browser-tz';
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -128,6 +129,7 @@ export function DiagnosticFinish() {
             survey: pending.survey,
             source: "google_oauth",
             referrer: pending.referrer ?? undefined,
+            tz: browserTimezone(),
           }),
         });
         const body = (await res.json().catch(() => ({}))) as {

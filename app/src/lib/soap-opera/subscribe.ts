@@ -55,6 +55,7 @@ export interface SubscribeInput {
   source: string;
   diagnostic_result: DiagnosticResult | null;
   identity_variant: IdentityVariant | null;
+  tz?: string;
 }
 
 export type SubscribeOutcome =
@@ -112,7 +113,7 @@ export async function subscribeToSoapOpera(
   // the shared email-engine, which owns double-opt-in + the linearized SOS.
   // The visitor experience is identical ("check your inbox to confirm").
   if (!hasSupabaseAdminConfig()) {
-    const engine = await subscribeViaEngine(emailRaw, input.source);
+    const engine = await subscribeViaEngine(emailRaw, input.source, input.tz);
     if (engine.ok) {
       console.log("[soap-opera-subscribe] engine_fallback_ok", {
         email: emailRaw,
@@ -172,7 +173,7 @@ export async function subscribeToSoapOpera(
     });
     // Supabase is configured but unreachable/broken — last-resort engine
     // fallback so a transient outage never drops a subscriber on the floor.
-    const engine = await subscribeViaEngine(emailRaw, input.source);
+    const engine = await subscribeViaEngine(emailRaw, input.source, input.tz);
     if (engine.ok) {
       console.log("[soap-opera-subscribe] engine_rescue_ok", {
         email: emailRaw,
