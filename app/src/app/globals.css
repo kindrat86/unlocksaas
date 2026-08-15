@@ -332,6 +332,15 @@
     margin: 0 0 1rem;
     text-align: center;
 }
+.portfolio-network .network-note {
+    font-size: 0.8125rem;
+    color: inherit;
+    opacity: 0.7;
+    text-align: center;
+    max-width: 52ch;
+    margin: 0 auto 1.25rem;
+    line-height: 1.5;
+}
 .network-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
