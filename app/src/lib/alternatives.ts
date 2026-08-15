@@ -1598,6 +1598,53 @@ const ALTERNATIVES_LIST: Alternative[] = [
     tags: ["creator-economy", "payments", "for-post-launch", "digital-products"],
     lastVerified: "2026-08-13",
   },
+  {
+    slug: "strategic-flow",
+    displayName: "Strategic Flow",
+    creator: "Alex Iliescu (Strategic Flow Tech, Tenerife, Spain)",
+    category: "Email architecture audit service",
+    oneLine: "Strategic Flow rebuilds the email itself. Unlock SaaS finds the customers who receive it. Different problems, complementary tools.",
+    pricingNote: "Strategic Flow has a $49 one-time Diagnostic Audit, a $499 one-time Full Architecture Rebuild, and monthly plans; no subscription required to start (verified 2026-08-15). Unlock SaaS is $1 Starter + $49/month Playbook.",
+    whatItIs: [
+      "A diagnostic service that scores a single SaaS email 1-10 against a 7-point Decision Friction Model",
+      "A same-day rebuild of that email: diagnosis, rebuilt version, and 3 A/B subject line variants",
+      "A 59-teardown public archive of named B2B SaaS emails (Semrush, HeyGen, Optimizely, Revolut, Wrike, Zoho) with scores and fixes",
+    ],
+    whatItIsNot: [
+      "A deliverability tool: it does not fix bounce rates, spam placement, or sender reputation",
+      "A lifecycle or automation audit: it diagnoses the individual message, not the flows around it",
+      "A customer-acquisition playbook tied to your Stripe ledger",
+    ],
+    whoForIt: "B2B SaaS founders and marketing managers whose open rates are acceptable (above 20%) but click rates are not (below 2%), and newsletter operators with 1,000+ subscribers.",
+    whoNotForIt: "Founders who have not yet sent the emails or built the audience: the audit is only worth it once messages are going out and getting opened but not clicked.",
+    honestVerdict: "Strategic Flow is a sharp, narrowly-scoped diagnostic: it names the structural reason a specific email fails to convert after it is opened. The problem it does not touch is the one before it: who the email goes to, how many send, and whether the offer behind it can convert at all. That is Unlock SaaS territory. The natural sequence is the reverse of what most founders expect: build the demand and offer layer with Unlock SaaS first, then sharpen each individual send with a Strategic Flow teardown.",
+    faqs: [
+      {
+        q: "Is Unlock SaaS a Strategic Flow alternative?",
+        a: "No. Strategic Flow audits and rebuilds individual emails. Unlock SaaS is the customer-acquisition playbook that determines who you email, how often, and with what offer. They solve different problems and are commonly used together.",
+      },
+      {
+        q: "Can I use Strategic Flow on emails written from an Unlock SaaS playbook?",
+        a: "Yes. The Unlock SaaS playbook determines audience, cadence, and offer. Strategic Flow then diagnoses the structure of each individual send: subject construction, lead framing, proof placement, CTA language. Same email, two different layers.",
+      },
+      {
+        q: "Does Strategic Flow fix deliverability or spam placement?",
+        a: "No, and they are explicit about it. It is a behavioral architecture diagnostic for emails that already reach the inbox. If open rates are fine but clicks are not, that is the layer it works on.",
+      },
+    ],
+    capabilities: {
+      tellsYouWhatToDo: true,
+      pushesBackOnVagueAnswers: false,
+      sendsOutreachInsideTool: false,
+      verifiesPayingCustomerViaStripe: false,
+      refundsInCode: false,
+      stopsYouFromSkipping: false,
+      costsLessThan98ToFindOut: true,
+    },
+    homepageUrl: "https://strategicflow.tech/",
+    tags: ["email", "conversion-audit", "for-post-launch", "marketing-education"],
+    lastVerified: "2026-08-15",
+  },
 ];
 
 // Indexed lookup. Module-level Map for O(1) access — pattern from
