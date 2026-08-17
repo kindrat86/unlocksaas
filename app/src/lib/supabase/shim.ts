@@ -66,7 +66,10 @@ class QueryBuilder {
   }
 
   select(columns?: string | string[]): this {
-    this.plan.op = "select";
+    // Supabase: .select() after a write (.update/.insert/.upsert/.delete) means
+    // "return these columns", not "run a SELECT". Keep the write op; the backend
+    // re-selects rows after writes anyway. The constructor defaults op to
+    // "select", so a plain .from(t).select() still reads.
     if (typeof columns === "string") {
       this.plan.columns = columns === "*" ? ["*"] : columns.split(",").map((c) => c.trim());
     } else if (Array.isArray(columns)) {
@@ -93,7 +96,8 @@ class QueryBuilder {
   like(col: string, val: any): this { this.plan.filters.push({ col, op: "like", val }); return this; }
   ilike(col: string, val: any): this { this.plan.filters.push({ col, op: "ilike", val }); return this; }
   is(col: string, val: any): this { this.plan.filters.push({ col, op: "is", val }); return this; }
-  in_(col: string, val: any[]): this { this.plan.filters.push({ col, op: "in", val }); return this; }
+  in(col: string, val: any[]): this { this.plan.filters.push({ col, op: "in", val }); return this; }
+  in_(col: string, val: any[]): this { return this.in(col, val); }
   match(obj: Record<string, any>): this { for (const [c, v] of Object.entries(obj)) this.eq(c, v); return this; }
   // .not(col, op, val) — Supabase negation; we model as neq/is-not-null variants
   not(col: string, op?: string, val?: any): this {
