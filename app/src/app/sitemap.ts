@@ -1598,15 +1598,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.35,
     })),
     // Alexa Flash Briefing JSON feed (VEO uplift landing 2026-05-21).
-    // Documented at strategy/voice-assistants-playbook.md. Listed in
-    // the sitemap so retrievers discover it without depending on the
-    // Amazon developer console submission step.
-    {
-      url: `${base}/feed/alexa-flash-briefing.json`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.35,
-    },
+    // Documented at strategy/voice-assistants-playbook.md. NOT listed in
+    // the sitemap: the route serves `X-Robots-Tag: noindex` (feeds are
+    // not indexable HTML), and Google flags noindex URLs listed in a
+    // sitemap as "Excluded by 'noindex' tag" (GSC 2026-08-17). Retriever
+    // discovery flows through /llms.txt instead.
     // -------------------------------------------------------------------------
     // Citation permalinks (Surface B – GEO/AEO/AIO uplift).
     //

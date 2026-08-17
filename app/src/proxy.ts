@@ -25,6 +25,7 @@ import {
   isAiEngine,
   resolveEngineFromUtmSource,
 } from "@/lib/seo/ai-attribution";
+import { deadLocaleRedirect } from "@/lib/seo/dead-locale-redirect";
 
 // Affiliate program (see lib/affiliate.ts). Re-declared here to avoid importing
 // the full lib (which transitively pulls Supabase + crypto) into the proxy
@@ -125,6 +126,20 @@ function setCanonicalLinkHeader(
  */
 export async function proxy(request: NextRequest) {
   const originalPathname = request.nextUrl.pathname;
+
+  // ── Dead-locale URL recovery (GSC 404 wave, 2026-08-17) ──────────────
+  // ~1,455 retired /{locale}/* URLs (pre-2026-07-07 AUTO_TRANSLATIONS era)
+  // still 404 while Google crawls them from cached sitemap history.
+  // 308 each to its English canonical BEFORE any session/cookie work —
+  // redirects must not mint attribution or A/B cookies. See
+  // lib/seo/dead-locale-redirect.ts for the full history and rules.
+  const deadLocaleTarget = deadLocaleRedirect(originalPathname);
+  if (deadLocaleTarget) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = deadLocaleTarget;
+    destination.search = ""; // locale query params never carried state
+    return NextResponse.redirect(destination, 308);
+  }
 
   // Older drip emails pointed subscribers at the paid member area. Those
   // messages already contain utm_source=email, so redirect them before the
