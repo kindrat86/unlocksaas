@@ -345,6 +345,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       alternates: hreflang(`${base}/stories`),
     },
+    // Public pages that GSC already discovered, with 200 responses and
+    // self-referencing canonical tags. Listing them makes the sitemap match
+    // the site's actual indexable public surface.
+    {
+      url: `${base}/who`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/who`),
+    },
+    {
+      url: `${base}/community-atlas`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/community-atlas`),
+    },
+    {
+      url: `${base}/ad-library`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: hreflang(`${base}/ad-library`),
+    },
     // $1 Starter sales page. Solution-aware comparator.
     {
       url: `${base}/starter`,
