@@ -318,6 +318,7 @@ export default function RootLayout({
               verified in a real browser 2026-07-14 (Maryan's profile);
               linked as x.com since twitter.com adds a redirect hop. */}
           <footer className="border-t border-border/40 mt-16">
+            <PortfolioNetworkFooter />
             <div className="max-w-6xl mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
               <strong className="text-foreground/60">Find us where indie hackers are:</strong>
               {" "}
@@ -329,9 +330,7 @@ export default function RootLayout({
         </PostHogProvider>
         </ThemeProvider>
       
-        {/* Cross-Portfolio Network Footer — web ring */}
-        <PortfolioNetworkFooter />
-        {/* Brunson Trust Bar — Dotcom Secrets Ch 7 */}
+        {/* Brunson Trust Bar, Dotcom Secrets Ch 7 */}
         <BrunsonTrustBar />
       </body>
     </html>
