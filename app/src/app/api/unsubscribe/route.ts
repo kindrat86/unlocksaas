@@ -9,14 +9,18 @@ import { verifyUnsubscribeToken } from "@/lib/soap-opera/tokens";
  * Public, one-click, no auth — the HMAC token IS the auth. Honoured by both
  * the email footer link and the RFC 8058 List-Unsubscribe header.
  *
- * Returns a tiny HTML confirmation page (200 OK on success, 400 on bad token)
- * so mail-client preview panes and gmail's one-click POST both work.
+ * Returns a tiny HTML confirmation page (200 OK on success, 400 on bad token).
+ * Legacy cold-outreach links without a token receive a safe, non-mutating mailto
+ * fallback instead of a dead 400 page.
  *
  * Also accepts POST for List-Unsubscribe-Post=One-Click compliance.
  */
 async function handle(email: string, token: string) {
-  if (!email || !token) {
-    return htmlResponse("Missing email or token.", 400);
+  if (!email) {
+    return htmlResponse("Missing email address.", 400);
+  }
+  if (!token) {
+    return legacyUnsubscribeResponse();
   }
   if (!verifyUnsubscribeToken(email, token)) {
     return htmlResponse("Invalid or expired unsubscribe link.", 400);
@@ -108,6 +112,18 @@ export async function POST(req: NextRequest) {
     }
   }
   return handle(email, token);
+}
+
+function legacyUnsubscribeResponse() {
+  const body = `<!doctype html>
+<html><head><meta charset="utf-8"><title>Unsubscribe</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#f7f7f5;color:#111;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px;}main{max-width:480px;background:#fff;padding:32px;border-radius:8px;font-size:16px;line-height:1.6;}a{color:#0f766e;font-weight:600;}</style>
+</head><body><main><p>This older unsubscribe link cannot be completed automatically.</p><p><a href="mailto:maryan@unlocksaas.com?subject=unsubscribe">Email Maryan to unsubscribe</a> and you will be removed manually.</p></main></body></html>`;
+  return new NextResponse(body, {
+    status: 200,
+    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+  });
 }
 
 function htmlResponse(message: string, status: number) {
