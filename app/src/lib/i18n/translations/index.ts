@@ -34,6 +34,11 @@ import {
 import { BENCHMARK_ENTRIES_PT_BR } from "./benchmarks.pt-br";
 
 export function getFaqEntries(locale: Locale): FaqEntry[] {
+  // Registry-approved locales get their translated dataset; everything else
+  // (and en-US itself) falls back to the canonical English source. Callers
+  // gate indexability on the registry — this resolver only resolves content.
+  if (locale === "es") return FAQ_ENTRIES_ES;
+  if (locale === "pt-BR") return FAQ_ENTRIES_PT_BR;
   return FAQ_ENTRIES;
 }
 
@@ -68,6 +73,10 @@ function overlayGlossary(
 export function getGlossaryEntries(
   locale: Locale,
 ): ReadonlyArray<GlossaryEntry> {
+  // Overlay the approved translations onto the canonical entries; missing
+  // slugs (and non-translated locales) fall back to en-US via the overlay.
+  if (locale === "es") return overlayGlossary(GLOSSARY, GLOSSARY_ES);
+  if (locale === "pt-BR") return overlayGlossary(GLOSSARY, GLOSSARY_PT_BR);
   return GLOSSARY;
 }
 
@@ -101,6 +110,12 @@ function overlayBenchmarks(
 export function getBenchmarkEntries(
   locale: Locale,
 ): ReadonlyArray<BenchmarkEntry> {
+  // Overlay the approved translations onto the canonical entries; missing
+  // slugs (and non-translated locales) fall back to en-US via the overlay.
+  if (locale === "es")
+    return overlayBenchmarks(BENCHMARK_ENTRIES, BENCHMARK_ENTRIES_ES);
+  if (locale === "pt-BR")
+    return overlayBenchmarks(BENCHMARK_ENTRIES, BENCHMARK_ENTRIES_PT_BR);
   return BENCHMARK_ENTRIES;
 }
 
