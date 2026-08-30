@@ -1,5 +1,6 @@
 import { generateText, streamText } from "ai";
 import { model } from "@/lib/anthropic";
+import { buildFallbackDiagnosis } from "@/lib/diagnostic-fallback";
 import {
   DIAGNOSTIC_STEP_LABELS,
   type DiagnosticStepId,
@@ -1023,11 +1024,13 @@ export async function deepAnalyzeUrl(
     return await deepAnalyzePageText(url.toString(), text, surveyContext);
   } catch (e) {
     const reason = e instanceof Error ? e.message : "unknown";
-    const err: DiagnosticError = {
-      kind: "engine_failed",
-      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
-    };
-    throw err;
+    // Engine-side failure: deterministic evidence-based fallback (same
+    // contract as the streaming path; no emit channel exists here).
+    console.log(
+      "[diagnostic/fallback]",
+      reason.replace(/\s+/g, " ").slice(0, 200),
+    );
+    return buildFallbackDiagnosis(url.toString(), text, reason);
   }
 }
 
@@ -1338,10 +1341,54 @@ export async function deepAnalyzeUrlStream(
     );
   } catch (e) {
     const reason = e instanceof Error ? e.message : "unknown";
-    const err: DiagnosticError = {
-      kind: "engine_failed",
-      message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+    if (signal?.aborted) {
+      // Client disconnected mid-engine: keep legacy error semantics. Do not
+      // spend a deterministic diagnosis on a visitor who already left.
+      const err: DiagnosticError = {
+        kind: "engine_failed",
+        message: `The engine choked on that page (${reason}). Try again, or paste a different URL.`,
+      };
+      throw err;
+    }
+    // Engine-side failure (restricted-model 403, provider down, timeout,
+    // parse failure): fall back to the deterministic evidence-based
+    // diagnosis so the free diagnostic never dead-ends and never returns
+    // label "error" for these cases. One log line marks the path in logs.
+    console.log(
+      "[diagnostic/fallback]",
+      reason.replace(/\s+/g, " ").slice(0, 200),
+    );
+    const fallback = buildFallbackDiagnosis(url.toString(), text, reason);
+    // The deterministic engine resolves every remaining step instantly;
+    // close them so the reasoning panel completes instead of hanging.
+    const fallbackScoreById: Partial<
+      Record<DiagnosticStepId, number>
+    > = {
+      score_wrong_person: fallback.scores.wrong_person.score,
+      score_weak_offer: fallback.scores.weak_offer.score,
+      score_weak_belief: fallback.scores.weak_belief.score,
     };
-    throw err;
+    const fallbackStepIds: DiagnosticStepId[] = [
+      "engine_start",
+      "score_wrong_person",
+      "score_weak_offer",
+      "score_weak_belief",
+      "rewrite_hero",
+      "rewrite_cta",
+      "rewrite_value_props",
+      "plan",
+      "competitors",
+    ];
+    for (const id of fallbackStepIds) {
+      const score = fallbackScoreById[id];
+      emit({
+        type: "step",
+        id,
+        label: DIAGNOSTIC_STEP_LABELS[id],
+        status: "done",
+        ...(score !== undefined ? { score } : {}),
+      });
+    }
+    return fallback;
   }
 }

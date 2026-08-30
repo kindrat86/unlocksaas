@@ -460,7 +460,8 @@ export function DeepReport({
         </div>
       </div>
 
-      {/* COMPETITORS */}
+      {/* COMPETITORS (hidden when the engine could not name any honestly) */}
+      {competitors.length > 0 && (
       <div>
         <h2 className="text-xl font-bold mb-1">How {hostname} stacks up</h2>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
@@ -514,6 +515,7 @@ export function DeepReport({
           ))}
         </div>
       </div>
+      )}
     </section>
   );
 }
