@@ -358,9 +358,9 @@ export default function LandingPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-2">
               Your price
             </p>
-            <div className="text-5xl sm:text-6xl font-bold text-primary tracking-tight">$197</div>
+            <div className="text-5xl sm:text-6xl font-bold text-primary tracking-tight">$49/mo</div>
             <p className="mt-3 text-muted-foreground">
-              one-time. Full system. 60-day money back, enforced by code.
+              Full system. 60-day money back, enforced by code. Cancel anytime.
             </p>
             <a
               href="/starter"
@@ -471,7 +471,7 @@ export default function LandingPage() {
             Your shipped SaaS deserves a paying customer. Not another month at zero.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            $197, one-time. Sixty days from today you either have a real customer or a full refund.
+            $49/month. Sixty days from today you either have a real customer or a full refund.
             Both outcomes are fine. Staying at zero is not.
           </p>
           <a
@@ -481,7 +481,7 @@ export default function LandingPage() {
             Get my free 2-minute diagnosis
           </a>
           <p className="mt-5 text-sm text-muted-foreground">
-            $197 one-time · 60-day code-enforced refund · No subscription
+            $49/month · 60-day code-enforced refund · Cancel anytime
           </p>
         </div>
       </section>
@@ -522,7 +522,7 @@ export default function LandingPage() {
             Sixty days. One customer. Or your money back, automatically.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            $197 one-time. The first paying customer is closer than another month at zero.
+            $49/month. The first paying customer is closer than another month at zero.
           </p>
           <a
             href="/starter"
