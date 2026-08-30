@@ -29,6 +29,7 @@ import {
   isPreVerifiedSource,
 } from "@/lib/email-verification";
 import { writeFounderMemoryAfter } from "@/lib/founder-memory";
+import { newDiagnosticLeadId } from "@/lib/diagnostic/persistence";
 import { captureDiagnosticEmail } from "@/lib/analytics/email-capture";
 
 /**
@@ -417,6 +418,7 @@ export async function POST(req: NextRequest) {
               };
 
         const row = {
+          id: newDiagnosticLeadId(),
           email,
           product_url: productUrl,
           label: diagnosis.label,
