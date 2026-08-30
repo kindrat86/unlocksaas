@@ -22,6 +22,7 @@ import {
   subscribeToSoapOpera,
   type IdentityVariant,
 } from "@/lib/soap-opera/subscribe";
+import { localSubscriberId } from "@/lib/soap-opera/subscriber-link";
 import type { DiagnosticResult as SoapDiagnosis } from "@/lib/soap-opera/emails";
 import {
   verifyDeliverableEmail,
@@ -358,7 +359,7 @@ export async function POST(req: NextRequest) {
             identity_variant: identityVariant,
           });
           if (outcome.ok) {
-            subscriberId = outcome.id;
+            subscriberId = localSubscriberId(outcome.id);
           } else if (outcome.reason === "day_0_send_failed") {
             subscriberId = outcome.id;
             console.error("[diagnostic/stream] day-0 send failed", {
