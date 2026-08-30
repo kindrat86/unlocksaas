@@ -35,6 +35,7 @@ import {
   newConfirmationToken,
   sendConfirmationEmail,
 } from "@/lib/double-opt-in";
+import { subscriberUpsertId } from "./subscriber-link";
 
 export const ALLOWED_DIAGNOSES: DiagnosticResult[] = [
   "wrong_person",
@@ -136,6 +137,22 @@ export async function subscribeToSoapOpera(
   const supabase = createAdminClient();
   const nowIso = new Date().toISOString();
 
+  const { data: existingRow, error: existingError } = await supabase
+    .from("soap_opera_subscribers")
+    .select("id")
+    .eq("email", emailRaw)
+    .maybeSingle();
+  if (existingError) {
+    return {
+      ok: false,
+      reason: "db_upsert_failed",
+      detail: existingError.message,
+    };
+  }
+  const upsertId = subscriberUpsertId(
+    (existingRow as { id?: string | null } | null)?.id
+  );
+
   // Branching: Google OAuth → active immediately; email path → pending_confirmation.
   const initialStatus = preVerified ? "active" : "pending_confirmation";
   const confirmationToken = preVerified ? null : newConfirmationToken();
@@ -147,6 +164,7 @@ export async function subscribeToSoapOpera(
     .from("soap_opera_subscribers")
     .upsert(
       {
+        id: upsertId,
         email: emailRaw,
         source: input.source,
         diagnostic_result: input.diagnostic_result,

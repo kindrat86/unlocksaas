@@ -1,4 +1,13 @@
+import { randomUUID } from "node:crypto";
+
 export const ENGINE_FALLBACK_SUBSCRIBER_ID = "engine-fallback";
+
+/** Preserve an existing subscriber key; generate one only for a new row. */
+export function subscriberUpsertId(
+  existingId: string | null | undefined
+): string {
+  return existingId ?? randomUUID();
+}
 
 /**
  * Return only IDs backed by the local soap_opera_subscribers table.
