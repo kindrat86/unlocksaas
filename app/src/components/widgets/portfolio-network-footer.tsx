@@ -12,88 +12,78 @@
 
 const SITES = [
   {
-    href: "https://gitdealflow.com",
+    href: "https://gitdealflow.com/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "GitDealFlow",
     tagline: "Data & Analytics",
     dot: "#10B981",
     title: "GitDealFlow: Track startup acquisitions & funding rounds",
   },
   {
-    href: "https://signals.gitdealflow.com",
+    href: "https://signals.gitdealflow.com/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "Signals by GitDealFlow",
     tagline: "AI & Investing",
     dot: "#3B82F6",
     title: "Signals by GitDealFlow: AI-powered startup investment signals",
   },
   {
-    href: "https://invisibleexit.com",
+    href: "https://invisibleexit.com/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "Invisible Exit",
     tagline: "SaaS & M&A",
     dot: "#8B5CF6",
     title: "Invisible Exit: Acquisition readiness for bootstrapped SaaS",
   },
   {
-    href: "https://sipiteno.com",
-    label: "SipiTeno",
+    href: "https://sipiteno.com/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
+    label: "Sipiteno",
     tagline: "AI Agents & Automation",
     dot: "#F59E0B",
-    title: "SipiTeno: AI Agents for SaaS Operations",
+    title: "Sipiteno: AI business systems and automation",
   },
   {
-    href: "https://unlocksaas.com",
-    label: "UnlockSaaS",
-    tagline: "SaaS Building",
-    dot: "#EC4899",
-    title: "UnlockSaaS: Launch your SaaS in 60 days",
-  },
-  {
-    href: "https://voicelogpro.com",
+    href: "https://voicelogpro.com/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "VoiceLogPro",
     tagline: "Voice AI & Field Ops",
     dot: "#06B6D4",
     title: "VoiceLogPro: Voice-to-insight for field teams",
   },
   {
-    href: "https://carshake.online",
+    href: "https://carshake.online/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "CarShake",
     tagline: "Automotive & Insurance",
     dot: "#EF4444",
     title: "CarShake: Valet-damage-proof vehicle handover",
   },
   {
-    href: "https://churnlens.site",
+    href: "https://churnlens.site/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "ChurnLens",
-    tagline: "SaaS Analytics",
+    tagline: "SaaS Due Diligence",
     dot: "#6366F1",
-    title: "ChurnLens: Churn analytics that predict, not just report",
+    title: "ChurnLens: Buyer-side SaaS churn due diligence",
   },
   {
-    href: "https://sanctionsai.dev",
+    href: "https://sanctionsai.dev/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
     label: "SanctionsAI",
     tagline: "Compliance & Fintech",
     dot: "#DC2626",
     title: "SanctionsAI: AI agent payment compliance",
   },
   {
-    href: "https://hirenika.com",
-    label: "HireNika",
-    tagline: "AI Employees",
-    dot: "#EAB308",
-    title: "HireNika: AI employees for small business. Bookkeeping, admin, calls from $0.40/task",
-  },
-  {
-    href: "https://sipi.bot",
-    label: "Sipi.bot",
+    href: "https://sipi.bot/?utm_source=unlocksaas.com&utm_medium=referral&utm_campaign=portfolio_crosspromo&utm_content=footer",
+    label: "sipi.bot",
     tagline: "AI Infrastructure",
     dot: "#14B8A6",
-    title: "Sipi.bot: AI spend firewall for agent payments",
+    title: "sipi.bot: AI spend firewall for agent payments",
   },
 ] as const;
 
 export function PortfolioNetworkFooter() {
   return (
-    <section className="portfolio-network">
-      <h3>🚀 Explore Our Network</h3>
+    <section
+      className="portfolio-network"
+      data-portfolio-cross-promo="v1"
+      data-portfolio-origin="unlocksaas.com"
+    >
+      <h3>Explore the Sipiteno product network</h3>
       <p className="network-note">
         Full disclosure: UnlockSaaS is one of ten small products built and run by one
         independent operator. These are the other nine.
