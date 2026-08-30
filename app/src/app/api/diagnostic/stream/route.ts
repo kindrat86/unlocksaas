@@ -29,7 +29,10 @@ import {
   isPreVerifiedSource,
 } from "@/lib/email-verification";
 import { writeFounderMemoryAfter } from "@/lib/founder-memory";
-import { newDiagnosticLeadId } from "@/lib/diagnostic/persistence";
+import {
+  insertedDiagnosticLeadId,
+  newDiagnosticLeadId,
+} from "@/lib/diagnostic/persistence";
 import { captureDiagnosticEmail } from "@/lib/analytics/email-capture";
 
 /**
@@ -449,7 +452,8 @@ export async function POST(req: NextRequest) {
           .select("id")
           .single();
 
-        let rowId: string | null = data?.id ?? null;
+        const insertedRowId = insertedDiagnosticLeadId(data);
+        let rowId: string | null = insertedRowId;
 
         // Concurrent-first-submit race: the unique index on
         // (lower(email), product_url) fires 23505 and we read back the
@@ -476,14 +480,13 @@ export async function POST(req: NextRequest) {
           return;
         }
 
-        // Primary conversion. Gated on `data?.id` rather than `rowId`: on the
-        // 23505 race above `rowId` is the *winning* request's row, and that
-        // request fires its own capture — counting it here too would double
-        // one address. Awaited so the event is out before the stream closes
-        // and the function freezes.
-        if (data?.id) {
+        // Primary conversion. Gated on the ID returned by this insert rather
+        // than `rowId`: on the 23505 race above `rowId` is the winning
+        // request's row, and that request fires its own capture. Awaited so
+        // the event is out before the stream closes and the function freezes.
+        if (insertedRowId) {
           await captureDiagnosticEmail({
-            leadId: data.id as string,
+            leadId: insertedRowId,
             email,
             productUrl,
             capture_surface: "stream",
