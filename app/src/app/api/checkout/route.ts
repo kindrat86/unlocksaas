@@ -9,7 +9,7 @@ import {
   readSubjectFromCookies,
 } from "@/lib/ab";
 import { REF_COOKIE } from "@/lib/affiliate";
-import { captureServer } from "@/lib/analytics/server";
+import { captureServer, captureServerAndFlush } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
 import { getOfferPriceId, type OfferId } from "@/lib/offers";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -229,7 +229,7 @@ export async function POST(req: NextRequest) {
       // Server-side mirror of the click. Useful when the browser event was
       // blocked by a tracker-disabler — the funnel-metrics report still sees
       // the checkout intent.
-      await captureServer(distinctId, Event.CheckoutSessionCreated, {
+      await captureServerAndFlush(distinctId, Event.CheckoutSessionCreated, {
         price_type: "starter",
         stripe_session_id: session.id,
         bump_included: bumpPriceId ? "true" : "false",
@@ -261,7 +261,7 @@ export async function POST(req: NextRequest) {
         client_reference_id: distinctId !== "anonymous" ? distinctId : undefined,
       });
 
-      await captureServer(distinctId, Event.CheckoutSessionCreated, {
+      await captureServerAndFlush(distinctId, Event.CheckoutSessionCreated, {
         price_type: "playbook",
         stripe_session_id: session.id,
         ...abMetadata,

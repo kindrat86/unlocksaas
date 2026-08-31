@@ -15,24 +15,24 @@ function branchBetween(start: string, end: string): string {
   return checkoutRoute.slice(startAt, endAt);
 }
 
-test("Starter checkout waits for its server-side intent capture", () => {
+test("Starter checkout waits for a flushed server-side intent capture", () => {
   const branch = branchBetween(
     'if (priceType === "starter")',
     'if (priceType === "playbook")',
   );
   assert.match(
     branch,
-    /await captureServer\(distinctId, Event\.CheckoutSessionCreated/,
+    /await captureServerAndFlush\(distinctId, Event\.CheckoutSessionCreated/,
   );
 });
 
-test("Core checkout waits for its server-side intent capture", () => {
+test("Core checkout waits for a flushed server-side intent capture", () => {
   const branch = branchBetween(
     'if (priceType === "playbook")',
     "// OTO chain",
   );
   assert.match(
     branch,
-    /await captureServer\(distinctId, Event\.CheckoutSessionCreated/,
+    /await captureServerAndFlush\(distinctId, Event\.CheckoutSessionCreated/,
   );
 });
