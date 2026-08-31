@@ -233,7 +233,7 @@ export default async function PlaybookSalesPage() {
               priceType="playbook"
               surface="playbook_sales"
               size="sm"
-              className="text-sm"
+              className="bg-[#047857] text-white hover:bg-[#065f46] text-sm"
             >
               Skip the story — start the $49/mo Playbook
             </CheckoutButton>

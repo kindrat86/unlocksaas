@@ -210,8 +210,7 @@ export default function RootLayout({
         ) : null}
         {/* R16 world-class UX layer — shared design system across portfolio */}
         <link rel="stylesheet" href="/ux.css" />
-        <script src="/ux.js" defer />
-      </head>
+        </head>
       <body className="antialiased bg-background text-foreground">
         <ThemeProvider
           attribute="class"

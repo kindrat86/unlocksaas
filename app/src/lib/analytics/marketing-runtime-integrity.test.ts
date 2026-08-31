@@ -38,6 +38,14 @@ test("CSP permits the PostHog SDK asset host used in production", () => {
   );
 });
 
+test("root layout does not run DOM-mutating ux.js before React hydration", () => {
+  assert.doesNotMatch(
+    layoutSource,
+    /<script\s+src="\/ux\.js"/,
+    "ux.js mutates document.body at DOMContentLoaded and must not run ahead of React hydration",
+  );
+});
+
 test("above-the-fold Core checkout keeps readable primary-button styling", () => {
   const match = playbookSalesSource.match(
     /<CheckoutButton[\s\S]*?>\s*Skip the story[^<]*<\/CheckoutButton>/,
@@ -47,5 +55,10 @@ test("above-the-fold Core checkout keeps readable primary-button styling", () =>
     match[0],
     /text-muted-foreground|px-0|py-0/,
     "the primary checkout button must not override its contrast or padding with link-like muted styles",
+  );
+  assert.match(
+    match[0],
+    /bg-\[#047857\][^\"]*text-white/,
+    "the primary checkout button must use the measured AA-compliant foreground/background pair",
   );
 });
