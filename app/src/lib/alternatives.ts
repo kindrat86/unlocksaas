@@ -87,6 +87,13 @@ export interface Alternative {
   tags?: readonly string[];
   /** ISO date of last manual sanity check of every claim in this entry. */
   lastVerified: string;
+  /**
+   * Optional hand-curated contextual internal links, rendered as an
+   * "Evergreen companions" section on the marketing detail page. Only
+   * entries with a deliberate reader journey carry them; targets must be
+   * indexable, canonical, and verified live before being added.
+   */
+  contextualLinks?: ReadonlyArray<{ href: string; label: string }>;
 }
 
 // Capability ordering — single source of truth for the comparison-table row order.
@@ -815,6 +822,28 @@ const ALTERNATIVES_LIST: Alternative[] = [
       costsLessThan98ToFindOut: false,
     },
     homepageUrl: "https://www.demandcurve.com/",
+    contextualLinks: [
+      {
+        href: "/launch-checklist",
+        label: "Run the pre-launch checklist Demand Curve assumes you already finished",
+      },
+      {
+        href: "/tools/revenue-projector",
+        label: "Model the MRR path the growth experiments should produce",
+      },
+      {
+        href: "/tools/ltv-calculator",
+        label: "Know the customer LTV before spending against it",
+      },
+      {
+        href: "/tools/churn-cost-calculator",
+        label: "Price what churn does to that growth curve",
+      },
+      {
+        href: "/alternatives-to/stacking-the-bricks",
+        label: "Compare the curriculum-first alternative: Stacking the Bricks",
+      },
+    ],
     tags: ["curriculum", "marketing", "for-funded-startups", "agency"],
     lastVerified: "2026-05-17",
   },
