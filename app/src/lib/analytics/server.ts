@@ -108,14 +108,11 @@ export async function captureServerAndFlush(
 ): Promise<void> {
   const client = getClient();
   if (!client) return;
-  client.capture({
+  await client.captureImmediate({
     distinctId,
     event,
     properties: { ...SERVER_EVENT_DEFAULTS, ...properties },
   });
-  // shutdownAsync() flushes the queue, but we don't want to kill the client
-  // on every webhook — just flush.
-  await client.flush();
 }
 
 /**
