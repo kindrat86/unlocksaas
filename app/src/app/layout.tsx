@@ -172,7 +172,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-US" className={cn(GeistSans.variable, GeistMono.variable)}>
+    <html
+      lang="en-US"
+      className={cn(GeistSans.variable, GeistMono.variable)}
+      suppressHydrationWarning
+    >
       <head>
         {/*
           Register a Trusted Types default policy. The CSP enforces

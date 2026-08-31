@@ -318,7 +318,8 @@ const nextConfig = {
     // CSP origins audited 2026-05-20 against actual client-side use:
     //   - Stripe.js script + Checkout iframe + Connect OAuth POST
     //   - Supabase REST + Realtime (wss) + Storage
-    //   - PostHog EU ingest + asset host (same origin: eu.i.posthog.com)
+    //   - PostHog EU ingest (eu.i.posthog.com) + SDK config assets
+    //     (eu-assets.i.posthog.com)
     //   - Mux video for VSL / founding (env-driven NEXT_PUBLIC_VSL_URL)
     //   - IndexNow ping (server-side fetch only — listed defensively)
     //
@@ -328,11 +329,11 @@ const nextConfig = {
     const isDev = process.env.NODE_ENV === "development";
     const STRICT_CSP = [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://js.stripe.com https://eu.i.posthog.com`,
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://js.stripe.com https://eu.i.posthog.com https://eu-assets.i.posthog.com`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://api.carshake.online https://eu.i.posthog.com https://api.stripe.com https://connect.stripe.com https://api.indexnow.org",
+      "connect-src 'self' https://api.carshake.online https://eu.i.posthog.com https://eu-assets.i.posthog.com https://api.stripe.com https://connect.stripe.com https://api.indexnow.org",
       "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://stream.mux.com",
       "media-src 'self' https://stream.mux.com https://image.mux.com data: blob:",
       "worker-src 'self' blob:",
