@@ -229,7 +229,7 @@ export async function POST(req: NextRequest) {
       // Server-side mirror of the click. Useful when the browser event was
       // blocked by a tracker-disabler — the funnel-metrics report still sees
       // the checkout intent.
-      captureServer(distinctId, Event.CheckoutSessionCreated, {
+      await captureServer(distinctId, Event.CheckoutSessionCreated, {
         price_type: "starter",
         stripe_session_id: session.id,
         bump_included: bumpPriceId ? "true" : "false",
@@ -261,7 +261,7 @@ export async function POST(req: NextRequest) {
         client_reference_id: distinctId !== "anonymous" ? distinctId : undefined,
       });
 
-      captureServer(distinctId, Event.CheckoutSessionCreated, {
+      await captureServer(distinctId, Event.CheckoutSessionCreated, {
         price_type: "playbook",
         stripe_session_id: session.id,
         ...abMetadata,
