@@ -42,7 +42,7 @@ const STACK = [
   {
     n: "05",
     title: "Verification-call script + objection map",
-    body: "The call structure and the 14 most likely objections, with tested responses drawn from real closes.",
+    body: "The call structure and the 14 most likely objections, with a tested response for each one.",
     value: "$800",
   },
   {
@@ -50,30 +50,6 @@ const STACK = [
     title: "Code-enforced money-back guarantee",
     body: "Finish 60 days with no paying customer and the refund fires automatically. No support ticket, no negotiation.",
     value: "$600",
-  },
-];
-
-const PROOF = [
-  {
-    when: "Customer on day 47",
-    quote:
-      "Shipped my SaaS, sat at zero for three months. Did the audit, killed two friction points I never saw, rewrote the offer. First paying customer on day 47.",
-    name: "Tomas R.",
-    role: "Solo founder, devtools",
-  },
-  {
-    when: "Customer in 3 weeks",
-    quote:
-      "The one-customer exercise was the unlock. I was selling to everyone and converting no one. Picked one buyer, closed them in three weeks.",
-    name: "Aisha M.",
-    role: "Founder, HR-tech",
-  },
-  {
-    when: "Refunded day 60, closed day 52 on rerun",
-    quote:
-      "I did not believe the guarantee until I needed it. Finished 60 days, no customer, refund fired automatically. Re-ran it, closed on day 52. They meant it.",
-    name: "Wesley K.",
-    role: "Founder, productivity SaaS",
   },
 ];
 
@@ -118,7 +94,7 @@ const STEPS = [
 const FAQS = [
   {
     q: "What if I don't have an audience?",
-    a: "You do not need one. The playbook opens seven direct channels that do not depend on a following: cold outreach, communities, directories, partners, search, intent signals, and referrals. Most founders who finish get their first customer through a channel they had never tried before.",
+    a: "You do not need one. The playbook opens seven direct channels that do not depend on a following: cold outreach, communities, directories, partners, search, intent signals, and referrals.",
   },
   {
     q: "What if my product is barely shipped?",
@@ -269,8 +245,8 @@ export default function LandingPage() {
                 desc: "of SaaS products that ship never reach $1,000 in monthly revenue. Not because the product is bad, because the founder stops at the build.",
               },
               {
-                big: "71%",
-                desc: "of founders who finish this playbook land a paying customer inside the 60 days. Median day to first dollar: 47.",
+                big: "1",
+                desc: "customer is all it takes to change the trajectory. The playbook is built to land that one customer inside the 60-day window.",
               },
               {
                 big: "60d",
@@ -372,41 +348,26 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PROOF */}
+      {/* HONEST POSITION */}
       <section className="py-20 bg-secondary/30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
-            Founders who broke through
+            Where this product stands
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight max-w-3xl text-foreground">
-            Shipped SaaS, zero customers. Then this.
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            No customer stories yet. Here is exactly what that means.
           </h2>
-          <div className="mt-10 grid sm:grid-cols-3 gap-5">
-            {PROOF.map((t) => (
-              <figure
-                key={t.name}
-                className="bg-card border border-border rounded-lg p-7 flex flex-col gap-5 border-l-4 border-l-primary"
-              >
-                <div className="inline-flex self-start items-center rounded-full bg-primary/10 border border-primary/30 px-3 py-1 text-xs font-semibold text-primary">
-                  {t.when}
-                </div>
-                <blockquote className="text-base leading-relaxed text-foreground">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-                <figcaption>
-                  <div className="font-semibold text-sm text-foreground">{t.name}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <div className="mt-12 pt-12 border-t border-border">
-            <p className="text-sm text-muted-foreground max-w-2xl">
-              Every result above is dated against the 60-day window. The median finisher
-              lands a customer on day 47. Founders who do not land one get refunded
-              automatically, and some close on the rerun.
-            </p>
-          </div>
+          <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
+            UnlockSaaS is accepting its first founding customers now. There are no
+            published customer outcomes yet, so there are no testimonials, success
+            rates, or median timelines on this page. We will not invent them.
+          </p>
+          <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+            What exists today: the full day-by-day playbook, the audit templates, the
+            channel scripts, and the code-enforced refund. The guarantee is the proof
+            we can make honestly: if you complete the 60 days with no paying customer,
+            your money comes back automatically.
+          </p>
         </div>
       </section>
 
@@ -455,7 +416,8 @@ export default function LandingPage() {
                   <span>
                     <strong className="font-semibold">No customer, refund fires.</strong>{" "}
                     Automatically, against the log. No support ticket, no awkward email, no
-                    negotiation. The other 29% get their money back without asking.
+                    negotiation. If the playbook does not land your first customer, you do
+                    not pay for it.
                   </span>
                 </li>
               </ol>
