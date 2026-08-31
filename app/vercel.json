@@ -29,26 +29,6 @@
   ],
   "crons": [
     {
-      "path": "/api/cron/soap-opera",
-      "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/cron/challenge",
-      "schedule": "30 14 * * *"
-    },
-    {
-      "path": "/api/cron/seinfeld",
-      "schedule": "0 15 * * *"
-    },
-    {
-      "path": "/api/cron/founding",
-      "schedule": "0 16 * * *"
-    },
-    {
-      "path": "/api/cron/cart-recovery",
-      "schedule": "0 17 * * *"
-    },
-    {
       "path": "/api/cron/indexnow",
       "schedule": "0 18 * * *"
     },
@@ -59,10 +39,6 @@
     {
       "path": "/api/cron/recrawl",
       "schedule": "0 7 * * *"
-    },
-    {
-      "path": "/api/cron/teardown-courtesy",
-      "schedule": "0 13 * * 1-5"
     },
     {
       "path": "/api/cron/llmo-citations",

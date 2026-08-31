@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/build-workbook-bundle.mjs && node scripts/verify-shim.mjs",
+    "prebuild": "node scripts/build-workbook-bundle.mjs && node scripts/verify-shim.mjs && node --test scripts/test/unlocksaas-cron-safety.test.mjs",
     "build": "next build",
     "postbuild": "node scripts/postbuild-csp.mjs && node scripts/verify-jsonld.mjs .next",
     "audit:prod": "node scripts/audit-prod.mjs",
