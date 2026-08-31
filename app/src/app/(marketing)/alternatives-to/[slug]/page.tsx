@@ -403,6 +403,33 @@ export default async function AlternativePage(props: { params: Promise<RoutePara
           </div>
         </section>
       ) : null}
+      {/* ----- Curated contextual internal links (reader-journey, not a
+            link dump; see Alternative["contextualLinks"]) ----- */}
+      {alt.contextualLinks && alt.contextualLinks.length > 0 ? (
+        <section
+          className="max-w-3xl mx-auto px-6 py-2"
+          aria-labelledby="contextual-links"
+        >
+          <h2
+            id="contextual-links"
+            className="text-lg font-bold mb-4 leading-tight"
+          >
+            Useful next steps on Unlock SaaS
+          </h2>
+          <ul className="space-y-2">
+            {alt.contextualLinks.map((link) => (
+              <li key={link.href} className="text-sm leading-relaxed">
+                <Link
+                  href={link.href}
+                  className="text-primary hover:underline font-medium"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       {/* ----- The two-column quick-take ----- */}
       <section
         className="max-w-3xl mx-auto px-6 py-10"
