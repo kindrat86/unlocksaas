@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getStripe } from "@/lib/stripe";
 import { checkBotId } from "botid/server";
+import { checkoutAppUrl } from "@/lib/checkout-app-url";
 import {
   IDENTITY_AB_KEY,
   readIdentityFromCookies,
@@ -113,7 +114,7 @@ export async function POST(req: NextRequest) {
   const { priceType, attribution, bump, parentSessionId, hdyhau } =
     (await req.json()) as CheckoutBody;
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = checkoutAppUrl();
 
   // Stamp the A/B identity variant + subject onto the Stripe session so the
   // webhook can attribute the purchase back to the variant when it fires
