@@ -118,40 +118,43 @@ def stripe_paged(resource, key, params=""):
         starting_after = page["data"][-1]["id"]
 
 
-def raise_alarm(db, err, now):
+def raise_alarm(db, err, now, section_ok):
     """Leave a marker a human will actually trip over.
 
     The launchd job's stdout lands in ~/.unlocksaas/sync.log and 91 failed runs
     sat there unread for four days. This writes a standalone file next to the
-    DB that says in plain words which snapshot funnel.db is stuck on, so a
-    frozen table is never mistaken for a real absence of signups.
+    DB that identifies which section is stale, so a frozen table is never
+    mistaken for a real absence of signups or revenue.
     """
     last_ok = db.execute("SELECT MAX(at) FROM sync_runs WHERE ok=1").fetchone()[0]
     fails = db.execute(
         "SELECT COUNT(*) FROM sync_runs WHERE ok=0 AND at > ?", (last_ok or "",)
     ).fetchone()[0]
     first = not ALERT_PATH.exists()
+    resend_status = "OK" if section_ok["resend"] else "FAILED"
+    stripe_status = "OK" if section_ok["stripe"] else "FAILED"
     ALERT_PATH.write_text(
         f"""# funnel.db sync is BROKEN
 
-    last successful sync : {last_ok or "never"}
-    failed runs since    : {fails}
-    latest failure       : {now}
-    error                : {err}
+    last fully successful sync : {last_ok or "never"}
+    failed runs since          : {fails}
+    latest failure             : {now}
+    Resend section             : {resend_status}
+    Stripe section             : {stripe_status}
+    error                      : {err}
 
-**~/.unlocksaas/funnel.db is FROZEN at the last successful sync.** Every table
-in it — subscribers, email_events, stripe_customers, stripe_subs — is a
-snapshot from {last_ok or "before any successful run"}, not a current picture.
-While this file exists, do not read those row counts as evidence about
-signups, sends or conversions: missing rows are this bug, not a market signal.
+**One or more sections of ~/.unlocksaas/funnel.db are stale.** `subscribers`
+and `email_events` follow the Resend status above; `stripe_customers` and
+`stripe_subs` follow the Stripe status. A successful section reflects this run;
+a failed section may be stale or only partly refreshed and must not be read as
+evidence about signups, sends, or revenue.
 
-Fix: the Resend key's source of truth is the portfolio vault
-(global:RESEND_API_KEY). It is mirrored into ~/email-engine/.env and into the
-Vercel `email-engine` project env, and a rotation that updates only the vault
-leaves both mirrors dead. If the vault copy is rejected too, the key was
-rotated at the Resend end and every mirror needs the new value.
+Inspect the named section error above and repair that upstream credential or
+request path. Resend's key source of truth is the portfolio vault
+(global:RESEND_API_KEY); Stripe uses global:STRIPE_SECRET_KEY from the same
+vault.
 
-This file is deleted automatically by the next successful run.
+This file is deleted automatically by the next fully successful run.
 """
     )
     if first:
@@ -190,12 +193,20 @@ def main():
           last_synced TEXT);
         CREATE TABLE IF NOT EXISTS sync_runs (
           at TEXT, ok INTEGER, subscribers INTEGER, emails INTEGER,
-          customers INTEGER, subs INTEGER, error TEXT);
+          customers INTEGER, subs INTEGER, error TEXT,
+          resend_ok INTEGER, stripe_ok INTEGER);
         """
     )
+    sync_run_columns = {
+        row[1] for row in db.execute("PRAGMA table_info(sync_runs)").fetchall()
+    }
+    for column in ("resend_ok", "stripe_ok"):
+        if column not in sync_run_columns:
+            db.execute(f"ALTER TABLE sync_runs ADD COLUMN {column} INTEGER")
     now = datetime.now(timezone.utc).isoformat()
     counts = {"subscribers": 0, "emails": 0, "customers": 0, "subs": 0}
-    err = None
+    section_ok = {"resend": False, "stripe": False}
+    errors = []
     try:
         # --- Resend audiences -> subscribers
         audiences = resend("/audiences")["data"]
@@ -231,7 +242,12 @@ def main():
                  e.get("scheduled_at"), now),
             )
             counts["emails"] += 1
+    except Exception as e:  # keep Stripe independent from Resend failures
+        errors.append(f"resend: {type(e).__name__}: {e}")
+    else:
+        section_ok["resend"] = True
 
+    try:
         # --- Stripe -> customers + subscriptions (shared live account)
         skey = Vault().get_key("STRIPE_SECRET_KEY").strip()
         for c in stripe_paged("customers", skey):
@@ -255,31 +271,39 @@ def main():
                  s.get("created"), now),
             )
             counts["subs"] += 1
-    except Exception as e:  # record the failure, keep partial data
-        err = f"{type(e).__name__}: {e}"
+    except Exception as e:  # record the failure, keep Resend data
+        errors.append(f"stripe: {type(e).__name__}: {e}")
+    else:
+        section_ok["stripe"] = True
 
+    err = "; ".join(errors) or None
+    overall_ok = all(section_ok.values())
     db.execute(
-        "INSERT INTO sync_runs VALUES (?,?,?,?,?,?,?)",
-        (now, int(err is None), counts["subscribers"], counts["emails"],
-         counts["customers"], counts["subs"], err),
+        """INSERT INTO sync_runs
+           (at, ok, subscribers, emails, customers, subs, error,
+            resend_ok, stripe_ok)
+           VALUES (?,?,?,?,?,?,?,?,?)""",
+        (now, int(overall_ok), counts["subscribers"], counts["emails"],
+         counts["customers"], counts["subs"], err,
+         int(section_ok["resend"]), int(section_ok["stripe"])),
     )
     db.commit()
 
-    if err is None:
+    if overall_ok:
         ALERT_PATH.unlink(missing_ok=True)
         status = "OK"
     else:
-        raise_alarm(db, err, now)
-        # "PARTIAL" flattered a run that wrote nothing at all: the Resend
-        # section runs first, so its failure skips Stripe too.
-        status = f"PARTIAL ({err})" if any(counts.values()) else f"FAILED ({err})"
+        raise_alarm(db, err, now, section_ok)
+        status_word = "FAILED" if len(errors) == 2 else "PARTIAL"
+        status = f"{status_word} ({err})"
     db.close()
 
     print(f"[{now}] {status} " + " ".join(f"{k}={v}" for k, v in counts.items()))
-    if err is not None:
+    if not overall_ok:
         # launchd merges both streams into sync.log, so don't repeat the line
-        print(f"  -> funnel.db is stale; see {ALERT_PATH}", file=sys.stderr)
-    sys.exit(0 if err is None else 1)
+        print(f"  -> one or more funnel.db sections are stale; see {ALERT_PATH}",
+              file=sys.stderr)
+    sys.exit(0 if overall_ok else 1)
 
 
 if __name__ == "__main__":
