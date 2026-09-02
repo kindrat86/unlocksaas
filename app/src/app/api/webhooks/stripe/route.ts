@@ -48,6 +48,7 @@ import {
   voidCommissionsForCharge,
 } from "@/lib/affiliate";
 import { sendAffiliateCommissionEmail } from "@/lib/affiliate-email";
+import { withOwnedStripeEvent } from "@/lib/stripe-checkout-ownership";
 
 // Node runtime is required: Stripe.webhooks.constructEvent uses Buffer + crypto.
 
@@ -60,8 +61,9 @@ export async function POST(req: NextRequest) {
   }
 
   let event: Stripe.Event;
+  const stripe = getStripe();
   try {
-    event = getStripe().webhooks.constructEvent(
+    event = stripe.webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
@@ -103,6 +105,15 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ received: true, connect: true });
   }
+
+  // This webhook is enabled account-wide on a Stripe account shared with other
+  // products. Every subscribed platform event must prove UnlockSaaS ownership
+  // before the idempotency write or any billing, email, analytics, or cache
+  // side effect.
+  const guardedPlatformEvent = await withOwnedStripeEvent(
+    event,
+    stripe,
+    async () => {
 
   // Idempotency guard. Every platform event passes through billing_events
   // first; Stripe retries become no-ops. The Connect branch above doesn't
@@ -253,7 +264,14 @@ export async function POST(req: NextRequest) {
   // See app/src/lib/open-metrics.ts → cacheTag("open-metrics","billing-mutation").
   revalidateTag("billing-mutation", "max");
 
-  return NextResponse.json({ received: true });
+      return NextResponse.json({ received: true });
+    },
+  );
+
+  if (!guardedPlatformEvent.owned) {
+    return NextResponse.json({ received: true, ignored: "foreign_stripe_event" });
+  }
+  return guardedPlatformEvent.value;
 }
 
 // ════════════════════════════════════════════════════════════════════════════

@@ -2,9 +2,12 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22.6.0"
+  },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/build-workbook-bundle.mjs && node scripts/verify-shim.mjs && node --test scripts/test/unlocksaas-cron-safety.test.mjs scripts/test/founding-offer.test.mjs",
+    "prebuild": "node scripts/build-workbook-bundle.mjs && node scripts/verify-shim.mjs && node --test scripts/test/unlocksaas-cron-safety.test.mjs scripts/test/founding-offer.test.mjs && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test scripts/test/stripe-webhook-ownership.test.mjs",
     "build": "next build",
     "postbuild": "node scripts/postbuild-csp.mjs && node scripts/verify-jsonld.mjs .next",
     "audit:prod": "node scripts/audit-prod.mjs",
