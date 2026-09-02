@@ -44,7 +44,10 @@ type CheckoutSessionWithLineItems = Pick<
   "metadata" | "payment_link"
 > & {
   id?: string;
-  line_items?: { data?: StripeResourceLine[] | null } | null;
+  line_items?: {
+    data?: StripeResourceLine[] | null;
+    has_more?: boolean;
+  } | null;
 };
 
 type StripeOwnershipEvent = {
@@ -77,7 +80,7 @@ function resourceId(value: string | { id?: string | null } | null | undefined) {
 
 function lineOwnership(
   line: StripeResourceLine,
-  priceIds = configuredPriceIds(),
+  priceIds = configuredPriceIds()
 ): boolean | null {
   const price = line.price;
   const priceId =
@@ -85,7 +88,9 @@ function lineOwnership(
   const productId =
     (typeof price === "object" && price !== null
       ? resourceId(price.product)
-      : null) ?? line.pricing?.price_details?.product ?? null;
+      : null) ??
+    line.pricing?.price_details?.product ??
+    null;
   if (!priceId && !productId) return null;
   return (
     (priceId !== null && priceIds.has(priceId)) ||
@@ -93,7 +98,11 @@ function lineOwnership(
   );
 }
 
-function allLinesAreOwned(lines: StripeResourceLine[] | null | undefined) {
+function allLinesAreOwned(
+  lines: StripeResourceLine[] | null | undefined,
+  hasMore = false
+) {
+  if (hasMore) return false;
   if (!lines?.length) return false;
   const decisions = lines.map((line) => lineOwnership(line));
   return decisions.every((decision) => decision === true);
@@ -105,13 +114,16 @@ function allLinesAreOwned(lines: StripeResourceLine[] | null | undefined) {
  * owned by UnlockSaaS. Metadata and amount never establish ownership.
  */
 export function isUnlockSaasCheckoutSession(
-  session: CheckoutSessionWithLineItems,
+  session: CheckoutSessionWithLineItems
 ): boolean {
   const paymentLinkId = resourceId(session.payment_link);
   if (paymentLinkId) {
     return UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS.has(paymentLinkId);
   }
-  return allLinesAreOwned(session.line_items?.data);
+  return allLinesAreOwned(
+    session.line_items?.data,
+    session.line_items?.has_more === true
+  );
 }
 
 function objectId(value: unknown): string | null {
@@ -131,15 +143,29 @@ function linesFrom(object: unknown, key: "lines" | "items") {
   return Array.isArray(data) ? (data as StripeResourceLine[]) : undefined;
 }
 
+function collectionHasMore(object: unknown, key: "lines" | "items") {
+  if (!object || typeof object !== "object") return false;
+  const collection = (object as Record<string, unknown>)[key];
+  if (!collection || typeof collection !== "object") return false;
+  return (collection as { has_more?: unknown }).has_more === true;
+}
+
 async function checkoutIsOwned(
   object: unknown,
-  stripe: StripeOwnershipReader,
+  stripe: StripeOwnershipReader
 ): Promise<boolean> {
   if (!object || typeof object !== "object") return false;
   let session = object as CheckoutSessionWithLineItems;
   const paymentLinkId = resourceId(session.payment_link);
-  if (paymentLinkId) return UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS.has(paymentLinkId);
-  if (allLinesAreOwned(session.line_items?.data)) return true;
+  if (paymentLinkId)
+    return UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS.has(paymentLinkId);
+  if (
+    allLinesAreOwned(
+      session.line_items?.data,
+      session.line_items?.has_more === true
+    )
+  )
+    return true;
   if (!session.id || !stripe.checkout?.sessions?.retrieve) return false;
   session = (await stripe.checkout.sessions.retrieve(session.id, {
     expand: ["line_items.data.price.product"],
@@ -149,35 +175,43 @@ async function checkoutIsOwned(
 
 async function invoiceIsOwned(
   object: unknown,
-  stripe: StripeOwnershipReader,
+  stripe: StripeOwnershipReader
 ): Promise<boolean> {
   const inlineLines = linesFrom(object, "lines");
-  if (inlineLines?.length) return allLinesAreOwned(inlineLines);
+  if (inlineLines?.length) {
+    return allLinesAreOwned(inlineLines, collectionHasMore(object, "lines"));
+  }
   const id = objectId(object);
   if (!id || !stripe.invoices?.retrieve) return false;
-  const invoice = await stripe.invoices.retrieve(id, {
-    expand: ["lines.data.price.product"],
-  });
-  return allLinesAreOwned(linesFrom(invoice, "lines"));
+  const invoice = await stripe.invoices.retrieve(id);
+  return allLinesAreOwned(
+    linesFrom(invoice, "lines"),
+    collectionHasMore(invoice, "lines")
+  );
 }
 
 async function subscriptionIsOwned(
   object: unknown,
-  stripe: StripeOwnershipReader,
+  stripe: StripeOwnershipReader
 ): Promise<boolean> {
   const inlineItems = linesFrom(object, "items");
-  if (inlineItems?.length) return allLinesAreOwned(inlineItems);
+  if (inlineItems?.length) {
+    return allLinesAreOwned(inlineItems, collectionHasMore(object, "items"));
+  }
   const id = objectId(object);
   if (!id || !stripe.subscriptions?.retrieve) return false;
   const subscription = await stripe.subscriptions.retrieve(id, {
     expand: ["items.data.price.product"],
   });
-  return allLinesAreOwned(linesFrom(subscription, "items"));
+  return allLinesAreOwned(
+    linesFrom(subscription, "items"),
+    collectionHasMore(subscription, "items")
+  );
 }
 
 async function refundIsOwned(
   object: unknown,
-  stripe: StripeOwnershipReader,
+  stripe: StripeOwnershipReader
 ): Promise<boolean> {
   if (!object || typeof object !== "object") return false;
   const charge = object as { invoice?: unknown; payment_intent?: unknown };
@@ -189,10 +223,12 @@ async function refundIsOwned(
     payment_intent: paymentIntentId,
     limit: 10,
   });
-  for (const session of sessions.data ?? []) {
-    if (await checkoutIsOwned(session, stripe)) return true;
+  if (sessions.has_more) return false;
+  if (!sessions.data?.length) return false;
+  for (const session of sessions.data) {
+    if (!(await checkoutIsOwned(session, stripe))) return false;
   }
-  return false;
+  return true;
 }
 
 /**
@@ -202,7 +238,7 @@ async function refundIsOwned(
  */
 export async function isUnlockSaasStripeEventOwned(
   event: StripeOwnershipEvent,
-  stripe: StripeOwnershipReader,
+  stripe: StripeOwnershipReader
 ): Promise<boolean> {
   switch (event.type) {
     case "checkout.session.completed":
@@ -220,4 +256,15 @@ export async function isUnlockSaasStripeEventOwned(
     default:
       return false;
   }
+}
+
+export async function withOwnedStripeEvent<T>(
+  event: StripeOwnershipEvent,
+  stripe: StripeOwnershipReader,
+  runSideEffects: () => Promise<T>
+): Promise<{ owned: false } | { owned: true; value: T }> {
+  if (!(await isUnlockSaasStripeEventOwned(event, stripe))) {
+    return { owned: false };
+  }
+  return { owned: true, value: await runSideEffects() };
 }
