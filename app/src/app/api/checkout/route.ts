@@ -13,6 +13,7 @@ import { captureServer, captureServerAndFlush } from "@/lib/analytics/server";
 import { Event } from "@/lib/analytics/events";
 import { getOfferPriceId, type OfferId } from "@/lib/offers";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { isCartOpen } from "@/lib/founding/cohort";
 
 /**
  * priceType values:
@@ -240,6 +241,13 @@ export async function POST(req: NextRequest) {
     }
 
     if (priceType === "playbook") {
+      if (!(await isCartOpen())) {
+        return NextResponse.json(
+          { error: "founding_cart_closed" },
+          { status: 409 },
+        );
+      }
+
       const session = await getStripe().checkout.sessions.create({
         mode: "subscription",
         line_items: [

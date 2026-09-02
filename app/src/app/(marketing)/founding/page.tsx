@@ -10,11 +10,11 @@ import { AbExposureBeacon } from "@/components/ab-exposure-beacon";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
-import { cartWindow } from "@/lib/founding/cohort";
+import { foundingCartStatus } from "@/lib/founding/cohort";
 import { isCorePriceConfigured } from "@/lib/offers";
 import { FoundingWaitlistForm } from "./waitlist-form";
 import { FoundingClaimButton } from "./claim-button";
-import { FOUNDING_COHORT_SIZE, seatsClaimedOrNull } from "./seats";
+import { FOUNDING_COHORT_SIZE } from "./seats";
 
 
 // Per-page metadata — Surface A of the Google strategy. The title and
@@ -81,15 +81,13 @@ const STACK_LINES: ReadonlyArray<{ name: string; value: string }> = [
 
 async function FoundingPageBody() {
   await connection();
-  const window = cartWindow();
-  const claimed = await seatsClaimedOrNull();
+  const { claimed, open: foundingCartOpen } = await foundingCartStatus();
 
   // "Full" requires a REAL count at or past the cohort size. An unavailable
   // count (null) can never close the door.
   const foundingFull = claimed !== null && claimed >= FOUNDING_COHORT_SIZE;
   const checkoutConfigured = isCorePriceConfigured("playbook");
-  const showCheckout =
-    window.state === "open" && checkoutConfigured && !foundingFull;
+  const showCheckout = foundingCartOpen && checkoutConfigured;
   const showWaitlist = !showCheckout && !foundingFull;
 
   // Founder walkthrough videos — env-gated Mux playback ids. Parts without

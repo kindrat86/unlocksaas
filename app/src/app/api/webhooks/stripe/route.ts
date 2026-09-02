@@ -1093,9 +1093,9 @@ async function recordDiagnosticAttribution(session: Stripe.Checkout.Session) {
 // a founding seat. Three gates must pass:
 //
 //   1. Cart window must be OPEN (FOUNDING_CART_OPEN_AT <= now < FOUNDING_CART_CLOSE_AT).
-//   2. Current seat count must be < 50.
+//   2. Current seat count must be < 100.
 //   3. The DB unique index on founding_cohort.seat_number provides the final
-//      race protection — the second of two concurrent 50th claims fails cleanly
+//      race protection — the second of two concurrent 100th claims fails cleanly
 //      and the subscription is still honored at $49/mo evergreen (no bonuses).
 //
 // If any gate fails, the seat is NOT granted and the founding bonuses do not
