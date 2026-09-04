@@ -434,3 +434,112 @@ test("prebuild declares a Node runtime that supports native TypeScript stripping
     /--disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test scripts\/test\/stripe-webhook-ownership\.test\.mjs/
   );
 });
+
+// ── 2026-09-03 founding cart regression ─────────────────────────────────────
+// Recon (unlocksaas-p0-recon-20260904.json): the live founding cart rotated to
+// payment link plink_1UBaMxCwGoUDklReKP5eVcWq with EUR price
+// price_1UBaL2CwGoUDklReihT2UVxY (prod_UWtaOvavCvalmm). PR #213's static
+// allowlists predate them, so withOwnedStripeEvent classified every founding
+// event as foreign and provisioning silently never ran. These tests pin both
+// the allowlist entries and the env escape hatch.
+
+const FOUNDING_PAYMENT_LINK_ID = "plink_1UBaMxCwGoUDklReKP5eVcWq";
+const FOUNDING_EUR_PRICE_ID = "price_1UBaL2CwGoUDklReihT2UVxY";
+const FOUNDING_PRODUCT_ID = "prod_UWtaOvavCvalmm";
+
+test("2026-09-03 founding cart checkout session is owned via its payment link", async () => {
+  const { isUnlockSaasCheckoutSession, withOwnedStripeEvent } = await import(
+    "../../src/lib/stripe-checkout-ownership.ts"
+  );
+  // Shape from recon new_link_sessions.data[0]: metadata {}, no line_items
+  // inline, payment_link set. Ownership must come from the plink allowlist.
+  const foundingSession = {
+    id: "cs_live_founding_regression",
+    object: "checkout.session",
+    mode: "subscription",
+    payment_status: "paid",
+    amount_total: 4900,
+    currency: "eur",
+    payment_link: FOUNDING_PAYMENT_LINK_ID,
+    metadata: {},
+  };
+  assert.equal(isUnlockSaasCheckoutSession(foundingSession), true);
+
+  let sideEffects = 0;
+  const guarded = await withOwnedStripeEvent(
+    {
+      id: "evt_founding_checkout_regression",
+      type: "checkout.session.completed",
+      data: { object: foundingSession },
+    },
+    {},
+    async () => {
+      sideEffects += 1;
+      return "provisioned";
+    }
+  );
+  assert.deepEqual(guarded, { owned: true, value: "provisioned" });
+  assert.equal(sideEffects, 1);
+});
+
+test("2026-09-03 founding cart invoice and subscription events are owned via EUR price", async () => {
+  const { isUnlockSaasStripeEventOwned } = await import(
+    "../../src/lib/stripe-checkout-ownership.ts"
+  );
+  const invoice = {
+    id: "in_founding_regression",
+    object: "invoice",
+    billing_reason: "subscription_create",
+    customer: "cus_founding",
+    lines: { data: [{ price: { id: FOUNDING_EUR_PRICE_ID } }] },
+  };
+  const subscription = {
+    id: "sub_founding_regression",
+    object: "subscription",
+    customer: "cus_founding",
+    items: { data: [{ price: { id: FOUNDING_EUR_PRICE_ID } }] },
+  };
+  assert.equal(
+    await isUnlockSaasStripeEventOwned(
+      { type: "invoice.payment_succeeded", data: { object: invoice } },
+      {}
+    ),
+    true
+  );
+  assert.equal(
+    await isUnlockSaasStripeEventOwned(
+      { type: "customer.subscription.updated", data: { object: subscription } },
+      {}
+    ),
+    true
+  );
+  assert.equal(
+    await isUnlockSaasStripeEventOwned(
+      { type: "customer.subscription.deleted", data: { object: subscription } },
+      {}
+    ),
+    true
+  );
+});
+
+test("rotated payment links can be blessed via STRIPE_OWNED_PAYMENT_LINK_IDS env", async () => {
+  const { isUnlockSaasCheckoutSession } = await import(
+    "../../src/lib/stripe-checkout-ownership.ts"
+  );
+  const rotatedSession = {
+    id: "cs_live_rotated_link_regression",
+    object: "checkout.session",
+    mode: "subscription",
+    payment_link: "plink_1ROTATEDbutRealFormat0000000000",
+    metadata: {},
+  };
+  // Fail-closed before the env var is set.
+  assert.equal(isUnlockSaasCheckoutSession(rotatedSession), false);
+  process.env.STRIPE_OWNED_PAYMENT_LINK_IDS =
+    "plink_1ROTATEDbutRealFormat0000000000, not_a_plink, plink_1SecondRotated000000000000000";
+  try {
+    assert.equal(isUnlockSaasCheckoutSession(rotatedSession), true);
+  } finally {
+    delete process.env.STRIPE_OWNED_PAYMENT_LINK_IDS;
+  }
+});

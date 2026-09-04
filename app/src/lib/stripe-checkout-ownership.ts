@@ -8,11 +8,27 @@ export const UNLOCKSAAS_OWNED_PRODUCT_IDS = new Set([
 export const UNLOCKSAAS_OWNED_PRICE_IDS = new Set([
   "price_1TXpnoCwGoUDklReXiTaUUCi",
   "price_1TXpnmCwGoUDklRePhZmxviJ",
+  // 2026-09-03 founding cart (recon unlocksaas-p0-recon-20260904.json):
+  // EUR Core price on prod_UWtaOvavCvalmm via payment link
+  // plink_1UBaMxCwGoUDklReKP5eVcWq. Without this, invoice/subscription events
+  // for founding buyers classify as foreign and provisioning never runs.
+  "price_1UBaL2CwGoUDklReihT2UVxY",
 ]);
 
 export const UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS = new Set([
   "plink_1TvFegCwGoUDklReGrnRlKVj",
+  // 2026-09-03 founding cart payment link (adaptive EUR Core checkout whose
+  // after_completion redirects to unlocksaas.com/onboarding).
+  "plink_1UBaMxCwGoUDklReKP5eVcWq",
 ]);
+
+// Payment Links can be rotated from the Stripe dashboard without a deploy
+// (the 2026-09-03 cart swap proved this). Allowlist extension via env so an
+// operator can bless a new link immediately instead of shipping a commit
+// while a live cart is dropping events. Mirrors CHECKOUT_PRICE_ENV_VARS.
+const CHECKOUT_PAYMENT_LINK_ENV_VARS = [
+  "STRIPE_OWNED_PAYMENT_LINK_IDS",
+] as const;
 
 const CHECKOUT_PRICE_ENV_VARS = [
   "STRIPE_STARTER_PRICE_ID",
@@ -74,6 +90,19 @@ function configuredPriceIds(): Set<string> {
   return ids;
 }
 
+function configuredPaymentLinkIds(): Set<string> {
+  const ids = new Set(UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS);
+  for (const envVar of CHECKOUT_PAYMENT_LINK_ENV_VARS) {
+    const raw = process.env[envVar]?.trim();
+    if (!raw) continue;
+    for (const value of raw.split(",")) {
+      const id = value.trim();
+      if (id.startsWith("plink_")) ids.add(id);
+    }
+  }
+  return ids;
+}
+
 function resourceId(value: string | { id?: string | null } | null | undefined) {
   return typeof value === "string" ? value : value?.id ?? null;
 }
@@ -118,7 +147,7 @@ export function isUnlockSaasCheckoutSession(
 ): boolean {
   const paymentLinkId = resourceId(session.payment_link);
   if (paymentLinkId) {
-    return UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS.has(paymentLinkId);
+    return configuredPaymentLinkIds().has(paymentLinkId);
   }
   return allLinesAreOwned(
     session.line_items?.data,
@@ -158,7 +187,7 @@ async function checkoutIsOwned(
   let session = object as CheckoutSessionWithLineItems;
   const paymentLinkId = resourceId(session.payment_link);
   if (paymentLinkId)
-    return UNLOCKSAAS_OWNED_PAYMENT_LINK_IDS.has(paymentLinkId);
+    return configuredPaymentLinkIds().has(paymentLinkId);
   if (
     allLinesAreOwned(
       session.line_items?.data,
