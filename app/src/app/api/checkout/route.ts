@@ -260,10 +260,11 @@ export async function POST(req: NextRequest) {
         // The user advances to /playbook from there. session_id is preserved so
         // /onboarding can show a "processing" banner while the webhook catches up.
         success_url: `${appUrl}/onboarding?session_id={CHECKOUT_SESSION_ID}`,
-        // Cancel on the upgrade page → return them to the next OTO in the
-        // chain, not back to /oto. Brunson rule: once they decline the spine,
-        // keep moving down the ladder, never spin them on the same page.
-        cancel_url: `${appUrl}/oto/vault`,
+        // Founding visitors return to their offer, not an unrelated upsell.
+        // Preserve the existing OTO continuation for all other upgrade paths.
+        cancel_url: diagnosticFrom === "founding"
+          ? `${appUrl}/founding`
+          : `${appUrl}/oto/vault`,
         metadata: abMetadata,
         subscription_data: { metadata: abMetadata },
         client_reference_id: distinctId !== "anonymous" ? distinctId : undefined,
