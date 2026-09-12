@@ -5,6 +5,10 @@ import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getOnboardingStatus, type OnboardingStatus } from "@/lib/onboarding";
 import {
+  buildOnboardingLoginUrl,
+  type OnboardingSearchParams,
+} from "@/lib/onboarding-return-path";
+import {
   getCommunityCardState,
   type CommunityCardState,
 } from "@/lib/community";
@@ -34,7 +38,7 @@ import {
 
 export default function OnboardingPage(
   props: {
-    searchParams: Promise<{ session_id?: string; connect?: string; error?: string }>;
+    searchParams: Promise<OnboardingSearchParams>;
   }
 ) {
   return (
@@ -62,19 +66,14 @@ function OnboardingSkeleton() {
 async function OnboardingBody({
   searchParams: searchParamsP,
 }: {
-  searchParams: Promise<{
-    session_id?: string;
-    connect?: string;
-    error?: string;
-    community?: string;
-  }>;
+  searchParams: Promise<OnboardingSearchParams>;
 }) {
   await connection();
   const searchParams = await searchParamsP;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
-    redirect("/login?next=/onboarding");
+    redirect(buildOnboardingLoginUrl(searchParams));
   }
 
   const status = await getOnboardingStatus({
