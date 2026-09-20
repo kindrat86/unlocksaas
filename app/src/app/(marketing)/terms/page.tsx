@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { BreadcrumbListJsonLd } from "@/components/seo/json-ld";
 import { pageAlternates } from "@/lib/seo/markdown-alternates";
+import { APP_STORE_GUARANTEE_TERMS } from "@/lib/guarantee-proof";
 
 /**
  * Terms of Service. E-E-A-T trust column + commercial table-stakes.
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 
-const EFFECTIVE_DATE = "2026-05-17";
+const EFFECTIVE_DATE = "2026-09-19";
 
 const TRAIL = [
   { name: "Unlock SaaS", url: "https://unlocksaas.com/" },
@@ -122,8 +123,15 @@ export default function TermsPage() {
               Playbook tracks step completion automatically.
             </li>
             <li>
-              If, by the end of day 60, no paying customer has cleared in
-              Stripe, you can claim a refund from inside the product.
+              If, by the end of day 60, no paying customer has been verified
+              through an eligible proof path, you can claim a refund from
+              inside the product.
+            </li>
+            <li>
+              Connected Stripe charges are verified automatically. App
+              Store-distributed products use operator-reviewed App Store
+              Connect or RevenueCat evidence against the written baseline and
+              measurement window agreed at the start.
             </li>
             <li>
               The guarantee is gated on real participation, because that&rsquo;s
@@ -131,6 +139,7 @@ export default function TermsPage() {
               guarantee does not protect you from your own skip.
             </li>
           </ul>
+          <p>{APP_STORE_GUARANTEE_TERMS}</p>
           <p>
             The $1 Starter is refundable on request for any reason within the
             same 60 days.

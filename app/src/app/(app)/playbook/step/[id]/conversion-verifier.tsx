@@ -19,6 +19,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  APP_STORE_GUARANTEE_CONTACT,
+  APP_STORE_GUARANTEE_TERMS,
+} from "@/lib/guarantee-proof";
 
 interface VerifiedConversion {
   id: string;
@@ -121,9 +125,7 @@ export function ConversionVerifier() {
           Verify Your First Customer
         </h1>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Stripe is the only proof. When a paying customer hits your account,
-          this is where it shows up — and where the guarantee resolves. No
-          screenshots, no testimonials, no proxies.
+          {APP_STORE_GUARANTEE_TERMS}
         </p>
       </header>
 
@@ -177,12 +179,24 @@ export function ConversionVerifier() {
             </p>
             <ul className="text-sm text-muted-foreground space-y-1 list-disc pl-5">
               <li>
-                <strong>Auto:</strong> connect your Stripe account (lands in
-                Sprint 3) and new charges register automatically.
+                <strong>Auto:</strong> connect your Stripe account and new
+                charges register automatically.
               </li>
               <li>
-                <strong>Manual:</strong> paste the charge below. The guarantee
-                will flip to &quot;kept&quot; immediately.
+                <strong>App Store:</strong> agree the starting baseline and
+                60-day window in writing, then send redacted App Store Connect
+                or RevenueCat sales evidence to{" "}
+                <a
+                  href={`mailto:${APP_STORE_GUARANTEE_CONTACT}`}
+                  className="underline underline-offset-4"
+                >
+                  {APP_STORE_GUARANTEE_CONTACT}
+                </a>{" "}
+                for operator review.
+              </li>
+              <li>
+                <strong>Manual Stripe:</strong> paste the charge below. The
+                guarantee will flip to &quot;kept&quot; immediately.
               </li>
             </ul>
           </CardContent>

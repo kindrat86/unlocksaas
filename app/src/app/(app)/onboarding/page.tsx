@@ -3,6 +3,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import {
+  APP_STORE_GUARANTEE_CONTACT,
+  APP_STORE_GUARANTEE_TERMS,
+} from "@/lib/guarantee-proof";
 import { getOnboardingStatus, type OnboardingStatus } from "@/lib/onboarding";
 import {
   buildOnboardingLoginUrl,
@@ -122,7 +126,7 @@ async function OnboardingBody({
       {searchParams.connect === "denied" ? (
         <FlashBanner
           tone="error"
-          message="Stripe connection canceled. You can connect later, but the 60-day verifier needs it to detect your first paying customer automatically."
+          message="Stripe connection canceled. You can connect later for automatic verification, or use the written App Store Connect/RevenueCat manual-review path if your product is App Store-distributed."
         />
       ) : null}
 
@@ -229,9 +233,7 @@ function ClockCard({ status }: { status: OnboardingStatus }) {
           </p>
         ) : null}
         <p className="text-sm text-muted-foreground">
-          If the Playbook does not produce a verified paying customer in your
-          Stripe by the 60-day mark, the two monthly payments come back to you.
-          That is in writing.
+          {APP_STORE_GUARANTEE_TERMS}
         </p>
       </CardContent>
     </Card>
@@ -355,9 +357,18 @@ function ConnectCard({ status }: { status: OnboardingStatus }) {
         ) : (
           <>
             <p className="text-sm text-muted-foreground">
-              Stripe is the only proof. Connect your Stripe so the Playbook can
-              detect your first paying customer the second it happens — and
-              the guarantee math runs itself.
+              {APP_STORE_GUARANTEE_TERMS}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              If your product is distributed through the App Store, agree the
+              baseline and 60-day measurement window with{" "}
+              <a
+                href={`mailto:${APP_STORE_GUARANTEE_CONTACT}`}
+                className="underline underline-offset-4"
+              >
+                {APP_STORE_GUARANTEE_CONTACT}
+              </a>{" "}
+              before the window starts.
             </p>
             <div className="flex items-center gap-3">
               <form action="/api/stripe-connect/start" method="post">

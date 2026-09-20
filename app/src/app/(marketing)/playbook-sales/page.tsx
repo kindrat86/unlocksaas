@@ -29,6 +29,7 @@ import { Event } from "@/lib/analytics/events";
 import { loadPublicBadgeCount } from "@/lib/builder-badge";
 import { buildPlaybookAggregateRating } from "@/lib/seo/review-rating";
 import { DEFAULT_OG_IMAGES } from "@/lib/seo/og-image";
+import { APP_STORE_GUARANTEE_TERMS } from "@/lib/guarantee-proof";
 import { createAdminClient, hasSupabaseAdminConfig } from "@/lib/supabase/server";
 import { cacheLife, cacheTag } from "next/cache";
 
@@ -550,13 +551,17 @@ export default async function PlaybookSalesPage() {
               every other guarantee in this space is a lie.
             </h3>
             <TldrBlock>
-              The guarantee is enforced by code, not by trust. Your Stripe
-              webhook watches for the charge. If it doesn't show up in 60 days,
-              the refund fires automatically.
+              Connected Stripe charges are verified automatically. App Store
+              Connect or RevenueCat sales evidence is reviewed manually against
+              the baseline and 60-day window agreed in writing.
             </TldrBlock>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
-              The guarantee is possible because both sides of it are verified by code, not by trust. The work conditions -- Steps 1 through 5 complete, 20 outreach actions logged -- are recorded inside the tool. The result -- a new paying customer -- is watched by a Stripe webhook. If 60 days pass and Stripe shows nothing, the refund fires automatically. Your maximum downside is $98. Neither side of that contract requires you to email me and ask nicely.
+              The work conditions -- Steps 1 through 5 complete, 20 outreach
+              actions logged -- are recorded inside the tool. Stripe results
+              are watched automatically. App Store-distributed products use an
+              operator-reviewed evidence path. The completion requirements,
+              $98 maximum refund, and 60-day deadline do not change.
             </p>
 
             {/* Story — guarantee mechanics from workbook 01 §2:
@@ -570,14 +575,13 @@ export default async function PlaybookSalesPage() {
                 you ask them what they actually mean. They are written to
                 feel good in the buying moment. They are not engineered to
                 fire. The Playbook&apos;s guarantee is different because it
-                is not a copywriting flourish. It is a contract enforced
-                by code. The work conditions are playbook-verifiable: the
-                tool watches Steps 1 through 5 and counts your outreach
-                actions in its own logs. The result is Stripe-verified:
-                the tool watches your connected Stripe account for a new
-                paying customer. Nothing on either side is a self-report.
-                You cannot lie to a log, and I cannot wriggle out of a
-                Stripe webhook.
+                is not a copywriting flourish. The work conditions are
+                playbook-verifiable: the tool watches Steps 1 through 5 and
+                counts your outreach actions in its own logs. Connected Stripe
+                results are webhook-verified automatically. For App
+                Store-distributed products, App Store Connect or RevenueCat
+                sales evidence is reviewed manually against the baseline and
+                60-day measurement window agreed in writing.
               </p>
             </div>
 
@@ -912,9 +916,7 @@ export default async function PlaybookSalesPage() {
                 </p>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                Do the work the tool tracks. If 60 days pass and your
-                connected Stripe shows no new paying customer, you get
-                both months back, in full.
+                {APP_STORE_GUARANTEE_TERMS}
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-start gap-2">
@@ -937,9 +939,9 @@ export default async function PlaybookSalesPage() {
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                   <span>
-                    <strong>Result.</strong> Stripe-verified. The tool
-                    watches your connected Stripe for a new paying
-                    customer.
+                    <strong>Result.</strong> Connected Stripe is verified
+                    automatically. App Store Connect or RevenueCat evidence is
+                    reviewed manually against the agreed baseline and window.
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -952,10 +954,10 @@ export default async function PlaybookSalesPage() {
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                   <span>
-                    <strong>Judged.</strong> At the 60-day mark. The code
-                    fires the refund. There is no &ldquo;please describe
-                    your experience.&rdquo; There is no
-                    email-the-founder.
+                    <strong>Judged.</strong> At the 60-day mark. Stripe proof
+                    can resolve automatically; App Store Connect or RevenueCat
+                    evidence is resolved through operator review under the
+                    written terms.
                   </span>
                 </li>
               </ul>
@@ -977,8 +979,9 @@ export default async function PlaybookSalesPage() {
               I&apos;ll take the $98 risk – start the Playbook
             </CheckoutButton>
             <p className="text-xs text-muted-foreground">
-              Founding-Builder price. Cancel anytime. The webhook returns the
-              $98 if your Stripe stays flat.
+              Founding-Builder price. Cancel anytime. Stripe proof resolves
+              automatically; App Store proof follows the written manual-review
+              terms above.
             </p>
           </div>
         </section>
@@ -1264,7 +1267,12 @@ export default async function PlaybookSalesPage() {
             The cost of waiting, in writing.
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-            Waiting costs two things: time and another 60 Tuesdays of the refresh-tweak-close ritual. The maximum cost of not waiting is $98 -- two months, refunded by code if the Playbook produces nothing. The math does not allow for a third outcome. Either the Stripe charge lands, or the $98 returns to your card automatically. The cost of doing nothing is not zero. It is another quarter of your life spent on a flat line you already know.
+            Waiting costs two things: time and another 60 Tuesdays of the
+            refresh-tweak-close ritual. The maximum cost of not waiting is $98
+            -- two months. Connected Stripe can resolve the result and refund
+            automatically. App Store Connect or RevenueCat evidence follows the
+            operator-reviewed path in the written guarantee. Either way, the
+            completion requirements, refund cap, and deadline stay the same.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
             If you close this tab without joining, here is what the next 60
@@ -1280,14 +1288,14 @@ export default async function PlaybookSalesPage() {
             spend them.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-4">
-            The other math is also simple. Two months at $49 is $98. If the
-            tool produces nothing, the webhook returns the $98 to your card
-            – automatically, with no inbox between you and the refund. If it
+            The other math is also simple. Two months at $49 is $98. Connected
+            Stripe can resolve the refund automatically. App Store Connect or
+            RevenueCat evidence is reviewed manually under the same completion
+            requirements, refund cap, and 60-day deadline. If the Playbook
             produces one paying customer at your current price, the cost of
-            this decision pays itself back forever, on the first charge.
-            There is no third outcome the math allows for. The price of
-            staying where you are is not zero. It is another quarter of
-            your life spent refreshing a number you already know.
+            this decision starts paying itself back on the first charge. The
+            price of staying where you are is not zero. It is another quarter
+            of your life spent refreshing a number you already know.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-6">
             Picture the next time someone in your life asks how the launch
@@ -1295,8 +1303,9 @@ export default async function PlaybookSalesPage() {
             &ldquo;we got our first paying customer last week.&rdquo;
             Picture the moment the Stripe email pings on your phone and you
             do not have to fake the reaction. That sentence and that ping
-            are what you are buying. The price is $98 capped, refunded by
-            code if the sentence stays out of reach.
+            are what you are buying. The price is $98 capped. Stripe proof can
+            resolve automatically; App Store Connect or RevenueCat proof follows
+            the operator-reviewed guarantee terms.
           </p>
 
           {/* CTA #4 – the close, immediately after the future-pace. */}

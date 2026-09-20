@@ -167,7 +167,8 @@
         "remedy": "LOCKED. Full refund of the 2 monthly payments ($49 x 2 = $98) made in the 60-day window.",
         "design_principle": "If an action cannot be verified, it must happen INSIDE the product. The product must be a DOING environment, not a teaching one - outreach happens in-tool so the software both helps and witnesses. Side benefit: kills Alex's 'not another tool' objection.",
         "billing": "Monthly subscription.",
-        "terms": "Judged AT the 60-day mark. Refund triggers only if (a) the tracked in-product milestones were completed AND (b) Stripe shows no new paying customer. Guarantee covers the 60-day window only.",
+        "terms": "Judged AT the 60-day mark. Refund triggers only if (a) the tracked in-product milestones were completed AND (b) no new paying customer is verified through an eligible proof path. Guarantee covers the 60-day window only.",
+        "app_store_proof_terms": "First-customer results may be verified through connected Stripe. For App Store-distributed products, App Store Connect or RevenueCat sales evidence may be reviewed manually against an agreed starting baseline and 60-day measurement window. Customer personal data may be redacted. The existing completion requirements, refund amount, and 60-day deadline remain unchanged.",
         "status": "FULLY BUILT AND LOCKED."
       },
       "urgency_scarcity": "",

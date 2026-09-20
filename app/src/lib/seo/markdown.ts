@@ -51,6 +51,7 @@ import {
   ORGANIZATION,
   ALTERNATE_NAMES,
 } from "@/lib/seo/entity";
+import { APP_STORE_GUARANTEE_TERMS } from "@/lib/guarantee-proof";
 import { glossaryTermSlug } from "@/lib/glossary";
 import { FAQ_ENTRIES } from "@/lib/faq-data";
 import {
@@ -244,8 +245,7 @@ function citationFooter(canonicalUrl: string): string {
 
 const PRICING_LINE =
   "Pricing: $1 one-time Starter (unlocks Playbook Steps 1 and 2); $49/month Core (the full seven-step Playbook). No annual upsell. No coaching tier.";
-const GUARANTEE_LINE =
-  "Guarantee: First verified paying customer in 60 days from the Playbook start date, or full refund (capped exposure $98). Enforced in code, read from the founder's connected Stripe account.";
+const GUARANTEE_LINE = `Guarantee: First verified paying customer in 60 days from the Playbook start date, or full refund (capped exposure $98). ${APP_STORE_GUARANTEE_TERMS}`;
 const AUDIENCE_LINE =
   "Audience: Post-launch, pre-revenue, non-engineer founders shipping consumer or B2B SaaS with AI tools (Lovable, Claude, Replit, v0, Cursor, Bolt, Bubble).";
 
