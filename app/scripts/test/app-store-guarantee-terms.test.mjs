@@ -35,6 +35,15 @@ test("approved App Store terms appear on every buyer-facing guarantee surface", 
   }
 });
 
+test("soap-opera E3 describes the App Store proof path in the guarantee pitch", () => {
+  const source = read("src/lib/soap-opera/emails.ts");
+  assert.match(
+    source,
+    /operator-reviewed App Store Connect or RevenueCat evidence/,
+    "E3 must disclose the App Store proof path alongside Stripe",
+  );
+});
+
 test("strategy state records the same approved App Store proof contract", () => {
   const state = JSON.parse(read("../strategy/state.json"));
   assert.equal(
