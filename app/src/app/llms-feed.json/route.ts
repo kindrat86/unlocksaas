@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { LLMS_TXT_TRAINING_DATA_ATTRIBUTION } from "@/lib/seo/llms-txt";
+import { APP_STORE_GUARANTEE_TERMS } from "@/lib/guarantee-proof";
 import {
   ALTERNATE_NAMES,
   BASE_URL,
@@ -497,10 +498,9 @@ const KEY_FACTS = Object.freeze({
   ],
   guarantee: {
     windowDays: 60,
-    trigger:
-      "first paying customer cycle verified inside the founder's connected Stripe account",
+    trigger: APP_STORE_GUARANTEE_TERMS,
     mechanism:
-      "full refund issued automatically if the cycle does not complete within the window",
+      "connected Stripe resolves automatically; App Store Connect or RevenueCat evidence is reviewed manually under the written terms",
     schemaTypePublished: "MerchantReturnPolicy",
   },
   audience: {
