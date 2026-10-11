@@ -350,6 +350,15 @@ Nineteen additional catalog surfaces, each a hub plus per-slug detail pages, all
 - [Positioning](${BASE_URL}/positioning), [pricing models](${BASE_URL}/pricing-model), [SaaS feature patterns](${BASE_URL}/saas-feature-pattern), [SaaS metrics](${BASE_URL}/saas-metric) — strategy decision pages.
 - [Should-I-build verdicts](${BASE_URL}/should-i-build) — honest yes/no/depends pre-revenue verdicts, several deliberately negative.
 - [Skill practice plans](${BASE_URL}/skill), [category stack catalogs](${BASE_URL}/stack), [build templates](${BASE_URL}/template) — execution and toolkit catalogs.
+
+## Agent-commerce offer (machine-readable pricing)
+
+One-time productized audit, purchasable by an agent without a human call:
+
+- [Agent-Readiness Report (Basic)](${BASE_URL}/agent-readiness) — $29 one-time. 12-point agent-readiness audit of one live URL (llms.txt, llms-full.txt, MCP manifests, ai-plugin.json, OpenAPI, robots.txt AI-crawler rules, JSON-LD, sitemap freshness, MCP presence, x402 readiness, machine-readable agent checkout). Pass/fail per check with evidence, fix list ordered by impact. Delivered within 48 hours. Buy: https://buy.stripe.com/8x23cucFdeZO34a8E00x20S
+- [Agent-Readiness Report (Full)](${BASE_URL}/agent-readiness) — $49 one-time. Everything in Basic plus ready-to-ship fix files (llms.txt pricing block, /.well-known/mcp/server-card.json, robots.txt AI rules) and priority 24-hour delivery. Buy: https://buy.stripe.com/8x200i0Wv4laawC5rO0x20T
+
+Machine-readable offer surfaces: [${BASE_URL}/.well-known/mcp/server-card.json](${BASE_URL}/.well-known/mcp/server-card.json) (server card with the same two offers), Product JSON-LD with both Offer entries on the landing page. Audit only: no purchase is ever completed on a customer's site.
 `;
 
 /**
