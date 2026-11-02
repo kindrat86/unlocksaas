@@ -39,7 +39,7 @@
     "geist": "^1.7.0",
     "lucide-react": "^1.16.0",
     "mcp-handler": "^1.1.0",
-    "next": "^16.2.11",
+    "next": "^16.4.3",
     "next-themes": "^0.4.6",
     "pdf-lib": "^1.17.1",
     "posthog-js": "^1.373.5",
@@ -51,14 +51,14 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "workflow": "^4.2.4",
-    "zod": "^4.4.3"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9",
-    "eslint-config-next": "^16.2.11",
+    "eslint-config-next": "^16.4.3",
     "postcss": "^8.5.23",
     "shadcn": "^4.7.0",
     "tailwindcss": "^3.4.1",
@@ -66,23 +66,36 @@
   },
   "overrides": {
     "@workflow/core": {
-      "devalue": "5.9.1",
+      "devalue": "5.9.4",
       "nanoid": "5.1.16"
     },
     "@workflow/world-local": {
-      "undici": "7.29.0"
+      "undici": "7.30.1"
     },
     "@workflow/world-vercel": {
-      "undici": "7.29.0"
+      "undici": "7.30.1"
     },
     "postcss": "$postcss",
-    "shell-quote": "1.10.0",
-    "sharp": "0.35.4",
-    "fast-uri": "3.1.6",
-    "body-parser": "2.3.0",
-    "dompurify": "3.4.13",
-    "postcss-selector-parser": "6.1.3",
-    "piscina": "4.9.3",
-    "protobufjs": "7.5.3"
+    "shell-quote": "1.12.0",
+    "sharp": "0.35.5",
+    "fast-uri": "3.1.9",
+    "body-parser": "2.4.0",
+    "dompurify": "3.4.17",
+    "postcss-selector-parser": "6.1.5",
+    "piscina": "4.9.4",
+    "protobufjs": "7.5.3",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "@hono/node-server": "2.1.5",
+    "@xhmikosr/decompress": "11.1.4",
+    "brace-expansion@^1": "1.1.21",
+    "brace-expansion@^2": "2.1.7",
+    "hono": "4.13.16",
+    "ip-address": "10.7.5",
+    "proxy-addr": "2.0.8",
+    "source-map-js": "1.2.2",
+    "undici@^6": "6.29.1",
+    "zod@^4": "$zod",
+    "brace-expansion@^5": "5.0.12",
+    "minimatch@^10": "11.0.4"
   }
 }
