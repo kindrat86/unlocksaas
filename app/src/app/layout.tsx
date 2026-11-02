@@ -24,6 +24,7 @@ import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { PostHogPageViewClient } from "@/components/analytics/posthog-pageview-client";
 import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
 import { SpeedInsightsDeferred } from "@/components/analytics/speed-insights-deferred";
+import { Analytics } from "@vercel/analytics/next";
 import { buildVerification } from "@/lib/seo/verification";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
 import { SiteHeader } from "@/components/blocks/site-header";
@@ -335,6 +336,7 @@ export default function RootLayout({
       
         {/* Brunson Trust Bar, Dotcom Secrets Ch 7 */}
         <BrunsonTrustBar />
+        <Analytics />
       </body>
     </html>
   );
