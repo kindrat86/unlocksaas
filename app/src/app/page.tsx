@@ -123,7 +123,7 @@ export default function LandingPage() {
     <div className="bg-background">
       {/* ANNOUNCEMENT BAR */}
       <div className="bg-primary text-primary-foreground text-center text-xs sm:text-sm font-medium tracking-wide px-4 py-2.5">
-        Shipped a SaaS, no customers? The 60-day playbook, money back enforced by code.
+        New and free: find the live threads where people describe your customer&apos;s problem.
       </div>
 
       {/* HERO */}
@@ -140,48 +140,49 @@ export default function LandingPage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
           <div>
             <Badge variant="secondary" className="mb-5 text-primary border-primary/30 bg-primary/5">
-              Money back enforced by code, not a support ticket
+              Free tool · no signup · finds threads, never posts
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05] text-foreground">
-              Land your <span className="text-primary">first paying customer</span> in 60 days.
+              Find <span className="text-primary">live threads</span> where people describe your customer&apos;s problem.
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl">
-              The 7-step playbook turns the SaaS you already shipped into a verified first
-              customer. If it does not land within 60 days, the refund fires without asking.
+              Describe your product and the problem it solves, in your own words. Get up to 20
+              public threads from the last 30-90 days — Hacker News, Reddit, Stack Overflow —
+              where real people describe exactly that problem, each with a why-it-matched quote,
+              its link, age, engagement, and a value-first reply draft you post yourself.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <a
-                href="/diagnostic"
+                href="/find"
                 className="inline-flex items-center justify-center h-12 px-8 rounded-md bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-colors"
               >
-                Get my free 2-minute diagnosis
+                Find live threads (free)
               </a>
               <a
-                href="#steps"
+                href="#playbook"
                 className="inline-flex items-center justify-center h-12 px-8 rounded-md border border-input bg-background text-foreground font-semibold text-base hover:bg-accent hover:text-accent-foreground transition-colors"
               >
-                See the 7 steps
+                See the 60-day playbook
               </a>
             </div>
           </div>
 
-          {/* CALENDAR MOCK */}
+          {/* RESULTS MOCK — honest: this is a real example shape, not a fake count */}
           <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-border">
-              <span className="font-semibold text-foreground">Your 60-day path</span>
-              <span className="text-xs text-muted-foreground font-medium">Day 21 of 60</span>
+              <span className="font-semibold text-foreground">What you get</span>
+              <span className="text-xs text-muted-foreground font-medium">live public threads</span>
             </div>
             <ol className="flex flex-col gap-2.5">
               {[
-                { label: "Audit the product for buyer friction", day: "D1-7", state: "done" },
-                { label: "Define the one customer it serves", day: "D8-14", state: "done" },
-                { label: "Write the offer that converts", day: "D15-24", state: "now" },
-                { label: "Open the 7 direct channels", day: "D25-38", state: "todo" },
-                { label: "Run the verification calls", day: "D39-50", state: "todo" },
-                { label: "Close the first paying customer", day: "D51-60", state: "todo" },
+                { label: "Thread: the exact question your customer asks", day: "3d old", state: "now" },
+                { label: "Why it matched: a quoted sentence from the thread", day: "quoted", state: "done" },
+                { label: "Reply draft: answer first, disclose, no link", day: "ready", state: "done" },
+                { label: "Each subreddit's self-promo rules, linked", day: "rules", state: "todo" },
+                { label: "You post it yourself, from your own account", day: "you", state: "todo" },
               ].map((s) => (
                 <li
-                  key={s.day}
+                  key={s.label}
                   className={[
                     "flex items-center gap-3 rounded-md p-3 bg-secondary/40",
                     s.state === "now" ? "ring-1 ring-primary bg-primary/5" : "",
@@ -214,14 +215,6 @@ export default function LandingPage() {
                 </li>
               ))}
             </ol>
-            <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                34% complete
-              </span>
-              <div className="h-2 w-28 rounded-full bg-secondary overflow-hidden">
-                <div className="h-full bg-primary" style={{ width: "34%" }} />
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -267,8 +260,8 @@ export default function LandingPage() {
 
       <Separator className="max-w-6xl mx-auto" />
 
-      {/* THE 7 STEPS */}
-      <section id="steps" className="py-20 bg-secondary/30">
+      {/* THE 7 STEPS (the playbook the tool feeds into) */}
+      <section id="playbook" className="py-20 bg-secondary/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary mb-4">
             The playbook
@@ -363,10 +356,12 @@ export default function LandingPage() {
             rates, or median timelines on this page. We will not invent them.
           </p>
           <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-            What exists today: the full day-by-day playbook, the audit templates, the
-            channel scripts, and the code-enforced refund. The guarantee is the proof
-            we can make honestly: if you complete the 60 days with no paying customer,
-            your money comes back automatically.
+            What exists today: the free Live Threads Finder (this is us using it
+            on our own products first — results posted as they come), the full
+            day-by-day playbook, the audit templates, the channel scripts, and
+            the code-enforced refund. The guarantee is the proof we can make
+            honestly: if you complete the 60 days with no paying customer, your
+            money comes back automatically.
           </p>
         </div>
       </section>

@@ -340,6 +340,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       alternates: hreflang(`${base}/diagnostic`),
     },
+    // Live Threads Finder — the pivot tool (2026-11-03 phase 3). Free,
+    // no-signup utility that earns the click; indexable with a canonical.
+    {
+      url: `${base}/find`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: hreflang(`${base}/find`),
+    },
     // Reverse-squeeze long-form. Cold reader on Google long-tail lands here.
     {
       url: `${base}/stories`,
