@@ -16,6 +16,12 @@ const forbidden: Array<[RegExp, string]> = [
   [/Shipped SaaS, zero customers\. Then this\./, "testimonial-section headline"],
   [/drawn from real closes/, "unsupported 'real closes' proof claim"],
   [/Most founders who finish get their first customer/, "unsupported FAQ outcome claim"],
+  // 2026-11-03 honesty cleanup: the unsourced "92% of SaaS never reach
+  // $1,000 MRR" headline stat is banned outright. No source was ever cited;
+  // the honest framing ("0 paying customers is where most shipped SaaS
+  // sits") replaced it in this same deploy.
+  [/92%/, "unsourced 92% headline statistic"],
+  [/never reach \$1,000 in monthly revenue/, "unsourced MRR-attainment statistic"],
 ];
 
 test("homepage carries no invented customer proof", () => {

@@ -421,6 +421,17 @@ const nextConfig = {
       // posted by Verified Builders on social, lands on the 302, and
       // catalogues the redirect target as an indexing issue).
       "/r/:code",
+      // Templated thin-content families noindexed 2026-11-03 (pivot
+      // phase 1, honesty cleanup). The per-page metadata already sets
+      // robots: { index: false }; this HTTP header is the defence-in-
+      // depth tier that also covers the /md markdown siblings and
+      // survives any per-page metadata regression. Pages stay 200.
+      "/funnel-playbook",
+      "/funnel-playbook/:path*",
+      "/vs",
+      "/vs/:path*",
+      "/why-isnt-my",
+      "/why-isnt-my/:path*",
     ];
 
     return [

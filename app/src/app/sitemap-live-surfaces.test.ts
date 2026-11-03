@@ -20,4 +20,24 @@ describe("sitemap public live surfaces", () => {
       );
     }
   });
+
+  // 2026-11-03 pivot phase 1 (honesty cleanup): the templated
+  // /funnel-playbook, /vs and /why-isnt-my families stay publicly
+  // accessible (200) but are noindexed and must never re-enter the
+  // sitemap. Listing a noindex URL in the sitemap is contradictory and
+  // GSC reports it as "Excluded by 'noindex' tag".
+  it("does not list the noindexed templated families", () => {
+    for (const path of ["/funnel-playbook", "/vs", "/why-isnt-my"]) {
+      assert.equal(
+        sitemapSource.includes(`url: \`${"${base}"}${path}\``),
+        false,
+        `${path} is noindexed and must not be sitemap-listed`,
+      );
+      assert.equal(
+        sitemapSource.includes(`url: \`${"${base}"}${path}/`),
+        false,
+        `${path}/<slug> details are noindexed and must not be sitemap-listed`,
+      );
+    }
+  });
 });

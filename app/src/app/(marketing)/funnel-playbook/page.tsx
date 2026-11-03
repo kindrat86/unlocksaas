@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Step-by-step playbooks for the eight Brunson funnel archetypes: tripwire, VSL, challenge, Perfect Webinar, Soap Opera, OTO, Seinfeld Email, and Value Ladder.",
   alternates: pageAlternates(CANONICAL),
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     title: "Brunson Funnel Playbooks",

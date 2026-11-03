@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   description:
     "Symmetric head-to-head comparisons. Dimension-by-dimension verdicts, honest take, and the right pick for indie SaaS founders specifically.",
   alternates: markdownAlternate("/vs", "/vs.md"),
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: true },
   openGraph: {
     title: "Compare",
     description:

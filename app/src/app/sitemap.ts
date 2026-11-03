@@ -3,11 +3,16 @@ import { ALTERNATIVE_SLUGS } from "@/lib/alternatives";
 import { TEARDOWN_SLUGS } from "@/lib/funnel-teardowns";
 import { PRICING_TEARDOWN_SLUGS } from "@/lib/pricing-teardowns";
 import { POST_MORTEM_SLUGS } from "@/lib/post-mortems";
-import { COMPARISON_SLUGS } from "@/lib/comparisons";
+// COMPARISON_SLUGS import removed 2026-11-03 (pivot phase 1): the /vs
+// family is noindexed; see the block-#4 note in the entries below.
 import { CATEGORY_SLUGS } from "@/lib/categories";
 import { PRESS_TOPIC_SLUGS } from "@/lib/press-topics";
 import { GLOSSARY_SLUGS } from "@/lib/glossary";
-import { WHY_ISNT_MY_SLUGS } from "@/lib/why-isnt-my";
+// NOTE 2026-11-03 (pivot phase 1): WHY_ISNT_MY_SLUGS, COMPARISON_SLUGS,
+// FUNNEL_PLAYBOOK_SLUGS and FUNNEL_MATRIX_SLUGS are deliberately no
+// longer imported here — those three families are noindexed (templated
+// thin content) and must not re-enter the sitemap. Guarded by
+// sitemap-live-surfaces.test.ts.
 import { NICHE_SLUGS } from "@/lib/niches";
 import { PARTNER_SLUGS } from "@/lib/partners";
 import { STACK_SLUGS } from "@/lib/stacks";
@@ -15,8 +20,6 @@ import { STACK_SLUGS as STACK_CATALOG_SLUGS } from "@/lib/stacks-catalog";
 import { CITY_SLUGS } from "@/lib/founders-in";
 import { LAUNCH_CHECKLIST_SLUGS } from "@/lib/launch-checklists";
 import { BENCHMARK_SLUGS } from "@/lib/benchmarks";
-import { FUNNEL_PLAYBOOK_SLUGS } from "@/lib/funnel-playbooks";
-import { FUNNEL_MATRIX_SLUGS } from "@/lib/funnel-playbook-matrix";
 import { ANSWER_SLUGS } from "@/lib/answers";
 import { SHOULD_I_SLUGS } from "@/lib/should-i";
 import { SCRIPT_SLUGS } from "@/lib/scripts";
@@ -597,24 +600,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #4 — head-to-head comparisons.
-    // Data source: src/lib/comparisons.ts. Highest-intent SaaS-research
-    // search class: "[A] vs [B]". Article + FAQPage + BreadcrumbList
-    // JSON-LD per detail page. CollectionPage on the hub.
+    // NOINDEXED 2026-11-03 (pivot phase 1, honesty cleanup). The /vs
+    // family (hub + COMPARISON_SLUGS details) is templated thin content
+    // that no longer matches the pivot ("20 live threads + reply drafts"
+    // tool). Pages stay publicly accessible (200) but carry
+    // robots: { index: false } in the page metadata and an X-Robots-Tag
+    // noindex header in next.config.mjs, so they are REMOVED from the
+    // sitemap (listing noindex URLs here triggers GSC "Excluded by
+    // 'noindex' tag"). Guarded by sitemap-live-surfaces.test.ts.
     // ---------------------------------------------------------------------
-    {
-      url: `${base}/vs`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-      alternates: hreflang(`${base}/vs`),
-    },
-    ...COMPARISON_SLUGS.map((slug) => ({
-      url: `${base}/vs/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-      alternates: hreflang(`${base}/vs/${slug}`),
-    })),
+    // ---------------------------------------------------------------------
     // ---------------------------------------------------------------------
     // /compare URLs REMOVED from sitemap (2026-07-28 GSC fix).
     //
@@ -671,24 +666,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #7 — panic-mode element diagnostics.
-    // Data source: src/lib/why-isnt-my.ts. Targets "why isn't my X
-    // converting" – the highest commercial intent search the ICP makes.
-    // Article + FAQPage + BreadcrumbList JSON-LD per detail page.
+    // NOINDEXED 2026-11-03 (pivot phase 1, honesty cleanup). The
+    // /why-isnt-my family (hub + WHY_ISNT_MY_SLUGS details) is templated
+    // thin content; pages stay publicly accessible (200) but carry
+    // robots: { index: false } + an X-Robots-Tag noindex header, and are
+    // REMOVED from the sitemap. Guarded by sitemap-live-surfaces.test.ts.
     // ---------------------------------------------------------------------
-    {
-      url: `${base}/why-isnt-my`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.65,
-      alternates: hreflang(`${base}/why-isnt-my`),
-    },
-    ...WHY_ISNT_MY_SLUGS.map((slug) => ({
-      url: `${base}/why-isnt-my/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.55,
-      alternates: hreflang(`${base}/why-isnt-my/${slug}`),
-    })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #8 — niche / cohort pages.
     // Data source: src/lib/niches.ts. Targets "[product] for [niche]"
@@ -808,17 +791,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #10 — Brunson funnel playbooks.
-    // Data source: src/lib/funnel-playbooks.ts. Targets action-intent
-    // build queries ("tripwire playbook", "perfect webinar structure").
-    // Article + HowTo + FAQPage + BreadcrumbList JSON-LD per detail.
+    // NOINDEXED 2026-11-03 (pivot phase 1, honesty cleanup). The
+    // /funnel-playbook family (hub + FUNNEL_PLAYBOOK_SLUGS +
+    // FUNNEL_MATRIX_SLUGS details) is templated thin content; pages stay
+    // publicly accessible (200) but carry robots: { index: false } + an
+    // X-Robots-Tag noindex header, and are REMOVED from the sitemap.
+    // Guarded by sitemap-live-surfaces.test.ts.
     // ---------------------------------------------------------------------
-    {
-      url: `${base}/funnel-playbook`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-      alternates: hreflang(`${base}/funnel-playbook`),
-    },
+    // ---------------------------------------------------------------------
     // ---------------------------------------------------------------------
     // /best — the "best SaaS customer acquisition playbooks" listicle.
     // Canonical AEO listicle format (43.8% of ChatGPT citations are
@@ -836,32 +816,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
       alternates: hreflang(`${base}/best`),
     },
-    ...FUNNEL_PLAYBOOK_SLUGS.map((slug) => ({
-      url: `${base}/funnel-playbook/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-      alternates: hreflang(`${base}/funnel-playbook/${slug}`),
-    })),
+    ...([] as MetadataRoute.Sitemap),
     // ---------------------------------------------------------------------
     // pSEO block #10b — funnel × niche matrix combos.
-    // Data source: src/lib/funnel-playbook-matrix.ts (synthesised from
-    // FUNNEL_PLAYBOOK_ENTRIES × NICHE_ENTRIES). Targets cohort-specific
-    // money-keyword shapes ("tripwire funnel for course creators",
-    // "VSL for AI wrappers"). Article + HowTo + FAQPage +
-    // BreadcrumbList JSON-LD per detail, same as bare-funnel pages.
-    // Priority is 0.4 (slightly below bare-funnel pages) because the
-    // funnel-level pages are the primary canonical surface for the
-    // mechanic; matrix combos serve the long-tail cohort-shape
-    // searches and crosslink upward to both parents.
+    // NOINDEXED 2026-11-03 together with the bare-funnel pages above
+    // (pivot phase 1, honesty cleanup). Removed from the sitemap; pages
+    // stay 200 with robots: { index: false } + X-Robots-Tag noindex.
     // ---------------------------------------------------------------------
-    ...FUNNEL_MATRIX_SLUGS.map((slug) => ({
-      url: `${base}/funnel-playbook/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.4,
-      alternates: hreflang(`${base}/funnel-playbook/${slug}`),
-    })),
+    ...([] as MetadataRoute.Sitemap),
     // ---------------------------------------------------------------------
     // Programmatic SEO block #11 — direct-answer AEO pages.
     // Data source: src/lib/answers.ts. Pure citation-bait: each page

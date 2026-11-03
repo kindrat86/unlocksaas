@@ -93,7 +93,7 @@ export async function generateMetadata(props: {
       title: bare.metaTitle,
       description: bare.metaDescription,
       alternates: markdownAlternate(canonical, `${canonical}/md`),
-      robots: { index: true, follow: true },
+      robots: { index: false, follow: true },
       openGraph: {
         type: "article",
         title: bare.metaTitle,
@@ -117,7 +117,7 @@ export async function generateMetadata(props: {
       title: matrix.metaTitle,
       description: matrix.metaDescription,
       alternates: markdownAlternate(canonical, `${canonical}/md`),
-      robots: { index: true, follow: true },
+      robots: { index: false, follow: true },
       openGraph: {
         type: "article",
         title: matrix.metaTitle,

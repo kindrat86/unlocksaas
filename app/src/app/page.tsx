@@ -241,8 +241,8 @@ export default function LandingPage() {
           <div className="mt-12 grid sm:grid-cols-3 gap-5">
             {[
               {
-                big: "92%",
-                desc: "of SaaS products that ship never reach $1,000 in monthly revenue. Not because the product is bad, because the founder stops at the build.",
+                big: "0",
+                desc: "paying customers is where most shipped SaaS sits the week after launch. The product works, the launch tweet got likes, the Stripe line stays flat. Building was never the bottleneck.",
               },
               {
                 big: "1",

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   description:
     "Panic-mode diagnostic guides for indie SaaS founders. Eight specific funnel-element pages, each labeling the issue Wrong Person, Weak Offer, or Weak Belief, with the fix to ship this week.",
   alternates: pageAlternates(CANONICAL),
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     title: "Why Isn't My Funnel Converting?",
