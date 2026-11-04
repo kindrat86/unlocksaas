@@ -1155,7 +1155,9 @@ export default async function PlaybookSalesPage() {
                   </p>
                   <p className="text-sm leading-relaxed">
                     Pick: you can be a praised builder for another year,
-                    or you can be a Verified Builder by August.
+                    or you can take seat #001 — the public directory
+                    currently shows 0 verified builders, and seat #001 is
+                    still open.
                   </p>
                 </CardContent>
               </Card>
@@ -1332,7 +1334,7 @@ export default async function PlaybookSalesPage() {
         {/* a list because the avatar-skeptic respects a list more than   */}
         {/* a soft paragraph. The identity callout above the button is    */}
         {/* the polarity peak: praised builder for another year, or      */}
-        {/* Verified Builder by August. Pick one.                         */}
+        {/* Verified Builder seat #001. Pick one.                         */}
         {/* ============================================================ */}
         <section className="mb-12">
           <div className="rounded-lg border border-border bg-muted/30 p-5 sm:p-6 mb-10 text-sm text-muted-foreground leading-relaxed space-y-3">

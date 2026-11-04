@@ -124,7 +124,7 @@ Each item from workbook 01 Section 2's offer stack gets its own slide. Slide str
 | Close | Wording |
 |---|---|
 | Story re-anchor | "Remember the flat Stripe line. Remember the ritual of refresh-tweak-close. Remember what you wanted when you first launched." |
-| Identity | "Pick: you can be a praised builder for another year, or you can be a Verified Builder by August." |
+| Identity | "Pick: you can be a praised builder for another year, or you can take seat #001 — the public directory currently shows 0 verified builders, and seat #001 is still open." |
 | Future pacing | "Picture the next conversation when someone asks how the launch is going. Picture saying 'we got our first paying customer last week.' That sentence is what you are buying." |
 
 **Category 4: Urgency / Scarcity (Slide 43), DEFERRED**

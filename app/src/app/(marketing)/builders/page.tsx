@@ -396,9 +396,10 @@ export default async function BuildersDirectoryPage() {
         {/* ── Footer: quiet attribution + one CTA ─────────────────────── */}
         <footer className="mt-16 border-t pt-8 space-y-4 text-sm text-muted-foreground">
           <p className="leading-relaxed">
-            The directory is part of UnlockSaaS — the Playbook that helped these
-            founders get to a paying customer in 60 days, verified by Stripe or
-            refunded. If you shipped a product and have not made the line move
+            The directory is part of UnlockSaaS — a 60-day playbook for
+            working toward your first paying customer. The public directory
+            currently shows 0 verified builders. If you shipped a product and
+            have not made the line move
             yet, the door starts at the{" "}
             <Link
               href="/diagnostic"
