@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FindTool } from "@/components/find/find-tool";
 import { Badge } from "@/components/ui/badge";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
+import { Event } from "@/lib/analytics/events";
 
 /**
  * /find — Live Threads Finder (pivot phase 3, 2026-11-03).
@@ -23,6 +25,7 @@ export const metadata: Metadata = {
 export default function FindPage() {
   return (
     <div className="bg-background">
+      <PageViewTracker event={Event.FindPageViewed} />
       {/* HERO */}
       <section className="border-b border-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-14 pb-10">

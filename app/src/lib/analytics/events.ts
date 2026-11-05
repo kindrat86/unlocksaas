@@ -81,6 +81,19 @@ export const Event = {
   OtoUpgradeClicked: "oto_upgrade_clicked",
   OtoDeclined: "oto_declined",
 
+  // Live Threads Finder (/find, pivot phase 3, 2026-11-03). Anonymous
+  // top-of-funnel tool funnel: viewed -> run_submitted -> results_viewed |
+  // run_failed -> draft_copied. The 2026-11-04 traffic audit found the tool
+  // had ZERO named events — pageviews alone cannot tell a real tool run from
+  // a bounce, so the pivot was unmeasurable from the day it shipped.
+  // draft_copied is the strongest intent signal (the visitor is about to
+  // post a value-first reply built from our scaffold).
+  FindPageViewed: "find_page_viewed",
+  FindRunSubmitted: "find_run_submitted",
+  FindResultsViewed: "find_results_viewed",
+  FindRunFailed: "find_run_failed",
+  FindDraftCopied: "find_draft_copied",
+
   // Post-Starter monetization stack (2026-05-21 audit Action #4).
   // Order bump on /starter + three-step OTO chain after the $1 charge:
   //   $1 cart  →  +$27 bump  →  $97 Vault  →  $27 downsell  →  $297 lifetime.

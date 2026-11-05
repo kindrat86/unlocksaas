@@ -20,6 +20,8 @@ import { useCallback, useMemo, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { track } from "@/lib/analytics/client";
+import { Event } from "@/lib/analytics/events";
 
 type SourceStatus = {
   source: string;
@@ -188,7 +190,17 @@ function ThreadCard({
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Reply draft (edit the [brackets], post it yourself)
           </p>
-          <CopyButton text={draft} label="Copy draft" />
+          <CopyButton
+            text={draft}
+            label="Copy draft"
+            onCopied={() =>
+              track(Event.FindDraftCopied, {
+                source: thread.source,
+                age_days: thread.age_days,
+                score: thread.score,
+              })
+            }
+          />
         </div>
         <pre className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-foreground bg-secondary/30 border border-border rounded-md p-4 font-sans">
           {draft}
@@ -223,6 +235,11 @@ export function FindTool() {
     setLoading(true);
     setError(null);
     setResult(null);
+    track(Event.FindRunSubmitted, {
+      problem_length: problem.trim().length,
+      has_product: product.trim().length > 0,
+      max_age_days: maxAge,
+    });
     try {
       const res = await fetch("/api/thread-finder", {
         method: "POST",
@@ -239,13 +256,27 @@ export function FindTool() {
         detail?: string;
       };
       if (!res.ok) {
+        track(Event.FindRunFailed, {
+          http_status: res.status,
+          error: (json.detail || json.error || "unknown").slice(0, 120),
+        });
         setError(
           json.detail || json.error || `Request failed (HTTP ${res.status}).`
         );
         return;
       }
+      track(Event.FindResultsViewed, {
+        threads: json.threads.length,
+        total_fetched: json.total_fetched,
+        sources_ok: json.sources.filter((s) => s.ok).length,
+        cached: json.cached,
+      });
       setResult(json);
     } catch (e) {
+      track(Event.FindRunFailed, {
+        http_status: 0,
+        error: (e instanceof Error ? e.message : "network error").slice(0, 120),
+      });
       setError(
         e instanceof Error ? e.message : "Network error. Try again in a moment."
       );
