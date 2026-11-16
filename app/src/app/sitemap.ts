@@ -337,22 +337,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       alternates: hreflang(`${base}/diagnostic`),
     },
-    // Live Threads Finder, restored from main. /find is indexable.
-    // /find/results stays noindex in its own metadata and is listed so the
-    // route is in the sitemap, as required for this restore.
+    // Live Threads Finder, restored from main. /find is indexable and listed.
+    // /find/results stays noindex in its own metadata, so it is not listed.
     {
       url: `${base}/find`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
       alternates: hreflang(`${base}/find`),
-    },
-    {
-      url: `${base}/find/results`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.5,
-      alternates: hreflang(`${base}/find/results`),
     },
     // Reverse-squeeze long-form. Cold reader on Google long-tail lands here.
     {
