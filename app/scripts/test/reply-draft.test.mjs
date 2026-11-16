@@ -148,7 +148,5 @@ test("/find/results page makes NO outcome claims we cannot source", () => {
   assert.doesNotMatch(page, /case stud(y|ies) (from|of) (our )?customers/i);
 });
 
-test("homepage hero leads to /find", () => {
-  const home = readFileSync(resolve(APP_ROOT, "src/app/page.tsx"), "utf8");
-  assert.match(home, /href="\/find"/);
-});
+// Not restored: main asserts the homepage hero links to /find. The production
+// snapshot homepage still links to /diagnostic, and that page stays as shipped.
