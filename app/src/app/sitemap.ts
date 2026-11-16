@@ -1387,18 +1387,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
       alternates: hreflang(`${base}/dataset`),
     },
-    {
-      url: `${base}/dataset/indie-saas-teardowns.json`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${base}/dataset/indie-saas-teardowns.csv`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
+    // 2026-11-16 indexing QA: bundle/per-table CSV+JSON downloads and
+    // /dataset/*/raw artifacts are omitted here. Live Link headers
+    // canonicalize those files to /dataset or the human-readable parent,
+    // so listing them produced GSC alternate/canonical exclusions.
+    // The files themselves stay live.
     // Per-table CSVs – same dataset, narrower slices with table-
     // specific columns. Lifted at priority 0.45 (just under the bundle
     // downloads) so Google Dataset Search counts them as distinct
@@ -1407,36 +1400,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // DATASET_PER_TABLE_CSV, add a sitemap entry here in the same
     // commit so the new distribution is crawler-discoverable on first
     // deploy.
-    {
-      url: `${base}/dataset/tables/funnel-teardowns.csv`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.45,
-    },
-    {
-      url: `${base}/dataset/tables/pricing-teardowns.csv`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.45,
-    },
-    {
-      url: `${base}/dataset/tables/comparisons.csv`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.45,
-    },
-    {
-      url: `${base}/dataset/tables/alternatives.csv`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.45,
-    },
-    {
-      url: `${base}/dataset/tables/categories.csv`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.45,
-    },
     // -------------------------------------------------------------------------
     // Annual flagship report (Surface C – linkable asset / off-page lift).
     //
@@ -1486,12 +1449,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
     },
-    {
-      url: `${base}/dataset/huggingface/raw`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
     // Zenodo submission surface (2026-05-20 DOI uplift). Parallel to the
     // Hugging Face pair above: /dataset/zenodo is the human-readable
     // canonical, /dataset/zenodo/raw is the machine artifact (the JSON
@@ -1505,12 +1462,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.5,
-    },
-    {
-      url: `${base}/dataset/zenodo/raw`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
     },
     // -------------------------------------------------------------------------
     // Dataset changelog podcast (Surface D – GEO/AEO discovery
@@ -1692,47 +1643,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
     {
-      url: `${base}/llms-full.txt`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
       url: `${base}/llms-feed.json`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
     },
+    // 2026-11-16 indexing QA: /llms-full.txt (canonical: /) and the
+    // /llms-{claude,gpt,gemini,perplexity}.txt variants (canonical:
+    // /llms.txt) are omitted here. Files stay live.
     // Per-model variants of /llms.txt – static dedicated routes that mirror
     // /llms.txt?model=<key>. Listed so retrievers walking the sitemap
     // discover their own model variant in one pass. The body is the shared
     // LLMS_TXT_BODY prefixed by a short routing preamble; no exclusive
     // content per model (Brunson Hard-Rule). Priority 0.3 matches the
     // canonical /llms.txt so search-engine crawl budget is not skewed.
-    {
-      url: `${base}/llms-claude.txt`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${base}/llms-gpt.txt`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${base}/llms-gemini.txt`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${base}/llms-perplexity.txt`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
     // -------------------------------------------------------------------------
     // Surface B/D – Glossary audio podcast feed (VEO / AEO uplift).
     //

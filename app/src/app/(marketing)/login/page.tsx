@@ -7,6 +7,12 @@ import { LoginForm } from "./login-form";
 export const metadata = {
   title: "Sign in",
   description: "Sign in to your Unlock SaaS account with a one-time email link.",
+  // Align with next.config.mjs X-Robots-Tag: noindex, nofollow on /login.
+  // Without this, the HTML meta is "index, follow" while the HTTP header is
+  // noindex, and the HTML canonical inherited from the root layout points at
+  // the homepage (live, 2026-11-16).
+  robots: { index: false, follow: false },
+  alternates: { canonical: "https://unlocksaas.com/login" },
 };
 
 // Cache Components: searchParams + Supabase auth read are request-time inputs.
