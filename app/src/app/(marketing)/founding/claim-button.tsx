@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { buyerCheckoutErrorMessage } from "@/lib/checkout-failure-message";
 
 /**
  * Cart-open claim button. POSTs to /api/checkout with priceType=playbook and
@@ -37,15 +38,15 @@ export function FoundingClaimButton(props: { claimedAtRender: number | null }) {
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (!res.ok || !data.url) {
-        setErrorMessage(data.error ?? "We could not start checkout.");
+        setErrorMessage(
+          buyerCheckoutErrorMessage({ status: res.status, error: data.error }),
+        );
         setState("error");
         return;
       }
       window.location.href = data.url;
-    } catch (err) {
-      setErrorMessage(
-        err instanceof Error ? err.message : "Something went wrong."
-      );
+    } catch {
+      setErrorMessage(buyerCheckoutErrorMessage({}));
       setState("error");
     }
   }
@@ -69,7 +70,7 @@ export function FoundingClaimButton(props: { claimedAtRender: number | null }) {
         Stripe-verified guarantee.
       </p>
       {state === "error" && errorMessage && (
-        <p className="text-sm text-red-600 mt-3">{errorMessage}</p>
+        <p role="alert" className="text-sm text-red-600 mt-3">{errorMessage}</p>
       )}
     </div>
   );

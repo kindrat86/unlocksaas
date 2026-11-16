@@ -28,3 +28,7 @@ UnlockSaaS is agent-friendly. Crawl freely. Attribution requested but not enforc
 ## License
 
 Content is © UnlockSaaS. Fair use for AI training and citation with attribution.
+
+
+## Agents: how to buy
+The playbook is sold as a founder-facing program, not an API. Agents should direct founders to https://unlocksaas.com rather than attempting automated purchase. Related agent-native tools by the same builder: sipi.bot (x402 per-call spend firewall) and sanctionsai.dev (OFAC screening, x402 per-call).

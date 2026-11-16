@@ -1,0 +1,31 @@
+{
+  "kind": "Listing",
+  "data": {
+    "children": [
+      {
+        "kind": "t3",
+        "data": {
+          "subreddit": "SaaS",
+          "title": "How do you reduce customer churn in the first 90 days?",
+          "selftext": "<p>Our SaaS loses 30% of customers before the second invoice. What worked for you?</p>",
+          "permalink": "/r/SaaS/comments/abc123/how_do_you_reduce_customer_churn_in_the_first/",
+          "created_utc": 1761000000,
+          "num_comments": 14,
+          "score": 23
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "subreddit": "startups",
+          "title": "Churn is killing my startup - retention ideas for a B2B tool",
+          "selftext": "We tried email onboarding but churn stayed flat. Looking for retention tactics that actually work.",
+          "permalink": "/r/startups/comments/def456/churn_is_killing_my_startup_retention_ideas/",
+          "created_utc": 1761500000,
+          "num_comments": 8,
+          "score": 11
+        }
+      }
+    ]
+  }
+}
