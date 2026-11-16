@@ -36,11 +36,17 @@ import { spawnSync } from 'node:child_process';
  * that no runtime code imports — is a devDependency).
  */
 const ACCEPTED = [
-  // Intentionally empty as of 2026-08-15: every previously-accepted advisory is now
-  // resolved in-place. brace-expansion backported fixes to 1.1.18 / 2.1.4 / 5.0.9,
-  // so the three in-tree copies (minimatch 3/5/9/10 lines) are all clean without a
-  // cross-major override. @hono/node-server's advisory no longer reports against the
-  // installed range. Add entries here only when a root advisory has no reachable fix.
+  {
+    // minimatch <11.0.1: globparts amplification (DoS) only with attacker-controlled
+    // patterns at optimizationLevel >= 2. The remaining copies are minimatch 3.x
+    // (c2pa-node -> npm-run-all) and 5.x (workflow CLI -> ejs/jake/filelist); both
+    // match fixed, repo-authored globs and there is no patched 3.x/5.x line, while a
+    // cross-major override to 11 would break their CJS API. The 10.x copies are
+    // overridden to 11.0.4 in package.json. Re-check when c2pa-node / workflow update.
+    id: 'GHSA-g3hv-75wg-m249',
+    reason: 'minimatch 3/5 in build-time CLI deps, fixed patterns only; no patched line',
+    expires: '2027-02-01',
+  },
 ];
 
 const today = new Date().toISOString().slice(0, 10);
