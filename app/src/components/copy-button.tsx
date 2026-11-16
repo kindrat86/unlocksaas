@@ -25,15 +25,9 @@ interface CopyButtonProps {
   text: string;
   /** Idle-state button label. Defaults to "Copy". */
   label?: string;
-  /**
-   * Called once per successful copy (NOT on the clipboard-unavailable
-   * fallback). Lets callers attach funnel analytics without duplicating the
-   * clipboard logic.
-   */
-  onCopied?: () => void;
 }
 
-export function CopyButton({ text, label = "Copy", onCopied }: CopyButtonProps) {
+export function CopyButton({ text, label = "Copy" }: CopyButtonProps) {
   const [state, setState] = useState<"idle" | "copied" | "fallback">("idle");
 
   const onClick = useCallback(async () => {
@@ -52,13 +46,12 @@ export function CopyButton({ text, label = "Copy", onCopied }: CopyButtonProps) 
     try {
       await navigator.clipboard.writeText(text);
       setState("copied");
-      onCopied?.();
       // Reset after 2s so a second copy still feels responsive.
       window.setTimeout(() => setState("idle"), 2000);
     } catch {
       setState("fallback");
     }
-  }, [text, onCopied]);
+  }, [text]);
 
   const display =
     state === "copied"

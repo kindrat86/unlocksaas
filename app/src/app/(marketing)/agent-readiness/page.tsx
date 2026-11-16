@@ -126,9 +126,17 @@ export default function AgentReadinessPage() {
         </ol>
       </div>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2">
+      <div className="mt-10 rounded-2xl border-2 border-amber-400 bg-amber-50 p-4 text-center">
+          <p className="text-sm font-bold text-amber-800">
+            ⚡ Launch week: code LAUNCH50 = 50% off either report - Basic $14.50, Full $24.50. Enter the code on the Stripe checkout page. Ends Friday Nov 14.
+          </p>
+        </div>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div className="rounded-2xl border border-neutral-200 p-6">
-          <h3 className="text-lg font-bold">Basic - $29</h3>
+          <h3 className="text-lg font-bold">
+            Basic - $29{" "}
+            <span className="text-sm font-medium text-neutral-500 line-through" aria-hidden="true">$14.50 with LAUNCH50</span>
+          </h3>
           <ul className="mt-3 space-y-2 text-sm text-neutral-700">
             <li>Full 12-point audit of your live URL</li>
             <li>Pass/fail per check with evidence</li>
@@ -148,6 +156,8 @@ export default function AgentReadinessPage() {
             <span className="ml-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold uppercase text-amber-700">
               Most picked
             </span>
+            {" "}
+            <span className="text-sm font-medium text-neutral-500 line-through" aria-hidden="true">$24.50 with LAUNCH50</span>
           </h3>
           <ul className="mt-3 space-y-2 text-sm text-neutral-700">
             <li>Everything in Basic</li>

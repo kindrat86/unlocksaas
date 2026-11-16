@@ -73,7 +73,7 @@ export async function generateMetadata(
     title,
     description,
     alternates: markdownAlternate(canonical, `${canonical}/md`),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title,
       description,

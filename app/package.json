@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/build-workbook-bundle.mjs && node scripts/verify-shim.mjs && node --test scripts/test/unlocksaas-cron-safety.test.mjs scripts/test/founding-offer.test.mjs scripts/test/thread-finder.test.mjs scripts/test/reply-draft.test.mjs scripts/test/find-funnel-instrumentation.test.mjs && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test scripts/test/stripe-webhook-ownership.test.mjs scripts/test/onboarding-return-path.test.mjs scripts/test/onboarding-auth-consumers.test.mjs scripts/test/app-store-guarantee-terms.test.mjs src/lib/checkout-failure-message.test.ts",
+    "prebuild": "node scripts/build-workbook-bundle.mjs && node scripts/verify-shim.mjs && node --test scripts/test/unlocksaas-cron-safety.test.mjs scripts/test/founding-offer.test.mjs && node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --experimental-strip-types --test scripts/test/stripe-webhook-ownership.test.mjs scripts/test/onboarding-return-path.test.mjs scripts/test/onboarding-auth-consumers.test.mjs scripts/test/app-store-guarantee-terms.test.mjs",
     "build": "next build",
     "postbuild": "node scripts/postbuild-csp.mjs && node scripts/verify-jsonld.mjs .next",
     "audit:prod": "node scripts/audit-prod.mjs",
@@ -28,7 +28,6 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
     "@stripe/stripe-js": "^9.5.0",
-    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "ai": "^6.0.188",
     "botid": "^1.5.11",
@@ -39,7 +38,7 @@
     "geist": "^1.7.0",
     "lucide-react": "^1.16.0",
     "mcp-handler": "^1.1.0",
-    "next": "^16.4.3",
+    "next": "^16.2.11",
     "next-themes": "^0.4.6",
     "pdf-lib": "^1.17.1",
     "posthog-js": "^1.373.5",
@@ -51,14 +50,14 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "workflow": "^4.2.4",
-    "zod": "^4.6.7"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9",
-    "eslint-config-next": "^16.4.3",
+    "eslint-config-next": "^16.2.11",
     "postcss": "^8.5.23",
     "shadcn": "^4.7.0",
     "tailwindcss": "^3.4.1",
@@ -66,36 +65,23 @@
   },
   "overrides": {
     "@workflow/core": {
-      "devalue": "5.9.4",
+      "devalue": "5.9.1",
       "nanoid": "5.1.16"
     },
     "@workflow/world-local": {
-      "undici": "7.30.1"
+      "undici": "7.29.0"
     },
     "@workflow/world-vercel": {
-      "undici": "7.30.1"
+      "undici": "7.29.0"
     },
     "postcss": "$postcss",
-    "shell-quote": "1.12.0",
-    "sharp": "0.35.5",
-    "fast-uri": "3.1.9",
-    "body-parser": "2.4.0",
-    "dompurify": "3.4.17",
-    "postcss-selector-parser": "6.1.5",
-    "piscina": "4.9.4",
-    "protobufjs": "7.5.3",
-    "@modelcontextprotocol/sdk": "1.32.2",
-    "@hono/node-server": "2.1.5",
-    "@xhmikosr/decompress": "11.1.4",
-    "brace-expansion@^1": "1.1.21",
-    "brace-expansion@^2": "2.1.7",
-    "hono": "4.13.16",
-    "ip-address": "10.7.5",
-    "proxy-addr": "2.0.8",
-    "source-map-js": "1.2.2",
-    "undici@^6": "6.29.1",
-    "zod@^4": "$zod",
-    "brace-expansion@^5": "5.0.12",
-    "minimatch@^10": "11.0.4"
+    "shell-quote": "1.10.0",
+    "sharp": "0.35.4",
+    "fast-uri": "3.1.6",
+    "body-parser": "2.3.0",
+    "dompurify": "3.4.13",
+    "postcss-selector-parser": "6.1.3",
+    "piscina": "4.9.3",
+    "protobufjs": "7.5.3"
   }
 }

@@ -65,7 +65,7 @@ export async function generateMetadata(props: {
     title: e.metaTitle,
     description: e.metaDescription,
     alternates: markdownAlternate(canonical, `${canonical}/md`),
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       type: "article",
       title: e.metaTitle,

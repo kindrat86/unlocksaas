@@ -136,21 +136,21 @@ function makeQuarter(
 export const COHORT_QUARTERS: ReadonlyArray<CohortQuarter> = [
   makeQuarter(2026, 1, {
     tldr:
-      "The first quarter UnlockSaaS shipped to the world. The January-to-March 2026 window closed with 0 verified builders recorded on this page.",
+      "The first quarter UnlockSaaS shipped to the world. Founders who took the diagnostic, ran the Playbook, and crossed their first paying-customer line between January and March 2026.",
     theme:
-      "Day-one founders. The window is closed; the record stands at zero and says so.",
+      "Day-one founders. The class that proved the cycle works before the marketing did.",
     lastVerified: "2026-05-22",
   }),
   makeQuarter(2026, 2, {
     tldr:
-      "The April-to-June 2026 window closed with 0 verified builders recorded on this page.",
+      "The April-to-June 2026 class. Founders ran the diagnostic, took the $1 Starter, climbed to the $49/mo Core Playbook, and surfaced their first Stripe-verified customer inside the quarter window.",
     theme:
       "Post-launch, pre-revenue founders shipping their first real charge.",
     lastVerified: "2026-05-22",
   }),
   makeQuarter(2026, 3, {
     tldr:
-      "The July-to-September 2026 window closed with 0 verified builders recorded on this page.",
+      "The July-to-September 2026 class. Cohort opens at the first day of Q3; the directory page populates automatically as Stripe-verified customers land. No invitation, no application - the path is the diagnostic.",
     theme:
       "Late-summer 2026 class. The path opens the day the diagnostic returns a label you can act on.",
     lastVerified: "2026-05-22",

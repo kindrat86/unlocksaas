@@ -123,3 +123,12 @@ export function findShowcaseByQuery(query: string): ShowcaseQuery | undefined {
   const normalised = query.trim().toLowerCase();
   return SHOWCASE_QUERIES.find((q) => q.query.toLowerCase() === normalised);
 }
+
+/**
+ * Resolve a legacy `/ask?q=...` showcase URL to its stable canonical path.
+ * Free-form questions stay on `/ask?q=...` and therefore return null.
+ */
+export function showcasePathForQuery(query: string): string | null {
+  const showcase = findShowcaseByQuery(query);
+  return showcase ? `/ask/${showcase.slug}` : null;
+}
